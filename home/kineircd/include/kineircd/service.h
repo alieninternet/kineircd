@@ -106,6 +106,10 @@ namespace Kine {
 		  const Receiver::Directivity directivity =
 		  Receiver::Directivity())
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
+      
+      
+      // Decamp
+      void decamp(void) {};
    }; // class Service
 }; // namespace Kine
 

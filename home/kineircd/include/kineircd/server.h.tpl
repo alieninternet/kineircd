@@ -30,18 +30,19 @@
 # include <kineircd/entity.h>
 # include <kineircd/denizen.h>
 # include <kineircd/sender.h>
-# include <kineircd/user.h>
 # include <kineircd/errors.h>
- 
+
 namespace Kine {
    class Client;
+   class User;
+//   class Service;
    
    //! A server
    class Server : public Denizen, public Sender {
     public:
-      //! Server modes type 
+      //! Server modes type
       typedef unsigned long modes_type;
-      
+
       // Server modes...
       struct Mode { // <=- should be namespace?
 	 enum mode_type {[+ FOR servermodes +]
@@ -96,6 +97,7 @@ namespace Kine {
 	{ return isModeSet(Mode::HIDDEN); };
       
       
+      //@{
       //! Request administrative information from this server
       virtual const Error::error_type requestAdminInfo(const Client& who)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
@@ -120,9 +122,98 @@ namespace Kine {
       //! Request the daemon's version from this server
       virtual const Error::error_type requestVersion(const Client& who)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
+      //@}
+      
+
+      //@{
+      /*!
+       * \brief Register a User to the network
+       * 
+       * This will register the given \p user to the network \e via this
+       * server. Each User connects to a specific server on the network,
+       * and must be registered as being connected to that particular server
+       * for verification purposes.
+       *
+       * \return The status of the operation
+       * \retval Error::NO_ERROR
+       *    The \p user has been registered to the network, as being
+       *    \e logically connected to this server
+       * \retval Error::ENTITY_EXISTS
+       *    This \p user is already registered. If the given \p user is
+       *    being reregistered, the most likely explaination is that there is
+       *    a flaw in your code. This means that the given \p user is
+       *    identical to one which is already registered -- not just by name,
+       *    but the instance of the User is the same one as that which is
+       *    already registered.
+       * \retval Error::NAME_HAS_BAD_CHARS
+       *    The \p user has a name which contains characters which are
+       *    considered invalid. It's best to check the name closer using
+       *    the ClientName routines
+       * \retval Error::NAME_IS_IN_USE
+       *    The \p user given is using a name which is already in use on the
+       *    network, and has not been registered
+       * \retval Error::NAME_TOO_LONG
+       *    The \p user given has a name which is considered to be too long
+       * \retval Error::NICKNAME_BEGINS_WITH_DIGIT
+       *    The \p user has a nickname which begins with a digit, and is
+       *    considered to be invalid. Only arabic digits (\c 0 to \c 9) cause
+       *    this.
+       * \retval Error::PERMISSION_DENIED
+       *    The \p user is not allowed to be registered to this server. The
+       *    server may have a special property, such as not being able to
+       *    carry as clients. User registration to such a server would
+       *    obviously be illegal, under such terms.
+       * \retval Error::UNSUPPORTED_BY_ENTITY
+       *    This server cannot accept User entities.
+       */
+      const Error::error_type addUser(User& user);
+      
+      /*!
+       * \brief Register a Service to the network
+       * 
+       * This will register the given \p service to the network \e via this
+       * server. See addUser() for more information.
+       * 
+       * \return The status of the operation
+       * \retval Error::NO_ERROR
+       *    The \p service has been registered to the network, as being
+       *    \e logically connected to this server
+       * \retval Error::ENTITY_EXISTS
+       *    This \p service is already registered. If the given \p service is
+       *    being reregistered, the most likely explaination is that there is
+       *    a flaw in your code.
+       * \retval Error::NAME_HAS_BAD_CHARS
+       *    The \p service has a name which contains characters which are
+       *    considered invalid. It's best to check the name closer using
+       *    the ClientName routines
+       * \retval Error::NAME_IS_IN_USE
+       *    The \p service given is using a name which is already in use on
+       *    the network within the given scope. If the \p service you're
+       *    trying to register has a scope identical than the one which
+       *    already exists, you should try to tighten or widen the scope up
+       *    to avoid the conflict. See Service::getScopeMask() and related
+       *    functions for more information on this.
+       * \retval Error::NAME_TOO_LONG
+       *    The \p service given has a name which is considered to be too long
+       * \retval Error::NICKNAME_BEGINS_WITH_DIGIT
+       *    The \p service has a nickname which begins with a digit, and is
+       *    considered to be invalid. Only arabic digits (\c 0 to \c 9) cause
+       *    this.
+       * \retval Error::PERMISSION_DENIED
+       *    The \p service is not allowed to be registered to this server.
+       * \retval Error::UNSUPPORTED_BY_ENTITY
+       *    This server cannot carry Service entities.
+       */
+//      const Error::error_type addService(Service& service);
+      //@}
+      
+      
+      // Decamp
+      void decamp(void) {};
    }; // class Server
 }; // namespace Kine
 
-# include <kineircd/client.h>
+# include <kineircd/user.h>
+//# include <kineircd/service.h>
  
 #endif // [+(. header-guard)+]

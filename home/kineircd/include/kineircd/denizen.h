@@ -149,6 +149,24 @@ namespace Kine {
        * \return The server the denizen is connected to
        */
       virtual Server& getServer(void) const = 0;
+      
+      
+      /*!
+       * \brief Abruptly quit the network
+       *
+       * This marks an unfortunately abrupt disconnection for this denizen
+       * on the network. Most likely, the denizen has been disconnected
+       * for reasons out of our control, such as the physical network
+       * connection being broken, or an unrecoverable protocol error.
+       * 
+       * This should be used \b only for abrupt and uncontrollable problems.
+       * Each entity normally has its own method of leaving the network, and
+       * if the entity is leaving/deregistering normally, those methods must
+       * be used instead.
+       * 
+       * \param reason The reason for this denizen's decampment
+       */
+      virtual void decamp(void) = 0;
    }; // class Denizen
 }; // namespace Kine
 

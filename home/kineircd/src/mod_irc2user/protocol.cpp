@@ -61,7 +61,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    maxMessageSize(512) // <=- should really be configurable
 {
    // Attempt to register the user to the registry..
-   if (registry().addUser(user) != Error::NO_ERROR) {
+   if (myServer().addUser(user) != Error::NO_ERROR) {
       // Deal with this in a nice way.. but we don't, yet, do we?
       return;
    };
@@ -129,8 +129,8 @@ Protocol::Protocol(const Kine::Registrant& registrant,
  */
 Protocol::~Protocol(void)
 {
-   // Deregister our user, we hope.. It is not smart to ignore the error..
-   (void)registry().removeUser(user);
+   // Deregister our user somewhat abruptly
+   user.decamp();
 }
 
 

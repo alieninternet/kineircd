@@ -137,7 +137,42 @@ namespace Kine {
       const bool hasSelectiveHearing(void) const
 	{ return (attentionGlyph != notDeafGlyph); };
       
+
+      //@{
+      /*!
+       * \brief Quit, with no reason
+       * 
+       * This is a voluntary action by the client to leave the network.
+       * 
+       * Unlike kill(), this is not a forceful removal of the client; Rather,
+       * the client is simply being innocuously disconnected, at their own
+       * behest. If the client must be removed for more truculent reasons,
+       * you need to use kill() instead.
+       * 
+       * \return The status of the operation
+       * \retval Kine::Error::NO_ERROR
+       *    The client has quit and been deregistered successfully
+       * \retval Kine::Error::UNREGISTERED_ENTITY
+       *    The client isn't registered, and therefore (obviously) cannot
+       *    leave the network and be deregistered
+       */
+      const Error::error_type quit(void);
       
+      /*!
+       * \brief Quit, with a \p reason
+       * 
+       * Use this method if the client has specified a reason for quitting.
+       * 
+       * \copydoc quit(void)
+       * \param reason The given reason for quitting
+       * \retval Kine::Error::TEXT_TOO_LONG
+       *    The given \p reason is too long and cannot be accepted. If the
+       *    client is expecting the quit to continue, you should crop the
+       *    \p reason text prior to calling this.
+       */
+      const Error::error_type quit(const std::string reason);
+
+
       /*!
        * \brief Kill this client
        * 
@@ -185,6 +220,7 @@ namespace Kine {
        */
       const Error::error_type kill(Denizen& killer, const std::string& reason)
 	{ return Kine::Error::UNKNOWN_ERROR; };
+      //@}
    }; // class Client
 }; // namespace Kine
 

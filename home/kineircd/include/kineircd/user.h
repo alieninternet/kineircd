@@ -203,6 +203,10 @@ namespace Kine {
 	sendNotice(Sender& from, const std::string& message,
 		   const Receiver::Directivity directivity =
 		   Receiver::Directivity());
+
+
+      // Decamp
+      void decamp(void) {};
    }; // class User
 }; // namespace Kine
 

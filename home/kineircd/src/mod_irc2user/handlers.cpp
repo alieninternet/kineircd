@@ -764,13 +764,34 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePRIVMSG)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_QUIT
 /* handleQUIT
  * Original 14/08/2001 simonb
- * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 {
-   // Let the core know about the client quitting
-   
-   // Say goodbye to the client
+   // Make the user quit (we can't help but ignore the error values)
+   if (parameters.empty()) {
+      (void)user.quit();
+      if (true) {
+	 /* Say goodbye to the client. RFC1459 makes us send an ERROR, despite
+	  * it being somewhat of a misnomer!
+	  */
+	 sendError(GETLANG(irc2user_ERROR_CLOSING_LINK_QUIT,
+			   user.getNickname(),
+			   user.getUsername(),
+			   user.getHostname()));
+      }
+   } else {
+      (void)user.quit(parameters[0]);
+      if (true) {
+	 /* Say goodbye to the client. RFC1459 makes us send an ERROR, despite
+	  * it being somewhat of a misnomer!
+	  */
+	 sendError(GETLANG(irc2user_ERROR_CLOSING_LINK_QUIT_WITH_REASON,
+			   user.getNickname(),
+			   user.getUsername(),
+			   user.getHostname(),
+			   parameters[0]));
+      }
+   }
    
    // Close the connection
    connection.goodbye();
@@ -783,7 +804,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
  * Original 19/09/2001 simonb
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleREHASH)
-{
+{ 
    static const char* const commandName = "REHASH";
    
    // Try to rehash

@@ -99,11 +99,6 @@ namespace Kine {
       //! Constructor
       Registry(void);
 
-      
-      //! Change a user's nickname
-      const Error::error_type 
-	changeUserNickname(User& user, const ClientName& newNickname);
-
       // Our friends
       friend class User;
       
@@ -120,19 +115,6 @@ namespace Kine {
 	{ return *instance; };
       
       
-      // Add the given user
-      const Error::error_type addUser(User& entity);
-      
-      // Remove the given user
-      const Error::error_type removeUser(const User& entity);
-      
-      // Add the given service
-      const Error::error_type addService(Service& entity);
-      
-      // Remove the given service
-      const Error::error_type removeService(const Service& entity);
-
-
       //! Find the given user, by its name
       User* const findUser(const ClientName& name) const;
 

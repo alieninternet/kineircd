@@ -28,6 +28,8 @@
 # include <kineircd/config.h>
 
 namespace Kine {
+   class LocalUser;
+   
    /*!
     * \brief Our server instance
     * 
@@ -266,6 +268,17 @@ namespace Kine {
       const Error::error_type sendWallops(const Sender& sender,
 					  const std::string& message)
 	{ return Error::UNKNOWN_ERROR; };
+      
+      
+      /*!
+       * \brief Register a LocalUser to this server
+       * 
+       * This will register a <em>locally connected</em> user (a LocalUser)
+       * to this server.
+       * 
+       * \copydoc Server::addUser()
+       */
+      const Error::error_type addUser(LocalUser& user);
    }; // class MyServer
 
 
@@ -281,5 +294,7 @@ namespace Kine {
    inline static MyServer& myServer(void)
      { return MyServer::getInstance(); };
 };
+
+# include <kineircd/localuser.h>
 
 #endif // _INCLUDE_KINEIRCD_MYSERVER_H_

@@ -100,6 +100,8 @@ void Registry::initInstance(void)
 }
 
 
+#warning "This file is crappy"
+#ifdef EIAFAIEHFIAEFIAIEHFIAEFIHAEIFIAEFIHAEFIAIEFIAEFIUAEIHIAUEFA
 /* changeUserNickname - Change a user's nickname (may involve a key change)
  * Original 16/05/2003
  */
@@ -232,6 +234,7 @@ const Error::error_type Registry::removeUser(const User& entity)
    // Complain about the user not existing
    return Error::UNREGISTERED_ENTITY;
 }
+#endif // AKKAFEKEFAHKAKHHAFEAFHFEAHKFAHAFHKAFKHEAFAKAFEKHAEHKAAEF blah
 
 
 /* findUser - Find the a user by its name
@@ -252,6 +255,7 @@ User* const Registry::findUser(const ClientName& name) const
 }
 
 
+#ifdef AFKUEAFKUAEFHAEFKAEFHAHEFHAEHFAEFHAEFKHAEHAEF
 /* addService - Add the given service
  * Original 08/04/2003
  */
@@ -345,6 +349,7 @@ const Error::error_type Registry::removeService(const Service& entity)
    // Complain about the user not existing
    return Error::UNREGISTERED_ENTITY;
 }
+#endif // KAHKAFHakefkhAEFHkaefaFKHaefkaefkuaef blah
 
 
 /* findService - Find the a service by its name
