@@ -48,7 +48,7 @@ namespace {
       0,
 
       // Flags to define how we need to be run
-      Kine::Module::Flags::UNIQUE_INSTANCE,
+      0,
 
       // Configuration stuff
       &Kine::mod_filelog::Config::definitionTable
