@@ -62,6 +62,7 @@ EXTRA_DIST=\
 	autogen/chanmodes.def \
 	autogen/chantypes.def \
 	autogen/config.def \
+	autogen/config.scm \
 	autogen/errors.def \
 	autogen/irc2numerics.def \
 	autogen/logger.def \
@@ -86,8 +87,12 @@ dist-hook:
 
 
 # Customised .tpl rule, since the template and the defs do not match
-install/example.conf: install/example.conf.tpl $(AUTOGEN_DEF_DIR)/config.def
-	$(AUTOGEN) -b $(basename $@) -T $< $(AUTOGEN_DEF_DIR)/config.def
+install/example.conf: install/example.conf.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $< \
+		-S $(AUTOGEN_DEF_DIR)/config.scm \
+		$(AUTOGEN_DEF_DIR)/config.def
 
 
 
@@ -96,4 +101,6 @@ RFC_LOCATION=http://www.rfc-editor.org/rfc
 WGET=wget
 
 rfc%.txt:
-	$(WGET) -N $(RFC_LOCATION)/$(notdir $@) -O $@
+	$(WGET) \
+		-N $(RFC_LOCATION)/$(notdir $@) \
+		-O $@

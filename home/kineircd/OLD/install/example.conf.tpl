@@ -50,54 +50,10 @@
 ## You must edit this to suit your server!!!
 ##[+
 
-   ;;; Create the initial (empty) prefix stack list thingy
-   (define tablePrefixStack (list ""))
-
-
-   ;;; getPrefix - Little function to display the prefix properly
-   (define (getPrefix)
-      (letrec ((prefix "")
-               (prefixGetter
-	          (lambda (stack)
-		     ;; Prepend this prefix..
-	             (set! prefix
-		        (string-append
-			   (car stack)
-			   prefix))
-
-		     ;; More prefixes to go?
-		     (if (not (null? (cdr stack)))
-		        (prefixGetter (cdr stack))))))
-
-         ;; Bootstrap the prefix-getting-thingy
-	 (prefixGetter tablePrefixStack)
-	 
-	 ;; Return the result
-         prefix))
-
-
-   ;;; pushPrefix - Push a string onto the prefix stack
-   (define (pushPrefix x)
-      (set! tablePrefixStack
-         (append
-	    (list x)
-	    tablePrefixStack)))
-
-
-   ;;; popPrefix - Pop a string from the prefix stack
-   (define (popPrefix)
-      (set! tablePrefixStack
-         (cdr tablePrefixStack)))
-
-
-   ;;; topPrefix - Get the top prefix from the prefix stack
-   (define (topPrefix)
-      (car tablePrefixStack))
-
-
    ;;; getIndentLevel - Work out the identation depth (# of chars)
    (define (getIndentLevel)
       (- (* (length tablePrefixStack) 3) 3))
+
 
 
    ;;; lineIndent - Create an indentation appropriate for our nesting level.
@@ -114,7 +70,7 @@
 			   (string-append
 			   output
 			   "\t"))
-				     
+
 		        ;; Append the rest of the string
 			(set! output
 		           (string-append
@@ -124,13 +80,14 @@
 			;; More?
 			(if (> level 8)
 			   (indenter (- level 8))))))
-				     
+
          ;; Do we *really* need to run?
 	 (if (> (getIndentLevel) 0)
             (indenter (getIndentLevel)))
-	    
+
 	 ;; Return the output
          output))
+
 
 
    ;;; formatComment - Format a comment block
@@ -146,7 +103,7 @@
 		     (if (equal? (string-ref tail (- where 1)) #\ )
 		        ;; Yes, return this!
 		        where
-			
+
 			;; No, go back one more character
 			(findWhereToCut tail (- where 1)))))
 
@@ -155,7 +112,7 @@
 		     ;; Work out where to cut the string at..
 		     (set! cutWhere
 		        (findWhereToCut tail chunkLength))
-				 
+
 		     ;; Append the bit before the cut
 		     (set! output
 			(string-append
@@ -186,7 +143,7 @@
 			   (string-append
 			      output
 			      lineTail))
-				
+
 		     ;; Recurse, breaking the line down some more
 		     (formatter (split! lineTail))))))
 
@@ -195,7 +152,7 @@
 
 	 ;; Return the output
          output))
-	 
+
  +][+DEFINE make-def-name+][+IF .variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+][+ENDDEF+]
 [+DEFINE output-config-stuff+][+FOR .definition+][+IF (not (exist? "hidden"))+][+IF .definition+][+IF (not (first-for?))+]
 [+ENDIF+][+IF .comment+][+IF (not (first-for?))+]

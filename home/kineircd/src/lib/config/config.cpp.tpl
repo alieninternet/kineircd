@@ -35,23 +35,7 @@
 #include "libkineircd/listener/config.h"
 
 using namespace Kine;
-[+
-   ; Create the initial (empty) prefix stack list thingy
-   (define tablePrefixStack (list ""))
-   
-   ; Little function to display the prefix properly
-   (define (getPrefix)
-      (let ((prefix ""))
-         (letrec ((prefixGetter (lambda (stack)
-	                           (set! prefix
-				      (string-append 
-				         (car stack)
-					 prefix))
-	                           (if (not (null? (cdr stack)))
-			              (prefixGetter (cdr stack))))))
-            (prefixGetter tablePrefixStack))
-         prefix))
- +]
+
 [+DEFINE output-class-definition-table+]const AISutil::ConfigParser::defTable_type Config::[+tableClass+] = {[+FOR definition+]
 [+IF condition+]#ifdef [+condition+]
 [+ENDIF+]     {

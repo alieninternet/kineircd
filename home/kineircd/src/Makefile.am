@@ -127,10 +127,23 @@ libkineircd_la_LIBADD=\
 
 # Customised .tpl to .cpp rules, since the template and the defs do not match
 libkineircd/regnumerics.h: libkineircd/regnumerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
-	$(AUTOGEN) -b $(basename $@) -T $< $(AUTOGEN_DEF_DIR)/irc2numerics.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $< \
+		$(AUTOGEN_DEF_DIR)/irc2numerics.def
 
 libkineircd/loggerconfig.cpp: libkineircd/loggerconfig.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
-	$(AUTOGEN) -b $(basename $@) -T $< $(AUTOGEN_DEF_DIR)/logger.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $< \
+		$(AUTOGEN_DEF_DIR)/logger.def
+		
+libkineircd/config/config.cpp: libkineircd/config/config.cpp.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $< \
+		-S $(AUTOGEN_DEF_DIR)/config.scm \
+		$(AUTOGEN_DEF_DIR)/logger.def
 		
 
 
@@ -298,7 +311,10 @@ mod_syslog_la_LIBADD=\
 
 # Customised .tpl to .cpp rules, since the template and the defs do not match
 mod_syslog/syslog.cpp: mod_syslog/syslog.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
-	$(AUTOGEN) -b $(basename $@) -T $< $(AUTOGEN_DEF_DIR)/logger.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $< \
+		$(AUTOGEN_DEF_DIR)/logger.def
 
 
 
