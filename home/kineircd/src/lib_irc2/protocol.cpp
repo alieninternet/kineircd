@@ -22,9 +22,60 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifdef HAVE_CONFIG_H
+# include "autoconf.h"
+#endif
+
+#include <aisutil/string/tokens.h>
+
 #include "libkineircd_irc2/protocol.h"
 
+using AISutil::StringTokens;
 using namespace Kine::LibIRC2;
+
+
+/* parseLine - Break up a protocol message into its components, and pass it on
+ * Original 12/08/2001 simonb
+ * Note: This could be more efficient :(
+ */
+void Protocol::parseLine(const std::string& line)
+{
+   StringTokens message(line);
+   std::string origin;
+   std::string command;
+   std::string destination;
+   parameters_type parameters;
+
+   // Do we have an origin to break out?
+   if (line[0] == ':') {
+      origin = message.nextToken().substr(1);
+      command = message.nextToken().toUpper();
+      destination = message.nextToken();
+   } else {
+      command = message.nextToken().toUpper();
+   }
+   
+   // Grab the parameters...
+   std::string thingy;
+   while (message.hasMoreTokens()) {
+      thingy = message.nextToken();
+      
+      // Last one?
+      if (thingy[0] == ':') {
+	 thingy = thingy.substr(1) + ' ' + message.rest();
+	 parameters.push_back(thingy);
+	 break;
+      }
+      
+      parameters.push_back(thingy);
+   }
+   
+   // Check - we must at least have a command to pass
+   if (!command.empty()) {
+      // Hand the line over to the message handler
+      parseMessage(origin, command, destination, parameters);
+   }
+}
 
 
 /* handleInput - Handle incoming data
@@ -71,10 +122,6 @@ void Protocol::handleInput(std::stringstream& data)
 	  * should they break this limit.
 	  */
 	 if (buffer.length() > 510) {
-#ifdef KINE_DEBUG_PSYCHO
-	    debug("Registrar::handleInput() - "
-		  "Inordinate amount of incoming data");
-#endif
 	    connection.goodbye();
 	 }
 	 

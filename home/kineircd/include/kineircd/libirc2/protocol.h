@@ -26,13 +26,18 @@
 # define _SRC_LIBKINEIRCD_IRC2_PROTOCOL_H_ 1
 
 # include <queue>
+# include <vector>
 # include <string>
+# include <aisutil/string/string.h>
 # include <kineircd/protocol.h>
 
 namespace Kine {
    namespace LibIRC2 {
       class Protocol : public Kine::Protocol {
        protected:
+	 // The type of a 'parameter list'
+	 typedef std::vector <AISutil::String> parameters_type;
+
 	 // Our input buffer..
 	 std::string buffer;
 
@@ -41,8 +46,13 @@ namespace Kine {
 	 
        private:
 	 // Appropriately parse a protocol message
-	 virtual void parseLine(const std::string& line)
-	   {};
+	 virtual void parseMessage(const std::string& origin,
+				   const std::string& command,
+				   const std::string& destination,
+				   const parameters_type& parameters) = 0;
+
+	 // Break up a protocol message into its components
+	 virtual void parseLine(const std::string& line);
 
        protected:
 	 // Constructor

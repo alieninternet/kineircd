@@ -25,8 +25,6 @@
 #ifndef _SRC_LIBKINEIRCD_REGISTRAR_H_
 # define _SRC_LIBKINEIRCD_REGISTRAR_H_ 1
 
-# include <aisutil/string/tokens.h>
-
 # include "kineircd/listener.h"
 # include "kineircd/registrant.h"
 # include "kineircd/config.h"
@@ -34,7 +32,7 @@
 # include "libkineircd/regnumerics.h"
 
 # define KINE_LIB_REGISTRAR_FUNCTION(x) \
-     void x(AISutil::StringTokens& line)
+     void x(const Kine::LibIRC2::Protocol::parameters_type& parameters)
 
 namespace Kine {
    class Registrar : public LibIRC2::Protocol {
@@ -78,7 +76,10 @@ namespace Kine {
       void sendPing(void);
 
       // Appropriately parse a protocol message
-      void parseLine(const std::string& line);
+      void parseMessage(const std::string& origin, const std::string& command,
+			const std::string& destination,
+			const Kine::LibIRC2::Protocol::parameters_type&
+			parameters);
 
       // Protocol commands
       handler_type parseCAPAB;

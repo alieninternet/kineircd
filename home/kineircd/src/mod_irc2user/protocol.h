@@ -30,6 +30,15 @@
 namespace Kine {
    namespace mod_irc2user {
       class Protocol : public Kine::LibIRC2::Protocol {
+       private:
+	 // Appropriately parse a protocol message
+	 void parseMessage(const std::string& origin,
+			   const std::string& command,
+			   const std::string& destination,
+			   const Kine::LibIRC2::Protocol::parameters_type&
+			   parameters)
+	   {};
+	 
        public:
 	 // Constructor
 	 Protocol(const Kine::Registrant& registrant,

@@ -39,7 +39,6 @@
 
 using namespace Kine;
 using AISutil::String;
-using AISutil::StringTokens;
 
 
 // Master command table (zero terminated, ordered alphabetically)
@@ -152,22 +151,22 @@ void Registrar::sendPing(void)
 }
 
 
-/* parseLine - Parse an incoming line
+/* parseMessage - Appropriately parse a protocol message
  * Original 12/08/2001 simonb
  */
-void Registrar::parseLine(const std::string& line)
+void Registrar::parseMessage(const std::string& origin,
+			     const std::string& command,
+			     const std::string& destination,
+			     const Kine::LibIRC2::Protocol::parameters_type&
+			     parameters)
 {
    bool found = false;
-
-   // Tokenise the line, and grab the command
-   StringTokens st(line);
-   String command = st.nextToken().toUpper();
 
    // Run through the list and find a function..
    for (int i = 0; commandTable[i].command != 0; i++) {
       if (command == commandTable[i].command) {
 	 found = true;
-	 (this->*(commandTable[i].handler))(st);
+	 (this->*(commandTable[i].handler))(parameters);
 	 break;
       }
    }
@@ -317,13 +316,13 @@ void Registrar::parseLine(const std::string& line)
 KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseCAPAB)
 {
    // Make sure we were given at least one parameter
-   if (line.countTokens() < 2) {
+   if (parameters.empty()) {
       sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "CAPAB");
       return;
    }
 
-   // Append the capability to the capabilities vector
-   registrantData.capabilities.push_back(line.rest());
+//   // Append the capability to the capabilities vector
+//   registrantData.capabilities.push_back(line.rest());
 
 #ifdef KINE_DEBUG_PSYCHO
    std::ostringstream out;
@@ -353,16 +352,13 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
    }
 
    // Check there are enough tokens. We consider the description field optional
-   if (line.countTokens() < 6) {
+   if (parameters.size() < 6) {
       sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "IIRCN");
       return;
    }
    
-   // Take out the remote network's name from the line..
-   registrantData.nickname = line.nextToken();
-   
    // Check that the 'from network' field is * - it must be during registration
-   if (line.nextToken() != "*") {
+   if (parameters[1] != "*") {
 #ifdef KINE_DEBUG_PSYCHO
       debug("Registrar::parseIIRCN() - Invalid: from network != \"*\"");
 #endif
@@ -370,10 +366,11 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
       return;
    }
    
-   // Continue ripping out the data
-   registrantData.hostname = line.nextToken();
-   registrantData.protocol = line.nextToken().toUpper();
-   registrantData.linkStamp = line.nextToken().toLong();
+   // Rip out the data, then..
+   registrantData.nickname = parameters[0];
+   registrantData.hostname = parameters[2];
+   registrantData.protocol = parameters[3].toUpper();
+   registrantData.linkStamp = parameters[4].toLong();
    
 #ifdef KINE_DEBUG_PSYCHO
    // Output debugging info
@@ -392,8 +389,8 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
       return;
    }
    
-   if (line.hasMoreTokens()) {
-      registrantData.realname = line.nextColonToken();
+   if (parameters.size() > 5) {
+      registrantData.realname = parameters[5];
 #ifdef KINE_DEBUG_PSYCHO
       debug(" -=>  Description: " + registrantData.realname);
 #endif
@@ -409,11 +406,8 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
  */
 KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
 {
-   // Rip the nick out, ignoring anything after a space
-   String nick = line.nextToken();
-   
-   // Check we got a nickname from that..
-   if (nick.empty()) {
+   // Check the parameter list, there must be one parameter at least..
+   if (parameters.empty()) {
       sendNumeric(RegistrationNumerics::ERR_NONICKNAMEGIVEN);
       return;
    }
@@ -453,7 +447,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
 //   }
    
    // If we got here, the nick was ok - allow it
-   registrantData.nickname = nick;
+   registrantData.nickname = parameters[0];
 # ifdef KINE_DEBUG_PSYCHO
    debug(" -=>         Nick: " + registrantData.nickname);
 # endif
@@ -477,19 +471,25 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePASS)
       return;
    }
    
+   // We need at least one parameter here (the password itself, duh!)
+   if (parameters.empty()) {
+      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "PASS");
+      return;
+   }
+   
    // Grab the password from the line (we do not care if it is blank)
-   registrantData.password = line.nextColonToken();
+   registrantData.password = parameters[0];
    
 #ifdef KINE_DEBUG_PSYCHO
    debug(" -=>     Password: " + registrantData.password);
 #endif
    
    // Is there anything else on the line we should know about?
-   if (line.hasMoreTokens()) {
-      registrantData.passwordKludge = line.rest();
-#ifdef KINE_DEBUG_PSYCHO
-      debug(" -=>  PASS Kludge: " + registrantData.passwordKludge);
-#endif
+   if (parameters.size() > 1) {
+//      registrantData.passwordKludge = line.rest();
+//#ifdef KINE_DEBUG_PSYCHO
+//      debug(" -=>  PASS Kludge: " + registrantData.passwordKludge);
+//#endif
    }
 }
 
@@ -499,15 +499,15 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePASS)
  */
 KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePONG)
 {
-   // Were we expecting a pong reply?
-   if (pongsLeft == 0) {
+   // Were we expecting a pong reply? Is this pong empty?
+   if ((pongsLeft == 0) || (parameters.empty())) {
       // Drop this connection..
       connection.goodbye();
       return;
    }
-   
+
    // Make sure this pong is valid
-   if (line.nextColonToken() != pongMatch) {
+   if (parameters[0] != pongMatch) {
       // They tried to trick us - drop them off for being naughty
       connection.goodbye();
       return;
@@ -535,7 +535,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseQUIT)
 {
    /* Close the connection. No goodbye or anything to prevent abuse. It is
     * very rare for a connection to use the QUIT command during registration,
-    * if ever.
+    * anyway..
     */
    connection.goodbye();
 }
@@ -565,25 +565,26 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
    /* Check there are enough tokens, based on the lowest possible a la 
     * RFC1459. However, we consider the info/description field optional.
     */
-   if (line.countTokens() < 4) {
+   if (parameters.size() < 3) {
       sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "SERVER");
       return;
    }
 
    // Grab the first required value, the server name..
-   registrantData.hostname = line.nextToken();
+   registrantData.hostname = parameters[0];
 #ifdef KINE_DEBUG_PSYCHO
    debug(" -=>       Server: " + registrantData.hostname);
 #endif
    
    // Grab the second required value - hop count
-   int hops = line.nextToken().toInt();
+   int hops = parameters[1].toInt();
 #ifdef KINE_DEBUG_PSYCHO
-   debug(" -=>         Hops: " + String::convert(hops));
+   debug(" -=>         Hops: " + parameters[1]);
 #endif
    
    // Check the hop count, it must be 1, any other value is incorrect
    if (hops != 1) {
+      // Oh well - nice try.. We don't like servers which want to lie to us :(
       connection.goodbye();
       return;
    }
@@ -631,13 +632,10 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
    }
    
    // Check there are enough tokens
-   if (line.countTokens() < 7) {
+   if (parameters.size() < 6) {
       sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "SERVICE");
       return;
    }
-
-   // Grab the service name (nickname/whatever)
-   String name = line.nextToken();
 
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
 //   if (!User::okName(name)) {
@@ -655,18 +653,16 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
    ///////////////////////////////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////
    
-   // Ok, that name should be ok
-   registrantData.username = name;
- 
-   // Rip out the rest of the variables
-   (void)line.nextToken(); // ignored.. (RFC-2812: reserved)
-   registrantData.distribution = line.nextToken();
-   (void)line.nextToken(); // ignored.. (RFC-2812: type)
-   (void)line.nextToken(); // ignored (RFC-2812: reserved)
-   registrantData.realname = 
-     line.nextColonToken().substr(0, 
-				  config().
-				  getOptionsLimitsUsersMaxRealNameLength());
+   // Ok, rip out the variables...
+   registrantData.username = parameters[0];
+   registrantData.distribution = parameters[2];
+   
+   // If there's a real-name field, we should grab that one too
+   if (parameters.size() > 5) {
+      registrantData.realname = 
+	parameters[5].substr(0,
+			     config().getOptionsLimitsUsersMaxRealNameLength());
+   }
    
 #ifdef KINE_DEBUG_PSYCHO
    // Send what we got to the debugging output
@@ -700,19 +696,22 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
    }
    
    // Check there are enough tokens
-   if (line.countTokens() < 5) {
+   if (parameters.size() < 4) {
       sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "USER");
       return;
    }
    
    // Rip the command apart
-   registrantData.username = line.nextToken();
-   registrantData.modes = line.nextToken();
-   registrantData.hostname = line.nextToken();
-   registrantData.realname = 
-     line.nextColonToken().substr(0, 
-				  config().
-				  getOptionsLimitsUsersMaxRealNameLength());
+   registrantData.username = parameters[0];
+   registrantData.modes = parameters[1];
+   registrantData.hostname = parameters[2];
+   
+   // If there's a real-name field, grab it too
+   if (parameters.size() > 3) {
+      registrantData.realname =
+	parameters[3].substr(0,
+			     config().getOptionsLimitsUsersMaxRealNameLength());
+   }
 
 #ifdef KINE_DEBUG_PSYCHO
    // Output what we got for debugging purposes
