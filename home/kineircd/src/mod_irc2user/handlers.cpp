@@ -168,15 +168,13 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	 
 	 // Send the user the usage help for this function, if we can
 	 if (it->second.helpUsage == 0) {
-	    sendMessage("NOTICE",
-			user.getNickname(),
-			prefix.str() +
-			GETLANG(irc2user_HELP_NO_PARAMETERS));
+	    user.sendNotice(myServer(),
+			    prefix.str() +
+			    GETLANG(irc2user_HELP_NO_PARAMETERS));
 	 } else {
-	    sendMessage("NOTICE",
-			user.getNickname(),
-			prefix.str() +
-			GETLANG_BY_ID(*(it->second.helpUsage)));
+	    user.sendNotice(myServer(),
+			    prefix.str() +
+			    GETLANG_BY_ID(*(it->second.helpUsage)));
 	 }
 	 
 	 // If we are doing extended help, send the extended lines
@@ -207,11 +205,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	       }
 	       
 	       // Send this bit..
-	       sendMessage("NOTICE",
-			   user.getNickname(),
-			   prefix.str() +
-			   help.substr(startPosition,
-				       (endPosition - startPosition)));
+	       user.sendNotice(myServer(),
+			       prefix.str() +
+			       help.substr(startPosition,
+					   (endPosition - startPosition)));
 	       
 	       // If we're now at the end of the line, break out of this loop
 	       if (endPosition == help.length()) {
@@ -224,6 +221,11 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	 }
       }
    }
+
+   // Tell the user the HELP command has completed its run
+   user.sendNotice(myServer(),
+		   GETLANG(irc2user_HELP_END,
+			   mask));
 }
 #endif
 
