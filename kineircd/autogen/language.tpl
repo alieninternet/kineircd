@@ -1,19 +1,34 @@
 [+ AutoGen5 template cpp h +][+
+
    ;;; Try to be sane..
    (if
       (string-null?
          (getenv "COMPONENT"))
       (error "COMPONENT was not defined"))
+      
  +][+
+ 
    ;;; Do we use the tag in the current scope?
    (define (useThisTag?)
       ;; Check if 'component' is the one for us
       (string-ci=?
          (get "component")
          (getenv "COMPONENT")))
-	    
+
+
    ;;; Define our dodgy counting thingy
    (define counter 0)
+   
+
+   ;;; Work out what namespace to use (either the one given, or make up one)
+   (define (namespace)
+      (if
+         (eq?
+	    (getenv "NAMESPACE")
+	    #f)
+         (getenv "COMPONENT")
+	 (getenv "NAMESPACE")))
+	 
  +]/* $Id$
  * 
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
@@ -47,7 +62,7 @@
 
 using namespace Kine;
 
-Languages::tagMap_type [+(getenv "COMPONENT")+]::Language::tagMap = {[+ FOR tags +][+ IF
+Languages::tagMap_type [+(namespace)+]::Language::tagMap = {[+ FOR tags +][+ IF
    (useThisTag?) 
  +]
    { "[+
@@ -64,7 +79,7 @@ Languages::tagMap_type [+(getenv "COMPONENT")+]::Language::tagMap = {[+ FOR tags
 # include <kineircd/languages.h>
 
 namespace Kine {
-   namespace [+(getenv "COMPONENT")+] {
+   namespace [+(namespace)+] {
       namespace Language {
          // Language tag look-up table (for our language map)
          enum {[+ FOR tags +][+ IF (useThisTag?) +][+ IF
@@ -91,7 +106,7 @@ namespace Kine {
 	 // The language map
 	 extern Languages::tagMap_type tagMap;
       }; // namespace Language
-   }; // namespace [+(getenv "COMPONENT")+]
+   }; // namespace [+(namespace)+]
 }; // namespace Kine
 
 #endif // [+(. header-guard)+]
