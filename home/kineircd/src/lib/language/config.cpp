@@ -35,7 +35,6 @@
 
 #include "libkineircd/language/config.h"
 #include "kineircd/languages.h"
-#include "kineircd/languagedata.h"
 #include "kineircd/config.h"
 #include "libkineircd/debug.h"
 
@@ -79,7 +78,7 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(LanguageConfig::varHandler)
    unsigned long lineNum = 0;
 
    // Create what may be either our permanent or temporary home for this data
-   LanguageData* languageData = new LanguageData();
+   Languages::LanguageData* languageData = new Languages::LanguageData();
    
 #ifdef KINE_DEBUG_PSYCHO
    std::ostringstream out;

@@ -33,8 +33,6 @@
 # include <kineircd/receiver.h>
 
 namespace Kine {
-   class LanguageData;
-   
    class Languages {
     public:
       /* The tag identifier type (also referred to as a 'TID').
@@ -84,7 +82,58 @@ namespace Kine {
 
       // The ID of the 'unknown tag'
       static const tagID_type unknownTagID = 0;
-      
+
+      /* Language data class, this holds information about the language, along
+       * with the tag data. It also provides basic look-up functions per
+       * language
+       */
+      class LanguageData {
+       public:
+	 // Tag data type
+	 typedef std::vector < std::string* > tagData_type;
+	 
+       private:
+	 std::string languageCode;		// RFC-3066 compliant code
+	 std::string languageName;		// Name of the language (UTF-8)
+	 std::string languageNote;		// Optional notice
+	 std::string maintainer;		// Maintainer of the file
+	 long fileRevision;			// File revision
+	 unsigned long tagCount;		// *real* number of tags
+	 
+	 tagData_type tagData;			// The tag data itself!
+	 
+       public:
+	 // Constructor
+	 LanguageData(void)
+	   : fileRevision(0),
+	     tagCount(0)
+	   {};
+	 
+	 // Destructor
+	 ~LanguageData(void);
+	 
+	 // Look for a given TID's data, and return it if possible
+	 const std::string* const 
+	   findTag(const Languages::tagID_type tagID) const;
+	 
+	 // Grab other stuff..
+	 const std::string& getLanguageCode(void) const
+	   { return languageCode; };
+	 const std::string& getLanguageName(void) const
+	   { return languageName; };
+	 const std::string& getLanguageNote(void) const
+	   { return languageNote; };
+	 const std::string& getMaintainer(void) const
+	   { return maintainer; };
+	 const unsigned long getFileRevision(void) const
+	   { return fileRevision; };
+	 const unsigned long getTagCount(void) const
+	   { return tagCount; };
+	 
+	 // Friends
+	 friend struct LanguageConfig;
+      };
+
     private:
       // A set full of language tag name to tag ID mapping arrays
       typedef std::set < tagMap_type* > tagMaps_type;
@@ -193,7 +242,5 @@ namespace Kine {
    inline static Languages& langs(void)
      { return Languages::getInstance(); };
 }; // namespace Kine
-
-# include <kineircd/languagedata.h>
 
 #endif // _INCLUDE_KINEIRCD_LANGUAGES_H_

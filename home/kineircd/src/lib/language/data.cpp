@@ -31,7 +31,7 @@
 # include <sstream>
 #endif
 
-#include "kineircd/languagedata.h"
+#include "kineircd/languages.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
@@ -40,7 +40,7 @@ using namespace Kine;
 /* ~LanguageData - Destructor
  * Original 20/03/2003 simonb
  */
-LanguageData::~LanguageData(void)
+Languages::LanguageData::~LanguageData(void)
 {
    // Erase the language data vector
    while (!tagData.empty()) {
@@ -59,7 +59,7 @@ LanguageData::~LanguageData(void)
  * Original 16/03/2003 simonb
  */
 const std::string* const 
-  LanguageData::findTag(const Languages::tagID_type tagID) const
+  Languages::LanguageData::findTag(const Languages::tagID_type tagID) const
 {
    // Make sure the tag is valid..
    if ((tagID == 0) || (tagID > tagData.size())) {

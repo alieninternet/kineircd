@@ -164,7 +164,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/errors.h \
 	include/kineircd/exit.h \
 	include/kineircd/kineircdconf.h \
-	include/kineircd/languagedata.h \
 	include/kineircd/languages.h \
 	include/kineircd/listener.h \
 	include/kineircd/listenerlist.h \
