@@ -3446,12 +3446,16 @@ irc2numerics = {
 };
 
 irc2numerics = {
-   name		= "ERR_NOMORELANGS";
+   name		= "ERR_TOOMANYLANGUAGES";
    numeric	= "981";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<max_langs> :<info>";
-   comment	= "Returned by LANGUAGE to tell the client they cannot associate any more languages to their nickname";
+   comment	= "Returned by the LANGUAGE command to tell the client they "
+                  "cannot set as many languages as they have requested. "
+		  "To assist the client, the maximum languages which can be "
+		  "set at one time is given, and the language settings are "
+		  "not changed.";
 };
 
 irc2numerics = {
@@ -3460,7 +3464,8 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<language_code> :<info>";
-   comment	= "Returned by LANGUAGE to tell the client it has specified an unknown language code";
+   comment	= "Returned by the LANGUAGE command to tell the client it "
+                  "has specified an unknown language code.";
 };
 
 irc2numerics = {
