@@ -82,7 +82,7 @@ Languages::tagMap_type [+(namespace)+]::Language::tagMap = {[+ FOR tag +][+ IF
    { 0, 0 }
 }; // tagMap
 [+ == h +]
-[+(make-header-guard "")+]
+[+(make-header-guard "kine")+]
 
 # include <kineircd/languages.h>
 
