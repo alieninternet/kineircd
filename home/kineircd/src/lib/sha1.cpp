@@ -50,7 +50,7 @@ typedef struct {
 
 
 /* transform - Transform a 512 bit string to SHA1 code
- * Original, Steve Reid <steve@edmweb.com>
+ * Original unknown (Steve Reid <steve@edmweb.com>, ported by scottm)
  */
 void SHA1transform(unsigned long state[5], char buffer[64])
 {
@@ -100,9 +100,9 @@ void SHA1transform(unsigned long state[5], char buffer[64])
 
 
 /* init - Initialize new context
- * Original, Steve Reid <steve@edmweb.com>
- * 22/01/01 scottm@alien.net.au - Modified for evolution game engine use
- * 12/08/01 pickle@austnet.org - Modified for AustHex use
+ * Original unknown (Steve Reid <steve@edmweb.com>, ported by scottm)
+ * 22/01/01 scottm - Modified for evolution game engine use
+ * 12/08/01 simonb - Modified for AustHex use
  */
 void SHA1init(SHA1_CTX *context)
 {
@@ -116,9 +116,9 @@ void SHA1init(SHA1_CTX *context)
 
 
 /* update - Add a string to the SHA1 checksum
- * Original, Steve Reid <steve@edmweb.com>
- * 22/01/01 scottm@alien.net.au - Modified for evolution game engine use
- * 12/08/01 pickle@austnet.org - Modified for AustHex use
+ * Original unknown (Steve Reid <steve@edmweb.com>, ported by scottm)
+ * 22/01/01 scottm - Modified for evolution game engine use
+ * 12/08/01 simonb - Modified for AustHex use
  */
 void SHA1update(SHA1_CTX *context, char *data, unsigned int len)
 {
@@ -152,9 +152,9 @@ void SHA1update(SHA1_CTX *context, char *data, unsigned int len)
 
 
 /* final - Finalise the SHA code
- * Original, Steve Reid <steve@edmweb.com>
- * 22/01/01 scottm@alien.net.au - Modified for evolution game engine use
- * 12/08/01 pickle@austnet.org - Modified for AustHex use
+ * Original unknown (Steve Reid <steve@edmweb.com>, ported by scottm)
+ * 22/01/01 scottm - Modified for evolution game engine use
+ * 12/08/01 simonb - Modified for AustHex use
  */
 void SHA1final(char digest[20], SHA1_CTX *context)
 {
@@ -194,9 +194,9 @@ void SHA1final(char digest[20], SHA1_CTX *context)
 
 
 /* generateSHA1 - Wrapper for SHA1 generation
- * Original 22/01/01, Scott Mackenzie <scottm@alien.net.au>
- * 19/07/01 simonb - Modified for DumbOP use
- * 16/08/01 simonb - Modified for austhex use
+ * Original 22/01/2001 scottm
+ * 19/07/2001 simonb - Modified for DumbOP use
+ * 16/08/2001 simonb - Modified for austhex use
  * Note: Top 6th char per dword will either be 0 or 1, this is just what
  *       happens with an obscure base like 80.
  */
@@ -205,7 +205,7 @@ String Utils::generateSHA1(String const &line)
    /* Make sure we got something. The SHA1 generator doesn't like to be fed
     * nothings
     */
-   if (line.length()) {
+   if (!line.empty()) {
       union {
 	 char c[20];
 	 unsigned long l[5];
@@ -215,11 +215,11 @@ String Utils::generateSHA1(String const &line)
       String output = "";
       
       SHA1init(&context);
-      SHA1update(&context, (char *)line, line.length() - 1);
+      SHA1update(&context, (char *)line.c_str(), line.length() - 1);
       SHA1final(digest.c, &context);
       
       for (unsigned char i = 0; i < 5; i++) {
-	 output = output +
+	 output +=
 	   Utils::baseXStr(digest.l[i], SHA1_BASE).prepad(SHA1_BASE_PAD, '0');
       }
       

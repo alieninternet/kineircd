@@ -21,7 +21,7 @@
 // Classes table. Many many duplicates to make config file writing easier..
 struct {
    char *className;
-	void (*classHandler)(ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
+	void (*classHandler)(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
 }
 
  configurationClassTable[] = {
@@ -53,7 +53,7 @@ struct {
 
 
 /* ConfigData - Constructor for the temporary data holding class, ConfigData
- * Original 05/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 05/09/01 simonb
  */
 ConfigData::ConfigData(void)
 : adminName(""),
@@ -79,7 +79,7 @@ ConfigData::ConfigData(void)
 
 
 /* configComplain - Complain about something to the appropriate output
- * Original 05/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 05/09/01 simonb
  */
 void Daemon::configComplain(bool firstRun, String const &complaint)
 {
@@ -95,7 +95,7 @@ void Daemon::configComplain(bool firstRun, String const &complaint)
 
 
 /* configWarning - Warn about something to the appropriate output
- * Original 05/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 05/09/01 simonb
  */
 void Daemon::configWarning(bool firstRun, String const &complaint)
 {
@@ -111,7 +111,7 @@ void Daemon::configWarning(bool firstRun, String const &complaint)
 
 
 /* configCopy - Copy the configuration data into appropriate places
- * Original 14/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 14/09/01 simonb
  */
 bool Daemon::configCopy(bool firstRun, ConfigData *conf)
 {
@@ -203,7 +203,7 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
    
    // Open and read the MOTD file, if we can.
    if (conf->confMOTD.length()) {
-      ifstream file(conf->confMOTD);
+      ifstream file(conf->confMOTD.c_str());
       String temp = "";
       
       if (file) {
@@ -219,7 +219,7 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
 	    String newLine = "";
 	    
 	    // Run through the line and look for tabs to fix
-	    for (String::length_t i = 0; i < temp.length(); i++) {
+	    for (String::size_type i = 0; i < temp.length(); i++) {
 	       switch (temp[i]) {
 		case '\t':
 		  newLine = newLine + "        "; // 8 chars
@@ -269,7 +269,7 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
 
 
 /* configure - Load/parse the configuration files
- * Original 03/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 03/09/01 simonb
  * Note: Nice looking easy to use configuration file = slower and heavier
  *       configuration parser. Fortunate for us this only gets called on the
  *       rare occasion! :)
@@ -283,7 +283,7 @@ bool Daemon::configure(bool firstRun)
       wipeListens();
       
       // Temporary: poor checking..
-      s = new SocketIPv4(0x00000000, 6667, true, false);
+      s = new SocketIPv4(0x00000000, 6666, true, false);
       
       if (!s->setNonBlocking() ||
 	  !s->setReuseAddress()) {
@@ -359,7 +359,7 @@ bool Daemon::configure(bool firstRun)
     * we need to find the other files (motd etc)
     */
    String configData = "", temp = "";
-   ifstream file(configFile);
+   ifstream file(configFile.c_str());
    
    // Check that we opened the file ok
    if (!file) {
@@ -370,8 +370,7 @@ bool Daemon::configure(bool firstRun)
    }
 
 #ifdef DEBUG
-   debug(String::printf("Reading main configuration from '%s'...",
-			(char const *)configFile));
+   debug("Reading main configuration from '" + configFile + "'...");
 #endif
    
    bool inComment = false, inQuote = false;
@@ -394,7 +393,7 @@ bool Daemon::configure(bool firstRun)
       /* Run through the line and MUNG it down into something easier for us
        * to digest :) Yes, bad pun, sorry. :( *hides from the pun police*
        */
-      for (String::length_t i = 0; i < temp.length(); i++) {
+      for (String::size_type i = 0; i < temp.length(); i++) {
 	 // If we are in a quote, we have to copy this string over literally
 	 if (inQuote) {
 	    configData = configData + String(temp[i]);
@@ -474,7 +473,7 @@ bool Daemon::configure(bool firstRun)
    bool gotClass = false;
 
    // Run through the generated line
-   for (String::length_t i = 0; i < configData.length(); i++) {
+   for (String::size_type i = 0; i < configData.length(); i++) {
       switch (configData[i]) {
        case ';': // Stray semi-colon.. We will ignore it
 	 continue;
@@ -490,7 +489,7 @@ bool Daemon::configure(bool firstRun)
 	       
 	       // Check if there is a handler for this class..
 	       if (configurationClassTable[ii].classHandler) {
-#ifdef DEBUG_EXTENDED
+#ifdef DEBUG_PSYCHO
 		  debug(String(" +-> Class: ") + className);
 #endif
 		  
@@ -501,9 +500,8 @@ bool Daemon::configure(bool firstRun)
 	       } else {
 		  // Otherwise we are ignoring this class
 #ifdef DEBUG_EXTENDED
-		  debug(String::printf("Ignoring top-level configuration "
-				       "class set '%s'",
-				       (char const *)className));
+		  debug("Ignoring top-level configuration class set '" +
+			className + '\'');
 #endif
 		  // Skip until we hit the end of this class or the line..
 		  while (configData[i] != '}') {
@@ -547,9 +545,9 @@ bool Daemon::configure(bool firstRun)
 
 
 /* configADMIN
- * Original 03/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 03/09/01 simonb
  */
-void Daemon::configADMIN(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configADMIN(ConfigData *conf, String *line, String::size_type *pos, bool firstRun)
 {
    String command = "", parameter = "";
    bool doingCommand = true;
@@ -578,7 +576,7 @@ void Daemon::configADMIN(ConfigData *conf, String *line, String::length_t *pos, 
 	 command = command.toUpper().trimQuotes();
 	 parameter = parameter.trimQuotes();
 	 
-#ifdef DEBUG_EXTENDED
+#ifdef DEBUG_PSYCHO
 	 debug(String::printf(" | +-> Variable: %s, Param: %s",
 			      (char const *)command,
 			      (char const *)parameter));
@@ -630,9 +628,9 @@ void Daemon::configADMIN(ConfigData *conf, String *line, String::length_t *pos, 
 
 
 /* configARBITER
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
-void Daemon::configARBITER(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configARBITER(ConfigData *conf, String *line, String::size_type *pos, bool firstRun)
 {
    int c = 1;
    (*pos)++;
@@ -655,9 +653,9 @@ void Daemon::configARBITER(ConfigData *conf, String *line, String::length_t *pos
 
 
 /* configCONF
- * Original 03/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 03/09/01 simonb
  */
-void Daemon::configCONF(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configCONF(ConfigData *conf, String *line, String::size_type *pos, bool firstRun)
 {
    String command = "", parameter = "";
    bool doingCommand = true;
@@ -686,7 +684,7 @@ void Daemon::configCONF(ConfigData *conf, String *line, String::length_t *pos, b
 	 command = command.toUpper().trimQuotes();
 	 parameter = parameter.trimQuotes();
 	 
-#ifdef DEBUG_EXTENDED
+#ifdef DEBUG_PSYCHO
 	 debug(String::printf(" | +-> Variable: %s, Param: %s",
 			      (char const *)command,
 			      (char const *)parameter));
@@ -756,9 +754,9 @@ void Daemon::configCONF(ConfigData *conf, String *line, String::length_t *pos, b
 
 
 /* configFAIL
- * Original 06/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 06/09/01 simonb
  */
-void Daemon::configFAIL(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configFAIL(ConfigData *conf, String *line, String::size_type *pos, bool firstRun)
 {
    String subclassName = "", mask = "", reason = "";
    bool doingMask = true;
@@ -781,7 +779,7 @@ void Daemon::configFAIL(ConfigData *conf, String *line, String::length_t *pos, b
 	 // We will be assigning this soon, so save some stress!
 	 Daemon::relationmask_list_t *failList;
 
-#ifdef DEBUG_EXTENDED
+#ifdef DEBUG_PSYCHO
 	 debug(String(" | +-> Sub-Class: ") + subclassName);
 #endif
 	 
@@ -828,7 +826,7 @@ void Daemon::configFAIL(ConfigData *conf, String *line, String::length_t *pos, b
 	       mask = mask.toLower().trimQuotes();
 	       reason = reason.trimQuotes();
 	       
-#ifdef DEBUG_EXTENDED
+#ifdef DEBUG_PSYCHO
 	       debug(String::printf(" | | +-> Mask: %s (%s)",
 				    (char const *)mask,
 				    (char const *)reason));
@@ -882,9 +880,9 @@ void Daemon::configFAIL(ConfigData *conf, String *line, String::length_t *pos, b
 
 
 /* configLISTEN
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
-void Daemon::configLISTEN(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configLISTEN(ConfigData *conf, String *line, String::size_type *pos, bool firstRun)
 {
    while ((*line)[*pos] != '}') {
       // Check we have not skipped over the EOL..
@@ -896,9 +894,9 @@ void Daemon::configLISTEN(ConfigData *conf, String *line, String::length_t *pos,
 
 
 /* configOPERS
- * Original 07/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 07/09/01 simonb
  */
-void Daemon::configOPERS(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configOPERS(ConfigData *conf, String *line, String::size_type *pos, bool firstRun)
 {
    String command = "", parameter = "";
    String nickname = "", name = "", password = "", user = "", host = "";
@@ -920,7 +918,7 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::length_t *pos, 
 	 command = parameter = password = "";
 	 isGlobal = false;
 	 
-#ifdef DEBUG_EXTENDED
+#ifdef DEBUG_PSYCHO
 	 debug(String(" | +-> Operator: ") + nickname);
 #endif
  
@@ -951,7 +949,7 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::length_t *pos, 
 	       command = command.toUpper().trimQuotes();
 	       parameter = parameter.trimQuotes();
 	       
-#ifdef DEBUG_EXTENDED
+#ifdef DEBUG_PSYCHO
 	       debug(String::printf(" | | +-> Variable: %s, Param: %s",
 				    (char const *)command,
 				    (char const *)parameter));
@@ -1008,7 +1006,7 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::length_t *pos, 
 	       // Fix up the command (subclass name) variable
 	       command = command.toUpper().trimQuotes();
 	       
-#ifdef DEBUG_EXTENDED
+#ifdef DEBUG_PSYCHO
 	       debug(String(" | | +-> Sub-Class: ") + command);
 #endif
 
@@ -1055,7 +1053,7 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::length_t *pos, 
 		     user = user.toLower().trimQuotes();
 		     host = host.toLower().trimQuotes();
 		     
-#ifdef DEBUG_EXTENDED
+#ifdef DEBUG_PSYCHO
 		     debug(String::printf(" | | | +-> Access Identify: %s@%s",
 					  (char const *)user,
 					  (char const *)host));
@@ -1137,9 +1135,9 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::length_t *pos, 
 
 
 /* configREDIRECT
- * Original 13/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 13/09/01 simonb
  */
-void Daemon::configREDIRECT(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configREDIRECT(ConfigData *conf, String *line, String::size_type *pos, bool firstRun)
 {
    String subclassName = "", mask = "", dest = "";
    bool doingMask = true;
@@ -1162,7 +1160,7 @@ void Daemon::configREDIRECT(ConfigData *conf, String *line, String::length_t *po
 	 // We will be assigning this soon, so save some stress!
 	 Daemon::relationmask_list_t *redirectList;
 
-#ifdef DEBUG_EXTENDED
+#ifdef DEBUG_PSYCHO
 	 debug(String(" | +-> Sub-Class: ") + subclassName);
 #endif
 	 
@@ -1208,7 +1206,7 @@ void Daemon::configREDIRECT(ConfigData *conf, String *line, String::length_t *po
 	       mask = mask.toLower().trimQuotes();
 	       dest = dest.trimQuotes();
 	       
-#ifdef DEBUG_EXTENDED
+#ifdef DEBUG_PSYCHO
 	       debug(String::printf(" | | +-> Redirect: %s, To: %s",
 				    (char const *)mask,
 				    (char const *)dest));
@@ -1262,9 +1260,9 @@ void Daemon::configREDIRECT(ConfigData *conf, String *line, String::length_t *po
 
 
 /* configSSL
- * Original 17/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 17/09/01 simonb
  */
-void Daemon::configSSL(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configSSL(ConfigData *conf, String *line, String::size_type *pos, bool firstRun)
 {
    /* We can only read this information on the FIRST RUN as it could screw up
     * any SSL connections being run at this point in time
@@ -1303,7 +1301,7 @@ void Daemon::configSSL(ConfigData *conf, String *line, String::length_t *pos, bo
 	    command = command.toUpper().trimQuotes();
 	    parameter = parameter.trimQuotes();
 	    
-# ifdef DEBUG_EXTENDED
+# ifdef DEBUG_PSYCHO
 	    debug(String::printf(" | +-> Variable: %s, Param: %s",
 				 (char const *)command,
 				 (char const *)parameter));
@@ -1380,9 +1378,9 @@ void Daemon::configSSL(ConfigData *conf, String *line, String::length_t *pos, bo
 
 
 /* configSTATUS
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
-void Daemon::configSTATUS(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configSTATUS(ConfigData *conf, String *line, String::size_type *pos, bool firstRun)
 {
    while ((*line)[++(*pos)] != '}');
 }

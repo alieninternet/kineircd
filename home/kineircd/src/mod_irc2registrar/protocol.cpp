@@ -41,7 +41,7 @@ struct registerHandler::functionTableStruct const
 
 
 /* registerHandler - Constructor for the register handler sub-class
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 registerHandler::registerHandler(Connection *c)
 : Handler(c),
@@ -79,45 +79,37 @@ registerHandler::registerHandler(Connection *c)
 
 
 /* sendGeneric - Minature generic send routine
- * Original 16/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 16/08/01 simonb
  * Note: Double-up? Sort of, this one works a little differently than the
  *       irc2userHandler:: one
  */ 
 void registerHandler::sendGeneric(char const *command, 
 				  String const &line) const
 {
-   getConnection()->
-     sendRaw(String::printf(":%s %s %s %s" REGISTRATION_EOL_CHARS,
-			    (char const *)Daemon::myServer()->getHostname(),
-			    command,
-			    (nickname.length() ?
-			     (char const *)nickname :
-			     "*"),
-			    (char const *)line));
+   getConnection()->sendRaw(':' + Daemon::myServer()->getHostname() + ' ' +
+			    command + ' ' +
+			    (nickname.empty() ? '*' : nickname) + ' ' +
+			    line + REGISTRATION_EOL_CHARS);
 }
 
 
 /* sendNumeric - Minature sendNumeric routine 'cause of no send handler
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  * Note: We do a cheap thing here with the numeric because we know it will
  * 	 be three digits and suffer no 0-prepadding issues.
  */
 void registerHandler::sendNumeric(Numerics::numeric_t numeric, User *to, 
 				  String const &line) const
 {
-   getConnection()->
-     sendRaw(String::printf(":%s %d %s %s" REGISTRATION_EOL_CHARS,
-			    (char const *)Daemon::myServer()->getHostname(),
-			    numeric,
-			    (nickname.length() ?
-			     (char const *)nickname :
-			     "*"),
-			    (char const *)line));
+   getConnection()->sendRaw(':' + Daemon::myServer()->getHostname() + ' ' +
+			    String(numeric) + ' ' +
+			    (nickname.empty() ? '*' : nickname) + ' ' +
+			    line + REGISTRATION_EOL_CHARS);
 }
 
 
 /* parseLine - Parse an incoming line
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 void registerHandler::parseLine(String const &line)
 {
@@ -247,8 +239,8 @@ void registerHandler::parseLine(String const &line)
 # endif
 	     default: // Unknown protocol, terminate connection
 # ifdef DEBUG
-	       debug(String::printf("Unsupported protocol (%d), terminating!",
-				    protocol));
+	       debug("Unsupported protocol (" + String(protocol) + 
+		     "), terminating!");
 # endif
 	       getConnection()->goodbye();
 	       return;
@@ -272,8 +264,7 @@ void registerHandler::parseLine(String const &line)
 	       // Check if this server is already connected here
 	       if (server->isLocal()) {
 # ifdef DEBUG
-		  debug(String::printf("Server %s is already connected!",
-				       (char const *)username));
+		  debug("Server " + username + " is already connected!");
 # endif
 		  getConnection()->goodbye();
 	       }
@@ -372,9 +363,10 @@ void registerHandler::parseLine(String const &line)
 
 
 /* parseCAPAB - Requested capabilities
- * Original 16/08/01, Simon Butcher <pickle@austnet.org>
- * Note: Capabilities are separated by a space, capability options are
- *       broken up by a comma, similar to most IRC command paramters
+ * Original 16/08/01 simonb
+ * Note: Capability formatting depends on the protocol usually, so we
+ *       don't deal with it here but rather just give it to the protocol
+ *       handler upon initialisation for it to grok.
  */
 void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
 {
@@ -384,7 +376,7 @@ void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 #else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-			   String("CAPAB :") + 
+			   "CAPAB :" + 
 			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
 #endif
       return;
@@ -396,15 +388,14 @@ void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
    for (String ability = tokens->nextToken(); ability.length();
 	ability = tokens->nextToken()) {
 #ifdef DEBUG_EXTENDED
-      debug(String::printf(" -=>     Ability: %s",
-			   (char const *)ability));
+      debug(" -=>  Capability: " + ability);
 #endif
    }
 }
 
 
 /* parseNICK
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 {
@@ -416,7 +407,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else
-      handler->sendNumeric(Numerics::ERR_NONICKNAMEGIVEN, 0, String(':') +
+      handler->sendNumeric(Numerics::ERR_NONICKNAMEGIVEN, 0, ':' +
 			   Lang::lang(LangTags::L_ERR_NONICKNAMEGIVEN));
 #endif
       return;
@@ -451,10 +442,9 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 #else
       handler->
 	sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
-		    String::printf("%s :%s (%s)",
-				   (char const *)nick,
-				   (char const *)Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME),
-				   (char const *)reason));
+		    nick + " :" + 
+		    Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME) + " (" +
+		    reason + ')');
       return;
 #endif
    }
@@ -474,8 +464,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    // If we got here, the nick was ok - allow it
    handler->nickname = nick;
 #ifdef DEBUG_EXTENDED
-   debug(String::printf(" -=>         Nick: %s",
-			(char const *)nick));
+   debug(" -=>         Nick: " + nick);
 #endif
    
 #ifdef USER_CONNECTION_PINGPONG
@@ -488,19 +477,20 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 
    // Send a PING out to make sure we are dealing with a 'real' client
 # ifndef PASSIVE_REGISTRATION      	 
-   handler->sendGeneric("NOTICE",
-			String::printf((char *)Lang::L_PINGPONG_NOTICE,
-				       (char const *)handler->pingpong, 
-				       (char const *)handler->pingpong,
-				       (char const *)Daemon::myServer()->getHostname()));
+   handler->
+     sendGeneric("NOTICE",
+		 String::printf((char *)Lang::L_PINGPONG_NOTICE,
+				handler->pingpong.c_str(), 
+				handler->pingpong.c_str(),
+				Daemon::myServer()->getHostname().c_str()));
 # endif
-   handler->getConnection()->sendRaw(String("PING :") + handler->pingpong + "\r\n");
+   handler->getConnection()->sendRaw("PING :" + handler->pingpong + "\r\n");
 #endif
 }
 
 
 /* parsePASS
- * Original 31/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 31/08/01 simonb
  */
 void registerHandler::parsePASS(registerHandler *handler, StringTokens *tokens)
 {
@@ -517,15 +507,14 @@ void registerHandler::parsePASS(registerHandler *handler, StringTokens *tokens)
    handler->password = tokens->nextColonToken();
    
 #ifdef DEBUG_EXTENDED
-   debug(String::printf(" -=>     Password: %s",
-			(char const *)handler->password));
+   debug(" -=>     Password: " + handler->password);
 #endif
 }
 
 
 #ifdef USER_CONNECTION_PINGPONG
 /* parsePONG
- * Original 16/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 16/08/01 simonb
  */
 void registerHandler::parsePONG(registerHandler *handler, StringTokens *tokens)
 {
@@ -541,7 +530,7 @@ void registerHandler::parsePONG(registerHandler *handler, StringTokens *tokens)
 
 
 /* parseQUIT
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 void registerHandler::parseQUIT(registerHandler *handler, StringTokens *tokens)
 {
@@ -552,7 +541,7 @@ void registerHandler::parseQUIT(registerHandler *handler, StringTokens *tokens)
 
 #ifdef ALLOW_SERVER_CONNECTIONS
 /* parseSERVER
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens)
 {
@@ -562,7 +551,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
 #  ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #  else
-      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, String(':') +
+      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
 			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
@@ -576,7 +565,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
       handler->getConnection()->goodbye();
 # else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-			   String("SERVER :") +
+			   "SERVER :" +
 			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
 # endif
       return;
@@ -587,25 +576,18 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
    int hops = tokens->nextToken().toInt();
    handler->startStamp = tokens->nextToken().toLong();
    handler->linkStamp = tokens->nextToken().toLong();
-   handler->protocol = tokens->nextToken().subString(1).toInt();
-   handler->realname = tokens->nextColonToken().subString(0, 
-							  MAXLEN_SERVERDESC);
+   handler->protocol = String(tokens->nextToken().substr(1)).toInt();
+   handler->realname = tokens->nextColonToken().substr(0, MAXLEN_SERVERDESC);
    
 # ifdef DEBUG_EXTENDED
    // Send what we got to the debugging output
-   debug(String::printf(" -=>       Server: %s",
-			(char const *)handler->username));
-   debug(String::printf(" -=>         Hops: %d",
-			hops));
-   debug(String::printf(" -=>   startStamp: %lu",
-			handler->startStamp));
-   debug(String::printf(" -=>    linkStamp: %lu (My time is %lu)",
-			handler->linkStamp,
-			Daemon::getTime()));
-   debug(String::printf(" -=>     Protocol: %d",
-			handler->protocol));
-   debug(String::printf(" -=>         Name: %s",
-			(char const *)handler->realname));
+   debug(" -=>       Server: " + handler->username);
+   debug(" -=>         Hops: " + hops);
+   debug(" -=>   startStamp: " + handler->startStamp);
+   debug(" -=>    linkStamp: " + String(handler->linkStamp) +
+	 " (My time is " + String(Daemon::getTime()) + ')');
+   debug(" -=>     Protocol: " + handler->protocol);
+   debug(" -=>         Name: " + handler->realname);
 # endif
    
    // Check the integers variables are ok
@@ -627,7 +609,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
 
 #ifdef ALLOW_SERVICE_CONNECTIONS
 /* parseSERVICE
- * Original 28/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 28/10/01 simonb
  */
 void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *tokens)
 {
@@ -637,7 +619,7 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
 #  ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #  else
-      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, String(':') +
+      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
 			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
@@ -651,7 +633,7 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
       handler->getConnection()->goodbye();
 # else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-			   String("SERVICE :") + 
+			   "SERVICE :" + 
 			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
 # endif
       return;
@@ -688,22 +670,16 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
    handler->distribution = tokens->nextToken();
    String type = tokens->nextToken(); // ignored.. (RFC-2812: type)
    String res2 = tokens->nextToken(); // ignored (RFC-2812: reserved)
-   handler->realname = tokens->nextColonToken().subString(0, MAXLEN_REALNAME);
+   handler->realname = tokens->nextColonToken().substr(0, MAXLEN_REALNAME);
    
 # ifdef DEBUG_EXTENDED
    // Send what we got to the debugging output
-   debug(String::printf(" -=>      Service: %s",
-			(char const *)handler->username));
-   debug(String::printf(" -=> (reserved 1): %s",
-			(char const *)res1));
-   debug(String::printf(" -=> Distribution: %s",
-			(char const *)handler->distribution));
-   debug(String::printf(" -=>       (type): %s",
-			(char const *)type));
-   debug(String::printf(" -=> (reserved 2): %s",
-			(char const *)res1));
-   debug(String::printf(" -=>  Information: %s",
-			(char const *)handler->realname));
+   debug(" -=>      Service: " + handler->username);
+   debug(" -=> (reserved 1): " + res1);
+   debug(" -=> Distribution: " + handler->distribution);
+   debug(" -=>       (type): " + type);
+   debug(" -=> (reserved 2): " + res2);
+   debug(" -=>  Information: " + handler->realname);
 # endif
    
    // Set the registration mode
@@ -714,7 +690,7 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
 
 #ifdef ALLOW_CLIENT_CONNECTIONS
 /* parseUSER
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
 {
@@ -724,7 +700,7 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
 #  ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #  else
-      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, String(':') +
+      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
 			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
@@ -738,7 +714,7 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 # else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-			   String("USER :") + 
+			   "USER :" +
 			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
 # endif
       return;
@@ -748,16 +724,13 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
    handler->username = tokens->nextToken();
    handler->modes = tokens->nextToken();
    (void)tokens->nextToken(); // We ignore this one, we will get our own host
-   handler->realname = tokens->nextColonToken().subString(0, MAXLEN_REALNAME);
+   handler->realname = tokens->nextColonToken().substr(0, MAXLEN_REALNAME);
 
 # ifdef DEBUG_EXTENDED
    // Output what we got for debugging purposes
-   debug(String::printf(" -=>         User: %s",
-			(char const *)handler->username));
-   debug(String::printf(" -=>        Modes: %s",
-			(char const *)handler->modes));
-   debug(String::printf(" -=>     Realname: %s",
-			(char const *)handler->realname));
+   debug(" -=>         User: " + handler->username);
+   debug(" -=>        Modes: " + handler->modes);
+   debug(" -=>     Realname: " + handler->realname);
 # endif
    
    // Set the registration mode

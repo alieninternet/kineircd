@@ -1,9 +1,9 @@
 /* remotes.cpp
- * Protocol reply routines, remote replies.
+ * Protocol reply routines, remote replies. Majorly based on IRC2 :(
  * 
- * NOTE: This needs to be seriously reworked! If/When irc3user comes half of
- * this may (most likely) become obsolete - a more generic approach must be
- * taken!
+ * NOTE: This needs to be seriously reworked! When irc3user/AN1 comes this
+ * will be wrong. This MUST be broken up and reproduced in the protocol
+ * handlers themselves, then protocol translation executed.
  */
 
 #include "autoconf.h"
@@ -24,7 +24,7 @@
 
 
 /* doADMIN
- * Original 27/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 27/08/01 simonb
  * Note: We do something slightly dodgey here; The colon prefixes are set
  * 	 up in the variables themselves so we do not have to waste time
  *       creating a new string (adding the colon to the string).. Ok, it is
@@ -51,7 +51,7 @@ void Handler::doADMIN(Handler *handler, User *from)
 
 
 /* doLUSERS
- * Original 13/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 13/08/01 simonb
  */
 void Handler::doLUSERS(Handler *handler, User *from, String const &request)
 {
@@ -112,7 +112,7 @@ void Handler::doLUSERS(Handler *handler, User *from, String const &request)
 
 
 /* doMAP
- * Original 01/11/01, Simon Butcher <pickle@austnet.org>
+ * Original 01/11/01 simonb
  */
 void Handler::doMAP(Handler *handler, User *from)
 {
@@ -138,7 +138,7 @@ void Handler::doMAP(Handler *handler, User *from)
 
 
 /* doMOTD
- * Original 13/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 13/08/01 simonb
  * Note: Not too happy about the length of the request to get the server name
  * Note: The RPL_MOTDSTART conforms to the RFC - mIRC seems to mangle it now
  *       and then -- don't blame me!!
@@ -193,7 +193,7 @@ void Handler::doMOTD(Handler *handler, User *from)
 class statsFunctions {
  public:
    /* replyL - Link info (List of connections)
-    * Original 26/08/01, Simon Butcher <pickle@austnet.org>
+    * Original 26/08/01 simonb
     */
    static STATS_REPLY(replyL)
      {
@@ -223,7 +223,7 @@ class statsFunctions {
    
    
    /* replyO - Server operator information ('o-lines')
-    * Original 26/08/01, Simon Butcher <pickle@austnet.org>
+    * Original 26/08/01 simonb
     * Note: Slightly modified, most clients ignore it, other clients use it :)
     */
    static STATS_REPLY(replyO)
@@ -244,7 +244,7 @@ class statsFunctions {
 
    
    /* replyRUSAGE - Server resource usage information
-    * Original 28/08/01, Simon Butcher <pickle@austnet.org>
+    * Original 28/08/01 simonb
     */
    static STATS_REPLY(replyRUSAGE)
      {
@@ -290,7 +290,7 @@ class statsFunctions {
    
    
    /* replyU - Server uptime information
-    * Original 26/08/01, Simon Butcher <pickle@austnet.org>
+    * Original 26/08/01 simonb
     */
    static STATS_REPLY(replyU)
      {
@@ -332,7 +332,7 @@ struct {
 
 
 /* doSTATS
- * Original 14/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 14/08/01 simonb
  */
 void Handler::doSTATS(Handler *handler, User *from, String const &request)
 {
@@ -365,7 +365,7 @@ void Handler::doSTATS(Handler *handler, User *from, String const &request)
 
 
 /* doTIME
- * Original 29/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 29/08/01 simonb
  */
 #define TIMESTR_BUF_LEN 64
 void Handler::doTIME(Handler *handler, User *from)
@@ -373,12 +373,10 @@ void Handler::doTIME(Handler *handler, User *from)
    // Send time on server data (more accurate)
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_TIMEONSERVERIS, from,
-		 String::printf("%lu %ld %s %s :%s ...fix-me...",
-				Daemon::getTime(),
-				Daemon::getTimeUsecs(),
-				(char const *)Daemon::getTimeZone(),
-				(char const *)Daemon::getTimeFlags(),
-				(char const *)from->lang(LangTags::B_RPL_TIMEONSERVERIS)));
+		 String(Daemon::getTime()) + ' ' + 
+		 String(Daemon::getTimeUsecs()) + ' ' +
+		 Daemon::getTimeZone() + ' ' + Daemon::getTimeFlags() + 
+		 " :" + from->lang(LangTags::B_RPL_TIMEONSERVERIS));
    
    // Compile the time string (human readable)
    char timestr[TIMESTR_BUF_LEN];
@@ -393,26 +391,25 @@ void Handler::doTIME(Handler *handler, User *from)
 
 
 /* doVERSION
- * Original 24/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/08/01 simonb
  * 24/10/01 simonb - Added ISUPPORT output
  */
 void Handler::doVERSION(Handler *handler, User *from)
 {
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_VERSION, from,
-		 String::printf("%s %s :%s (%s)",
-				Version::version,
-				(char const *)Daemon::myServer()->getHostname(),
-				Version::versionChars,
-				(char const *)from->lang(LangTags::L_RPL_VERSION)));
-   handler->sendNumeric(Daemon::myServer(), Numerics::RPL_ISUPPORT, from,
-			Daemon::makeISUPPORT() + " :" + 
-			from->lang(LangTags::E_RPL_ISUPPORT));
+		 Version::version + ' ' + Daemon::myServer()->getHostname() +
+		 " :" + Version::versionChars + " (" +
+		 from->lang(LangTags::L_RPL_VERSION) + ')');
+   handler->
+     sendNumeric(Daemon::myServer(), Numerics::RPL_ISUPPORT, from,
+		 Daemon::makeISUPPORT() + " :" + 
+		 from->lang(LangTags::E_RPL_ISUPPORT));
 }
 
 
 /* doWHOIS
- * Original 23/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 23/08/01 simonb
  */
 void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 {
@@ -434,23 +431,19 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       
       // Send the user entry
       handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISUSER, from,
-			   String::printf("%s %s %s * :%s",
-					  (char const *)u->nickname,
-					  (char const *)u->username,
-					  (u->showVW(from) ?
-					   (char const *)u->vwhostname :
-					   (char const *)u->hostname),
-					  (char const *)u->realname));
+			   u->nickname + ' ' + u->username + ' ' +
+			   (u->showVW(from) ?
+			    u->vwhostname : u->hostname) + " * :" +
+			   u->realname);
       
       // Send the virtual world information if we need to
       if (!u->showVW(from) && 
 	  (u->modes & User::M_VWORLD)) {
 	 handler->
 	   sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISVIRT, from,
-		       String::printf("%s :%s %s",
-				      (char const *)u->nickname,
-				      (char const *)from->lang(LangTags::P_RPL_WHOISVIRT),
-				      (char const *)u->vwhostname));
+		       u->nickname + " :" + 
+		       from->lang(LangTags::P_RPL_WHOISVIRT) + ' ' +
+		       u->vwhostname);
       }
       
       // Send the channel list(s)
@@ -515,9 +508,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 	 // Send a notice to a paranoid operator, sheesh
 	 Daemon::routeTo(u)->
 	   sendNotice(Daemon::myServer(), from,
-		      String::printf((char *)Lang::L_NOTIFY_PARANOID_OPERS_ON_WHOIS,
-				     (char const *)from->nickname,
-				     (char const *)from->getAddress()));
+		      'w' + from->nickname);
 #endif
 	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISOPERATOR, from,
 			      u->nickname + " :" +
@@ -528,9 +519,8 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       if (u->modes & User::M_SECURE) {
 	 handler->
 	   sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISSECURE, from,
-		       String::printf("%s * :%s",
-				      (char const *)u->nickname,
-				      (char const *)from->lang(LangTags::E_RPL_WHOISSECURE)));
+		       u->nickname + " * :" +
+		       from->lang(LangTags::E_RPL_WHOISSECURE));
       }
 
       // If the user is away, send the away message
@@ -549,13 +539,11 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 	  (!u->isModeSet(User::M_INVISIBLE) || User::isHelper(from))) {
 	 handler->
 	   sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISIDLE, from,
-		       String::printf("%s %lu %lu :%s",
-				      (char const *)u->nickname,
-				      ((unsigned long)
-				       difftime(Daemon::getTime(),
-						u->local->handler->getConnection()->getLastSpoke())),
-				      u->signonTime,
-				      (char const *)from->lang(LangTags::E_RPL_WHOISIDLE)));
+		       u->nickname + ' ' +
+		       String(Daemon::getTime() -
+			      u->local->handler->getConnection()->getLastSpoke()) +
+		       ' ' + String(u->signonTime) + " :" +
+		       from->lang(LangTags::E_RPL_WHOISIDLE));
       }
 
       /* Send the server information, if the server is not hidden and the

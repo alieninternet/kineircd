@@ -242,6 +242,8 @@
 *                                                                             *
 * Hey wait!  Stuff below here is determined by the auto-configuration script! *
 *                                                                             *
+*  If you want to edit anything down here, use the configure script to do so  *
+*                                                                             *
 ******************************************************************************/
 
 @TOP@
@@ -296,7 +298,11 @@
 # undef ALLOW_CLIENT_CONNECTIONS
 # undef ALLOW_SERVER_CONNECTIONS
 # undef ALLOW_SERVICE_CONNECTIONS
-  
+
+
+/* Define these depending on what commands you want available */
+# undef ALLOW_COMMAND_DIE
+
   
 /* Define these with an amount in seconds for each flood-lock timeout,
  * or undefine to disable the flood-lock.
@@ -444,6 +450,7 @@
 # undef HAVE_TRANSPORT_TCP_IPV4
 # undef HAVE_TRANSPORT_TCP_IPV6
   
+  
 /* Define these depending on what protocols you want compiled in */
 # undef HAVE_IRC2USER_PROTOCOL
 # undef HAVE_IRC3USER_PROTOCOL
@@ -458,6 +465,7 @@
 # endif
 # ifdef HAVE_P13SERVER_PROTOCOL
 #  undef HAVE_P13SERVER_COMPRESS
+#  undef HAVE_P13SERVER_EXTENDED
 # endif
 # ifdef HAVE_P14SERVER_PROTOCOL
 #  undef HAVE_P14SERVER_COMPRESS
@@ -499,6 +507,17 @@
 /* Define if OpenSSL is installed */
 # undef HAVE_OPENSSL
 
+  
+/* Define if we are going to incorporate SNMP stuff */
+# undef HAVE_SNMP_AGENT
+  
+  
+/* Define if the SNMP agent is to be a master and not a subagent? */
+# undef HAVE_SNMP_AGENT_MASTER
+# ifdef HAVE_SNMP_AGENT_MASTER
+#  undef HAVE_SNMP_AGENT_MASTER_PORT
+# endif
+  
   
 /* Define if /dev/urandom does not exist */
 # undef MUST_INIT_PRNG
@@ -566,6 +585,7 @@
 #  define SERVER_NAME_MASK		"*"
 # endif
 
+  
 /* Work out the highest protocol major number we support */
 # ifdef HAVE_P14SERVER_PROTOCOL
 #  define HIGHEST_SUPPORTED_SERVER_PROTOCOL 14
@@ -576,5 +596,5 @@
 #   define HIGHEST_SUPPORTED_SERVER_PROTOCOL 0 /* blind */
 #  endif
 # endif
-  
+
 #endif

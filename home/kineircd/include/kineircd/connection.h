@@ -21,7 +21,7 @@ class Connection {
  private:
    Socket *socket;			// The connected socket
 
-   queue<String> outQueue;		// Output queue
+   std::queue <String> outQueue;	// Output queue
    
    unsigned long long sentBytes;	// Number of bytes sent
    unsigned long sentMessages;		// Number of messages sent (lines)

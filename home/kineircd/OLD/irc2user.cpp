@@ -4,7 +4,7 @@
 
 #include "autoconf.h"
 
-#include <ctype.h>
+#include <cctype>
 
 #include "irc2user.h"
 #include "daemon.h"
@@ -56,6 +56,7 @@ struct irc2userHandler::functionTableStruct const
 	  "the target server rather than the local server forfilling the "
 	  "request."
      },
+#ifdef ALLOW_COMMAND_DIE
      { "DIE",		parseDIE,		0,
 	  User::isOper,
 	  "[ <reason> ]",
@@ -64,6 +65,7 @@ struct irc2userHandler::functionTableStruct const
 	  "other operators on the network as the reason for the server's "
 	  "disappearance."
      },
+#endif
      { "GLOBOPS",	parseGLOBOPS,		0,
 	  User::isGlobalOper,
 	  "<message>",
@@ -420,7 +422,7 @@ struct irc2userHandler::functionTableStruct const
 
 
 /* irc2userHandler - Constructor for the user handler sub-class
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 : Handler(c),
@@ -596,7 +598,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 
 
 /* ~irc2userHandler - Class destructor
- * Original 13/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 13/08/01 simonb
  */
 irc2userHandler::~irc2userHandler(void)
 {
@@ -606,7 +608,7 @@ irc2userHandler::~irc2userHandler(void)
 
 
 /* goodbye - Handle a connection closure
- * Original 02/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 02/09/01 simonb
  */
 void irc2userHandler::goodbye(String const &reason)
 {
@@ -627,7 +629,7 @@ void irc2userHandler::goodbye(String const &reason)
 
 
 /* kill - Handle a connection closure (killed)
- * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/09/01 simonb
  */
 void irc2userHandler::kill(String const &caller, String const &reason)
 {
@@ -640,7 +642,7 @@ void irc2userHandler::kill(String const &caller, String const &reason)
 
 
 /* processUserModes - Process a user mode string
- * Original 24/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/08/01 simonb
  */
 String irc2userHandler::processUserModes(String &modes, StringTokens *tokens, 
 					 bool silent)
@@ -653,7 +655,7 @@ String irc2userHandler::processUserModes(String &modes, StringTokens *tokens,
    String toggleParamsOn = "";
    String toggleParamsOff = "";
 
-   for (String::length_t i = 0; 
+   for (String::size_type i = 0; 
 	((i < modes.length()) && (numModes < MAX_MODES_PER_COMMAND));
 	i++) {
       switch (modes[i]) {
@@ -766,7 +768,7 @@ String irc2userHandler::processUserModes(String &modes, StringTokens *tokens,
 
 
 /* sendChannelMode - Send a channel mode change
- * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 30/08/01 simonb
  */
 void irc2userHandler::sendChannelMode(Channel *c, User *u,
 				      String const &modes) const
@@ -780,7 +782,7 @@ void irc2userHandler::sendChannelMode(Channel *c, User *u,
 
 
 /* sendGoodbye - Send an ERROR message to tell the client we are saying bye
- * Original 14/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 14/08/01 simonb
  */
 void irc2userHandler::sendGoodbye(String const &reason) const
 {
@@ -793,7 +795,7 @@ void irc2userHandler::sendGoodbye(String const &reason) const
 
 
 /* sendInvite - Send an invitation to a channel
- * Original 19/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 19/10/01 simonb
  */
 void irc2userHandler::sendInvite(User *user, Channel *channel, User *from,
 				 time_t expiry) const
@@ -808,7 +810,7 @@ void irc2userHandler::sendInvite(User *user, Channel *channel, User *from,
 
 
 /* sendJoin - Send a channel join message
- * Original 14/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 14/08/01 simonb
  */
 void irc2userHandler::sendJoin(Channel *c, User *u) const
 {
@@ -820,7 +822,7 @@ void irc2userHandler::sendJoin(Channel *c, User *u) const
 
 
 /* sendKick - Send a channel kick message
- * Original 20/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 20/09/01 simonb
  */
 void irc2userHandler::sendKick(Channel *c, User *kicker, User *kickee,
 			       String const &reason) const
@@ -837,7 +839,7 @@ void irc2userHandler::sendKick(Channel *c, User *kicker, User *kickee,
 
 
 /* sendKill - Send a user kill message
- * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/09/01 simonb
  * Note: The user field is ignored since any kill MUST be to us anyway
  */
 void irc2userHandler::sendKill(User *u, String const &caller, 
@@ -853,7 +855,7 @@ void irc2userHandler::sendKill(User *u, String const &caller,
 
 
 /* sendKnock - Send a channel knocking message
- * Original 24/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/10/01 simonb
  */
 void irc2userHandler::sendKnock(User *u, Channel *c, 
 				String const &reason) const
@@ -867,7 +869,7 @@ void irc2userHandler::sendKnock(User *u, Channel *c,
 
 
 /* sendLanguage - Send a channel knocking message
- * Original 24/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/10/01 simonb
  */
 void irc2userHandler::sendLanguage(User *u, String const &languages,
 				   String const &charset) const
@@ -881,7 +883,7 @@ void irc2userHandler::sendLanguage(User *u, String const &languages,
 
 
 /* sendNickChange - Send a nickname change event
- * Original 24/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/08/01 simonb
  */
 void irc2userHandler::sendNickChange(User *u, String const &nick) const
 {
@@ -893,7 +895,7 @@ void irc2userHandler::sendNickChange(User *u, String const &nick) const
 
 
 /* sendNotice - [Various Forms] Send a NOTICE message
- * Original 01/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 01/08/01 simonb
  */
 void irc2userHandler::sendNotice(Server *from, User *destination, 
 				 String const &message) const
@@ -937,7 +939,7 @@ void irc2userHandler::sendNotice(User *from, StringMask const &destination,
 
 
 /* sendNoticeAnon - Send a *anonymous* NOTICE message
- * Original 12/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/10/01 simonb
  */
 void irc2userHandler::sendNoticeAnon(Channel *destination,
 				     String const &message) const
@@ -951,7 +953,7 @@ void irc2userHandler::sendNoticeAnon(Channel *destination,
 
 
 /* sendNumeric - [Various forms] Send a numeric to the connection
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 void irc2userHandler::sendNumeric(Numerics::numeric_t numeric,
 				  String const &line) const
@@ -977,7 +979,7 @@ void irc2userHandler::sendNumeric(Server *from, Numerics::numeric_t numeric,
 
 
 /* sendPart - Send a channel part message
- * Original 14/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 14/08/01 simonb
  */
 void irc2userHandler::sendPart(Channel *c, User *u, String const &reason) const
 {
@@ -992,7 +994,7 @@ void irc2userHandler::sendPart(Channel *c, User *u, String const &reason) const
 
 
 /* sendPing - Send a PING request to this connection
- * Original 24/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/08/01 simonb
  */
 void irc2userHandler::sendPing(void) const
 {
@@ -1003,7 +1005,7 @@ void irc2userHandler::sendPing(void) const
 
 
 /* sendPong - Send a PING reply (PONG)
- * Original 20/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 20/08/01 simonb
  */
 void irc2userHandler::sendPong(String const &reply) const
 {
@@ -1016,7 +1018,7 @@ void irc2userHandler::sendPong(String const &reply) const
 
 
 /* sendPrivmsg - [Various Forms] Send a PRIVMSG message
- * Original 01/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 01/08/01 simonb
  */
 void irc2userHandler::sendPrivmsg(Server *from, User *destination,
 				  String const &message) const
@@ -1060,7 +1062,7 @@ void irc2userHandler::sendPrivmsg(User *from, StringMask const &destination,
 
 
 /* sendPrivmsgAnon - Send a *anonymous* PRIVMSG message
- * Original 12/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/10/01 simonb
  */
 void irc2userHandler::sendPrivmsgAnon(Channel *destination,
 				      String const &message) const
@@ -1074,7 +1076,7 @@ void irc2userHandler::sendPrivmsgAnon(Channel *destination,
 
 
 /* sendQuit - Send a network quit message
- * Original 22/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/08/01 simonb
  */
 void irc2userHandler::sendQuit(User *u, String const &reason) const
 {
@@ -1088,7 +1090,7 @@ void irc2userHandler::sendQuit(User *u, String const &reason) const
 
 
 /* sendServerMode - [Various forms] Send a server mode change
- * Original 21/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 21/09/01 simonb
  */
 void irc2userHandler::sendServerMode(Server *s, Server *setter, 
 				     String const &modes) const
@@ -1112,7 +1114,7 @@ void irc2userHandler::sendServerMode(Server *s, User *setter,
 
 
 /* sendSilence - Send a SILENCE reply
- * Original 23/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 23/09/01 simonb
  * Note: The 'silencer' is ignored here, since this is always going to be
  *       the current user.
  */
@@ -1128,7 +1130,7 @@ void irc2userHandler::sendSilence(User *silencer, bool setting,
 
 
 /* sendTopic - [Various Forms] Send a channel topic change
- * Original 19/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 19/09/01 simonb
  */
 void irc2userHandler::sendTopic(Channel *chan, Server *from,
 				String const &topic) const
@@ -1152,7 +1154,7 @@ void irc2userHandler::sendTopic(Channel *chan, User *from,
 
 
 /* sendUserMode - Send a user mode change
- * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 25/08/01 simonb
  * Note: This is a strange one, but this is how it's supposed to work
  *       according to the implementations (not the RFC). Here the given user
  *       is ignored
@@ -1168,7 +1170,7 @@ void irc2userHandler::sendUserMode(User *u, String const &modes) const
 
 
 /* sendWhoReply - Send a WHO reply
- * Original 22/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/08/01 simonb
  */
 void irc2userHandler::sendWhoReply(User *u, Channel *c, 
 				   ChannelMember *cm) const
@@ -1205,7 +1207,7 @@ void irc2userHandler::sendWhoReply(User *u, Channel *c,
 
 
 /* sendWallops - [Various Forms] Send a WALLOPS message
- * Original 18/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 18/09/01 simonb
  */
 void irc2userHandler::sendWallops(Server *from, String const &message) const
 {
@@ -1225,7 +1227,7 @@ void irc2userHandler::sendWallops(User *from, String const &message) const
 
 
 /* sendWatchOff - [Various Forms] Send an object sign-off notification message
- * Original 24/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/09/01 simonb
  */
 void irc2userHandler::sendWatchOff(Server *target) const
 {
@@ -1266,7 +1268,7 @@ void irc2userHandler::sendWatchOff(User *target) const
 
 
 /* sendWatchOn - [Various Forms] Send an object sign-on notification message
- * Original 24/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/09/01 simonb
  */
 void irc2userHandler::sendWatchOn(Server *target) const
 {
@@ -1317,7 +1319,7 @@ inline String irc2userHandler::lang(LangTags::tag_t const &t) const
 
 
 /* doNAMES - Process and reply to a NAMES command
- * Original 15/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 15/08/01 simonb
  */
 void irc2userHandler::doNAMES(String const &param)
 {
@@ -1400,7 +1402,7 @@ void irc2userHandler::doNAMES(String const &param)
 
 
 /* parseLine - Parse an incoming line
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 void irc2userHandler::parseLine(String const &line)
 {
@@ -1436,7 +1438,7 @@ void irc2userHandler::parseLine(String const &line)
 
 
 /* parseACCEPT - Accept a user for receiving messages (efnet +g style)
- * Original 23/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 23/10/01 simonb
  */
 void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -1571,7 +1573,7 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
 
 
 /* parseADMIN
- * Original 27/08/01, Simon Butcher <pickle@austnet.org> 
+ * Original 27/08/01 simonb 
  */
 void irc2userHandler::parseADMIN(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -1613,7 +1615,7 @@ void irc2userHandler::parseADMIN(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseAWAY
- * Original 13/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 13/08/01 simonb
  */
 void irc2userHandler::parseAWAY(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -1668,7 +1670,7 @@ void irc2userHandler::parseAWAY(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseCONNECT
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
 void irc2userHandler::parseCONNECT(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -1676,8 +1678,9 @@ void irc2userHandler::parseCONNECT(irc2userHandler *handler, StringTokens *token
 }
 
 
+#ifdef ALLOW_COMMAND_DIE
 /* parseDIE
- * Original 14/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 14/08/01 simonb
  */
 void irc2userHandler::parseDIE(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -1697,10 +1700,11 @@ void irc2userHandler::parseDIE(irc2userHandler *handler, StringTokens *tokens)
 			  Lang::L_REQUESTED_SHUTDOWN);
    }
 }
+#endif
 
 
 /* parseGLOBOPS
- * Original 19/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 19/09/01 simonb
  */
 void irc2userHandler::parseGLOBOPS(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -1739,7 +1743,7 @@ void irc2userHandler::parseGLOBOPS(irc2userHandler *handler, StringTokens *token
 
 
 /* parseHELP
- * Original 13/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 13/08/01 simonb
  * Note: Not the best use on CPU since it's checking a match no matter how
  *       this is called, but since this is very rarely called I decided the 
  *       code should be small rather than faster :)
@@ -1853,7 +1857,7 @@ void irc2userHandler::parseHELP(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseHELPME
- * Original 19/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 19/09/01 simonb
  */
 void irc2userHandler::parseHELPME(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -1892,7 +1896,7 @@ void irc2userHandler::parseHELPME(irc2userHandler *handler, StringTokens *tokens
 
 
 /* parseINFO
- * Original 14/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 14/08/01 simonb
  */
 void irc2userHandler::parseINFO(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -1909,7 +1913,7 @@ void irc2userHandler::parseINFO(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseINVITE
- * Original 19/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 19/10/01 simonb
  */
 void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -2012,7 +2016,7 @@ void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens
 
 
 /* parseISON
- * Original 13/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 13/08/01 simonb
  * Note: I don't like this.. there has to be a better way. We cannot simply
  *       run through the list and check the line since the RFC says we must
  *       return the ISON members in exact order as given, just 'edited'.
@@ -2053,7 +2057,7 @@ void irc2userHandler::parseISON(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseJOIN
- * Original 14/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 14/08/01 simonb
  * Needs: '0' support. I would have done this already, except to stop people
  *        being able to flood it should scan the tokens for a 0, part all,
  *        then join channels AFTER that 0; eg. /join #foo,#bar,0,#baz should
@@ -2253,7 +2257,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseKICK
- * Original 20/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 20/09/01 simonb
  */
 void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -2371,7 +2375,7 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseKILL
- * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/09/01 simonb
  */
 void irc2userHandler::parseKILL(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -2421,7 +2425,7 @@ void irc2userHandler::parseKILL(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseKNOCK
- * Original 24/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/10/01 simonb
  */
 void irc2userHandler::parseKNOCK(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -2512,7 +2516,7 @@ void irc2userHandler::parseKNOCK(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseLANGUAGE
- * Original 26/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 26/10/01 simonb
  */
 void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -2645,7 +2649,7 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
 
 
 /* parseLINKS
- * Original 27/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 27/08/01 simonb
  * Note: In accordance with other servers around the world, this command works
  *       somewhat differently to how traditional links works. Traditionally,
  *       this command gives enough information to know the topology of the
@@ -2691,7 +2695,7 @@ void irc2userHandler::parseLINKS(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseLIST
- * Original 15/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 15/08/01 simonb
  * Note: This should be a 'remote', but since the content is so large nobody
  *       really needs to list channels remotely, unless of course they wanted
  *       local channels. Bah, local channels are *LOCAL* anyway! Many other
@@ -2731,7 +2735,7 @@ void irc2userHandler::parseLIST(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseLOCOPS
- * Original 19/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 19/09/01 simonb
  */
 void irc2userHandler::parseLOCOPS(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -2770,7 +2774,7 @@ void irc2userHandler::parseLOCOPS(irc2userHandler *handler, StringTokens *tokens
 
 
 /* parseLUSERS
- * Original 27/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 27/08/01 simonb
  */
 void irc2userHandler::parseLUSERS(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -2813,7 +2817,7 @@ void irc2userHandler::parseLUSERS(irc2userHandler *handler, StringTokens *tokens
 
 
 /* parseMAP
- * Original 01/11/01, Simon Butcher <pickle@austnet.org>
+ * Original 01/11/01 simonb
  */
 void irc2userHandler::parseMAP(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -2855,7 +2859,7 @@ void irc2userHandler::parseMAP(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseMODE
- * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 25/08/01 simonb
  */
 void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -2999,7 +3003,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseMOTD
- * Original 13/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 13/08/01 simonb
  */
 void irc2userHandler::parseMOTD(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3041,7 +3045,7 @@ void irc2userHandler::parseMOTD(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseNAMES
- * Original 15/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 15/08/01 simonb
  */
 void irc2userHandler::parseNAMES(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3060,7 +3064,7 @@ void irc2userHandler::parseNAMES(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseNICK
- * Original 24/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/08/01 simonb
  */
 void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3146,7 +3150,7 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseNOTICE
- * Original 01/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 01/09/01 simonb
  * Note: Exactly the same as PRIVMSG, except we are not allowed to reply
  *       to an error at all. This is wrong in many servers which just block
  *       the RPL_AWAY. Read the RFC you lazy ircd programmers!!! :)
@@ -3305,7 +3309,7 @@ void irc2userHandler::parseNOTICE(irc2userHandler *handler, StringTokens *tokens
 
 
 /* parseOPER
- * Original 08/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 08/09/01 simonb
  */
 void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3398,7 +3402,7 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parsePART
- * Original 18/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 18/08/01 simonb
  * Note: We have no need for 'ERR_NOSUCHCHANNEL' here, since we look up
  *       the channel differently to how the ircd used in the RFC does
  */
@@ -3439,7 +3443,7 @@ void irc2userHandler::parsePART(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parsePING
- * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 25/08/01 simonb
  * Note: This obviously does not conform to standards. We simple take
  *       whatever it is this user sent us and send it right on back at
  *       them. Users do not have access to throw ping packets all over
@@ -3453,7 +3457,7 @@ void irc2userHandler::parsePING(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parsePONG
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
 void irc2userHandler::parsePONG(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3462,7 +3466,7 @@ void irc2userHandler::parsePONG(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parsePRIVMSG
- * Original 01/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 01/09/01 simonb
  */
 void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3704,7 +3708,7 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 
 
 /* parseQUIT
- * Original 14/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 14/08/01 simonb
  */
 void irc2userHandler::parseQUIT(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3725,7 +3729,7 @@ void irc2userHandler::parseQUIT(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseREHASH
- * Original 19/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 19/09/01 simonb
  */
 void irc2userHandler::parseREHASH(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3738,7 +3742,7 @@ void irc2userHandler::parseREHASH(irc2userHandler *handler, StringTokens *tokens
 
 
 /* parseRESTART
- * Original 28/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 28/10/01 simonb
  */
 void irc2userHandler::parseRESTART(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3748,7 +3752,7 @@ void irc2userHandler::parseRESTART(irc2userHandler *handler, StringTokens *token
 
 
 /* parseSERVLIST - List services visible and on-line
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
 void irc2userHandler::parseSERVLIST(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3768,7 +3772,7 @@ void irc2userHandler::parseSERVLIST(irc2userHandler *handler, StringTokens *toke
 
 
 /* parseSILENCE - Block a user from sending a message (dalnet/undernet style)
- * Original 23/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 23/09/01 simonb
  * Note: If I invented this command I would have at least put multiple target
  *       possibilities in it. Adding that would be kind of pointless now that
  *       this command features such widespread use.. :(
@@ -3877,7 +3881,7 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
 
 
 /* parseSQUIT
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
 void irc2userHandler::parseSQUIT(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3886,7 +3890,7 @@ void irc2userHandler::parseSQUIT(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseSTATS
- * Original 14/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 14/08/01 simonb
  */
 void irc2userHandler::parseSTATS(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3939,7 +3943,7 @@ void irc2userHandler::parseSTATS(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseTIME
- * Original 27/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 27/08/01 simonb
  */
 void irc2userHandler::parseTIME(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3981,7 +3985,7 @@ void irc2userHandler::parseTIME(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseTOPIC
- * Original 19/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 19/08/01 simonb
  */
 void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -4063,7 +4067,7 @@ void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseTRACE
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
 void irc2userHandler::parseTRACE(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -4073,7 +4077,7 @@ void irc2userHandler::parseTRACE(irc2userHandler *handler, StringTokens *tokens)
 
 #ifdef HAVE_CMD_TRACEROUTE
 /* parseTRACEROUTE
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
 void irc2userHandler::parseTRACEROUTE(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -4083,7 +4087,7 @@ void irc2userHandler::parseTRACEROUTE(irc2userHandler *handler, StringTokens *to
 
 
 /* parseUSERHOST
- * Original 21/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 21/08/01 simonb
  */
 void irc2userHandler::parseUSERHOST(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -4127,7 +4131,7 @@ void irc2userHandler::parseUSERHOST(irc2userHandler *handler, StringTokens *toke
 
 
 /* parseUSERIP
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
 void irc2userHandler::parseUSERIP(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -4135,7 +4139,7 @@ void irc2userHandler::parseUSERIP(irc2userHandler *handler, StringTokens *tokens
 
 
 /* parseVERSION
- * Original 24/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/08/01 simonb
  */
 void irc2userHandler::parseVERSION(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -4177,7 +4181,7 @@ void irc2userHandler::parseVERSION(irc2userHandler *handler, StringTokens *token
 
 
 /* parseWALLCHOPS
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
 void irc2userHandler::parseWALLCHOPS(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -4187,7 +4191,7 @@ void irc2userHandler::parseWALLCHOPS(irc2userHandler *handler, StringTokens *tok
 
 #ifdef ALLOW_OPER_WALLOPS
 /* parseWALLOPS
- * Original 18/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 18/09/01 simonb
  */
 void irc2userHandler::parseWALLOPS(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -4218,7 +4222,7 @@ void irc2userHandler::parseWALLOPS(irc2userHandler *handler, StringTokens *token
 
 
 /* parseWATCH
- * Original 24/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/09/01 simonb
  */
 void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -4492,7 +4496,7 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseWHO
- * Original 22/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/08/01 simonb
  * Note: In regards to grabbing the channel, perhaps we should loop to find
  *       a non-hidden channel before assuming channel is *? It's a minor
  *       thing; doesn't matter that much.
@@ -4629,7 +4633,7 @@ void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseWHOIS
- * Original 23/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 23/08/01 simonb
  */
 void irc2userHandler::parseWHOIS(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -4672,7 +4676,7 @@ void irc2userHandler::parseWHOIS(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseWHOWAS
- * Original 09/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 09/10/01 simonb
  */
 void irc2userHandler::parseWHOWAS(irc2userHandler *handler, StringTokens *tokens)
 {

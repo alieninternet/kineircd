@@ -11,23 +11,31 @@ AC_INIT(src/Makefile.in)
 AC_CONFIG_AUX_DIR(autoconf)
 AC_CONFIG_HEADER(include/autoconf.h)
 
-dnl
-dnl Grab version information
-dnl
-PROGNAME=austhex.servd
+dnl Determine our version information.
+dnl These should not be touched as they define the version of this software
+dnl from an 'official' standpoint - only the developers who should touch 
+dnl them .. uhh.. should touch them :)
 VERSION_MAJOR=8
 VERSION_MINOR=0
 VERSION_EXTRA=.prealpha
-AC_SUBST(PROGNAME)
+PACKAGE_NAME=austhex.servd
+PACKAGE_TARNAME=
+PACKAGE_VERSION=$VERSION_MAJOR.$VERSION_MINOR$VERSION_EXTRA
+PACKAGE_STRING=
+PACKAGE_BUGREPORT=dev@austnet.org
+
+dnl Export our version information
 AC_SUBST(VERSION_MAJOR)
 AC_SUBST(VERSION_MINOR)
 AC_SUBST(VERSION_EXTRA)
-echo "Configuring $PROGNAME$VERSION_MAJOR.$VERSION_MINOR$VERSION_EXTRA"
+AC_SUBST(PACKAGE_NAME)
+AC_SUBST(PACKAGE_TARNAME)
+AC_SUBST(PACKAGE_VERSION)
+AC_SUBST(PACKAGE_STRING)
+AC_SUBST(PACKAGE_BUGREPORT)
 
-
-dnl Save the LDFLAGS since we will be making a mess of it soon..
+dnl Save LDFLAGS since we will be making a mess of it soon..
 LDFLAGS_SAVE="$LDFLAGS"
-
 INCDIRS=""
 
 
@@ -294,11 +302,6 @@ AC_CACHE_SAVE
 dnl  -------------------------------------------------------------------------
 echo " -=> Checking for libraries and specific library functions"
 dnl  -------------------------------------------------------------------------
-AC_CHECK_LIB(pthread, pthread_self,,[
-  AC_MSG_RESULT(no)
-  dnl should check for other threads libraries here. For now, just complain
-  AC_MSG_WARN([A threads library will be needed in the future..])
- ])
 AC_CHECK_LIB(resolv, res_init)
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
@@ -317,37 +320,107 @@ AC_CHECK_FUNCS(
 	strerror \
 		)
 
+AC_MSG_CHECKING([snmp-agent parameter])
+AC_ARG_ENABLE(snmp-agent,[
+  --enable-snmp-agent=[agentx|master]        (Default is disabled)
+    SNMP additions to the server allow you to monitor the server remotely
+    via the standard SNMP protocols. This will requre you to have the 
+    NET-SNMP libraries installed, however. Specifying agentx here will allow
+    the server's SNMP component to connect to a master agent (eg. snmpd) which
+    will proxy the requests to the server (this is recommended). Specifying
+    master here will allow this server to become a master SNMP agent itself.
+    For better control, it is preferred that you use the agentx method.
+    Anything else specified here will automatically presume 'agentx'.
+ ],[
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+     austhex_test_have_snmp_agent=no
+   else
+     dnl "Master or agentx?"
+     if test "$enableval" = "master"; then
+       AC_MSG_RESULT([yes (master agent)])
+       AC_DEFINE(HAVE_SNMP_AGENT_MASTER)
+       AC_DEFINE(HAVE_SNMP_AGENT_MASTER_PORT, 161)
+     else
+       AC_MSG_RESULT([yes (agentx)])
+       AC_DEFINE(HAVE_SNMP_AGENT)
+     fi
+     
+     dnl We want to know if we have a valid snmp library here..
+dnl     AC_CHECK_LIB(ucdagent, init_agent,[
+       AC_DEFINE(HAVE_SNMP_AGENT)
+       austhex_test_have_snmp_agent=yes
+       snmp_lib="-lucdagent -lucdmibs -lsnmp -ldl"
+       snmp_ldflags="-L/usr/local/lib -L/usr/lib"
+       austhex_test_need_openssl=yes
+dnl      ],[
+dnl       AC_MSG_WARN([Could not find the appropriate SNMP libraries --
+dnl                    SNMP disabled])
+dnl       austhex_test_have_snmp_agent=no
+dnl      ])
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+   austhex_test_have_snmp_agent=no
+ ]) 
+AC_SUBST(austhex_test_have_snmp_agent)
+AC_SUBST(snmp_lib)
+AC_SUBST(snmp_ldflags)
+
 AC_MSG_CHECKING([for OpenSSL library/include path])
 AC_ARG_ENABLE(ssl,[  --enable-ssl=DIRECTORY * * * * location of SSL library/include files],
  [
- 	dnl Check the given path
-	if test -f "$enableval/include/openssl/ssl.h"; then
-		ssl_dir="$enableval"
-		ssl_libs="$enableval/lib"
-	fi
+   dnl Just run with the given path.. we will check it soon
+   ssl_dir="$enableval"
+   ssl_libs="$enableval/lib"
  ],[
-	dnl Check for files in numerous different paths :-/
-	for dirA in /usr/local /usr/lib /var/lib /usr /var /opt . ~; do
-		for dirB in $dirA $dirA/openssl $dirA/ssl; do
-			if test -f "$dirB/include/openssl/ssl.h"; then
-				ssl_dir="$dirB"
-				ssl_libs="$dirB/lib"
-				break 2
-			fi
-		done
-	done
+   dnl Say it is required
+   austhex_test_need_openssl_required=yes
  ])
 dnl Check that we are not being told to skip this...
-if test "$ssl_dir" = "no"; then
-  AC_MSG_RESULT(ignoring)
+if test "$austhex_test_need_openssl" = "yes"; then
+  dnl We are forced to try and get it..
+  austhex_test_need_openssl_required=yes
+  dnl Do they not want the support?
+  if test "$ssl_dir" = "no"; then
+    austhex_test_openssl_not_wanted=yes   
+  fi
 else
+  if test "$ssl_dir" = "no"; then
+    dnl They do not want it and we do not need it - ignore it
+    AC_MSG_RESULT(ignoring)
+    austhex_test_need_openssl=no
+  else
+    dnl They want it, try and get it
+    austhex_test_need_openssl=yes
+  fi
+fi
+if test "$austhex_test_need_openssl" = "yes"; then
   dnl Check that the 'ssl_dir' environment variable is not empty
+  if test -n "$ssl_dir"; then
+    dnl Check for files in numerous different paths :-/
+    for dirA in /usr/local /usr/lib /var/lib /usr /var /opt . ~; do
+      for dirB in $dirA $dirA/openssl $dirA/ssl; do
+        if test -f "$dirB/include/openssl/ssl.h"; then
+	  ssl_dir="$dirB"
+	  ssl_libs="$dirB/lib"
+	  break 2
+        fi
+      done
+    done
+  fi
+  dnl Check that the 'ssl_dir' environment variable is not still empty
   if test -n "$ssl_dir"; then
     dnl Check that the 'ssl_libs' environment is a directory
     if test -d "$ssl_libs"; then
-      AC_MSG_RESULT($ssl_dir)
-      AC_DEFINE(HAVE_OPENSSL)
-      INCDIRS="$INCDIRS -I$ssl_dir/include"
+      dnl Check if they do not want SSL support
+      if test "$austhex_test_openssl_not_wanted" = "yes"; then 
+        AC_MSG_RESULT([$ssl_dir (support turned off though)])
+      else
+        AC_MSG_RESULT($ssl_dir)
+        AC_DEFINE(HAVE_OPENSSL)
+        INCDIRS="$INCDIRS -I$ssl_dir/include"
+      fi
       ssl_lib="-lssl -lcrypto"
       ssl_ldflags="-L$ssl_libs"
       LDFLAGS="$LDFLAGS $ssl_ldflags"
@@ -363,6 +436,7 @@ else
       ],[
         AC_MSG_RESULT(unknown)
         AC_MSG_WARN([Your OpenSSL installation seems incomplete!])
+        austhex_test_openssl_broken=yes
        ])
     else
       AC_MSG_RESULT(unknown)
@@ -370,12 +444,20 @@ else
       echo "  It appears your OpenSSL installation does not contain a library directory!"
       echo "  Use --with-ssl=DIRECTORY to corret this if you beleive this is wrong."
       echo "  Without this library you will not be able to use secured SSL connections."
+      austhex_test_openssl_broken=yes
     fi
   else
     AC_MSG_RESULT(unknown)
     AC_MSG_WARN([Could not find your OpenSSL installation])
     echo "  Use --with-ssl=DIRECTORY to correct this if you beleive this is wrong."
     echo "  Without this library you will not be able to use secured SSL connections."
+    austhex_test_openssl_broken=yes
+  fi
+fi
+dnl Make sure we got it OK if we desparately need it
+if test "$austhex_test_need_openssl_required" = "yes"; then
+  if test "$austhex_test_openssl_broken" = "yes"; then
+    AC_MSG_ERROR([Something you have included requires OpenSSL and I cannot find it.])
   fi
 fi
 AC_SUBST(ssl_lib)
@@ -385,7 +467,8 @@ AC_CACHE_CHECK([for a working C++ Standard Template Library],
  austhex_cv_lib_stl_ok,[
   AC_LANG_CPLUSPLUS
   AC_TRY_RUN([
-	#include <stl.h>
+	#include <list>
+	#include <map>
 	
 	int main(void)
 	{
@@ -411,7 +494,7 @@ AC_CACHE_CHECK([for an SGI compliant hash capability in your STL],
  austhex_cv_lib_stl_sgi_hash,[
   AC_LANG_CPLUSPLUS
   AC_TRY_RUN([
-	#include <hash_map.h>
+	#include <hash_map>
 
 	int main(void)
  	{
@@ -432,7 +515,7 @@ AC_CACHE_CHECK([for an SGI compliant single list template in your STL],
  austhex_cv_lib_stl_sgi_slist,[
   AC_LANG_CPLUSPLUS
   AC_TRY_RUN([
-	#include <slist.h>
+	#include <slist>
 
 	int main(void)
  	{
@@ -523,6 +606,25 @@ AC_ARG_ENABLE(accept-unknown-langs,[
    fi
  ],[
    AC_MSG_RESULT([no (default)])
+ ])
+
+AC_MSG_CHECKING([command-die parameter])
+AC_ARG_ENABLE(command-die,[
+  --enable-command-die                       (Default is enabled)
+    This enables the 'DIE' IRC Operator command. This command is one which
+    many server administrators do not like since disgruntled operators can
+    easily wipe out the server. On the other hand, the command is here out
+    of pure convenience.
+ ],[
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(ALLOW_COMMAND_DIE)
+   fi
+ ],[
+   AC_MSG_RESULT([yes (default)])
+   AC_DEFINE(ALLOW_COMMAND_DIE)
  ])
 
 AC_MSG_CHECKING([allow-clients parameter])
@@ -1375,7 +1477,7 @@ AC_ARG_ENABLE(p13server-protocol,[
 AC_SUBST(austhex_test_have_p13server_protocol)
 
 if test "$austhex_test_have_p13server_protocol" = "yes"; then
-AC_MSG_CHECKING([p13server-compress parameter])
+  AC_MSG_CHECKING([p13server-compress parameter])
   AC_ARG_ENABLE(p13server-compress,[
   --enable-p13server-compress                (Default is enabled)
     This allows server to server links using the P13 protocol (above) to be
@@ -1397,6 +1499,30 @@ AC_MSG_CHECKING([p13server-compress parameter])
      AC_MSG_RESULT([yes (default)])
      AC_DEFINE(HAVE_P13SERVER_COMPRESS)
      austhex_test_have_p13server_compress=yes
+   ])
+
+  AC_MSG_CHECKING([p13server-extended parameter])
+  AC_ARG_ENABLE(p13server-extended,[
+  --enable-p13server-extended                (Default is enabled)
+    Previous versions of the P13 server to server protocol have certain
+    flaws and absenses of commands. To correct this, the new additions to
+    P13 allow backwards compatibility while fixing many of those problems.
+    Unfortunately some servers cannot handle the new corrections and may
+    work eratically, or become out of sync. The additions include
+    compatibility with IPv6 and work around some very nasty byte-ordering
+    issues that had become an issue. It is not recommended to disable this,
+    however it may become necessary as a temporary solution. Some
+    functionality may be lost with reverting to the non-extended P13.
+   ],[
+     if test "$enableval" = "no"; then
+       AC_MSG_RESULT(no)
+     else
+       AC_MSG_RESULT(yes)
+       AC_DEFINE(HAVE_P13SERVER_EXTENDED)
+     fi
+   ],[
+     AC_MSG_RESULT([yes (default)])
+     AC_DEFINE(HAVE_P13SERVER_EXTENDED)
    ])
 else
   austhex_test_have_p13server_compress=no
@@ -1430,7 +1556,7 @@ AC_ARG_ENABLE(p14server-protocol,[
 AC_SUBST(austhex_test_have_p14server_protocol)
 
 if test "$austhex_test_have_p14server_protocol" = "yes"; then
-AC_MSG_CHECKING([p14server-compress parameter])
+  AC_MSG_CHECKING([p14server-compress parameter])
   AC_ARG_ENABLE(p14server-compress,[
   --enable-p14server-compress                (Default is enabled)
     This allows server to server links using the P14 protocol (above) to be
@@ -1455,7 +1581,7 @@ else
   austhex_test_have_p14server_compress=no
 fi
 AC_SUBST(austhex_test_have_p14server_compress)
- 
+
 
 dnl  -------------------------------------------------------------------------
 echo " -=> Determining installation information"
@@ -1473,6 +1599,14 @@ AC_OUTPUT([
 	install/Makefile
 	src/Makefile
 	src/generator/Makefile
+	src/protocols/Makefile
+	src/protocols/server/Makefile
+	src/protocols/server/an-p13
+	src/protocols/server/an1
+	src/protocols/user/Makefile
+	src/protocols/user/irc2
+	src/protocols/user/irc3
+	src/socket/Makefile
 	])
 
 

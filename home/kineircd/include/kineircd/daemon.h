@@ -362,15 +362,15 @@ class Daemon {
    
    // Configuration top-level class parsing routines
    static bool configure(bool = false);
-   static void configADMIN(ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
-   static void configARBITER(ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
-   static void configCONF(ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
-   static void configFAIL(ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
-   static void configLISTEN(ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
-   static void configOPERS(ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
-   static void configREDIRECT(ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
-   static void configSSL(ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
-   static void configSTATUS(ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
+   static void configADMIN(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
+   static void configARBITER(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
+   static void configCONF(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
+   static void configFAIL(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
+   static void configLISTEN(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
+   static void configOPERS(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
+   static void configREDIRECT(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
+   static void configSSL(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
+   static void configSTATUS(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
    
    static void shutdown(String const & = "");	// Start the shutdown sequence
    static void run(void);			// The main loop

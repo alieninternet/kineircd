@@ -140,15 +140,15 @@ class ChannelMask {
 class Channel {
  public:
 # ifdef STL_HAS_HASH
-   typedef hash_map <String, ChannelMember *> member_map_t;
+   typedef std::hash_map <String, ChannelMember *> member_map_t;
 # else
-   typedef map <String, ChannelMember *> member_map_t;
+   typedef std::map <String, ChannelMember *> member_map_t;
 # endif
 
 # ifdef STL_HAS_SLIST
-   typedef slist <ChannelMask *> mask_list_t;
+   typedef std::slist <ChannelMask *> mask_list_t;
 # else
-   typedef list <ChannelMask *> mask_list_t;
+   typedef std::list <ChannelMask *> mask_list_t;
 # endif
 
    // Channel mode type - do not change this - P14 needs this to be the same
@@ -166,7 +166,7 @@ class Channel {
    };
    static struct modeTableStruct const modeTable[];
 
-   String name;					// Name of the channel + prefix
+   String name;				// Name of the channel + prefix
    modes_t modes;				// Channel mode flags
    time_t creationTime;				// Time channel was created
 

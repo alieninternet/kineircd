@@ -5,6 +5,14 @@
 #ifndef __SERVER_H_
 # define __SERVER_H_
 
+# ifdef STL_HAS_HASH
+#  include <hash_map>
+# endif
+
+# ifdef STL_HAS_SLIST
+#  include <slist>
+# endif
+
 class Server;
 
 # include "handler.h"
@@ -16,11 +24,11 @@ class Server;
 class Server {
  public:
 # ifdef STL_HAS_HASH
-   typedef hash_map <String, Server *> server_map_t;
-   typedef hash_map <String, User *> user_map_t;
+   typedef std::hash_map <String, Server *> server_map_t;
+   typedef std::hash_map <String, User *> user_map_t;
 # else
-   typedef map <String, Server *> server_map_t;
-   typedef map <String, User *> user_map_t;
+   typedef std::map <String, Server *> server_map_t;
+   typedef std::map <String, User *> user_map_t;
 # endif
 
    typedef unsigned short flags_t;

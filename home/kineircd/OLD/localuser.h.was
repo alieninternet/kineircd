@@ -8,7 +8,7 @@
 # ifdef STL_HAS_HASH
 #  include <hash_set>
 # else
-#  include <set.h>
+#  include <set>
 # endif
 
 class LocalUser;
@@ -18,6 +18,7 @@ class LocalUser;
 # include "handler.h"
 # include "lang.h"
 # include "str.h"
+# include "utils.h"
 # include "servernotice.h"
 
 // An 'invitation' (for channel invites)
@@ -49,15 +50,15 @@ class LocalUserInvitation {
 class LocalUser {
  public:
 # ifdef STL_HAS_HASH
-   typedef hash_set <String> watch_set_t;
+   typedef std::hash_set <String> watch_set_t;
 # else
-   typedef set <String> watch_set_t;
+   typedef std::set <String> watch_set_t;
 # endif
    
    // The invitations list should never get long enough to warrant hashing
-   typedef map <String, LocalUserInvitation *> invitation_map_t;
+   typedef std::map <String, LocalUserInvitation *> invitation_map_t;
    
-   typedef map <String, time_t> floodlock_reply_map_t;
+   typedef std::map <String, time_t> floodlock_reply_map_t;
 
  public:
    User *user;					// Link into main user class

@@ -72,7 +72,7 @@ struct User::modeTableStruct const User::modeTable[] = {
 
 
 /* getChannel - Look through our local channel list for a channel
- * Original 15/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 15/08/01 simonb
  * Note: Minature version of what appears for the main channel list, why
  *       we do this is for speed purposes mainly
  */
@@ -95,7 +95,7 @@ Channel *User::getChannel(String &channel)
 
 
 /* markAway - Toggle the user's away 
- * Original 11/09/01, Simon Butcher <pickle@austnet.org
+ * Original 11/09/01 simonb
  */
 void User::markAway(String const &message)
 {
@@ -108,7 +108,7 @@ void User::markAway(String const &message)
 
 
 /* setLangInfo - Set up new language information (dumb)
- * Original 31/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 31/10/01 simonb
  */
 void User::setLangInfo(String const &langl, String const &langc)
 {
@@ -124,7 +124,7 @@ void User::setLangInfo(String const &langl, String const &langc)
 
 
 /* isSilencing - Check if the given user matches a mask a particular mask list
- * Original 24/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/09/01 simonb
  */
 bool User::isSilencing(User *target)
 {
@@ -144,7 +144,7 @@ bool User::isSilencing(User *target)
 
 
 /* okName - Check if a nickname contains ok characters and is short enough
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 bool User::okName(String const &nick)
 {
@@ -159,7 +159,7 @@ bool User::okName(String const &nick)
    }
    
    // Run through the nickname and look for nasty characters
-   for (String::length_t i = nick.length(); i--;) {
+   for (String::size_type i = nick.length(); i--;) {
       char c = nick[i];
 
       if (!(isalnum(c) || 
@@ -175,7 +175,7 @@ bool User::okName(String const &nick)
 
 
 /* makeModes - [Various forms] Create a string of user modes
- * Original 24/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 24/08/01 simonb
  */
 String User::makeModes(modes_t modes)
 {
@@ -216,7 +216,7 @@ String User::makeModes(User *user)
 
 
 /* User::toggleModeDEAF
- * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 25/08/01 simonb
  */
 bool User::toggleModeDEAF(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -233,7 +233,7 @@ bool User::toggleModeDEAF(bool setting, Handler *handler, User *user, char *mode
 
 
 /* User::toggleModeGOT_IDENTD
- * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/09/01 simonb
  */
 bool User::toggleModeGOT_IDENTD(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -250,7 +250,7 @@ bool User::toggleModeGOT_IDENTD(bool setting, Handler *handler, User *user, char
 
 
 /* User::toggleModeHELPER
- * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/09/01 simonb
  */
 bool User::toggleModeHELPER(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -292,7 +292,7 @@ bool User::toggleModeHELPER(bool setting, Handler *handler, User *user, char *mo
 
 
 /* User::toggleModeIDENTIFIED
- * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/09/01 simonb
  */
 bool User::toggleModeIDENTIFIED(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -309,7 +309,7 @@ bool User::toggleModeIDENTIFIED(bool setting, Handler *handler, User *user, char
 
 
 /* User::toggleModeIGNORING
- * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/09/01 simonb
  */
 bool User::toggleModeIGNORING(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -326,7 +326,7 @@ bool User::toggleModeIGNORING(bool setting, Handler *handler, User *user, char *
 
 
 /* User::toggleModeINVISIBLE
- * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 25/08/01 simonb
  */
 bool User::toggleModeINVISIBLE(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -343,7 +343,7 @@ bool User::toggleModeINVISIBLE(bool setting, Handler *handler, User *user, char 
 
 
 /* User::toggleModeNONKICKABLE
- * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/09/01 simonb
  */
 bool User::toggleModeNONKICKABLE(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -360,7 +360,7 @@ bool User::toggleModeNONKICKABLE(bool setting, Handler *handler, User *user, cha
 
 
 /* User::toggleModeOPER
- * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 25/08/01 simonb
  * Note: This can only be toggled off, not on.
  */
 bool User::toggleModeOPER(bool setting, Handler *handler, User *user, char *modeChr, String *param)
@@ -413,7 +413,7 @@ bool User::toggleModeOPER(bool setting, Handler *handler, User *user, char *mode
 
 
 /* User::toggleModeREGNICKSMSG
- * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 30/08/01 simonb
  */
 bool User::toggleModeREGNICKSMSG(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -438,7 +438,7 @@ bool User::toggleModeREGNICKSMSG(bool setting, Handler *handler, User *user, cha
 
 
 /* User::toggleModeRESTRICTED
- * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/09/01 simonb
  */
 bool User::toggleModeRESTRICTED(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -455,7 +455,7 @@ bool User::toggleModeRESTRICTED(bool setting, Handler *handler, User *user, char
 
 
 /* User::toggleModeROUTINGSTAFF
- * Original 21/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 21/10/01 simonb
  */
 bool User::toggleModeROUTINGSTAFF(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -472,7 +472,7 @@ bool User::toggleModeROUTINGSTAFF(bool setting, Handler *handler, User *user, ch
 
 
 /* User::toggleModeSECURE
- * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/09/01 simonb
  */
 bool User::toggleModeSECURE(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -489,7 +489,7 @@ bool User::toggleModeSECURE(bool setting, Handler *handler, User *user, char *mo
 
 
 /* User::toggleModeSERVNOTICES
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
 bool User::toggleModeSERVNOTICES(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -525,7 +525,7 @@ bool User::toggleModeSERVNOTICES(bool setting, Handler *handler, User *user, cha
 
 
 /* User::toggleModeVWORLD
- * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 25/08/01 simonb
  */
 bool User::toggleModeVWORLD(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -550,7 +550,7 @@ bool User::toggleModeVWORLD(bool setting, Handler *handler, User *user, char *mo
 
 
 /* User::toggleModeWALLOPS
- * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 25/08/01 simonb
  */
 bool User::toggleModeWALLOPS(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
@@ -577,7 +577,7 @@ bool User::toggleModeWALLOPS(bool setting, Handler *handler, User *user, char *m
 
 
 /* makeVWorld - Generate a virtual world hash on the given hostname
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
 String User::makeVWorld(String const &hostname)
 {
@@ -586,7 +586,7 @@ String User::makeVWorld(String const &hostname)
 
 
 /* addInvitation - Invite us to a channel!
- * Original 19/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 19/10/01 simonb
  */
 void LocalUser::addInvitation(Channel *channel, User *inviter, time_t expiry)
 {
@@ -599,7 +599,7 @@ void LocalUser::addInvitation(Channel *channel, User *inviter, time_t expiry)
 
 
 /* invitedTo - Check if we are invited to a specific channel
- * Original 19/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 19/10/01 simonb
  */
 bool LocalUser::invitedTo(Channel *channel)
 {
@@ -631,7 +631,7 @@ bool LocalUser::invitedTo(Channel *channel)
 
 
 /* onReplyFloodlockMap - Check for someone on a reply floodlock map
- * Original 21/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 21/10/01 simonb
  */
 bool LocalUser::onReplyFloodlockMap(LocalUser::floodlock_reply_map_t &lockmap,
 				    time_t timelen, String const &target)

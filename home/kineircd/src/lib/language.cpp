@@ -43,12 +43,6 @@ namespace Lang {
 
 
    // Misc/Disorganised
-   char const *L_NOTIFY_PARANOID_OPERS_ON_WHOIS =
-     "*** Notice -- %s (%s) did a /whois on you";
-
-   char const *L_QUIT_KILLED =
-     "Killed (%s (%s))";
-
    char const *L_REQUESTED_SHUTDOWN =
      " requested shutdown";
    char const *L_BYE_BYE_USER =
@@ -64,9 +58,9 @@ namespace Lang {
 
 
 /* loadLanguages - Seek and load language files in the given directory
- * Original 28/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 28/10/01 simonb
  */
-bool Lang::loadLanguages(String const &directory, 
+bool Lang::loadLanguages(String const &directory,
 			 String const &defaultCode)
 {
 #ifdef DEBUG
@@ -74,7 +68,7 @@ bool Lang::loadLanguages(String const &directory,
 #endif
    
    struct dirent *dirEntry;
-   DIR *dir = opendir(directory);
+   DIR *dir = opendir(directory.c_str());
 
    // Make sure we opened that directory
    if (!dir) {
@@ -87,13 +81,11 @@ bool Lang::loadLanguages(String const &directory,
    
    // Stuff we need
 #ifdef STL_HAS_HASH
-   hash_map <String, String *> langData;
+   std::hash_map <String, String *> langData;
 #else
-   map <String, String *> langData;
+   std::map <String, String *> langData;
 #endif
-   String line = "";
-   String tag = "";
-   String data = "";
+   String line = "", tag = "", data = "";
    unsigned int lineNum = 0;
    
    // Run through the directory list and look for files we want
@@ -102,19 +94,19 @@ bool Lang::loadLanguages(String const &directory,
       if (!strncasecmp(dirEntry->d_name, LANG_FILE_PREFIX,
 		       LANG_FILE_PREFIX_LEN)) {
 	 // Open the file
-	 String fileName = String(dirEntry->d_name);
-	 ifstream file(directory + fileName);
+	 String fileName = directory + dirEntry->d_name;
+	 ifstream file(fileName.c_str());
 
 	 // Check that we opened the file properly
 	 if (!file) {
 #ifdef DEBUG
-	    debug(String("Could not open language file: ") + fileName);
+	    debug("Could not open language file: " + fileName);
 #endif
 	    continue;
 	 }
 	 
 #ifdef DEBUG_EXTENDED
-	 debug(String("Loading language file ") + fileName);
+	 debug("Loading language file " + fileName);
 #endif
 	 
 	 // Reset some variables
@@ -173,17 +165,13 @@ bool Lang::loadLanguages(String const &directory,
 	    // Check the data for this line
 	    if (!tag.length() || !data.length()) {
 #ifdef DEBUG
-	       debug(String::printf("Bad language line %u: %s",
-				    lineNum,
-				    (char const *)line));
+	       debug("Bad language line " + String(lineNum) + ": " + line);
 #endif
 	       continue;
 	    }
 	    
-#ifdef DEBUG_EXTENDED
-	    debug(String::printf(" +-> %s: %s",
-				 (char const *)tag,
-				 (char const *)data));
+#ifdef DEBUG_PSYCHO
+	    debug(" +-> " + String(tag) + ": " + data);
 #endif
 
 	    // Is this data already in the map?
@@ -249,17 +237,16 @@ bool Lang::loadLanguages(String const &directory,
 	it != languages.end(); it++) {
       // If there is already something in the line, add a comma before the code
       if (ISUPPORTcodes.length()) {
-	 ISUPPORTcodes = ISUPPORTcodes + String(',');
+	 ISUPPORTcodes += ',';
       }
       
       // If this is the default, add it with braces, otherwise add it normally
       if ((*it).second == defaultLanguage) {
-	 ISUPPORTcodes = ISUPPORTcodes + "(" + (*it).first + ")";
+	 ISUPPORTcodes += '(' + (*it).first + ')';
       } else {
-	 ISUPPORTcodes = ISUPPORTcodes + (*it).first;
+	 ISUPPORTcodes += (*it).first;
       }
    }
-   
    
    // OK!
    return true;
@@ -267,7 +254,7 @@ bool Lang::loadLanguages(String const &directory,
 
 
 /* get - Find language data on related to the given language code, if possible
- * Original 30/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 30/10/01 simonb
  * Note: The given code will be presumed to be in the appropriate case (lower)
  *       for searching, eg. 'en' not 'En' etc.
  */
@@ -289,12 +276,10 @@ LangData *Lang::get(String const &code)
 
 
 /* lang - Grab language dialogue from the default language if selected
- * Original 03/11/01, Simon Butcher <pickle@austnet.org>
+ * Original 03/11/01 simonb
  * Notes: This should be inline...
  */
 String Lang::lang(LangTags::tag_t const &t)
 {
-   return (defaultLanguage ? 
-	   defaultLanguage->get(t) : 
-	   String("*"));
+   return (defaultLanguage ? defaultLanguage->get(t) : '*');
 };

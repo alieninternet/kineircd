@@ -15,7 +15,7 @@
 
 
 /* Connection - Initialise new connection
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 Connection::Connection(Socket *sock, bool sec)
 : socket(sock),
@@ -51,7 +51,7 @@ Connection::Connection(Socket *sock, bool sec)
 
 
 /* ~Connection - Shut down connection
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 Connection::~Connection(void)
 {
@@ -84,7 +84,7 @@ void Connection::touch(void)
 
 
 /* handleInput - Handle data input on connection
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 void Connection::handleInput(void)
 {
@@ -120,7 +120,7 @@ void Connection::handleInput(void)
 
 
 /* sendRaw - [Various forms] Write a raw line to the connection output queue
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 void Connection::sendRaw(String const &line)
 {
@@ -135,7 +135,7 @@ void Connection::sendRaw(String const &line)
 
 
 /* killQueue - Wipe the queue clear
- * Original 17/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 17/08/01 simonb
  */
 void Connection::killQueue(void)
 {
@@ -146,7 +146,7 @@ void Connection::killQueue(void)
 
 
 /* sendQueue - Send a line from the queue
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  * Note: This is shit. We should send as much as we can to generate bigger
  *       tcp packets, this is just an utter disgrace but will do for now
  *       (time of writing, not even the user parser has been completed)
@@ -209,7 +209,7 @@ void Connection::sendQueue(void)
 
 
 /* goodbye - [Various forms] Say goodbye to a socket and mark it 'disconnected'
- * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 12/08/01 simonb
  */
 void Connection::goodbye(String const &reason)
 {
@@ -240,7 +240,7 @@ void Connection::goodbye(String const &reason)
 
 
 /* kill - Kill the connection - nasty :)
- * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 22/09/01 simonb
  */
 void Connection::kill(void)
 {

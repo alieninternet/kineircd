@@ -52,14 +52,11 @@ class Operator {
      };
 
    // Transform the nickname and password pair into SHA1 output
-   static String makeOperPassword(String const &nickname, 
+   static String makeOperPassword(String const &nickname,
 				  String const &password)
      {
-	return Utils::generateSHA1(String::printf("%s" 
-						  MAGIC_OPER_PASSWD_STRING 
-						  "%s",
-						  (char const *)nickname.IRCtoLower(),
-						  (char const *)password));
+	return Utils::generateSHA1(nickname.IRCtoLower() +
+				   MAGIC_OPER_PASSWD_STRING + password);
      };
 };
 

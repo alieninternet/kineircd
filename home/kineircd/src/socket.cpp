@@ -53,7 +53,7 @@ Socket::~Socket(void)
 void Socket::close(void)
 {
 #ifdef DEBUG_EXTENDED
-   debug(String::printf("[%d] close()", fd));
+   debug('[' + fd + "] close()");
 #endif
    ::close(fd);
    fd = -1;
@@ -78,9 +78,8 @@ bool Socket::setNonBlocking(bool nonblock /* = true */)
    // We first get the file descriptor flags
    if (!fcntl(fd, F_GETFL, &flags)) {
 #ifdef DEBUG_EXTENDED
-      debug(String::printf("setNonBlocking(): Could not F_GETFL with "
-			   "fcntl (%s)",
-			   strerror(errno)));
+      debug("setNonBlocking(): Could not F_GETFL with fcntl (" +
+	    String(strerror(errno)) + ')');
 #endif
       return false;
    }
@@ -88,9 +87,8 @@ bool Socket::setNonBlocking(bool nonblock /* = true */)
    // Check if it is already set
    if (flags & O_NONBLOCK) {
 #ifdef DEBUG_EXTENDED
-      debug(String::printf("setNonBlocking(): Socket is already set "
-			   "non-blocking (%d)",
-			   fd));
+      debug("setNonBlocking(): Socket is already set non-blocking (" +
+	    fd + ')');
 #endif
       return true;
    }
@@ -445,8 +443,8 @@ bool PlainSocketIO::write(String str)
    // Sanity check...
    if (socket->fd >= 0) {
       // Send the data
-      return (::write(socket->fd, (char const *)str, str.length()) == 
-	      str.length());
+      return (::write(socket->fd, str.c_str(), str.length()) ==
+	      (int)str.length());
    }
 
    return false;
@@ -492,8 +490,8 @@ String PlainSocketIO::read(void)
 #ifdef DEBUG_EXTENDED
 	    debug("goodbye()ing a connection");
 #endif
-	    socket->connection->goodbye(String::printf("Read error: %s",
-						       strerror(errno)));
+	    socket->connection->goodbye("Read error: %s" +
+					String(strerror(errno)));
 	 }
 	 
 	 return String("");

@@ -116,7 +116,7 @@ and code formatting information.
 	((bar[0] != '\a') || ((baz ^ qux) & quux))) {
        // Rediculously hard to get to statement here :)
     }
-  I have been accused of "over-using" my braces, but I beleive it makes it
+  I have been accused of "over-using" my braces, but I believe it makes it
   especially easier to read, and easier to confirm an operation. Consider
   the following:
     if (x == y || x > 12 && !z || baz ^ qux & quux) {
@@ -171,7 +171,7 @@ and code formatting information.
   is for readability, and also so you can get the credit :) Please
   strictly follow this format:
     /* <function name> - <short description>
-     * Original DD/MM/YY, <your name> <<email>> [<cvsname>]
+     * Original <date> <cvsname>
      * <date> <cvsname> - <modification details>
      * [Note: <notes/warnings>]
      * [Need: <what the function needs for completion>]
@@ -179,9 +179,10 @@ and code formatting information.
   Note that the 'your name' field can either be your cvs name, or your
   real name. If it is not your cvs name, then you can optionally shove
   your cvs name in the 'cvsname' bit, but it's not necessary.
+  Also, make sure the date is in DD/MM/YY format!!
    eg.
     /* foo - Process bah and baz using the parameters in the qux bitmask
-     * Original 24/09/01, Simon Butcher <pickle@austnet.org>
+     * Original 23/04/00 simonb
      */
     void foo(int bah, int baz, unsigned short qux)
     {
@@ -190,15 +191,20 @@ and code formatting information.
     
    eg. With a modification
     /* foo - Process bah and baz using the parameters in the qux bitmask
-     * Original 24/09/01, Simon Butcher <pickle@austnet.org>
-     * 03/01/01 drquack - Added sanity check on baz, should not be < -50
+     * Original 23/04/00 simonb
+     * 03/01/01 scottm - Added sanity check on baz, should not be < -50
      */
    eg. With a note (I ran out of creativity here, hehe)
     /* foo - Process bah and baz using the parameters in the qux bitmask
-     * Original 24/09/01, Simon Butcher <pickle@austnet.org>
-     * 03/01/01 drquack - Added sanity check on baz, should not be < -50
+     * Original 23/04/00 simonb
+     * 03/01/01 scottm - Added sanity check on baz, should not be < -50
      * Note: Bit 1 of qux must be set if foo is representing a local
      *       connection number.
+     */
+   If you are just placing an empty function/method in the code, or whatever
+   is in the function is useless/temporary, you may omit the date:
+    /* foo - Process bah and baz using the parameters in the qux bitmask
+     * Original  simonb
      */
 
 * If you make any extensions to the protocols, DOCUMENT IT! There is

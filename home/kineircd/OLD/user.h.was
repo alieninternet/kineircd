@@ -6,12 +6,12 @@
 # define __USER_H_
 
 # include <time.h>
-# include <map.h>
+# include <map>
 
 # ifdef STL_HAS_SLIST
 #  include <slist>
 # else
-#  include <list.h>
+#  include <list>
 # endif
 
 class User;
@@ -27,16 +27,16 @@ class User;
 // Main user class
 class User {
  public:
-   typedef map <String, Channel *> channel_map_t;
+   typedef std::map <String, Channel *> channel_map_t;
 # ifdef STL_HAS_SLIST
-   typedef slist <StringMask> silence_list_t;
+   typedef std::slist <StringMask> silence_list_t;
 # else
-   typedef list <StringMask> silence_list_t;
+   typedef std::list <StringMask> silence_list_t;
 # endif
 # ifdef STL_HAS_HASH
-   typedef hash_set <String> accept_set_t;
+   typedef std::hash_set <String> accept_set_t;
 # else
-   typedef set <String> accept_set_t;
+   typedef std::set <String> accept_set_t;
 # endif
 
    // User mode type - do not change this - P14 needs this to be the same

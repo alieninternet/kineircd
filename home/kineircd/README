@@ -3,6 +3,13 @@
               AustHex IRC Server Daemon Installation Instructions
             -------------------------------------------------------
 
+
+    Warning! This server is DEVELOPMENT software, that means: Anything
+    that can go wrong, WILL go wrong. You run this software at YOUR OWN
+    RISK (or peril, whichever sounds worse :). If something goes wrong
+    then it's your own fault! Yes, even if your cat catches on fire.
+
+
  1. What is all this about?
     -----------------------
     
@@ -56,9 +63,25 @@
        load.
        
        
-     - Threading library:
+     - Threading library (optional):
        
        More information later, probably looks like pthreads only though?
+       Without threading, some additional features may be unavailable.
+
+
+     - OpenSSL (optional):
+
+       If you wish to use SSL for connections between servers, or even
+       from clients, then you will need OpenSSL. 
+
+     
+     - NET-SNMP (optional): 
+     
+       If you wish to add SNMP capability to the daemon (eg. for 
+       statistical analysis) then you will need to install the NET-SNMP 
+       package. The daemon can be set up to work as an agent on its own,
+       or combine with another agent using the AgentX protocol (such as 
+       the agent that comes in the NET-SNMP package).
        
        
        
@@ -104,3 +127,6 @@
        
     OpenSSL
        http://www.openssl.org/
+
+    NET-SNMP
+       http://net-snmp.sourceforge.net/

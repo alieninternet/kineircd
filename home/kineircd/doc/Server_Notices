@@ -29,6 +29,10 @@ Each notice begins with a single character (which will have to be stripped
 before the data is delimetered in the script) which is CASE SENSITIVE ('A' and 
 'a' are different) and denotes the type of the notice, as described below. 
 
+Note that all of these contain the same information and possibly added
+fields, except the high traffic mode ('H') notice - it outputs in
+bits-per-second (bps) rather than kilobytes-per-second (KB/s).
+
 These codes also correspond to the MODE command's +s tags for turning them
 on and off, so this table serves as a table for them too :)
 
@@ -40,27 +44,11 @@ The output will be:
   KNickOP [Pickle] Kill requested by pickle
                    ^^^^^^^^^^^^^^^^^^^^^^^^ -- all of this is the last field
 
-Quick lookup table:
-
-The following is a rough list of what is available and breif definitions:
-  +c    Configuration/Rehash/Garbo, etc - Housekeeping information; general
-  +D	Debugging information
-  +g    GLOBOPS messages
-  +h    HELPME messages
-  +H	High-Traffic Mode messages
-  +k	Kill notifications
-  +l    LOCOPS messages
-  +n	Network connect/squit/tendril-bone-swaps etc
-  +o	OPER commands, attempts, and deops
-  +s	User connection and disconnection notices
-  +S	General out-of-sync errors
-  +t	Target sync errors
-  +T	Timestamp sync errors
 
 Char | Description/Format
 -----+-------------------------------------------------------------------------
   b  | Completed receiving/sending burst data
-     | <from_server> <to_server> <burst_size_bytes> <burst_speed_bps>
+     | <from_server> <to_server> <bytes_on_link_so_far> <burst_speed_bps>
      |
   D  | Debugging notices
      | (no specific format)
@@ -74,7 +62,7 @@ Char | Description/Format
   h  | HELPME messages
      | <from> <message...>
      |
-  H  | High-Traffic Mode (level of 0 means means, -1 means leaving)
+  H  | High-Traffic Mode (level of 0 means entering, -1 means leaving)
      | <level> <input_bps> <htm_high_water_mark_bps>
      |
   k  | Kill notice (local)
@@ -98,6 +86,10 @@ Char | Description/Format
   O  | Global operators getting their +O notices
      | <nick>
      |
+     |
+  P  | Possible port scan
+     | <to_ip> <port> <from_ip> <from_dns>
+     |
   s  | User/Service sign-on messages
      | <nick> <user> <host>
      |
@@ -112,6 +104,12 @@ Char | Description/Format
      |
   j  | Minor net-junction (Tenticle link -- Old server with another path)
      | <from_server> <to_server> <link_protocol>
+     |
+  w  | Someone did a WHOIS on you
+     | <nick>
+     |
+  x  | Someone used the STATS command on this server
+     | <stats_code>
      |
   z  | Server stuff (critical stuff like the DIE command etc)
      | <calling_nick>

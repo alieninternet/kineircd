@@ -24,9 +24,9 @@ class LangData;
 class Lang {
  public:
 # ifdef STL_HAS_HASH
-   typedef hash_map <String, LangData *> languages_map_t;
+   typedef std::hash_map <String, LangData *> languages_map_t;
 # else
-   typedef hash_map <String, LangData *> languages_map_t;
+   typedef std::hash_map <String, LangData *> languages_map_t;
 # endif
    
 // private:
@@ -48,8 +48,9 @@ class Lang {
 //   static void clear(void);			// Wipe the language lists
 
  public:
-   static bool loadLanguages(String const &,
-			     String const &);	// Load language files
+   static bool 
+     loadLanguages(String const &,
+		   String const &);		// Load language files
    
    static LangData *get(String const &);	// Find language dialogue data
    
@@ -66,8 +67,6 @@ class Lang {
    static char const *L_PINGPONG_NOTICE;
 
    // Misc/Disorganised
-   static char const *L_NOTIFY_PARANOID_OPERS_ON_WHOIS;
-   static char const *L_QUIT_KILLED;
    static char const *L_REQUESTED_SHUTDOWN;
    static char const *L_BYE_BYE_USER;
    static char const *L_ERROR_CLOSING_LINK;
@@ -82,7 +81,7 @@ class Lang {
 // Language data class
 class LangData {
  private:
-   vector <String> dialogue;
+   std::vector <String> dialogue;
    
  public:
    // Constructor

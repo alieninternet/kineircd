@@ -11,7 +11,7 @@
 
 
 /* baseXStr - Convert a number to another base (output a string) up to base 84
- * Original 17/1/01, Simon Butcher <simonb@alien.net.au>
+ * Original 17/01/01 simonb
  * Notes: The charset is NOT mime/base64 compatible! Do not be fooled!!
  */
 #define MAXBASE 84
@@ -27,7 +27,7 @@ String Utils::baseXStr(unsigned long n, unsigned short base)
    while (n > 0) {
       digit = n % base;
       n = (n - digit) / base;
-      tempStr = String(baseChrs[digit]) + tempStr;
+      tempStr = baseChrs[digit] + tempStr;
    }
    
    return tempStr;
@@ -35,7 +35,7 @@ String Utils::baseXStr(unsigned long n, unsigned short base)
 
 
 /* toBool - Convert a string like 'yes' 'no' 'true' 'false' etc into boolean
- * Original 21/09/01, Simon Butcher <pickle@austnet.org>
+ * Original 21/09/01 simonb
  * Note: This is very rough.
  */
 bool Utils::toBool(String const &word, bool defaultBool)
@@ -59,7 +59,7 @@ bool Utils::toBool(String const &word, bool defaultBool)
 
 
 /* fixToIdentityMask - Transform a normal mask into an 'identity mask'
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original  simonb
  */
 StringMask Utils::fixToIdentityMask(String const &inMask)
 {
@@ -69,21 +69,14 @@ StringMask Utils::fixToIdentityMask(String const &inMask)
    String nick = "", user = "", host = "", temp1 = "", temp2 = "", temp3 = "";
    
    // Run through the given mask
-   for (String::length_t i = inMask.length(); i--;) {
+   for (String::size_type i = inMask.length(); i--;) {
 
    }
    
    // Make the fixed mask
-   StringMask retval(String::printf("%s!%s@%s",
-				    (nick.length() ?
-				     (char const *)nick :
-				     "*"),
-				    (user.length() ?
-				     (char const *)user :
-				     "*"),
-				    (host.length() ?
-				     (char const *)host :
-				     "*")));
+   StringMask retval((nick.length() ? nick : "*") + '!' +
+		     (user.length() ? user : "*") + '@' +
+		     (host.length() ? host : "*"));
 
    return retval;
 }

@@ -50,7 +50,9 @@ class irc2userHandler : public Handler {
    static void parseADMIN(irc2userHandler *handler, StringTokens *tokens);
    static void parseAWAY(irc2userHandler *handler, StringTokens *tokens);
    static void parseCONNECT(irc2userHandler *handler, StringTokens *tokens);
+#  ifdef ALLOW_COMMAND_DIE
    static void parseDIE(irc2userHandler *handler, StringTokens *tokens);
+#  endif
    static void parseGLOBOPS(irc2userHandler *handler, StringTokens *tokens);
    static void parseHELP(irc2userHandler *handler, StringTokens *tokens);
    static void parseHELPME(irc2userHandler *handler, StringTokens *tokens);

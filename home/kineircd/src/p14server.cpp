@@ -63,7 +63,7 @@ struct p14serverHandler::functionTableStruct const
 
 
 /* p14serverHandler - Constructor for the server handler (P14) sub-class
- * Original 07/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 07/10/01 simonb
  */
 p14serverHandler::p14serverHandler(Connection *c, Server *s)
 : Handler(c),
@@ -86,7 +86,7 @@ p14serverHandler::p14serverHandler(Connection *c, Server *s)
 
 
 /* ~p14serverHandler - Class destructor
- * Original 07/10/01, Simon Butcher <pickle@austnet.org>
+ * Original 07/10/01 simonb
  */
 p14serverHandler::~p14serverHandler(void)
 {

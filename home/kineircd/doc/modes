@@ -1,4 +1,4 @@
-(last edited 21/08/01)
+(last edited 24/02/2002)
 
 OK OK! Finally I've written this to compile a list of modes that austhex
 knows and some descriptions of what they do, how they work. Hopefully this
@@ -238,6 +238,12 @@ etc but that's basically what it does.
 
 Phew.
 
+A - Follow autoconnect rules
+This allows the server to take the rules given in the server connection list
+to attempt to reconnect to the network should it need to. Turning this mode
+off is a good way to turn a server into an island without worrying that it
+will keep trying to reconnect.
+
 h - Hidden
 Hide the server from the network. Opers can still see it, though
 
@@ -290,3 +296,4 @@ austnet returns).
 
 n - NOOP replacement
 "Look to the future!"
+

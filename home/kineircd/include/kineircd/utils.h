@@ -21,13 +21,13 @@ class Utils {
    Utils(void) {};				// Constructor (cannot be run)
    
  public:
-// utils.cc
+   // utils.cc
    static String baseXStr(unsigned long, 
 			  unsigned short);	// Convert to another base
    static bool toBool(String const &, bool);	// Convert a string to boolean
    static StringMask 
      fixToIdentityMask(String const &);		// Fix a mask into an id mask
-   
+
    // sha1.cc
    static String generateSHA1(String const &);	// SHA1 from as string
 };
