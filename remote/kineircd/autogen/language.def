@@ -1944,3 +1944,78 @@ tag = {
    data_en	= "<nickname> ( ',' <nickname> )  [ <count> ]";
 };
 
+
+
+/*****************************************************************************
+ **                                                                         **
+ **                   Tag data for libkineircd (the core)                   **
+ **                                                                         **
+ *****************************************************************************/
+
+tag = {
+   name		= "Kine_Error_CLIENT_EXISTS";
+   components	= "libkineircd";
+   data_en	= "Client already exists";
+};
+
+tag = {
+   name		= "Kine_Error_NAME_HAS_BAD_CHARS";
+   components	= "libkineircd";
+   data_en	= "The name given has invalid characters";
+};
+
+tag = {
+   name		= "Kine_Error_NAME_IS_IN_USE";
+   components	= "libkineircd";
+   data_en	= "The name given is already in use";
+};
+
+tag = {
+   name		= "Kine_Error_NAME_TOO_LONG";
+   components	= "libkineircd";
+   data_en	= "The name given is too long to be acceptable";
+};
+
+tag = {
+   name		= "Kine_Error_NETWORK_EXISTS";
+   components	= "libkineircd";
+   data_en	= "Network already exists";
+};
+
+tag = {
+   name		= "Kine_Error_NICKNAME_BEGINS_WITH_DIGIT";
+   components	= "libkineircd";
+   data_en	= "The nickname given begins with a digit";
+};
+
+tag = {
+   name		= "Kine_Error_PERMISSION_DENIED";
+   components	= "libkineircd";
+   data_en	= "Permission denied";
+};
+
+tag = {
+   name		= "Kine_Error_SERVER_EXISTS";
+   components	= "libkineircd";
+   data_en	= "Server already exists";
+};
+
+tag = {
+   name		= "Kine_Error_SERVICE_EXISTS";
+   components	= "libkineircd";
+   data_en	= "Service already exists";
+};
+
+tag = {
+   name		= "Kine_Error_UNREGISTERED_ENTITY";
+   components	= "libkineircd";
+   data_en	= "Operation could not be completed as the given entity is "
+                  "not registered";
+};
+
+tag = {
+   name		= "Kine_Error_UNSUPPORTED_BY_ENTITY";
+   components	= "libkineircd";
+   data_en	= "Cannot complete action as it is not supported by the "
+                  "entity";
+};
