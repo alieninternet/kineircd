@@ -75,7 +75,11 @@ void Protocol::parseLine(const std::string& line)
       
       // Last one?
       if (thingy[0] == ':') {
-	 thingy = thingy.substr(1) + ' ' + message.rest();
+	 if (message.hasMoreTokens()) {
+	    thingy = thingy.substr(1) + ' ' + message.rest();
+	 } else {
+	    thingy = thingy.substr(1);
+	 }
 	 parameters.push_back(thingy);
 	 break;
       }
