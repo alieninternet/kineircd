@@ -82,9 +82,7 @@ namespace Kine {
 	 // Flags to determine how this module needs to be configured
 	 enum flags_type {
 	    FLAG_NONE = 0,			      // No flags set
-	    FLAG_NEEDS_ROOT_START	= 0x00000001, // Must be SUID to start
-	    FLAG_NEEDS_ROOT_RUN		= 0x00000002, // Must be SUID always
-            FLAG_UNIQUE_INSTANCE	= 0x00000004  // No multiple instances
+            FLAG_UNIQUE_INSTANCE	= 0x00000001  // No multiple instances
 	 };
 	 const int flags;
 	 
