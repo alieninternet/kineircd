@@ -85,7 +85,8 @@ namespace Kine {
 	    FLAG_NEEDS_ROOT_START	= 0x00000001, // Must be SUID to start
 	    FLAG_NEEDS_ROOT_RUN		= 0x00000002, // Must be SUID always
             FLAG_UNIQUE_INSTANCE	= 0x00000004  // No multiple instances
-	 } const flags;
+	 };
+	 const int flags;
 	 
 	 // The two required functions - start and stop
 	 const startFunction_type *startFunction;
