@@ -27,7 +27,7 @@
 
 # CVSROOT works a little differently; At this stage we just ignore it :)
 # is there a better way of doing this? :(
-CVSROOT /bin/true
+CVSROOT cat >/dev/null
 
 # Default setting
 DEFAULT /cvsbin/austhex/loginfo.sh %{sVv}
