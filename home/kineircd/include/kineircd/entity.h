@@ -36,7 +36,7 @@ namespace Kine {
       const AIS::Util::Time signonTime;		//!< Time this entity connected
       
       //! Constructor
-      Entity(const AIS::Util::Time& _signonTime)
+      explicit Entity(const AIS::Util::Time& _signonTime)
 	: signonTime(_signonTime)
 	{};
       

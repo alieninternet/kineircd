@@ -56,10 +56,10 @@ namespace Kine {
 
     protected:
       //! Constructor
-      User(const ClientName& _nickname,
-	   const std::string& _username,
-	   const std::string& _hostname,
-	   const AIS::Util::Time& _signonTime)
+      explicit User(const ClientName& _nickname,
+		    const std::string& _username,
+		    const std::string& _hostname,
+		    const AIS::Util::Time& _signonTime)
 	: Client(_hostname, _signonTime),
           nickname(_nickname),
           username(_username)

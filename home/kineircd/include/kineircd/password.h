@@ -37,10 +37,11 @@ namespace Kine {
 
     public:
       // Constructor   
-      Password(const ClientName& nickname, const std::string& password)
-	: AIS::Util::SHA1_Digest(nickname.IRCtoLower() +
+      explicit Password(const ClientName& _nickname,
+			const std::string& _password)
+	: AIS::Util::SHA1_Digest(_nickname.IRCtoLower() +
 				 dataDelimiter +
-				 password)
+				 _password)
 	{};
 
       // Destructor

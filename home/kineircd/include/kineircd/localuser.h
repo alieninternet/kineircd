@@ -32,10 +32,11 @@ namespace Kine {
    class LocalUser : public User {
     protected:
       //! Constructor
-      LocalUser(const ClientName& _nickname,
-		const std::string& _username,
-		const std::string& _hostname,
-		const AIS::Util::Time& _signonTime = daemon().getTime())
+      explicit LocalUser(const ClientName& _nickname,
+			 const std::string& _username,
+			 const std::string& _hostname,
+			 const AIS::Util::Time& _signonTime =
+			 daemon().getTime())
 	: User(_nickname, _username, _hostname, _signonTime)
         {};
       

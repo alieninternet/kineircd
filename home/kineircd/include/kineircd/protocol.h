@@ -47,7 +47,7 @@ namespace Kine {
       
     public:
       // Constructor
-      Protocol(Connection& c)
+      explicit Protocol(Connection& c)
 	: connection(c)
         {};
       

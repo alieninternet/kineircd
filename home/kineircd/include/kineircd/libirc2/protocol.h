@@ -70,7 +70,7 @@ namespace Kine {
 	 
        protected:
 	 // Constructor
-	 Protocol(Kine::Connection& c)
+	 explicit Protocol(Kine::Connection& c)
 	   : Kine::LibCLBP::Protocol(c),
 	     lineTerminator("\r\n"),
 	     sentMessageCount(0),
@@ -78,7 +78,8 @@ namespace Kine {
 	   {};
 
 	 // Constructor (for migrating I/O queues)
-	 Protocol(Kine::Connection& c, std::string& iq, std::string& oq)
+	 explicit Protocol(Kine::Connection& c, std::string& iq,
+			   std::string& oq)
 	   : Kine::LibCLBP::Protocol(c, iq, oq),
 	     lineTerminator("\r\n"),
 	     sentMessageCount(0),

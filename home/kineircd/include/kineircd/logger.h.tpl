@@ -102,7 +102,7 @@ namespace Kine {
       
     public:
       //! Constructor
-      Logger(const Mask::lazy_type mask)
+      explicit Logger(const Mask::lazy_type mask)
 	: logMask(mask)
 	{};
 

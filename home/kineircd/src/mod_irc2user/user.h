@@ -65,9 +65,9 @@ namespace Kine {
 	 
        public:
 	 // Constructor
-	 User(Protocol& _protocol,
-	      const Kine::Registrant& _registrant,
-	      const std::string& _hostname)
+	 explicit User(Protocol& _protocol,
+		       const Kine::Registrant& _registrant,
+		       const std::string& _hostname)
 	   : LocalUser(_registrant.name,
 		       _registrant.username,
 		       _hostname),

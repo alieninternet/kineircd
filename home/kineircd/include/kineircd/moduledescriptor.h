@@ -40,7 +40,7 @@ namespace Kine {
       Module& module;				// The module itself
       
       // Constructor
-      ModuleDescriptor(lt_dlhandle& h, Module& m)
+      explicit ModuleDescriptor(lt_dlhandle& h, Module& m)
 	: handle(h),
           module(m)
 	{};

@@ -61,7 +61,8 @@ namespace Kine {
 	 
        public:
 	 //! Constructor
-	 Member(Client& _client, Status::lazy_type _status = 0)
+	 explicit Member(Client& _client,
+			 Status::lazy_type _status = 0)
 	   : client(_client),
 	     status(_status)
 	   {};
@@ -101,9 +102,9 @@ namespace Kine {
       
     protected:
       //! Constructor
-      Channel(const ChannelName& _name,
-	      const scope_type _scope,
-	      const AIS::Util::Time& _creationTime)
+      explicit Channel(const ChannelName& _name,
+		       const scope_type _scope,
+		       const AIS::Util::Time& _creationTime)
 	: Entity(_creationTime),
 	  name(_name),
           scope(_scope)

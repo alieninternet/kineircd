@@ -58,8 +58,9 @@ namespace Kine {
       
     public:
       //! Constructor
-      Listener(AIS::Util::Socket& s, const unsigned short lb, 
-	       const flags_type f = 0)
+      explicit Listener(AIS::Util::Socket& s,
+			const unsigned short lb,
+			const flags_type f = 0)
 	: socket(s),
           listenBacklog(lb),
           flags(f),

@@ -60,8 +60,8 @@ namespace Kine {
       
     protected:
       //! Constructor
-      Server(const std::string& _hostname,
-	     const AIS::Util::Time& _signonTime)
+      explicit Server(const std::string& _hostname,
+		      const AIS::Util::Time& _signonTime)
 	: Denizen(_signonTime),
           hostname(_hostname),
 	  modes(0)

@@ -49,7 +49,7 @@ namespace Kine {
       
     public:
       //! Class constructor
-      Connection(AIS::Util::Socket& s);
+      explicit Connection(AIS::Util::Socket& s);
       
       //! Shutdown connection
       ~Connection(void);

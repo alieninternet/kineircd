@@ -81,7 +81,7 @@ namespace Kine {
 	 const char* const key;
       
 	 // Constructor
-	 Description(Type::type t, const char* const n)
+	 explicit Description(Type::type t, const char* const n)
 	   : type(t),
 	     name(n)
 	   {};
@@ -89,7 +89,7 @@ namespace Kine {
       
     protected:
       // Constructor
-      ProtocolInfo(Type::type t, const char* const n)
+      explicit ProtocolInfo(Type::type t, const char* const n)
 	: description(t, n)
 	{};
 	 

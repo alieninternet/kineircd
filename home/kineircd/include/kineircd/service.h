@@ -38,9 +38,9 @@ namespace Kine {
       
     protected:
       //! Constructor
-      Service(const ClientName& _nickname,
-	      const std::string& _hostname,
-	      const AIS::Util::Time& _signonTime)
+      explicit Service(const ClientName& _nickname,
+		       const std::string& _hostname,
+		       const AIS::Util::Time& _signonTime)
 	: Client(_hostname, _signonTime),
           nickname(_nickname),
           scopeMask("*")
