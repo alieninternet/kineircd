@@ -70,7 +70,16 @@
        If you wish to compile AustHex with module support, you will need
        support on your system for shared libraries. Many systems support
        this these days, so this shouldn't be an issue.
+
+
+     - GNU LibTool:
+     
+       To compile AustHex with module support, you will need GNU LibTool
+       installed. LibTool has been used to allow AustHex to easily be
+       compiled on a large variety of systems.
        
+       GNU LibTool can be found at http://www.gnu.org/software/libtool/
+
 
      - OpenSSL (optional):
 
