@@ -28,6 +28,10 @@
 
 # include <ctime>
 
+extern "C" {
+# include <sys/time.h>
+};
+
 // Forwarded declarations (completed after class)
 namespace Kine {
    class Config;
@@ -53,9 +57,13 @@ namespace Kine {
       Config& config;				// Configuration data
       Signals& signals;				// Signal handlers
       
-      const time_t startTime;			// Time the daemon started
-      time_t timeNow;				// The time now
+      const long startTime;			// Time the daemon started
+      timeval currentTime;			// The time now
       
+      // Set the current time
+      void setTime(void) 
+	{ (void)gettimeofday(&currentTime, NULL); };
+
     public:
       // Constructor
       Daemon(Config& conf, Signals& sigs);
@@ -77,11 +85,11 @@ namespace Kine {
       
       // Grab our 'uptime'
       unsigned long getUptime(void) const
-	{ return (unsigned long)difftime(timeNow, startTime); };
+	{ return (unsigned long)(currentTime.tv_sec - startTime); };
 
       // Grab the time now
-      time_t const getTime(void) const
-	{ return timeNow; };
+      const timeval& getTime(void) const
+	{ return currentTime; };
       
       // Main loop
       Exit::status_type run(void);

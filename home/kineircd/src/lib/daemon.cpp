@@ -49,9 +49,11 @@ Daemon::Daemon(Config& conf, Signals& sigs)
   : runlevel(RUNLEVEL_INIT),
     config(conf),
     signals(sigs),
-    startTime(time(NULL)),
-    timeNow(startTime)
+    startTime(time(NULL))
 {
+   // Set up the current time variable for the first time
+   setTime();
+   
    // Fire-up the modules we have loaded!
    config.getModuleList().startAll(*this);
    
@@ -90,6 +92,9 @@ Exit::status_type Kine::Daemon::run(void)
 #endif
 
    for (;;) {
+      // Set the time
+      setTime();
+      
       // Do stuff here with the poller :)
       sleep(10); // temporary
 
