@@ -70,9 +70,9 @@ void FileLog::logLine(const std::string& str,
       
       // Break up the time, depending on what timezone setting the user has
       if (config.getUTC()) {
-	 currentTime = *gmtime(&daemon().getTime().tv_sec);
+	 currentTime = *gmtime((const time_t *)&daemon().getTime().tv_sec);
       } else {
-	 currentTime = *localtime(&daemon().getTime().tv_sec);
+	 currentTime = *localtime((const time_t *)&daemon().getTime().tv_sec);
       }
 
       // Process the format and output the line
