@@ -140,8 +140,12 @@ void Protocol::parseMessage(const std::string& origin,
       // Check if we found something..
       if (protocolInfo == 0) {
 	 // Complain
-	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_USER,
-			   Languages::toWideStr(registrantData.protocol)));
+	 if (!registrantData.protocol.empty()) {
+	    sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_USER,
+			      Languages::toWideStr(registrantData.protocol)));
+	 } else {
+	    sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNKNOWN));
+	 }
 	 return;
       }
 
@@ -166,8 +170,12 @@ void Protocol::parseMessage(const std::string& origin,
 	   daemon().findProtocol(ProtocolInfo::Type::NETWORK,
 				 registrantData.protocol.toUpper())) == 0) {
 	 // Complain
-	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_IIRC,
-			   Languages::toWideStr(registrantData.protocol)));
+	 if (!registrantData.protocol.empty()) {
+	    sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_IIRC,
+			      Languages::toWideStr(registrantData.protocol)));
+	 } else {
+	    sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNKNOWN));
+	 }
 	 return;
       }
 
@@ -186,8 +194,12 @@ void Protocol::parseMessage(const std::string& origin,
 	  ((protocolInfo = 
 	    daemon().findProtocol(ProtocolInfo::Type::SERVER,
 				  registrantData.protocol.toUpper())) == 0)) {
-	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVER,
-			   Languages::toWideStr(registrantData.protocol)));
+	 if (!registrantData.protocol.empty()) {
+	    sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVER,
+			      Languages::toWideStr(registrantData.protocol)));
+	 } else {
+	    sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNKNOWN));
+	 }
 	 return;
       }
       break;
@@ -202,8 +214,12 @@ void Protocol::parseMessage(const std::string& origin,
       }
        
       // No support yet...
-      sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVICE,
-			Languages::toWideStr(registrantData.protocol)));
+      if (!registrantData.protocol.empty()) {
+	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVICE,
+			   Languages::toWideStr(registrantData.protocol)));
+      } else {
+	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNKNOWN));
+      }
       return;
    }
    
