@@ -248,6 +248,10 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 		case 'c': // Colour start sequence char
 		  line += '\003';
 		  continue;
+
+		case 'f': // Flashing (eww, ick)
+		  line += '\006';
+		  continue;
 		  
 		case 'g': // Beep
 		  line += '\007';
