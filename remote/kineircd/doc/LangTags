@@ -216,9 +216,11 @@ Substitutions within tag data
 	\\	- A slash
        \nnn	- An escaped character. See above for valid characters.
         \b	- Toggle bold (same as \002)
-	\c	- Beginning of colour sequence (not recommended; Same as \003)
+	\c	- Beginning of colour sequence (mIRC form; Same as \003)
+	\C	- Colour sequence (RGB form; Same as \004)
 	\f	- Flash (only supported by some clients; same as \006)
 	\g	- Beep (only supported by some clients; same as \007)
+	\i	- Italics (only supported by some clients; same as \035)
 	\n	- New section (only useful on tags used for multi-call output)
 	\o	- Turn off/reset all text attributes (same as \017)
 	\r	- Toggle reversed (same as \026)

@@ -33,9 +33,18 @@ chars = {
 
 chars = {
    char		= "\\003";
-   name		= "Colour";
-   description	= "Colour changing sequence";
+   name		= "mIRC Colour";
+   description	= "Colour changing sequence (this is the '^C[<fg>[,<bg>]]' "
+                  "format created for mIRC)";
    langtag_code	= "c";
+};
+
+chars = {
+   char		= "\\004";
+   name		= "RGB Colour";
+   description	= "Colour changing sequence (this is the RGB form, "
+                  "'^D[RRGGBB[,RRGGBB]]')";
+   langtag_code	= "C";
 };
 
 chars = {
@@ -65,6 +74,14 @@ chars = {
    description	= "Reverse background/foreground colours (sometimes this will "
                   "only toggle black on white/white on black text)";
    langtag_code	= "r";
+};
+
+chars = {
+   char		= "\\035";
+   name		= "Italics";
+   description	= "Reverse background/foreground colours (sometimes this will "
+                  "only toggle black on white/white on black text)";
+   langtag_code	= "i";
 };
 
 chars = {
