@@ -14,7 +14,4 @@ Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
   There is NO WARRANTY; not even for MERCHANTABILITY or FITNESS
                     FOR A PARTICULAR PURPOSE.
 
- KineIRCd Development Team:
-    Simon Butcher           Scott Mackenzie
-
 Bugs? Comments? Questions? http://sf.net/tracker/?group_id=64061
