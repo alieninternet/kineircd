@@ -40,7 +40,7 @@ namespace Kine {
 	{};
 
       //! Get the name of this network
-      const std::string& getNetworkName(void) const = 0;
+      virtual const std::string& getNetworkName(void) const = 0;
       
       //! Return the 'name'
       const std::string& getName(void) const
