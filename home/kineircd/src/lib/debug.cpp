@@ -41,6 +41,6 @@ void debug(String const &line)
    // Output it to stderr
    cerr << line << endl;
    
-   // Also, log it
-   Daemon::logger(line, Logger::MASK_DEBUG);
+//   // Also, log it
+//   Daemon::logger(line, Logger::MASK_DEBUG);
 }
