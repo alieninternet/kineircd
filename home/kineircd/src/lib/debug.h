@@ -6,7 +6,9 @@
 # ifndef __DEBUG_H_
 #  define __DEBUG_H_
 
-#  include <cassert>
+#  ifdef DEBUG_ASSERT
+#   include <cassert>
+#  endif
 
 #  include "str.h"
 
