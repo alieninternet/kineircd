@@ -44,6 +44,9 @@ namespace Kine {
     */
    class MyServer : public Server {
     private:
+      //! The description of the server
+      std::wstring description;
+      
       //! Our instance
       static MyServer* instance;
       
@@ -65,7 +68,7 @@ namespace Kine {
       
       // Return the server's description
       const std::wstring& getDescription(void) const
-	{ return Languages::toWideStr(config().getServerDescription()); };
+	{ return description; };
       
       // Return the server we're "connected to" (technically, that's us)
       Server& getServer(void) const
