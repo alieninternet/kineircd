@@ -1,4 +1,4 @@
-/* $Id$
+/* $id: language.def,v 1.26 2003/04/09 19:35:33 pickle Exp $
  *
  * Copyright © 2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright © 2003 Idil Jans <idil@users.sf.net>
@@ -120,6 +120,11 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_ERR_CANTKILLSERVER";
+   data_en	= "You can't kill a server!";
+};
+
+tags = {
    name		= "irc2_ERR_CHANNELISFULL";
    component	= "mod_irc2user";
    data_en	= "Cannot join channel (+l)";
@@ -144,6 +149,12 @@ tags = {
    component	= "mod_irc2user";
    data_en	= "Erroneous nickname";
    data_tr	= "Yanlıž^_ nickname";
+};
+
+tags = {
+   name		= "irc2_ERR_FILEERROR";
+   fields	= "0 = file operation, 1 = file";
+   data_en	= "File error doing %p0 on %p1";
 };
 
 tags = {
@@ -185,7 +196,7 @@ tags = {
 
 tags = {
    name		= "irc2_ERR_NOADMININFO";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "No administrative info available";
    data_tr	= "İdari bilgi bulunamadı";
 };
@@ -201,6 +212,11 @@ tags = {
    name		= "irc2_ERR_NOLANGUAGE";
    component	= "mod_irc2user";
    data_en	= "is an unknown language to me";
+};
+
+tags = {
+   name		= "irc2_ERR_NOLOGIN";
+   data_en	= "User not logged in";
 };
 
 tags = {
@@ -260,6 +276,27 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_ERR_NOSUCHCHANNEL";
+   component	= "mod_irc2user";
+   data_en	= "No such channel";
+   data_tr	= "Böyle bir kanal bulunamadı";
+};
+
+tags = {
+   name		= "irc2_ERR_NOSUCHNICK";
+   component	= "mod_irc2user";
+   data_en	= "No such nick";
+   data_tr	= "Böyle bir nick bulunamadi";
+};
+
+tags = {
+   name		= "irc2_ERR_NOSUCHSERVER";
+   component	= "mod_irc2user";
+   data_en	= "No such server";
+   data_tr	= "Böyle bir server bulunamadı";
+};
+
+tags = {
    name		= "irc2_ERR_NOSUCHSERVICE";
    component	= "mod_irc2user";
    data_en	= "No such service";
@@ -288,6 +325,11 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_ERR_NOTREGISTERED";
+   data_en	= "You have not registered";
+};
+
+tags = {
    name		= "irc2_ERR_PASSWDMISMATCH";
    component	= "mod_irc2user";
    data_en	= "Password incorrect";
@@ -309,7 +351,7 @@ tags = {
 
 tags = {
    name		= "irc2_ERR_SUMMONDISABLED";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "SUMMON has been disabled";
    data_tr	= "SUMMON komutu kapatıldı";
 };
@@ -319,6 +361,11 @@ tags = {
    component	= "mod_irc2user";
    data_en	= "You have joined too many channels (%p0 is the limit)";
    data_tr	= "Fazla kanala girdiniz (limit %p0 dir)";
+};
+
+tags = {
+   name		= "irc2_ERR_TOOMANYTARGETS";
+   data_en	= "Duplicate recipients. No message delivered";
 };
 
 tags = {
@@ -380,7 +427,7 @@ tags = {
 
 tags = {
    name		= "irc2_ERR_USERSDISABLED";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "USERS has been disabled";
    data_tr	= "USERS komutu kapatıldı";
 };
@@ -504,8 +551,9 @@ tags = {
 
 tags = {
    name		= "irc2_RPL_ADMINME";
-   component	= "mod_irc2user";
-   data_en	= "Administrative Info";
+   fields	= "0 = server hostname";
+   component	= "libkineircd_irc2";
+   data_en	= "Administrative info about %p0";
    data_tr	= "Administratif bilgi";
 };
 
@@ -572,7 +620,7 @@ tags = {
 
 tags = {
    name		= "irc2_RPL_ENDOFMOTD";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "End of MOTD command";
    data_tr	= "MOTDnin sonu";
 };
@@ -589,6 +637,11 @@ tags = {
    component	= "mod_irc2user";
    data_en	= "End of STATS report";
    data_tr	= "STATS raporunun sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_ENDOFUSERS";
+   data_en	= "End of USERS";
 };
 
 tags = {
@@ -615,7 +668,7 @@ tags = {
 tags = {
    name		= "irc2_RPL_GLOBALUSERS";
    fields	= "0 = # of global users, 1 = peak global user count";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "Current global users: %p0 Max: %p1";
 };
 
@@ -636,13 +689,13 @@ tags = {
 tags = {
    name		= "irc2_RPL_LOCALUSERS";
    fields	= "0 = # of local users, 1 = peak local user count";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "Current local users: %p0 Max: %p1";
 };
 
 tags = {
    name		= "irc2_RPL_LUSERCHANNELS";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "channels formed";
    data_tr	= "Kullanici kanalı";
 };
@@ -650,7 +703,7 @@ tags = {
 tags = {
    name		= "irc2_RPL_LUSERCLIENT";
    fields	= "0 = # of users, 1 = # of services, 2 = # of servers";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "There are %p0 users and %p1 services on %p2 servers";
    data_tr	= "ž^^u an serverin üstünde %p0 kullanici var ve %p2 "
                   "server üzerinde %p1 servis var";
@@ -658,28 +711,28 @@ tags = {
 
 tags = {
    name		= "irc2_RPL_LUSERSTAFF";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "Staff member(s) online";
 };
 
 tags = {
    name		= "irc2_RPL_LUSERME";
    fields	= "0 = clients, 1 = servers";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "I have %p0 clients and %p1 servers";
    data_tr	= "%p0 kullanıcım ve %p1 serverım var";
 };
 
 tags = {
    name		= "irc2_RPL_LUSEROP";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "operator(s) online";
    data_tr	= "online operator";
 };
 
 tags = {
    name		= "irc2_RPL_LUSERUNKNOWN";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "unknown connection(s)";
    data_tr	= "bilinmeyen baľ^_lantı";
 };
@@ -687,30 +740,9 @@ tags = {
 tags = {
    name		= "irc2_RPL_MOTDSTART";
    fields	= "0 = server name";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "%p0 Message of the day";
    data_tr	= "%p0 Günün mesajı";
-};
-
-tags = {
-   name		= "irc2_RPL_NOSUCHCHANNEL";
-   component	= "mod_irc2user";
-   data_en	= "No such channel";
-   data_tr	= "Böyle bir kanal bulunamadı";
-};
-
-tags = {
-   name		= "irc2_RPL_NOSUCHNICK";
-   component	= "mod_irc2user";
-   data_en	= "No such nick";
-   data_tr	= "Böyle bir nick bulunamadi";
-};
-
-tags = {
-   name		= "irc2_RPL_NOSUCHSERVER";
-   component	= "mod_irc2user";
-   data_en	= "No such server";
-   data_tr	= "Böyle bir server bulunamadı";
 };
 
 tags = {
@@ -718,6 +750,11 @@ tags = {
    component	= "mod_irc2user";
    data_en	= "No topic is set";
    data_tr	= "Hiç bir topic yoktur";
+};
+
+tags = {
+   name		= "irc2_RPL_NOUSERS";
+   data_en	= "Nobody logged in";
 };
 
 tags = {
@@ -742,8 +779,13 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_RPL_SUMMONING";
+   data_en	= "Summoning user to IRC";
+};
+
+tags = {
    name		= "irc2_RPL_TIMEONSERVERIS";
-   component	= "mod_irc2user";
+   component	= "libkineircd_irc2";
    data_en	= "time according to server";
 };
 
@@ -755,10 +797,20 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_RPL_TRYAGAIN";
+   data_en	= "Please wait a while and try again";
+};
+
+tags = {
    name		= "irc2_RPL_UNAWAY";
    component	= "mod_irc2user";
    data_en	= "You are no longer marked as being away";
    data_tr	= "Awayiniz kaldırılmıž^_tır";
+};
+
+tags = {
+   name		= "irc2_RPL_USERSSTART";
+   data_en	= "UserID   Terminal  Host";
 };
 
 tags = {
