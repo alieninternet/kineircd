@@ -25,7 +25,6 @@
 # define _INCLUDE_KINEIRCD_UTILS_H_
 
 # include <cstdlib>
-# include <netinet/in.h>
 
 # include "kineircd/str.h"
 
