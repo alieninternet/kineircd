@@ -12,7 +12,6 @@ LIBLTDL_DIR=libltdl
 LIBOPTS_DIR=libopts
 
 bootstrap:
-	rm -rf $(LIBLTDL_DIR)
 	libtoolize --copy --force --ltdl
 	rm -rf $(LIBOPTS_DIR) libopts-*
 	tar zxvf `autoopts-config libsrc`
