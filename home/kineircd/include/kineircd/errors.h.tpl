@@ -30,11 +30,14 @@ namespace Kine {
    namespace Error {
       //! Error returns from functions
       enum error_type {
-	 NO_ERROR = 0,			//!< No error[+ FOR errors +]
-	 [+
-	    (sprintf "%-31s" (sprintf "%s," (get "name")))
-	  +]//!< [+ reason +][+ ENDFOR errors +]
-	 UNKNOWN_ERROR = 0xFFFFFFFF	//!< Unknown error
+         //! No error
+	 NO_ERROR = 0,[+ FOR errors +]
+	 
+	 //! [+reason+]
+	 [+name+],[+ ENDFOR errors +]
+	 
+	 //! Unknown error
+	 UNKNOWN_ERROR = 0xFFFFFFFF
       }; // enum error_type
    }; // namespace Error
 }; // namespace Kine
