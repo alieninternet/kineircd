@@ -1605,6 +1605,7 @@ irc2numerics = {
    origin	= "RFC1459";
    format	= "<user> :<info>";
    comment	= "Returned by a server answering a SUMMON message to indicate that it is summoning that user";
+   obsolete	= "yes";
 };
 
 irc2numerics = {
