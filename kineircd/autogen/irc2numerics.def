@@ -1197,6 +1197,19 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "RPL_AWAY";
+   numeric	= "301";
+   origin	= "KineIRCd";
+   format	= "<nick> <seconds away> :<message>";
+   comment	= "Identical to RPL_AWAY, however this includes the number of "
+                  "seconds the user has been away for. This is designed to "
+		  "discourage the need for people to use those horrible "
+		  "scripts which set the AWAY message every 30 seconds in "
+		  "order to include an 'away since' timer.";
+   repeated;
+};
+
+irc2numerics = {
    name		= "RPL_USERHOST";
    numeric	= "302";
    origin	= "RFC1459";
