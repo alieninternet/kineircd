@@ -404,7 +404,7 @@ AC_SUBST(snmp_lib)
 AC_SUBST(snmp_ldflags)
 
 AC_MSG_CHECKING([for OpenSSL library/include path])
-AC_ARG_ENABLE(ssl,[  --enable-ssl=DIRECTORY * * * * location of SSL library/include files],
+AC_ARG_WITH(ssl,[  --with-ssl=DIRECTORY      location of SSL library/include files],
  [
    dnl Just run with the given path.. we will check it soon
    ssl_dir="$enableval"
@@ -455,6 +455,7 @@ if test "$kineircd_test_need_openssl" = "yes"; then
       else
         AC_MSG_RESULT($ssl_dir)
         AC_DEFINE(HAVE_OPENSSL)
+        AC_DEFINE(WITH_SSL)
         INCDIRS="$INCDIRS -I$ssl_dir/include"
       fi
       ssl_lib="-lssl -lcrypto"
