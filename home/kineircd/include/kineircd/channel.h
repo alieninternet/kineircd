@@ -27,10 +27,29 @@
 
 # include <kineircd/entity.h>
 # include <kineircd/receiver.h>
-# include <kineircd/user.h>
+# include <kineircd/client.h>
 
 namespace Kine {
+   class User;
+   
    class Channel : public Receiver {
+    public:
+      //! Channel member class
+      class Member {
+       private:
+	 Client& client;			//!< The member (a client)
+	 
+       public:
+	 //! Constructor
+	 Member(Client& _client)
+	   : client(_client)
+	   {};
+	 
+	 //! Destructor
+	 ~Member(void)
+	   {};
+      };
+      
     protected:
       //! Constructor
       Channel(void)
@@ -49,8 +68,7 @@ namespace Kine {
 	{ return ""; };
       
       //! Return the topic on the channel
-      virtual const std::string& getTopic(void) const
-	{ return ""; };
+      virtual const std::string& getTopic(void) const = 0;
       
       //! Return the number of users on the channel (0 = unknown/unavailable)
       virtual const unsigned long getUserCount(void) const
@@ -77,5 +95,7 @@ namespace Kine {
 	{ return false; };
    }; // class Channel
 }; // namespace Kine
+
+# include <kineircd/user.h>
 
 #endif // _INCLUDE_KINEIRCD_CHANNEL_H_

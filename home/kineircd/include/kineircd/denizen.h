@@ -42,7 +42,7 @@ namespace Kine {
 
       //! Return a pointer to the server this denizen is connected to/through
       virtual const Server& getServer(void) const = 0;
-   }; // class Entity
+   }; // class Denizen
 }; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_DENIZEN_H_

@@ -30,12 +30,13 @@
 namespace Kine {
    class User : public Client {
     private:
+      std::string nickname;			//!< User's nickname
       std::string awayMessage;			//!< Away message (empty = off)
       
     protected:
       //! Constructor
-      User(std::string& _nickname)
-	: Client(_nickname)
+      User(const std::string& _nickname)
+	: nickname(_nickname)
 	{};
 
     public:
@@ -43,6 +44,10 @@ namespace Kine {
       virtual ~User(void)
 	{};
       
+      //! Return the users's nickname
+      const std::string& getNickname(void) const
+	{ return nickname; };
+
       //! Return the virtual hostname of this user
       virtual const std::string& getVirtualHostname(void) const
 	{ return getHostname(); };
