@@ -165,13 +165,68 @@ void Protocol::parseMessage(const std::string& origin,
 
 /* sendISUPPORT - Send ISUPPORT information to the user
  * Original 24/08/2001 simonb
+ * Note: This *must* be cached, when the events system is written
  */
 void Protocol::sendISUPPORT(void)
 {
    // Save the suffix string, since we could be using it a few times..
    std::string suffix = GETLANG(irc2_RPL_ISUPPORT);
    
+   // Our output buffer
+   std::ostringstream output;
+
+   // Put the ISUPPORT string together
+   output <<
+     "NICKLEN=" << (int)config().getLimitsUsersMaxNickNameLength() << " "
+     "TOPICLEN=" << config().getLimitsChannelsMaxTopicLength() << " "
+     "KICKLEN=" << config().getLimitsMaxKickReasonLength() << " "
+     "CHANNELLEN=" << config().getLimitsChannelsMaxNameLength() << " "
+     "MAXCHANNELS=" << config().getLimitsUsersMaxChannels() << " "
+     "MAXBANS=" << config().getLimitsChannelsMaxBans() << " "
+     "MAXTARGETS=" << (int)config().getLimitsMaxTargets() << " "
+     "PREFIX=(.ohv).@%+ "
+     "CHANTYPES=&#!+.~ "
+     "CHIDLEN=5 "
+     "CHANMODES=beI,k,l,imnpsta "
+     "SILENCE=" << config().getLimitsUsersMaxSilences() << " "
+     "CALLERID=" << config().getLimitsUsersMaxAccepts() << " "
+     "STATUSMSG=+%@ "
+     "MODES=" << (int)0 << " "
+     "CASEMAPPING=rfc1459 "
+     "CHARSET=UTF-8 "
+     "FNC "
+     "PENALTY "
+     "INVEX "
+     "EXCEPTS";
+   
+   // If there's a network name, output that too
+   if (!config().getNetworkName().empty()) {
+      output << " "
+	"NETWORK=" << config().getNetworkName();
+   }
+
+   // Compile the language information
+   output << " "
+     "LANGUAGE=" << (int)config().getLimitsUsersMaxLanguages();
+
+   for (Languages::languageDataMap_type::const_iterator it = 
+	languages().getLanguageDataMap().begin();
+	it != languages().getLanguageDataMap().end();
+	it++) {
+      output << ',';
+      
+      // Is this language the default one?
+      if (it->second == languages().getDefaultLanguage()) {
+	 output << '*';
+      }
+      
+      // Output the code
+      output << it->second->getLanguageCode();
+   }
+   
+   // Send this chunk
    sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
+	       output.str(),
 	       suffix);
 }
 
