@@ -219,14 +219,15 @@ namespace Kine {
        *
        * Likewise, the number of channels may also not reflect what another
        * server will believe, considering there may be channels scoped
-       * locally on this server which are not distributed to other servers.
+       * locally on this server or the other server, which are not distributed
+       * to other servers.
        * 
        * It may seem odd, but internetwork-scoped channels (which span
        * multiple networks) are also included in this count. Ultimately, this
        * count contains the number of channels \e on this network, and not the
        * number of channels \e within this network. Therefore, this count
-       * represents the number of channels \e available to the network as
-       * seen by this part of the network.
+       * represents the number of channels \e available to users of this
+       * server.
        * 
        * \return The number of channels on this network (as visible)
        */
