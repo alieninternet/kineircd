@@ -129,9 +129,6 @@ void Daemon::initInstance(void)
    debugOut << "Daemon::initInstance() - Created new instance @ " << instance;
    debug(debugOut.str());
 #endif
-   
-   // Also create our server thingy
-   MyServer::initInstance();
 }
 
 
