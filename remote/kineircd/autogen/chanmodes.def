@@ -385,8 +385,6 @@ chanmodes = {
    comment	= "Channel only allows registered nicknames to join/talk. "
                   "Since there is a much greater prevalence for +R for the "
 		  "same task, +R may be a better choice.";
-   server_on	= "yes";
-   server_off	= "yes";
    conflict	= "yes";
 };
 
@@ -395,8 +393,6 @@ chanmodes = {
    name		= "REGONLY";
    origin	= "Bahamut, KineIRCd, tr-ircd";
    comment	= "Channel only allows registered nicknames to join/talk";
-   server_on	= "yes";
-   server_off	= "yes";
 };
 
 chanmodes = {
