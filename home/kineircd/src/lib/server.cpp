@@ -114,9 +114,11 @@ const Error::error_type Server::Name::checkValidity(void) const
  */
 const Error::error_type Server::addUser(User& user)
 {
-#ifdef KINE_DEBUG
-# warning "Lots of checking missing here!!"
-#endif
+   // Make sure this user is pointing to this server properly
+   if (&user.getServer() != this) {
+      return Error::SERVERS_DONT_MATCH;
+   }
+   
    // Okay, fob this off to the registry
    const Error::error_type addError = Internal::registry().addUser(user);
    if (addError == Error::NO_ERROR) {
