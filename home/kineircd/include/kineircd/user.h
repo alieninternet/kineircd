@@ -122,6 +122,10 @@ namespace Kine {
       const bool isOperator(void) const
 	{ return (isGlobalOperator() || isLocalOperator()); };
       
+      //! Is the user hidden from normal users (i.e. 'invisible')?
+      const bool isHidden(void) const
+	{ return false; /* <=- tmp */ };
+      
       //! Return the away message for this user. If blank, there is none set
       const std::string& getAwayMessage(void) const
 	{ return awayMessage; };
