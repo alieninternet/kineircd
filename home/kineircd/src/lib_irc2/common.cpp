@@ -29,6 +29,7 @@
 #include <sstream>
 #include <iomanip>
 #include <aisutil/string/string.h>
+#include <aisutil/string/tokens.h>
 #include <kineircd/config.h>
 #include <kineircd/daemon.h>
 #include <kineircd/registry.h>
@@ -39,6 +40,7 @@
 
 using namespace Kine::LibIRC2;
 using AISutil::String;
+using AISutil::StringTokens;
 
 
 // Dodgey macro to grab language stuff
@@ -186,7 +188,7 @@ void Protocol::doMOTD(const User& user, const bool justConnected)
 /* handleSUMMON
  * Original 10/04/2003 simonb
  */
-void Protocol::doSUMMON(const User& user, const std::string& who)
+void Protocol::doSUMMON(const User& user, const std::string& username)
 {
    // We only reply to conform to specs..
    sendNumeric(user, LibIRC2::Numerics::ERR_SUMMONDISABLED,
@@ -260,4 +262,150 @@ void Protocol::doVERSION(const User& user)
 	       config().getOptionsServerName(),
 	       Version::version,
 	       Version::versionChars);
+}
+
+
+/* doWHOIS
+ * Original 23/08/2001 simonb
+ * Note: Very imcomplete transfer
+ */
+void Protocol::doWHOIS(const User& user, const std::string& targets)
+{
+   // Tokenise the targets list
+   StringTokens st(targets);
+   
+   while (st.hasMoreTokens()) {
+      // Find out who to look for
+      std::string target = st.nextToken(',');
+
+      // Find this target (presuming it is a user)
+      const User* const u = registry().findUser(target);
+      
+      // Make sure we found that user
+      if (u != 0) {
+	 // Check if this user is allowed to see the real hostname of this user
+	 if (&user == u) {
+	    // Send the user entry as normal
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
+			u->getNickname(),
+			u->getUsername(),
+			u->getHostname(),
+			'*',
+			u->getDescription());
+	    
+	    // Also send the virtual host details
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOIS_HIDDEN,
+			u->getNickname(),
+			u->getVirtualHostname(),
+			GETLANG(irc2_RPL_WHOIS_HIDDEN));
+	 } else {
+	    // Send the user details with the virtual hostname
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
+			u->getNickname(),
+			u->getUsername(),
+			u->getVirtualHostname(),
+			'*',
+			u->getDescription());
+	 }
+	 
+	 sendNumeric(user, LibIRC2::Numerics::RPL_WHOISCHANNELS,
+		     u->getNickname(),
+		     "%#foo +#bah @#baz");
+	 
+	 // If this user has language info, we should send it too
+	 if (!u->getLanguageList().empty()) {
+	    std::ostringstream langs;
+	    
+	    // Assemble the language information for this user
+	    for (Languages::languageDataList_type::const_iterator it =
+		 u->getLanguageList().begin();
+		 it != u->getLanguageList().end();
+		 ++it) {
+	       // Can we output this langauge?
+	       if (*it != 0) {
+		  // Do we need to output a delimeter here?
+		  if (!langs.str().empty()) {
+		     langs << ',';
+		  }
+		  
+		  // Output the language code
+		  langs << (*it)->getLanguageCode();
+	       }
+	    }
+	    
+	    // Send the language info
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISLANGUAGE,
+			u->getNickname(),
+			langs.str(),
+			GETLANG(irc2_RPL_WHOISLANGUAGE));
+	 }
+	 
+	 // If the user is an IRC operator, tell the world about it
+	 if (false /* u->isSet(something) */) {
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISOPERATOR,
+			u->getNickname(),
+			GETLANG(irc2_RPL_WHOISOPERATOR));
+	 } else if (false /* u->isSet(local) */) {
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISOPERATOR,
+			u->getNickname(),
+			GETLANG(irc2_RPL_WHOISOPERATOR_LOCAL));
+	 }
+	 
+	 /* If this user is a network staff member (i.e. network services),
+	  * then we should also add this to the list
+	  */
+	 if (false) {
+	    /* We cannot work out what kind of staff member, or we do not have
+	     * the appropriate language data to say what kind of staff member
+	     * this person is, so we'll just say they're a staff member and
+	     * leave it at that.
+	     */
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSTAFF,
+			u->getNickname(),
+			GETLANG(irc2_RPL_WHOISSTAFF));
+	 }
+	 
+	 // If the user is connected via a secure connection, say what type
+	 if (false) {
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSECURE,
+			u->getNickname(),
+			"SSL",
+			GETLANG(irc2_RPL_WHOISSECURE));
+	 }
+	 
+	 // See if the user is locally connected
+	 const LocalUser* const lu = u->getLocalSelf();
+	 if (lu != 0) {
+	    // Output the idle time, and the time this user connected
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISIDLE,
+			u->getNickname(),
+			lu->getLastAwake().seconds,
+			u->getSignonTime().seconds,
+			GETLANG(irc2_RPL_WHOISIDLE));
+	 }
+	 
+	 // If the server the user is on is not hidden, send that too
+	 if (false) {
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSERVER,
+			u->getNickname(),
+			"server.host.name",
+			"server description here");
+	 }
+	 
+	 // Continue to the next target
+	 continue;
+      }
+
+      // Maybe check the services list here, if we are allowed?
+      
+      // If we got here, the user was unknown
+      sendNumeric(user, LibIRC2::Numerics::ERR_NOSUCHNICK,
+		  target,
+		  GETLANG(irc2_ERR_NOSUCHNICK));
+   }
+
+   // Send the footer
+   sendNumeric(user, LibIRC2::Numerics::RPL_ENDOFWHOIS,
+	       targets,
+	       GETLANG(irc2_RPL_ENDOFWHOIS));
 }

@@ -334,10 +334,11 @@ namespace Kine {
 	 void doADMIN(const User& user);
 	 void doLUSERS(const User& user);
 	 void doMOTD(const User& user, const bool justConnected = false);
-	 void doSUMMON(const User& user, const std::string& who);
+	 void doSUMMON(const User& user, const std::string& username);
 	 void doTIME(const User& user);
 	 void doUSERS(const User& user);
 	 void doVERSION(const User& user);
+	 void doWHOIS(const User& user, const std::string& targets);
       };
    }; // namespace LibIRC2
 }; // namespace Kine

@@ -497,3 +497,25 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+
+
+/* handleWHOIS
+ * Original 23/08/2001 simonb
+ * 20/04/2003 simonb - Imported from old code (incompleted)
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleWHOIS)
+{
+   // If there is only one parameter, we are the intended respondent
+   if (parameters.size() < 2) {
+      doWHOIS(user, parameters[0]);
+      return;
+   }
+   
+   // Look up the server?
+   const std::string& serverName = parameters[0];
+   
+   // We didn't find the server..
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
+	       serverName,
+	       GETLANG(irc2_ERR_NOSUCHSERVER));
+}

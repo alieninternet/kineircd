@@ -31,6 +31,8 @@
 # include <kineircd/languages.h>
 
 namespace Kine {
+   class LocalUser;
+   
    //! A user (refinement of a client)
    class User : public Client {
     private:
@@ -103,7 +105,13 @@ namespace Kine {
       const Error::error_type
 	setLanguageList(const Languages::languageDataList_type& languages,
 			const bool secret = false);
+      
+      //! If this user is local, this will return the local version of this
+      virtual const LocalUser* const getLocalSelf(void) const
+	{ return 0; };
    }; // class User
 }; // namespace Kine
+
+# include <kineircd/localuser.h>
 
 #endif // _INCLUDE_KINEIRCD_USER_H_

@@ -331,11 +331,11 @@ commands = {
 //   minimumParams	= 1;
 //};
 
-//commands = {
-//   command		= "WHOIS";
-//   defaultPenalty	= 2;
-//   minimumParams	= 1;
-//};
+commands = {
+   command		= "WHOIS";
+   defaultPenalty	= 2;
+   minimumParams	= 1;
+};
 
 //commands = {
 //   command		= "WHOWAS";
