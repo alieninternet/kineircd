@@ -73,7 +73,7 @@ namespace Kine {
       //! An event called whenever a user's nickname has been changed (maybe us)
       virtual void doEventNicknameChange(const Entity& changer,
 					 const User& user,
-					 const std::string& newNickname)
+					 const Name& newNickname)
 	{};
       
       //! An event called when a message was successfully sent to us
