@@ -1,8 +1,8 @@
 /* $Id$
  * KineIRCd module interface for the IRC-2 user protocol module
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -31,6 +31,7 @@
 
 #include "mod_irc2user/module.h"
 #include "mod_irc2user/protocolinfo.h"
+#include "mod_irc2user/language.h"
 
 
 namespace {
@@ -54,24 +55,24 @@ namespace {
    };
 
 
-   class mod_irc2user : public Kine::Module {
+   class mod_irc2user_module : public Kine::Module {
     private:
       Kine::mod_irc2user::ProtocolInfo protocolInfo;
 
     public:
       // Constructor
-      mod_irc2user(void)
+      mod_irc2user_module(void)
 	{};
       
       // Destructor
-      ~mod_irc2user(void)
+      ~mod_irc2user_module(void)
 	{};
       
       // Return the information
       const Kine::Module::Info& getInfo(void) const
 	{ return info; };
       
-      /* moduleStart - Fire up the module
+      /* start - Fire up the module
        * Original 04/11/2002 simonb
        */
       bool start(void) {
@@ -80,12 +81,28 @@ namespace {
 	    return false;
 	 }
 	 
+	 // Register our language tag map to the langtags engine..
+	 if (!Kine::langs().registerMap(Kine::mod_irc2user::Language::tagMap)) {
+	    return false;
+	 }
+	 
 	 // Smile :)
 	 return true;
+      };
+      
+      /* stop - Stop the module
+       * Original 23/03/2003 simonb
+       */
+      void stop(void) {
+	 // Deregister our language tag map
+	 Kine::langs().deregisterMap(Kine::mod_irc2user::Language::tagMap);
+
+	 // Deregister the protocol itself
+	 Kine::daemon().deregisterProtocol(protocolInfo);
       };
    }; // class mod_irc2user
 }; // namespace {anonymous}
 
 
 // The initialisation function, called by Kine
-KINE_MODULE_INIT { return new mod_irc2user(); };
+KINE_MODULE_INIT { return new mod_irc2user_module(); };
