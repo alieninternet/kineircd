@@ -873,7 +873,7 @@ tag = {
    name		= "irc2_RPL_YOURLANGUAGEIS";
    fields	= "0 = language name";
    components	= "mod_irc2user";
-   data_en	= "Your primary language is '%p0'";
+   data_en	= "Your primary language is set to '%p0'";
 };
 
 tag = {
