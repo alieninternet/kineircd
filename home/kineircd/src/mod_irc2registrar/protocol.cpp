@@ -414,7 +414,17 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
    
    // Do we need to send a ping out?
    if ((pongsLeft > 0) && (pongMatch.empty())) {
+      // Create and send out the ping request..
       sendPing();
+
+      // Send out a notice to the client?
+      if (true) { /* <=- configure ! :( */
+	 sendMessage("NOTICE",
+		     registrantData.name,
+		     GETLANG(irc2registrar_NOTICE_ANTI_SPOOF_PING_HELP,
+			     pongMatch,
+			     "email@somewhere.org")); /* <=- configure !! */
+      }
    }
 }
 
@@ -472,6 +482,11 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parsePONG)
       return;
    }
 
+#ifdef KINE_DEBUG
+   debug("mod_irc2registrar: -=>         Pong: '" +
+	 parameters[0] + "' (wanting '" + pongMatch + "')");
+#endif
+   
    // Make sure this pong is valid
    if (parameters[0] != pongMatch) {
       // They tried to trick us!
@@ -484,11 +499,6 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parsePONG)
 
    // Lower the pong count
    --pongsLeft;
-   
-# ifdef KINE_DEBUG
-   debug("mod_irc2registrar: -=>   Pong match: " +
-	 pongMatch);
-# endif
    
    // Do we need to send another ping?
    if (pongsLeft > 0) {
