@@ -259,6 +259,27 @@ tag = {
 };
 
 tag = {
+   name		= "irc2_ERR_NOPRIVILEGES_DIE";
+   components	= "mod_irc2user";
+   data_en	= "Permission Denied - Your operator privileges do not allow "
+                  "you to shut the server down";
+};
+
+tag = {
+   name		= "irc2_ERR_NOPRIVILEGES_REHASH";
+   components	= "mod_irc2user";
+   data_en	= "Permission Denied - Your operator privileges do not allow "
+                  "you to rehash the server";
+};
+
+tag = {
+   name		= "irc2_ERR_NOPRIVILEGES_RESTART";
+   components	= "mod_irc2user";
+   data_en	= "Permission Denied - Your operator privileges do not allow "
+                  "you to shutdown and restart the server";
+};
+
+tag = {
    name		= "irc2_ERR_NORECIPIENT";
    fields	= "0 = command";
    components	= "libkineircd_irc2";
@@ -744,6 +765,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_REHASHING";
+   components	= "mod_irc2user";
    data_en	= "Rehashing";
    data_tr	= "Rehash komutu uygulanıyor";
 };
@@ -1020,15 +1042,15 @@ tag = {
    name		= "irc2user_HELP_CMD_DIE";
    components	= "mod_irc2user";
    data_en	= "This command shuts down the server you are currently "
-                  "connected to. Optionally a reason can be specified which "
-		  "will be broadcast to other operators on the network as "
-		  "the reason for the server's disappearance.";
+                  "connected to. A reason must be specified which will be "
+		  "broadcast to other operators on the network as the reason "
+		  "for the server's disappearance.";
 };
 
 tag = {
    name		= "irc2user_HELP_CMD_DIE_USAGE";
    components	= "mod_irc2user";
-   data_en	= "[ ':' <reason> ]";
+   data_en	= "':' <reason>";
 };
 
 tag = {
@@ -1469,13 +1491,14 @@ tag = {
    name		= "irc2user_HELP_CMD_RESTART";
    components	= "mod_irc2user";
    data_en	= "This will restart the server. This command will load an "
-                  "entirely new process for the IRC Daemon.";
+                  "entirely new process for the IRC Daemon. A reason for "
+		  "why the server is to be restarted must be given.";
 };
 
 tag = {
    name		= "irc2user_HELP_CMD_RESTART_USAGE";
    components	= "mod_irc2user";
-   // no data (no parameters)
+   data_en	= "':' <reason>";
 };
 
 tag = {

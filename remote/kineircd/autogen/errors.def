@@ -53,3 +53,8 @@ errors = {
    name		= "UNSUPPORTED_BY_ENTITY";
    reason	= "Cannot complete action, it is not supported by the entity";
 };
+
+errors = {
+   name		= "PERMISSION_DENIED";
+   reason	= "Permission denied";
+};
