@@ -25,32 +25,45 @@
 #ifndef _SRC_LIB_IRC2_PROTOCOL_H_
 # define _SRC_LIB_IRC2_PROTOCOL_H_ 1
 
+# include <queue>
+# include <string>
 # include <kineircd/protocol.h>
 
 namespace Kine {
    namespace LibIRC2 {
       class Protocol : public Kine::Protocol {
-       public:
+       protected:
+	 // Our input buffer..
+	 std::string buffer;
+
+	 // The output data queue
+	 std::queue <std::string> outputQueue;
+	 
+       private:
+	 // Appropriately parse a protocol message
+	 virtual void parseLine(const std::string& line)
+	   {};
+
+       protected:
 	 // Constructor
 	 Protocol(Kine::Connection& c)
 	   : Kine::Protocol(c)
 	   {};
 	 
+       public:
 	 // Destructor
 	 virtual ~Protocol(void)
 	   {};
 	 
 	 // Handle incoming data
-	 virtual void handleInput(std::stringstream& data)
-	   {};
+	 virtual void handleInput(std::stringstream& data);
 	 
 	 // Remove up to the amount of octets given from the output queue
-	 std::string withdrawOutput(AISutil::Socket::blockSize_type amount)
-	   { return ""; };
+	 std::string withdrawOutput(AISutil::Socket::blockSize_type amount);
 	 
 	 // Return true should there be anything in the output queue to send
 	 bool moreOutput(void) const
-	   { return false; };
+	   { return (!outputQueue.empty()); };
       };
    }; // namespace LibIRC2
 }; // namespace Kine

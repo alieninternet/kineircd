@@ -571,21 +571,6 @@ fi
 dnl finish off the line
 echo
 
-dnl Work out which module libraries we need
-AC_MSG_CHECKING([which module libraries to compile])
-
-if test \
-	"$kineircd_test_compile_mod_iirc1" = "yes" -o \
-	"$kineircd_test_compile_mod_irc2user" = "yes"; then
-  echo -n "lib_irc2 "
-  kineircd_test_compile_lib_irc2=yes;
-fi
-AM_CONDITIONAL(KINEIRCD_COMPILE_LIB_IRC2,
-	       [test x$kineircd_test_compile_lib_irc2 = xyes])
-
-dnl finish off the line
-echo
-
 dnl
 dnl Developer stuff
 dnl

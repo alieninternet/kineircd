@@ -6,10 +6,6 @@
 include $(top_builddir)/config/automake.inc
 
 
-# Work out which additional libraries we need to compile...
-if KINEIRCD_COMPILE_LIB_IRC2
- KINEIRCD_TARGET_LIB_IRC2=libkineircd_irc2.la
-endif
 
 # Work out which modules we need to compile...
 if KINEIRCD_COMPILE_MOD_BOVINI1
@@ -43,7 +39,7 @@ endif
 # Libraries and modules to build
 lib_LTLIBRARIES=\
 	libkineircd.la \
-	$(KINEIRCD_TARGET_LIB_IRC2) \
+	libkineircd_irc2.la \
 	$(KINEIRCD_TARGET_MOD_BOVINI1) \
 	$(KINEIRCD_TARGET_MOD_CHANNELLOG) \
 	$(KINEIRCD_TARGET_MOD_FILELOG) \
@@ -123,6 +119,7 @@ libkineircd_la_LDFLAGS=\
 	@LDFLAGS@ \
 	@ssl_ldflags@
 libkineircd_la_LIBADD=\
+	libkineircd_irc2.la \
 	-ldl \
 	-laisutil \
 	@ssl_lib@
@@ -141,12 +138,15 @@ lib/loggerconfig.cpp: lib/loggerconfig.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
 ###############################################################################
 libkineircd_irc2_la_SOURCES=\
 	lib_irc2/modes.h \
+	lib_irc2/protocol.cpp \
 	lib_irc2/protocol.h \
 	lib_irc2/servermodes.cpp
+
 libkineircd_irc2_la_LDFLAGS=\
 	-avoid-version
+
 libkineircd_irc2_la_LIBADD=\
-	libkineircd.la
+	# libkineircd.la
 
 
 
@@ -156,9 +156,11 @@ libkineircd_irc2_la_LIBADD=\
 mod_bovini1_la_SOURCES=\
 	mod_bovini1/module.cpp \
 	mod_bovini1/module.h
+
 mod_bovini1_la_LDFLAGS=\
 	-avoid-version \
 	-module
+
 mod_bovini1_la_LIBADD=\
 	libkineircd.la
 
@@ -174,9 +176,11 @@ mod_channellog_la_SOURCES=\
 	mod_channellog/config.h \
 	mod_channellog/module.cpp \
 	mod_channellog/module.h
+
 mod_channellog_la_LDFLAGS=\
 	-avoid-version \
 	-module
+
 mod_channellog_la_LIBADD=\
 	libkineircd.la
 
@@ -192,9 +196,11 @@ mod_filelog_la_SOURCES=\
 	mod_filelog/filelog.h \
 	mod_filelog/module.cpp \
 	mod_filelog/module.h
+
 mod_filelog_la_LDFLAGS=\
 	-avoid-version \
 	-module
+
 mod_filelog_la_LIBADD=\
 	libkineircd.la
 
@@ -206,9 +212,11 @@ mod_filelog_la_LIBADD=\
 mod_http_la_SOURCES=\
 	mod_http/module.cpp \
 	mod_http/module.h
+
 mod_http_la_LDFLAGS=\
 	-avoid-version \
 	-module
+
 mod_http_la_LIBADD=\
 	libkineircd.la
 
@@ -220,9 +228,11 @@ mod_http_la_LIBADD=\
 mod_iirc1_la_SOURCES=\
 	mod_iirc1/module.cpp \
 	mod_iirc1/module.h
+
 mod_iirc1_la_LDFLAGS=\
 	-avoid-version \
 	-module
+
 mod_iirc1_la_LIBADD=\
 	libkineircd.la \
 	libkineircd_irc2.la
@@ -237,9 +247,11 @@ mod_irc2user_la_SOURCES=\
 	mod_irc2user/module.h \
 	mod_irc2user/protocol.h \
 	mod_irc2user/protocolinfo.h
+
 mod_irc2user_la_LDFLAGS=\
 	-avoid-version \
 	-module
+
 mod_irc2user_la_LIBADD=\
 	libkineircd.la \
 	libkineircd_irc2.la
@@ -254,9 +266,11 @@ mod_snmp_la_SOURCES=\
 	mod_snmp/module.h \
 	mod_snmp/snmp.cpp \
 	mod_snmp/snmp.h
+
 mod_snmp_la_LDFLAGS=\
 	-avoid-version \
 	-module
+
 mod_snmp_la_LIBADD=\
 	libkineircd.la
 
@@ -272,9 +286,11 @@ mod_syslog_la_SOURCES=\
 	mod_syslog/module.h \
 	mod_syslog/syslog.cpp \
 	mod_syslog/syslog.h
+
 mod_syslog_la_LDFLAGS=\
 	-avoid-version \
 	-module
+
 mod_syslog_la_LIBADD=\
 	libkineircd.la
 
@@ -289,6 +305,7 @@ mod_syslog/syslog.cpp: mod_syslog/syslog.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
 ###############################################################################
 ircd_SOURCES=\
 	ircd.cpp
+
 ircd_LDADD=\
 	libkineircd.la
 
@@ -299,5 +316,6 @@ ircd_LDADD=\
 ###############################################################################
 ircpasswd_SOURCES=\
 	ircpasswd.cpp
+
 ircpasswd_LDADD=\
 	libkineircd.la

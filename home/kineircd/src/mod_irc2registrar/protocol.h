@@ -25,31 +25,23 @@
 #ifndef _SRC_LIB_REGISTRAR_H_
 # define _SRC_LIB_REGISTRAR_H_ 1
 
-# include <queue>
-# include <vector>
-# include <string>
-# include <aisutil/string/string.h>
 # include <aisutil/string/tokens.h>
 
-# include "kineircd/protocol.h"
 # include "kineircd/listener.h"
 # include "kineircd/registrant.h"
 # include "kineircd/config.h"
+# include "lib_irc2/protocol.h"
 # include "regnumerics.h"
 
 # define KINE_LIB_REGISTRAR_FUNCTION(x) \
      void x(AISutil::StringTokens& line)
 
 namespace Kine {
-   class Registrar : public Protocol {
+   class Registrar : public LibIRC2::Protocol {
     private:
       Listener& listener;			// The listener who invoked us
 
       Registrant registrantData;		// Collected registrant info
-      
-      AISutil::String buffer;			// Our input buffer..
-      
-      std::queue <std::string> outputQueue;	// The output data queue
       
       struct RegistrationType { // <=- Should be namespace?
 	 enum type {
@@ -85,8 +77,8 @@ namespace Kine {
       // Send a ping with some unpredictable data
       void sendPing(void);
 
-      // Appropriately parse a line of protocol
-      void parseLine(const AISutil::String& line);
+      // Appropriately parse a protocol message
+      void parseLine(const std::string& line);
 
       // Protocol commands
       handler_type parseCAPAB;
@@ -111,16 +103,6 @@ namespace Kine {
       // Destructor
       ~Registrar(void)
 	{};
-      
-      // Handle incoming data
-      void handleInput(std::stringstream& data);
-      
-      // Remove up to the amount of octets given from the output queue
-      std::string withdrawOutput(AISutil::Socket::blockSize_type amount);
-      
-      // Return true should there be anything in the output queue to send
-      bool moreOutput(void) const
-	{ return (!outputQueue.empty()); };
    };
 }; // namespace Kine
    
