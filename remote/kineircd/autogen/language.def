@@ -1953,10 +1953,10 @@ tag = {
 tag = {
    name		= "irc2user_HELP_CMD_WHO_USAGE";
    components	= "mod_irc2user";
-   data_en	= "{ <channel> | <nickname mask> | '0' }  "
+   data_en	= "{ <mask> | '0' }  "
                   "[ 'H' | 'I' | 'N' | 'O' | 'R' | 'S' | 'U' | 'X' ] "
-		  "[ '%%' { 'C' | 'D' | 'F' | 'H' | 'I' | 'N' | 'R' | 'S' | "
-		  "'T' | 'U' } [ ',' <query type> ] ]";
+		  "[ '%%' { 'C' | 'D' | 'F' | 'H' | 'I' | 'L' | 'N' | 'R' | "
+		  "'S' | 'T' | 'U' } [ ',' <query type> ] ]";
 };
 
 tag = {
