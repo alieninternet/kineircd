@@ -139,6 +139,7 @@ BUILT_SOURCES=\
 	include/kineircd/server.h \
 	install/.lang \
 	src/ircd/options.h \
+	src/lib/language.h \
 	src/lib_irc2/language.h \
 	src/mod_irc2registrar/language.h \
 	src/mod_irc2user/commands.h \
@@ -223,6 +224,9 @@ libkineircd_la_SOURCES=\
 	src/lib/daemon.cpp \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_CPP) \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_H) \
+	src/lib/errors.cpp \
+	src/lib/language.cpp \
+	src/lib/language.h \
 	src/lib/logger.cpp \
 	src/lib/myserver.cpp \
 	src/lib/name.cpp \
@@ -275,6 +279,21 @@ src/lib/chantypes.cpp: src/lib/chantypes.cpp.tpl $(AUTOGEN_DIR)/chantypes.def
 		-b $(basename $@) \
 		-T src/lib/chantypes.cpp.tpl \
 		$(AUTOGEN_DIR)/chantypes.def
+
+src/lib/errors.cpp: src/lib/errors.cpp.tpl $(AUTOGEN_DIR)/errors.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T src/lib/errors.cpp.tpl \
+		$(AUTOGEN_DIR)/errors.def
+
+src/lib/language.cpp src/lib/language.h: $(AUTOGEN_DIR)/language.tpl $(AUTOGEN_DIR)/language.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $(AUTOGEN_DIR)/language.tpl \
+		-DCOMPONENT=libkineircd \
+		-DNAMESPACE=Internal \
+		-DSUBDIR=lib \
+		$(AUTOGEN_DIR)/language.def
 
 # Stop having to relink every module per build in maintainer mode..
 # Is this wise, though?

@@ -1,4 +1,7 @@
 chantypes.cpp
+errors.cpp
+language.cpp
+language.h
 logger.cpp
 loggerconfig.cpp
 version.cpp
