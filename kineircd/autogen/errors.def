@@ -101,6 +101,11 @@ errors = {
 };
 
 errors = {
+   name		= "UNKNOWN_CHARSET";
+   reason	= "The character set is unknown, invalid, or unsupported";
+};
+
+errors = {
    name		= "UNREGISTERED_ENTITY";
    reason	= "Operation could not be completed on an unregistered entity";
 };

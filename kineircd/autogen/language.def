@@ -2363,6 +2363,14 @@ tag = {
 };
 
 tag = {
+   name		= "Kine_Error_UNKNOWN_CHARSET";
+   components	= "libkineircd";
+   data_en	= "The character set given is unknown, invalid, or is "
+		  "currently unsupported";
+};
+
+
+tag = {
    name		= "Kine_Error_UNKNOWN_ERROR";
    components	= "libkineircd";
    data_en	= "An unknown or unexpected error occurred";
