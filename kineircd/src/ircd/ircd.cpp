@@ -45,7 +45,6 @@
 #endif
 #include <ltdl.h>
 #include <kineircd/languages.h>
-#include <kineircd/registry.h>
 #include <kineircd/config.h>
 #include <kineircd/daemon.h>
 #include <kineircd/mynetwork.h>
@@ -91,7 +90,7 @@ int main(int argc, char **argv)
    Languages::initInstance();
 
    // Create the registry, where all the entities live
-   Registry::initInstance();
+//   Registry::initInstance();
    
    // Attempt to load and parser the configuration file
    if (!config().configure(OPT_ARG(CONFIG_FILE))) {
