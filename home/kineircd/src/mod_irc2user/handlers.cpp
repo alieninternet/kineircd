@@ -137,6 +137,37 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 }
 
 
+/* handleLANGUAGE
+ * Original 26/10/2001 simonb
+ * 03/04/2001 simonb - Imported from old code
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
+{
+   // If we do not have any parameters, we will list the languages available
+   if (parameters.empty()) {
+      // Run through known languages and list them to the client
+      // Hey - this needs to be for_each'd :(
+      for (Languages::languageDataList_type::const_iterator it =
+	   languages().getLanguageDataList().begin();
+	   it != languages().getLanguageDataList().end();
+	   it++) {
+	 sendNumeric(LibIRC2::Numerics::RPL_LANGUAGE,
+		     (*it).second->getLanguageCode(),
+		     (*it).second->getFileRevision(),
+		     (*it).second->getMaintainer(),
+		     '*',
+		     (*it).second->getLanguageName());
+      }
+      
+      // Send the end of list tag
+      sendNumeric(LibIRC2::Numerics::RPL_ENDOF_GENERIC,
+		  "LANGUAGE",
+		  GETLANG(irc2_RPL_ENDOF_GENERIC_LANGUAGE));
+      return;      
+   }
+}
+
+
 /* handleLUSERS
  * Original 27/08/2001 simonb
  * 03/04/2001 simonb - Imported from old code
@@ -177,8 +208,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
 {
    // If we were given a parameter, send it back (simple as that!)
    if (!parameters.empty()) {
-      sendMessage("PONG",
-		  parameters[0]);
+      // Send the reply in full form
+      sendMessageTo(config().getOptionsServerName(), 
+		    config().getOptionsServerName(), 
+		    "PONG", parameters[0]);
       return;
    }
    
