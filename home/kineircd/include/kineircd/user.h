@@ -62,7 +62,7 @@ namespace Kine {
 
       //! Return the users's hostname
       const std::string& getHostname(void) const
-	{ return nickname; };
+	{ return hostname; };
 
       //! Return the virtual hostname of this user
       virtual const std::string& getVirtualHostname(void) const
