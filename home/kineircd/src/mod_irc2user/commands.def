@@ -46,6 +46,7 @@ commands = {
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
 //   access		= "oper";
+//   changeIdleTime;
 //};
 
 //commands = {
@@ -61,6 +62,7 @@ commands = {
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
 //   access		= "globaloper";
+//   changeIdleTime;
 //};
 
 commands = {
@@ -104,12 +106,14 @@ commands = {
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
 //   access		= "oper";
+//   changeIdleTime;
 //};
 
 //commands = {
 //   command		= "KNOCK";
 //   defaultPenalty	= 2;
 //   minimumParams	= 1;
+//   changeIdleTime;
 //};
 
 commands = {
@@ -135,6 +139,7 @@ commands = {
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
 //   access		= "oper";
+//   changeIdleTime;
 //};
 
 commands = {
@@ -201,6 +206,7 @@ commands = {
 //   command		= "PRIVMSG";
 //   defaultPenalty	= 4;
 //   minimumParams	= 2;
+//   changeIdleTime;
 //};
 
 commands = {
@@ -221,6 +227,7 @@ commands = {
 //   defaultPenalty	= 0;
 //   minimumParams	= 0;
 //   access		= "oper";
+//   changeIdleTime;
 //   disabled;
 //};
 
@@ -241,6 +248,7 @@ commands = {
 //   defaultPenalty	= 1;
 //   minimumParams	= 1;
 //   access		= "oper";
+//   changeIdleTime;
 //};
 
 //commands = {
@@ -253,6 +261,7 @@ commands = {
    command		= "SUMMON";
    defaultPenalty	= 1;
    minimumParams	= 1;
+   changeIdleTime;
 };
 
 commands = {
@@ -315,6 +324,7 @@ commands = {
 //   command		= "WALLCHOPS";
 //   defaultPenalty	= 4;
 //   minimumParams	= 2;
+//   changeIdleTime;
 //};
 
 //commands = {
@@ -322,6 +332,7 @@ commands = {
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
 //   access		= "oper";
+//   changeIdleTime;
 //   disabled;
 //};
 

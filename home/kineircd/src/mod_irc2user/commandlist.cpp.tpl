@@ -49,7 +49,9 @@ const Commands::preInitCommand_type Commands::preInitCommands[] = {[+FOR command
  +][+ELSE+]0[+ENDIF+],
 	  [+IF (exist? "disabled")+]false[+ELSE+]true[+ENDIF+], [+defaultPenalty+], [+minimumParams+],
 	  &Language::tagMap[Language::irc2user_HELP_CMD_[+command+]_USAGE].tagID,
-	  &Language::tagMap[Language::irc2user_HELP_CMD_[+command+]].tagID
+	  &Language::tagMap[Language::irc2user_HELP_CMD_[+command+]].tagID,
+	  Flags::NONE[+IF (exist? "changeIdleTime")+] |
+	    Flags::CHANGE_IDLE_TIME[+ENDIF+]
      },[+ENDFOR+]
-     { 0, 0, false, 0, 0, 0, 0, 0 }
+     { 0, 0, false, 0, 0, 0, 0, 0, Flags::NONE }
 };

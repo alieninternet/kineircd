@@ -40,6 +40,15 @@ namespace Kine {
    namespace mod_irc2user {
       // IRC-2 user commands
       class Commands {
+       public:
+	 struct Flags { // <=- should be namespace?
+	    enum flag_type {
+	       NONE			= 0x00000000,
+	       CHANGE_IDLE_TIME		= 0x00000001	// Reset user idle time
+	    };
+	    typedef unsigned int lazy_type;
+	 };
+	 
        private:
 	 // A table holding the built-in commands we always support
 	 struct preInitCommand_type {
@@ -54,6 +63,7 @@ namespace Kine {
 	      helpUsage;				// Command usage hint
 	    const Kine::Languages::tagID_type* const 
 	      helpInfo;					// Detailed help tag
+	    const Flags::lazy_type flags;		// Flags
 	 } static const preInitCommands[];
 
        public:
@@ -69,6 +79,7 @@ namespace Kine {
 	      helpUsage;				// Command usage hint
 	    const Kine::Languages::tagID_type* const
 	      helpInfo;					// Detailed help tag
+	    Flags::lazy_type flags;			// Flags
 	    unsigned long long callCount;		// # times used
 	    
 	    // Copy constructor to aid in initialisation
@@ -80,6 +91,7 @@ namespace Kine {
 	        minimumParams(info.minimumParams),
 	        helpUsage(info.helpUsage),
 	        helpInfo(info.helpInfo),
+	        flags(info.flags),
 	        callCount(0)
 	      {};
 	    
