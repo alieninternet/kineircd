@@ -30,8 +30,8 @@ namespace Kine {
    class ModuleProtocol : public Module {
     public:
       // Constructor
-      ModuleProtocol(const Module::basicInfo_type &mi,
-		     const ConfigData *cd = 0)
+      ModuleProtocol(const Module::basicInfo_type& mi,
+		     const ConfigData* const cd = 0)
 	: Module(Module::TYPE_PROTOCOL, mi, cd)
 	{};
 	  

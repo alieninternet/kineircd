@@ -34,7 +34,7 @@ namespace Kine {
 
 // Template for the function which initialises the module and returns the info
 # define KINE_MODULE_INIT_PROTOTYPE(x) \
-   const Kine::Module *x(void)
+   const Kine::Module* x(void)
 
 // The correct name of the symbol which is searched for by dlopen()
 # define KINE_MODULE_INIT_SYMBOL_NAME \
@@ -46,7 +46,7 @@ namespace Kine {
 
 // Template for the function which triggers a module to start
 # define KINE_MODULE_START(x) \
-   bool x(Kine::Daemon &daemon)
+   bool x(Kine::Daemon& daemon)
 
 // Template for the function which triggers a module to stop
 # define KINE_MODULE_STOP(x) \
@@ -79,13 +79,13 @@ namespace Kine {
 	  *  <versionExtra>
 	  * Eg. FooMod-1.2.3b
 	  */
-	 const char *nameShort;
-	 const char *nameLong;
-	 const char *copyright;
+	 const char* nameShort;
+	 const char* nameLong;
+	 const char* copyright;
 	 const unsigned char versionMajor;
 	 const unsigned char versionMinor;
 	 const unsigned short versionPatchLevel;
-	 const char *versionExtra;
+	 const char* versionExtra;
 
 	 // Flags to determine how this module needs to be configured
 	 enum flags_type {
@@ -95,11 +95,11 @@ namespace Kine {
 	 const int flags;
 	 
 	 // Configuration info (optional, set to 0 if you don't want it)
-	 const ConfigParser::defTable_type *configDefinitions;
+	 const ConfigParser::defTable_type* configDefinitions;
 	 
 	 // The two required functions - start and stop
-	 const startFunction_type *startFunction;
-	 const stopFunction_type *stopFunction;
+	 const startFunction_type* startFunction;
+	 const stopFunction_type* stopFunction;
 	 
 	 // Padding, for future use (ignore this, or fill it with 0's)
 	 char _padding[28];
@@ -116,14 +116,14 @@ namespace Kine {
       const type_type type;
       
       // Basic information about this module
-      const basicInfo_type &basicInfo;
+      const basicInfo_type& basicInfo;
 
       // The configuration data class (optional)
-      const ConfigData *configData;
+      ConfigData* const configData;
 
     protected:
       // Constructor
-      Module(const type_type t, const basicInfo_type &bi, const ConfigData *cd)
+      Module(const type_type t, const basicInfo_type& bi, ConfigData* const cd)
 	: type(t),
           basicInfo(bi),
           configData(cd)
@@ -135,18 +135,22 @@ namespace Kine {
 	{};
 
       // Return the type of the module
-      const type_type &getType(void) const
+      const type_type& getType(void) const
 	{ return type; };
       
       // Return the basic information about the module
-      const basicInfo_type &getBasicInfo(void) const
+      const basicInfo_type& getBasicInfo(void) const
 	{ return basicInfo; };
+
+      // Return the configuration data class pointer
+      ConfigData* const getConfigData(void) const
+	{ return configData; };
       
       // Return the name (from the basic information) in full version format
       String getVersionString(void) const;
       
       // Return a name worthy enough to be used as a key in a map
-      const char *getKeyName(void) const
+      const char* getKeyName(void) const
 	{ return basicInfo.nameShort; };
    };
 };

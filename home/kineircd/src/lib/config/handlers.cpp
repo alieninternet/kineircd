@@ -719,7 +719,38 @@ Kine::Config::~Config(void)
  */
 CONFIG_CLASS_HANDLER(Kine::Config::classHandleModule)
 {
-   // Be happy
+#ifdef KINE_DEBUG_ASSERT
+   assert(dataVariable != 0);
+#endif
+   
+   // Check if the first value is empty (the filename field)
+   if (values.front().empty()) {
+      // Get cranky
+      errString = "No module filename supplied!";
+      return false;
+   }
+
+   // Attempt to open the module
+   ModuleDescriptor *moduleDesc =
+     ((dataClass.*((ModuleList ConfigData::*)dataVariable)).
+      loadModule(values.front().trim(), errString));
+   
+   // Make sure the module was loaded
+   if (moduleDesc == 0) {
+      return false;
+   }
+   
+   // Does the module have configuration data?
+   if (moduleDesc->getModule()->getBasicInfo().configDefinitions != 0) {
+      // Parse the module's configuration data
+      return 
+	ConfigParser::parse(configData, position,
+			    (void *)(moduleDesc->getModule()->getBasicInfo().
+				     configDefinitions),
+			    *moduleDesc->getModule()->getConfigData());
+   }
+   
+   // Just be happy, the module loaded!
    return true;
 }
 

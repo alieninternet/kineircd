@@ -30,8 +30,8 @@ namespace Kine {
    class ModuleService : public Module {
     public:
       // Constructor
-      ModuleService(const Module::basicInfo_type &mi,
-		    const ConfigData *cd = 0)
+      ModuleService(const Module::basicInfo_type& mi,
+		    ConfigData* const cd = 0)
 	: Module(Module::TYPE_SERVICE, mi, cd)
 	{};
 	  

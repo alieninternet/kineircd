@@ -30,8 +30,8 @@ namespace Kine {
    class ModuleExtension : public Module {
     public:
       // Constructor
-      ModuleExtension(const Module::basicInfo_type &mi,
-		      const ConfigData *cd = 0)
+      ModuleExtension(const Module::basicInfo_type& mi,
+		      ConfigData* const cd = 0)
 	: Module(Module::TYPE_EXTENSION, mi, cd)
 	{};
 	  
