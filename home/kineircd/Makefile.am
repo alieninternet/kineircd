@@ -21,6 +21,8 @@ includedir=@includedir@/kineircd
 
 # KineIRCd library header files
 include_HEADERS=\
+	include/kineircd/channel.h \
+	include/kineircd/client.h \
 	include/kineircd/config.h \
 	include/kineircd/connection.h \
 	include/kineircd/daemon.h \
@@ -36,13 +38,19 @@ include_HEADERS=\
 	include/kineircd/module.h \
 	include/kineircd/moduledescriptor.h \
 	include/kineircd/modulelist.h \
+	include/kineircd/network.h \
 	include/kineircd/password.h \
 	include/kineircd/protocol.h \
 	include/kineircd/protocolinfo.h \
 	include/kineircd/protocolname.h \
+	include/kineircd/receiver.h \
+	include/kineircd/sender.h \
+	include/kineircd/server.h \
 	include/kineircd/servermodes.h \
+	include/kineircd/service.h \
 	include/kineircd/signals.h \
 	include/kineircd/str.h \
+	include/kineircd/user.h \
 	include/kineircd/utils.h \
 	include/kineircd/version.h
 
