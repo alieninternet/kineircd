@@ -47,7 +47,7 @@ Connection::Connection(AISutil::Socket& s)
   lastSpoke(connectedTime),
   connected(socket.isOkay())
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream out;
    out << "Connection::Connection() Loading new connection on fd " <<
     socket.getFD() << " @ " << this << " (" << connectedTime << ')';
@@ -83,7 +83,7 @@ bool Connection::handleInput(void)
    // Read a line from the socket buffer (this should change)
    std::stringstream line;
    if (!socket.read(line)) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("Connection::handleInput() - Read failed on fd " + 
 	    String::convert(socket.getFD()));
 #endif
@@ -135,7 +135,7 @@ void Connection::sendOutput(void)
  */
 void Connection::goodbye(void)
 {
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
    debug("Connection::goodbye() - Shutting down fd " +
 	 String::convert(socket.getFD()));
 #endif

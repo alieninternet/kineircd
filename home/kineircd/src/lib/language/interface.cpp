@@ -74,7 +74,7 @@ void Languages::initInstance(void)
    // Create the new instance, then!
    instance = new Languages();
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream debugOut;
    debugOut << "Languages::initInstance() - Created new instance @ " <<
      (void *)instance;
@@ -88,7 +88,7 @@ void Languages::initInstance(void)
  */
 void Languages::processTagMap(tagMap_type map) const
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream out;
    out << "Languages::processTagMap() - Processing map @ " << (void *)map;
    debug(out.str());
@@ -104,7 +104,7 @@ void Languages::processTagMap(tagMap_type map) const
       
       // Did we find it?
       if (it == tagDictionary.end()) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
 	 debug(String("Languages::processTagMap() - Did not find ") +
 	       map[i].tagName);
 #endif
@@ -114,7 +114,7 @@ void Languages::processTagMap(tagMap_type map) const
 	 continue;
       } 
       
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("Languages::processTagMap() - Found tag " + (*it).first + 
 	    " with TID of " + String::convert((*it).second));
 #endif
@@ -131,7 +131,7 @@ void Languages::processTagMap(tagMap_type map) const
 bool Languages::loadFile(const std::string& fileName, std::string& errString,
 			 const bool makeDefault)
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("Languages::loadFile() - Attemping to open '" + fileName +
 	 '\'');
 #endif
@@ -145,7 +145,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
       return false;
    }
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("Languages::loadFile() - Beginning read loop");
 #endif
    
@@ -158,7 +158,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
    // Create what may be either our permanent or temporary home for this data
    LanguageData* languageData = new LanguageData();
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream out;
    out << "Languages::loadFile() - Current language data @ " <<
      (void *)languageData;
@@ -311,7 +311,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	 line += data[i];
       }
 
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("Languages::loadFile() - Line " + String::convert(lineNum) +
 	    " data: '" + line + '\'');
 #endif
@@ -332,7 +332,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	 // Strip away the first char and convert it to upper-case
 	 tag = tag.substr(1);
 	 
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
 	 debug("Languages::LoadFile() - Line " + String::convert(lineNum) +
 	       " tag: '" + tag + "' - Control tag");
 #endif
@@ -361,7 +361,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	    // We did not find it - make a new tag..
 	    tagID = ++highestTagID;
 	    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
 	 debug("Languages::loadFile() - Line " + String::convert(lineNum) +
 	       " tag: '" + tag + "' - TID #" + String::convert(tagID) +
 	       " (new)");
@@ -373,7 +373,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	    // Use the tag ID we found
 	    tagID = (*it).second;
 	    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
 	 debug("Languages::loadFile() - Line " + String::convert(lineNum) +
 	       " tag: '" + tag + "' - TID #" + String::convert(tagID) +
 	       " (found)");
@@ -397,7 +397,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
    LanguageData* const langData = findByCode(languageData->languageCode);
    
    if (langData == 0) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("Languages::loadFile() - Inserting as new data");
 #endif
       
@@ -405,7 +405,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
       languageDataMap.insert(languageDataMap_type::value_type
 			     (languageData->languageCode, languageData));
    } else {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("Languages::loadFile() - Merging with existing data");
 #endif
       
@@ -449,7 +449,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
  */
 bool Languages::registerMap(tagMap_type map)
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream debugOut;
    debugOut << "Languages::registerMap() - Attempting to register map @ " <<
      (void *)map;
@@ -463,7 +463,7 @@ bool Languages::registerMap(tagMap_type map)
    
    // Firstly, we need to see if this is already registered..
    if (tagMaps.find((tagMap_type*)&map) != tagMaps.end()) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("Languages::registerMap() - Map already exists");
 #endif
 
@@ -474,7 +474,7 @@ bool Languages::registerMap(tagMap_type map)
    // Okay, good enough, add it!
    (void)tagMaps.insert((tagMap_type*)&map);
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("Languages::registerMap() - Map array added to the set (" +
 	 String::convert(tagMaps.size()) + " maps in the set)");
 #endif
@@ -491,7 +491,7 @@ bool Languages::registerMap(tagMap_type map)
  */
 void Languages::deregisterMap(const tagMap_type map)
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream debugOut;
    debugOut << "Languages::registerMap() - Attempting to deregister map @ " <<
      (void *)map;
@@ -551,7 +551,7 @@ const std::string
 {
    // Did we find the language?
    if (languageData != 0) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("Languages::get() - Attempting to get data from " + 
 	    languageData->getLanguageCode());
 #endif
@@ -566,7 +566,7 @@ const std::string
 
       // Can we try the default language?
       if (defaultLanguage != 0) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
 	 debug("Languages::get() - Attempting to get data from default "
 	       "language");
 #endif

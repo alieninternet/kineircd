@@ -236,7 +236,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
       // Try and determine the domain
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPV4_TCP
       if ((domain == "IPV4") || (domain == "TCP/IPV4")) {
-# ifdef KINE_DEBUG_PSYCHO
+# ifdef KINE_DEBUG
 	 debug("ListenerConfig::classHandler() - TCP/IPv4 socket chosen");
 # endif
 	 domainType = DOMAIN_IPV4;
@@ -244,7 +244,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 #endif
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPV6_TCP
       if ((domain == "IPV6") || (domain == "TCP/IPV6")) {
-# ifdef KINE_DEBUG_PSYCHO
+# ifdef KINE_DEBUG
 	 debug("ListenerConfig::classHandler() - TCP/IPv6 socket chosen");
 # endif
 	 domainType = DOMAIN_IPV6;
@@ -252,7 +252,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 #endif
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPX_SPX
       if ((domain == "IPX") || (domain == "SPX") || (domain == "IPX/SPX")) {
-# ifdef KINE_DEBUG_PSYCHO
+# ifdef KINE_DEBUG
 	 debug("ListenerConfig::classHandler() - IPX/SPX socket chosen");
 # endif
 	 domainType = DOMAIN_IPX;
@@ -260,7 +260,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 #endif
 #ifdef LIBAISUTIL_HAVE_SOCKET_UNIX
       if (domain == "UNIX") {
-# ifdef KINE_DEBUG_PSYCHO
+# ifdef KINE_DEBUG
 	 debug("ListenerConfig::classHandler() - UNIX socket chosen");
 # endif
 	 domainType = DOMAIN_UNIX;
@@ -278,7 +278,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
    if (domainType == DOMAIN_UNKNOWN) {
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPV4_TCP
       if (false) { // some check needs to go here..
-# ifdef KINE_DEBUG_PSYCHO
+# ifdef KINE_DEBUG
 	 debug("ListenerConfig::classHandler() - "
 	       "TCP/IPv4 socket determined from address");
 # endif
@@ -287,7 +287,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 #endif
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPV6_TCP
       if (false) { // some check needs to go here..
-# ifdef KINE_DEBUG_PSYCHO
+# ifdef KINE_DEBUG
 	 debug("ListenerConfig::classHandler() - "
 	       "TCP/IPv6 socket determined from address");
 # endif
@@ -318,7 +318,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 	 return false;
       }
       
-# ifdef KINE_DEBUG_PSYCHO
+# ifdef KINE_DEBUG
       debug("ListenerConfig::classHandler() - Creating a UNIX socket...");
 # endif
       // Create the socket and set it up
@@ -414,7 +414,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 	 }
       }
       
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("Port discovered was " + String::convert(port));
 #endif
       

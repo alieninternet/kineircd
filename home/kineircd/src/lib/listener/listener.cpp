@@ -41,7 +41,7 @@ using namespace Kine;
  */
 const bool Listener::listen(void)
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream output;
    output << "Listener::listen() on file descriptor " << socket.getFD() <<
      " (" << socket.getLocalAddress() << " port " <<
@@ -51,7 +51,7 @@ const bool Listener::listen(void)
    
    // Make sure we are not already listening, and that the socket exists
    if (listening) {
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
       debug("Already listening on the socket");
 #endif
       return false;
@@ -59,7 +59,7 @@ const bool Listener::listen(void)
 
    // Try and listen..
    if (!socket.listen(listenBacklog)) {
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
       debug("Could not listen on " + socket.getLocalAddress() + ": " +
 	    socket.getErrorMessage());
 #endif

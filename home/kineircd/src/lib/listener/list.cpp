@@ -54,7 +54,7 @@ ListenerList::~ListenerList(void)
  */
 void ListenerList::startAll(void)
 {
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
    debug("ListenerList::startAll() - Starting " + 
 	 String::convert(listeners.size()) + " listening sockets");
 #endif

@@ -57,7 +57,7 @@ ModuleDescriptor::~ModuleDescriptor(void)
 ModuleDescriptor* const ModuleDescriptor::loadModule(const String& filename,
 						     String& errString) 
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("ModuleDescriptor::loadModule() - Trying to load " + filename);
 #endif
    
@@ -66,13 +66,13 @@ ModuleDescriptor* const ModuleDescriptor::loadModule(const String& filename,
    if ((handle = lt_dlopen(filename.c_str())) == (void*)0) {
       // Set the error string
       errString = lt_dlerror();
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("ModuleDescriptor::loadModule() - lt_dlopen() gave: " + errString);
 #endif
       return 0;
    }
 
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream out;
    out << "ModuleDescriptor::loadModule() - Loaded " << filename << 
      " with an initial handle @ " << (void *)&handle;
@@ -96,7 +96,7 @@ ModuleDescriptor* const ModuleDescriptor::loadModule(const String& filename,
       return 0;
    }
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream out2;
    out2 << "ModuleDescriptor::loadModule() - Running the init function in " <<
      filename << " @ " << (void *)initFunction;
@@ -118,7 +118,7 @@ ModuleDescriptor* const ModuleDescriptor::loadModule(const String& filename,
       return 0;
    }
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream out3;
    out3 << "ModuleDescriptor::loadModule() - Returning module @ " <<
      (void *)module;

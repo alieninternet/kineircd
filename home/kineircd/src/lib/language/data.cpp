@@ -65,7 +65,7 @@ void Languages::LanguageData::mergeWith(const Languages::LanguageData& newData)
 {
    // Firstly, if the given data has more tags than we know of, resize ourself
    if (newData.tagData.size() > tagData.size()) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("Languages::LanguageData::mergeWith() - Resizing data set to " +
 	    String::convert(newData.tagData.size()));
 #endif
@@ -76,14 +76,14 @@ void Languages::LanguageData::mergeWith(const Languages::LanguageData& newData)
    for (unsigned int i = 0; i < newData.tagData.size(); i++) {
       // Does data exist at this point
       if (newData.tagData[i] != 0) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
 	 debug("Languages::LanguageData::mergeWith() - TID #" +
 	       String::convert(i) + " has new data");
 #endif	
  
 	 // Okay, it has data. Do we have data at this point?
 	 if (tagData[i] != 0) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
 	    debug("Languages::LanguageData::mergeWith() - ^^ Old data being "
 		  "removed");
 #endif
@@ -99,7 +99,7 @@ void Languages::LanguageData::mergeWith(const Languages::LanguageData& newData)
    
    // Finally, check the revisions, if the new one is "newer", change ours..
    if (newData.fileRevision > fileRevision) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("Languages::LanguageData::mergeWith() - Revision being changed "
 	    "to " + String::convert(newData.fileRevision));
 #endif
@@ -115,20 +115,20 @@ const std::string
 			       const Languages::parameterList_type* const
 			       parameters) const
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("Languages::LanguageData::get() - Requested TID #" +
 	 String::convert(tagID) + " from language " + languageCode);
 #endif
 
    // Make sure the tag is valid..
    if ((tagID == 0) || (tagID > tagData.size())) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("Languages::LanguageData::findTag() - Invalid TID given");
 #endif
       return "";
    }
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream out;
    out << "Languages::LanguageData::findTag() - Returning data @ " << 
      (void *)tagData[tagID - 1];

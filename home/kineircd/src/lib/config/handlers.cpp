@@ -149,7 +149,7 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleNetworkName)
    // Set it happily
    dataClass.*((String ConfigData::*)dataVariable) = values.front();
       
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("Config::varHandleNetworkName() -> '" + 
 	 dataClass.*((String ConfigData::*)dataVariable) + '\'');
 #endif

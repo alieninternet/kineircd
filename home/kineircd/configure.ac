@@ -565,32 +565,17 @@ dnl Developer stuff
 dnl
 AC_MSG_CHECKING([debugging parameter])
 AC_ARG_ENABLE(debugging,
-              AC_HELP_STRING([--enable-debugging=<yes|extended|psycho>],
+              AC_HELP_STRING([--enable-debugging],
                              [Enable debugging (for developers)]),
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
      kineircd_test_have_debugging=no
    else
-     if test "$enableval" = "psycho"; then
-       AC_MSG_RESULT([yes (psycho)])
-       AC_DEFINE(KINE_DEBUG_PSYCHO,1,[psychotic-debugging?])
-       AC_DEFINE(KINE_DEBUG_EXTENDED,1,[extended debugging?])
-       AC_DEFINE(KINE_DEBUG,1,[debugging?])
-       AC_DEFINE(KINE_DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
-       kineircd_test_debugging=yes
-     elif test "$enableval" = "extended"; then
-       AC_MSG_RESULT([yes (extended)])
-       AC_DEFINE(KINE_DEBUG_EXTENDED,1,[extended debugging?])
-       AC_DEFINE(KINE_DEBUG,1,[debugging?])
-       AC_DEFINE(KINE_DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
-       kineircd_test_debugging=yes
-     else
-       AC_MSG_RESULT(yes)
-       AC_DEFINE(KINE_DEBUG,1,[debugging?])
-       AC_DEFINE(KINE_DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
-       kineircd_test_debugging=yes
-     fi
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(KINE_DEBUG,1,[debugging?])
+     AC_DEFINE(KINE_DEBUG_ASSERT,1,[do assert() calls for sanity?])
+     kineircd_test_debugging=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
@@ -598,13 +583,6 @@ AC_ARG_ENABLE(debugging,
  ])
 AM_CONDITIONAL(KINEIRCD_COMPILE_LIB_DEBUG,
 	       [test x$kineircd_test_debugging = xyes])
-
-
-dnl -------------------------------------------------------------------------
-dnl  Determining installation information
-dnl -------------------------------------------------------------------------
-dnl stuff goes here, would like to do it 'apache style' tho :)
-
 
 dnl -------------------------------------------------------------------------
 dnl  Creating files

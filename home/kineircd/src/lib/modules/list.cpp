@@ -63,7 +63,7 @@ struct checkKey {
 ModuleDescriptor* const ModuleList::loadModule(const String& filename,
 					 String& errString)
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("ModuleList::loadModule() - Trying to load " + filename);
 #endif
 
@@ -76,7 +76,7 @@ ModuleDescriptor* const ModuleList::loadModule(const String& filename,
       return 0;
    }
 
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
    debug("ModuleList::loadModule() - Loaded module: " + filename);
 #endif
 
@@ -97,7 +97,7 @@ ModuleDescriptor* const ModuleList::loadModule(const String& filename,
    // Okay then, if we got this far we can add this module to the list
    modules.push_back(descriptor);
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("ModuleList::loadModule() - Added " +
 	 descriptor->getModule().getVersionString() + 
 	 " to the module list (" + String::convert(modules.size()) +
@@ -125,7 +125,7 @@ ModuleDescriptor* const ModuleList::loadModule(const String& filename,
  */
 void ModuleList::startAll(void) const
 {
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
    debug("ModuleList::startAll() - Starting " + 
 	 String::convert(modules.size()) + " modules");
 #endif
@@ -133,7 +133,7 @@ void ModuleList::startAll(void) const
    // Run through the list of modules and call their start functions
    for (modulesList_type::const_iterator it = modules.begin(); 
 	it != modules.end(); it++) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("ModuleList::startAll() - Starting: " +
 	    (*it)->getModule().getVersionString());
 #endif
@@ -155,7 +155,7 @@ void ModuleList::startAll(void) const
  */
 void ModuleList::stopAll(void)
 {
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
    debug("ModuleList::stopAll() - Stopping " + 
 	 String::convert(modules.size()) + " modules");
 #endif
@@ -163,7 +163,7 @@ void ModuleList::stopAll(void)
    // Run through the list of modules to stop and delete them all
    for (modulesList_type::const_iterator it = modules.begin(); 
 	it != modules.end(); it++) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug("ModuleList::stopAll() - Stopping: " +
 	    (*it)->getModule().getVersionString());
 #endif

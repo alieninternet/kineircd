@@ -121,7 +121,7 @@ void Daemon::initInstance(void)
    // Create the new instance, then!
    instance = new Daemon();
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream debugOut;
    debugOut << "Daemon::initInstance() - Created new instance @ " << instance;
    debug(debugOut.str());
@@ -134,7 +134,7 @@ void Daemon::initInstance(void)
  */
 void Daemon::newConnection(Listener& listener)
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("Daemon::newConnection() - New connection on file descriptor " +
 	 String::convert(listener.getFD()));
 #endif
@@ -144,13 +144,13 @@ void Daemon::newConnection(Listener& listener)
    
    // Check if that worked..
    if (newSocket == 0) {
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
       debug("A null socket was returned from the listener!");
 #endif
       return;
    }
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("New socket FD = " + String::convert(newSocket->getFD()) +
 	 "; Remote address is " + newSocket->getRemoteAddress() +
 	 " on port " + String::convert(newSocket->getRemotePort()));
@@ -183,7 +183,7 @@ void Daemon::newConnection(Listener& listener)
  */
 bool Daemon::registerProtocol(ProtocolInfo& info)
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream output;
    output << "Daemon::registerProtocol() - Attemping to add protocol '" <<
      info.description.name << "' of type #" << info.description.type;
@@ -192,7 +192,7 @@ bool Daemon::registerProtocol(ProtocolInfo& info)
    
    // Look for the protocol first - see if it is not already added
    if (protocols.find(info.description.key) != protocols.end()) {
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
       debug("Daemon::registerProtocol() - Unable to register '" +
 	    String(info.description.name) + '\'');
 #endif
@@ -214,7 +214,7 @@ bool Daemon::registerProtocol(ProtocolInfo& info)
  */
 void Daemon::deregisterProtocol(const ProtocolInfo& info)
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("Daemon::deregisterProtocol() - Attempting to remove protocol '" +
 	 String(info.description.name) + '\'');
 #endif
@@ -230,7 +230,7 @@ void Daemon::deregisterProtocol(const ProtocolInfo& info)
 ProtocolInfo* const Daemon::findProtocol(const ProtocolInfo::Type::type type,
 					 const std::string& name) const
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug("Daemon::findProtocol() - Looking for protocol '" +
 	 name + "' of type type #" + String::convert(type));
 #endif
@@ -254,7 +254,7 @@ ProtocolInfo* const Daemon::findProtocol(const ProtocolInfo::Type::type type,
  */
 bool Daemon::registerLogger(Logger& logger)
 {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream output;
    output << "Daemon::registerLogger() - Attemping to add logger @ " << 
      &logger;
@@ -263,7 +263,7 @@ bool Daemon::registerLogger(Logger& logger)
    
    // Confirm the logger is not already registered
    if (loggers.find(&logger) != loggers.end()) {
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
       debug("Daemon::registerLogger() - Logger already registered");
 #endif
       return false;
@@ -307,7 +307,7 @@ struct logLine {
  */
 void Daemon::log(const std::string& str, const Logger::Mask::type mask)
 {
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
    debug("Log::sendLoggers(\"" + str + "\", " + String::convert(mask) + ");");
 #endif
    
@@ -341,7 +341,7 @@ bool Daemon::run(void)
    // Start listening on all listeners..
    config().getListenerList().startAll();
 
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
    debug("Daemon::run() - Initialising main loop");
 #endif
 
@@ -381,13 +381,13 @@ bool Daemon::run(void)
       switch (select(maxDescriptors, &inFDtemp, &outFDtemp,
 		     SELECT_TYPE_ARG234 NULL, SELECT_TYPE_ARG5 NULL)) {
        case -1: // Select aborted (caused by a signal, usually)
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG
 	 perror("Daemon::run() - select()");
 #endif
 	 break;
 	 
        case 0: // Select timed out, no descriptor change
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
 	 debug("Doing nothing...");
 #endif
 	 break;
@@ -416,7 +416,7 @@ bool Daemon::run(void)
 	       if (FD_ISSET((*it)->getSocket().getFD(), &inFDtemp)) {
 		  // Tell the connection it has stuff waiting to read
 		  if (!(*it)->handleInput()) {
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
 		     debug("Destroying connection on fd " + 
 			   String::convert((*it)->getSocket().getFD()));
 #endif
