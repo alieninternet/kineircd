@@ -131,7 +131,7 @@ namespace Kine {
 	   { return tagCount; };
 	 
 	 // Friends
-	 friend struct LanguageConfig;
+	 friend struct Languages;
       };
 
     private:
@@ -186,6 +186,9 @@ namespace Kine {
       // Return the single instance of this class (hopefully it exists ;)
       static Languages& getInstance(void)
 	{ return *instance; };
+
+      // Load a given language file
+      bool loadFile(const std::string& fileName, std::string& errString);
       
       // Add/remove/process tag name/ID correlation maps
       bool registerMap(tagMap_type map);
@@ -223,11 +226,6 @@ namespace Kine {
 			    const parameter_type& p2,
 			    const parameter_type& p3,
 			    const parameter_type& p4) const;
-      
-      /* Friends -- LanguageConfig:: needs to fiddle with our private bits..
-       * *giggles* ;)
-       */
-      friend struct LanguageConfig;
    }; // class Languages
 
    

@@ -27,8 +27,12 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
-#include <cctype>
 #include <algorithm>
+#include <iostream>
+#include <fstream>
+#include <cctype>
+#include <cstdlib>
+#include <aisutil/string/tokens.h>
 
 #include "kineircd/languages.h"
 #include "kineircd/config.h"
@@ -36,6 +40,7 @@
 
 using namespace Kine;
 using AISutil::String;
+using AISutil::StringTokens;
 
 
 // Our instance...
@@ -44,9 +49,9 @@ Languages* Languages::instance = 0;
 
 // Two replacement characters..
 const char* const Languages::replacementObjectGlyph = 
-  "\357\277\274"; // <=- Unicode U0FFFC; UTF-8 0xEF 0xBF 0xBC
+  "\357\277\274"; // <=- Unicode U+0FFFC; UTF-8 0xEF 0xBF 0xBC
 const char* const Languages::replacementCharacterGlyph =
-  "\357\277\275"; // <=- Unicode U0FFFD; UTF-8 0xEF 0xBF 0xBD
+  "\357\277\275"; // <=- Unicode U+0FFFD; UTF-8 0xEF 0xBF 0xBD
 
 
 /* initInstance - Create the single instance of this class
@@ -111,6 +116,279 @@ void Languages::processTagMap(tagMap_type map) const
       // We must have found it - put the tag ID we found in the map
       map[i].tagID = (*it).second;
    }
+}
+
+
+/* loadFile - Load a given language file
+ * Original 21/08/2002 simonb
+ */
+bool Languages::loadFile(const std::string& fileName, std::string& errString)
+{
+#ifdef KINE_DEBUG_PSYCHO
+   debug("Languages::loadFile() - Attemping to open '" + fileName +
+	 '\'');
+#endif
+   
+   // Open the file
+   std::ifstream file(fileName.c_str());
+   
+   // Check that we opened the file properly
+   if (!file) {
+      errString = "Could not open the file";
+      return false;
+   }
+   
+#ifdef KINE_DEBUG_PSYCHO
+   debug("Languages::loadFile() - Beginning read loop");
+#endif
+   
+   // Stuff we need during the read
+   String line;
+   String tag;
+   String data;
+   unsigned long lineNum = 0;
+
+   // Create what may be either our permanent or temporary home for this data
+   LanguageData* languageData = new LanguageData();
+   
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream out;
+   out << "Languages::loadFile() - Current language data @ " <<
+     (void *)languageData;
+   debug(out.str());
+#endif
+
+   // Loop through the file..
+   for (;;) {
+      // Read the line
+      std::getline(file, line);
+
+      // Make sure the file is still happy..
+      if (!file.good() || file.eof()) {
+	 break;
+      }
+      
+      // Increase the line counter
+      lineNum++;
+      
+      // Trim the line
+      line = line.trim();
+      
+      // Is the line empty, or perhaps even a comment?
+      if (line.empty() || (line[0] == '#')) {
+	 // Skip this line!
+	 continue;
+      }
+      
+      // Rip out the two sides to the token
+      StringTokens st(line);
+      tag = st.nextToken('=').trim().toUpper();
+      data = st.rest().trim();
+
+      // Clear the line variable.. We will reuse it soon..
+      line.clear();
+      
+      // Process the data: substitute anything we know now
+      for (std::string::size_type i = 0; i < data.length(); i++) {
+	 if (data[i] == '%') {
+	    /* Check the next character. If it's another percentage sign, let
+	     * it get copied, otherwise convert it over to the super secret
+	     * hush hush magical mystical char... which is a null.. ;)
+	     */
+	    if (data[i + 1] == '%') {
+	       i++;
+	    } else {
+	       line += '\0';
+	       continue;
+	    }
+	 }
+	 
+	 // Escaped char?
+	 if (data[i] == '\\') {
+	    // Next char
+	    i++;
+	    
+	    // If this is a three-digit number, we can convert it flat..
+	    if ((data.length() > (i + 2)) &&
+		isdigit(data[i]) &&
+		isdigit(data[i + 1]) &&
+		isdigit(data[i + 2])) {
+	       // Convert the three digits found from octal to a long
+	       long value = strtol(data.substr(i, 3).c_str(), NULL, 8);
+	       
+	       /* Skip over the next numbers.. (the last will be skipped
+		* automatically, so we only need to skip two of them)
+		*/
+	       i += 2;
+	       
+	       // Is this a naughty char?
+	       if ((value > 0) && (value < 256)) {
+		  // Replace our 'current' character for further analysis..
+		  data[i] = char(value);
+	       } else {
+		  // Force this character to be replaced
+		  data[i] = 0;
+	       }
+	    } else {
+	       /* Something else, a single character tells us what to do then!
+		* If this gets larger, reconsider using 512 byte table..
+		*/
+	       switch (data[i]) {
+		case '\\': // A slash..
+		  break; // just skip to the bit where we copy the char flat
+		  
+		case 'b': // Bold
+		  line += '\002';
+		  continue;
+		  
+		case 'c': // Colour start sequence char
+		  line += '\003';
+		  continue;
+		  
+		case 'g': // Beep
+		  line += '\007';
+		  continue;
+		  
+		case 'r': // Reverse
+		  line += '\026';
+		  continue;
+		  
+		case 's': // Space (often used at the end of a line as a hack)
+		  line += '\040';
+		  continue;
+		  
+		case 't': // Horizontal tab
+		  line += '\011'; // should we just use 8 spaces here??
+		  continue;
+		  
+		case 'u': // Underline
+		  line += '\037';
+		  continue;
+		  
+		default:
+		  // nfi, skip it..
+		  continue;
+	       }
+	    }
+	 }
+	    
+	 // Make sure this character isn't going to cause problems..
+	 if ((data[i] == 0) ||
+	     (data[i] == '\b') ||
+	     (data[i] == '\n') ||
+	     (data[i] == '\v') ||
+	     (data[i] == '\f') ||
+	     (data[i] == '\r') ||
+	     ((data[i] >= '\021') && (data[i] <= '\024'))) {
+	    /* Okay, it's a naughty char, we must replace it. Following
+	     * Unicode specifications, here we replace the bad character
+	     * with the "replacement" character.
+	     * 
+	     * Since all these bad chars are in the control char region,
+	     * I have considered up-converting them to their symbols, so
+	     * they'd appear like a dumb terminal in debug mode. It would
+	     * be fairly easy, since all you need to do is add 0x2400 and
+	     * convert it to UTF-8. I reconsidered this, since the
+	     * characters aren't supposed to be there anyway, so a single,
+	     * boring, replacement character does the job.
+	     * 
+	     * Then again, in the time it's taken me to write out my
+	     * reasoning, I probably could have written, and tested an
+	     * upconverter.. Hmm.. :)
+	     */
+	    line += replacementCharacterGlyph;
+	    continue;
+	 } 
+	    
+	 // If we got here, just copy the char over
+	 line += data[i];
+      }
+
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Languages::loadFile() - Line " + String::convert(lineNum) +
+	    " data: '" + line + '\'');
+#endif
+      
+      // Check the first letter of the tag...
+      if (tag[0] == '.') {
+	 // Strip away the first char and convert it to upper-case
+	 tag = tag.substr(1);
+	 
+#ifdef KINE_DEBUG_PSYCHO
+	 debug("Languages::LoadFile() - Line " + String::convert(lineNum) +
+	       " tag: '" + tag + "' - Control tag");
+#endif
+	 
+	 // Do something with the control tag (this is ugly)
+	 if (tag == "LANGCODE") {
+	    languageData->languageCode =
+	      data.toLower().substr(0, data.find(' '));
+	 } else if (tag == "LANGNAME") {
+	    languageData->languageName = data;
+	 } else if (tag == "LANGNOTE") {
+	    languageData->languageNote = data;
+	 } else if (tag == "MAINTAINER") {
+	    languageData->maintainer = data;
+	 } else if (tag == "REVISION") {
+	    languageData->fileRevision = atol(data.c_str());
+	 }
+      } else {
+	 tagID_type tagID;
+	 
+	 // Look for this tag in the dictionary
+	 tagDictionary_type::const_iterator it = tagDictionary.find(tag);
+	 
+	 // Did we find it?
+	 if (it == tagDictionary.end()) {
+	    // We did not find it - make a new tag..
+	    tagID = ++highestTagID;
+	    
+#ifdef KINE_DEBUG_PSYCHO
+	 debug("Languages::loadFile() - Line " + String::convert(lineNum) +
+	       " tag: '" + tag + "' - TID #" + String::convert(tagID) +
+	       " (new)");
+#endif
+
+	    // .. and insert its TUID into the tag dictionary
+	    tagDictionary.insert(tagDictionary_type::value_type(tag, tagID));
+	 } else {
+	    // Use the tag ID we found
+	    tagID = (*it).second;
+	    
+#ifdef KINE_DEBUG_PSYCHO
+	 debug("Languages::loadFile() - Line " + String::convert(lineNum) +
+	       " tag: '" + tag + "' - TID #" + String::convert(tagID) +
+	       " (found)");
+#endif
+	 }
+
+	 // If the language data vector is not big enough yet, resize it
+	 if (languageData->tagData.size() < tagID) {
+	    languageData->tagData.resize(tagID);
+	 }
+	 
+	 // Copy the tag's data into this language's tag data vector
+	 languageData->tagData[tagID - 1] = new std::string(line);
+
+	 // Increase the tag counter..
+	 languageData->tagCount++;
+      }
+   }
+
+   // Add this language to the list..
+   languageDataList.insert(languageDataList_type::value_type
+			   (languageData->languageCode, languageData));
+   
+   // If there is no default language, make this language the default..
+   if (defaultLanguage == 0) {
+      defaultLanguage = languageData;
+   }
+   
+   // Close the file!
+   file.close();
+   
+   // Presume everything went okay!
+   return true;
 }
 
 
