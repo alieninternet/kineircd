@@ -26,7 +26,7 @@
 
 # include <string>
 # include <kineircd/user.h>
-# include <kineircd/receiver.h>
+# include <kineircd/server.h>
 
 namespace Kine {
    namespace LibIRC2 {
@@ -41,7 +41,31 @@ namespace Kine {
 	   findMessageTarget(const std::wstring& target,
 			     Receiver::Directivity& directivity,
 			     const bool includeServices = false);
-	 
+
+
+	 /*!
+	  * \brief Find a server as a target
+	  * 
+	  * The IRC-2 protocol contains a querk where you can specify a
+	  * client's name as a server, and the software will use the server
+	  * that client is connected to. Also, you can specify a partial
+	  * server name in the form of a mask, and the software will use the
+	  * first match it finds.
+	  * 
+	  * If the mask given is not a mask, the server will first look for a
+	  * server name, then a client's name.
+	  * 
+	  * If the mask given is a mask (it contains '*' or '?') then the
+	  * server name list will be checked and the first matching server
+	  * whose name matches the mask given will be returned.
+	  * 
+	  * \param name The mask of the entity to look for
+	  * \return A pointer to a server record, or a null pointer
+	  * \retval 0 A server was not found matching the name given
+	  */
+	 extern Server* const findServerTarget(const std::wstring& mask);
+
+
 	 //! Make a user\@host string
 	 inline static const std::wstring
 	   makeUserHostIdent(const Kine::Client& client)

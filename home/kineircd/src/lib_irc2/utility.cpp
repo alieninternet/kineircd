@@ -103,3 +103,34 @@ Kine::Receiver* const
    return 0;
 }
 
+
+/* findServerTarget - Find a server as a target from the given mask
+ * Original 29/11/2003 simonb
+ */
+Kine::Server* const Utility::findServerTarget(const std::wstring& mask)
+{
+   // Is the given mask actually a mask?
+   if (mask.find_first_of(L"*?") == std::wstring::npos) {
+      // It's not a mask, so first of all, check the server list
+      Server* const serverPtr = myNetwork().findServer(mask);
+      if (serverPtr != 0) {
+	 // Found it, return it!
+	 return serverPtr;
+      }
+      
+      // Okay, look for a client name instead then..
+      Client* const clientPtr = myNetwork().findClient(mask);
+      if (clientPtr != 0) {
+	 // Found it, return server the client is connected to
+	 return &(clientPtr->getServer());
+      }
+   } else {
+      // It's a mask, go over the server list
+#ifdef KINE_DEBUG
+# warning "Cannot check server list with masks until query facility is written"
+#endif
+   }
+   
+   // Hrrm, out of ideas - return a null pointer
+   return 0;
+}
