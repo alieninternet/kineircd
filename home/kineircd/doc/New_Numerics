@@ -97,7 +97,7 @@ _______________________________________________________________________________
           error: No route to host" etc)
 
 
-673 - RPL_WHOISSECURE
+671 - RPL_WHOISSECURE
       <nick> <type> [:is connected via a secure connection]
 
 
