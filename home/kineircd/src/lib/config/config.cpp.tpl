@@ -36,10 +36,76 @@
 
 using namespace Kine;
 
-[+DEFINE output-class-definition-table+]const AISutil::ConfigParser::defTable_type Config::[+tableClass+] = {[+FOR definition+]
+[+
+   ;;; Create the variable holding the list thingies
+   (define defList '())
+
+
+
+   ;;; clearDefList - Clear the definition list
+   (define (clearDefList)
+      (set! defList '()))
+
+
+
+   ;;; addDef - Add a definition to the list for analysis later..
+   (define (addDef defName)
+      (set! defList
+         (cons defName defList)))
+      
+      
+      
+   ;;; calcDefChars - Determine the minimum number of necessary characters
+   (define (calcDefChars defName)
+      (let
+         ;; The number of characters. To start with, we presume just the one
+	 ;; character is needed for the name to remain an individual..
+         ((charCount 1))
+
+	 ;; Iterate through the list..
+         (for-each
+            (lambda (name)
+	       ;; There's no point continuing if the number of characters
+	       ;; within this name is greater than the number of characters
+	       ;; we currently require for a match. There's also no point
+	       ;; comparing this string with itself, since it would serve
+	       ;; to be useless. 
+	       (if (and
+	              (>= (string-length name) charCount)
+		      (not (= name defName)))
+	          (letrec ((nextChar
+		              (lambda ()
+			         ;; Increase the char count, and examine the
+				 ;; next character..
+ 			         (display (sprintf "%s - %s\n" defName name))
+				 (set! charCount (+ charCount 1))
+				 (examineNames)))
+				 
+		           (examineNames
+		              (lambda ()
+	                         ;; Check that the first 'n+1' relevant chars,
+				 ;; known so far, of both names are equal. If
+				 ;; they are, then we have not yet found the
+				 ;; minimum number of unique characters
+				 ;; required for individuality yet...
+				 (if (=
+				        (substring name 0 charCount)
+					(substring defName 0 charCount))
+					
+				    ;; Increase the char count, and repeat..
+				    (nextChar)))))
+				 
+		     ;; Start examining these two names..
+		     (examineNames))))
+	    defList)
+	 
+	 ;; Return the char count we found..
+	 charCount))
+      
+ +][+DEFINE output-class-definition-table+]const AISutil::ConfigParser::defTable_type Config::[+tableClass+] = {[+(clearDefList)+][+FOR definition+][+(addDef (string-upcase (get "name")))+][+ENDFOR+][+FOR definition+]
 [+IF .condition+]#ifdef [+condition+]
 [+ENDIF+]     {
-	"[+(string-upcase (get "name"))+]", (sizeof("[+name+]") - 1),
+	"[+(string-upcase (get "name"))+]", [+(calcDefChars (string-upcase (get "name")))+],
 	  [+IF .hasVariable+](void*)&Config::def[+IF .variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+][+ELSE+]0[+ENDIF+],
 	  [+IF .varHandler+]&[+varHandler+][+ELSE+]0[+ENDIF+],
 	  [+IF .definition+]&defClass[+(getPrefix)+][+name+][+ELSE+]0[+ENDIF+],
