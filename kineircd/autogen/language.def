@@ -1085,6 +1085,13 @@ tag = {
 };
 
 tag = {
+   name		= "irc2user_ERROR_CLOSING_LINK";
+   fields	= "0 = quit reason";
+   components	= "mod_irc2user";
+   data_en	= "Closing link: %p0";
+};
+
+tag = {
    name		= "irc2user_HELP_CMD_ACCEPT";
    components	= "mod_irc2user";
    data_en	= "This command is only useful with the user mode '+g' set. "
