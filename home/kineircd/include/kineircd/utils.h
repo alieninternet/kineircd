@@ -59,6 +59,7 @@ namespace Kine {
 	 // A digest. SHA1 returns 160 bits, this makes it easier to manage.
 	 union digest_type {
 	    unsigned char c[20];
+	    signed char s_char[20];
 	    unsigned long l[5];
 	    
 	    // Boolean equals operator
