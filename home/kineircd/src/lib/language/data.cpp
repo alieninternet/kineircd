@@ -1,8 +1,8 @@
 /* $Id$
  * Language data container (one per language)
  *
- * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2002 KineIRCd Development Team
+ * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -31,3 +31,20 @@
 
 using namespace Kine;
 
+
+/* findTag - Look for a given TID's data, and return it if possible
+ * Original 16/03/2003 simonb
+ */
+const std::string* const LanguageData::findTag(const tagID_type tagID) const
+{
+   // Grab whatever is found at the given TID
+   const std::string& data = tagData[tagID];
+   
+   // If the string is valid, return it
+   if (!data.empty()) {
+      return &data;
+   }
+   
+   // Nothing found, return null and hope for the best
+   return 0;
+}

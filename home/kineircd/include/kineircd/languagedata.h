@@ -25,13 +25,53 @@
 #ifndef _INCLUDE_KINEIRCD_LANGUAGEDATA_H_
 # define _INCLUDE_KINEIRCD_LANGUAGEDATA_H_ 1
 
+# include <string>
+# include <vector>
+
 namespace Kine {
    class LanguageData {
     public:
       // The tag identifier type
       typedef unsigned int tagID_type;
+      typedef std::vector <std::string> tagData_type;
       
-      // Nothing must here yet :(
+    private:
+      std::string languageCode;			// RFC-3066 compliant code
+      std::string languageName;			// Name of the language (UTF-8)
+      std::string languageNote;			// Optional notice
+      std::string maintainer;			// Maintainer of the file
+      unsigned long fileRevision;		// File revision
+      unsigned long tagCount;			// *real* number of tags
+
+      tagData_type tagData;			// The tag data itself!
+      
+    public:
+      // Constructor
+      LanguageData(void)
+	: fileRevision(0),
+          tagCount(0)
+	{};
+      
+      // Destructor
+      ~LanguageData(void)
+	{};
+
+      // Look for a given TID's data, and return it if possible
+      const std::string* const findTag(const tagID_type tagID) const;
+      
+      // Grab other stuff..
+      const std::string& getLanguageCode(void) const
+	{ return languageCode; };
+      const std::string& getLanguageName(void) const
+	{ return languageName; };
+      const std::string& getLanguageNote(void) const
+	{ return languageNote; };
+      const std::string& getMaintainer(void) const
+	{ return maintainer; };
+      const unsigned long getFileRevision(void) const
+	{ return fileRevision; };
+      const unsigned long getTagCount(void) const
+	{ return tagCount; };
    };
 };
 
