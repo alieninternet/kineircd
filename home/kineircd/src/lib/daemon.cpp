@@ -184,7 +184,7 @@ Kine::Daemon::~Daemon(void)
 bool Kine::Daemon::init(Config &conf)
 {
 #ifdef DEBUG
-   cerr << "Initialising new server" << endl;
+   std::cerr << "Initialising new server" << std::endl;
 #endif
 
    // Copy the config pointer over
@@ -192,7 +192,7 @@ bool Kine::Daemon::init(Config &conf)
    
    // Reset lists
 #ifdef DEBUG_EXTENDED
-   cerr << "Resetting lists" << endl;
+   std::cerr << "Resetting lists" << std::endl;
 #endif
    failNicknames.clear();
    failChannels.clear();
@@ -213,7 +213,7 @@ bool Kine::Daemon::init(Config &conf)
    
    // Reset variables
 #ifdef DEBUG_EXTENDED
-   cerr << "Setting up variables" << endl;
+   std::cerr << "Setting up variables" << std::endl;
 #endif
    gettimeofday(&currentTime, NULL);
    startTime = getTime();
@@ -252,7 +252,7 @@ bool Kine::Daemon::init(Config &conf)
       // get openssl error?
       logger(&reason, LOGPRI_WARNING);
 # ifndef DEBUG
-      cout << reason << endl;
+      std::cout << reason << std::endl;
 # endif
       
       // For our sanity, just in case.
@@ -268,15 +268,15 @@ bool Kine::Daemon::init(Config &conf)
    Socket *s = 0;
    s = new SocketIPv4(0, 6666, true, false);
    if (!s->setNonBlocking() || !s->setReuseAddress()) {
-      cout << "socketopts fail" << endl; 
+      std::cout << "socketopts fail" << std::endl; 
       return false;
    }
    if (!s->bind()) {
-      cout << "bind fail" << endl;
+      std::cout << "bind fail" << std::endl;
       return false;
    }
    if (!s->listen(LISTEN_MAXQUEUE)) {
-      cout << "listen fail" << endl;
+      std::cout << "listen fail" << std::endl;
       return false;
    }
    listens.push_front(new Listen(s, false));

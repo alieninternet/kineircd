@@ -41,7 +41,7 @@ using namespace Kine;
 void debug(String const &line)
 {
    // Output it to stderr
-   cerr << line << endl;
+   std::cerr << line << std::endl;
    
 //   // Also, log it
 //   Daemon::logger(line, Logger::MASK_DEBUG);
