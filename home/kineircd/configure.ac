@@ -624,6 +624,5 @@ LDFLAGS="$LDFLAGS_SAVE"
 AC_SUBST(INCDIRS)
 AC_OUTPUT([
 	Makefile
-	src/Makefile
 	include/kineircd/kineircdconf.h
 	])
