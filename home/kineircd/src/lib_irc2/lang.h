@@ -26,10 +26,20 @@
 
 # include "libkineircd_irc2/language.h"
 
-// Dodgey macro to grab language stuff
-# define GETLANG(n,...) \
+
+// Dodgey macros to grab language stuff
+# define GETLANG_BY_ID(id,...) \
    Kine::languages().get(user.getLanguageList(), \
-			 Language::tagMap[Language::n].tagID, \
+                         id, \
                          ##__VA_ARGS__)
+
+# define GETLANG(n,...) \
+   GETLANG_BY_ID(Language::tagMap[Language::n].tagID, \
+                 ##__VA_ARGS__)
+
+
+// The prefix used for RPL_WHOISSTAFF status name lookups
+# define WHOISSTAFF_TAG_PREFIX "irc2_RPL_WHOISSTAFF_"
+
 
 #endif // _SRC_MOD_LIBKINEIRCD_IRC2_LANG_H_

@@ -26,10 +26,18 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
+#include <algorithm>
+#include <aisutil/string.h>
+
 #include "kineircd/user.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
+using AISutil::String;
+
+
+// Static stuff..
+const std::string::size_type User::maxStaffStatusLength = 32;
 
 
 /* setAway - Mark the user as being away
@@ -83,5 +91,57 @@ const Error::error_type
       doEventLanguageChange();
    }
    
+   return Error::NO_ERROR;
+}
+
+
+/* changeStaffStatus - Change the staff status
+ * Original 29/04/2003 simonb
+ */
+const Error::error_type User::changeStaffStatus(const std::string& status)
+{
+   // Naughty chars we consider a delimeter
+   static const char* const naughtyChars =
+     "\0!\"#$%&'()*+,-./\\:;<=>?@[\\]^`{|}~";
+   
+   // Make sure the given status is not empty..
+   if (!status.empty()) {
+      /* Set the status, making sure the status is entirely upper-case, is
+       * only one word, and is smaller than the maximum length allowed.
+       */
+      staffStatus =
+	static_cast<const String&>
+	(status.substr(0,
+		       std::min(maxStaffStatusLength,
+				status.find_first_of(naughtyChars)))).toUpper();
+      
+      // broadcast it.
+
+      // Tell ourself..
+      doEventStaffStatusChange();
+      
+      // No worries
+      return Error::NO_ERROR;
+   }
+   
+   // Okay, the status was empty - bounce into 'setStaffOff' then..
+   return setStaffOff();
+}
+
+
+/* setStaffOff - Remove the staff status
+ * Original 29/04/2003 simonb
+ */
+const Error::error_type User::setStaffOff(void)
+{
+   // Clear the status..
+   staffStatus.clear();
+   
+   // broadcast it..
+   
+   // Tell ourself....
+   doEventStaffStatusChange();
+   
+   // Happy chappy..
    return Error::NO_ERROR;
 }

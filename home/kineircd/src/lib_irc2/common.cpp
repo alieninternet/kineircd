@@ -402,15 +402,32 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	 /* If this user is a network staff member (i.e. network services),
 	  * then we should also add this to the list
 	  */
-	 if (false) {
-	    /* We cannot work out what kind of staff member, or we do not have
-	     * the appropriate language data to say what kind of staff member
-	     * this person is, so we'll just say they're a staff member and
-	     * leave it at that.
+	 if (user.isStaff()) {
+	    /* Try to locate an appropriate tag ID which describes this user's
+	     * job..
 	     */
+	    std::string text;
+	    Languages::tagID_type tagID;
+	    if ((tagID = languages().getTagID(WHOISSTAFF_TAG_PREFIX +
+					      user.getStaffStatus())) !=
+		Languages::unknownTagID) {
+	       /* Output the data at the tag we found (and hope there is data
+		* for the user's selected language(s)!!)
+		*/
+	       text = GETLANG_BY_ID(tagID);
+	    } else {
+	       /* We cannot work out what kind of staff member, or we do not
+		* have the appropriate language data to say what kind of staff
+		* member this person is, so we'll just say they're a staff
+		* member and leave it at that.
+		*/
+	       text = GETLANG(irc2_RPL_WHOISSTAFF);
+	    }
+	 
+	    // Send it, with whatever language text we could find..
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSTAFF,
 			u->getNickname(),
-			GETLANG(irc2_RPL_WHOISSTAFF));
+			text);
 	 }
 	 
 	 // If the user is connected via a secure connection, say what type

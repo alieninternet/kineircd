@@ -35,15 +35,24 @@ namespace Kine {
    
    //! A user (refinement of a client)
    class User : public Client {
+    public:
+      //! The maximum length of the 'status status' field
+      static const std::string::size_type maxStaffStatusLength;
+      
     private:
       Name nickname;				//!< User's nickname
       std::string username;			//!< User's username
       std::string hostname;			//!< User's hostname
-      std::string awayMessage;			//!< Away message (empty = off)
+      
+      //! Away message. If this is empty, the user should be considered 'here'
+      std::string awayMessage;
 
+      //! If the user is a helper, this is a single word defining their status
+      std::string staffStatus;
+      
       //! Languages in use by the user
       Languages::languageDataList_type languageList;
-      
+
     protected:
       //! Constructor
       User(const Name& _nickname,
@@ -61,20 +70,26 @@ namespace Kine {
 
       //! An event called whenever the language list is modified
       virtual void doEventLanguageChange(void) {};
+
+      //! An event called whenever the staff status is changed/turned on or off
+      virtual void doEventStaffStatusChange(void) {};
       
     public:
       //! Destructor
       virtual ~User(void)
 	{};
       
+      
       //! Return the users' nickname
       const Name& getNickname(void) const
 	{ return nickname; };
 
+      
       //! Return the users' username / identd reply
       const std::string& getUsername(void) const
 	{ return username; };
 
+      
       //! Return the users' hostname
       const std::string& getHostname(void) const
 	{ return hostname; };
@@ -82,6 +97,7 @@ namespace Kine {
       //! Return the virtual hostname of this user
       virtual const std::string& getVirtualHostname(void) const
 	{ return getHostname(); };
+      
       
       //! Return the away message for this user. If blank, there is none set
       const std::string& getAwayMessage(void) const
@@ -95,7 +111,23 @@ namespace Kine {
       const Error::error_type setAway(const std::string& reason);
       
       //! Set this user as 'here' (or in IRC terminology, 'UNAWAY' ;)
-      const Error::error_type setHere(void);
+      const Error::error_type setHere(void); 
+ 
+      
+      //! Return the user's staff status
+      const std::string& getStaffStatus(void) const
+	{ return staffStatus; };
+      
+      //! Is this user a staff member?
+      const bool isStaff(void) const
+	{ return (!staffStatus.empty()); };
+      
+      //! Change a user's staff status. Empty status is equal to setStaffOff()
+      const Error::error_type changeStaffStatus(const std::string& status);
+
+      //! Remove the user's staff status, if it was even set
+      const Error::error_type setStaffOff(void);
+      
       
       //! Return the languages list
       const Languages::languageDataList_type& getLanguageList(void) const
@@ -105,6 +137,7 @@ namespace Kine {
       const Error::error_type
 	setLanguageList(const Languages::languageDataList_type& languages,
 			const bool secret = false);
+      
       
       //! If this user is local, this will return the local version of this
       virtual const LocalUser* const getLocalSelf(void) const
