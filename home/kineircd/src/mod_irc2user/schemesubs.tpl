@@ -60,7 +60,7 @@ const Subs::subrInfo_type Subs::subrInfoTable[] = {[+FOR subs+]
 	  [+requiredParams+],
 	  [+optionalParams+],
 	  [+restParams+],
-	  Subs::[+
+	  (SCM (*)())Subs::[+
    (schemeName->CName
       (get "name"))
  +]
@@ -68,8 +68,6 @@ const Subs::subrInfo_type Subs::subrInfoTable[] = {[+FOR subs+]
 #endif[+ENDFOR+]
      { 0, 0, 0, 0 }
 };
-
-
 [+== h+]
 [+(make-header-guard "kine")+]
 
@@ -100,7 +98,7 @@ namespace Kine {
 }; // namespace Kine
 
 
-// Define which scheme subrs need to be compiled in[+FOR commands+]
+// Define which scheme subrs need to be compiled in[+FOR subs+]
 # define KINE_MOD_IRC2USER_HAVE_[+
    (string-upcase
       (schemeName->CName
