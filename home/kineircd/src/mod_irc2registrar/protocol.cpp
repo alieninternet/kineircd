@@ -141,13 +141,6 @@ void Registrar::sendError(const char* const error)
  */
 void Registrar::sendPing(void)
 {
-   // Make up some dodgey random stuff
-//   handler->pingpong = 
-//     String::printf("%08lX",
-//		    ((unsigned long)Daemon::getTime() ^
-//		     (unsigned long)(((0xFFFFFFFE + 1.0) * rand()) / 
-//				     RAND_MAX)));
-
    // Set the expectant pong result string appropriately
    pongMatch = 
      Utils::baseXStr((unsigned long)(((0xFFFFFFFE + 1.0) * rand()) / RAND_MAX),
