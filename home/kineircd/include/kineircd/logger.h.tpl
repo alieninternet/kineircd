@@ -27,36 +27,25 @@
 #ifndef _INCLUDE_KINEIRCD_LOGGER_H_
 # define _INCLUDE_KINEIRCD_LOGGER_H_ 1
 
-# include <kineircd/kineircdconf.h>
-
 # include <aisutil/string/string.h>
 
 namespace Kine {
-
    // The top Logger class the actual loggers are derived from
    class Logger {
     public:
       // Bitmask list for a mask (type of log message)
-      enum mask_type {
-	 MASK_NONE = 0x00000000,[+ (define bitvalue 1) +][+ FOR logger_masks +]
-	 MASK_[+name+] = [+
-	    (define newbitvalue (* bitvalue 2))
-	    (define bitvalue newbitvalue)
-            (sprintf "0x%08X" (/ newbitvalue 2))
-          +], // +[+char+][+ ENDFOR logger_masks +]
-         MASK_ALL = 0xFFFFFFFF
+      struct Mask { // <=- should be namespace!
+         enum type {
+	    Nothing                   = 0x00000000,[+ (define bitvalue 1) +][+ FOR logger_masks +]
+	    [+
+	       (define newbitvalue (* bitvalue 2))
+	       (define bitvalue newbitvalue)
+               (sprintf "%-25s = 0x%08X," (get "name") (/ newbitvalue 2))
+             +][+ ENDFOR logger_masks +]
+            Everything                = 0xFFFFFFFF
+         };
       };
    
-      // Logger types (each logger class must set itself to one of these)
-      enum type_type {
-	 TYPE_OTHER,				// Other; eg. module extension
-# ifdef HAVE_SYSLOG_H
-	 TYPE_SYSLOG,				// Syslog interface
-# endif
-	 TYPE_FILE,				// Generic file based log
-	 TYPE_SNOTICE				// Server Notice (via daemon)
-      };
-      
       static const unsigned char maskTableSize = [+ 
          (count "logger_masks")
        +];
@@ -65,52 +54,42 @@ namespace Kine {
       struct maskTable_type {
 	 const char *name;			// Name of the mask
 	 const char chr;			// Character for the mask
-	 const mask_type mask;			// The mask itself
+	 const Mask::type mask;			// The mask itself
       } static const maskTable[maskTableSize];
       
     private:
-      const type_type logType;				// Type of log this is
-      const mask_type logMask;				// OK log message types
+      const Mask::type logMask;				// OK log message types
       
       // Log a string of text
-      virtual void logLine(const AISutil::String &,
-      	                   const mask_type = MASK_HOUSEKEEPING)
-	{};
+      virtual void logLine(const AISutil::String& str,
+      	                   const Mask::type mask) = 0;
       
     public:
       // Constructor
-      Logger(type_type t, mask_type m)
-	: logType(t),
-          logMask(m)
+      Logger(const Mask::type m)
+	: logMask(m)
 	{};
-      
+
       // Destructor
       virtual ~Logger(void) 
 	{};
    
-      // Grab logging type
-      const type_type getType(void) const
-	{ return logType; };
-      
       // Grab logging mask
-      const mask_type getMask(void) const
+      const Mask::type getMask(void) const
 	{ return logMask; };
       
       // Is the log ok?
-      virtual bool ok(void) const
-	{ return true; };
+      virtual bool ok(void) const = 0;
 
       // Pass a line of text to the logging function if it matches our mask
-      void log(const AISutil::String &line,
-               const mask_type mask = MASK_HOUSEKEEPING)
+      void log(const AISutil::String &str, const Mask::type mask)
 	{
 	   if (logMask & mask) {
-	      logLine(line, mask);
+	      logLine(str, mask);
 	   }
 	};
-   };
-   
-};
+   }; // class Logger
+}; // namespace Kine
    
 #endif // _INCLUDE_KINEIRCD_LOGGER_H_
 

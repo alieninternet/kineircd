@@ -34,11 +34,11 @@ namespace Kine {
     private:
       std::ofstream logFile;
       
-      void logLine(const AISutil::String &,
-		   const mask_type = MASK_HOUSEKEEPING);// Log a string of text
+      // Log a string of text
+      void logLine(const AISutil::String& str, const Mask::type mask);
       
     public:
-      LoggerFile(mask_type, const char *);		// Constructor
+      LoggerFile(Mask::type, const char *);		// Constructor
       ~LoggerFile(void);				// Destructor
       
       // Is the log ok?

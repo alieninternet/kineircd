@@ -44,9 +44,9 @@ using AISutil::String;
  * 04/04/2002 simonb - Added PID boolean option
  * 04/04/2002 simonb - Added debugging info
  */
-LoggerSyslog::LoggerSyslog(mask_type mask, const char *processName, 
+LoggerSyslog::LoggerSyslog(Logger::Mask::type mask, const char *processName, 
 			   const bool showPid)
-  : Logger(Logger::TYPE_SYSLOG, mask)
+  : Logger(mask)
 {
    int option = LOG_NDELAY;
 
@@ -77,19 +77,19 @@ LoggerSyslog::~LoggerSyslog(void)
  * 04/04/2002 simonb - Modified for use with new String class
  * 04/04/2002 simonb - Added debugging info
  */
-void LoggerSyslog::logLine(const String &line, const mask_type mask)
+void LoggerSyslog::logLine(const String& str, const Logger::Mask::type mask)
 {
 #ifdef KINE_DEBUG_PSYCHO
-   debug("LoggerSyslog::log(" + line + ')');
+   debug("LoggerSyslog::log(" + str + ')');
 #endif
 
    // Determine what the syslog-relative priority should be (this is shit)
    int priority;
    switch (mask) {[+ FOR logger_masks +]
-    case MASK_[+name+]:
+    case Logger::Mask::[+name+]:
       priority = [+syslogpri+];
       break;[+ ENDFOR logger_masks +]
    }
 
-   syslog(priority, "%s", line.c_str());
+   syslog(priority, "%s", str.c_str());
 }

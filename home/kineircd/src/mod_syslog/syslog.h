@@ -41,11 +41,11 @@ namespace Kine {
    // The syslog logging class
    class LoggerSyslog : public Logger {
     private:
-      void logLine(const AISutil::String &,
-		   const mask_type = MASK_HOUSEKEEPING);// Log a string of text
+      // Log a string of text
+      void logLine(const AISutil::String& str, const Logger::Mask::type);
       
     public:
-      LoggerSyslog(mask_type, const char *, const bool);// Constructor
+      LoggerSyslog(Logger::Mask::type, const char *, const bool);// Constructor
       ~LoggerSyslog(void);				// Destructor
    
       // Is the log ok?

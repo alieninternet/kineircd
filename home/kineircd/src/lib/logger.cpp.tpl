@@ -35,5 +35,5 @@ using namespace Kine;
 // Our list of masks, and how to translate them around nicely
 const Logger::maskTable_type Logger::maskTable[Logger::maskTableSize] = {[+ 
    FOR logger_masks "," +]
-     { "[+name+]", '[+char+]', Logger::MASK_[+name+] }[+ ENDFOR logger_masks +]
+     { "[+name+]", '[+char+]', Logger::Mask::[+name+] }[+ ENDFOR logger_masks +]
 };

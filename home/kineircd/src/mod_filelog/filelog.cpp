@@ -36,8 +36,8 @@ using AISutil::String;
  * Original 18/02/2000 simonb
  * 04/04/2002 simonb - Added debugging info
  */
-LoggerFile::LoggerFile(mask_type mask, const char *fileName)
-  : Logger(Logger::TYPE_FILE, mask)
+LoggerFile::LoggerFile(Logger::Mask::type mask, const char *fileName)
+  : Logger(mask)
 {
 #ifdef KINE_DEBUG_EXTENDED
    debug(String("LoggerFile::LoggerFile(): logFile.open(") + fileName + ')');
@@ -66,13 +66,14 @@ LoggerFile::~LoggerFile(void)
  * 04/04/2002 simonb - Added debugging info
  * Note: This logging output sucks.
  */
-void LoggerFile::logLine(const AISutil::String &line, const mask_type mask)
+void LoggerFile::logLine(const AISutil::String& str,
+			 const Logger::Mask::type mask)
 {
    if (ok()) {
 #ifdef KINE_DEBUG_PSYCHO
-      debug("LoggerFile::log(" + line + ')');
+      debug("LoggerFile::log(" + str + ')');
 #endif
 
-      logFile << '[' << time(NULL) << ':' << mask << "] " << line << std::endl;
+      logFile << '[' << time(NULL) << ':' << mask << "] " << str << std::endl;
    }
 }
