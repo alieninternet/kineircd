@@ -391,9 +391,9 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString)
     * the tag maps to be updated, otherwise any new tags that were needed and
     * now actually exist won't be discovered automatically..
     */
-   if (!config().isConfiguring()) {
+//   if (!config().isConfiguring()) {
       processMaps();
-   }
+//   }
    
    // Presume everything went okay!
    return true;
