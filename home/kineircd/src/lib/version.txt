@@ -6,8 +6,8 @@
       ^^    ^^
 
 Copyright © 1996,1998,1999,2000,2001,2002 Alien Internet Services
-Copyright © 2001,2002 KineIRCd Development Team
-Copyright © 2001,2002 Simon Butcher <pickle@alien.net.au>
+Copyright © 2001,2002,2003 KineIRCd Development Team
+Copyright © 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
 
 This is free software; see the source for copying conditions. There
 is NO WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A
