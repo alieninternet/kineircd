@@ -131,6 +131,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleDIE)
       } 
       
 # ifdef KINE_DEBUG_ASSERT
+      // Make sure we're sane..
       assert(error != Error::UNREGISTERED_ENTITY);
 # endif
 
@@ -312,6 +313,67 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleJOIN)
    sendNumeric(LibIRC2::Numerics::ERR_NOSUCHCHANNEL,
 	       parameters[0],
 	       GETLANG(irc2_ERR_NOSUCHCHANNEL_UNSUPPORTED_TYPE));
+}
+#endif
+
+
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_KILL
+/* handleKILL
+ * Original 22/09/01 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleKILL)
+{
+   static const char* const commandName = "KILL";
+   
+   // Find the client to kill
+   Client* const victim = registry().findClient(parameters[0]);
+   
+   // Check
+   if (victim != 0) {
+      // Attempt to commit the homicide
+      const Error::error_type error = victim->kill(user, parameters[1]);
+      
+      // Check the error
+      if (error == Error::NO_ERROR) {
+	 /* Tell the user the kill was done. Supposedly this reply is
+	  * considered to be obsolete, however it's nice to have some sort
+	  * of feedback on the command if the user is not listening to
+	  * kill notices or can see the client directly.
+	  */
+//	 sendNumeric(LibIRC2::Numerics::RPL_KILLDONE,
+//		     victim->getName(),
+//		     GETLANG(irc2_RPL_KILLDONE));
+	 return;
+      } else if (error == Error::PERMISSION_DENIED) {
+	 // Complain about not having access to this command
+	 sendNumeric(LibIRC2::Numerics::ERR_NOPRIVILEGES,
+		     commandName,
+		     GETLANG(irc2_ERR_NOPRIVILEGES_SPECIFIC));
+	 return;
+      } else if (error == Error::TEXT_TOO_SHORT) {
+	 // Complain about the reason being too short..
+	 sendNumeric(LibIRC2::Numerics::ERR_TEXTTOOSHORT,
+		     commandName,
+		     GETLANG(irc2_ERR_TEXTTOOSHORT));
+	 return;
+      }
+      
+# ifdef KINE_DEBUG_ASSERT
+      // Make sure we're sane..
+      assert(error != Error::UNREGISTERED_ENTITY);
+# endif
+
+      // Unknown error..
+      sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
+		  commandName,
+		  GETLANG(irc2_ERR_UNKNOWNERROR));
+      return;
+   }
+   
+   // There was no such nickname found
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHNICK,
+	       parameters[0],
+	       GETLANG(irc2_ERR_NOSUCHNICK));
 }
 #endif
 
@@ -749,6 +811,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleREHASH)
    }
    
 # ifdef KINE_DEBUG_ASSERT
+   // Make sure we're sane..
    assert(error != Error::UNREGISTERED_ENTITY);
 # endif
 
@@ -789,6 +852,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleRESTART)
       }
 	
 # ifdef KINE_DEBUG_ASSERT
+      // Make sure we're sane..
       assert(error != Error::UNREGISTERED_ENTITY);
 # endif
 
@@ -1242,6 +1306,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWALLOPS)
       }
 	
 # ifdef KINE_DEBUG_ASSERT
+      // Make sure we're sane..
       assert(error != Error::UNREGISTERED_ENTITY);
 # endif
 

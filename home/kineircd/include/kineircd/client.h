@@ -136,6 +136,55 @@ namespace Kine {
       //! Are we 'deaf' to normal (un-prefixed) channel messages?
       const bool hasSelectiveHearing(void) const
 	{ return (attentionGlyph != notDeafGlyph); };
+      
+      
+      /*!
+       * \brief Kill this client
+       * 
+       * This will \e kill the client, disconnecting them from the network
+       * with the given reason. This indeed sounds somewhat more
+       * melodramatic than it really is, since the user is free to return
+       * following the kill (they are not banned).
+       * 
+       * Killing could occur as a responce to a <em>nickname collisions</em>,
+       * or simply an \e dead client being removed from the network if the
+       * connection has somehow become stale.
+       * 
+       * This can, of course, be abused by <em>IRC Operators</em> and should
+       * be used carefully. Modern client software have reconnection systems
+       * in place which can make the forceful removal of a client from the
+       * network somewhat useless, so killing an abusing user will probably
+       * be futile. Depending on each individual operator's access
+       * configuration, and indeed the server's configuration itself,
+       * operators may not be able to kill at all, or may only be able to kill
+       * clients which are connected locally.
+       * 
+       * \param killer The entity initiating the execution
+       * \param reason The reason for this user being killed. If the reason
+       *    comes from a server protocol which appends a \e bang-path style
+       *    route for the kill, please strip it from the reason string.
+       * \return The result of the kill
+       * \retval Kine::Error::NO_ERROR
+       *    The client has been killed
+       * \retval Kine::Error::PERMISSION_DENIED
+       *    The given \p killer is a client, but is not allowed to kill this
+       *    client. This may be because the client has some special protection
+       *    (such as it's a Service which performs nickname registration),
+       *    or the \p killer is not an <em>IRC Operator</em>. If the \p killer
+       *    is an <em>IRC Operator</em>, they may not be allowed to kill, or
+       *    can only kill clients locally connected (if this client is not
+       *    connected to MyServer).
+       * \retval Kine::Error::TEXT_TOO_SHORT
+       *    The given reason for killing this client is too short to be
+       *    considered acceptable. It needs to be lengthened. This is only
+       *    returned when the \p killer is another Client
+       * \retval Kine::Error::UNREGISTERED_ENTITY
+       *    This is caused by two problems. Either the given \p killer is not
+       *    registered to the network, and therefore cannot kill clients, or
+       *    this client itself is not registered, and cannot be killed!
+       */
+      const Error::error_type kill(Denizen& killer, const std::string& reason)
+	{ return Kine::Error::UNKNOWN_ERROR; };
    }; // class Client
 }; // namespace Kine
 

@@ -101,13 +101,13 @@ commands = {
 //   minimumParams	= 2;
 //};
 
-//commands = {
-//   command		= "KILL";
-//   defaultPenalty	= 0;
-//   minimumParams	= 1;
-//   access		= "OPERATOR";
-//   changeIdleTime;
-//};
+commands = {
+   command		= "KILL";
+   defaultPenalty	= 0;
+   minimumParams	= 2;
+   access		= "OPERATOR";
+   changeIdleTime;
+};
 
 //commands = {
 //   command		= "KNOCK";
