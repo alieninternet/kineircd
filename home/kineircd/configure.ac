@@ -81,7 +81,8 @@ dnl  Checking 'default' definitions
 dnl -------------------------------------------------------------------------
 AC_MSG_CHECKING([what to set CXXFLAGS to])
 if test "$CXXFLAGS" = ""; then
-  CXXFLAGS="-O2"
+#  CXXFLAGS="-O2"
+  CXXFLAGS="-O0 -g"
   AC_MSG_RESULT(['$CXXFLAGS' (default)])
 else
   AC_MSG_RESULT(['$CXXFLAGS' (given)])
