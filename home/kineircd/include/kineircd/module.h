@@ -38,7 +38,7 @@ namespace Kine {
 	 enum type_type {
 	    PROTOCOL,			// Protocol module (pmod)
 	    SERVICE,			// Service module (smod)
-	    EXTENTION			// Core extention module (emod)
+	    EXTENSION			// Core extension module (emod)
 	 } const type;
 	 
 	 /* Name and version information of the module.
@@ -53,11 +53,23 @@ namespace Kine {
 	 const unsigned char versionMinor;
 	 const unsigned short versionPatchLevel;
 	 const char *versionExtra;
-      } moduleInfo;
+	 
+	 // Check that the details are okay
+	 const bool isOkay(void) const
+	   {
+	      return (((type == PROTOCOL) || (type == SERVICE) || 
+		       (type == EXTENSION)) &&
+		      (name != 0) && (copyright != 0));
+	   };
+      } const &moduleInfo;
       
     public:
-      Module(void)
+      // Constructor
+      Module(const modInfo_type &mi)
+	: moduleInfo(mi)
 	{};
+      
+      // Destructor
       ~Module(void)
 	{};
    };
