@@ -72,7 +72,7 @@ void ircd::printVersion(const unsigned int level)
 	 std::cout << 
 	   "\nCore /INFO command data (may contain UTF-8 characters):\n";
 	 
-	 for (int i = 0; Version::versionInfo[i] != 0; i++) {
+	 for (int i = 0; Version::versionInfo[i] != 0; ++i) {
 	    std::cout << Version::versionInfo[i] << '\n';
 	 }
       }
