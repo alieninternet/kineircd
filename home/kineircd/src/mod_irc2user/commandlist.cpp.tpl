@@ -42,9 +42,11 @@ const Commands::preInitCommand_type Commands::preInitCommands[] = {[+FOR command
         "[+
  (string-upcase
     (get "command"))
- +]", [+defaultPenalty+], [+minimumParams+],
+ +]",
+	  &Protocol::handle[+command+],
+	  [+defaultPenalty+], [+minimumParams+],
 	  &Language::tagMap[Language::irc2_HELP_CMD_[+command+]_USAGE].tagID,
 	  &Language::tagMap[Language::irc2_HELP_CMD_[+command+]].tagID
      },[+ENDFOR+]
-     { 0, 0, 0, 0, 0 }
+     { 0, 0, 0, 0, 0, 0 }
 };

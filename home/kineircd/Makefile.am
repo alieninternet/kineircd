@@ -408,6 +408,12 @@ src/mod_irc2user/language.cpp src/mod_irc2user/language.h: src/mod_irc2user/lang
 		-T src/mod_irc2user/language.tpl \
 		$(AUTOGEN_DEF_DIR)/language.def
 
+src/mod_irc2user/protocol.h: src/mod_irc2user/protocol.h.tpl src/mod_irc2user/commands.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T src/mod_irc2user/protocol.h.tpl \
+		src/mod_irc2user/commands.def
+
 
 
 ###############################################################################

@@ -1,3 +1,4 @@
+[+ AutoGen5 template h +]
 /* $Id$
  * The IRC-2 user protocol class
  * 
@@ -20,6 +21,9 @@
  * You should have received a copy of the GNU General Public License
  * along with KineIRCd; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+[+(dne " * ")+]
  */
 
 #ifndef _SRC_MOD_IRC2USER_PROTOCOL_H_
@@ -32,9 +36,19 @@
 # include "libkineircd_irc2/numerics.h"
 # include "mod_irc2user/user.h"
 
+
+// Handy definition thingy
+# define IRC2USER_COMMAND_HANDLER(x) \
+     void x(void)
+
+
 namespace Kine {
    namespace mod_irc2user {
       class Protocol : public Kine::LibIRC2::Protocol {
+       public:
+	 // Convenient type-definition of handler functions
+	 typedef IRC2USER_COMMAND_HANDLER(handler_type);
+	 
        private:
 	 User user;				// The user for this instance
 	 
@@ -143,6 +157,9 @@ namespace Kine {
 			      user.getNickname(), numeric,
 			      pa, pb, pc, pd, pe, pf, pg, ph);
 	     };
+	 
+	 // Command handlers[+FOR commands+]
+	 handler_type handle[+command+];[+ENDFOR+]
       }; // class Protocol
    }; // namespace mod_irc2user
 }; // namespace Kine
