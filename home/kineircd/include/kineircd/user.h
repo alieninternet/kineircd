@@ -66,13 +66,16 @@ namespace Kine {
 	{};
 
       //! An event called if we are marked away or returning from away
-      virtual void doEventAwayToggle(void) {};
+      virtual void doEventAwayToggle(void)
+	{};
 
       //! An event called whenever the language list is modified
-      virtual void doEventLanguageChange(void) {};
+      virtual void doEventLanguageChange(void)
+	{};
 
       //! An event called whenever the staff status is changed/turned on or off
-      virtual void doEventStaffStatusChange(void) {};
+      virtual void doEventStaffStatusChange(void)
+	{};
       
     public:
       //! Destructor
