@@ -167,6 +167,7 @@ libkineircd_la_SOURCES=\
 	include/kineircd/languages.h \
 	include/kineircd/listener.h \
 	include/kineircd/listenerlist.h \
+	include/kineircd/localuser.h \
 	include/kineircd/logger.h \
 	include/kineircd/loggerconfig.h \
 	include/kineircd/module.h \
