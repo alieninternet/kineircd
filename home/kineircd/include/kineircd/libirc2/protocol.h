@@ -209,6 +209,81 @@ namespace Kine {
 		outputQueue.push(output.str());
 	     };
 	 
+	 // Send a message from a particular client
+	 template <class Tc>
+	   void sendMessageFrom(const Client& client, const Tc& command)
+	     {
+		sendMessageFrom(client.makeNickUserHostIdent(),
+				command);
+	     };
+	 template <class Tc, class Tpa>
+	   void sendMessageFrom(const Client& client, const Tc& command,
+				const Tpa& pa)
+	     {
+		sendMessageFrom(client.makeNickUserHostIdent(),
+				command, pa);
+	     };
+	 template <class Tc, class Tpa, class Tpb>
+	   void sendMessageFrom(const Client& client, const Tc& command,
+				const Tpa& pa, const Tpb& pb)
+	     {
+		sendMessageFrom(client.makeNickUserHostIdent(),
+				command, pa, pb);
+	     };
+	 template <class Tc, class Tpa, class Tpb, class Tpc>
+	   void sendMessageFrom(const Client& client, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc)
+	     {
+		sendMessageFrom(client.makeNickUserHostIdent(),
+				command, pa, pb, pc);
+	     };
+	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd>
+	   void sendMessageFrom(const Client& client, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd)
+	     {
+		sendMessageFrom(client.makeNickUserHostIdent(),
+				command, pa, pb, pc, pd);
+	     };
+	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
+	           class Tpe>
+	   void sendMessageFrom(const Client& client, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd, const Tpe& pe)
+	     {
+		sendMessageFrom(client.makeNickUserHostIdent(),
+				command, pa, pb, pc, pd, pe);
+	     };
+	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
+	           class Tpe, class Tpf>
+	   void sendMessageFrom(const Client& client, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd, const Tpe& pe, const Tpf& pf)
+	     {
+		sendMessageFrom(client.makeNickUserHostIdent(),
+				command, pa, pb, pc, pd, pe, pf);
+	     };
+	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
+	           class Tpe, class Tpf, class Tpg>
+	   void sendMessageFrom(const Client& client, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd, const Tpe& pe, const Tpf& pf,
+				const Tpg& pg)
+	     {
+		sendMessageFrom(client.makeNickUserHostIdent(),
+				command, pa, pb, pc, pd, pe, pf, pg);
+	     };
+	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
+	           class Tpe, class Tpf, class Tpg, class Tph>
+	   void sendMessageFrom(const Client& client, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd, const Tpe& pe, const Tpf& pf,
+				const Tpg& pg, const Tph& ph)
+	     {
+		sendMessageFrom(client.makeNickUserHostIdent(),
+				command, pa, pb, pc, pd, pe, pf, pg, ph);
+	     };
+	 
 	 // Send a numeric
 	 void sendNumeric(const Client& destination,
 			  const Numerics::numeric_type numeric)
