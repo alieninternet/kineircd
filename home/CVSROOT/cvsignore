@@ -1,9 +1,10 @@
 RCS
 CVS
 Makefile
+configure
 config.log
 config.status
-config.h
+config.cache
 cvslog.*
 tags
 TAGS
@@ -25,6 +26,7 @@ _$*
 *.a
 *.olb
 *.o
+*.lo
 *.obj
 *.so
 *.exe
