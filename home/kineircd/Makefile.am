@@ -147,6 +147,7 @@ BUILT_SOURCES=\
 	install/.lang \
 	src/ircd/options.h \
 	src/lib/language.h \
+	src/lib/version.h \
 	src/lib_irc2/language.h \
 	src/mod_irc2registrar/language.h \
 	src/mod_irc2user/commands.h \
