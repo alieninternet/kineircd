@@ -49,7 +49,6 @@ FileLog::FileLog(Config& c)
 
 /* ~FileLog - Generic file logger component destructor
  * Original 18/02/2000 simonb
- * 04/04/2002 simonb - Added debugging info
  */
 FileLog::~FileLog(void)
 {
