@@ -18,12 +18,14 @@
 #include "kineircd/utils.h"
 #include "kineircd/str.h"
 
-// If we have OpenSSL, we can just use their SHA1 function -- YAY!
 #ifdef HAVE_OPENSSL
 # include <openssl/sha.h>
-#else
+#endif
 
 using namespace Kine;
+
+// If we have OpenSSL, we can just use their SHA1 function -- YAY!
+#ifndef HAVE_OPENSSL
 
 # define SHA_DIGEST_LENGTH	20	// 160 bits.
 
