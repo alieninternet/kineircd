@@ -381,13 +381,13 @@ tag = {
 tag = {
    name		= "irc2_ERR_NOSUCHCHANNEL_UNSUPPORTED_TYPE";
    components	= "mod_irc2user";
-   data_en	= "No such channel - the channel type is unsupported";
+   data_en	= "No such channel - This type of channel is unsupported";
 };
 
 tag = {
    name		= "irc2_ERR_NOSUCHCHANNEL_DOES_NOT_EXIST";
    components	= "mod_irc2user";
-   data_en	= "No such channel - it must be created for you to join (this "
+   data_en	= "No such channel - It must be created for you to join (this "
 		  "type of channel does not allow you to create it yourself)";
 };
 
