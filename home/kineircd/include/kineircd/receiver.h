@@ -29,7 +29,13 @@
 namespace Kine {
    class Sender;
    
-   //! Abstract base class for objects which can receive messages
+   /*!
+    * \brief Abstract base class for \e receivers
+    * 
+    * \e Receivers are objects which can receive messages from Sender
+    * objects. Message types primarily include ordinary messages (or
+    * <em>PRIVMSG</em>'s) and notices.
+    */
    class Receiver {
     public:
       //! The 'directivity' of a recipient (acuteness of target specification)
@@ -60,18 +66,40 @@ namespace Kine {
       //! Destructor
       virtual ~Receiver(void)
 	{};
+
       
-      //! Send a message to this recipient
+      /*!
+       * \brief Send a message to this recipient
+       * 
+       * \param sender The sender of the message
+       * \param message The message itself (or the \e payload)
+       * \param directivity The focus or Directivity of the specified
+       *    receiver
+       * \return The status of the operation
+       * \retval Kine::Error::NO_ERROR The message was sent successfully.
+       *    Note that this <b>does not</b> guarantee that the message will
+       *    be received, though.
+       * \retval Kine::Error::PERMISSION_DENIED The \p sender is not allowed
+       *    to send to this receiver
+       * \retval Kine::Error::UNREGISTERED_ENTITY The \p sender is not
+       *    registered on the network, and therefore cannot send messages
+       * \retval Kine::Error::UNSUPPORTED_BY_ENTITY The receiver is
+       *    unequipped to accept the message
+       */
       virtual const Error::error_type
-	sendMessage(Sender& from,
+	sendMessage(Sender& sender,
 		    const std::string& message,
 		    const Directivity directivity = Directivity())
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
 
-   
-      //! Send a notice to this recipient
+
+      /*!
+       * \brief Send a notice to this recipient
+       * 
+       * \copydoc sendMessage()
+       */
       virtual const Error::error_type
-	sendNotice(Sender& from,
+	sendNotice(Sender& sender,
 		   const std::string& message,
 		   const Directivity directivity = Directivity())
 	{ return Error::UNSUPPORTED_BY_ENTITY; };

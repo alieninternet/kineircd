@@ -73,11 +73,11 @@ namespace Kine {
 	{};
 
 
-      //! Return the hostname of the server
+      // Return the hostname of the server
       const std::string& getHostname(void) const
         { return hostname; };
 	
-      //! Return the 'name' (a server's hostname is normally its name)
+      // Return the 'name' (a server's hostname is normally its name)
       const std::string& getName(void) const
 	{ return getHostname(); };
 
@@ -91,7 +91,7 @@ namespace Kine {
 	{ return (getModes() & mode); };
 
 
-      //! Is this server hidden from the given user? (this is broken)
+      // Is this server hidden from the given user? (this is broken)
       const bool isHiddenFrom(const User& who) const
 	{ return isModeSet(Mode::HIDDEN); };
       

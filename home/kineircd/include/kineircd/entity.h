@@ -30,12 +30,49 @@
 namespace Kine {
    class User;
    
-   //! Abstract base class for objects - stuff that is common to all objects
+   /*!
+    * \brief A generic <em>network entity</em>
+    * 
+    * This is a generic representation of an object which might exist on an
+    * IRC network. Everything including users, servers, channels, etc, are
+    * all an \e entity of some form.
+    */
    class Entity {
     protected:
-      const AIS::Util::Time signonTime;		//!< Time this entity connected
-      
-      //! Constructor
+      /*!
+       * \brief The time this entity was originally created
+       * 
+       * In most cases, this is the time the entity 'signed on' to the
+       * network, in that it is the time it was created and propagated.
+       * 
+       * Most <em>server to server</em> protocols require this information as
+       * an aide for conflict resolution, and statistical modules will want
+       * this information too.
+       * 
+       * This time \b must be relevant to the time on the system that
+       * \e KineIRCd is running on. %Kine requires this relation for
+       * consistancy, and simplicity. If the sign-on time of the entity is
+       * intended to be \e now, assign with the value from
+       * Kine::Daemon::getTime().
+       *
+       * Since the likely-hood of two IRC servers maintaining the same time
+       * is rare, or indeed time-zone for that matter, it's likely that
+       * protocol modules will want to offset the time somehow. Since some
+       * protocols deal with time in very different manners, time offsets are
+       * left up to those individual protocol modules to deal with.
+       */
+      const AIS::Util::Time signonTime;
+
+      /*!
+       * \brief Constructor
+       * 
+       * You must provide an initialisation value for the \a signonTime field
+       * here, as many network protocols, and indeed statistical modules,
+       * require this information.
+       * 
+       * \param _signonTime The time the entity was created, or when it
+       *    connected
+       */
       explicit Entity(const AIS::Util::Time& _signonTime)
 	: signonTime(_signonTime)
 	{};
@@ -45,14 +82,39 @@ namespace Kine {
       virtual ~Entity(void)
 	{};
 
-      //! Return whatever is an acceptable name for this entity
+      /*!
+       * \brief Return whatever is an acceptable name for this entity
+       * 
+       * This will return a somewhat \e unique name for this entity. For
+       * example, a Server will return its server name, while a Client will
+       * return its nickname.
+       * 
+       * \return The \e unique name for this entity
+       */
       virtual const std::string& getName(void) const = 0;
       
-      //! Is this entity hidden from the given user? (default to 'no')
-      virtual const bool isHiddenFrom(const User& who) const
+      /*!
+       * \brief Is this entity hidden from the given user?
+       *
+       * Check if the entity is hidden from the given user. Note that entities
+       * are always available for services and other entities as they're
+       * considered to be trusted.
+       *
+       * \param user Check the given \p user for rights to see \e this entity
+       * \return Whether this entity is to be hidden from the given \p user
+       * \retval true The user doesn't have the rights to see this entity
+       * \retval false This entity is visible to the given \p user
+       */
+      virtual const bool isHiddenFrom(const User& user) const
 	{ return false; };
 
-      //! Return the time this entity initially connected to the network
+      /*!
+       * \brief Return the time this entity <em>signed on</em>
+       * 
+       * This returns the \a signonTime of this entity.
+       * 
+       * \return The time the entity was created, or connected to the network
+       */
       const AIS::Util::Time& getSignonTime(void) const
 	{ return signonTime; };
    }; // class Entity

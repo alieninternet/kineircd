@@ -91,7 +91,7 @@ namespace Kine {
       //! Return the client's nickname
       virtual const ClientName& getNickname(void) const = 0;
 
-      //! Return the client's nickname (which is also its unique 'name')
+      // Return the client's nickname (which is also its unique 'name')
       const std::string& getName(void) const
 	{ return getNickname(); };
 
@@ -100,7 +100,7 @@ namespace Kine {
       virtual const std::string& getUsername(void) const = 0;
 
 
-      //! Return the client's hostname
+      // Return the client's hostname
       const std::string& getHostname(void) const
 	{ return hostname; };
 

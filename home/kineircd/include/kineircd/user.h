@@ -100,12 +100,12 @@ namespace Kine {
 	{};
       
       
-      //! Return the user's nickname
+      // Return the user's nickname
       const ClientName& getNickname(void) const
 	{ return nickname; };
 
       
-      //! Return the user's username / identd reply
+      // Return the user's username / identd reply
       const std::string& getUsername(void) const
 	{ return username; };
 

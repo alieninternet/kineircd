@@ -28,7 +28,17 @@
 # include <kineircd/config.h>
 
 namespace Kine {
-   //! 'My Server' -- Our server instance, representing ourself
+   /*!
+    * \brief Our server instance
+    * 
+    * This is a special instance of a Server, which is the specific server
+    * this daemon represents.
+    *
+    * Unlike an ordinary Server, though, this also provides access to special
+    * functions, such as extended information or sending \e wallops messages.
+    * 
+    * You should reference it through Kine::myServer().
+    */
    class MyServer : public Server {
     private:
       //! Our instance
@@ -45,22 +55,29 @@ namespace Kine {
       // Create the single instance of this class
       static void initInstance(void);
       
-      //! Return out instance
+      // Return out instance
       static MyServer& getInstance(void)
 	{ return *instance; };
       
       
-      //! Return the server's description
+      // Return the server's description
       const std::string& getDescription(void) const
 	{ return config().getServerDescription(); };
       
-      //! Return the server we're "connected to" (technically, that's us)
+      // Return the server we're "connected to" (technically, that's us)
       Server& getServer(void) const
 	{ return const_cast<MyServer&>(*this); };
    }; // class MyServer
 
 
-   //! Return the 'my' server (the server that is this daemon)
+   /*!
+    * \brief Return the MyServer instance
+    *
+    * Since MyServer is a singleton, this is how you should reference it in
+    * your code.
+    *
+    * \return The current instance of MyServer
+    */
    inline static MyServer& myServer(void)
      { return MyServer::getInstance(); };
 };

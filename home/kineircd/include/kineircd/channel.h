@@ -37,7 +37,14 @@ namespace Kine {
    class Client;
    class User;
    
-   //! An abstract class for a channel
+   /*!
+    * \brief A channel
+    *
+    * An abstract class for a channel object. This doesn't specify the type
+    * of the channel, though, or any specific scope (such whether the channel
+    * is local to this server only, or is propagated over all servers on
+    * this network).
+    */
    class Channel : public Entity, public Receiver {
     public:
       //! Channel member class
@@ -120,7 +127,7 @@ namespace Kine {
       const ChannelName& getChannelName(void) const
 	{ return name; };
 
-      //! Return the 'name' (generic form)
+      // Return the 'name' (generic form)
       const std::string& getName(void) const
 	{ return getChannelName(); };
 
@@ -195,7 +202,7 @@ namespace Kine {
       const bool isPrivate(void) const
 	{ return false; };
       
-      //! Is this channel hidden from public view (i.e. /whois, /list etc)
+      // Is this channel hidden from public view (i.e. /whois, /list etc)
       virtual const bool isHiddenFrom(const User& who) const
 	{ return (isSecret() || isPrivate()); };
       

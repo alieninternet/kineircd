@@ -52,12 +52,12 @@ namespace Kine {
 	{};
 
       
-      //! Return the user's nickname
+      // Return the user's nickname
       const ClientName& getNickname(void) const
 	{ return nickname; };
 
       
-      //! Return the user name (default to the service nickname)
+      // Return the user name (default to the service nickname)
       virtual const std::string& getUsername(void) const
 	{ return getName(); };
       

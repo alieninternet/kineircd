@@ -27,7 +27,12 @@
 # include <string>
 
 namespace Kine {
-   //! Abstract base class for objects which can send messages
+   /*!
+    * \brief Abstract base class for \e senders
+    * 
+    * A \e sender is a special type of object which can send messages to
+    * Receiver objects.
+    */
    class Sender {
     protected:
       //! Constructor
@@ -40,7 +45,11 @@ namespace Kine {
 	{};
 
       
-      //! Return whatever is an acceptable name for this sender
+      /*!
+       * \brief Return whatever is an acceptable name for this sender
+       * 
+       * \copydoc Kine::Entity::getName()
+       */
       virtual const std::string& getName(void) const = 0;
    }; // class Sender
 }; // namespace Kine

@@ -28,10 +28,18 @@
 # include <kineircd/sender.h>
 
 namespace Kine {
-   //! A network
+   /*!
+    * \brief A network
+    * 
+    * This is literally an IRC network.
+    */
    class Network : public Denizen {
     protected:
-      //! Constructor
+      /*!
+       * \brief Constructor
+       * 
+       * \copydoc Kine::Denizen::Denizen()
+       */
       explicit Network(const AIS::Util::Time& _signonTime)
 	: Denizen(_signonTime)
 	{};
@@ -41,10 +49,18 @@ namespace Kine {
       virtual ~Network(void)
 	{};
 
-      //! Get the name of this network
+      /*!
+       * \breif Get the network's short name
+       * 
+       * Return the network name, in <em>short form</em>. For example,
+       * <em>"The Foo Network"</em> would probably use something along the
+       * lines of \e "FooNET" as their short name.
+       * 
+       * \return The short network name
+       */
       virtual const std::string& getNetworkName(void) const = 0;
       
-      //! Return the 'name'
+      // Return the 'name'
       const std::string& getName(void) const
 	{ return getNetworkName(); };
    }; // class Network
