@@ -1,0 +1,416 @@
+/* language.cpp
+ * Text in a centralised location so it can be easily changed/fixed etc
+ */
+
+#include "config.h"
+
+#include "language.h"
+
+/* Do not change these lines unless you know how they are used/referenced or
+ * integrate with the IRC protocol etc. Often white-space before/after a
+ * string of text is there for a very specific reason.
+ */
+
+// Greeting lines sent when a user connects
+char const *Language::L_PINGPONG_NOTICE =
+  ":*** If you are having problems connecting due to ping timeouts, "
+  "type /raw PONG %s or /quote PONG %s now. If you are still having "
+  "trouble connecting, please e-mail help@austnet.org with the name "
+  "and version of the client you are using, and the server you tried "
+  "to connect to (%s).";
+char const *Language::L_RPL_WELCOME =
+  ":Welcome to the AustNet IRC Network %s -- For more information "
+  "visit http://www.austnet.org";
+char const *Language::L_RPL_YOURHOST =
+  ":Your server is %s, running version %s";
+char const *Language::L_RPL_YOURHOST_IRCII_KLUGE_NOTICE =
+  "NOTICE %s :*** Your host is %s, running version %s";
+char const *Language::L_RPL_CREATED =
+  ":This server was created %s";
+char const *Language::L_RPL_ISUPPORT_TAG =
+  ":are supported by this server";
+char const *Language::L_RPL_TIMEONSERVERIS =
+  "%lu %ld %c%02u%02u %u :time according to server";
+
+// 'Spam' notification, rather server policy that demands to be read
+char const *Language::L_RPL_SPAM_LINE1 =
+  ": ";
+char const *Language::L_RPL_SPAM_LINE2 =
+  ": Please be advised that use of this service constitutes consent to";
+char const *Language::L_RPL_SPAM_LINE3 =
+  ":  all network policies and server conditions of use, which can be";
+char const *Language::L_RPL_SPAM_LINE4 =
+  ": sighted at http://www.austnet.org/agreement/ and is in accordance";
+char const *Language::L_RPL_SPAM_LINE5 =
+  ": with the Electronic Communications Privacy Act,  18 USC 2701-2711";
+char const *Language::L_RPL_SPAM_LINE6 =
+  ": ";
+
+// Generic responces
+char const *Language::L_ERR_UNKNOWNCOMMAND =
+  " :Unknown command";
+char const *Language::L_ERR_PASSWDMISMATCH =
+  ":Password incorrect";
+char const *Language::L_ERR_SERVERTOOFULL =
+  ":This server cannot accept any more user connections";
+char const *Language::L_ERR_NEEDMOREPARAMS =
+  " :Not enough parameters";
+char const *Language::L_ERR_ALREADYREGISTERED =
+  ":You may only claim registration type once";
+char const *Language::L_ERR_SUMMONDISABLED =
+  ":SUMMON has been disabled";
+char const *Language::L_ERR_USERSDISABLED =
+  ":USERS has been disabled";
+char const *Language::L_ERR_NOPRIVILEGES =
+  ":Permission Denied - You're not an AustNet IRC operator";
+
+// Nickname related errors
+char const *Language::L_ERR_NONICKNAMEGIVEN =
+  ":No nickname given";
+char const *Language::L_ERR_ERRONEUSNICKNAME =
+  " :Erroneous nickname";
+char const *Language::L_ERR_ERRONEUSNICKNAME_W_REASON =
+  "%s :Bad nickname specified: %s";
+char const *Language::L_ERR_NICKNAMEINUSE =
+  " :Nickname is already in use";
+char const *Language::L_ERR_EVENTNICKCHANGE =
+  " :Sorry, cannot change nickname during a channel event (+E)";
+
+// Channel related messages
+char const *Language::L_ERR_BADCHANNAME =
+  " :Bad channel name";
+char const *Language::L_ERR_BADCHANNAME_SAFECHAN =
+  " :Safe channels must be created first";
+char const *Language::L_ERR_BADCHANNAME_FAILMASK =
+  "%s :Channel name is unavailable: %s";
+
+char const *Language::L_ERR_NOTONCHANNEL =
+  " :You're not on that channel";
+char const *Language::L_ERR_USERNOTINCHANNEL =
+  "%s %s :They aren't on that channel";
+
+char const *Language::L_ERR_TOOMANYCHANNELS =
+  " :You have joined too many channels";
+char const *Language::L_ERR_BANNEDFROMCHAN =
+  " :Cannot join channel (+b)";
+char const *Language::L_ERR_CHANOPRIVSNEEDED =
+  " :You're not a channel operator";
+char const *Language::L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER =
+  " :You're not a full channel operator";
+char const *Language::L_ERR_UNIQOPRIVSNEEDED =
+  ":You're not the original channel operator";
+char const *Language::L_ERR_NOSUCHCHANNEL =
+  " :No such channel";
+
+char const *Language::L_ERR_INVITEONLYCHAN =
+  " :Cannot join channel (+i)";
+char const *Language::L_ERR_USERONCHANNEL =
+  "%s %s :is already on channel";
+char const *Language::L_ERR_CHANNELISFULL =
+  " :Cannot join channel (+l)";
+char const *Language::L_ERR_BADCHANNELKEY =
+  " :Cannot join channel (+k)";
+
+char const *Language::L_ERR_CANNOTSENDTOCHAN =
+  " :Cannot send to channel";
+char const *Language::L_ERR_CANNOTSENDTOCHAN_NOOUTSIDEMSG =
+  " :Cannot send to channel, you are not on that channel (+n)";
+char const *Language::L_ERR_CANNOTSENDTOCHAN_BANNED =
+  " :Cannot send to channel, you are banned (+b)";
+char const *Language::L_ERR_CANNOTSENDTOCHAN_MODERATED =
+  " :Cannot send to channel, channel is moderated (+m)";
+char const *Language::L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY =
+  " :Cannot send to channel, you need to be identified (+R)";
+
+char const *Language::L_RPL_CHANREDIR =
+  "%s %s :You are being redirected";
+char const *Language::L_RPL_NOTOPIC =
+  " :No topic is set";
+
+// Mode related messages
+char const *Language::L_RPL_ENDOFBANLIST =
+  " :End of channel ban list";
+char const *Language::L_RPL_ENDOFEXCEPTLIST =
+  " :End of channel ban exception list";
+char const *Language::L_RPL_ENDOFINVITELIST =
+  " :End of channel invite list";
+char const *Language::L_ERR_USERSDONTMATCH_MODE =
+  ":Cannot change mode for other users";
+char const *Language::L_ERR_UMODEUNKNOWNFLAG =
+  " :Unknown user MODE flag";
+char const *Language::L_ERR_UNKNOWNMODE =
+  "%c :is an unknown mode char to me for %s";
+char const *Language::L_ERR_UNKNOWNSERVERMODE =
+  "%c :is an unknown server mode";
+char const *Language::L_ERR_NOPRIVILEGES_PLUS_IRCOPER =
+  ":Permission Denied - Use the OPER command instead";
+char const *Language::L_ERR_NOPRIVILEGES_PLUS_HELPER =
+  ":Permission Denied - Identify yourself to services";
+char const *Language::L_ERR_NOPRIVILEGES_PLUS_SERVNOTICES =
+  ":Permission Denied - Only network operators are allowed to see "
+  "server notices";
+char const *Language::L_ERR_SERVERMODELOCK =
+  " :Cannot change server modes (+L)";
+char const *Language::L_RPL_MODECHANGEWARN_MINUS_VWORLD =
+  "-v :Warning - You have changed your mode to -v (Virtual World). "
+  "You are now vulnerable to Denial of Service attacks.";
+char const *Language::L_RPL_MODECHANGEWARN_IRCOPER_MINUS_WALLOPS =
+  "-w :You may miss important messages by disabling the receive "
+  "wallops mode";
+char const *Language::L_RPL_MODECHANGEWARN_HELPER_PLUS_REGNICKSMSG =
+  "+R :Setting +R (Only registered nicks can send to you) is not "
+  "recommended for helpers";
+char const *Language::L_ERR_CANNOTCHANGEUMODE =
+  "%c :Cannot toggle this user mode";
+char const *Language::L_ERR_CANNOTCHANGECHANMODE =
+  "%c :Cannot modify this channel mode";
+char const *Language::L_ERR_CANNOTCHANGESERVERMODE =
+  "%c :Cannot modify this server mode";
+char const *Language::L_ERR_NOCHANMODES =
+  " :Channel doesn't support modes";
+char const *Language::L_ERR_KEYSET =
+  " :Channel key already set";
+
+// MOTD (Message of the day) replies
+char const *Language::L_RPL_MOTDSTART =
+  ":- %s Message of the day -";
+char const *Language::L_RPL_MOTD_SHORT1 =
+  ":- Please read the MOTD by typing /motd";
+char const *Language::L_RPL_MOTD_SHORT2 =
+  ":- Connection to this server from this point onwards assumes that";
+char const *Language::L_RPL_MOTD_SHORT3 =
+  ":- you have read and agree to all terms and conditions in the MOTD";
+char const *Language::L_RPL_MOTD_PREFIX =
+  ":- ";
+char const *Language::L_RPL_ENDOFMOTD =
+  ":End of MOTD";
+char const *Language::L_ERR_NOMOTD =
+  ":MOTD File is missing";
+char const *Language::L_ERR_NOMOTD_NOREMOTE =
+  ":MOTD on %s cannot be viewed remotely";
+
+// WHO messages
+char const *Language::L_ERR_WHOTRUNC =
+  ":Who list too long - Truncated.";
+char const *Language::L_RPL_ENDOFWHO =
+  "%s :End of WHO list";
+char const *Language::L_RPL_ENDOFWHO_NOMATCH =
+  "%s :End of WHO list (no match)";
+char const *Language::L_RPL_ENDOFWHO_MATCHES =
+  "%s :End of WHO list (%d matches)";
+
+// WHOIS messages
+char const *Language::L_RPL_WHOISVIRT =
+  " :on Virtual World as ";
+char const *Language::L_RPL_WHOISIDLE =
+  " %lu %lu :seconds idle, signon time";
+char const *Language::L_RPL_WHOISOPERATOR =
+  " :is an AustNet IRC Operator";
+char const *Language::L_RPL_WHOISSECURE =
+  " :is connected via a secure connection";
+char const *Language::L_RPL_ENDOFWHOIS =
+  " :End of WHOIS list";
+
+// WHOWAS messages
+char const *Language::L_RPL_ENDOFWHOWAS =
+  "%s :End of WHOWAS";
+char const *Language::L_RPL_ENDOFWHOWAS_NOMATCH =
+  "%s :End of WHOWAS (no match, or matches have expired)";
+char const *Language::L_RPL_ENDOFWHOWAS_MATCHES =
+  "%s :End of WHOWAS (%d matches)";
+
+// HELP command replies
+char const *Language::L_RPL_ENDOFHELP =
+  "%s :End of HELP";
+char const *Language::L_RPL_ENDOFHELP_NOMATCH =
+  "%s :End of HELP (no match)";
+char const *Language::L_RPL_ENDOFHELP_MATCHES =
+  "%s :End of HELP (%d matches)";
+char const *Language::L_RPL_ENDOFHELP_SIMPLE =
+  "%s :End of HELP; Try 'HELP -%s' for more information";
+char const *Language::L_RPL_ENDOFHELP_SIMPLE_MATCHES =
+  "%s :End of HELP (%d matches); Try 'HELP -%s' for more information";
+
+// AWAY command messages
+char const *Language::L_RPL_NOWAWAY =
+  ":You have been marked as being away";
+char const *Language::L_RPL_UNAWAY =
+  ":You are no longer marked as being away";
+
+// WATCH command messages
+char const *Language::L_ERR_TOOMANYWATCH =
+  "%s :Maximum size for WATCH-list is %d entries";
+char const *Language::L_RPL_WATCHSTAT =
+  ":You have %d and are on %d WATCH entries";
+char const *Language::L_RPL_ENDOFWATCHLIST =
+  ":End of WATCH %c";
+
+char const *Language::L_RPL_LOGOFF_SERVER =
+  ":has net-split";
+char const *Language::L_RPL_LOGOFF_CHANNEL =
+  ":has disappeared";
+char const *Language::L_RPL_LOGOFF_USER =
+  ":has logged off";
+
+char const *Language::L_RPL_LOGON_SERVER =
+  ":has net-joined";
+char const *Language::L_RPL_LOGON_CHANNEL =
+  ":has been created";
+char const *Language::L_RPL_LOGON_USER =
+  ":has logged on";
+
+char const *Language::L_RPL_NOWON_SERVER =
+  ":is connected";
+char const *Language::L_RPL_NOWON_CHANNEL =
+  ":exists";
+char const *Language::L_RPL_NOWON_USER =
+  ":is online";
+
+char const *Language::L_RPL_NOWOFF =
+  ":is offline";
+char const *Language::L_RPL_WATCHOFF =
+  ":stopped watching";
+
+// SILENCE list replies
+char const *Language::L_RPL_ENDOFSILELIST =
+  " :End of SILENCE list";
+char const *Language::L_ERR_SILELISTFULL =
+  " :Your silence list is full";
+
+// LUSERS command replies
+char const *Language::L_RPL_LUSERCLIENT =
+  ":There are %d users and %d services on %d servers";
+char const *Language::L_RPL_LUSEROP =
+  "%u :operator(s) online";
+char const *Language::L_RPL_LUSERHELPERS =
+  "%u :helper(s) online";
+char const *Language::L_RPL_LUSERUNKNOWN =
+  "%u :unknown connection(s)";
+char const *Language::L_RPL_LUSERCHANNELS =
+  "%u :channels formed";
+char const *Language::L_RPL_LUSERME =
+  ":I have %u clients and %u servers";
+char const *Language::L_RPL_LOCALUSERS =
+  ":Current local users: %u Peak: %u";
+char const *Language::L_RPL_GLOBALUSERS =
+  ":Current global users: %u Peak: %u";
+
+// Command not processed messages
+char const *Language::L_RPL_TRYAGAIN_AWAY =
+  "AWAY :You have set your away message too quickly, please try again soon";
+
+/* Server notice output strings
+ * Note: This ties in with GLOBOPS, HELPME and LOCOPS broadcasts too since
+ *	    they are sent by the same notice mechanism.
+ */
+char const *Language::L_SERVNOTICE_LINK =
+  "Link with %s established";
+char const *Language::L_SERVNOTICE_DELINK =
+  "Link with %s cancelled: %s";
+char const *Language::L_SERVNOTICE_RECV_EOB =
+  "Completed receiving Burst Data from %s";
+char const *Language::L_SERVNOTICE_CMD_DIE =
+  "%s initiated server shutdown";
+char const *Language::L_SERVNOTICE_CMD_REHASH =
+  "%s started server rehash";
+char const *Language::L_SERVNOTICE_GARBO =
+  "Garbologist completed cleaning";
+char const *Language::L_SERVNOTICE_GARBO_ITEMS =
+  "Garbologist completed cleaning %d items";
+char const *Language::L_SERVNOTICE_GLOBOPS =
+  "*** Global -- OPER from %s: %s";
+char const *Language::L_SERVNOTICE_HELPME =
+  "*** Help -- from %s: %s";
+char const *Language::L_SERVNOTICE_LOCOPS =
+  "*** Local -- from %s: %s";
+char const *Language::L_SERVNOTICE_NOTIFY_ON_CMD_STATS =
+  "*** Notice -- STATS %s by %s (%s)";
+
+// Misc/Disorganised
+char const *Language::L_NOTIFY_PARANOID_OPERS_ON_WHOIS =
+  "*** Notice -- %s (%s) did a /whois on you";
+
+char const *Language::L_ERR_NOSUCHSERVER =
+  " :No such server";
+
+char const *Language::L_ERR_ISCHANSERVICE =
+  "%s %s :AustNet services cannot be kicked or deoped";
+char const *Language::L_ERR_CANTKILLSERVICES =
+  ":You are not allowed to kill Austnet Services!";
+
+char const *Language::L_QUIT_KILLED =
+  "Killed (%s (%s))";
+char const *Language::L_RPL_KILLDONE =
+  " :Killed.";
+
+char const *Language::L_ERR_NORECIPIENT =
+  ":No recipient given ";
+char const *Language::L_ERR_NOTEXTTOSEND =
+  ":No text to send";
+
+char const *Language::L_REQUESTED_SHUTDOWN =
+  " requested shutdown";
+char const *Language::L_BYE_BYE_USER =
+  "Exit: %s";
+char const *Language::L_ERROR_CLOSING_LINK =
+  "ERROR :Closing Link: %s";
+char const *Language::L_ERROR_CLOSING_LINK_DEFAULT_REASON =
+  "Unknown error";
+
+char const *Language::L_RPL_ENDOFINFO =
+  ":End of INFO";
+char const *Language::L_RPL_LISTEND =
+  ":End of LIST";
+char const *Language::L_RPL_ENDOFNAMES =
+  "%s :End of NAMES list";
+char const *Language::L_RPL_ENDOFNAMES_NOMATCH =
+  "%s :End of NAMES list (no match)";
+char const *Language::L_RPL_ENDOFNAMES_MATCHES =
+  "%s :End of NAMES list (%d matches)";
+char const *Language::L_RPL_ENDOFSTATS =
+  " :End of STATS report";
+
+char const *Language::L_RPL_VERSION =
+  "%s %s :%s (Type /INFO for more details)";
+
+char const *Language::L_RPL_ADMINME =
+  " :Administration information";
+
+char const *Language::L_RPL_STATSUPTIME =
+  ":Server Up %d days %d:%02d:%02d";
+char const *Language::L_RPL_STATSCONN =
+  ":Highest connection count: %u (%u clients)";
+
+char const *Language::L_ERR_NONONREG_CHANNEL =
+  " :You must be identified with NickOP to join this channel";
+char const *Language::L_ERR_NONONREG_USER =
+  " :You must be identified with NickOP to talk privately with this user";
+
+char const *Language::L_ERR_NOSUCHNICK =
+  " :No such nickname or channel";
+char const *Language::L_ERR_NOSUCHNICK_NICK =
+  " :No such nickname";
+char const *Language::L_ERR_NOSUCHNICK_CHANNEL =
+  " :No such channel";
+char const *Language::L_ERR_NOSUCHNICK_OR_SERVER =
+  " :No such nickname, channel or server";
+
+char const *Language::L_ERR_CANNOTSENDTONICK_MUSTID =
+  " :You must be identified to send to this person";
+
+char const *Language::L_DEFAULT_QUIT_MESSAGE =
+  "Austnet Chat Network";
+
+char const *Language::L_ERR_NOOPERHOST =
+  ":Access Denied: No operator details configured for your host";
+char const *Language::L_ERR_NOOPERHOST_NOOP =
+  ":Access Denied: This server is in NOOP mode.";
+char const *Language::L_RPL_YOUREOPER =
+  ":You are now an unpaid network babysitter";
+char const *Language::L_RPL_YOUREOPER_ALREADY =
+  ":You're ALREADY an IRC Operator!";
+char const *Language::L_RPL_REHASHING =
+  " :Rehashing";
+
+char const *Language::L_RPL_ENDOFLINKS =
+  " :End of LINKS list";

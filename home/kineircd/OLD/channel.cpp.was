@@ -201,7 +201,7 @@ void Channel::processModes(Handler *handler, User *user,
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_NOCHANMODES, 0,
-			      name + LNG_ERR_NOCHANMODES);
+			      name + Language::L_ERR_NOCHANMODES);
       }
       return;
    }
@@ -224,7 +224,7 @@ void Channel::processModes(Handler *handler, User *user,
       if (!cmTemp) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_NOTONCHANNEL, 0,
-			      name + LNG_ERR_NOTONCHANNEL);
+			      name + Language::L_ERR_NOTONCHANNEL);
 	 return;
       }
       
@@ -294,7 +294,7 @@ void Channel::processModes(Handler *handler, User *user,
 		  if (handler) {
 		     handler->sendNumeric(TO_DAEMON->myServer(),
 					  ERR_CANNOTCHANGECHANMODE, 0,
-					  String::printf(LNG_ERR_CANNOTCHANGECHANMODE,
+					  String::printf((char *)Language::L_ERR_CANNOTCHANGECHANMODE,
 							 modes[i]));
 		  }
 	       }
@@ -305,11 +305,12 @@ void Channel::processModes(Handler *handler, User *user,
 	 
 	 // Check if we found a valid char. If not, complain about it if we can
 	 if (!gotModeChar && handler) {
-	    handler->sendNumeric(TO_DAEMON->myServer(),
-				 ERR_UNKNOWNMODE, 0,
-				 String::printf(LNG_ERR_UNKNOWNMODE,
-						modes[i], 
-						(char const *)name));
+	    handler->
+	      sendNumeric(TO_DAEMON->myServer(),
+			  ERR_UNKNOWNMODE, 0,
+			  String::printf((char *)Language::L_ERR_UNKNOWNMODE,
+					 modes[i], 
+					 (char const *)name));
 	 }
       }
    }
@@ -501,7 +502,7 @@ bool Channel::toggleModeANONYMOUS(bool setting, Handler *handler, Channel *chann
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_UNIQOPRIVSNEEDED, 0,
-			      LNG_ERR_UNIQOPRIVSNEEDED);
+			      Language::L_ERR_UNIQOPRIVSNEEDED);
       }
       return false;
    }
@@ -513,7 +514,8 @@ bool Channel::toggleModeANONYMOUS(bool setting, Handler *handler, Channel *chann
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -551,7 +553,7 @@ bool Channel::toggleModeBAN(bool setting, Handler *handler, Channel *channel, Ch
 
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      RPL_ENDOFBANLIST, 0,
-			      channel->name + LNG_RPL_ENDOFBANLIST);
+			      channel->name + Language::L_RPL_ENDOFBANLIST);
       }
       
       // Return false since no mode was actually changed
@@ -563,7 +565,8 @@ bool Channel::toggleModeBAN(bool setting, Handler *handler, Channel *channel, Ch
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -630,7 +633,7 @@ bool Channel::toggleModeBANEXCEPT(bool setting, Handler *handler, Channel *chann
 
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      RPL_ENDOFEXCEPTLIST, 0,
-			      channel->name + LNG_RPL_ENDOFEXCEPTLIST);
+			      channel->name + Language::L_RPL_ENDOFEXCEPTLIST);
       }
       
       // Return false since no mode was actually changed
@@ -642,7 +645,8 @@ bool Channel::toggleModeBANEXCEPT(bool setting, Handler *handler, Channel *chann
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -712,12 +716,13 @@ bool Channel::toggleModeCHANOPER(bool setting, Handler *handler, Channel *channe
 	 if (member->modes & ChannelMember::MODE_HALFOPPED) {
 	    handler->sendNumeric(TO_DAEMON->myServer(),
 				 ERR_CHANOPRIVSNEEDED, 0,
-				 channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+				 channel->name + 
+				 Language::L_ERR_CHANOPRIVSNEEDED);
 	 } else {
 	    handler->sendNumeric(TO_DAEMON->myServer(),
 				 ERR_CHANOPRIVSNEEDED, 0,
 				 channel->name + 
-				 LNG_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER);
+				 Language::L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER);
 	 }
       }
       return false;
@@ -734,7 +739,7 @@ bool Channel::toggleModeCHANOPER(bool setting, Handler *handler, Channel *channe
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_NOSUCHNICK, 0,
-			      *param + LNG_ERR_NOSUCHNICK_NICK);
+			      *param + Language::L_ERR_NOSUCHNICK_NICK);
       }
       return false;
    }
@@ -745,22 +750,24 @@ bool Channel::toggleModeCHANOPER(bool setting, Handler *handler, Channel *channe
    // Check..
    if (!cm) {
       if (handler) {
-	 handler->sendNumeric(TO_DAEMON->myServer(),
-			      ERR_USERNOTINCHANNEL, 0,
-			      String::printf(LNG_ERR_USERNOTINCHANNEL,
-					     (char const *)u->nickname,
-					     (char const *)channel->name));
+	 handler->
+	   sendNumeric(TO_DAEMON->myServer(),
+		       ERR_USERNOTINCHANNEL, 0,
+		       String::printf((char *)Language::L_ERR_USERNOTINCHANNEL,
+				      (char const *)u->nickname,
+				      (char const *)channel->name));
       }
       return false;
    }
 
    // Check if this user is immune from deopping
    if (u->modes & User::MODE_NONKICKABLE) {
-      handler->sendNumeric(TO_DAEMON->myServer(),
-			   ERR_ISCHANSERVICE, 0,
-			   String::printf(LNG_ERR_ISCHANSERVICE,
-					  (char const *)u->nickname,
-					  (char const *)channel->name));
+      handler->
+	sendNumeric(TO_DAEMON->myServer(),
+		    ERR_ISCHANSERVICE, 0,
+		    String::printf((char *)Language::L_ERR_ISCHANSERVICE,
+				   (char const *)u->nickname,
+				   (char const *)channel->name));
       return false;
    }
       
@@ -813,7 +820,8 @@ bool Channel::toggleModeEVENT(bool setting, Handler *handler, Channel *channel, 
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -847,7 +855,8 @@ bool Channel::toggleModeHALFOPER(bool setting, Handler *handler, Channel *channe
 	  !(member->modes & ChannelMember::MODE_OPPED)) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
 	 return false;
       }
    } else {
@@ -858,7 +867,8 @@ bool Channel::toggleModeHALFOPER(bool setting, Handler *handler, Channel *channe
 	 if (handler) {
 	    handler->sendNumeric(TO_DAEMON->myServer(),
 				 ERR_CHANOPRIVSNEEDED, 0,
-				 channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+				 channel->name + 
+				 Language::L_ERR_CHANOPRIVSNEEDED);
 	 }
 	 return false;
       }
@@ -875,7 +885,7 @@ bool Channel::toggleModeHALFOPER(bool setting, Handler *handler, Channel *channe
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_NOSUCHNICK, 0,
-			      *param + LNG_ERR_NOSUCHNICK_NICK);
+			      *param + Language::L_ERR_NOSUCHNICK_NICK);
       }
       return false;
    }
@@ -886,11 +896,12 @@ bool Channel::toggleModeHALFOPER(bool setting, Handler *handler, Channel *channe
    // Check..
    if (!cm) {
       if (handler) {
-	 handler->sendNumeric(TO_DAEMON->myServer(),
-			      ERR_USERNOTINCHANNEL, 0,
-			      String::printf(LNG_ERR_USERNOTINCHANNEL,
-					     (char const *)u->nickname,
-					     (char const *)channel->name));
+	 handler->
+	   sendNumeric(TO_DAEMON->myServer(),
+		       ERR_USERNOTINCHANNEL, 0,
+		       String::printf((char *)Language::L_ERR_USERNOTINCHANNEL,
+				      (char const *)u->nickname,
+				      (char const *)channel->name));
       }
       return false;
    }
@@ -934,7 +945,8 @@ bool Channel::toggleModeINVITE(bool setting, Handler *handler, Channel *channel,
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -973,7 +985,7 @@ bool Channel::toggleModeINVITEALLOW(bool setting, Handler *handler, Channel *cha
 
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      RPL_ENDOFINVITELIST, 0,
-			      channel->name + LNG_RPL_ENDOFINVITELIST);
+			      channel->name + Language::L_RPL_ENDOFINVITELIST);
       }
 
       // Return false since no mode was actually changed
@@ -985,7 +997,8 @@ bool Channel::toggleModeINVITEALLOW(bool setting, Handler *handler, Channel *cha
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -1041,7 +1054,8 @@ bool Channel::toggleModeKEY(bool setting, Handler *handler, Channel *channel, Ch
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -1051,7 +1065,7 @@ bool Channel::toggleModeKEY(bool setting, Handler *handler, Channel *channel, Ch
       if (channel->key.length()) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_KEYSET, 0,
-			      channel->name + LNG_ERR_KEYSET);
+			      channel->name + Language::L_ERR_KEYSET);
 	 return false;
       }
       
@@ -1090,7 +1104,8 @@ bool Channel::toggleModeLIMIT(bool setting, Handler *handler, Channel *channel, 
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -1128,7 +1143,8 @@ bool Channel::toggleModeMODERATED(bool setting, Handler *handler, Channel *chann
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -1157,7 +1173,8 @@ bool Channel::toggleModeNOOUTSIDEMSG(bool setting, Handler *handler, Channel *ch
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -1186,7 +1203,8 @@ bool Channel::toggleModePRIVATE(bool setting, Handler *handler, Channel *channel
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -1215,7 +1233,8 @@ bool Channel::toggleModeREGNICKSONLY(bool setting, Handler *handler, Channel *ch
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -1244,7 +1263,8 @@ bool Channel::toggleModeSECRET(bool setting, Handler *handler, Channel *channel,
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -1273,7 +1293,8 @@ bool Channel::toggleModeTOPICLOCK(bool setting, Handler *handler, Channel *chann
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
       }
       return false;
    }
@@ -1342,7 +1363,8 @@ bool Channel::toggleModeVOICE(bool setting, Handler *handler, Channel *channel, 
 	  !(member->modes & ChannelMember::MODE_HALFOPPED)) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
-			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel->name + 
+			      Language::L_ERR_CHANOPRIVSNEEDED);
 	 return false;
       }
    } else {
@@ -1353,7 +1375,8 @@ bool Channel::toggleModeVOICE(bool setting, Handler *handler, Channel *channel, 
 	 if (handler) {
 	    handler->sendNumeric(TO_DAEMON->myServer(),
 				 ERR_CHANOPRIVSNEEDED, 0,
-				 channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+				 channel->name + 
+				 Language::L_ERR_CHANOPRIVSNEEDED);
 	 }
 	 return false;
       }
@@ -1370,7 +1393,7 @@ bool Channel::toggleModeVOICE(bool setting, Handler *handler, Channel *channel, 
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_NOSUCHNICK, 0,
-			      *param + LNG_ERR_NOSUCHNICK_NICK);
+			      *param + Language::L_ERR_NOSUCHNICK_NICK);
       }
       return false;
    }
@@ -1381,11 +1404,12 @@ bool Channel::toggleModeVOICE(bool setting, Handler *handler, Channel *channel, 
    // Check..
    if (!cm) {
       if (handler) {
-	 handler->sendNumeric(TO_DAEMON->myServer(),
-			      ERR_USERNOTINCHANNEL, 0,
-			      String::printf(LNG_ERR_USERNOTINCHANNEL,
-					     (char const *)u->nickname,
-					     (char const *)channel->name));
+	 handler->
+	   sendNumeric(TO_DAEMON->myServer(),
+		       ERR_USERNOTINCHANNEL, 0,
+		       String::printf((char *)Language::L_ERR_USERNOTINCHANNEL,
+				      (char const *)u->nickname,
+				      (char const *)channel->name));
       }
       return false;
    }

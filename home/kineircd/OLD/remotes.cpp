@@ -33,7 +33,8 @@
 void Handler::doADMIN(Handler *handler, User *from)
 {
    handler->sendNumeric(TO_DAEMON->server, RPL_ADMINME, from, 
-			TO_DAEMON->server->getHostname() + LNG_RPL_ADMINME);
+			TO_DAEMON->server->getHostname() + 
+			Language::L_RPL_ADMINME);
    handler->sendNumeric(TO_DAEMON->server, RPL_ADMINLOC1, from,
 			TO_DAEMON->adminName);
    
@@ -60,7 +61,7 @@ void Handler::doINFO(Handler *handler, User *from)
 
    // End of the list
    handler->sendNumeric(TO_DAEMON->server, RPL_ENDOFINFO, from, 
-			LNG_RPL_ENDOFINFO);
+			Language::L_RPL_ENDOFINFO);
 }
 
 
@@ -106,7 +107,7 @@ void Handler::doLINKS(Handler *handler, User *from, String const &request)
    
    // End of the list
    handler->sendNumeric(TO_DAEMON->server, RPL_ENDOFLINKS, from, 
-			request + LNG_RPL_ENDOFLINKS);
+			request + Language::L_RPL_ENDOFLINKS);
 }
 
    
@@ -116,33 +117,33 @@ void Handler::doLINKS(Handler *handler, User *from, String const &request)
 void Handler::doLUSERS(Handler *handler, User *from, String const &request)
 {
    handler->sendNumeric(TO_DAEMON->server, RPL_LUSERCLIENT, from,
-			String::printf(LNG_RPL_LUSERCLIENT,
+			String::printf((char *)Language::L_RPL_LUSERCLIENT,
 				       TO_DAEMON->numTotalUsers,
 				       TO_DAEMON->numServices,
 				       TO_DAEMON->numServers));
    handler->sendNumeric(TO_DAEMON->server, RPL_LUSEROP, from,
-			String::printf(LNG_RPL_LUSEROP,
+			String::printf((char *)Language::L_RPL_LUSEROP,
 				       TO_DAEMON->numOpers));
    handler->sendNumeric(TO_DAEMON->server, RPL_LUSERHELPERS, from,
-			String::printf(LNG_RPL_LUSERHELPERS,
+			String::printf((char *)Language::L_RPL_LUSERHELPERS,
 				       TO_DAEMON->numHelpers));
    handler->sendNumeric(TO_DAEMON->server, RPL_LUSERUNKNOWN, from,
-			String::printf(LNG_RPL_LUSERUNKNOWN,
+			String::printf((char *)Language::L_RPL_LUSERUNKNOWN,
 				       TO_DAEMON->numUnknown));
    handler->sendNumeric(TO_DAEMON->server, RPL_LUSERCHANNELS, from,
-			String::printf(LNG_RPL_LUSERCHANNELS,
+			String::printf((char *)Language::L_RPL_LUSERCHANNELS,
 				       (TO_DAEMON->channels.size() +
 					TO_DAEMON->localChannels.size())));
    handler->sendNumeric(TO_DAEMON->server, RPL_LUSERME, from,
-			String::printf(LNG_RPL_LUSERME,
+			String::printf((char *)Language::L_RPL_LUSERME,
 				       TO_DAEMON->numClientConns,
 				       TO_DAEMON->numServerConns));
    handler->sendNumeric(TO_DAEMON->server, RPL_LOCALUSERS, from,
-			String::printf(LNG_RPL_LOCALUSERS,
+			String::printf((char *)Language::L_RPL_LOCALUSERS,
 				       TO_DAEMON->numClientConns,
 				       TO_DAEMON->numClientConnsPeak));
    handler->sendNumeric(TO_DAEMON->server, RPL_GLOBALUSERS, from,
-			String::printf(LNG_RPL_GLOBALUSERS,
+			String::printf((char *)Language::L_RPL_GLOBALUSERS,
 				       TO_DAEMON->numTotalUsers,
 				       TO_DAEMON->numTotalUsersPeak));
 }
@@ -162,10 +163,11 @@ void Handler::doMOTD(Handler *handler, User *from)
    if ((from->server != TO_DAEMON->server) &&
        !(TO_DAEMON->server->isModeSet(Server::MODE_REMOTEMOTD))) {
       // Not allowed to send the motd over the network
-      handler->sendNumeric(TO_DAEMON->server, ERR_NOMOTD, from,
-			   String::printf(LNG_ERR_NOMOTD_NOREMOTE,
-					  ((char const *)
-					   TO_DAEMON->server->getHostname())));
+      handler->
+	sendNumeric(TO_DAEMON->server, ERR_NOMOTD, from,
+		    String::printf((char *)Language::L_ERR_NOMOTD_NOREMOTE,
+				   ((char const *)
+				    TO_DAEMON->server->getHostname())));
       return;
    }
    
@@ -173,7 +175,7 @@ void Handler::doMOTD(Handler *handler, User *from)
    if (!TO_DAEMON->motd.empty()) {
       // Send the header
       handler->sendNumeric(TO_DAEMON->server, RPL_MOTDSTART, from,
-			   String::printf(LNG_RPL_MOTDSTART,
+			   String::printf((char *)Language::L_RPL_MOTDSTART,
 					  (char const *)TO_DAEMON->server->getHostname()));
 
       // Run through the MOTD and send each line in the list
@@ -185,11 +187,11 @@ void Handler::doMOTD(Handler *handler, User *from)
 	 
       // Send the footer
       handler->sendNumeric(TO_DAEMON->server, RPL_ENDOFMOTD, from, 
-			   LNG_RPL_ENDOFMOTD);
+			   Language::L_RPL_ENDOFMOTD);
    } else {
       // No MOTD to send
       handler->sendNumeric(TO_DAEMON->server, ERR_NOMOTD, from, 
-			   LNG_ERR_NOMOTD);
+			   Language::L_ERR_NOMOTD);
    }
 }
 
@@ -305,14 +307,14 @@ class statsFunctions {
 	
 	handler->sendNumeric(TO_DAEMON->server,
 			     RPL_STATSUPTIME, from,
-			     String::printf(LNG_RPL_STATSUPTIME,
+			     String::printf((char *)Language::L_RPL_STATSUPTIME,
 					    (int)(uptime / 86400),
 					    ((int)(uptime % 86400) / 3600),
 					    ((int)(uptime % 3600) / 60),
 					    (int)(uptime % 60)));
 	handler->sendNumeric(TO_DAEMON->server,
 			     RPL_STATSCONN, from,
-			     String::printf(LNG_RPL_STATSCONN,
+			     String::printf((char *)Language::L_RPL_STATSCONN,
 					    TO_DAEMON->numConnsPeak,
 					    TO_DAEMON->numClientConnsPeak));
      }
@@ -343,7 +345,7 @@ void Handler::doSTATS(Handler *handler, User *from, String const &request)
 #ifdef NOTIFY_ON_CMD_STATS
    // Send a server notice out regarding this stats request
    TO_DAEMON->
-     broadcastServerNotice(String::printf(LNG_SERVNOTICE_NOTIFY_ON_CMD_STATS,
+     broadcastServerNotice(String::printf((char *)Language::L_SERVNOTICE_NOTIFY_ON_CMD_STATS,
 					  (char const *)request,
 					  (char const *)from->nickname,
 					  (char const *)from->getAddress()));
@@ -360,7 +362,7 @@ void Handler::doSTATS(Handler *handler, User *from, String const &request)
 
    // Send the footer
    handler->sendNumeric(TO_DAEMON->server, RPL_ENDOFSTATS, from, 
-			request + LNG_RPL_ENDOFSTATS);
+			request + Language::L_RPL_ENDOFSTATS);
 }
 
 
@@ -441,7 +443,7 @@ void Handler::doTIME(Handler *handler, User *from)
 void Handler::doVERSION(Handler *handler, User *from)
 {
    handler->sendNumeric(TO_DAEMON->server, RPL_VERSION, from,
-			String::printf(LNG_RPL_VERSION,
+			String::printf((char *)Language::L_RPL_VERSION,
 				       getVersion,
 				       (char const *)TO_DAEMON->server->getHostname(),
 				       getVersionChars));
@@ -466,7 +468,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       // Make sure we found that user record
       if (!u) {
 	 handler->sendNumeric(TO_DAEMON->server, ERR_NOSUCHNICK, from,
-			      user + LNG_ERR_NOSUCHNICK_NICK);
+			      user + Language::L_ERR_NOSUCHNICK_NICK);
 	 continue; 
       }
       
@@ -484,7 +486,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       if (!u->showVW(from) && 
 	  (u->modes & User::MODE_VWORLD)) {
 	 handler->sendNumeric(TO_DAEMON->server, RPL_WHOISVIRT, from,
-			      u->nickname + LNG_RPL_WHOISVIRT +
+			      u->nickname + Language::L_RPL_WHOISVIRT +
 			      u->vwhostname);
       }
       
@@ -546,7 +548,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       if (u->server == TO_DAEMON->server) {
 	 handler->sendNumeric(TO_DAEMON->server, RPL_WHOISIDLE, from,
 			      u->nickname +
-			      String::printf(LNG_RPL_WHOISIDLE,
+			      String::printf((char *)Language::L_RPL_WHOISIDLE,
 					     ((unsigned long)
 					      difftime(TO_DAEMON->getTime(),
 						       u->local->handler->connection->getLastSpoke())),
@@ -558,27 +560,28 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 #ifdef NOTIFY_PARANOID_OPERS_ON_WHOIS
 	 // Send a notice to a paranoid operator if they are locally connected
 	 if (u->local) {
-	    String message = String::printf(LNG_NOTIFY_PARANOID_OPERS_ON_WHOIS,
-					    (char const *)from->nickname,
-					    (char const *)from->getAddress());
+	    String message = 
+	      String::printf(Language::L_NOTIFY_PARANOID_OPERS_ON_WHOIS,
+			     (char const *)from->nickname,
+			     (char const *)from->getAddress());
 	    u->local->handler->
 	      sendNotice(TO_DAEMON->server, from, message);
 			 
 	 }
 #endif
 	 handler->sendNumeric(TO_DAEMON->server, RPL_WHOISOPERATOR, from,
-			      u->nickname + LNG_RPL_WHOISOPERATOR);
+			      u->nickname + Language::L_RPL_WHOISOPERATOR);
       }
       
       // Check if this user is connected via an SSL enabled port
       if (u->modes & User::MODE_SECURE) {
 	 handler->sendNumeric(TO_DAEMON->server, RPL_WHOISSECURE, from,
-			      u->nickname + " *" + LNG_RPL_WHOISSECURE);
+			      u->nickname + " *" + Language::L_RPL_WHOISSECURE);
       }
    }
    
    // Send the footer
    handler->sendNumeric(TO_DAEMON->server, RPL_ENDOFWHOIS, from,
-			request + LNG_RPL_ENDOFWHOIS);
+			request + Language::L_RPL_ENDOFWHOIS);
 }
 

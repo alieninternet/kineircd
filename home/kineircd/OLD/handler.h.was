@@ -123,13 +123,13 @@ class Handler {
 // IRC-2 User-handler sub-class
 class irc2userHandler : public Handler {
  private:
-   User *user;					// Link to the user data
-
 #  ifdef FLOODLOCK_AWAY_SET
    time_t lastAwaySet;				// Time the away msg was set
    bool lastAwaySetGrace;			// Grace to allow an extra set
 #  endif
    
+   User *user;					// Link to the user data
+
    struct functionTableStruct {
       char const *command;			// Command name
       void (*function)(irc2userHandler *handler, 

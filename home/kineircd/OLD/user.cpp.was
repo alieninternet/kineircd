@@ -247,7 +247,7 @@ bool User::toggleModeHELPER(bool setting, Handler *handler, Daemon *daemon, User
 	 if (!(user->modes & User::MODE_HELPER)) {
 	    handler->sendNumeric(TO_DAEMON->myServer(),
 				 ERR_NOPRIVILEGES, 0,
-				 LNG_ERR_NOPRIVILEGES_PLUS_HELPER);
+				 Language::L_ERR_NOPRIVILEGES_PLUS_HELPER);
 	 }
 	 return false;
       } else {
@@ -357,8 +357,8 @@ bool User::toggleModeOPER(bool setting, Handler *handler, Daemon *daemon, User *
 	     !(user->modes & User::MODE_LOCALOPER)) {
 	    /* Tell the user they're an idiot :) */
 	    handler->sendNumeric(TO_DAEMON->myServer(),
-				ERR_NOPRIVILEGES, 0,
-				 LNG_ERR_NOPRIVILEGES_PLUS_IRCOPER);
+				 ERR_NOPRIVILEGES, 0,
+				 Language::L_ERR_NOPRIVILEGES_PLUS_IRCOPER);
 	 }
 	 return false;
       } else {
@@ -408,7 +408,7 @@ bool User::toggleModeREGNICKSMSG(bool setting, Handler *handler, Daemon *daemon,
       if (handler && User::isHelper(user)) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      RPL_MODECHANGEWARN, 0,
-			      LNG_RPL_MODECHANGEWARN_HELPER_PLUS_REGNICKSMSG);
+			      Language::L_RPL_MODECHANGEWARN_HELPER_PLUS_REGNICKSMSG);
       }
       
       return true;
@@ -511,7 +511,7 @@ bool User::toggleModeVWORLD(bool setting, Handler *handler, Daemon *daemon, User
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      RPL_MODECHANGEWARN, 0,
-			      LNG_RPL_MODECHANGEWARN_MINUS_VWORLD);
+			      Language::L_RPL_MODECHANGEWARN_MINUS_VWORLD);
       }
       
       return true;
@@ -538,7 +538,7 @@ bool User::toggleModeWALLOPS(bool setting, Handler *handler, Daemon *daemon, Use
 	   (user->modes & User::MODE_LOCALOPER))) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      RPL_MODECHANGEWARN, 0,
-			      LNG_RPL_MODECHANGEWARN_IRCOPER_MINUS_WALLOPS);
+			      Language::L_RPL_MODECHANGEWARN_IRCOPER_MINUS_WALLOPS);
       }
       
       return true;

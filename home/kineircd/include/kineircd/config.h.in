@@ -81,8 +81,7 @@
  * Check user.h for more usermodes you can 'or' together.
  * Undefining this will stop users automatically being set a mode.
  */
-#define USER_REGISTRATION_MODES		User::MODE_VWORLD | \
-					User::MODE_INVISIBLE
+#define USER_REGISTRATION_MODES		User::MODE_VWORLD
 
 
 /******************************************************************************

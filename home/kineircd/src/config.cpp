@@ -234,9 +234,9 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
 #else
 	    // Add the line to the MOTD in memory
 # ifdef STL_HAS_SLIST
-	    conf->motd.push_front(String(LNG_RPL_MOTD_PREFIX) + temp);
+	    conf->motd.push_front(String(Language::L_RPL_MOTD_PREFIX) + temp);
 # else
-	    motd.push_back(String(LNG_RPL_MOTD_PREFIX) + temp);
+	    motd.push_back(String(Language::L_RPL_MOTD_PREFIX) + temp);
 # endif
 #endif
 	 }

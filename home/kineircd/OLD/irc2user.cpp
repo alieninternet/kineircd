@@ -393,9 +393,11 @@ struct irc2userHandler::functionTableStruct const
  */
 irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 : Handler(c),
-  user(u),
+#ifdef FLOODLOCK_AWAY_SET
   lastAwaySet(0),
-  lastAwaySetGrace(true)
+  lastAwaySetGrace(true),
+#endif
+  user(u)
 {
 #ifdef DEBUG
    debug("New Handler: irc2userHandler");
@@ -417,10 +419,10 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 
    // Send the greeting lines
    sendNumeric(RPL_WELCOME,
-	       String::printf(LNG_RPL_WELCOME,
+	       String::printf((char *)Language::L_RPL_WELCOME,
 			      (char const *)user->getAddress()));
    sendNumeric(RPL_YOURHOST,
-	       String::printf(LNG_RPL_YOURHOST,
+	       String::printf((char *)Language::L_RPL_YOURHOST,
 			      (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
 			      (char const *)getVersion));
    
@@ -430,15 +432,16 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
     * desparately needs it.. or so they say - First person to confirm that to
     * be false gets the honours of removing this crap :)
     */
-   getConnection()->sendRaw(String::printf(LNG_RPL_YOURHOST_IRCII_KLUGE_NOTICE
-					   IRC2USER_EOL_CHARS,
-					   (char const *)user->nickname,
-					   (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
-					   (char const *)getVersion));
+   getConnection()->
+     sendRaw(String::printf(LNG_RPL_YOURHOST_IRCII_KLUGE_NOTICE
+			    IRC2USER_EOL_CHARS,
+			    (char const *)user->nickname,
+			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			    (char const *)getVersion));
 #endif
    
    sendNumeric(RPL_CREATED,
-	       String::printf(LNG_RPL_CREATED,
+	       String::printf((char *)Language::L_RPL_CREATED,
 			      getBuild));
    sendNumeric(RPL_MYINFO,
 	       String::printf("%s %s %s %s %s %s %s %s %s",
@@ -467,7 +470,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			      "CHARSET=rfc1459 " 	// (16chrs)
 			      "MODES=%d "		// (~9chrs)
 			      "PREFIX=%s "		// (~20chrs)
-			      LNG_RPL_ISUPPORT_TAG, 	// (=~196chrs + this)
+			      "%s",		 	// (=~196chrs + tag)
 			      MAXLEN_NICKNAME,
 			      MAXLEN_TOPIC,
 			      MAXLEN_KICK_REASON,
@@ -483,7 +486,8 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			      MAX_CHANNELS_PER_USER, 
 			      MAX_BANS_PER_CHANNEL,
 			      MAX_MODES_PER_COMMAND,
-			      Channel::prefixStr));
+			      Channel::prefixStr,
+			      Language::L_RPL_ISUPPORT_TAG));
    
    // Assemble and send the current time on the server to the client
    TYPE_RPL_TIMEONSERVERIS_FLAGS tosiFlags = 0;
@@ -518,7 +522,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 #endif
    
    sendNumeric(RPL_TIMEONSERVERIS,
-	       String::printf(LNG_RPL_TIMEONSERVERIS,
+	       String::printf((char *)Language::L_RPL_TIMEONSERVERIS,
 			      getConnection()->getDaemon()->getTime(),
 			      getConnection()->getDaemon()->getTimeUsecs(),
 			      ((GMTdiffEast) ? '+' : '-'),
@@ -532,23 +536,23 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 #ifdef SHORT_MOTD
    // Send a fake three-line motd
    sendNumeric(RPL_MOTDSTART,
-	       String::printf(LNG_RPL_MOTDSTART, 
+	       String::printf((char *)Language::L_RPL_MOTDSTART, 
 			      (char const *)getConnection()->getDaemon()->myServer()->hostname));
-   sendNumeric(RPL_MOTD, LNG_RPL_MOTD_SHORT1);
-   sendNumeric(RPL_MOTD, LNG_RPL_MOTD_SHORT2);
-   sendNumeric(RPL_MOTD, LNG_RPL_MOTD_SHORT3);
-   sendNumeric(RPL_ENDOFMOTD, LNG_RPL_ENDOFMOTD);
+   sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT1);
+   sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT2);
+   sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT3);
+   sendNumeric(RPL_ENDOFMOTD, Language::L_RPL_ENDOFMOTD);
 #else
    doMOTD(this, user);
 #endif
    
    // Send the 6-line spam notice thingy
-   sendNumeric(RPL_SPAM, LNG_RPL_SPAM_LINE1);
-   sendNumeric(RPL_SPAM, LNG_RPL_SPAM_LINE2);
-   sendNumeric(RPL_SPAM, LNG_RPL_SPAM_LINE3);
-   sendNumeric(RPL_SPAM, LNG_RPL_SPAM_LINE4);
-   sendNumeric(RPL_SPAM, LNG_RPL_SPAM_LINE5);
-   sendNumeric(RPL_SPAM, LNG_RPL_SPAM_LINE6);
+   sendNumeric(RPL_SPAM, Language::L_RPL_SPAM_LINE1);
+   sendNumeric(RPL_SPAM, Language::L_RPL_SPAM_LINE2);
+   sendNumeric(RPL_SPAM, Language::L_RPL_SPAM_LINE3);
+   sendNumeric(RPL_SPAM, Language::L_RPL_SPAM_LINE4);
+   sendNumeric(RPL_SPAM, Language::L_RPL_SPAM_LINE5);
+   sendNumeric(RPL_SPAM, Language::L_RPL_SPAM_LINE6);
    
 #ifdef USER_REGISTRATION_MODES
    // Set the user modes to the default
@@ -704,7 +708,7 @@ String irc2userHandler::processUserModes(String &modes, StringTokens *tokens,
 		  // Tell the user they cannot change that mode, if we can
 		  if (!silent) {
 		     sendNumeric(ERR_CANNOTCHANGEUMODE,
-				 String::printf(LNG_ERR_CANNOTCHANGEUMODE,
+				 String::printf((char *)Language::L_ERR_CANNOTCHANGEUMODE,
 						modes[i]));
 		  }
 	       }
@@ -724,7 +728,7 @@ String irc2userHandler::processUserModes(String &modes, StringTokens *tokens,
 	  */
 	 if (!gotModeChar && !silent) {
 	    sendNumeric(ERR_UMODEUNKNOWNFLAG,
-			String(modes[i]) + LNG_ERR_UMODEUNKNOWNFLAG);
+			String(modes[i]) + Language::L_ERR_UMODEUNKNOWNFLAG);
 	 }
       }
    }
@@ -776,11 +780,11 @@ void irc2userHandler::sendChannelMode(Channel *c, User *u,
 void irc2userHandler::sendGoodbye(String const &reason) const
 {
    getConnection()->
-     sendRaw(String::printf(LNG_ERROR_CLOSING_LINK 
+     sendRaw(String::printf(LNG_ERROR_CLOSING_LINK
 			    IRC2USER_EOL_CHARS,
 			    (reason.length() ?
 			     (char const *)reason :
-			     LNG_ERROR_CLOSING_LINK_DEFAULT_REASON)));
+			     Language::L_ERROR_CLOSING_LINK_DEFAULT_REASON)));
 }
 
 
@@ -1047,7 +1051,7 @@ void irc2userHandler::sendQuit(User *u, String const &reason) const
 			    (char const *)u->getAddress(user),
 			    (reason.length() ?
 			     (char const *)reason :
-			     LNG_DEFAULT_QUIT_MESSAGE)));
+			     Language::L_DEFAULT_QUIT_MESSAGE)));
 }
 
 
@@ -1340,16 +1344,16 @@ void irc2userHandler::doNAMES(String const &param)
    sendNumeric(RPL_ENDOFNAMES,
 	       ((matches > 0) ?
 		((matches == 1) ?
-		 String::printf(LNG_RPL_ENDOFNAMES,
+		 String::printf((char *)Language::L_RPL_ENDOFNAMES,
 				(char const *)param) :
-		 String::printf(LNG_RPL_ENDOFNAMES_MATCHES,
+		 String::printf((char *)Language::L_RPL_ENDOFNAMES_MATCHES,
 				(char const *)param,
 				matches)) :
-		String::printf(LNG_RPL_ENDOFNAMES_NOMATCH,
+		String::printf((char *)Language::L_RPL_ENDOFNAMES_NOMATCH,
 			       (char const *)param)));
 #else
    sendNumeric(RPL_ENDOFNAMES,
-	       String::printf(LNG_RPL_ENDOFNAMES,
+	       String::printf((char *)Language::L_RPL_ENDOFNAMES,
 			      (char const *)param));
 #endif
 }
@@ -1387,7 +1391,7 @@ void irc2userHandler::parseLine(String const &line)
 
    // Command not found, complain about it..
    sendNumeric(ERR_UNKNOWNCOMMAND,
-	       command + LNG_ERR_UNKNOWNCOMMAND);
+	       command + Language::L_ERR_UNKNOWNCOMMAND);
 }
 
 
@@ -1416,7 +1420,7 @@ void irc2userHandler::parseADMIN(irc2userHandler *handler, StringTokens *tokens)
       // Check
       if (!s) {
 	 handler->sendNumeric(ERR_NOSUCHSERVER,
-			      server + LNG_ERR_NOSUCHSERVER);
+			      server + Language::L_ERR_NOSUCHSERVER);
 	 return;
       }
       
@@ -1449,7 +1453,8 @@ void irc2userHandler::parseAWAY(irc2userHandler *handler, StringTokens *tokens)
 	 // Ok... maybe they have a grace period then?
 	 if (!handler->lastAwaySetGrace) {
 	    // Tell them they have to be a little more patient :)
-	    handler->sendNumeric(999, ":reply undecided");
+	    handler->sendNumeric(RPL_TRYAGAIN, 
+				 Language::L_RPL_TRYAGAIN_AWAY);
 	    return;
 	 } else {
 	    // Chew up the grace setting
@@ -1465,19 +1470,21 @@ void irc2userHandler::parseAWAY(irc2userHandler *handler, StringTokens *tokens)
       // Do the change
       handler->user->markAway(message);
 	 
+#ifdef FLOODLOCK_AWAY_SET
       // Mark the change down..
       handler->lastAwaySet = TO_DAEMON->getTime();
+#endif
       
       // Tell them it worked
       handler->sendNumeric(RPL_NOWAWAY,
-			   LNG_RPL_NOWAWAY);
+			   Language::L_RPL_NOWAWAY);
    } else {
       // Do the change
       handler->user->markAway(message);
 
       // Tell them it worked
       handler->sendNumeric(RPL_UNAWAY,
-			   LNG_RPL_UNAWAY);
+			   Language::L_RPL_UNAWAY);
    }
 }
 
@@ -1501,7 +1508,7 @@ void irc2userHandler::parseDIE(irc2userHandler *handler, StringTokens *tokens)
    // Send out a server notice
    TO_DAEMON->
      broadcastServerNotice(SERVERNOTICE_OPER,
-			   String::printf(LNG_SERVNOTICE_CMD_DIE,
+			   String::printf((char *)Language::L_SERVNOTICE_CMD_DIE,
 					  ((char const *)
 					   handler->user->nickname)));
    
@@ -1511,7 +1518,7 @@ void irc2userHandler::parseDIE(irc2userHandler *handler, StringTokens *tokens)
 					  handler->user->nickname + ")");
    } else {
       TO_DAEMON->shutdown(handler->user->nickname + 
-					  LNG_REQUESTED_SHUTDOWN);
+			  Language::L_REQUESTED_SHUTDOWN);
    }
 }
 
@@ -1530,11 +1537,12 @@ void irc2userHandler::parseGLOBOPS(irc2userHandler *handler, StringTokens *token
 	 message = message.subString(1);
       }
    
-      TO_DAEMON->broadcastServerNotice(SERVERNOTICE_GLOBOPS,
-				     String::printf(LNG_SERVNOTICE_GLOBOPS,
-						    ((char const *)
-						     handler->user->nickname), 
-						    (char const *)message));
+      TO_DAEMON->
+	broadcastServerNotice(SERVERNOTICE_GLOBOPS,
+			      String::printf((char *)Language::L_SERVNOTICE_GLOBOPS,
+					     ((char const *)
+					      handler->user->nickname), 
+					     (char const *)message));
       return;
    }
    
@@ -1606,40 +1614,43 @@ void irc2userHandler::parseHELP(irc2userHandler *handler, StringTokens *tokens)
    // Send the end of help numeric
    if (extended) {
 #ifdef DO_MATCH_COUNTING
-      handler->sendNumeric(RPL_ENDOFHELP,
-			   ((matches > 0) ?
-			    ((matches == 1) ?
-			     String::printf(LNG_RPL_ENDOFHELP,
-					    (char const *)maskStr) :
-			     String::printf(LNG_RPL_ENDOFHELP_MATCHES,
-					    (char const *)maskStr,
-					    matches)) :
-			    String::printf(LNG_RPL_ENDOFHELP_NOMATCH,
-					   (char const *)maskStr)));
+      handler->
+	sendNumeric(RPL_ENDOFHELP,
+		    ((matches > 0) ?
+		     ((matches == 1) ?
+		      String::printf((char *)Language::L_RPL_ENDOFHELP,
+				     (char const *)maskStr) :
+		      String::printf((char *)Language::L_RPL_ENDOFHELP_MATCHES,
+				     (char const *)maskStr,
+				     matches)) :
+		     String::printf((char *)Language::L_RPL_ENDOFHELP_NOMATCH,
+				    (char const *)maskStr)));
 #else
       handler->sendNumeric(RPL_ENDOFHELP,
-			   String::printf(LNG_RPL_ENDOFHELP,
+			   String::printf((char *)Language::L_RPL_ENDOFHELP,
 					  (char const *)maskStr));
 #endif
    } else {
 #ifdef DO_MATCH_COUNTING
-      handler->sendNumeric(RPL_ENDOFHELP,
-			   ((matches > 0) ?
-			    ((matches == 1) ?
-			     String::printf(LNG_RPL_ENDOFHELP_SIMPLE,
-					    (char const *)maskStr,
-					    (char const *)maskStr) :
-			     String::printf(LNG_RPL_ENDOFHELP_SIMPLE_MATCHES,
-					    (char const *)maskStr,
-					    matches,
-					    (char const *)maskStr)) :
-			    String::printf(LNG_RPL_ENDOFHELP_NOMATCH,
-					   (char const *)maskStr)));
+      handler->
+	sendNumeric(RPL_ENDOFHELP,
+		    ((matches > 0) ?
+		     ((matches == 1) ?
+		      String::printf((char *)Language::L_RPL_ENDOFHELP_SIMPLE,
+				     (char const *)maskStr,
+				     (char const *)maskStr) :
+		      String::printf((char *)Language::L_RPL_ENDOFHELP_SIMPLE_MATCHES,
+				     (char const *)maskStr,
+				     matches,
+				     (char const *)maskStr)) :
+		     String::printf((char *)Language::L_RPL_ENDOFHELP_NOMATCH,
+				    (char const *)maskStr)));
 #else
-      handler->sendNumeric(RPL_ENDOFHELP,
-			   String::printf(LNG_RPL_ENDOFHELP_SIMPLE,
-					  (char const *)maskStr,
-					  (char const *)maskStr));
+      handler->
+	sendNumeric(RPL_ENDOFHELP,
+		    String::printf((char *)Language::L_RPL_ENDOFHELP_SIMPLE,
+				   (char const *)maskStr,
+				   (char const *)maskStr));
 #endif
    }
 }
@@ -1689,7 +1700,7 @@ void irc2userHandler::parseINFO(irc2userHandler *handler, StringTokens *tokens)
       // Check
       if (!s) {
 	 handler->sendNumeric(ERR_NOSUCHSERVER,
-			      server + LNG_ERR_NOSUCHSERVER);
+			      server + Language::L_ERR_NOSUCHSERVER);
 	 return;
       }
    
@@ -1742,7 +1753,7 @@ void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens
    // Check
    if (!u) {
       handler->sendNumeric(ERR_NOSUCHNICK,
-			   nick + LNG_ERR_NOSUCHNICK_NICK);
+			   nick + Language::L_ERR_NOSUCHNICK_NICK);
       return;
    }
    
@@ -1752,7 +1763,7 @@ void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens
    // Check
    if (!c) {
       handler->sendNumeric(ERR_NOSUCHCHANNEL,
-			   chan + LNG_ERR_NOSUCHCHANNEL);
+			   chan + Language::L_ERR_NOSUCHCHANNEL);
       return;
    }
 
@@ -1762,16 +1773,17 @@ void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens
    // Check
    if (!cm) {
       handler->sendNumeric(ERR_NOTONCHANNEL,
-			   chan + LNG_ERR_NOTONCHANNEL);
+			   chan + Language::L_ERR_NOTONCHANNEL);
       return;
    }
    
    // Make sure the person we are looking for is not already on the channel
    if (c->getMember(u)) {
-      handler->sendNumeric(ERR_USERONCHANNEL,
-			   String::printf(LNG_ERR_USERONCHANNEL,
-					  (char const *)nick, 
-					  (char const *)chan));
+      handler->
+	sendNumeric(ERR_USERONCHANNEL,
+		    String::printf((char *)Language::L_ERR_USERONCHANNEL,
+				   (char const *)nick, 
+				   (char const *)chan));
       return;
    }
    
@@ -1779,7 +1791,7 @@ void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens
    if (c->isModeSet(Channel::MODE_INVITE) && 
        !cm->isChanOper()) {
       handler->sendNumeric(ERR_CHANOPRIVSNEEDED,
-			   chan + LNG_ERR_CHANOPRIVSNEEDED); 
+			   chan + Language::L_ERR_CHANOPRIVSNEEDED); 
      return;
    }
 
@@ -1872,10 +1884,11 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	 String redir = TO_DAEMON->redirectedChannel(chan);
 	 if (redir.length()) {
 	    // Notify a savvy client
-	    handler->sendNumeric(RPL_CHANREDIR,
-				 String::printf(LNG_RPL_CHANREDIR,
-						(char const *)chan,
-						(char const *)redir));
+	    handler->
+	      sendNumeric(RPL_CHANREDIR,
+			  String::printf((char *)Language::L_RPL_CHANREDIR,
+					 (char const *)chan,
+					 (char const *)redir));
 	    // Do the swap
 	    chan = redir;
 	 }
@@ -1884,14 +1897,14 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
       // Make sure joining this channel does not go over our limit
       if (handler->user->channels.size() >= MAX_CHANNELS_PER_USER) {
 	 handler->sendNumeric(ERR_TOOMANYCHANNELS,
-			      chan + LNG_ERR_TOOMANYCHANNELS);
+			      chan + Language::L_ERR_TOOMANYCHANNELS);
 	 return; // no point going through other channels.
       }
       
       // Make sure the channel name is acceptable
       if (!Channel::okName(chan)) {
 	 handler->sendNumeric(ERR_BADCHANNAME,
-			      chan + LNG_ERR_BADCHANNAME);
+			      chan + Language::L_ERR_BADCHANNAME);
 	 continue;
       }
 
@@ -1912,7 +1925,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	 if ((c->modes & Channel::MODE_REGNICKSONLY) &&
 	     !(handler->user->modes & User::MODE_IDENTIFIED)) {
 	    handler->sendNumeric(ERR_NONONREG,
-				 chan + LNG_ERR_NONONREG_CHANNEL);
+				 chan + Language::L_ERR_NONONREG_CHANNEL);
 	    continue;
 	 }
 	 
@@ -1921,7 +1934,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	    // if this user does not have an exemption, they cannot be let in
 	    if (!c->onBanExcept(handler->user)) {
 	       handler->sendNumeric(ERR_BANNEDFROMCHAN,
-				    chan + LNG_ERR_BANNEDFROMCHAN);
+				    chan + Language::L_ERR_BANNEDFROMCHAN);
 	       continue;
 	    }
 	 }
@@ -1936,7 +1949,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	       // Check this user is not invited or not on the invite list
 	       if (!c->onInvite(handler->user)) {
 		  handler->sendNumeric(ERR_INVITEONLYCHAN,
-				       chan + LNG_ERR_INVITEONLYCHAN);
+				       chan + Language::L_ERR_INVITEONLYCHAN);
 		  continue;
 	       }
 	    }
@@ -1946,7 +1959,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	 if ((c->limit > 0) && 
 	     (c->members.size() >= c->limit)) {
 	    handler->sendNumeric(ERR_CHANNELISFULL,
-				 chan + LNG_ERR_CHANNELISFULL);
+				 chan + Language::L_ERR_CHANNELISFULL);
 	    continue;
 	 }
 	 
@@ -1954,7 +1967,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	 if (c->key.length() && 
 	     (c->key != keys.nextToken(','))) {
 	    handler->sendNumeric(ERR_BADCHANNELKEY,
-				 chan + LNG_ERR_BADCHANNELKEY);
+				 chan + Language::L_ERR_BADCHANNELKEY);
 	    continue;
 	 }
 	 
@@ -1965,7 +1978,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	 if (chan[0] == '!') {
 	    // Reject their request outright. We should fix this one day?
 	    handler->sendNumeric(ERR_BADCHANNAME,
-				 chan + LNG_ERR_BADCHANNAME_SAFECHAN);
+				 chan + Language::L_ERR_BADCHANNAME_SAFECHAN);
 	    continue;
 	 }
 
@@ -1975,10 +1988,11 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	    String reason = TO_DAEMON->failedChannel(chan);
 	    if (reason.length()) {
 	       // Tell the user they cannot join, giving them the reaso
-	       handler->sendNumeric(ERR_BADCHANNAME,
-				    String::printf(LNG_ERR_BADCHANNAME_FAILMASK,
-						   (char const *)chan,
-						   (char const *)reason));
+	       handler->
+		 sendNumeric(ERR_BADCHANNAME,
+			     String::printf((char *)Language::L_ERR_BADCHANNAME_FAILMASK,
+					    (char const *)chan,
+					    (char const *)reason));
 	       continue;
 	    }
 	 }
@@ -2058,7 +2072,7 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       // Check
       if (!c) {
 	 handler->sendNumeric(ERR_NOTONCHANNEL,
-			      chan + LNG_ERR_NOTONCHANNEL);
+			      chan + Language::L_ERR_NOTONCHANNEL);
 	 continue;
       } 
       
@@ -2073,14 +2087,14 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
 	       "member -- VERY WRONG!");
 #endif
 	 handler->sendNumeric(ERR_NOTONCHANNEL,
-			      chan + LNG_ERR_NOTONCHANNEL);
+			      chan + Language::L_ERR_NOTONCHANNEL);
 	 continue;
       }
       
       // Does this fella have the rights to even contemplate kicking someone?
       if (!kicker->isChanOper()) {
 	 handler->sendNumeric(ERR_CHANOPRIVSNEEDED,
-			      chan + LNG_ERR_CHANOPRIVSNEEDED);
+			      chan + Language::L_ERR_CHANOPRIVSNEEDED);
 	 continue;
       }
       
@@ -2090,7 +2104,7 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       // Check
       if (!u) {
 	 handler->sendNumeric(ERR_NOSUCHNICK,
-			      target + LNG_ERR_NOSUCHNICK_NICK);
+			      target + Language::L_ERR_NOSUCHNICK_NICK);
 	 continue;
       }
 
@@ -2099,19 +2113,21 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       
       // Check
       if (!kickee) {
-	 handler->sendNumeric(ERR_USERNOTINCHANNEL,
-			      String::printf(LNG_ERR_USERNOTINCHANNEL,
-					     (char const *)u->nickname,
-					     (char const *)chan));
+	 handler->
+	   sendNumeric(ERR_USERNOTINCHANNEL,
+		       String::printf((char *)Language::L_ERR_USERNOTINCHANNEL,
+				      (char const *)u->nickname,
+				      (char const *)chan));
 	 continue;
       }
       
       // Check if this user is immune from kicks
       if (u->modes & User::MODE_NONKICKABLE) {
-	 handler->sendNumeric(ERR_ISCHANSERVICE,
-			      String::printf(LNG_ERR_ISCHANSERVICE,
-					     (char const *)u->nickname,
-					     (char const *)c->name));
+	 handler->
+	   sendNumeric(ERR_ISCHANSERVICE,
+		       String::printf((char *)Language::L_ERR_ISCHANSERVICE,
+				      (char const *)u->nickname,
+				      (char const *)c->name));
 	 continue;
       }
       
@@ -2120,7 +2136,8 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
 	  kicker->isModeSet(ChannelMember::MODE_HALFOPPED) &&
 	  !kicker->isModeSet(ChannelMember::MODE_OPPED)) {
 	 handler->sendNumeric(ERR_CHANOPRIVSNEEDED,
-			      chan + LNG_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER);
+			      chan + 
+			      Language::L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER);
 	 continue;
       }
       
@@ -2152,13 +2169,14 @@ void irc2userHandler::parseKILL(irc2userHandler *handler, StringTokens *tokens)
    // Check
    if (!u) {
       handler->sendNumeric(ERR_NOSUCHNICK,
-			   target + LNG_ERR_NOSUCHNICK_NICK);
+			   target + Language::L_ERR_NOSUCHNICK_NICK);
       return;
    }
    
    // Check if this user is immune from kills
    if (u->modes & User::MODE_NONKICKABLE) {
-      handler->sendNumeric(ERR_CANTKILLSERVICES, LNG_ERR_CANTKILLSERVICES);
+      handler->sendNumeric(ERR_CANTKILLSERVICES, 
+			   Language::L_ERR_CANTKILLSERVICES);
       // Broadcast this blunder
       return;
    }
@@ -2172,7 +2190,7 @@ void irc2userHandler::parseKILL(irc2userHandler *handler, StringTokens *tokens)
     * turned off just to confirm the kill.
     */
    handler->sendNumeric(RPL_KILLDONE,
-			target + LNG_RPL_KILLDONE);
+			target + Language::L_RPL_KILLDONE);
 }
 
 
@@ -2193,7 +2211,7 @@ void irc2userHandler::parseLINKS(irc2userHandler *handler, StringTokens *tokens)
       // Check
       if (!s) {
 	 handler->sendNumeric(ERR_NOSUCHSERVER,
-			      server + LNG_ERR_NOSUCHSERVER);
+			      server + Language::L_ERR_NOSUCHSERVER);
 	 return;
       }
    
@@ -2246,7 +2264,7 @@ void irc2userHandler::parseLIST(irc2userHandler *handler, StringTokens *tokens)
    }
    
    // Send the end of the list message
-   handler->sendNumeric(RPL_LISTEND, LNG_RPL_LISTEND);
+   handler->sendNumeric(RPL_LISTEND, Language::L_RPL_LISTEND);
 }
 
 
@@ -2264,11 +2282,12 @@ void irc2userHandler::parseLOCOPS(irc2userHandler *handler, StringTokens *tokens
 	 message = message.subString(1);
       }
    
-      TO_DAEMON->broadcastServerNotice(SERVERNOTICE_LOCOPS,
-				     String::printf(LNG_SERVNOTICE_LOCOPS,
-						    ((char const *)
-						     handler->user->nickname), 
-						    (char const *)message));
+      TO_DAEMON->
+	broadcastServerNotice(SERVERNOTICE_LOCOPS,
+			      String::printf((char *)Language::L_SERVNOTICE_LOCOPS,
+					     ((char const *)
+					      handler->user->nickname), 
+					     (char const *)message));
       return;
    }
    
@@ -2295,7 +2314,7 @@ void irc2userHandler::parseLUSERS(irc2userHandler *handler, StringTokens *tokens
       // Check
       if (!s) {
 	 handler->sendNumeric(ERR_NOSUCHSERVER,
-			      server + LNG_ERR_NOSUCHSERVER);
+			      server + Language::L_ERR_NOSUCHSERVER);
 	 return;
       }
    
@@ -2335,7 +2354,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
       // Make sure we got that channel
       if (!c) {
 	 handler->sendNumeric(ERR_NOSUCHCHANNEL,
-			      target + LNG_ERR_NOSUCHCHANNEL);
+			      target + Language::L_ERR_NOSUCHCHANNEL);
 	 return;
       }
       
@@ -2343,7 +2362,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
       if (c->isHidden() &&
 	  !c->getMember(handler->user)) {
 	 handler->sendNumeric(ERR_NOTONCHANNEL,
-			      c->name + LNG_ERR_NOTONCHANNEL);
+			      c->name + Language::L_ERR_NOTONCHANNEL);
 	 return;
       }
       
@@ -2390,7 +2409,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    // If this user is a helper, we can continue
    if (!User::isHelper(handler->user)) {
       handler->sendNumeric(ERR_USERSDONTMATCH,
-			   LNG_ERR_USERSDONTMATCH_MODE);
+			   Language::L_ERR_USERSDONTMATCH_MODE);
       return;
    }
    
@@ -2411,7 +2430,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    // Ok perhaps not. If this user is not an oper, skip the last check
    if (!User::isOper(handler->user)) {
       handler->sendNumeric(ERR_NOSUCHNICK,
-			   target + LNG_ERR_NOSUCHNICK);
+			   target + Language::L_ERR_NOSUCHNICK);
       return;
    }
    
@@ -2421,14 +2440,15 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    // Check
    if (!server) {
       handler->sendNumeric(ERR_NOSUCHNICK,
-			   target + LNG_ERR_NOSUCHNICK_OR_SERVER);
+			   target + Language::L_ERR_NOSUCHNICK_OR_SERVER);
       return;
    }
 
    // Is this server unlocked for mode changes?
    if (server->isModeSet(Server::MODE_MODELOCK)) {
       handler->sendNumeric(ERR_SERVERMODELOCK,
-			   server->getHostname() + LNG_ERR_SERVERMODELOCK);
+			   server->getHostname() + 
+			   Language::L_ERR_SERVERMODELOCK);
       return;
    }
    
@@ -2463,7 +2483,7 @@ void irc2userHandler::parseMOTD(irc2userHandler *handler, StringTokens *tokens)
       // Check
       if (!s) {
 	 handler->sendNumeric(ERR_NOSUCHSERVER,
-			      server + LNG_ERR_NOSUCHSERVER);
+			      server + Language::L_ERR_NOSUCHSERVER);
 	 return;
       }
    
@@ -2508,14 +2528,14 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
    // Make sure we got a nickname..
    if (!nick.length()) {
       handler->sendNumeric(ERR_NONICKNAMEGIVEN,
-			   LNG_ERR_NONICKNAMEGIVEN);
+			   Language::L_ERR_NONICKNAMEGIVEN);
       return;
    }
    
    // Check the nickname for an acceptable length and ok characters
    if (!User::okName(nick)) {
       handler->sendNumeric(ERR_ERRONEUSNICKNAME,
-			   nick + LNG_ERR_ERRONEUSNICKNAME);
+			   nick + Language::L_ERR_ERRONEUSNICKNAME);
       return;
    }
    
@@ -2525,10 +2545,11 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
       String reason = TO_DAEMON->failedNickname(nick);
       if (reason.length()) {
 	 // Tell the user they cannot join, giving them the reaso
-	 handler->sendNumeric(ERR_ERRONEUSNICKNAME,
-			      String::printf(LNG_ERR_ERRONEUSNICKNAME_W_REASON,
-					     (char const *)nick,
-					     (char const *)reason));
+	 handler->
+	   sendNumeric(ERR_ERRONEUSNICKNAME,
+		       String::printf((char *)Language::L_ERR_ERRONEUSNICKNAME_W_REASON,
+				      (char const *)nick,
+				      (char const *)reason));
 	 return;
       }
       
@@ -2552,7 +2573,7 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
 		((*it).second->modes & Channel::MODE_EVENT)) {
 	       handler->sendNumeric(ERR_EVENTNICKCHANGE,
 				    (*it).second->name + 
-				    LNG_ERR_EVENTNICKCHANGE);
+				    Language::L_ERR_EVENTNICKCHANGE);
 	       return;
 	    }
 	 }
@@ -2566,7 +2587,7 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
    if (!(handler->user->nickname.IRCtoLower() == nick.IRCtoLower()) &&
        TO_DAEMON->getUser(nick)) {
       handler->sendNumeric(ERR_NICKNAMEINUSE,
-			   nick + LNG_ERR_NICKNAMEINUSE);
+			   nick + Language::L_ERR_NICKNAMEINUSE);
       return;
    }
 
@@ -2749,13 +2770,15 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
 
    // Check that this user is not already an oper
    if (User::isOper(handler->user)) {
-      handler->sendNumeric(RPL_YOUREOPER, LNG_RPL_YOUREOPER_ALREADY);
+      handler->sendNumeric(RPL_YOUREOPER, 
+			   Language::L_RPL_YOUREOPER_ALREADY);
       return;
    }
    
    // Check if the server is in NOOPER mode
    if (TO_DAEMON->myServer()->isModeSet(Server::MODE_NOOP)) {
-      handler->sendNumeric(ERR_NOOPERHOST, LNG_ERR_NOOPERHOST_NOOP);
+      handler->sendNumeric(ERR_NOOPERHOST, 
+			   Language::L_ERR_NOOPERHOST_NOOP);
       return;
    }
 
@@ -2768,14 +2791,16 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    
    // Check.
    if (!oper) {
-      handler->sendNumeric(ERR_NOOPERHOST, LNG_ERR_NOOPERHOST);
+      handler->sendNumeric(ERR_NOOPERHOST, 
+			   Language::L_ERR_NOOPERHOST);
       return;
    }
    
    // Try this password against this operator
    if (oper->getPassword() != 
        Operator::makeOperPassword(nickname, password)) {
-      handler->sendNumeric(ERR_PASSWDMISMATCH, LNG_ERR_PASSWDMISMATCH);
+      handler->sendNumeric(ERR_PASSWDMISMATCH, 
+			   Language::L_ERR_PASSWDMISMATCH);
       return;
    }
 
@@ -2818,7 +2843,8 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    handler->user->modes |= modes;
    
    // Tell the user they are now an IRC Operator, finally!
-   handler->sendNumeric(RPL_YOUREOPER, LNG_RPL_YOUREOPER);
+   handler->sendNumeric(RPL_YOUREOPER, 
+			Language::L_RPL_YOUREOPER);
 }
 
 
@@ -2851,7 +2877,7 @@ void irc2userHandler::parsePART(irc2userHandler *handler, StringTokens *tokens)
 
       if (!c) {
 	 handler->sendNumeric(ERR_NOTONCHANNEL,
-			      chan + LNG_ERR_NOTONCHANNEL);
+			      chan + Language::L_ERR_NOTONCHANNEL);
 	 continue;
       } 
       
@@ -2893,7 +2919,8 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
    
    // Check the targets
    if (!targetStr.length()) {
-      handler->sendNumeric(ERR_NORECIPIENT, LNG_ERR_NORECIPIENT);
+      handler->sendNumeric(ERR_NORECIPIENT, 
+			   Language::L_ERR_NORECIPIENT);
       return;
    }
    
@@ -2933,7 +2960,8 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	 if (!c) {
 	    if (!User::isOper(handler->user)) {
 	       handler->sendNumeric(ERR_NOSUCHNICK,
-				    iter + LNG_ERR_NOSUCHNICK_CHANNEL);
+				    iter + 
+				    Language::L_ERR_NOSUCHNICK_CHANNEL);
 	       continue;
 	    }
 	 } else {
@@ -2949,53 +2977,59 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	       if (!cm->isPrivileged()) {
 		  // Check if this channel is moderated
 		  if (c->modes & Channel::MODE_MODERATED) {
-		     handler->sendNumeric(ERR_CANNOTSENDTOCHAN,
-					  iter + 
-					  LNG_ERR_CANNOTSENDTOCHAN_MODERATED);
+		     handler->
+		       sendNumeric(ERR_CANNOTSENDTOCHAN,
+				   iter + 
+				   Language::L_ERR_CANNOTSENDTOCHAN_MODERATED);
 		     continue;
 		  }
 		  
 		  // Check if this is a registered user only channel
 		  if ((c->modes & Channel::MODE_REGNICKSONLY) && 
 		      !(handler->user->modes & User::MODE_IDENTIFIED)) {
-		     handler->sendNumeric(ERR_CANNOTSENDTOCHAN,
-					  iter + 
-					  LNG_ERR_CANNOTSENDTOCHAN_REGNICKSONLY);
+		     handler->
+		       sendNumeric(ERR_CANNOTSENDTOCHAN,
+				   iter + 
+				   Language::L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY);
 		     continue;
 		  }
 		  
 		  // Check if this user is banned
 		  if (c->onBan(handler->user) && 
 		      !c->onBanExcept(handler->user)) {
-		     handler->sendNumeric(ERR_CANNOTSENDTOCHAN,
-					  iter + 
-					  LNG_ERR_CANNOTSENDTOCHAN_BANNED);
+		     handler->
+		       sendNumeric(ERR_CANNOTSENDTOCHAN,
+				   iter + 
+				   Language::L_ERR_CANNOTSENDTOCHAN_BANNED);
 		     continue;
 		  }
 	       }
 	    } else {
 	       // Check if the user can still send while not on the channel
 	       if (c->modes & Channel::MODE_NOOUTSIDEMSG) {
-		  handler->sendNumeric(ERR_CANNOTSENDTOCHAN,
-				       iter + 
-				       LNG_ERR_CANNOTSENDTOCHAN_NOOUTSIDEMSG);
+		  handler->
+		    sendNumeric(ERR_CANNOTSENDTOCHAN,
+				iter + 
+				Language::L_ERR_CANNOTSENDTOCHAN_NOOUTSIDEMSG);
 		  continue;
 	       }
 	       
 	       // Check if this is a registered user only channel
 	       if ((c->modes & Channel::MODE_REGNICKSONLY) && 
 		   !(handler->user->modes & User::MODE_IDENTIFIED)) {
-		  handler->sendNumeric(ERR_CANNOTSENDTOCHAN,
-				       iter + 
-				       LNG_ERR_CANNOTSENDTOCHAN_REGNICKSONLY);
+		  handler->
+		    sendNumeric(ERR_CANNOTSENDTOCHAN,
+				iter + 
+				Language::L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY);
 		  continue;
 	       }
 	       
 	       // Check if this user is banned from this channel
 	       if (c->onBan(handler->user) && !c->onBanExcept(handler->user)) {
-		  handler->sendNumeric(ERR_CANNOTSENDTOCHAN,
-				       iter + 
-				       LNG_ERR_CANNOTSENDTOCHAN_BANNED);
+		  handler->
+		    sendNumeric(ERR_CANNOTSENDTOCHAN,
+				iter + 
+				Language::L_ERR_CANNOTSENDTOCHAN_BANNED);
 		  continue;
 	       }
 	    }
@@ -3013,9 +3047,10 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	    // Did we not get a user record and this user is not an oper?
 	    if (!u) {
 	       if (!User::isOper(handler->user)) {
-		  handler->sendNumeric(ERR_NOSUCHNICK,
-				       iter + 
-				       LNG_ERR_NOSUCHNICK_NICK);
+		  handler->
+		    sendNumeric(ERR_NOSUCHNICK,
+				iter + 
+				Language::L_ERR_NOSUCHNICK_NICK);
 		  continue;
 	       }
 	    } else {
@@ -3023,8 +3058,10 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	       if ((u->modes & User::MODE_REGNICKSMSG) &&
 		   (!(handler->user->modes & User::MODE_IDENTIFIED) ||
 		    !User::isOper(handler->user))) {
-		  handler->sendNumeric(ERR_CANNOTSENDTONICK,
-				       iter + LNG_ERR_CANNOTSENDTONICK_MUSTID);
+		  handler->
+		    sendNumeric(ERR_CANNOTSENDTONICK,
+				iter + 
+				Language::L_ERR_CANNOTSENDTONICK_MUSTID);
 		  continue;
 	       }
 	       
@@ -3085,7 +3122,7 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
       
       // If we got here, we did not find a match, complain to the user
       handler->sendNumeric(ERR_NOSUCHNICK,
-			   iter + LNG_ERR_NOSUCHNICK);
+			   iter + Language::L_ERR_NOSUCHNICK);
    }
 }
 
@@ -3102,8 +3139,9 @@ void irc2userHandler::parseQUIT(irc2userHandler *handler, StringTokens *tokens)
     * to them :)
     */
    if (reason.length()) {
-      handler->getConnection()->goodbye(String::printf(LNG_BYE_BYE_USER,
-						       (char const *)reason));
+      handler->getConnection()->
+	goodbye(String::printf((char *)Language::L_BYE_BYE_USER,
+			       (char const *)reason));
    } else {
       handler->getConnection()->goodbye();
    }
@@ -3164,7 +3202,8 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
 	      // Check if their silence list is too big
 	      if (handler->user->silences.size() > MAX_SILENCES_PER_USER) {
 		 handler->sendNumeric(ERR_SILELISTFULL,
-				      param + LNG_ERR_SILELISTFULL);
+				      param + 
+				      Language::L_ERR_SILELISTFULL);
 		 return;
 	      }
 	      
@@ -3211,7 +3250,8 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
 	  * appears to be how dalnet ppl do it. Anyone think we should just
 	  * send a customised permission denied?
 	  */
-	 handler->sendNumeric(RPL_ENDOFSILELIST, LNG_RPL_ENDOFSILELIST);
+	 handler->sendNumeric(RPL_ENDOFSILELIST, 
+			      Language::L_RPL_ENDOFSILELIST);
 	 return;
       }
       
@@ -3220,7 +3260,8 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
       
       // Check
       if (!u) {
-	 handler->sendNumeric(ERR_NOSUCHNICK, LNG_ERR_NOSUCHNICK_NICK);
+	 handler->sendNumeric(ERR_NOSUCHNICK, 
+			      Language::L_ERR_NOSUCHNICK_NICK);
 	 return;
       }
    } else {
@@ -3239,7 +3280,8 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
    }
    
    // Send the end of the list numeric
-   handler->sendNumeric(RPL_ENDOFSILELIST, LNG_RPL_ENDOFSILELIST);
+   handler->sendNumeric(RPL_ENDOFSILELIST, 
+			Language::L_RPL_ENDOFSILELIST);
 }
 
 
@@ -3278,7 +3320,8 @@ void irc2userHandler::parseSTATS(irc2userHandler *handler, StringTokens *tokens)
       // Check
       if (!s) {
 	 handler->sendNumeric(ERR_NOSUCHSERVER,
-			      server + LNG_ERR_NOSUCHSERVER);
+			      server + 
+			      Language::L_ERR_NOSUCHSERVER);
 	 return;
       }
    
@@ -3315,7 +3358,8 @@ void irc2userHandler::parseTIME(irc2userHandler *handler, StringTokens *tokens)
 	 // Check
 	 if (!u) {
 	    handler->sendNumeric(ERR_NOSUCHSERVER,
-				 target + LNG_ERR_NOSUCHSERVER);
+				 target + 
+				 Language::L_ERR_NOSUCHSERVER);
 	    return;
 	 }
 	 
@@ -3359,7 +3403,7 @@ void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
    // Check
    if (!c) {
       handler->sendNumeric(ERR_NOSUCHCHANNEL,
-			   channel + LNG_ERR_NOSUCHCHANNEL);
+			   channel + Language::L_ERR_NOSUCHCHANNEL);
       return;
    } 
 
@@ -3381,7 +3425,7 @@ void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
 	
       // No topic...
       handler->sendNumeric(RPL_NOTOPIC,
-			   c->name + LNG_RPL_NOTOPIC);
+			   c->name + Language::L_RPL_NOTOPIC);
       
       return;
    }
@@ -3392,7 +3436,7 @@ void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
    // Check
    if (!cm) {
       handler->sendNumeric(ERR_NOTONCHANNEL,
-			   channel + LNG_ERR_NOTONCHANNEL);
+			   channel + Language::L_ERR_NOTONCHANNEL);
       return;
    }
    
@@ -3401,7 +3445,7 @@ void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
       // Check if this user is an operator
       if (!cm->isChanOper()) {
 	 handler->sendNumeric(ERR_CHANOPRIVSNEEDED,
-			      channel + LNG_ERR_CHANOPRIVSNEEDED);
+			      channel + Language::L_ERR_CHANOPRIVSNEEDED);
 	 return;
       }
    }
@@ -3498,7 +3542,7 @@ void irc2userHandler::parseVERSION(irc2userHandler *handler, StringTokens *token
       // Check
       if (!s) {
 	 handler->sendNumeric(ERR_NOSUCHSERVER,
-			      server + LNG_ERR_NOSUCHSERVER);
+			      server + Language::L_ERR_NOSUCHSERVER);
 	 return;
       }
    
@@ -3561,10 +3605,11 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	 continue;
        case 'S': // Something.
 	   {
-	      handler->sendNumeric(RPL_WATCHSTAT,
-				   String::printf(LNG_RPL_WATCHSTAT,
-						  handler->user->local->watches.size(),
-						  (int)0));
+	      handler->
+		sendNumeric(RPL_WATCHSTAT,
+			    String::printf((char *)Language::L_RPL_WATCHSTAT,
+					   handler->user->local->watches.size(),
+					   (int)0));
 
 	      String reply = ":";
 	      
@@ -3593,9 +3638,10 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	      }
 
 	      // Send the end of list marker
-	      handler->sendNumeric(RPL_ENDOFWATCHLIST,
-				   String::printf(LNG_RPL_ENDOFWATCHLIST,
-						  param[0]));
+	      handler->
+		sendNumeric(RPL_ENDOFWATCHLIST,
+			    String::printf((char *)Language::L_RPL_ENDOFWATCHLIST,
+					   param[0]));
 	   }
 	 continue;
        case 'L': // Another something *sigh*
@@ -3679,9 +3725,10 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	 }
 	 
 	 // Send the end of watch list message
-	 handler->sendNumeric(RPL_ENDOFWATCHLIST, 
-			      String::printf(LNG_RPL_ENDOFWATCHLIST,
-					     param[0]));
+	 handler->
+	   sendNumeric(RPL_ENDOFWATCHLIST, 
+		       String::printf((char *)Language::L_RPL_ENDOFWATCHLIST,
+				      param[0]));
 	 
 	 continue;
        case '+': // Adding a watch
@@ -3704,10 +3751,11 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	      if (handler->user->local->watches.size() > 
 		  MAX_WATCHES_PER_USER) {
 		 // Complain
-		 handler->sendNumeric(ERR_TOOMANYWATCH,
-				      String::printf(LNG_ERR_TOOMANYWATCH,
-						     (char const *)param,
-						     MAX_WATCHES_PER_USER));
+		 handler->
+		   sendNumeric(ERR_TOOMANYWATCH,
+			       String::printf((char *)Language::L_ERR_TOOMANYWATCH,
+					      (char const *)param,
+					      MAX_WATCHES_PER_USER));
 		 
 		 // Stop any more warnings being sent (no flood)
 		 noAdd = true;
@@ -3904,7 +3952,7 @@ void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
 	    if (!User::isOper(handler->user) &&
 		(++lines >= MAX_WHO_LIST_LINES)) {
 	       handler->sendNumeric(ERR_WHOTRUNC,
-				    LNG_ERR_WHOTRUNC);
+				    Language::L_ERR_WHOTRUNC);
 	       break;
 	    }
 #endif
@@ -3914,19 +3962,20 @@ void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
    
    // Send the end of help numeric
 #ifdef DO_MATCH_COUNTING
-   handler->sendNumeric(RPL_ENDOFWHO,
-			((matches > 0) ?
-			 ((matches == 1) ?
-			  String::printf(LNG_RPL_ENDOFWHO,
-					 (char const *)maskStr) :
-			  String::printf(LNG_RPL_ENDOFWHO_MATCHES,
-					 (char const *)maskStr,
-					 matches)) :
-			 String::printf(LNG_RPL_ENDOFWHO_NOMATCH,
-					(char const *)maskStr)));
+   handler->
+     sendNumeric(RPL_ENDOFWHO,
+		 ((matches > 0) ?
+		  ((matches == 1) ?
+		   String::printf((char *)Language::L_RPL_ENDOFWHO,
+				  (char const *)maskStr) :
+		   String::printf((char *)Language::L_RPL_ENDOFWHO_MATCHES,
+				  (char const *)maskStr,
+				  matches)) :
+		  String::printf((char *)Language::L_RPL_ENDOFWHO_NOMATCH,
+				 (char const *)maskStr)));
 #else
    handler->sendNumeric(RPL_ENDOFWHO,
-			String::printf(LNG_RPL_ENDOFWHO,
+			String::printf((char *)Language::L_RPL_ENDOFWHO,
 				       (char const *)maskStr));
 #endif
 }
@@ -3949,7 +3998,7 @@ void irc2userHandler::parseWHOIS(irc2userHandler *handler, StringTokens *tokens)
       // Check
       if (!s) {
 	 handler->sendNumeric(ERR_NOSUCHSERVER,
-			      param1 + LNG_ERR_NOSUCHSERVER);
+			      param1 + Language::L_ERR_NOSUCHSERVER);
 	 return;
       }
    
@@ -4044,19 +4093,20 @@ void irc2userHandler::parseWHOWAS(irc2userHandler *handler, StringTokens *tokens
    
    // Send end of whowas list
 #ifdef DO_MATCH_COUNTING
-   handler->sendNumeric(RPL_ENDOFWHOWAS,
-			((matches > 0) ?
-			 ((matches == 1) ?
-			  String::printf(LNG_RPL_ENDOFWHOWAS,
-					 (char const *)param) :
-			  String::printf(LNG_RPL_ENDOFWHOWAS_MATCHES,
-					 (char const *)param,
-					 matches)) :
-			 String::printf(LNG_RPL_ENDOFWHOWAS_NOMATCH,
-					(char const *)param)));
+   handler->
+     sendNumeric(RPL_ENDOFWHOWAS,
+		 ((matches > 0) ?
+		  ((matches == 1) ?
+		   String::printf((char *)Language::L_RPL_ENDOFWHOWAS,
+				  (char const *)param) :
+		   String::printf((char *)Language::L_RPL_ENDOFWHOWAS_MATCHES,
+				  (char const *)param,
+				  matches)) :
+		  String::printf((char *)Language::L_RPL_ENDOFWHOWAS_NOMATCH,
+				 (char const *)param)));
 #else
    handler->sendNumeric(RPL_ENDOFWHOWAS,
-			String::printf(LNG_RPL_ENDOFWHOWAS,
+			String::printf(Language::L_RPL_ENDOFWHOWAS,
 				       (char const *)param));
 #endif
 }

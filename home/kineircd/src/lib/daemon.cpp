@@ -349,10 +349,11 @@ check_connections:
    if (called) {
 #ifdef MAX_GARBO_RUN_ITEMS
       broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING,
-			    String::printf(LNG_SERVNOTICE_GARBO_ITEMS,
+			    String::printf((char *)Language::L_SERVNOTICE_GARBO_ITEMS,
 					   items));
 #else
-      broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING, LNG_SERVNOTICE_GARBO);
+      broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING, 
+			    Language::L_SERVNOTICE_GARBO);
 #endif
    }
 }
@@ -369,12 +370,12 @@ void Daemon::rehash(Handler *handler, User *user)
       if (handler) {
 	 handler->sendNumeric(server, RPL_REHASHING, user,
 			      configFile +
-			      LNG_RPL_REHASHING);
+			      Language::L_RPL_REHASHING);
       }
       
       // Send out a server broadcast notifying of the rehash
       broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING,
-			    String::printf(LNG_SERVNOTICE_CMD_REHASH,
+			    String::printf((char *)Language::L_SERVNOTICE_CMD_REHASH,
 					   ((char const *)
 					    user->nickname)));
    }
@@ -934,7 +935,7 @@ void Daemon::killUser(User *user, String const &caller,
    messages.clear();
    
    // Fix up the reason
-   String newReason = String::printf(LNG_QUIT_KILLED,
+   String newReason = String::printf((char *)Language::L_QUIT_KILLED,
 				     (char const *)caller,
 				     (char const *)reason);
    
@@ -1477,7 +1478,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 		  if (handler) {
 		     handler->sendNumeric(server,
 					  ERR_CANNOTCHANGESERVERMODE, 0,
-					  String::printf(LNG_ERR_CANNOTCHANGESERVERMODE,
+					  String::printf((char *)Language::L_ERR_CANNOTCHANGESERVERMODE,
 							 modes[i]));
 		  }
 	       }
@@ -1489,7 +1490,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 	 // Check if we found a valid char. If not,c omplain if we can
 	 if (!gotModeChar && handler) {
 	    handler->sendNumeric(server, ERR_UNKNOWNSERVERMODE, 0,
-				 String::printf(LNG_ERR_UNKNOWNSERVERMODE,
+				 String::printf((char *)Language::L_ERR_UNKNOWNSERVERMODE,
 						modes[i]));
 
 	 }

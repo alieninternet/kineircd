@@ -144,7 +144,7 @@ void registerHandler::parseLine(String const &line)
       handler->getConnection()->goodbye();
 # else
       sendNumeric(ERR_UNKNOWNCOMMAND, 0, 
-		  command + LNG_ERR_UNKNOWNCOMMAND);
+		  command + Language::L_ERR_UNKNOWNCOMMAND);
 # endif
       return;
    }
@@ -171,7 +171,8 @@ void registerHandler::parseLine(String const &line)
 	    if (password.length()) {
 	       // something here.
 #ifndef PASSIVE_REGISTRATION      	 
-	       sendNumeric(ERR_PASSWDMISMATCH, 0, LNG_ERR_PASSWDMISMATCH);
+	       sendNumeric(ERR_PASSWDMISMATCH, 0, 
+			   Language::L_ERR_PASSWDMISMATCH);
 #endif
 #ifdef DEBUG_EXTENDED
 	       debug("Invalid password, terminating!");
@@ -185,7 +186,8 @@ void registerHandler::parseLine(String const &line)
 	    // Check if we are not full up on clients at the moment
 	    if (getConnection()->socket->getFD() > MAX_FD_NO_MORE_USERS) {
 #ifndef PASSIVE_REGISTRATION      	 
-	       sendNumeric(ERR_SERVERTOOFULL, 0, LNG_ERR_SERVERTOOFULL);
+	       sendNumeric(ERR_SERVERTOOFULL, 0, 
+			   Language::L_ERR_SERVERTOOFULL);
 #endif
 #ifdef DEBUG
 	       debug("Server is too full, no more clients!");
@@ -356,7 +358,8 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else
-      handler->sendNumeric(ERR_NONICKNAMEGIVEN, 0, LNG_ERR_NONICKNAMEGIVEN);
+      handler->sendNumeric(ERR_NONICKNAMEGIVEN, 0, 
+			   Language::L_ERR_NONICKNAMEGIVEN);
 #endif
       return;
    }
@@ -367,7 +370,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 #else
       handler->sendNumeric(ERR_ERRONEUSNICKNAME, 0,
-			   nick + LNG_ERR_ERRONEUSNICKNAME);
+			   nick + Language::L_ERR_ERRONEUSNICKNAME);
 #endif
       return;
    }
@@ -378,10 +381,11 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else
-      handler->sendNumeric(ERR_ERRONEUSNICKNAME, 0,
-			   String::printf(LNG_ERR_ERRONEUSNICKNAME_W_REASON,
-					  (char const *)nick,
-					  (char const *)reason));
+      handler->
+	sendNumeric(ERR_ERRONEUSNICKNAME, 0,
+		    String::printf((char *)Language::L_ERR_ERRONEUSNICKNAME_W_REASON,
+				   (char const *)nick,
+				   (char const *)reason));
       return;
 #endif
    }
@@ -392,7 +396,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 #else
       handler->sendNumeric(ERR_NICKNAMEINUSE, 0,
-			   nick + LNG_ERR_NICKNAMEINUSE);
+			   nick + Language::L_ERR_NICKNAMEINUSE);
 #endif
       return;
    }
@@ -415,7 +419,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    // Send a PING out to make sure we are dealing with a 'real' client
 # ifndef PASSIVE_REGISTRATION      	 
    handler->sendGeneric("NOTICE",
-			String::printf(LNG_PINGPONG_NOTICE,
+			String::printf((char *)Language::L_PINGPONG_NOTICE,
 				       (char const *)handler->pingpong, 
 				       (char const *)handler->pingpong,
 				       (char const *)TO_DAEMON->myServer()->getHostname()));
@@ -489,7 +493,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
       handler->getConnection()->goodbye();
 #  else
       handler->sendNumeric(ERR_ALREADYREGISTERED, 0,
-			   LNG_ERR_ALREADYREGISTERED);
+			   Language::L_ERR_ALREADYREGISTERED);
       handler->getConnection()->goodbye();
 #  endif
       return;
@@ -563,7 +567,7 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 #  else
       handler->sendNumeric(ERR_ALREADYREGISTERED, 0,
-			   LNG_ERR_ALREADYREGISTERED);
+			   Language::L_ERR_ALREADYREGISTERED);
       handler->getConnection()->goodbye();
 #  endif
       return;
