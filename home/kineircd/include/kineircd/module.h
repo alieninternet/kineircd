@@ -26,7 +26,7 @@
 
 // Template for the function which initialises the module and returns the info
 # define KINE_MODULE_INIT_PROTOTYPE(x) \
-   const Kine::Module::basicInfo_type &x(void)
+   const Kine::Module *x(void)
 
 // The correct name of the symbol which is searched for by dlopen()
 # define KINE_MODULE_INIT_SYMBOL_NAME \
@@ -88,18 +88,22 @@ namespace Kine {
 	 // The two required functions - start and stop
 	 const startFunction_type *startFunction;
 	 const stopFunction_type *stopFunction;
-      } const &moduleInfo;
+      } const &basicInfo;
 
     protected:
       // Constructor
       Module(const type_type t, const basicInfo_type &mi)
 	: type(t),
-          moduleInfo(mi)
+          basicInfo(mi)
         {};
       
       // Destructor
       ~Module(void)
 	{};
+      
+      // Return the basic information about the module
+      const basicInfo_type &getBasicInfo(void) const
+	{ return basicInfo; };
    };
 };
    
