@@ -254,6 +254,21 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
 }
 
 
+/* handleQUIT
+ * Original 14/08/2001 simonb
+ * 08/04/2001 simonb - Imported from old code
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
+{
+   // Let the core know about the client quitting
+   
+   // Say goodbye to the client
+   
+   // Close the connection
+   connection.goodbye();
+}
+
+
 /* handleVERSION
  * Original 24/08/2001 simonb
  * 03/04/2001 simonb - Imported from old code
