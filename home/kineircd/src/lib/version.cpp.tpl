@@ -47,8 +47,11 @@ namespace Version {
    
    /* Information for INFO command (note: no colon prefixes for any protocol)
     * Note: Try to make this work OK on a 80 column display (check in text
-    *       clients like EPIC/BitchX etc). This is the reason for the special
-    *       formatting.. DO NOT EDIT THIS UNLESS YOU ARE TOLD TO!!!
+    *       clients like EPIC/BitchX etc). Also keep this in UTF-8, or at
+    *       least ISO-8859-1 encoding in a vague attempt to try and keep it 
+    *       fairly standard to read for the various clients out there. This
+    *       is the reason for the special formatting..
+    *       PLEASE DO NOT EDIT THIS UNLESS YOU ARE TOLD TO!!! :)
     */
    char const *versionInfo[] = {
 "          \026                     _   _               ___      \026",
@@ -58,8 +61,8 @@ namespace Version {
 "          \026     \\__._|\\__._|___/\\__|_| |_|\\___/_/\\_\\___/     \026",
 "          \026                                                  \026",
 "",
-"Copyright (c) 1996,1998,1999,2000,2001,2002 Alien Internet Services",
-"Copyright (c) 2001,2002 AustHex Development Team:",       
+"Copyright \251 1996,1998,1999,2000,2001,2002 Alien Internet Services",
+"Copyright \251 2001,2002 AustHex Development Team:",       
 "  to be done.. hehe shh, it will come before release :)",
       0
    };
