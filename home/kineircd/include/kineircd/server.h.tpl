@@ -30,8 +30,11 @@
 # include <kineircd/entity.h>
 # include <kineircd/sender.h>
 # include <kineircd/user.h>
-
+# include <kineircd/errors.h>
+ 
 namespace Kine {
+   class Client;
+   
    //! A server
    class Server : public Entity, public Sender {
     public:
@@ -87,7 +90,35 @@ namespace Kine {
       //! Is this server hidden from the given user? (this is broken)
       const bool isHiddenFrom(const User& who) const
 	{ return isModeSet(Mode::HIDDEN); };
+      
+      
+      //! Request administrative information from this server
+      virtual const Error::error_type
+	requestAdminInfo(const Kine::Client& who) const
+	{ return Error::UNSUPPORTED_BY_ENTITY; };
+      
+      //! Request the current message of the day from this server
+      virtual const Error::error_type
+	requestMOTD(const Kine::Client& who) const
+	{ return Error::UNSUPPORTED_BY_ENTITY; };
+      
+      //! Request server/daemon information from this server
+      virtual const Error::error_type
+	requestServerInfo(const Kine::Client& who) const
+	{ return Error::UNSUPPORTED_BY_ENTITY; };
+
+      //! Request the local time on this server
+      virtual const Error::error_type
+	requestTime(const Kine::Client& who) const
+	{ return Error::UNSUPPORTED_BY_ENTITY; };
+
+      //! Request the daemon's version from this server
+      virtual const Error::error_type
+	requestVersion(const Kine::Client& who) const
+	{ return Error::UNSUPPORTED_BY_ENTITY; };
    }; // class Server
 }; // namespace Kine
 
+# include <kineircd/client.h>
+ 
 #endif // [+(. header-guard)+]
