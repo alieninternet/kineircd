@@ -139,3 +139,48 @@ void Protocol::sendTimeOnServer(const User& user)
 	       data.str(),
 	       GETLANG(irc2_RPL_TIMEONSERVERIS));
 }
+
+
+/* sendTime - Send RPL_TIME and RPL_TIMEONSERVERIS
+ * Original 29/08/2001 simonb
+ */
+void Protocol::sendTime(const User& user)
+{
+   // Make up a "human readable" time string
+   struct tm currentTime;
+   currentTime = *gmtime((const time_t*)&daemon().getTime());
+   
+   /* Stuff used to make a human readable time string which confirms
+    * relatively strictly to what traditional IRC daemons output.
+    * Unfortunately it is not internationalised, and too many 
+    * scripts/bots rely on it. Hopefully this changes one day.
+    */
+   static const char* const months[12] = {
+      "January", "February", "March", "April", "May", "June", "July",
+      "August", "September", "October", "November", "December"
+   };
+   static const char* const days[7] = {
+      "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+      "Saturday"
+   };
+   
+   std::ostringstream text;
+   text << std::setfill('0') <<
+     days[currentTime.tm_wday] << ' ' <<
+     months[currentTime.tm_mon] << ' ' <<
+     currentTime.tm_mday << ' ' <<
+     (currentTime.tm_year + 1900) << " -- " <<
+     std::setw(2) << currentTime.tm_hour << ':' <<
+     std::setw(2) << currentTime.tm_min << ' ' <<
+     ((timezone > 0) ? '-' : '+') <<
+     std::setw(2) << ((-timezone) / 3600) << ':' <<
+     std::setw(2) << (((-timezone) % 3600) / 60);
+   
+   // Send the RPL_TIME reply
+   sendNumeric(user, LibIRC2::Numerics::RPL_TIME,
+	       config().getOptionsServerName(),
+	       text.str());
+   
+   // Also send the RPL_TIMEONSERVERIS
+   sendTimeOnServer(user);
+}

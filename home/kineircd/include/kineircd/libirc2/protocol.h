@@ -317,6 +317,9 @@ namespace Kine {
 	 
 	 // Send RPL_TIMEONSERVERIS to the given client
 	 void sendTimeOnServer(const User& user);
+	 
+	 // Send RPL_TIME and RPL_TIMEONSERVERIS to the given client
+	 void sendTime(const User& user);
       };
    }; // namespace LibIRC2
 }; // namespace Kine

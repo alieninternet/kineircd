@@ -354,48 +354,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
 {
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
-      // Make up a "human readable" time string
-      struct tm currentTime;
-      currentTime = *gmtime((const time_t*)&daemon().getTime());
-      std::ostringstream text;
-      
-//      if (true) { // <=- should be a configurable define or something
-	 /* Stuff used to make a human readable time string which confirms
-	  * relatively strictly to what traditional IRC daemons output.
-	  * Unfortunately it is not internationalised, and too many 
-	  * scripts/bots rely on it. Hopefully this changes one day.
-	  */
-	 static const char* const months[12] = {
-	    "January", "February", "March", "April", "May", 
-	    "June", "July", "August", "September", "October",
-	    "November", "December"
-	 };
-	 static const char* const days[7] = {
-	    "Sunday", "Monday", "Tuesday", "Wednesday",
-	    "Thursday", "Friday", "Saturday"
-	 };
-	 
-	 text << std::setfill('0') <<
-	   days[currentTime.tm_wday] << ' ' <<
-	   months[currentTime.tm_mon] << ' ' <<
-	   currentTime.tm_mday << ' ' <<
-	   (currentTime.tm_year + 1900) << " -- " <<
-	   std::setw(2) << currentTime.tm_hour << ':' <<
-	   std::setw(2) << currentTime.tm_min << ' ' <<
-	   ((timezone > 0) ? '-' : '+') <<
-	   std::setw(2) << ((-timezone) / 3600) << ':' <<
-	   std::setw(2) << (((-timezone) % 3600) / 60);
-//      }
-	
-      // Send the RPL_TIME reply
-      sendNumeric(LibIRC2::Numerics::RPL_TIME,
-		  config().getOptionsServerName(),
-		  text.str());
-      
-      // Also send the RPL_TIMEONSERVERIS
-      sendTimeOnServer(user);
-      
-      // We're done..
+      sendTime(user);
       return;
    }
    
