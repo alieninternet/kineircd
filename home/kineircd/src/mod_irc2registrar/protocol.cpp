@@ -1,5 +1,5 @@
 /* $Id$
- * Handle registration data (before handling a real handler)
+ * Handle registration (before handling a real protocol)
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)

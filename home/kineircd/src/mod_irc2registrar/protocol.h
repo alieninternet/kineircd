@@ -1,5 +1,5 @@
 /* $Id$
- * The protocol base class
+ * Handle registration (before handling a real protocol)
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
