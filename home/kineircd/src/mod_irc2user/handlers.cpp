@@ -96,6 +96,35 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
 #endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_DIE
+/* handleDIE
+ * Original 14/08/2001 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleDIE)
+{
+   static const char* const commandName = "DIE";
+   Error::error_type error;
+   
+   // Try to shutdown the server - eek!
+   if ((error = daemon().shutdown(parameters[0], &user)) != Error::NO_ERROR) {
+      // What's the error?
+      if (error == Error::PERMISSION_DENIED) {
+	 // Complain about not having access to this command
+	 sendNumeric(LibIRC2::Numerics::ERR_NOPRIVILEGES,
+		     commandName,
+		     GETLANG(irc2_ERR_NOPRIVILEGES_DIE));
+	 return;
+      } 
+      
+      // Unknown error
+      sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
+		  commandName,
+		  GETLANG(irc2_ERR_UNKNOWNERROR));
+   }
+}
+#endif
+
+
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_HELP
 /* handleHELP
  * Original 13/08/2001 simonb
@@ -106,7 +135,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
 IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 {
    static const char* const commandName = "HELP";
-   
+
    bool extended = false;
    AISutil::StringMask mask;
    
@@ -520,6 +549,73 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
    
    // Close the connection
    connection.goodbye();
+}
+#endif
+
+
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_REHASH
+/* handleREHASH
+ * Original 19/09/2001 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleREHASH)
+{
+   static const char* const commandName = "REHASH";
+   Error::error_type error;
+   
+   // Try to rehash
+   if ((error = daemon().rehash(&user)) == Error::NO_ERROR) {
+      /* Tell the user we are rehashing.. Technically, we have rehashed! Even
+       * if we told the user we were rehashing *before* we started rehashing,
+       * the output would not normally not be sent to the user until after the
+       * event anyway..
+       */
+      sendNumeric(LibIRC2::Numerics::RPL_REHASHING,
+		  GETLANG(irc2_RPL_REHASHING));
+      return;
+   }
+
+   // Process the error..
+   if (error == Error::PERMISSION_DENIED) {
+      // Complain about not having access to this command
+      sendNumeric(LibIRC2::Numerics::ERR_NOPRIVILEGES,
+		  commandName,
+		  GETLANG(irc2_ERR_NOPRIVILEGES_REHASH));
+      return;
+   }
+   
+   // No idea what the error is
+   sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
+	       commandName,
+	       GETLANG(irc2_ERR_UNKNOWNERROR));
+}
+#endif
+
+
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_RESTART
+/* handleRESTART
+ * Original 28/10/2001 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleRESTART)
+{
+   static const char* const commandName = "RESTART";
+   Error::error_type error;
+   
+   // Try to rehash
+   if ((error = daemon().restart(parameters[0], &user)) != Error::NO_ERROR) {
+      // What's the error?
+      if (error == Error::PERMISSION_DENIED) {
+	 // Complain about not having access to this command
+	 sendNumeric(LibIRC2::Numerics::ERR_NOPRIVILEGES,
+		     commandName,
+		     GETLANG(irc2_ERR_NOPRIVILEGES_RESTART));
+	 return;
+      } 
+	
+      // Unknown error
+      sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
+		  commandName,
+		  GETLANG(irc2_ERR_UNKNOWNERROR));
+   }
 }
 #endif
 

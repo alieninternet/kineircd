@@ -49,13 +49,13 @@ commands = {
 //   changeIdleTime;
 //};
 
-//commands = {
-//   command		= "DIE";
-//   defaultPenalty	= 0;
-//   minimumParams	= 0;
-//   access		= "OPERATOR";
-//   disabled;
-//};
+commands = {
+   command		= "DIE";
+   defaultPenalty	= 0;
+   minimumParams	= 1;
+   access		= "OPERATOR";
+   disabled;
+};
 
 //commands = {
 //   command		= "GLOBOPS";
@@ -221,21 +221,21 @@ commands = {
    minimumParams	= 0;
 };
 
-//commands = {
-//   command		= "REHASH";
-//   defaultPenalty	= 0;
-//   minimumParams	= 0;
-//   access		= "OPERATOR";
-//};
+commands = {
+   command		= "REHASH";
+   defaultPenalty	= 0;
+   minimumParams	= 0;
+   access		= "OPERATOR";
+};
 
-//commands = {
-//   command		= "RESTART";
-//   defaultPenalty	= 0;
-//   minimumParams	= 0;
-//   access		= "OPERATOR";
-//   changeIdleTime;
-//   disabled;
-//};
+commands = {
+   command		= "RESTART";
+   defaultPenalty	= 0;
+   minimumParams	= 1;
+   access		= "OPERATOR";
+   changeIdleTime;
+   disabled;
+};
 
 commands = {
    command		= "SERVLIST";
