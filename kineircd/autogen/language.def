@@ -1086,6 +1086,12 @@ tag = {
 
 tag = {
    name		= "irc2user_ERROR_CLOSING_LINK";
+   components	= "mod_irc2user";
+   data_en	= "Closing link";
+};
+
+tag = {
+   name		= "irc2user_ERROR_CLOSING_LINK_WITH_REASON";
    fields	= "0 = quit reason";
    components	= "mod_irc2user";
    data_en	= "Closing link: %p0";
