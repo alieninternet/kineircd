@@ -24,7 +24,10 @@
 #ifndef _INCLUDE_KINEIRCD_USER_H_
 # define _INCLUDE_KINEIRCD_USER_H_ 1
 
+# include <string>
+# include <kineircd/name.h>
 # include <kineircd/client.h>
+# include <kineircd/errors.h>
 # include <kineircd/languages.h>
 
 namespace Kine {
@@ -87,18 +90,19 @@ namespace Kine {
 	{ return (!getAwayMessage().empty()); };
 
       //! Set this user 'away' (with the given string as the reason)
-      void setAway(const std::string& reason);
+      const Error::error_type setAway(const std::string& reason);
       
       //! Set this user as 'here' (or in IRC terminology, 'UNAWAY' ;)
-      void setHere(void);
+      const Error::error_type setHere(void);
       
       //! Return the languages list
       const Languages::languageDataList_type& getLanguageList(void) const
 	{ return languageList; };
       
       //! Set the language list to the given list (replaces the list)
-      void setLanguageList(const Languages::languageDataList_type& languages,
-			   const bool secret = false);
+      const Error::error_type
+	setLanguageList(const Languages::languageDataList_type& languages,
+			const bool secret = false);
    }; // class User
 }; // namespace Kine
 

@@ -35,7 +35,7 @@ using namespace Kine;
 /* setAway - Mark the user as being away
  * Original 13/08/2001 simonb
  */
-void User::setAway(const std::string& reason)
+const Error::error_type User::setAway(const std::string& reason)
 {
    // Copy the message across (check it??)
    awayMessage = reason;
@@ -44,13 +44,15 @@ void User::setAway(const std::string& reason)
 
    // Tell ourself about this, if we care
    doEventAwayToggle();
+
+   return Error::NO_ERROR;
 }
 
 
 /* setHere - Mark the user as returning from being away
  * Original 13/08/2001 simonb
  */
-void User::setHere(void)
+const Error::error_type User::setHere(void)
 {
    // Clear the away message
    awayMessage.clear();
@@ -59,14 +61,17 @@ void User::setHere(void)
 
    // Tell ourself about this, if we care
    doEventAwayToggle();
+
+   return Error::NO_ERROR;
 }
 
 
 /* setLanguageList - Change the language list over to the one provided
  * Original 16/04/2003 simonb
  */
-void User::setLanguageList(const Languages::languageDataList_type& languages,
-			   const bool secret)
+const Error::error_type
+  User::setLanguageList(const Languages::languageDataList_type& languages,
+			const bool secret)
 {
    // Okay, cheap.. We should verify the list here, really..
    languageList = languages;
@@ -77,4 +82,6 @@ void User::setLanguageList(const Languages::languageDataList_type& languages,
    if (!secret) {
       doEventLanguageChange();
    }
+   
+   return Error::NO_ERROR;
 }

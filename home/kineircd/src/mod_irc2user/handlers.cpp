@@ -70,12 +70,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
    // If there is a parameter, the user is going away
    if (!parameters.empty()) {
       // Set the user 'away'
-      user.setAway(parameters[0]);
+      (void)user.setAway(parameters[0]);
       return;
    }
    
    // No parameters were given, so the user is now here..
-   user.setHere();
+   (void)user.setHere();
 }
 
 
@@ -307,7 +307,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
    }
    
    // Set the new language list
-   user.setLanguageList(languageList);
+   (void)user.setLanguageList(languageList);
 }
 
 
