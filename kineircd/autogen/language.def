@@ -71,6 +71,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_BADCHANNELKEY";
+   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+k)";
    data_tr	= "Kanala girilmiyor (+k)";
 };
@@ -96,6 +97,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_BANNEDFROMCHAN";
+   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+b)";
    data_tr	= "Kanala girilmiyor (+b)";
 };
@@ -133,6 +135,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_CHANNELISFULL";
+   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+l)";
    data_tr	= "Kanala girilmiyor (+l)";
 };
@@ -164,6 +167,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_INVITEONLYCHAN";
+   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+i)";
    data_tr	= "Kanala girilmiyor (+i)";
 };
@@ -352,6 +356,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOTONCHANNEL";
+   components	= "mod_irc2user";
    data_en	= "You're not on that channel";
    data_tr	= "O kanalda deľ^_ilsiniz";
 };
@@ -395,6 +400,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_TOOMANYCHANNELS";
+   components	= "mod_irc2user";
    data_en	= "You have joined too many channels (%p0 is the limit)";
    data_tr	= "Fazla kanala girdiniz (limit %p0 dir)";
 };
