@@ -35,7 +35,7 @@ namespace Kine {
 	 std::ofstream logFile;
 	 
 	 // Log a string of text
-	 void logLine(const AISutil::String& str,
+	 void logLine(const std::string& str,
 		      const Kine::Logger::Mask::type mask);
 	 
        public:

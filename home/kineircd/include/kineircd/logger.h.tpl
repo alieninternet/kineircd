@@ -27,7 +27,7 @@
 #ifndef _INCLUDE_KINEIRCD_LOGGER_H_
 # define _INCLUDE_KINEIRCD_LOGGER_H_ 1
 
-# include <aisutil/string/string.h>
+# include <string>
 
 namespace Kine {
    // The top Logger class the actual loggers are derived from
@@ -65,7 +65,7 @@ namespace Kine {
       const Mask::type logMask;				// OK log message types
       
       // Log a string of text
-      virtual void logLine(const AISutil::String& str,
+      virtual void logLine(const std::string& str,
       	                   const Mask::type mask) = 0;
       
     public:
@@ -86,7 +86,7 @@ namespace Kine {
       virtual bool ok(void) const = 0;
 
       // Pass a line of text to the logging function if it matches our mask
-      void log(const AISutil::String &str, const Mask::type mask)
+      void log(const std::string &str, const Mask::type mask)
 	{
 	   if (logMask & mask) {
 	      logLine(str, mask);

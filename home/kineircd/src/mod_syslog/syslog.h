@@ -43,7 +43,7 @@ namespace Kine {
    class LoggerSyslog : public Logger {
     private:
       // Log a string of text
-      void logLine(const AISutil::String& str, const Logger::Mask::type);
+      void logLine(const std::string& str, const Logger::Mask::type);
       
     public:
       LoggerSyslog(Logger::Mask::type, const char *, const bool);// Constructor
