@@ -25,6 +25,7 @@
 # define _SRC_LIB_REGISTER_H_ 1
 
 # include "kineircd/protocol.h"
+# include "kineircd/listener.h"
 # include "kineircd/str.h"
 
 # define KINE_LIB_REGISTER_FUNCTION(x) \
@@ -33,6 +34,8 @@
 namespace Kine {
    class Register : public Protocol {
     private:
+      Listener& listener;			// The listener who invoked us
+      
       String buffer;				// Our buffer..
       
       struct RegistrationType { // <=- Should be namespace?
@@ -85,7 +88,7 @@ namespace Kine {
       
     public:
       // Constructor
-      Register(Connection& c);
+      Register(Connection& c, Listener& l);
       
       // Destructor
       ~Register(void)

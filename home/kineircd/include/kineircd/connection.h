@@ -50,6 +50,8 @@ namespace Kine {
       const time_t connectedTime;	// Time connection was established
       time_t lastSpoke;			// Time the connection last spoke
 
+      bool connected;			// Are we connected?
+      
       // Fix the lastSpoke variable to 'now'
       void touch(void)
 	{ lastSpoke = daemon.getTime().tv_sec; };
@@ -84,6 +86,9 @@ namespace Kine {
 
       // Handle input on connection
       bool handleInput(void);
+      
+      // Close the connection
+      void goodbye(void);
    };
 };
 

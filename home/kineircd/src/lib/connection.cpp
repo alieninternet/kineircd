@@ -39,7 +39,8 @@ Connection::Connection(Daemon& d, Socket& s)
   sentBytes(0),
   receivedBytes(0),
   connectedTime(d.getTime().tv_sec),
-  lastSpoke(connectedTime)
+  lastSpoke(connectedTime),
+  connected(socket.isOkay())
 {
 #ifdef KINE_DEBUG_PSYCHO
    debug("Connection::Connection() Loading new connection on fd " +
@@ -57,6 +58,11 @@ bool Connection::handleInput(void)
 #ifdef KINE_DEBUG_ASSERT
    assert(protocol != 0);
 #endif
+
+   // Make sure we are connected..
+   if (!connected) {
+      return false;
+   }
    
    // Read a line from the socket buffer (this should change)
    std::stringstream line;
@@ -80,4 +86,15 @@ bool Connection::handleInput(void)
    
    // All is well!
    return true;
+}
+
+
+/* goodbye - Close the connection
+ * Original 12/08/2001 simonb
+ */
+void Connection::goodbye(void)
+{
+   // This is temporary..
+   connected = false;
+//   socket.close();
 }

@@ -49,6 +49,10 @@ const Register::commandTable_type Register::commandTable[] = {
  */
 void Register::parseLine(const String& line)
 {
+#ifdef KINE_DEBUG_PSYCHO
+   debug("Register::parseLine() <- " + line);
+#endif
+   
    bool found = false;
    
    // Tokenise the line, and grab the command
@@ -99,11 +103,18 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseCAPAB)
  */
 KINE_LIB_REGISTER_FUNCTION(Register::parseIIRCN)
 {
+   // Does the port this person connected to accept this type of connection?
+   if (!(listener.getFlags() & Listener::Flags::ALLOW_NETWORKS)) {
+      // Throw away this connection.. We should report an error here?
+      connection.goodbye();
+      return;
+   }
+   
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
 //      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
 //			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
-//      handler->getConnection()->goodbye();
+      connection.goodbye();
       return;
    }
 
@@ -201,7 +212,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parsePASS)
    // Have we already got the password?
    if (!password.empty()) {
       // Drop this connection..
-//      handler->getConnection()->goodbye();
+      connection.goodbye();
       return;
    }
    
@@ -222,7 +233,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parsePONG)
    // Were we expecting a pong reply?
    if (pongsLeft == 0) {
       // Drop this connection..
-//      handler->getConnection()->goodbye();
+      connection.goodbye();
       return;
    }
    
@@ -244,7 +255,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parsePONG)
 KINE_LIB_REGISTER_FUNCTION(Register::parseQUIT)
 {
    // Close the connection. No goodbye or anything
-//   handler->getConnection()->goodbye();
+   connection.goodbye();
 }
 
 
@@ -253,11 +264,18 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseQUIT)
  */
 KINE_LIB_REGISTER_FUNCTION(Register::parseSERVER)
 {
+   // Does the port this person connected to accept this type of connection?
+   if (!(listener.getFlags() & Listener::Flags::ALLOW_SERVERS)) {
+      // Throw away this connection.. We should report an error here?
+      connection.goodbye();
+      return;
+   }
+   
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
 //      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
 //			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
-//      handler->getConnection()->goodbye();
+      connection.goodbye();
       return;
    }
    
@@ -295,7 +313,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseSERVER)
 #ifdef KINE_DEBUG_EXTENDED
       debug("Variables are invalid!");
 #endif
-//      handler->getConnection()->goodbye();
+      connection.goodbye();
       return;
    }
    
@@ -309,11 +327,18 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseSERVER)
  */
 KINE_LIB_REGISTER_FUNCTION(Register::parseSERVICE)
 {
+   // Does the port this person connected to accept this type of connection?
+   if (!(listener.getFlags() & Listener::Flags::ALLOW_SERVICES)) {
+      // Throw away this connection.. We should report an error here?
+      connection.goodbye();
+      return;
+   }
+   
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
 //      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
 //			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
-//      handler->getConnection()->goodbye();
+      connection.goodbye();
       return;
    }
    
@@ -374,11 +399,18 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseSERVICE)
  */
 KINE_LIB_REGISTER_FUNCTION(Register::parseUSER)
 {
+   // Does the port this person connected to accept this type of connection?
+   if (!(listener.getFlags() & Listener::Flags::ALLOW_USERS)) {
+      // Throw away this connection.. We should report an error here?
+      connection.goodbye();
+      return;
+   }
+   
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
 //      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
 //			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
-//      handler->getConnection()->goodbye();
+      connection.goodbye();
       return;
    }
    
@@ -455,8 +487,9 @@ void Register::handleInput(std::stringstream& data)
 /* Register - Constructor for the registration mini-protocol class
  * Original 12/08/2001 simonb
  */
-Register::Register(Connection& c)
+Register::Register(Connection& c, Listener& l)
   : Protocol(c),
+    listener(l),
     registrationType(RegistrationType::NONE),
     pongsLeft(0)
 {

@@ -126,7 +126,7 @@ void Daemon::newConnection(Listener& listener)
    
    // Add the socket to the connections list
    Connection* newConnection = new Connection(*this, *newSocket);
-   newConnection->setProtocol(*(new Register(*newConnection)));
+   newConnection->setProtocol(*(new Register(*newConnection, listener)));
    connections.push_front(newConnection);
 }
 
@@ -223,6 +223,10 @@ Exit::status_type Daemon::run(void)
 	       if (FD_ISSET((*it)->getSocket().getFD(), &inFDtemp)) {
 		  // Tell the connection it has stuff waiting to read
 		  if (!(*it)->handleInput()) {
+#ifdef KINE_DEBUG_PSYCHO
+		     debug("Destroying connection on fd " + 
+			   String::convert((*it)->getSocket().getFD()));
+#endif
 		     // The operation did not work, so we will delete this
 		     FD_CLR((*it)->getSocket().getFD(), &inFDSET);
 		     FD_CLR((*it)->getSocket().getFD(), &outFDSET);

@@ -182,16 +182,16 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
    // Work out the flags..
    Listener::flags_type flags = 0;
    if (config.varAllowNetworks) {
-      flags &= Listener::FLAG_ALLOW_NETWORKS;
+      flags &= Listener::Flags::ALLOW_NETWORKS;
    }
    if (config.varAllowServers) {
-      flags &= Listener::FLAG_ALLOW_SERVERS;
+      flags &= Listener::Flags::ALLOW_SERVERS;
    }
    if (config.varAllowServices) {
-      flags &= Listener::FLAG_ALLOW_SERVICES;
+      flags &= Listener::Flags::ALLOW_SERVICES;
    }
    if (config.varAllowUsers) {
-      flags &= Listener::FLAG_ALLOW_USERS;
+      flags &= Listener::Flags::ALLOW_USERS;
    }
    
    /* Since we may be creating multiple sockets here, we need to know what
