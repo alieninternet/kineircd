@@ -33,7 +33,7 @@
 #include <aisutil/string/string.h>
 
 #include "mod_irc2user/protocol.h"
-#include "mod_irc2user/language.h"
+#include "mod_irc2user/lang.h"
 #include "mod_irc2user/commands.h"
 
 using namespace Kine::mod_irc2user;

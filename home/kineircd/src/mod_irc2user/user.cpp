@@ -24,51 +24,35 @@
 #ifdef HAVE_CONFIG_H
 # include "autoconf.h"
 #endif
-#include "kineircd/kineircdconf.h"
 
-#include "kineircd/user.h"
-#include "libkineircd/debug.h"
+#include "mod_irc2user/user.h"
+#include "mod_irc2user/language.h"
 
-using namespace Kine;
-
-
-/* setAway - Mark the user as being away
- * Original 13/08/2001 simonb
- */
-void User::setAway(const std::string& reason)
-{
-   // Copy the message across (check it??)
-   awayMessage = reason;
-
-   // broadcast it.
-
-   // Tell ourself about this, if we care
-   doEventAwayToggle();
-}
+using namespace Kine::mod_irc2user;
 
 
-/* setHere - Mark the user as returning from being away
- * Original 13/08/2001 simonb
- */
-void User::setHere(void)
-{
-   // Clear the away message
-   awayMessage.clear();
-   
-   // broadcast it.
-
-   // Tell ourself about this, if we care
-   doEventAwayToggle();
-}
+// Alternative GETLANG() macro (since the getLanguageList() call is local)
+# define GETLANG(n,...) \
+   Kine::languages().get(getLanguageList(), \
+			 Language::tagMap[Language::n].tagID, \
+                         ##__VA_ARGS__)
 
 
-/* setLanguageList - Change the language list over to the one provided
+
+/* doEventAwayToggle - Called when we are going away/returning away
  * Original 16/04/2003 simonb
  */
-void User::setLanguageList(const Languages::languageDataList_type& languages)
+void User::doEventAwayToggle(void)
 {
-   // Okay, cheap.. We should verify the list here, really..
-   languageList = languages;
+   // Have we gone away or are we returning?
+   if (isAway()) {
+      // Tell the user they are now known to be away
+      protocol.sendNumeric(LibIRC2::Numerics::RPL_NOWAWAY,
+			   GETLANG(irc2_RPL_NOWAWAY));
+      return;
+   }
    
-   // broadcast it.
+   // Tell the user they are now back, as far as we know
+   protocol.sendNumeric(LibIRC2::Numerics::RPL_UNAWAY,
+			GETLANG(irc2_RPL_UNAWAY));
 }

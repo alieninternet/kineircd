@@ -35,11 +35,11 @@ commands = {
    minimumParams	= 0;
 };
 
-//commands = {
-//   command		= "AWAY";
-//   defaultPenalty	= 1;
-//   minimumParams	= 0;
-//};
+commands = {
+   command		= "AWAY";
+   defaultPenalty	= 1;
+   minimumParams	= 0;
+};
 
 //commands = {
 //   command		= "CONNECT";

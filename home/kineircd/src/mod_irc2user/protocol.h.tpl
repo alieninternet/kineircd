@@ -152,17 +152,5 @@ namespace Kine {
    }; // namespace mod_irc2user
 }; // namespace Kine
 
-
-// Language related macros to make the code neater (hopefully)
-# define GETLANG_BY_ID(id,...) \
-   Kine::languages().get(user.getLanguageList(), \
-                     id, \
-                     ##__VA_ARGS__)
-
-# define GETLANG(n,...) \
-   GETLANG_BY_ID(Language::tagMap[Language::n].tagID, \
-                 ##__VA_ARGS__)
-
-
 #endif // [+(. header-guard)+]
    

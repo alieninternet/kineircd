@@ -40,6 +40,9 @@ namespace Kine {
 	 
 	 std::string description;		// Description/real name field
 	 AISutil::Time lastAwake;		// Time user was last awake
+
+	 // Events we want to know about
+	 virtual void doEventAwayToggle(void);
 	 
        public:
 	 // Constructor

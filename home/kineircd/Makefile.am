@@ -464,6 +464,7 @@ mod_irc2user_la_SOURCES=\
 	src/mod_irc2user/commands.cpp \
 	src/mod_irc2user/commands.h \
 	src/mod_irc2user/handlers.cpp \
+	src/mod_irc2user/lang.h \
 	src/mod_irc2user/language.cpp \
 	src/mod_irc2user/language.h \
 	src/mod_irc2user/module.cpp \
@@ -471,6 +472,7 @@ mod_irc2user_la_SOURCES=\
 	src/mod_irc2user/protocol.cpp \
 	src/mod_irc2user/protocol.h \
 	src/mod_irc2user/protocolinfo.h \
+	src/mod_irc2user/user.cpp \
 	src/mod_irc2user/user.h
 
 mod_irc2user_la_LDFLAGS=\

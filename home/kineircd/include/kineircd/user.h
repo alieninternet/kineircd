@@ -51,6 +51,9 @@ namespace Kine {
           hostname(_hostname)
 	{};
 
+      //! An event called if we are marked away or returning from away
+      virtual void doEventAwayToggle(void) {};
+      
     public:
       //! Destructor
       virtual ~User(void)
@@ -79,6 +82,12 @@ namespace Kine {
       //! Check if this user is away
       const bool isAway(void) const
 	{ return (!getAwayMessage().empty()); };
+
+      //! Set this user 'away' (with the given string as the reason)
+      void setAway(const std::string& reason);
+      
+      //! Set this user as 'here' (or in IRC terminology, 'UNAWAY' ;)
+      void setHere(void);
       
       //! Return the languages list
       const Languages::languageDataList_type& getLanguageList(void) const

@@ -31,7 +31,7 @@
 #include <aisutil/string.h>
 
 #include "mod_irc2user/protocol.h"
-#include "mod_irc2user/language.h"
+#include "mod_irc2user/lang.h"
 #include "mod_irc2user/commands.h"
 
 using namespace Kine::mod_irc2user;
@@ -58,6 +58,24 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleADMIN)
    sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
+}
+
+
+/* handleAWAY
+ * Original 13/08/2001 simonb
+ * 18/04/2003 simonb - Imported from old code (incomplete)
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
+{
+   // If there is a parameter, the user is going away
+   if (!parameters.empty()) {
+      // Set the user 'away'
+      user.setAway(parameters[0]);
+      return;
+   }
+   
+   // No parameters were given, so the user is now here..
+   user.setHere();
 }
 
 
