@@ -22,5 +22,23 @@
  */
 autogen definitions version;
 
+// Version char information
+version_chars = {
+   char		= "D";
+   ifdef	= "KINE_DEBUG";
+};
 
-// nothing here, yet
+version_chars = {
+   char		= "H";
+   ifdef	= "KINE_STL_HAS_HASH";
+};
+
+version_chars = {
+   char		= "N";
+   ifdef	= "KINE_STRICT_CHANNEL_NAMES";
+};
+
+version_chars = {
+   char		= "S";
+   ifdef	= "KINE_WITH_SSL";
+};
