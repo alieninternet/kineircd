@@ -88,8 +88,7 @@ namespace Kine {
       };
 
     private:
-      std::string channelName;			//!< The channel name
-      std::string channelNameWithPrefix;	//!< Name with prefix
+      const std::string name;			//!< The channel name
       const scope_type scope;			//!< Channel's 'scope'
       const AISutil::Time creationTime;		//!< Channel creation time
       std::string topic;			//!< Channel topic
@@ -101,9 +100,11 @@ namespace Kine {
       
     protected:
       //! Constructor
-      Channel(const scope_type _scope,
+      Channel(const std::string& _name,
+	      const scope_type _scope,
 	      const AISutil::Time& _creationTime)
-	: scope(_scope),
+	: name(_name),
+          scope(_scope),
           creationTime(_creationTime)
 	{}
       
@@ -113,17 +114,17 @@ namespace Kine {
 	{};
       
       
-      //! Return the name of the channel. This does not include the prefix char
-      const std::string& getChannelName(void) const
-	{ return channelName; };
-
-      //! Return the name of the channel, only with the prefix
-      virtual const std::string& getChannelNameWithPrefix(void) const
-	{ return channelNameWithPrefix; };
-
       //! Return the 'name'
       const std::string& getName(void) const
-	{ return getChannelNameWithPrefix(); };
+	{ return name; };
+      
+      //! Return the name of the channel, without the prefix character
+      const std::string getNameWithoutPrefix(void) const
+	{ return name.substr(1); };
+      
+      //! Return the channel prefix char
+      const char getPrefix(void) const
+	{ return name[0]; };
       
       
       //! Return the channel's scope
