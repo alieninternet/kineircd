@@ -30,7 +30,7 @@ AM_INIT_AUTOMAKE([1.7 foreign no-installinfo no-installman nostdinc subdir-objec
 AC_COPYRIGHT([Portions Copyright (c) 2001,2002 KineIRCd Development Team])
 AC_PREREQ(2.53)
 AC_CONFIG_AUX_DIR(config)
-AM_CONFIG_HEADER(include/kineircd/kineircdconf.h)
+AM_CONFIG_HEADER(include/config.h)
 AC_REVISION([$Revision$])
 
 dnl Determine our version information.
@@ -409,28 +409,6 @@ if test "$kineircd_cv_lib_stl_ok" = "no"; then
   AC_MSG_ERROR([Sorry, you need a working Standard Template Library])
 fi
 
-AC_CACHE_CHECK([for an SGI compliant hash capability in your STL],
- kineircd_cv_lib_stl_sgi_hash,[
-  AC_LANG_CPLUSPLUS
-  AC_TRY_RUN([
-	#include <hash_map>
-
-	int main(void)
- 	{
-	   std::hash_map <int, int> hm;
-	   hm.clear();
-	}
-   ],[
-     kineircd_cv_lib_stl_sgi_hash=yes
-   ],[
-     kineircd_cv_lib_stl_sgi_hash=no
-   ])
- ])
-if test "$kineircd_cv_lib_stl_sgi_hash" = "yes"; then
-  AC_DEFINE(KINE_STL_HAS_HASH, 1,
-            [Define if your C++ STL has the SGI-compatible hashing extensions])
-fi
-
 AC_CACHE_CHECK([for an SGI compliant slist<> in your STL],
  kineircd_cv_lib_stl_sgi_slist,[
   AC_LANG_CPLUSPLUS
@@ -451,8 +429,11 @@ AC_CACHE_CHECK([for an SGI compliant slist<> in your STL],
    ])
  ])
 if test "$kineircd_cv_lib_stl_sgi_slist" = "yes"; then
-  AC_DEFINE(KINE_STL_HAS_SLIST, 1,
-            [Define if your C++ STL has an SGI-compatible slist<> template])
+  AC_SUBST(KINEIRCD_DEFINE__KINE_STL_HAS_SLIST,
+           ["# define KINE_STL_HAS_SLIST 1"])
+else	  
+  AC_SUBST(KINEIRCD_DEFINE__KINE_STL_HAS_SLIST,
+           ["/* # define KINE_STL_HAS_SLIST */"])
 fi
 
 AC_CACHE_SAVE
@@ -630,6 +611,7 @@ dnl -------------------------------------------------------------------------
 LDFLAGS="$LDFLAGS_SAVE"
 AC_SUBST(INCDIRS)
 AC_OUTPUT([
+	include/kineircd/kineircdconf.h
 	Makefile
 	include/Makefile
 	install/Makefile

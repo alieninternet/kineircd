@@ -24,7 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "kineircd/kineircdconf.h"
+#include "config.h"
 
 // Make sure we are being compiled OK
 #ifndef HAVE_SYSLOG_H
