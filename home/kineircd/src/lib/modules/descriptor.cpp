@@ -21,32 +21,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_MODULES_DESCRIPTOR_H_
-# define _SRC_LIB_MODULES_DESCRIPTOR_H_ 1
+#include "kineircd/kineircdconf.h"
 
-# include "kineircd/module.h"
-
-namespace Kine {
-   class ModuleDescriptor {
-    private:
-      void *handle;				// Module handle from dlopen()
-      Module *module;				// The module's info itself
-      
-      // Constructor
-      ModuleDescriptor(void *h, Module *m)
-	: handle(h),
-          module(m)
-	{};
-      
-    public:
-      // Destructor
-      ~ModuleDescriptor(void);
-      
-      // Return the module
-      const Module *getModule(void) const
-	{ return module; };
-   };
+extern "C" {
+# include <dlfcn.h>
 };
+
+#include "modules/descriptor.h"
+
+using namespace Kine;
+
+
+/* ~ModuleDescriptor - Descriptor destructor, hehe
+ * Original 20/07/2002 simonb
+ */
+ModuleDescriptor::~ModuleDescriptor(void)
+{
+   // Close the module if it appears to be still valid
+   if (handle != 0) {
+      (void)dlclose(handle);
+   }
    
-#endif // _SRC_LIB_MODULES_DESCRIPTOR_H_
-   
+   // Delete the module
+   delete module;
+}
+      

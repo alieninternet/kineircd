@@ -27,10 +27,11 @@ TARGET=libkineircd.$(LIBTOOL_LIB_EXT)
 SUB_DIRS=\
 	config \
 	logger \
+	modules \
 	socket
 
 # This should be automatic.. I forgot how to do that tho.. I'll fix it soon!!
-ROBJECTS=config/config.lo logger/logger.lo socket/socket.lo
+ROBJECTS=config/config.lo logger/logger.lo modules/modules.lo socket/socket.lo
 
 VER_MAJOR=@VERSION_MAJOR@
 VER_MINOR=@VERSION_MINOR@
@@ -52,7 +53,6 @@ VER_FLG=-DBUILD_STRING="\"`date -u +%04Y%02m%02d%02H%02M%02S`\"" \
 # libkineircd library sources that are required
 SOURCES=\
 	daemon.cpp \
-	modules.cpp \
 	sha1.cpp \
 	signals.cpp \
 	str.cpp \

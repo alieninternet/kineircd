@@ -718,6 +718,7 @@ AC_OUTPUT([
 	src/lib/Makefile
 	src/lib/config/Makefile
 	src/lib/logger/Makefile
+	src/lib/modules/Makefile
 	src/lib/socket/Makefile
 	src/protocols/Makefile
 	src/protocols/common/Makefile
