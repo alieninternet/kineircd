@@ -47,7 +47,7 @@
 .LangNote = [+langNote+][+ ENDIF +][+ IF (exist? "langMaintainer") +]
 .Maintainer = [+langMaintainer+][+ ENDIF +]
 .Revision = [+
-   ;; Generate a revision based on the current time
+   ;; Generate a revision based on the current time (cropped ISO 8601 style)
    (strftime "%Y%m%d%H"
       (gmtime 
          (current-time)))
