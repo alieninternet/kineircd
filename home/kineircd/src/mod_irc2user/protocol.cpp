@@ -136,10 +136,19 @@ void Protocol::parseMessage(const std::string& origin,
 	       if (commandInfo->handler != 0) {
 		  // Call it..
 		  (this->*(commandInfo->handler))(parameters);
+		  return;
 	       }
 	       
-	       // We're done!
-	       return;
+	       // Check if this is an alias, or a scriping thingy, or something
+	    
+	       /* If we get here, there was not enough information about the
+		* command for us to do anything useful with it. In such a
+		* case, we should act 'dumb' and say we don't know about the
+		* command (to the client)..
+		* 
+		* This sounds like a job for 'goto' *fanfair*.
+		*/
+	       goto unknown_cmd;
 	    }
 	    
 	    // Complain about not having enough parameters, and return
@@ -163,6 +172,7 @@ void Protocol::parseMessage(const std::string& origin,
       return;
    }
 
+ unknown_cmd:
    // If we got here, the command was not found - tell the user the bad news
    sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNCOMMAND,
 	       command,
