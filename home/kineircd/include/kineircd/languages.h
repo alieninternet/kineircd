@@ -25,8 +25,14 @@
 #ifndef _INCLUDE_KINEIRCD_LANGUAGES_H_
 # define _INCLUDE_KINEIRCD_LANGUAGES_H_ 1
 
+# include <kineircd/kineircdconf.h>
+
 # include <set>
-# include <map>
+# ifdef KINE_STL_HAS_HASH
+#  include <hash_map>
+# else
+#  include <map>
+# endif
 # include <string>
 # include <vector>
 
@@ -145,6 +151,15 @@ namespace Kine {
 	 friend struct Languages;
       };
 
+      // The language data list type
+# ifdef KINE_STL_HAS_HASH
+      typedef std::hash_map < std::string, LanguageData* >
+	languageDataList_type;
+# else
+      typedef std::map < std::string, LanguageData* >
+	languageDataList_type;
+# endif
+      
     private:
       // A set full of language tag name to tag ID mapping arrays
       typedef std::set < tagMap_type* > tagMaps_type;
@@ -167,8 +182,7 @@ namespace Kine {
       //! The highest known TID
       tagID_type highestTagID;
 
-      // Languages!! Well, language data..
-      typedef std::map < std::string, LanguageData* > languageDataList_type;
+      //! The language data itself
       languageDataList_type languageDataList;
       
       //! Our default language, to use if all else fails..
@@ -207,6 +221,10 @@ namespace Kine {
       void deregisterMap(const tagMap_type map);
       void processMaps(void) const;
 
+      //! Return the language data list itself (read-only access)
+      const languageDataList_type& getLanguageDataList(void) const
+	{ return languageDataList; };
+      
       //! Find the given language, by its code..
       LanguageData* const findByCode(const std::string& code) const;
       
@@ -215,7 +233,7 @@ namespace Kine {
 	get(const std::string& languageCode,
 	    const tagID_type tagID,
 	    const parameterList_type* const parameters = 0) const;
-      
+
       //! Lazy functions for use when you have one to five parameters..
       const std::string get(const std::string& languageCode,
 			    const tagID_type tagID,
