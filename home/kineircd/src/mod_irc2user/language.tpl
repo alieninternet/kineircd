@@ -92,7 +92,7 @@ namespace Kine {
 
 // Macro to make the code neater (hopefully)
 # define GETLANG(n,...) \
-   Kine::langs().get(origin.getLanguage(), \
+   Kine::langs().get("en", \
                      Language::tagMap[Language::n].tagID, \
                      ##__VA_ARGS__)
 
