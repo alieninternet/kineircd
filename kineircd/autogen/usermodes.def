@@ -383,6 +383,16 @@ usermodes = {
 usermodes = {
    irc2char	= "s";
    name		= "SERVER_NOTICES";
+   origin	= "ircu";
+   parameter	= "Mask integer";
+   comment	= "User receives server notices, and can opt in/out of "
+   		  "particular notice types by supplying the optional mask "
+		  "as an integer";
+};
+
+usermodes = {
+   irc2char	= "s";
+   name		= "SERVER_NOTICES";
    origin	= "KineIRCd, Unreal";
    parameter	= "Notice mask list";
    comment	= "User receives server notices. The notice masks are "
