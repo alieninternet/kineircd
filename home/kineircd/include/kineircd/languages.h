@@ -313,7 +313,7 @@ namespace Kine {
 		      parameters);
 	};
 
-      //! Lazy functions for use when you have one to five parameters..
+      //! Lazy functions for use when you have one to six parameters..
       template <class T>
 	const std::string get(const T& languageCode,
 			      const tagID_type tagID,
@@ -381,6 +381,26 @@ namespace Kine {
 	   parameters.push_back(&p2);
 	   parameters.push_back(&p3);
 	   parameters.push_back(&p4);
+	   std::string output(get(languageCode, tagID, &parameters));
+	   return output;
+	};
+      template <class T>
+	const std::string get(const T& languageCode,
+			      const tagID_type tagID,
+			      const parameter_type& p0,
+			      const parameter_type& p1,
+			      const parameter_type& p2,
+			      const parameter_type& p3,
+			      const parameter_type& p4,
+			      const parameter_type& p5) const
+	{
+	   parameterList_type parameters;
+	   parameters.push_back(&p0);
+	   parameters.push_back(&p1);
+	   parameters.push_back(&p2);
+	   parameters.push_back(&p3);
+	   parameters.push_back(&p4);
+	   parameters.push_back(&p5);
 	   std::string output(get(languageCode, tagID, &parameters));
 	   return output;
 	};
