@@ -25,11 +25,12 @@ dnl -------------------------------------------------------------------------
 dnl  Getting ready to configure...
 dnl -------------------------------------------------------------------------
 dnl Initialise the autoconf thingamebobs
-AC_INIT([Kine IRC Daemon],[ ])
+AC_INIT([Kine IRC Daemon], [ ])
+AM_INIT_AUTOMAKE([1.7 foreign no-installinfo no-installman nostdinc subdir-objects])
 AC_COPYRIGHT([Portions Copyright (c) 2001,2002 KineIRCd Development Team])
 AC_PREREQ(2.53)
-AC_CONFIG_AUX_DIR(autoconf)
-AC_CONFIG_HEADER(include/kineircd/kineircdconf.h)
+AC_CONFIG_AUX_DIR(config)
+AM_CONFIG_HEADER(include/kineircd/kineircdconf.h)
 AC_REVISION([$Revision$])
 
 dnl Determine our version information.
@@ -529,11 +530,8 @@ dnl  ],[
 dnl    AC_MSG_RESULT([no (default)])
    kineircd_test_old_config_subparser=no
 dnl  ])
-AC_SUBST(kineircd_test_old_config_subparser)
-dnl if test "$kineircd_test_old_config_subparser" = "yes"; then
-dnl   AC_DEFINE(KINE_OLD_CONFIG_SUBPARSER, 1,
-dnl             [Define if you also want to use old-style configuration files])
-dnl fi
+AM_CONDITIONAL(KINEIRCD_COMPILE_LIB_CONFIG_OLDCONFIG,
+	       [test x$kineircd_test_old_config_subparser = xyes])
 
 AC_MSG_CHECKING([security-conscious parameter])
 AC_ARG_ENABLE(security-conscious,
@@ -573,7 +571,8 @@ AC_ARG_ENABLE(mod-http,
    echo -n "mod_http "
    kineircd_test_compile_mod_http=yes
  ])
-AC_SUBST(kineircd_test_compile_mod_http)
+AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_MOD_HTTP,
+	       [test x$kineircd_test_compile_mod_http = xyes])
 
 if test "$kineircd_test_netsnmp_broken" = "no"; then
   AC_ARG_ENABLE(mod-snmp,
@@ -591,7 +590,8 @@ if test "$kineircd_test_netsnmp_broken" = "no"; then
 else
   kineircd_test_compile_mod_snmp=no
 fi
-AC_SUBST(kineircd_test_compile_mod_snmp)
+AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_MOD_SNMP,
+	       [test x$kineircd_test_compile_mod_snmp = xyes])
 
 dnl finish off the line
 echo
@@ -631,8 +631,9 @@ AC_ARG_ENABLE(debugging,
  ],[
    AC_MSG_RESULT([no (default)])
    kineircd_test_debugging=no
- ]) 
-AC_SUBST(kineircd_test_debugging)
+ ])
+AM_CONDITIONAL(KINEIRCD_COMPILE_LIB_DEBUG,
+	       [test x$kineircd_test_debugging = xyes])
 
 
 dnl -------------------------------------------------------------------------
@@ -649,25 +650,10 @@ AC_SUBST(INCDIRS)
 AC_OUTPUT([
 	Makefile
 	include/Makefile
-	include/kineircd/Makefile
 	install/Makefile
-	make/defs
-	make/rules
 	src/Makefile
 	src/lib/Makefile
-	src/lib/config/Makefile
-	src/lib/language/Makefile
-	src/lib/listener/Makefile
-	src/lib/logger/Makefile
-	src/lib/modules/Makefile
 	src/modules/Makefile
 	src/modules/mod_http/Makefile
 	src/modules/mod_snmp/Makefile
 	])
-
-
-echo
-echo "Done!"
-echo
-echo "Type 'gmake' to build the package."
-echo

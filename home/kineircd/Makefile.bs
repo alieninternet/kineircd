@@ -2,16 +2,17 @@
 # Little makefile for developers wishing to bootstrap the package
 #
 
-.PHONY: __bs__ autoconf
+.PHONY: bootstrap
 
-__bs__:
-	@echo "Do not make directly from Makefile.bs!"
-	@echo "This file is intended for developers only."
+AUTOCONF_DIR=./config
+AUTOCONF_FILE=./configure.ac
+AUTOCONF_SCRIPT=./configure
+AUTOCONF_HEADER=./include/kineircd/kineircdconf.h.in
 
-
-# Create AutoConf files from templates
-autoconf: autoconf/configure.in
-	autoconf -I autoconf -o configure autoconf/configure.in
-	-chmod 755 configure
-	autoheader --localdir=autoconf autoconf/configure.in \
-		>include/kineircd/kineircdconf.h.in
+bootstrap:
+	aclocal -I $(AUTOCONF_DIR)
+	autoheader --localdir=$(AUTOCONF_DIR) $(AUTOCONF_FILE) \
+			> $(AUTOCONF_HEADER)
+	automake --add-missing --copy --include-deps --foreign
+	autoconf -I $(AUTOCONF_DIR) -o $(AUTOCONF_SCRIPT) $(AUTOCONF_FILE)
+	-chmod 755 $(AUTOCONF_SCRIPT)
