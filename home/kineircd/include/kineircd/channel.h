@@ -91,6 +91,7 @@ namespace Kine {
       std::string channelName;			//!< The channel name
       std::string channelNameWithPrefix;	//!< Name with prefix
       const scope_type scope;			//!< Channel's 'scope'
+      const AISutil::Time creationTime;		//!< Channel creation time
       std::string topic;			//!< Channel topic
       std::string topicChanger;			//!< Who changed the topic
       AISutil::Time topicChangeTime;		//!< Time the topic changed
@@ -100,8 +101,10 @@ namespace Kine {
       
     protected:
       //! Constructor
-      Channel(const scope_type _scope)
-	: scope(_scope)
+      Channel(const scope_type _scope,
+	      const AISutil::Time& _creationTime)
+	: scope(_scope),
+          creationTime(_creationTime)
 	{}
       
     public:
@@ -126,6 +129,11 @@ namespace Kine {
       //! Return the channel's scope
       const scope_type getScope(void) const
 	{ return scope; };
+
+      
+      //! Return the time the channel was created
+      const AISutil::Time& getCreationTime(void) const
+	{ return creationTime; };
       
       
       //! Return the topic on the channel (empty string for no topic)
