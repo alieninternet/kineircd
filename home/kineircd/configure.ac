@@ -187,35 +187,6 @@ AC_CACHE_CHECK([current select() file fd_set bit-size],
 AC_DEFINE_UNQUOTED(KINE_SELECT_FDSET_NUMFDS, $kineircd_cv_sys_fdset_numfds,
                    [Number of file descriptors safely usable with select()])
 
-AC_CACHE_CHECK([for tzset() and timezone/daytime variables],
- kineircd_cv_sys_tzset,[
-  AC_LANG_CPLUSPLUS
-  AC_TRY_RUN([
-	#include <time.h>
-
-	int main(void)
-	{
-	   // Fire up the timezone information
-	   tzset();
-	   
-	   // Try to assign some variables
-	   long mytz = timezone;
-	   int mydst = daylight;
-	   
-	   // If that worked, woopee
-	   exit(0);
-	}
-   ],[
-     kineircd_cv_sys_tzset=yes
-   ],[
-     kineircd_cv_sys_tzset=no
-   ])
- ])
-if test "$kineircd_cv_sys_tzset" = "yes"; then
-  AC_DEFINE(KINE_HAVE_TZSET, 1,
-            [Define if the function tzset() and its variables exist])
-fi
-
 AC_CACHE_SAVE
 
 
@@ -256,7 +227,6 @@ AC_HEADER_STDBOOL
 AC_HEADER_STAT
 AC_HEADER_TIME
 AC_HEADER_SYS_WAIT
-AC_HEADER_DIRENT
 AC_CHECK_HEADERS( \
 	errno.h \
 	fcntl.h \
@@ -289,18 +259,13 @@ dnl AC_CHECK_LIB(aisutil, something????)
 AC_CHECK_LIB(opts, optionProcess)
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
-AC_FUNC_FNMATCH
-AC_FUNC_VPRINTF
 dnl AC_FUNC_GETLOADAVG
 AC_FUNC_SELECT_ARGTYPES
 AC_FUNC_STRFTIME
 AC_CHECK_FUNCS(
-	alarm \
 	getrusage \
-	gettimeofday \
 	getutent \
 	getutxent \
-	inet_ntoa \
 	memset \
 	select \
 	socket \
