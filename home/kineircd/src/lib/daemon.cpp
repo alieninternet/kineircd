@@ -51,6 +51,9 @@ Daemon::Daemon(Config &conf, Signals &sigs)
     config(conf),
     signals(sigs)
 {
+   // Fire-up the modules we have loaded!
+   config.getModuleList().startAll();
+   
    // We are ready to go, go into normal running stage
    stage = STAGE_NORMAL;
 }
@@ -80,9 +83,6 @@ int Kine::Daemon::run(void)
    if (stage != STAGE_NORMAL) {
       return Exit::ERR_DAEMON_INIT;
    }
-
-   // Fire-up the modules we have loaded!
-   config.getModuleList().startAll();
    
 #ifdef KINE_DEBUG
    debug("Daemon::run() - Entering main loop");
