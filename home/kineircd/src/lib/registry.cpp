@@ -100,7 +100,9 @@ void Registry::initInstance(void)
 }
 
 
-#warning "This file is crappy"
+#ifdef DEBUG
+# warning "This file is crappy"
+#endif
 /* changeUserNickname - Change a user's nickname (may involve a key change)
  * Original 16/05/2003
  */
