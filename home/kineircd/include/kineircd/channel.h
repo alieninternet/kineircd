@@ -193,6 +193,10 @@ namespace Kine {
       virtual const bool isHidden(void) const
 	{ return (isSecret() || isPrivate()); };
       
+
+      //! Is the given client on the channel?
+      const bool onChannel(const Client& who) const
+	{ return false; /* temporary ? */ };
       
       //! Is the given user banned? (+b list)
       virtual const bool isBanned(const User& who) const
