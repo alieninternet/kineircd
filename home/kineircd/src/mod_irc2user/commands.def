@@ -42,6 +42,12 @@ commands = {
 };
 
 //commands = {
+//   command		= "CHANURL";
+//   defaultPenalty	= 3;
+//   minimumParams	= 1;
+/};
+
+//commands = {
 //   command		= "CONNECT";
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
