@@ -188,67 +188,65 @@ void Registrar::parseLine(const String& line)
       // There is nothing to do - registration has not been completed yet.
       return;
        
-    case RegistrationType::CLIENT: {
-       // Make sure all required fields have been given..
-       if (registrantData.nickname.empty() ||
-	   registrantData.username.empty() ||
-	   registrantData.hostname.empty() ||
-	   (pongsLeft > 0)) {
-	  return;
-       }
+    case RegistrationType::CLIENT:
+      // Make sure all required fields have been given..
+      if (registrantData.nickname.empty() ||
+	  registrantData.username.empty() ||
+	  registrantData.hostname.empty() ||
+	  (pongsLeft > 0)) {
+	 return;
+      }
+      
+      // No support yet...
+      sendError("Requested client protocol unavailable");
+      return;
+      
+    case RegistrationType::IIRCN:
+      // Make sure all required fields have been given..
+      if (registrantData.password.empty() ||
+	  registrantData.nickname.empty() ||
+	  registrantData.hostname.empty() ||
+	  registrantData.protocol.empty() ||
+	  registrantData.linkStamp <= 0) {
+	 return;
+      }
+      
+      /* Since we know IIRCN protocols always have a protocol name, finding
+       * the appropriate protocol is easy.
+       */
+      if ((protocolInfo = 
+	   connection.getDaemon().
+	   findProtocol(ProtocolName::Type::NETWORK,
+			registrantData.protocol.toUpper())) == 0) {
+	 // Complain
+	 sendError("Requested IIRC protocol unavailable");
+	 return;
+      }
 
-       // No support yet...
-       sendError("Requested client protocol unavailable");
-       return;
-    }
+      break;
       
-    case RegistrationType::IIRCN: {
-       // Make sure all required fields have been given..
-       if (registrantData.password.empty() ||
-	   registrantData.nickname.empty() ||
-	   registrantData.hostname.empty() ||
-	   registrantData.protocol.empty() ||
-	   registrantData.linkStamp <= 0) {
-	  return;
-       }
-
-       /* Since we know IIRCN protocols always have a protocol name, finding
-	* the appropriate protocol is easy.
-	*/
-       if ((protocolInfo = 
-	    connection.getDaemon().
-	    findProtocol(ProtocolName::Type::NETWORK,
-			 registrantData.protocol.toUpper())) == 0) {
-	  // Complain
-	  sendError("Requested IIRC protocol unavailable");
-	  return;
-       }
-    }
+    case RegistrationType::SERVER:
+      // Make sure all required fields have been given..
+      if (registrantData.password.empty() ||
+	  registrantData.hostname.empty()) {
+	 return;
+      }
       
-    case RegistrationType::SERVER: {
-       // Make sure all required fields have been given..
-       if (registrantData.password.empty() ||
-	   registrantData.hostname.empty()) {
-	  return;
-       }
+      // No support yet...
+      sendError("Requested server protocol unavailable");
+      return;
+      
+    case RegistrationType::SERVICE:
+      // Make sure all required fields have been given..
+      if (registrantData.password.empty() ||
+	  registrantData.nickname.empty() ||
+	  registrantData.distribution.empty()) {
+	 return;
+      }
        
-       // No support yet...
-       sendError("Requested server protocol unavailable");
-       return;
-    }
-      
-    case RegistrationType::SERVICE: {
-       // Make sure all required fields have been given..
-       if (registrantData.password.empty() ||
-	   registrantData.nickname.empty() ||
-	   registrantData.distribution.empty()) {
-	  return;
-       }
-       
-       // No support yet...
-       sendError("Requested service protocol unavailable");
-       return;
-    }
+      // No support yet...
+      sendError("Requested service protocol unavailable");
+      return;
    }
    
    // If we got here, we are likely to switch to the newly created protocol.
