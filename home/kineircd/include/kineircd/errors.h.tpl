@@ -27,20 +27,43 @@
 [+(make-header-guard "kine")+]
 
 namespace Kine {
+   /*!
+    * \brief Error status returns
+    *
+    * Functions internally within the KineIRCd core often return operational
+    * status using the type Error::error_type.
+    */
    namespace Error {
-      //! Error returns from functions
+      /*!
+       * \brief Error returns from functions
+       * 
+       * Each function which returns an Error::error_type are returning
+       * details on how the operation went.
+       *
+       * For convenience, this enumeration is designed so that errors are
+       * \e negative values (below \c 0) and successful replies are \e positive
+       * values (above \c 0). Unknown results are given a value of \e zero 
+       * (\c 0).
+       * 
+       * In each function's documentation, a list of possible error returns
+       * will be given. In your software, if relevant, you should try to
+       * handle all, or at least as many of these replies as you can. You
+       * \e should anticipate replies outside of those listed, however, as
+       * future versions may incorporate additional responces, or unknown
+       * errors may trigger a Kine::Error::UNKNOWN_ERROR responce.
+       */
       enum error_type {
       	 //! No error, but no data returned either
-	 NO_ERROR_OR_DATA = 1,
+	 NO_ERROR_OR_DATA = 2,
       
          //! No error
-	 NO_ERROR = 0,
+	 NO_ERROR = 1,
 	 
 	 //! Unknown error
-	 UNKNOWN_ERROR = -1,[+FOR errors ","+]
+	 UNKNOWN_ERROR = 0,[+FOR errors ","+]
 	 
 	 //! [+reason+]
-	 [+name+] = -[+(+ (for-index) 2)+][+ENDFOR errors+]
+	 [+name+] = -[+(+ (for-index) 1)+][+ENDFOR errors+]
       }; // enum error_type
    }; // namespace Error
 }; // namespace Kine
