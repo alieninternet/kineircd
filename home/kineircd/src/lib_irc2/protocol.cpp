@@ -86,7 +86,7 @@ void Protocol::parseLine(const std::string& line)
    // Check - we must at least have a command to pass
    if (!command.empty()) {
       // Hand the line over to the message handler
-      parseMessage(origin, command, destination, parameters);
+      parseMessage(origin, destination, command, parameters);
    }
 }
 

@@ -65,9 +65,22 @@ namespace Kine {
       } static const commandTable[];
 
       // Send a numeric
-      void sendNumeric(const RegistrationNumerics::numeric_type numeric);
+      void sendNumeric(const RegistrationNumerics::numeric_type numeric)
+	{
+	   sendMessage(config().getOptionsServerName(),
+		       (registrantData.nickname.empty() ? '*' :
+			registrantData.nickname),
+		       numeric, ':');
+	};
+      
       void sendNumeric(const RegistrationNumerics::numeric_type numeric,
-		       const char* const data);
+		       const char* const data)
+	{
+	   sendMessage(config().getOptionsServerName(),
+		       (registrantData.nickname.empty() ? '*' :
+			registrantData.nickname),
+		       numeric, data);
+	};
 
       // Send an error message and disconnect
       void sendError(const char* const error);
@@ -76,8 +89,9 @@ namespace Kine {
       void sendPing(void);
 
       // Appropriately parse a protocol message
-      void parseMessage(const std::string& origin, const std::string& command,
+      void parseMessage(const std::string& origin, 
 			const std::string& destination,
+			const std::string& command,
 			const Kine::LibIRC2::Protocol::parameters_type&
 			parameters);
 

@@ -56,68 +56,6 @@ const Registrar::commandTable_type Registrar::commandTable[] = {
 };
 
 
-/* sendNumeric - Send a numeric (no payload)
- * Original 12/08/2001 simonb
- */
-void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric)
-{
-   std::ostringstream output;
-   
-   /* Output the server name and the numeric (note, we do not pre-pad the
-    * numeric because all registration numerics are over 100 anyway!
-    */
-   output <<
-     ':' << config().getOptionsServerName() << ' ' << (int)numeric;
-   
-   // Determine the appropriate nickname.
-   if (registrantData.nickname.empty()) {
-      output << " *";
-   } else {
-      output << ' ' << registrantData.nickname;
-   }
-
-   /* Terminate the line according to RFC1459; The colon is to avoid any
-    * potential problems with really brain-dead clients...
-    */
-   output << " :\r\n";
-   
-   // Throw the line onto the output queue
-   outputQueue.push(output.str());
-}
-
-
-/* sendNumeric - Send a numeric (including payload)
- * Original 12/08/2001 simonb
- */
-void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
-			    const char* const data)
-{
-   std::ostringstream output;
-   
-   /* Output the server name and the numeric (note, we do not pre-pad the
-    * numeric because all registration numerics are over 100 anyway!
-    */
-   output << 
-     ':' << config().getOptionsServerName() << ' ' << (int)numeric;
-   
-   // Determine the appropriate nickname.
-   if (registrantData.nickname.empty()) {
-      output << " * ";
-   } else {
-      output << ' ' << registrantData.nickname << ' ';
-   }
-
-   /* Output the payload and terminate the line according to RFC1459; The 
-    * colon is to avoid any potential problems with really brain-dead 
-    * clients...
-    */
-   output << data << " :\r\n";
-   
-   // Throw the line onto the output queue
-   outputQueue.push(output.str());
-}
-
-
 /* sendError - Send an error and disconnect
  * Original 12/08/2001 simonb
  */
@@ -155,8 +93,8 @@ void Registrar::sendPing(void)
  * Original 12/08/2001 simonb
  */
 void Registrar::parseMessage(const std::string& origin,
-			     const std::string& command,
 			     const std::string& destination,
+			     const std::string& command,
 			     const Kine::LibIRC2::Protocol::parameters_type&
 			     parameters)
 {

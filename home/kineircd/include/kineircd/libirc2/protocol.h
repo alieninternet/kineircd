@@ -28,6 +28,7 @@
 # include <queue>
 # include <vector>
 # include <string>
+# include <sstream>
 # include <aisutil/string/string.h>
 # include <kineircd/protocol.h>
 
@@ -47,8 +48,8 @@ namespace Kine {
        private:
 	 // Appropriately parse a protocol message
 	 virtual void parseMessage(const std::string& origin,
-				   const std::string& command,
 				   const std::string& destination,
+				   const std::string& command,
 				   const parameters_type& parameters) = 0;
 
 	 // Break up a protocol message into its components
@@ -77,6 +78,34 @@ namespace Kine {
 	 // Return true should there be anything in the output queue to send
 	 bool moreOutput(void) const
 	   { return (!outputQueue.empty()); };
+	 
+	 // Send an appropriately formatted message
+	 template <class To, class Td, class Tc, class Tp>
+	   void sendMessage(const To& origin, const Td& destination,
+			    const Tc& command, const Tp& parameters)
+	   {
+	      std::ostringstream output;
+	      
+	      // Construct the line..
+	      output << ':' << origin << ' ' << command << ' ' <<
+		destination << ' ' << parameters << "\r\n";
+
+	      // Send the line!
+	      outputQueue.push(output.str());
+	   };
+	 
+	 // Send an appropriately formatted message, without TO/FROM fields
+	 template <class Tc, class Tp>
+	   void sendMessage(const Tc& command, const Tp& parameters)
+	   {
+	      std::ostringstream output;
+	      
+	      // Construct the line..
+	      output << command << ' ' << parameters << "\r\n";
+	      
+	      // Send the line!
+	      outputQueue.push(output.str());
+	   };
       };
    }; // namespace LibIRC2
 }; // namespace Kine
