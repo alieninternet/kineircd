@@ -48,6 +48,9 @@ namespace Kine {
       // Convert a string to boolean
       static bool toBool(const AISutil::String &, const bool);
       
+      // Determine if the given UTF-8 sequence is valid
+      static const bool validateUTF8(const std::string& str);
+      
       // Fix a mask into an id mask
       static AISutil::StringMask fixToIdentityMask(const AISutil::String &);
       

@@ -36,6 +36,7 @@
 
 #include "kineircd/languages.h"
 #include "kineircd/config.h"
+#include "kineircd/utils.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
@@ -308,6 +309,17 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 #ifdef KINE_DEBUG_PSYCHO
       debug("Languages::loadFile() - Line " + String::convert(lineNum) +
 	    " data: '" + line + '\'');
+#endif
+
+#ifdef KINE_SECURITY_CONSCIOUS
+      // Make sure the data contains valid UTF-8 sequences..
+      if (!Utils::validateUTF8(line)) {
+	 // Wuss out - this is not a nice file to have loaded
+	 errString = 
+	   "File contains invalid UTF-8 sequence(s) and poses a potential "
+	   "security problem";
+	 return false;
+      }
 #endif
       
       // Check the first letter of the tag...

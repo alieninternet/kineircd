@@ -1,9 +1,9 @@
 /* $Id$
  * General utilities
  *
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (C) 2001,2002 Alien Internet Services
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -113,4 +113,80 @@ StringMask Utils::fixToIdentityMask(const String &inMask)
 		     (host.length() ? host : "*"));
 
    return retval;
+}
+
+
+/* validateUTF8 - Determine if the given UTF-8 sequence is valid
+ * Original 22/03/2003 simonb
+ * Note: We only check in accordance to Unicode 3.2; That is between U+0000 to
+ *       U+10FFFF, which only forms 4-byte UTF-8 sequences (not the full 6-byte
+ *       sequences). This should probably be re-evaluated sometime in the
+ *       future, should this practise change.
+ *       This is considerably larger than needs be, and needs to be optimised!
+ */
+const bool Utils::validateUTF8(const std::string& str)
+{
+   for (std::string::size_type i = 0; i < str.length(); i++) {
+      // 0x00000000 -> 0x0000007F (one octet sequence)
+      if ((str[i] & 0x80) == 0) {
+	 // This is a single octet, so we know it's okay
+	 continue;
+      }
+      
+      // 0x00000080 -> 0x000007FF (two octet sequences)
+      if ((str[i] >= '\302') && (str[i] <= '\337') &&
+	  (str.length() >= (i + 1))) {
+	 i++;
+	 
+	 // Check the second octet
+	 if ((str[i] >= '\200') && (str[i] <= '\277')) {
+	    continue;
+	 }
+      }
+      
+      // 0x00000800 -> 0x00001000 (three octet sequences)
+      if ((str[i] >= '\340') && (str[i] <= '\357') &&
+	  (str.length() >= (i + 2))) {
+	 i++;
+	 
+	 // Check the second octet
+	 if ((((str[i - 1] == '\340') && (str[i] >= '\240')) ||
+	      (str[i] >= '\200')) &&
+	     (str[i] <= '\277')) {
+	    i++;
+	    
+	    // Check the third octet
+	    if ((str[i] >= '\200') && (str[i] <= '\277')) {
+	       continue;
+	    }
+	 }
+      }
+      
+      // 0x00010000 -> 0x00100000 (four octet sequences)
+      if ((str[i] >= '\360') && (str[i] <= '\364') &&
+	  (str.length() >= (i + 3))) {
+	 i++;
+	 
+	 // Check the second octet
+	 if (((str[i - 1] == '\360') &&
+	      (str[i] >= '\220') && (str[i] <= '\277')) ||
+	     ((str[i - 1] == '\364') &&
+	      (str[i] >= '\200') && (str[i] <= '\217')) ||
+	     ((str[i] >= '\200') && (str[i] <= '\277'))) {
+	    i += 2;
+	    
+	    // Check the third and forth octets
+	    if ((str[i - 1] >= '\200') && (str[i - 1] <= '\277') &&
+		(str[i] >= '\200') && (str[i] <= '\277')) {
+	       continue;
+	    }
+	 }
+      }
+      
+      // If we got here, the sequence is invalid
+      return false;
+   }
+   
+   // Presume it was okay
+   return true;
 }
