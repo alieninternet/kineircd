@@ -2386,6 +2386,12 @@ tag = {
                   "security reasons. You have been idle %p0:%p1:%p2.";
 };
 
+tag = {
+   name		= "Kine_OPER_WALLOPS_WRAPPER";
+   fields	= "0 = message";
+   components	= "libkineircd";
+   data		= "$ %p0";
+};
 
 
 /*****************************************************************************
