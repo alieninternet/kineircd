@@ -88,7 +88,7 @@ namespace Kine {
 			       const T& parameters)
 	   {
 	      std::ostringstream output;
-	      output << ':' << config().getOptionsServerName() <<
+	      output << ':' << config().getServerName() <<
 		' ' << std::setfill('0') << std::setw(3) << numeric <<
 		' ' << user.getNickname() << ' ' << parameters <<
 		lineTerminator;

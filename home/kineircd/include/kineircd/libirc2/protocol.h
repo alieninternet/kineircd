@@ -333,7 +333,7 @@ namespace Kine {
 			  const Numerics::numeric_type numeric)
 	   {
 	      std::ostringstream output;
-	      output << ':' << config().getOptionsServerName() << 
+	      output << ':' << config().getServerName() << 
 		' ' << std::setfill('0') << std::setw(3) << numeric << 
 		' ' << destination.getNickname() << lineTerminator;
 	      sendRawMessage(output.str());
@@ -344,7 +344,7 @@ namespace Kine {
 			    const Ta& pa)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() << 
+		output << ':' << config().getServerName() << 
 		  ' ' << std::setfill('0') << std::setw(3) << numeric << 
 		  ' ' << destination.getNickname() << 
 		  " :" << pa << lineTerminator;
@@ -356,7 +356,7 @@ namespace Kine {
 			    const Ta& pa, const Tb& pb)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() << 
+		output << ':' << config().getServerName() << 
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  " :" << pb << lineTerminator;
@@ -368,7 +368,7 @@ namespace Kine {
 			    const Ta& pa, const Tb& pb, const Tc& pc)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() <<
+		output << ':' << config().getServerName() <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << " :" << pc << lineTerminator;
@@ -381,7 +381,7 @@ namespace Kine {
 			    const Td& pd)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() <<
+		output << ':' << config().getServerName() <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << " :" << pd << lineTerminator;
@@ -394,7 +394,7 @@ namespace Kine {
 			    const Td& pd, const Te& pe)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() <<
+		output << ':' << config().getServerName() <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << " :" << pe <<
@@ -408,7 +408,7 @@ namespace Kine {
 			    const Td& pd, const Te& pe, const Tf& pf)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() <<
+		output << ':' << config().getServerName() <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
@@ -424,7 +424,7 @@ namespace Kine {
 			    const Tg& pg)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() << 
+		output << ':' << config().getServerName() << 
 		  ' ' << std::setfill('0') << std::setw(3) << numeric << 
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
@@ -440,7 +440,7 @@ namespace Kine {
 			    const Tg& pg, const Th& ph)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() <<
+		output << ':' << config().getServerName() <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
@@ -456,7 +456,7 @@ namespace Kine {
 			    const Tg& pg, const Th& ph, const Ti& pi)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() <<
+		output << ':' << config().getServerName() <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<

@@ -73,7 +73,7 @@ namespace Kine {
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa)
 	     {
-		sendMessageFrom(config().getOptionsServerName(), numeric,
+		sendMessageFrom(config().getServerName(), numeric,
 				(registrantData.name.empty() ?
 				 replacementParameter :
 				 registrantData.name),
@@ -83,7 +83,7 @@ namespace Kine {
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa, const Tb& pb)
 	     {
-		sendMessageFrom(config().getOptionsServerName(), numeric,
+		sendMessageFrom(config().getServerName(), numeric,
 				(registrantData.name.empty() ?
 				 replacementParameter :
 				 registrantData.name),

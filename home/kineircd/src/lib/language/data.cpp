@@ -152,7 +152,7 @@ const std::string
 	    continue;
 	    
 	  case 'd': // The description of the server
-	    output += config().getOptionsDescription();
+	    output += config().getServerDescription();
 	    continue;
 	    
 	  case 'L': // The location of the server
@@ -160,7 +160,7 @@ const std::string
 	    continue;
 	    
 	  case 'n': // The name of the server (its hostname)
-	    output += config().getOptionsServerName();
+	    output += config().getServerName();
 	    continue;
 	    
 	  case 'N': // The name of the network (if there is one)

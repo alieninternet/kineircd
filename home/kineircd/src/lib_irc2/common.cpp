@@ -103,16 +103,16 @@ void Protocol::doADMIN(const User& user)
        Kine::config().getAdministratorLocation().empty() &&
        Kine::config().getAdministratorContact().empty()) {
       sendNumeric(user, LibIRC2::Numerics::ERR_NOADMININFO,
-		  Kine::config().getOptionsServerName(),
+		  Kine::config().getServerName(),
 		  GETLANG(irc2_ERR_NOADMININFO));
       return;
    }
    
    // Send the admin header
    sendNumeric(user, LibIRC2::Numerics::RPL_ADMINME,
-	       Kine::config().getOptionsServerName(),
+	       Kine::config().getServerName(),
 	       GETLANG(irc2_RPL_ADMINME,
-		       Kine::config().getOptionsServerName()));
+		       Kine::config().getServerName()));
    
    // Send the administrator's name
    if (!Kine::config().getAdministratorName().empty()) {
@@ -198,7 +198,7 @@ void Protocol::doMOTD(const User& user, const bool justConnected)
    // Send the MOTD header
    sendNumeric(user, Numerics::RPL_MOTDSTART,
 	       GETLANG(irc2_RPL_MOTDSTART,
-		       Kine::config().getOptionsServerName()));
+		       Kine::config().getServerName()));
 
    // Send this line
    sendNumeric(user, Numerics::RPL_MOTD,
@@ -294,7 +294,7 @@ void Protocol::doTIME(const User& user)
    
    // Send the RPL_TIME reply
    sendNumeric(user, LibIRC2::Numerics::RPL_TIME,
-	       config().getOptionsServerName(),
+	       config().getServerName(),
 	       text.str());
 }
 
@@ -370,7 +370,7 @@ void Protocol::doVERSION(const User& user)
    // Send the RPL_VERSION reply
    sendNumeric(user, LibIRC2::Numerics::RPL_VERSION,
 	       Version::version,
-	       config().getOptionsServerName(),
+	       config().getServerName(),
 	       Version::versionChars);
 }
 

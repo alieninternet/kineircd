@@ -187,7 +187,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	      // The max number of chars we can send.. (is this algo okay??)
 	      const std::string::size_type maxChars =
 		maxMessageSize -
-		Kine::config().getOptionsServerName().length() -
+		Kine::config().getServerName().length() -
 		user.getNickname().length() -
 		25;
 	      
@@ -661,8 +661,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
    // If we were given a parameter, send it back (simple as that!)
    if (!parameters.empty()) {
       // Send the reply (pong) in full form
-      sendMessageFrom(config().getOptionsServerName(), "PONG",
-		      config().getOptionsServerName(), 
+      sendMessageFrom(config().getServerName(), "PONG",
+		      config().getServerName(), 
 		      parameters[0]);
       return;
    }
