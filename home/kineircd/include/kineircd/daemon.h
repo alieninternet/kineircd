@@ -30,6 +30,8 @@
 
 extern "C" {
 # include <sys/time.h>
+# include <sys/types.h>
+# include <unistd.h>
 };
 
 // Forwarded declarations (completed after class)
@@ -59,6 +61,10 @@ namespace Kine {
       
       const long startTime;			// Time the daemon started
       timeval currentTime;			// The time now
+
+      // For select()
+      fd_set inFDSET, outFDSET;			// Input/Output descriptor sets
+      int maxDescriptors;			// Highest descriptor to check
       
       // Set the current time
       void setTime(void) 

@@ -23,13 +23,14 @@
 
 #include "kineircd/kineircdconf.h"
 
-#include <unistd.h>
 #include <cstdio>
 #include <cerrno>
 #include <cstring>
 #include <ctime>
 
 extern "C" {
+#include <unistd.h>
+   
 #ifdef KINE_HAVE_OPENSSL
 # include <openssl/ssl.h>
 #endif
@@ -78,6 +79,8 @@ Daemon::~Daemon(void)
  * Original 11/08/01 simonb
  * Note: Unfortuantely not a very nice looking routine..
  */
+#define CheckInput(x)	FD_ISSET(x, &inFDtemp)
+#define CheckOutput(x)	FD_ISSET(x, &outFDtemp)
 Exit::status_type Kine::Daemon::run(void)
 {
    /* Make sure the init was all happy, else there isn't much point us
@@ -91,14 +94,76 @@ Exit::status_type Kine::Daemon::run(void)
    debug("Daemon::run() - Entering main loop");
 #endif
 
+   // Stuff we need for select()
+   struct timeval timeout;
+   fd_set inFDtemp, outFDtemp;
+   
+   // Set up stuff for select()
+   FD_ZERO(&inFDSET);
+   FD_ZERO(&outFDSET);
+   maxDescriptors = 0;
+
+   // The main loop!
    for (;;) {
       // Set the time
       setTime();
       
-      // Do stuff here with the poller :)
-      sleep(10); // temporary
+      // Set the timeout for select()..
+      timeout.tv_sec = 1;
+      timeout.tv_usec = 0;
+      
+      // Copy the FD sets over to save time
+      inFDtemp = inFDSET;
+      outFDtemp = outFDSET;
 
-      debug("Doing nothing...");
+      // Poll select()
+      switch (select(maxDescriptors, &inFDtemp, &outFDtemp, 
+		     SELECT_TYPE_ARG234 NULL, &timeout)) {
+       case -1: // Select aborted (caused by a signal, usually)
+#ifdef KINE_DEBUG_EXTENDED
+	 perror("Daemon::run() - select()");
+#endif
+	 break;
+	 
+       case 0: // Select timed out, no descriptor change
+#ifdef KINE_DEBUG
+	 debug("Doing nothing...");
+#endif
+	 break;
+	 
+//       default:
+//	 if (runlevel >= RUNLEVEL_NORMAL) {
+	    // Check for a new connection
+//	    for (listen_list_t::iterator it = listens.begin();
+//		 it != listens.end(); it++) {
+//	       // Check if there is a new connection we should be aware of
+//	       if (CheckInput((*it)->socket->getFD())) {
+//		  newConnection(*it);
+//	       }
+//	    }
+	    
+	    // Check for activity on connections
+//	    for (connection_list_t::iterator it = connections.begin();
+//		 it != connections.end(); it++) {
+#ifdef DEBUG_EXTENDED
+//	       if (!(*it) || !(*it)->socket) {
+//		  debug("broken?!");
+//		  continue;
+//	       }
+#endif
+	       
+	       // Check for input waiting
+//	       if (CheckInput((*it)->socket->getFD())) {
+//		  (*it)->handleInput();
+//	       }
+	       
+	       // Check for OK to send and something in the queue
+//	       if (CheckOutput((*it)->socket->getFD())) {
+//		  (*it)->sendQueue();
+//	       }
+//	    }
+
+      }
       
       // Check if we are in shutdown mode
       if (runlevel == RUNLEVEL_SHUTDOWN) {
