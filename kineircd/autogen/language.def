@@ -27,7 +27,7 @@ autogen definitions language;
  *
  * Don't forget to use whatever is considered the formal, international form of
  * your language (ie. International English over American English), and
- * include the correct glyphs to represent the words (ie. '你好', 'םולש' and
+ * include the correct glyphs to represent the words (ie. '你好', 'שלום' and
  * 'здравствулте', instead of their latin equivalents, 'ni hao', 'shalom', and
  * 'zdravstvuite' respectively). Proper use of language you're translating,
  * and its alphabet is paramount to the quality of the translation.
