@@ -102,46 +102,36 @@ using namespace Kine;
 	 charCount))
       
  +][+DEFINE output-class-definition-table+]const AISutil::ConfigParser::defTable_type Config::[+tableClass+] = {[+(clearDefList)+][+FOR definition+][+(addDef (string-upcase (get "name")))+][+ENDFOR+][+FOR definition+]
-[+IF .condition+]#ifdef [+condition+]
+[+IF (exist? ".condition")+]#ifdef [+condition+]
 [+ENDIF+]     {
 	"[+(string-upcase (get "name"))+]", [+(calcDefChars (string-upcase (get "name")))+],
-	  [+IF .hasVariable+](void*)&Config::def[+IF .variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+][+ELSE+]0[+ENDIF+],
-	  [+IF .varHandler+]&[+varHandler+][+ELSE+]0[+ENDIF+],
-	  [+IF .definition+]&defClass[+(getPrefix)+][+name+][+ELSE+]0[+ENDIF+],
-	  [+IF .classHandler+]&[+classHandler+][+ELSE+]0[+ENDIF+]
+	  [+IF (exist? ".hasVariable")+](void*)&Config::def[+IF (exist? ".variable")+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+][+ELSE+]0[+ENDIF+],
+	  [+IF (exist? ".varHandler")+]&[+varHandler+][+ELSE+]0[+ENDIF+],
+	  [+IF (exist? ".definition")+]&defClass[+(getPrefix)+][+name+][+ELSE+]0[+ENDIF+],
+	  [+IF (exist? ".classHandler")+]&[+classHandler+][+ELSE+]0[+ENDIF+]
      },[+IF .condition+]
 #endif // [+condition+][+ENDIF+][+ENDFOR+]
      {
 	0, 0,
-	  [+IF .defaultDefinition.variable+](void*)&Config::[+defaultDefinition.variable+][+ELSE+]0[+ENDIF+],
+	  [+IF (exist? ".defaultDefinition.variable")+](void*)&Config::[+defaultDefinition.variable+][+ELSE+]0[+ENDIF+],
 	  0,
 	  0,
 	  0
      }
 };
 
-[+FOR definition+][+IF .definition+]
+[+FOR definition+][+IF (exist? ".definition")+]
 // "[+(getPrefix)+][+name+]" section (nested [+
    (length tablePrefixStack)
  +] level[+
    (if (> (length tablePrefixStack) 1)
       "s")
- +] deep)[+
-   ; Push this prefix to the start of our prefix stack
-   (set! tablePrefixStack
-      (append
-         (list (get "name"))
-         tablePrefixStack))
- +]
+ +] deep)[+(pushPrefix (get "name"))+]
 [+output-class-definition-table
    tableClass=(string-append
 	         "defClass"
 		 (getPrefix))
- +][+
-   ; Pop our definition from the end of the list
-   (set! tablePrefixStack
-      (cdr tablePrefixStack))
- +][+ENDIF+][+ENDFOR+][+ENDDEF+]
+ +][+(popPrefix)+][+ENDIF+][+ENDFOR+][+ENDDEF+]
 // Top definitions
 [+output-class-definition-table tableClass=topDefs+]
 
@@ -150,7 +140,7 @@ using namespace Kine;
    (define currentIteration 0)
  +]
 Config::Config(void)
-[+DEFINE output-variable-defaults+][+FOR definition+][+IF .hasVariable+][+IF .defaultValue+][+
+[+DEFINE output-variable-defaults+][+FOR definition+][+IF (exist? ".hasVariable")+][+IF (exist? ".defaultValue")+][+
    ; Is this is the first iteration?
    (if (= currentIteration 0)
       ; Output the start..
@@ -162,17 +152,7 @@ Config::Config(void)
    ; Increase the iteration counter
    (set! currentIteration
       (+ currentIteration 1))
- +]def[+IF .variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+]([+defaultValue+])[+ENDIF+][+ENDIF+][+IF .definition+][+
-   ; Push this prefix to the start of our prefix stack
-   (set! tablePrefixStack
-      (append
-         (list (get "name"))
-         tablePrefixStack))
- +][+output-variable-defaults+][+
-   ; Pop our definition from the end of the list
-   (set! tablePrefixStack
-      (cdr tablePrefixStack))
- +][+ENDIF+][+ENDFOR+][+ENDDEF+][+output-variable-defaults+]
+ +]def[+IF (exist? ".variable")+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+]([+defaultValue+])[+ENDIF+][+ENDIF+][+IF (exist? ".definition")+][+(pushPrefix (get "name"))+][+output-variable-defaults+][+(popPrefix)+][+ENDIF+][+ENDFOR+][+ENDDEF+][+output-variable-defaults+]
 {
 #ifdef KINE_WITH_SSL
    // Fire up the SSL component
