@@ -200,7 +200,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/sender.h \
 	include/kineircd/server.h \
 	include/kineircd/service.h \
-	include/kineircd/signals.h \
 	include/kineircd/todo.h \
 	include/kineircd/user.h \
 	include/kineircd/version.h \
@@ -230,7 +229,6 @@ libkineircd_la_SOURCES=\
 	src/lib/myserver.h \
 	src/lib/name.cpp \
 	src/lib/registry.cpp \
-	src/lib/signals.cpp \
 	src/lib/todo.cpp \
 	src/lib/user.cpp \
 	src/lib/version.cpp
