@@ -24,22 +24,22 @@
 #ifndef _SRC_LIB_REGISTRAR_H_
 # define _SRC_LIB_REGISTRAR_H_ 1
 
-# include <libais/string/string.h>
-# include <libais/string/tokens.h>
+# include <aisutil/string/string.h>
+# include <aisutil/string/tokens.h>
 
 # include "kineircd/protocol.h"
 # include "kineircd/listener.h"
 # include "regnumerics.h"
 
 # define KINE_LIB_REGISTRAR_FUNCTION(x) \
-     void x(LibAIS::StringTokens& line)
+     void x(AISutil::StringTokens& line)
 
 namespace Kine {
    class Registrar : public Protocol {
     private:
       Listener& listener;			// The listener who invoked us
       
-      LibAIS::String buffer;			// Our buffer..
+      AISutil::String buffer;			// Our buffer..
       
       struct RegistrationType { // <=- Should be namespace?
 	 enum type {
@@ -52,19 +52,19 @@ namespace Kine {
       };
       RegistrationType::type registrationType;	// Type of registration
       
-      LibAIS::String password;			// Logon password
-      LibAIS::String nickname;			// Nickname (client/service)
-      LibAIS::String username;			// Username (client/server)
-      LibAIS::String hostname;			// Hostname
-      LibAIS::String realname;			// Realname/Description
-      LibAIS::String distribution;		// Distribution range (service)
-      LibAIS::String modes;			// Modes for next handler
-      LibAIS::String protocol;			// Protocol details
+      AISutil::String password;			// Logon password
+      AISutil::String nickname;			// Nickname (client/service)
+      AISutil::String username;			// Username (client/server)
+      AISutil::String hostname;			// Hostname
+      AISutil::String realname;			// Realname/Description
+      AISutil::String distribution;		// Distribution range (service)
+      AISutil::String modes;			// Modes for next handler
+      AISutil::String protocol;			// Protocol details
       long startStamp;				// Received start time-stamp
       long linkStamp;				// Received link time-stamp
 
       unsigned char pongsLeft;			// Number of pongs left
-      LibAIS::String pongMatch;			// Pong string to match
+      AISutil::String pongMatch;		// Pong string to match
       
       // The type of a handler, for handy use later..
       typedef KINE_LIB_REGISTRAR_FUNCTION(handler_type);
@@ -81,7 +81,7 @@ namespace Kine {
 		       const char* data);
       
       // Appropriately parse a line of protocol
-      void parseLine(const LibAIS::String& line);
+      void parseLine(const AISutil::String& line);
 
       // Protocol commands
       handler_type parseCAPAB;

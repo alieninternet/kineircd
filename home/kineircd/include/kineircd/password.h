@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_PASSWORD_H_
 # define _INCLUDE_KINEIRCD_PASSWORD_H_ 1
 
-# include <libais/string/string.h>
+# include <aisutil/string/string.h>
 
 # include "kineircd/utils.h"
 
@@ -51,8 +51,8 @@ namespace Kine {
       };
       
       // Transform the nickname and password pair into SHA1 output
-      static digest_type makePassword(const LibAIS::String& nickname,
-				      const LibAIS::String& password) {
+      static digest_type makePassword(const AISutil::String& nickname,
+				      const AISutil::String& password) {
 	 return Utils::SHA1::generate(nickname.IRCtoLower() + delim + 
 				      password);
       };

@@ -25,9 +25,9 @@
 # define _INCLUDE_KINEIRCD_STR_H_ 1
 
 // For now, just include the string classes, close to what used to be ..
-# include <libais/string/string.h>
+# include <aisutil/string/string.h>
 
-# include <libais/string/mask.h>
-# include <libais/string/tokens.h>
+# include <aisutil/string/mask.h>
+# include <aisutil/string/tokens.h>
 
 #endif // _INCLUDE_KINEIRCD_STR_H_

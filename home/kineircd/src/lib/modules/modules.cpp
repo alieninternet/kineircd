@@ -28,7 +28,7 @@
 #include "kineircd/module.h"
 
 using namespace Kine;
-using LibAIS::String;
+using AISutil::String;
 
 
 /* getVersionString - Return the module name in full version format

@@ -33,12 +33,12 @@
 #include "debug.h"
 
 using namespace Kine;
-using LibAIS::String;
+using AISutil::String;
 
 
 namespace Config {
    // Top definitions
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::topDefs = {
 	{
 	   "ADMINISTRATOR", 5,
@@ -139,7 +139,7 @@ namespace Config {
 
 
    // "ADMINISTRATOR" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassAdministrator = {
 	{
 	   "EMAIL", 5,
@@ -173,7 +173,7 @@ namespace Config {
 
 
    // "ARBITERS" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassArbiters = {
 	{
 	   "SERVERS", 4,
@@ -192,7 +192,7 @@ namespace Config {
    };
 
    // "ARBITERS.SERVERS" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassArbitersServers = {
 	{
 	   0, 0,
@@ -205,7 +205,7 @@ namespace Config {
 
 
    // "LANGUAGES" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassLanguages = {
 	{
 	   0, 0,
@@ -218,7 +218,7 @@ namespace Config {
 
 
    // "LOGGING" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassLogging = {
 	{
 	   0, 0,
@@ -231,7 +231,7 @@ namespace Config {
 
 
    // "NETWORK" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassNetwork = {
 	{
 	   "NAME", 4,
@@ -251,7 +251,7 @@ namespace Config {
 
 
    // "OPERATORS" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassOperators = {
 	{
 	   0, 0,
@@ -263,7 +263,7 @@ namespace Config {
    };
 
    // "OPERATORS.*" generic class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassOperatorsGeneric = {
 	{
 	   "HOSTS", 4,
@@ -303,7 +303,7 @@ namespace Config {
    };
 
    // "OPERATORS.*.HOSTS" generic class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassOperatorsGenericHosts = {
 	{
 	   0, 0,
@@ -316,7 +316,7 @@ namespace Config {
 
 
    // "OPTIONS" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassOptions = {
 	{
 	   "DESCRIPTION", 4,
@@ -391,7 +391,7 @@ namespace Config {
    };
 
    // "OPTIONS.LIMITS" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassOptionsLimits = {
 	{
 	   "CHANNELS", 4,
@@ -438,7 +438,7 @@ namespace Config {
    };
 
    // "OPTIONS.LIMITS.CHANNELS" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassOptionsLimitsChannels = {
 	{
 	   "MAXBANS", 7,
@@ -485,7 +485,7 @@ namespace Config {
    };
 
    // "OPTIONS.LIMITS.USERS" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassOptionsLimitsUsers = {
 	{
 	   "MAXACCEPTS", 9,
@@ -547,7 +547,7 @@ namespace Config {
 
 
    // "REDIRECTION" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassRedirection = {
 	{
 	   "CHANNELS", 4,
@@ -566,7 +566,7 @@ namespace Config {
    };
 
    // "REDIRECTION.CHANNELS" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassRedirectionChannels = {
 	{
 	   0, 0,
@@ -580,7 +580,7 @@ namespace Config {
 
 #ifdef KINE_WITH_SSL
    // "SSL" class
-   const LibAIS::ConfigParser::defTable_type
+   const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassSSL = {
 	{
 	   "CERTIFICATE", 4,
@@ -693,7 +693,7 @@ Kine::Config::~Config(void)
 /* classHandleModule - Get a module's filename and attempt to load & configure
  * Original 21/07/2002 simonb
  */
-LIBAIS_CONFIG_CLASS_HANDLER(Kine::Config::classHandleModule)
+LIBAISUTIL_CONFIG_CLASS_HANDLER(Kine::Config::classHandleModule)
 {
 #ifdef KINE_DEBUG_ASSERT
    assert(dataVariable != 0);
@@ -720,11 +720,11 @@ LIBAIS_CONFIG_CLASS_HANDLER(Kine::Config::classHandleModule)
    if (moduleDesc->getModule()->getBasicInfo().configDefinitions != 0) {
       // Parse the module's configuration data
       return 
-	LibAIS::ConfigParser::parse(configData, position,
-				    ((void *)
-				     (moduleDesc->getModule()->getBasicInfo().
-				      configDefinitions)),
-				    *moduleDesc->getModule()->getConfigData());
+	AISutil::ConfigParser::parse(configData, position,
+				     ((void *)
+				      (moduleDesc->getModule()->getBasicInfo().
+				       configDefinitions)),
+				     *moduleDesc->getModule()->getConfigData());
    }
    
    // Just be happy, the module loaded!
@@ -735,7 +735,7 @@ LIBAIS_CONFIG_CLASS_HANDLER(Kine::Config::classHandleModule)
 /* varHandleModule - Get a module's filename and attempt to load
  * Original 21/07/2002 simonb
  */
-LIBAIS_CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleModule)
+LIBAISUTIL_CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleModule)
 {
 #ifdef KINE_DEBUG_ASSERT
    assert(dataVariable != 0);
@@ -757,7 +757,7 @@ LIBAIS_CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleModule)
 /* varHandleNetworkName - Read a network name (front value) and check it
  * Original 13/04/2002 simonb
  */
-LIBAIS_CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleNetworkName)
+LIBAISUTIL_CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleNetworkName)
 {
 #ifdef KINE_DEBUG_ASSERT
    assert(dataVariable != 0);

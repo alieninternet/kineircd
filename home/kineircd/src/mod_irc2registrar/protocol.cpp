@@ -28,8 +28,8 @@
 #include "debug.h"
 
 using namespace Kine;
-using LibAIS::String;
-using LibAIS::StringTokens;
+using AISutil::String;
+using AISutil::StringTokens;
 
 
 // Master command table (zero terminated, ordered alphabetically)

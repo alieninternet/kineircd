@@ -25,7 +25,7 @@
 # define _INCLUDE_KINEIRCD_WHOWAS_H_ 1
 
 # include <ctime>
-# include <libais/string/string.h>
+# include <aisutil/string/string.h>
 
 namespace Kine {
    class Whowas;

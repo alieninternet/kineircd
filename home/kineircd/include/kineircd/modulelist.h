@@ -31,7 +31,7 @@ namespace Kine {
 };
 
 # include <map>
-# include <libais/string/string.h>
+# include <aisutil/string/string.h>
 
 namespace Kine {
    class ModuleList {
@@ -49,8 +49,8 @@ namespace Kine {
 	{ stopAll(); };
       
       // Load a module, return false if we failed (reason in 'errorReturn')
-      ModuleDescriptor *loadModule(const LibAIS::String &moduleFile,
-				   LibAIS::String &errorReturn);
+      ModuleDescriptor *loadModule(const AISutil::String &moduleFile,
+				   AISutil::String &errorReturn);
       
       // Start all modules
       void startAll(Daemon &daemon) const;

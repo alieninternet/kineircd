@@ -32,10 +32,10 @@
 #   include <cassert>
 #  endif
 
-#  include <libais/string/string.h>
+#  include <aisutil/string/string.h>
 
 // Output/Broadcast debug line
-extern void debug(LibAIS::String const &);
+extern void debug(AISutil::String const &);
    
 # endif // DEBUG
 #endif // _SRC_LIB_DEBUG_H_

@@ -27,14 +27,14 @@
 #include <csignal>
 #include <algorithm>
 #include <functional>
-#include <libais/string/string.h>
+#include <aisutil/string/string.h>
 
 #include "kineircd/signals.h"
 #include "kineircd/exit.h"
 #include "debug.h"
 
 using namespace Kine;
-using LibAIS::String;
+using AISutil::String;
 
 
 // This is here so we can remember where we are!

@@ -28,8 +28,8 @@
 
 # include <string>
 # include <cstdlib>
-# include <libais/string/string.h>
-# include <libais/string/mask.h>
+# include <aisutil/string/string.h>
+# include <aisutil/string/mask.h>
 
 namespace Kine {
    class Utils {
@@ -42,13 +42,13 @@ namespace Kine {
       
     public:
       // Convert to another base
-      static LibAIS::String baseXStr(unsigned long, const base_type);
+      static AISutil::String baseXStr(unsigned long, const base_type);
       
       // Convert a string to boolean
-      static bool toBool(const LibAIS::String &, const bool);
+      static bool toBool(const AISutil::String &, const bool);
       
       // Fix a mask into an id mask
-      static LibAIS::StringMask fixToIdentityMask(const LibAIS::String &);
+      static AISutil::StringMask fixToIdentityMask(const AISutil::String &);
       
       // sha1.cpp
       class SHA1 {

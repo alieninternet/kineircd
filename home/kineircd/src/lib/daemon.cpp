@@ -42,7 +42,7 @@ extern "C" {
 #include "registrar.h"
 
 using namespace Kine;
-using LibAIS::String;
+using AISutil::String;
 
 
 /* Daemon - Init the server
@@ -103,7 +103,7 @@ void Daemon::newConnection(Listener& listener)
 #endif
    
    // Accept the connection
-   LibAIS::Socket* const newSocket = listener.accept();
+   AISutil::Socket* const newSocket = listener.accept();
    
    // Check if that worked..
    if (newSocket == 0) {

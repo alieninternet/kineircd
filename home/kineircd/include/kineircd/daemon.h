@@ -33,7 +33,7 @@
 # endif
 
 # include <ctime>
-# include <libais/string/string.h>
+# include <aisutil/string/string.h>
 
 extern "C" {
 # include <sys/time.h>

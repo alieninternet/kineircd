@@ -32,7 +32,7 @@
 #  include <set>
 # endif
 
-# include <libais/string/string.h>
+# include <aisutil/string/string.h>
 
 namespace Kine {
    class LocalUser;

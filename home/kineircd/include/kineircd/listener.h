@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_LISTENER_H_
 # define _INCLUDE_KINEIRCD_LISTENER_H_ 1
 
-# include <libais/socket/socket.h>
+# include <aisutil/socket/socket.h>
 
 namespace Kine {
    class Listener {
@@ -41,7 +41,7 @@ namespace Kine {
       
     private:
       // The socket
-      LibAIS::Socket& socket;
+      AISutil::Socket& socket;
       
       // The pending acceptance backlog for this socket (for when we listen())
       unsigned short listenBacklog;
@@ -57,7 +57,7 @@ namespace Kine {
       
     public:
       // Constructor
-      Listener(LibAIS::Socket& s, unsigned short lb, flags_type f = 0)
+      Listener(AISutil::Socket& s, unsigned short lb, flags_type f = 0)
 	: socket(s),
           listenBacklog(lb),
           flags(f),
@@ -89,7 +89,7 @@ namespace Kine {
 	{ return socket.getFD(); };
       
       // Accept a new connection from the socket
-      LibAIS::Socket* const accept(void)
+      AISutil::Socket* const accept(void)
 	{
 	   acceptCount++;
 	   return socket.accept();

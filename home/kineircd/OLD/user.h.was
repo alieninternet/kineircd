@@ -35,7 +35,7 @@
 #  include <list>
 # endif
 
-# include <libais/string/string.h>
+# include <libutil/string/string.h>
 
 namespace Kine {
    class User;

@@ -24,14 +24,14 @@
 #ifndef _SRC_LIB_LANGUAGE_CONFIG_H_
 # define _SRC_LIB_LANGUAGE_CONFIG_H_ 1
 
-# include <libais/config/parser.h>
+# include <aisutil/config/parser.h>
 
 # include "kineircd/languagelist.h"
 
 namespace Kine {
    namespace LanguageConfig {
       // The variable handler
-      extern LIBAIS_CONFIG_VARIABLE_HANDLER(varHandler);
+      extern LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varHandler);
    };
 };
    

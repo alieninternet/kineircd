@@ -40,7 +40,7 @@
 #  include <list>
 # endif
 
-# include <libais/string/string.h>
+# include <aisutil/string/string.h>
 
 // Channel types we support for the ISUPPORT line.
 //# define CHANNEL_TYPES			"&#+!"

@@ -23,13 +23,13 @@
 
 #include "kineircd/kineircdconf.h"
 
-#include <libais/socket/sockets.h>
+#include <aisutil/socket/sockets.h>
 
 #include "kineircd/listener.h"
 #include "debug.h"
 
 using namespace Kine;
-using LibAIS::String;
+using AISutil::String;
 
 
 /* listen - Start listening on this listener socket

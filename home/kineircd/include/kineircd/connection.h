@@ -28,7 +28,7 @@
 
 # include <queue>
 
-# include <libais/socket/socket.h>
+# include <aisutil/socket/socket.h>
 
 namespace Kine {
    class Protocol;
@@ -40,10 +40,10 @@ namespace Kine {
    class Connection {
     private:
       Daemon& daemon;			// Call-back to the daemon
-      LibAIS::Socket& socket;		// The connected socket
+      AISutil::Socket& socket;		// The connected socket
       Protocol* protocol;		// The protocol we are running
       
-      std::queue <LibAIS::String>
+      std::queue <AISutil::String>
 	outputQueue;			// Output data queue
       
       unsigned long long sentBytes;	// Number of bytes sent
@@ -60,7 +60,7 @@ namespace Kine {
       
     public:
       // Class constructor
-      Connection(Daemon& d, LibAIS::Socket& s);
+      Connection(Daemon& d, AISutil::Socket& s);
       
       // Shutdown connection
       ~Connection(void) 
@@ -71,7 +71,7 @@ namespace Kine {
 	{ return daemon; };
       
       // Return the socket
-      const LibAIS::Socket& getSocket(void) const
+      const AISutil::Socket& getSocket(void) const
 	{ return socket; };
 
       // Replace the protocol with something new

@@ -34,7 +34,7 @@
 #  include <slist>
 # endif
 
-# include <libais/string/string.h>
+# include <aisutil/string/string.h>
 
 namespace Kine {
    class Server;
