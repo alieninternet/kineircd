@@ -62,17 +62,6 @@ bool ModuleList::loadModule(const String &moduleFile, String &errorReturn,
       return false;
    }
 
-   // Does this module demand to be configured?
-   if ((moduleDesc->getModule()->getBasicInfo().flags & 
-	Module::basicInfo_type::FLAG_CONFIGURE_MANDATORY) &&
-       !beingConfigured) {
-      // Be all upset on the module's behalf
-      errorReturn = moduleDesc->getModule()->getVersionString() +
-	" must be configured";
-      delete moduleDesc;
-      return false;
-   }
-
    // Okay then, if we got this far we can add this module to the list
    (void)modules.insert(modulesMap_type::value_type
 			(moduleDesc->getModule()->getKeyName(), moduleDesc));

@@ -90,8 +90,7 @@ namespace Kine {
 	 // Flags to determine how this module needs to be configured
 	 enum flags_type {
 	    FLAG_NONE = 0,			      // No flags set
-            FLAG_UNIQUE_INSTANCE	= 0x00000001, // No multiple instances
-	    FLAG_CONFIGURE_MANDATORY	= 0x00000002  // Must be configured
+            FLAG_UNIQUE_INSTANCE	= 0x00000001  // No multiple instances
 	 };
 	 const int flags;
 	 
