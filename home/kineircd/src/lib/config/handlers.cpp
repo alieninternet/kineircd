@@ -28,6 +28,7 @@
 #include "kineircd/config.h"
 #include "kineircd/moduledescriptor.h"
 #include "config/defaults.h"
+#include "language/config.h"
 #include "listener/config.h"
 #include "debug.h"
 
@@ -35,7 +36,6 @@ using namespace Kine;
 
 
 namespace Config {
-
    // Top definitions
    const Kine::ConfigParser::defTable_type
      Kine::Config::topDefs = {
@@ -64,7 +64,7 @@ namespace Config {
 #endif
 	{
 	   "LANGUAGES",
-	     0,
+	     (void *)&Config::defLanguageList,
 	     0,
 	     &defClassLanguages,
 	     0
@@ -209,9 +209,9 @@ namespace Config {
 	{
 	   0,
 	     0,
+	     &LanguageConfig::varHandler,
 	     0,
-	     0,
-	     0
+	  0
 	}
    };
 

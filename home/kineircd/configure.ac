@@ -759,6 +759,7 @@ AC_OUTPUT([
 	src/Makefile
 	src/lib/Makefile
 	src/lib/config/Makefile
+	src/lib/language/Makefile
 	src/lib/listener/Makefile
 	src/lib/logger/Makefile
 	src/lib/modules/Makefile
