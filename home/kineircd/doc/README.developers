@@ -216,7 +216,9 @@ and code formatting information. Last updated 200203252022
 
 * Start functions off with a multiline comment as a header. This is
   important! It is also just as important to use your cvs name. This
-  is for readability, and also so you can get the credit :) Please
+  is for readability, and also so you can get the credit :) Note that you
+  are advised to skip this for small trivial functions, such as inline
+  functions within header files or small functions in .cpp files. Please
   strictly follow this format:
     /* <function name> - <short description>
      * Original <date> <cvsname>
