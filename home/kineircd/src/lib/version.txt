@@ -16,4 +16,4 @@ PARTICULAR PURPOSE.
  KineIRCd Development Team:
     Simon Butcher           Scott Mackenzie
 
-Bugs? Questions? Comments? E-mail: kineircd@alien.net.au
+Bugs? Comments? Questions? http://sf.net/tracker/?group_id=64061
