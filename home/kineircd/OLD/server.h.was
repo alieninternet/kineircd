@@ -15,6 +15,14 @@ class Server;
 
 class Server {
  public:
+# ifdef STL_HAS_HASH
+   typedef hash_map <String, Server *> server_map_t;
+   typedef hash_map <String, User *> user_map_t;
+# else
+   typedef map <String, Server *> server_map_t;
+   typedef map <String, User *> user_map_t;
+# endif
+
    typedef unsigned short flags_t;
 
    // Server mode type - do not change this - P14 needs this to be the same
@@ -42,6 +50,9 @@ class Server {
    unsigned char numHops;			// Number of hops away
    unsigned int numUsers;			// Number of users connected
 
+   server_map_t servers;			// Servers on this server list
+   user_map_t users;				// Users on this server list
+   
    // Server mode change routines
    static bool toggleModeAUTOTBS(bool setting, Server *server, String *param);
    static bool toggleModeHIDDEN(bool setting, Server *server, String *param);
@@ -78,7 +89,10 @@ class Server {
        protocol(HIGHEST_SUPPORTED_SERVER_PROTOCOL),
        numHops(0),
        numUsers(0)
-     {};
+     {
+	users.clear();
+	servers.clear();
+     };
    
    Server(String const &ho, String const &d, unsigned char p, 
 	  unsigned char hops)
@@ -90,18 +104,21 @@ class Server {
        protocol(p),
        numHops(hops),
        numUsers(0)
-     {};
+     {
+	users.clear();
+	servers.clear();
+     };
 
    // Copy constructor
-   Server(Server const &s)
-     : hostname(s.hostname),
-       description(s.description),
-       flags(s.flags),
-       modes(s.modes),
-       handler(s.handler),
-       numHops(s.numHops),
-       numUsers(s.numUsers)
-     {};
+//   Server(Server const &s)
+//     : hostname(s.hostname),
+//       description(s.description),
+//       flags(s.flags),
+//       modes(s.modes),
+//       handler(s.handler),
+//       numHops(s.numHops),
+//       numUsers(s.numUsers)
+//     {};
    
    // Variable access
    String getHostname(void) const		// Return the hostname

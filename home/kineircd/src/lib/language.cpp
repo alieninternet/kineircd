@@ -42,37 +42,6 @@ namespace Lang {
      "to connect to (%s).";
 
 
-   /* Server notice output strings
-    * Note: This ties in with GLOBOPS, HELPME and LOCOPS broadcasts too since
-    *	    they are sent by the same notice mechanism.
-    */
-   char const *L_SERVNOTICE_LINK =
-     "Link with %s established (%s)";
-   char const *L_SERVNOTICE_DELINK =
-     "Link with %s cancelled: %s";
-   char const *L_SERVNOTICE_SIGNON =
-     "*** Notice -- Client connecting: %s (%s@%s) <%s>";
-   char const *L_SERVNOTICE_SIGNOFF =
-     "*** Notice -- Client exiting: %s (%s@%s> [%s]";
-   char const *L_SERVNOTICE_RECV_EOB =
-     "Completed receiving Burst Data from %s";
-   char const *L_SERVNOTICE_CMD_DIE =
-     "%s initiated server shutdown";
-   char const *L_SERVNOTICE_CMD_REHASH =
-     "%s started server rehash";
-   char const *L_SERVNOTICE_GARBO =
-     "Garbologist completed cleaning";
-   char const *L_SERVNOTICE_GARBO_ITEMS =
-     "Garbologist completed cleaning %d items";
-   char const *L_SERVNOTICE_GLOBOPS =
-     "*** Global -- OPER from %s: %s";
-   char const *L_SERVNOTICE_HELPME =
-     "*** Help -- from %s: %s";
-   char const *L_SERVNOTICE_LOCOPS =
-     "*** Local -- from %s: %s";
-   char const *L_SERVNOTICE_NOTIFY_ON_CMD_STATS =
-     "*** Notice -- STATS %s by %s (%s)";
-   
    // Misc/Disorganised
    char const *L_NOTIFY_PARANOID_OPERS_ON_WHOIS =
      "*** Notice -- %s (%s) did a /whois on you";

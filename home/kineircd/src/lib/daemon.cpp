@@ -409,11 +409,11 @@ check_connections:
     */
    if (called) {
 #ifdef MAX_GARBO_RUN_ITEMS
-      serverNotice(LocalUser::SN_HOUSEKEEPING,
-		   String::printf((char *)Lang::L_SERVNOTICE_GARBO_ITEMS,
+      serverNotice(ServerNotice::SN_HOUSEKEEPING,
+		   String::printf("Garbo collected %d items",
 				  items));
 #else
-      serverNotice(LocalUser::SN_HOUSEKEEPING, 
+      serverNotice(ServerNotice::SN_HOUSEKEEPING, 
 		   LangTags::L_SERVNOTICE_GARBO);
 #endif
    }
@@ -467,15 +467,13 @@ void Daemon::rehash(Handler *handler, User *user)
       }
       
       // Send out a server broadcast notifying of the rehash
-      serverNotice(LocalUser::SN_HOUSEKEEPING,
-		   String::printf((char *)Lang::L_SERVNOTICE_CMD_REHASH,
-				  ((char const *)
-				   user->nickname)));
+      serverNotice(ServerNotice::SN_HOUSEKEEPING,
+		   String::printf("Rehash called by %s",
+				  (char const *)user->nickname));
    } else {
       // Send out a server broadcast notifying of the rehash
-      serverNotice(LocalUser::SN_HOUSEKEEPING,
-		   String::printf((char *)Lang::L_SERVNOTICE_CMD_REHASH,
-				  "Signal SIGHUP"));
+      serverNotice(ServerNotice::SN_HOUSEKEEPING,
+		   "Rehash called by signal SIGHUP");
    }
 
    // Check the extended clock information (hey, you never know!)
@@ -544,7 +542,7 @@ String Daemon::makeISUPPORT(void)
 /* serverNotice - [Various Forms] Broadcast a server notice to +s's
  * Original 18/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::serverNotice(LocalUser::servnotice_t type, String const &message)
+void Daemon::serverNotice(ServerNotice::servnotice_t type, String const &message)
 {
    // Run through the local user list
    for (localuser_map_t::iterator it = localUsers.begin();
@@ -559,12 +557,38 @@ void Daemon::serverNotice(LocalUser::servnotice_t type, String const &message)
 	 continue;
       }
 #endif
+   
+      char typePrefix = '\0';
+      
+      // Run through the server notice types and grab the appropriate type-char
+      for (register unsigned int i = ServerNotice::NUM_TYPES; i--;) {
+	 // Check if this is the type
+	 if (ServerNotice::typeTable[i].mask == type) {
+	    typePrefix = ServerNotice::typeTable[i].type;
+	    break;
+	 }
+      }
+      
+#ifdef DEBUG
+      // This should only ever happen in a development phase..
+      if (!typePrefix) {
+	 debug(String::printf("Cannot output server notice of type %ld -- "
+			      "No type-char associated with it or "
+			      "ServerNotice::NUM_TYPES is incorrect!",
+			      type));
+	 continue;
+      }
+#endif
+      
+      // Fix the message up (with the prefix)
+      String fixedMessage = String(typePrefix) + message;
       
       // Check if this user is to receive server notices
       if ((*it).second->serverNotices & type) {
 	 // Send the message via the notice interface
-	 (*it).second->handler->sendNotice(server, (*it).second->user, 
-					   message);
+	 (*it).second->handler->
+	   sendNotice(server, (*it).second->user, 
+		      fixedMessage);
       }
    }
 }
@@ -735,6 +759,7 @@ void Daemon::newConnection(Listen *l)
 
 /* addUser - Add a user to the user map, and broadcast the addition to the net
  * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ * Note: I do not like this.
  */
 void Daemon::addUser(User *user)
 {
@@ -742,7 +767,8 @@ void Daemon::addUser(User *user)
    debug(String::printf("addUser() <- %s (%s)",
 			(char const *)user->nickname,
 			(user->local ?
-			 "local" : "remote")));
+			 "local" : 
+			 (const char *)user->server->getHostname())));
 #endif
    
    String fixedNick = user->nickname.IRCtoLower();
@@ -762,9 +788,13 @@ void Daemon::addUser(User *user)
    // Add the user, lowercasing the nickname for easier searching later on
    users[fixedNick] = user;
    
-   // If the user is local, add them to the local list too
+   // Is the user local?
    if (user->local) {
+      // The user is local -- add them to the local list too
       localUsers[fixedNick] = user->local;
+   } else {
+      // Add the user to their respective server..
+      user->server->users[fixedNick] = user;
    }
    
    /* CPU hogging time.. Run through the local users list and check each
@@ -845,6 +875,10 @@ void Daemon::changeUserNick(User *user, String const &newnick,
       if (user->local) {
 	 localUsers.erase(on);
 	 localUsers[nn] = user->local;
+      } else {
+	 // Switch on the server user list
+	 user->server->users.erase(on);
+	 user->server->users[nn] = user;
       }
    }
 
@@ -931,8 +965,11 @@ void Daemon::changeUserNick(User *user, String const &newnick,
 void Daemon::delUser(User *user)
 {
 #ifdef DEBUG_EXTENDED
-   debug(String::printf("delUser() <- %s",
-			(char const *)user->nickname));
+   debug(String::printf("delUser() <- %s (%s)",
+			(char const *)user->nickname,
+			(user->local ?
+			 "local" : 
+			 (const char *)user->server->getHostname())));
 #endif
 
    String fixedNick = user->nickname.IRCtoLower();
@@ -963,6 +1000,9 @@ void Daemon::delUser(User *user)
       LocalUser *lu = localUsers[fixedNick];
       localUsers.erase(fixedNick);
       delete lu;
+   } else {
+      // Remove the user from their server user list too..
+//      user->server->users.erase(fixedNick);
    }
 
    // If this user was also a global operator, we need to decrement the counter
@@ -1540,6 +1580,10 @@ void Daemon::addServer(Server *server)
 
 /* delServer - Remove a server from the servers map
  * Original 01/11/01, Simon Butcher <pickle@austnet.org>
+ * Warning!! This currently presumes the server is P13 (star topology network)
+ * This means it will fubar completely and will need to be reconsidered when
+ * P14 is done (it will most likely need to be reconsidered well before then
+ * anyway, so hopefully I'm safe...) :(
  */
 void Daemon::delServer(Server *server)
 {
@@ -1548,6 +1592,12 @@ void Daemon::delServer(Server *server)
 			(char const *)server->hostname));
 #endif
 
+   // Remove the users that were on that server
+   for (Server::user_map_t::iterator it = server->users.begin();
+	it != server->users.end(); it++) {
+      Daemon::delUser((*it).second);
+   }
+   
    // Remove it from the map
    servers.erase(server->hostname.toLower());
 

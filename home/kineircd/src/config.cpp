@@ -15,6 +15,7 @@
 #include "operator.h"
 #include "utils.h"
 #include "lang.h"
+#include "servernotice.h"
 
 
 // Classes table. Many many duplicates to make config file writing easier..
@@ -88,7 +89,7 @@ void Daemon::configComplain(bool firstRun, String const &complaint)
       cout << message << endl;
    } else {
       logger(message, LOGPRI_ERROR);
-      serverNotice(LocalUser::SN_HOUSEKEEPING, message);
+      serverNotice(ServerNotice::SN_HOUSEKEEPING, message);
    }
 }
 
@@ -104,7 +105,7 @@ void Daemon::configWarning(bool firstRun, String const &complaint)
       cout << message << endl;
    } else {
       logger(message, LOGPRI_WARNING);
-      serverNotice(LocalUser::SN_HOUSEKEEPING, message);
+      serverNotice(ServerNotice::SN_HOUSEKEEPING, message);
    }
 }
 

@@ -65,21 +65,6 @@ class Lang {
    // Greeting lines sent when a user connects
    static char const *L_PINGPONG_NOTICE;
 
-   // Server notice output strings
-   static char const *L_SERVNOTICE_LINK;
-   static char const *L_SERVNOTICE_DELINK;
-   static char const *L_SERVNOTICE_SIGNON; 
-   static char const *L_SERVNOTICE_SIGNOFF;
-   static char const *L_SERVNOTICE_RECV_EOB;
-   static char const *L_SERVNOTICE_CMD_DIE;
-   static char const *L_SERVNOTICE_CMD_REHASH;
-   static char const *L_SERVNOTICE_GARBO;
-   static char const *L_SERVNOTICE_GARBO_ITEMS;
-   static char const *L_SERVNOTICE_GLOBOPS;
-   static char const *L_SERVNOTICE_HELPME;
-   static char const *L_SERVNOTICE_LOCOPS;
-   static char const *L_SERVNOTICE_NOTIFY_ON_CMD_STATS;
-   
    // Misc/Disorganised
    static char const *L_NOTIFY_PARANOID_OPERS_ON_WHOIS;
    static char const *L_QUIT_KILLED;

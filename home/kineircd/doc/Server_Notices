@@ -1,0 +1,118 @@
+
+Server notices are rather different to the old server notices from
+austhex.servd7, and previous version of ircd. These days most (if not all)
+operators are using scripts to re-interpret generated server notices and
+output them in whatever form is comfortable to them (eg. a different window
+etc). 
+
+The new server notice format, while being totally incompatible with the old
+format, aims to reduce the traffic produced by the generated server notices,
+while also maintaining a small level of readability (even though readability
+is not much of an issue anymore, it is still important).
+
+Take for example the difference between the following server notices:
+
+ -pacific.nsw.au.austnet.org- *** Notice -- Received KILL message for
+   FoBbY. From sprint.austnet.org Path: netspace.vic.au.austnet.org!
+   iinet.wa.au.austnet.org!services.hub.austnet.org!sprint.austnet.org
+   (Banned from AustNet: No Clones.)
+
+In that line, most of which is generated for readability and for backwards
+compatibility to a client (the compatibility was only a formatting thing
+anyway), 171 chars are removed. The new line would look like this:
+
+ -pacific.nsw.au.austnet.org- Ksprint.austnet.org FoBbY Banned from AustNet: 
+   No Clones.
+
+Each server notice comes via the 'NOTICE' command ('SNOTICE' event in mIRC). 
+Each notice begins with a single character (which will have to be stripped 
+before the data is delimetered in the script) which is CASE SENSITIVE ('A' and 
+'a' are different) and denotes the type of the notice, as described below. 
+
+These codes also correspond to the MODE command's +s tags for turning them
+on and off, so this table serves as a table for them too :)
+
+Note that in the table below, a field ending with '...' means the rest of
+the line will contain that field. Eg:
+The format for 'K' (Kill notice):
+  <killer> <nick> <reason...>
+The output will be:
+  KNickOP [Pickle] Kill requested by pickle
+                   ^^^^^^^^^^^^^^^^^^^^^^^^ -- all of this is the last field
+
+Quick lookup table:
+
+The following is a rough list of what is available and breif definitions:
+  +c    Configuration/Rehash/Garbo, etc - Housekeeping information; general
+  +D	Debugging information
+  +g    GLOBOPS messages
+  +h    HELPME messages
+  +H	High-Traffic Mode messages
+  +k	Kill notifications
+  +l    LOCOPS messages
+  +n	Network connect/squit/tendril-bone-swaps etc
+  +o	OPER commands, attempts, and deops
+  +s	User connection and disconnection notices
+  +S	General out-of-sync errors
+  +t	Target sync errors
+  +T	Timestamp sync errors
+
+Char | Description/Format
+-----+-------------------------------------------------------------------------
+  b  | Completed receiving/sending burst data
+     | <from_server> <to_server> <burst_size_bytes> <burst_speed_bps>
+     |
+  D  | Debugging notices
+     | (no specific format)
+     |
+  g  | G-line activation notice
+     | <nick>
+     |
+  G  | GLOBOPS messages
+     | <from> <message...>
+     |
+  h  | HELPME messages
+     | <from> <message...>
+     |
+  H  | High-Traffic Mode (level of 0 means means, -1 means leaving)
+     | <level> <input_bps> <htm_high_water_mark_bps>
+     |
+  k  | Kill notice 
+     | <killer> <nick> <reason...>
+     |     
+  L  | LOCOPS messages
+     | <from> <message...>
+     |
+  n  | Netsplit (Minor -- Breakage which was repaired)
+     | <from_server> <to_server> <link_protocol> <reason...>
+     |
+  N  | Netsplit (Major -- Breakage which cannot be repaired)
+     | <from_server> <to_server> <link_protocol> <reason...>
+     |
+  o  | Local operators getting their +o notices
+     | <nick>
+     |
+  O  | Global operators getting their +O notices
+     | <nick>
+     |
+  s  | User/Service sign-on messages
+     | <nick> <user> <host>
+     |
+  S  | User/Service sign-off messages
+     | <nick> <user> <host> <reason...>
+     |
+  I  | IP mis-match
+     | <ip> <dns_name> <dns_ip>
+     |
+  J  | Major net-junction (Bone link -- New server on the network)
+     | <from_server> <to_server> <link_protocol>
+     |
+  j  | Minor net-junction (Tenticle link -- Old server with another path)
+     | <from_server> <to_server> <link_protocol>
+     |
+  z  | Server stuff (critical stuff like the DIE command etc)
+     | <calling_nick>
+     |
+  Z  | Housekeeping notices (configuration etc)
+     | (no specific format)
+     |

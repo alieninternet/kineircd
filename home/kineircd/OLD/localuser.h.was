@@ -18,7 +18,7 @@ class LocalUser;
 # include "handler.h"
 # include "lang.h"
 # include "str.h"
-
+# include "servernotice.h"
 
 // An 'invitation' (for channel invites)
 class LocalUserInvitation {
@@ -59,15 +59,12 @@ class LocalUser {
    
    typedef map <String, time_t> floodlock_reply_map_t;
 
-   // Server notices mask
-   typedef unsigned long servnotice_t;
-   
  public:
    User *user;					// Link into main user class
    Handler *handler;				// Link into user handler
    LangData *language;				// Language dialogue data
    
-   servnotice_t serverNotices;			// Server notices to receive
+   ServerNotice::servnotice_t serverNotices;	// Server notices to receive
    
    watch_set_t watches;				// Watching these nicknames
    invitation_map_t invitations;		// Invitations to channels
@@ -86,21 +83,6 @@ class LocalUser {
 			    String const &);	// Check an away-reply lock
 
  public:
-   // These are 'server notice' types, used to determine what is sent to users.
-   static servnotice_t const SN_OPER		= 0x00000001; // +o
-   static servnotice_t const SN_NETWORK		= 0x00000002; // +n
-   static servnotice_t const SN_KILL		= 0x00000004; // +k
-   static servnotice_t const SN_HELPME		= 0x00000008; // +h
-   static servnotice_t const SN_GLOBOPS		= 0x00000010; // +g
-   static servnotice_t const SN_LOCOPS		= 0x00000020; // +l
-   static servnotice_t const SN_HOUSEKEEPING	= 0x00000040; // +c
-   static servnotice_t const SN_HTM		= 0x00000080; // +H
-   static servnotice_t const SN_SYNC_TS		= 0x00000100; // +T
-   static servnotice_t const SN_SYNC_NOTARGET	= 0x00000200; // +t
-   static servnotice_t const SN_SYNC_GENERAL	= 0x00000400; // +S
-   static servnotice_t const SN_DEBUG		= 0x00000800; // +D
-   static servnotice_t const SN_SIGNONOFF	= 0x00001000; // +s
-
    // Constructor
    LocalUser(User *u, Handler *h, LangData *l)
      : user(u),

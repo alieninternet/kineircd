@@ -73,11 +73,12 @@ p14serverHandler::p14serverHandler(Connection *c, Server *s)
    debug("New Handler: p14serverHandler");
 #endif
 
-   // Send a nice server notice out
-   Daemon::serverNotice(LocalUser::SN_NETWORK,
-			String::printf((char *)Lang::L_SERVNOTICE_LINK,
-				       (char const *)server->getHostname(),
-				       "P14"));
+   // Send a nice server notice out (fix this for bone/tendril distinction)
+   Daemon::
+   serverNotice(ServerNotice::SN_NETJOIN_MAJOR,
+		String::printf("%s %s P14",
+			       (char const *)Daemon::myServer()->getHostname(),
+			       (char const *)server->getHostname()));
    
    // Increase the server connection count
    Daemon::numServerConns++;

@@ -435,12 +435,11 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 #endif
 
    // Send a nice notice to those who care
-   Daemon::serverNotice(LocalUser::SN_SIGNONOFF,
-			String::printf((char *)Lang::L_SERVNOTICE_SIGNON,
+   Daemon::serverNotice(ServerNotice::SN_SIGNON,
+			String::printf("%s %s %s",
 				       (char const *)user->getNickname(),
 				       (char const *)user->getUsername(),
-				       (char const *)user->getHost(),
-				       (char const *)user->getVWHost()));
+				       (char const *)user->getHost()));
    
    // Create a LocalUser class for this user since they are obviouslly local
    user->local = new LocalUser(user, this, Lang::defaultLanguage);
@@ -612,8 +611,8 @@ irc2userHandler::~irc2userHandler(void)
 void irc2userHandler::goodbye(String const &reason)
 {
    // Send a notice to those who care
-   Daemon::serverNotice(LocalUser::SN_SIGNONOFF,
-			String::printf((char *)Lang::L_SERVNOTICE_SIGNOFF,
+   Daemon::serverNotice(ServerNotice::SN_SIGNOFF,
+			String::printf("%s %s %s %s",
 				       (char const *)user->getNickname(),
 				       (char const *)user->getUsername(),
 				       (char const *)user->getHost(),
@@ -1686,15 +1685,13 @@ void irc2userHandler::parseDIE(irc2userHandler *handler, StringTokens *tokens)
 
    // Send out a server notice
    Daemon::
-     serverNotice(LocalUser::SN_OPER,
-		  String::printf((char *)Lang::L_SERVNOTICE_CMD_DIE,
-				 ((char const *)
-				  handler->user->nickname)));
+     serverNotice(ServerNotice::SN_SERVER,
+		  String::printf("Death by %s :(",
+				 (char const *)handler->user->nickname));
    
    // Check if we have a reason
    if (reason.length()) {
-      Daemon::shutdown(reason + " (" + 
-					  handler->user->nickname + ")");
+      Daemon::shutdown(reason + " (" + handler->user->nickname + ")");
    } else {
       Daemon::shutdown(handler->user->nickname + 
 			  Lang::L_REQUESTED_SHUTDOWN);
@@ -1722,12 +1719,11 @@ void irc2userHandler::parseGLOBOPS(irc2userHandler *handler, StringTokens *token
 	 message = message.subString(1);
       }
    
-      Daemon::
-	serverNotice(LocalUser::SN_GLOBOPS,
-		     String::printf((char *)Lang::L_SERVNOTICE_GLOBOPS,
-				    ((char const *)
-				     handler->user->nickname), 
-				    (char const *)message));
+      // Send the message!
+      Daemon::serverNotice(ServerNotice::SN_GLOBOPS,
+			   String::printf("%s %s",
+					  (char const *)handler->user->nickname,
+					  (char const *)message));
       return;
    }
    
@@ -1876,12 +1872,11 @@ void irc2userHandler::parseHELPME(irc2userHandler *handler, StringTokens *tokens
 	 message = message.subString(1);
       }
    
-      Daemon::
-	serverNotice(LocalUser::SN_HELPME,
-		     String::printf((char *)Lang::L_SERVNOTICE_HELPME,
-				    ((char const *)
-				     handler->user->nickname),
-				    (char const *)message));
+      // Send the message!
+      Daemon::serverNotice(ServerNotice::SN_HELPME,
+			   String::printf("%s %s",
+					  (char const *)handler->user->nickname,
+					  (char const *)message));
       return;
    }
    
@@ -2754,13 +2749,12 @@ void irc2userHandler::parseLOCOPS(irc2userHandler *handler, StringTokens *tokens
       if (message[0] == ':') {
 	 message = message.subString(1);
       }
-   
-      Daemon::
-	serverNotice(LocalUser::SN_LOCOPS,
-		     String::printf((char *)Lang::L_SERVNOTICE_LOCOPS,
-				    ((char const *)
-				     handler->user->nickname), 
-				    (char const *)message));
+      
+      // Send the message!
+      Daemon::serverNotice(ServerNotice::SN_LOCOPS,
+			   String::printf("%s %s",
+					  (char const *)handler->user->nickname,
+					  (char const *)message));
       return;
    }
    

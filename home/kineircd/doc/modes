@@ -179,22 +179,8 @@ at all) etc etc. Examples help in this messy description:
   /mode foo +s +no-k	   <=- turns on network/oper notices, and kills off
   /mode foo +s -n          <=- turns off network notices
   /mode foo -s             <=- turns off all notices, if there were any
-The following is a rough list of what is available and breif definitions:
-  +c    Configuration/Rehash/Garbo, etc - Housekeeping information; general
-  +D	Debugging information
-  +g    GLOBOPS messages
-  +h    HELPME messages
-  +H	High-Traffic Mode messages
-  +k	Kill notifications
-  +l    LOCOPS messages
-  +n	Network connect/squit/tendril-bone-swaps etc
-  +o	OPER commands, attempts, and deops
-  +s	User connection and disconnection notices
-  +S	General out-of-sync errors
-  +t	Target sync errors
-  +T	Timestamp sync errors
-  
-  
+For a list of the available codes, check out the Server_Notices file in the
+'doc' directory.
 
 S - Secure
 Cannot be toggled; Set upon connection. This mode means the connection is
