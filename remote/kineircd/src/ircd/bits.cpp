@@ -54,14 +54,14 @@ void ircd::printVersion(const unsigned int level)
 	"Linked to the following libraries:\n"
 	"   KineIRCd Library:  " <<
 	Kine::Version::version << " (API " <<
-	(unsigned int)Version::libVersion << '.' << 
-	(unsigned int)Version::libRevision << '.' <<
-	(unsigned int)Version::libAge << ")\n"
+	(unsigned int)Version::libVersion << ':' << 
+	(unsigned int)Version::libAge << ':' <<
+	(unsigned int)Version::libRevision << ")\n"
 	" LibAISutil Library:  " << 
 	AISutil::Version::version << " (API " <<
-	(unsigned int)AISutil::Version::libVersion << '.' <<
-	(unsigned int)AISutil::Version::libRevision << '.' <<
-	(unsigned int)AISutil::Version::libAge << ")\n"
+	(unsigned int)AISutil::Version::libVersion << ':' <<
+	(unsigned int)AISutil::Version::libAge << ':' <<
+	(unsigned int)AISutil::Version::libRevision << ")\n"
 	"           AutoOpts:  " <<
 	OPTIONS_VERSION_STRING << "\n"
 #ifdef KINE_HAVE_OPENSSL
