@@ -122,7 +122,8 @@ void Languages::processTagMap(tagMap_type map) const
 /* loadFile - Load a given language file
  * Original 21/08/2002 simonb
  */
-bool Languages::loadFile(const std::string& fileName, std::string& errString)
+bool Languages::loadFile(const std::string& fileName, std::string& errString,
+			 const bool makeDefault)
 {
 #ifdef KINE_DEBUG_PSYCHO
    debug("Languages::loadFile() - Attemping to open '" + fileName +
@@ -375,12 +376,38 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString)
       }
    }
 
-   // Add this language to the list..
-   languageDataList.insert(languageDataList_type::value_type
-			   (languageData->languageCode, languageData));
+   // Try to find this language..
+   LanguageData* const langData = findByCode(languageData->languageCode);
    
-   // If there is no default language, make this language the default..
-   if (defaultLanguage == 0) {
+   if (langData == 0) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Languages::loadFile() - Inserting as new data");
+#endif
+      
+      // This is a new language, add this language to the list..
+      languageDataList.insert(languageDataList_type::value_type
+			      (languageData->languageCode, languageData));
+   } else {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Languages::loadFile() - Merging with existing data");
+#endif
+      
+      /* This language already exists, so we must merge this data "over" the
+       * existing data in memory..
+       */
+      langData->mergeWith(*languageData);
+      
+      // Destroy the language data..
+      delete languageData;
+      
+      // Point the language data pointer at where the real stuff is
+      languageData = langData;
+   }
+   
+   /* If there is no default language, or we are told to make this the
+    * default language, then make this language the default! :)
+    */
+   if ((defaultLanguage == 0) || makeDefault) {
       defaultLanguage = languageData;
    }
    

@@ -101,6 +101,9 @@ namespace Kine {
 	 unsigned long tagCount;		// *real* number of tags
 	 
 	 tagData_type tagData;			// The tag data itself!
+
+	 // Merge the given language data "over" this language data
+	 void mergeWith(const LanguageData& newData);
 	 
        public:
 	 // Constructor
@@ -188,7 +191,8 @@ namespace Kine {
 	{ return *instance; };
 
       // Load a given language file
-      bool loadFile(const std::string& fileName, std::string& errString);
+      bool loadFile(const std::string& fileName, std::string& errString,
+		    const bool makeDefault = false);
       
       // Add/remove/process tag name/ID correlation maps
       bool registerMap(tagMap_type map);

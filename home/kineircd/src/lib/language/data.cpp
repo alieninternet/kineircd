@@ -30,11 +30,13 @@
 #ifdef KINE_DEBUG
 # include <sstream>
 #endif
+#include <aisutil/string/string.h>
 
 #include "kineircd/languages.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
+using AISutil::String;
 
 
 /* ~LanguageData - Destructor
@@ -55,6 +57,55 @@ Languages::LanguageData::~LanguageData(void)
 }
 
 
+/* mergeWith - Merge the given language data "over" our existing known data
+ * Original 20/03/2003 simonb
+ */
+void Languages::LanguageData::mergeWith(const Languages::LanguageData& newData)
+{
+   // Firstly, if the given data has more tags than we know of, resize ourself
+   if (newData.tagData.size() > tagData.size()) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Languages::LanguageData::mergeWith() - Resizing data set to " +
+	    String::convert(newData.tagData.size()));
+#endif
+      tagData.resize(newData.tagData.size());
+   }
+   
+   // Iterate over both data sets to see what needs replacing/inserting
+   for (unsigned int i = 0; i < newData.tagData.size(); i++) {
+      // Does data exist at this point
+      if (newData.tagData[i] != 0) {
+#ifdef KINE_DEBUG_PSYCHO
+	 debug("Languages::LanguageData::mergeWith() - TID #" +
+	       String::convert(i) + " has new data");
+#endif	
+ 
+	 // Okay, it has data. Do we have data at this point?
+	 if (tagData[i] != 0) {
+#ifdef KINE_DEBUG_PSYCHO
+	    debug("Languages::LanguageData::mergeWith() - ^^ Old data being "
+		  "removed");
+#endif
+	    
+	    // Delete our data, it is being over-written
+	    delete tagData[i];
+	 }
+	 
+	 // Make a new string (ick, I don't like this at all)
+	 tagData[i] = new std::string(*newData.tagData[i]);
+      }
+   }
+   
+   // Finally, check the revisions, if the new one is "newer", change ours..
+   if (newData.fileRevision > fileRevision) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Languages::LanguageData::mergeWith() - Revision being changed "
+	    "to " + String::convert(newData.fileRevision));
+#endif
+      fileRevision = newData.fileRevision;
+   }
+}
+
 /* findTag - Look for a given TID's data, and return it if possible
  * Original 16/03/2003 simonb
  */
@@ -64,14 +115,14 @@ const std::string* const
    // Make sure the tag is valid..
    if ((tagID == 0) || (tagID > tagData.size())) {
 #ifdef KINE_DEBUG_PSYCHO
-      debug("LanguageData::findTag() - Invalid TID given");
+      debug("Languages::LanguageData::findTag() - Invalid TID given");
 #endif
       return 0;
    }
    
 #ifdef KINE_DEBUG_PSYCHO
    std::ostringstream out;
-   out << "LanguageData::findTag() - Returning data @ " << 
+   out << "Languages::LanguageData::findTag() - Returning data @ " << 
      (void *)tagData[tagID - 1];
    debug(out.str());
 #endif
