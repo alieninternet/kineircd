@@ -447,6 +447,9 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
       defaultLanguage = languageData;
    }
    
+   // Close the iconv() conversion descriptor
+   (void)iconv_close(convDesc);
+   
    // Close the file!
    file.close();
 
