@@ -1,0 +1,7 @@
+This is the install directory. The files in here are copied (some of them
+generated prior to copying) into their respective locations upon
+installation of the daemon. These include files such as man pages,
+example configuration files, etc.
+
+Anything which doesn't normally get installed by us (i.e. automatically)
+should go into the doc or contrib directories.

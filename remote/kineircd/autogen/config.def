@@ -1,0 +1,530 @@
+/* $Id$
+ *
+ * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002 KineIRCd Development Team
+ * (See DEV-TEAM file for details)
+ *
+ * This file is a part of KineIRCd.
+ * 
+ * KineIRCd is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * KineIRCd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with KineIRCd; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+autogen definitions config;
+
+
+definition = {
+   name = "Administrator";
+   comment = 
+      "The Administrator section defines information about the person or "
+      "organisation that administrates this server. Everything here is "
+      "optional.";
+   
+   definition = {
+      name = "Contact";
+      hasVariable = yes;
+      varType = "AISutil::String";
+      exampleValue = "\"unconfigured@server.foo.org\"";
+      comment =
+         "The contact address of the admin. This is normally an e-mail "
+	 "address, or a URL to a website where contact information can be "
+	 "found.";
+   };
+   
+   definition = {
+      name = "Location";
+      hasVariable = yes;
+      varType = "AISutil::String";
+      exampleValue = "\"Server located in Woop-Woop, NoWhereLand\"";
+      comment =
+         "This is the location of the server. Commonly it is only used to "
+	 "specify that the server is located within a particular are of some "
+	 "particular country. Sometimes, though, it is used to more directly "
+	 "locate the server, such as a multi-campus university may want to "
+	 "specify which campus the server is located at.";
+   };
+   
+   definition = {
+      name = "Name";
+      hasVariable = yes;
+      varType = "AISutil::String";
+      exampleValue = "Joe Bloggs";
+      comment = 
+         "The name of the administrator, or the name of the sponsor of the "
+	 "server (i.e. a university or ISP)";
+   };
+};
+
+definition = {
+   name = "Arbiters";
+   comment =
+      "The list of arbitrators are needed on some networks for normal "
+      "operation, such as networks with user services hosted as a single "
+      "server. These define specific connections on the network which are "
+      "allowed to bypass normal security restrictions, such as changing "
+      "nicknames, modes, or spoofing identities for commands. They MUST "
+      "be used cautiously, as anybody with the ability to access this "
+      "capability (either themselves, or via their server) effectively has "
+      "the ability to do a lot of damage on the network.";
+   
+   definition = {
+      name = "Servers";
+      comment =
+         "Servers which are arbiters, or their users are arbiters.";
+	 
+      defaultDefinition = {
+         exampleValue = "services.eu.somenetwork.org";
+	 exampleValue = "services.us.somenetwork.org";
+      };
+   };
+};
+
+definition = {
+   name = "IncludeOldConfig";
+   condition = "KINE_OLD_CONFIG_SUBPARSER";
+   varHandler = "varHandleOldConfig";
+   hidden = yes; // hidden because nobody is actively developing this, yet.
+};
+
+definition = {
+   name = "Languages";
+   hasVariable = yes;
+   varType = "LanguageList";
+   variable = "LanguageList";
+   comment =
+      "The languages section defines files we need to load to obtain language "
+      "data. The list is ordered from most preferred to least preferred, with "
+      "the first language being the default language for all output.";
+   
+   defaultDefinition = {
+      varHandler = "LanguageConfig::varHandler";
+   };
+};
+   
+definition = {
+   name = "Limits";
+   comment =
+      "Define limits on things. These should comply with network-wide "
+      "settings. The use of large numbers here may result in cropped "
+      "fields in some instances.";
+
+   definition = {
+      name = "Channels";
+      comment =
+	 "Limits for channels";
+
+      definition = {
+	 name = "MaxBans";
+	 hasVariable = yes;
+         varType = "unsigned long";
+	 varHandler = "varHandleUnsignedLongNoZero";
+	 defaultValue = "50";
+	 comment =
+	    "Maximum number of ban masks set at once per channel";
+      };
+	 
+      definition = {
+	 name = "MaxBanExceptions";
+	 hasVariable = yes;
+         varType = "unsigned long";
+	 varHandler = "varHandleUnsignedLongNoZero";
+	 defaultValue = "50";
+	 comment =
+	    "Maximum number of ban exception masks set at once per channel";
+      };
+	 
+      definition = {
+	 name = "MaxInviteExceptions";
+	 hasVariable = yes;
+         varType = "unsigned long";
+	 varHandler = "varHandleUnsignedLongNoZero";
+	 defaultValue = "50";
+	 comment =
+	    "Maximum number of invite-only exception masks set at once "
+	    "pet channel";
+      };
+	 
+      definition = {
+	 name = "MaxNameLength";
+	 hasVariable = yes;
+         varType = "unsigned short";
+	 varHandler = "varHandleUnsignedShortNoZero";
+	 defaultValue = "40";
+	 comment =
+	    "Maximum length of a channel name";
+      };
+	 
+      definition = {
+	 name = "MaxTopicLength";
+	 hasVariable = yes;
+         varType = "unsigned short";
+	 varHandler = "varHandleUnsignedShortNoZero";
+	 defaultValue = "300";
+	 comment =
+	    "Maximum length of a channel's topic";
+      };
+   };
+      
+   definition = {
+      name = "MaxKickReasonLength";
+      hasVariable = yes;
+      varType = "unsigned short";
+      varHandler = "varHandleUnsignedShortNoZero";
+      defaultValue = "300";
+      comment =
+         "Maximum length of a KICK command's reason";
+   };
+      
+   definition = {
+      name = "MaxMessageLength";
+      hasVariable = yes;
+      varType = "unsigned short";
+      varHandler = "varHandleUnsignedShortNoZero";
+      defaultValue = "400";
+      comment =
+         "Maximum length of a message (NOTICE/PRIVMSG payload size)";
+   };
+      
+   definition = {
+      name = "MaxTargets";
+      hasVariable = yes;
+      varType = "unsigned char";
+      varHandler = "varHandleUnsignedCharNoZero";
+      defaultValue = "4";
+      comment =
+	 "Maximum number of targets possible to be specified for commands "
+	 "such as PRIVMSG, NOTICE, etc.";
+   };
+      
+   definition = {
+      name = "MinBroadcastLength";
+      hasVariable = yes;
+      varType = "unsigned short";
+      varHandler = "varHandleUnsignedShort";
+      defaultValue = "0";
+      comment =
+	 "Minimum length of a broadcasted message (WALLOPS, PRIVMSG "
+	 "broadcasts, etc). This is designed to avoid abuse, or accidental "
+	 "broadcasts of incomplete messages, as they are considered to be "
+	 "both 'expensive' and 'annoying'. To disable imposing the limit, "
+	 "simply comment this out or set this to 0.";
+   };
+      
+   definition = {
+      name = "Users";
+      comment =
+	 "Limits for users";
+
+      definition = {
+         name = "MaxAccepts";
+         hasVariable = yes;
+         varType = "unsigned long"; 
+         varHandler = "varHandleUnsignedLongNoZero";
+	 defaultValue = "100";
+	 comment =
+	    "Maximum number of accepts per user";
+      };
+	 
+      definition = {
+	 name = "MaxChannels";
+	 hasVariable = yes;
+         varType = "unsigned long"; 
+	 varHandler = "varHandleUnsignedLongNoZero";	
+	 defaultValue = "10";
+	 comment =
+	    "Maximum number of channels a user can be in at once. This "
+	    "may not apply to authenticated operators and/or staff.";
+      };
+	 
+      definition = {
+	 name = "MaxLanguages";
+	 hasVariable = yes;
+         varType = "unsigned char";
+	 varHandler = "varHandleUnsignedCharNoZero";
+	 defaultValue = "6";
+	 comment =
+	    "Maximum languages set at once per user";
+      };
+	 
+      definition = {
+	 name = "MaxNickNameLength";
+	 hasVariable = yes;
+         varType = "unsigned char"; 
+	 varHandler = "varHandleUnsignedCharNoZero";
+	 defaultValue = "9";
+	 comment =
+	    "Maximum length of a nickname";
+      };
+	 
+      definition = {
+	 name = "MaxRealNameLength";
+	 hasVariable = yes;
+         varType = "unsigned char";
+	 varHandler = "varHandleUnsignedCharNoZero";
+	 defaultValue = "50";
+	 comment =
+	    "Maximum length of the realname/GECOS field for users";
+      };
+	 
+      definition = {
+	 name = "MaxSilences";
+	 hasVariable = yes;
+         varType = "unsigned long"; 
+	 varHandler = "varHandleUnsignedLongNoZero";
+	 defaultValue = "20";
+	 comment =
+            "Maximum number of silences per user";
+      };
+	 
+      definition = {
+	 name = "MaxWatches";
+	 hasVariable = yes;
+         varType = "unsigned long"; 
+	 varHandler = "varHandleUnsignedLongNoZero";
+	 defaultValue = "128";
+	 comment =
+	    "Maximum number of nickname/channel/server watches per user";
+      };
+   };
+};
+   
+definition = {
+   name = "Listener";
+   hasVariable = yes;
+   varType = "ListenerList";
+   varTypeProtected = "ListenerList&";
+   varPublicModify = yes;
+   variable = "ListenerList";
+   classHandler = "ListenerConfig::classHandler";
+   hidden = yes; // for now..
+};
+
+definition = {
+   name = "Module";
+   hasVariable = yes;
+   varType = "ModuleList";
+   variable = "ModuleList";
+   varHandler = "varHandleModule";
+   classHandler = "classHandleModule";
+   hidden = yes; // for now..
+};
+   
+definition = {
+   name = "Network";
+   comment =
+      "The network class defines connection to other servers, both incoming "
+      "and outgoing.";
+   
+   definition = {
+      name = "Name";
+      hasVariable = yes;
+      varType = "AISutil::String";
+      varHandler = "varHandleNetworkName";
+      exampleValue = "Unconfigured";
+      comment =
+         "This is the name of the network you are connecting this server to. "
+	 "If you are not connecting it to a network, you can leave this blank "
+	 "or comment it out entirely, and it will never appear anywhere. This "
+	 "should be the same as every other server on the network, or clients "
+	 "may get confused. Some server-to-server protocols may also reject "
+	 "a connection based on a comparitive analysis of this value in order "
+	 "to secure network integrity.";
+   };
+};
+  
+definition = {
+   name = "Operators";
+   comment =
+      "The operators section defines who you allow to become an operator on "
+      "your server, where they are allowed to connect and identify "
+      "themselves from, their passwords, and a name or description. Be aware "
+      "that if the network you are connecting to employs an arbiter server "
+      "doing COM (Centralised Operator Management), these entries then may "
+      "be disabled upon linking to the network, depending on the validity. "
+      "Also be aware that the operator list may also grow, as operator "
+      "information is proliferated over the network via the COM system. "
+      "This isn't a bad thing, as the disabled entries are always enabled if "
+      "the server is an island (i.e. totally delinked). This allows you to "
+      "have your own 'emergancy operators' for the server, who only gain "
+      "access to the server only when it may require 'desparate' "
+      "reconnection. This, of course, depends on network policy too.";
+};
+   
+definition = {
+   name = "Options";
+   comment =
+      "This is the main options section. This is where the more important "
+      "core configuration settings for the daemon are kept.";
+
+   definition = {
+      name = "Description";
+      hasVariable = yes;
+      varType = "AISutil::String";
+      varHandler = "varHandleString";
+      defaultValue = "\"Unconfigured server\"";
+      comment =
+         "This description appears in WHOIS messages, server listings etc.";
+   };
+
+   definition = {
+      name = "ChGroup";
+      comment =
+         "This defines the GID (group identity) to switch to after the "
+	 "configuration has loaded.";
+   };
+   
+   definition = {
+      name = "ChRoot";
+      comment =
+         "Our chroot (change-root) gaol location. WARNING!! Do not set this "
+	 "unless you have read all the documentation (doc/Security) on how "
+	 "to do so. All file locations in the file WILL have to be "
+	 "referenced under this directory as if it were /.";
+   };
+   
+   definition = {
+      name = "ChUser";    
+      comment =
+         "This defines the UID (user identity) to switch to after the "
+	 "configuration has loaded.";
+   };
+   
+   definition = {
+      name = "Hidden";
+      hasVariable = yes;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "false";
+      comment =
+         "Setting this will hide your server from users";
+   };
+   
+   definition = {
+      name = "MOTDFile";
+//      hasVariable = "yes";
+//      varType = "textBuffer_type";
+      varType = "AISutil::String";
+      exampleValue = "./ircd.motd";
+      comment = 
+         "Location of the MOTD file";
+   };
+   
+   definition = {
+      name = "PidFile";
+      hasVariable = yes;
+      varType = "AISutil::String";
+      varHandler = "varHandleString";
+      exampleValue = "./ircd.pid";
+      comment =
+         "If you want to write a PID file (a file containing the PID number "
+	 "of the daemon's process), then this is the file to use. The PID "
+	 "number can be written to a file so that later on you may use it "
+	 "in an external program (such as a shell script) for some purpose "
+	 "such as a cron job to affirm the server's availability. If you do "
+	 "not want a PID file to be written, simply comment this out, or "
+	 "omit the file name.";
+   };
+   
+   definition = {
+      name = "Registrar";
+      comment =
+         "Normally, when servers, services, clients, and IRC networks connect "
+	 "to your server, they are presented with the traditional IRC "
+	 "registrar, which accepts their connection and attempts to determine "
+	 "what type of connection it is talking to, and what protocol it "
+	 "should pass the connection over to. This configuration section "
+	 "configures how the registrar, which performs these functions, should"
+	 "respond to connections.";
+      
+      definition = {
+         name = "UserPingProbeCount";
+	 hasVariable = yes;
+         varType = "unsigned char";
+	 varHandler = "varHandleUnsignedChar";
+         defaultValue = "0";
+	 exampleValue = "1";
+	 comment =
+	    "For validity checking, clients connection can be 'probed' to see "
+	    "if they are cheap scripts or actually real clients. This is done "
+	    "by sending a PING with random data attached. This can ween out "
+	    "many unwanted connections (such as badly programmed clones or "
+	    "spam-bots). Since many IRC Daemons do this PING probe now, many "
+	    "scripts are ready for just one PING. To counter-act this, here "
+	    "we allow you to configure the registrar to probe as many times "
+	    "as you want to, if necessary. Comment this out, or set this to "
+	    "0 if you do not want to PING probe clients. Setting this to 1 "
+	    "will mimic other servers.";
+      };
+      
+      definition = {
+         name = "UserProtocolDefault";
+	 hasVariable = yes;
+         varType = "AISutil::String";
+	 varHandler = "varHandleStringOneWord";
+         defaultValue = "\"IRC/2\"";
+	 hidden = yes;
+	 comment =
+	    "Default protocol to boot-strap into. Don't change this unless "
+	    "you know what you're doing.";
+      };
+   };
+   
+   definition = {
+      name = "ServerName";
+      hasVariable = yes;
+      varType = "AISutil::String";
+      varHandler = "varHandleHostName";
+      defaultValue = "\"unconfigured.kineircd.server\"";
+      comment =
+         "This is the host name of your server";
+   };
+};
+ 
+definition = {
+   name = "Redirection";
+   hidden = yes; // for now..
+
+   definition = {
+      name = "Channels";
+   };
+};
+  
+definition = {
+   name = "SSL";
+   hasVariable = yes;
+   varType = "SSL_CTX*";
+   varTypeProtected = "const SSL_CTX* const";
+   variable = "SSLContext";
+   condition = "KINE_WITH_SSL";
+   comment =
+      "The SSL section specifically defines configuration data specific to "
+      "'IRCS' - that is IRC through a Secure Socket Layer. Note that is is "
+      "not the encryption of traffic which creates large amounts of CPU "
+      "usage, but rather the key verification process which occurs only upon "
+      "connection of an SSL socket. This common misconception comes from "
+      "servers which use stateless connections such as HTTP. This section "
+      "is not available if SSL support has not been compiled into your "
+      "server.";
+   
+   definition = {
+      name = "Certificate";
+      comment =
+         "This is the full path and filename of the certificate file that "
+	 "identifies this server. This certificate must be signed by the "
+	 "master certificate of the network if you wish to connect to other "
+	 "servers via SSL, and must be kept secure! For those technically "
+	 "interested, the type of certificate should be in 'PEM' (Base64 "
+	 "Privacy Enhanced Mail encoded certificate) format, because it "
+	 "seems to be the 'preferred' format, and is easier to transport.";
+   };
+};
