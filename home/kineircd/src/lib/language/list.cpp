@@ -217,14 +217,14 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	    tagDictionary.
 	      insert(tagDictionary_type::value_type(tag, tagID));
 	 } else {
+	    // Use the tag ID we found
+	    tagID = (*it).second;
+	    
 #ifdef KINE_DEBUG_PSYCHO
 	 debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
 	       ": Tag '" + tag + "' - TID #" + String::convert(tagID) +
 	       " (found)");
 #endif
-
-	    // Use the tag ID we found
-	    tagID = (*it).second;
 	 }
 
 	 // Remember the tag's data and TUID.. here... :)
