@@ -39,15 +39,17 @@
 
 // "NETWORK" class
 # define DEFAULT_NETWORK_NAME \
-   ""
+   /* intentionally empty */
 
 // "OPTIONS" class
 # define DEFAULT_OPTIONS_DESCRIPTION \
    "Unconfigured server"
 # define DEFAULT_OPTIONS_HIDDEN \
    false
+# define DEFAULT_OPTIONS_PID_FILE \
+   /* intentionally empty - empty means disabled */
 # define DEFAULT_OPTIONS_SERVER_NAME \
-   ""
+   "unconfigured.kineircd.server"
 
 // "OPTIONS.LIMITS" class
 # define DEFAULT_OPTIONS_LIMITS_MAX_KICK_REASON_LENGTH \

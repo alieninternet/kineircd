@@ -367,6 +367,13 @@ namespace Config {
 	     0
 	},
 	{
+	   "PIDFILE",
+	     (void *)&Config::defOptionsPidFile,
+	     &varHandleString,
+	     0,
+	     0
+	},
+	{
 	   "SERVERNAME",
 	     (void *)&Config::defOptionsServerName,
 	     &varHandleHostName,
@@ -613,6 +620,7 @@ Kine::Config::Config(const String &f)
     // "OPTIONS" class
     defOptionsDescription(DEFAULT_OPTIONS_DESCRIPTION),
     defOptionsHidden(DEFAULT_OPTIONS_HIDDEN),
+    defOptionsPidFile(DEFAULT_OPTIONS_PID_FILE),
     defOptionsServerName(DEFAULT_OPTIONS_SERVER_NAME),
 
     // "OPTIONS.LIMITS" class

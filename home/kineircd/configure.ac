@@ -537,27 +537,6 @@ dnl   AC_DEFINE(KINE_OLD_CONFIG_SUBPARSER, 1,
 dnl             [Define if you also want to use old-style configuration files])
 dnl fi
 
-AC_MSG_CHECKING([pid-file parameter])
-AC_ARG_ENABLE(pid-file,[
-  --enable-pid-file[=default]                (Default is disabled)
-    When enabled, this makes the IRC daemon write the PID number to a file
-    as it forks out. This can aid control scripts to send signals to the
-    IRC Daemon's process, eg. SIGHUP to reload the configuration. If a
-    parameter is specified when enabling this option, it will be the default
-    file name to write the PID number to. This file can be overrided by
-    the configuration file.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT($enableval)
-     AC_DEFINE_UNQUOTED(KINE_PID_FILE, "$enableval",
-               [If defined, the daemon will write its PID to this file])
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
- ])
-
 AC_MSG_CHECKING([security-conscious parameter])
 AC_ARG_ENABLE(security-conscious,
               AC_HELP_STRING([--disable-security-conscious],
