@@ -23,13 +23,6 @@
 autogen definitions schemesubs;
 
 subs = {
-   name			= "getNumeric";
-   requiredParams	= 1;
-   optionalParams	= 0;
-   restParams		= 0;
-};
-
-subs = {
    name			= "isChannelOnline?";
    requiredParams	= 1;
    optionalParams	= 0;
@@ -70,3 +63,11 @@ subs = {
    optionalParams	= 0;
    restParams		= 0;
 };
+
+subs = {
+   name			= "string->numeric";
+   requiredParams	= 1;
+   optionalParams	= 0;
+   restParams		= 0;
+};
+

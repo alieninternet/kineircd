@@ -70,42 +70,6 @@ void Scheme::initScheme(void)
 }
 
 
-#ifdef KINE_MOD_IRC2USER_HAVE_SCM_GETNUMERIC
-/* (getNumeric) scheme function
- * Original 10/02/2003 simonb
- */
-SCM Scheme::Subs::scm_getNumeric(SCM numeric)
-{
-   // Is the parameter a string?
-   if (SCM_STRINGP(numeric) != 0) {
-      // Make sure the name is upper-cased
-      String name = SCM_STRING_CHARS(numeric);
-      name = name.toUpper();
-      
-      // Run over the numeric name list to try to find a match
-      for (unsigned int i = 0; numericNames[i].name != 0; ++i) {
-	 // Check if this is a match or not
-	 if (name == numericNames[i].name) {
-	    // Return this numeric's number
-	    return SCM_MAKINUM(numericNames[i].numeric);
-	 }
-      }
-      
-      // We did not find a match
-      return SCM_UNDEFINED;
-   }
-   
-   // If the parameter was a number, return it as it was given
-   if (SCM_INUMP(numeric)) {
-      return numeric;
-   }
-
-   // We were not given the appropriate object, return an undefined object
-   return SCM_UNDEFINED;
-}
-#endif // KINE_MOD_IRC2USER_HAVE_SCM_ISCHANNELONLINE_P
-
-
 #ifdef KINE_MOD_IRC2USER_HAVE_SCM_ISCHANNELONLINE_P
 /* (isChannelOnline?) scheme function
  * Original 10/02/2003 simonb
@@ -255,3 +219,39 @@ SCM Scheme::Subs::scm_isUserOnline_p(SCM name)
    return SCM_UNDEFINED;
 }
 #endif // KINE_MOD_IRC2USER_HAVE_SCM_ISUSERONLINE_P
+
+
+#ifdef KINE_MOD_IRC2USER_HAVE_SCM_STRING_TO_NUMERIC
+/* (string->numeric) scheme function
+ * Original 10/02/2003 simonb
+ */
+SCM Scheme::Subs::scm_string_to_numeric(SCM numeric)
+{
+   // Is the parameter a string?
+   if (SCM_STRINGP(numeric) != 0) {
+      // Make sure the name is upper-cased
+      String name = SCM_STRING_CHARS(numeric);
+      name = name.toUpper();
+      
+      // Run over the numeric name list to try to find a match
+      for (unsigned int i = 0; numericNames[i].name != 0; ++i) {
+	 // Check if this is a match or not
+	 if (name == numericNames[i].name) {
+	    // Return this numeric's number
+	    return SCM_MAKINUM(numericNames[i].numeric);
+	 }
+      }
+      
+      // We did not find a match
+      return SCM_UNDEFINED;
+   }
+   
+   // If the parameter was a number, return it as it was given
+   if (SCM_INUMP(numeric)) {
+      return numeric;
+   }
+
+   // We were not given the appropriate object, return an undefined object
+   return SCM_UNDEFINED;
+}
+#endif // KINE_MOD_IRC2USER_HAVE_SCM_STRING_TO_NUMERIC
