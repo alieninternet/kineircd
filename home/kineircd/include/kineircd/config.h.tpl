@@ -69,13 +69,20 @@ namespace Kine {
       
       // Our top-level definition table, defining compiled in top level classes
       static const AISutil::ConfigParser::defTable_type topDefs;
-      
-[+# defines here.+]
+[+DEFINE output-variables+][+FOR definition+][+IF .definition+][+IF .condition+]
+#ifdef [+condition+][+ENDIF+][+(pushPrefix (get "name"))+]
+
+      // '[+(getPrefix)+]' section...
+      static const AISutil::ConfigParser::defTable_type def[+(getPrefix)+];[+output-variables+][+(popPrefix)+][+IF .condition+]
+#endif[+ENDIF+][+ENDIF+][+IF .hasVariable+][+IF .varType+][+IF .condition+]
+#ifdef [+condition+][+ENDIF+]
+      [+varType+] def[+IF .variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+];[+IF .condition+]
+#endif[+ENDIF+][+ENDIF+][+ENDIF+][+ENDFOR+][+ENDDEF+][+output-variables+]
 	
       // Additional handlers specific to data in this class
       static LIBAISUTIL_CONFIG_CLASS_HANDLER(classHandleModule);
       static LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varHandleModule);
-      static LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varModuleNetworkName);
+      static LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varHandleNetworkName);
 # ifdef KINE_OLD_CONFIG_SUBPARSER
       static LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varHandleOldConfig);
 # endif
