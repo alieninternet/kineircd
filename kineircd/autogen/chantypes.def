@@ -75,7 +75,9 @@ chantypes = {
    comment	= "These unmoderated channels work almost exactly the same "
                   "as '#' channels, except nobody can obtain channel "
 		  "operator status on them. Some implementations seem to "
-		  "set the channel mode to '+nt' upon creation.";
+		  "set the channel mode to '+nt' upon creation, however most "
+		  "implementations act as if modes +nt are set but don't "
+		  "announce them as being set.";
    clientcreate	= "yes";
 };
 
