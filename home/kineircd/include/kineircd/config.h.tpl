@@ -120,7 +120,7 @@ namespace Kine {
 #ifdef [+condition+][+ENDIF+][+(pushPrefix (get "name"))+][+output-methods+][+(popPrefix)+][+IF .condition+]
 #endif[+ENDIF+][+ENDIF+][+IF .hasVariable+][+IF .varType+][+IF .condition+]
 #ifdef [+condition+][+ENDIF+]
-      [+varType+] get[+output-variable-name+](void) const
+      [+IF .varTypeProtected+][+varTypeProtected+][+ELSE+]const [+varType+]&[+ENDIF+] get[+output-variable-name+](void)[+IF (not (exist? "varPublicModify"))+] const[+ENDIF+]
          { return def[+output-variable-name+]; };[+IF .condition+]
 #endif[+ENDIF+][+ENDIF+][+ENDIF+][+ENDFOR+][+ENDDEF+][+output-methods+]
    }; // class Config
