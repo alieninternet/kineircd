@@ -46,6 +46,15 @@ using AISutil::StringTokens;
 Languages* Languages::instance = 0;
 
 
+// The code of a null language ('none')
+const char* const Languages::nullLanguageCode =
+  "none";
+
+// The code which will reference the default language (see RFC2277)
+const char* const Languages::defaultLanguageCode =
+  "i-default";
+
+
 // Replacement object glyph (will appear as nothing to clients)
 const char* const Languages::replacementObjectGlyph = 
   "\357\277\274"; // <=- Unicode U+0FFFC; UTF-8 0xEF 0xBF 0xBC
@@ -60,6 +69,7 @@ const char Languages::parameterMarkerChar =
   '\000'; // NUL
 const char Languages::newLineMarkerChar =
   '\001'; // SOH
+
 
 
 /* initInstance - Create the single instance of this class

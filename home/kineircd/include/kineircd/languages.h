@@ -182,6 +182,12 @@ namespace Kine {
       //! The ID of the 'unknown tag'
       static const tagID_type unknownTagID = 0;
 
+      //! The code associated with a 'null' language (null pointer, no output)
+      static const char* const nullLanguageCode;
+      
+      //! The code associated with the default language (not the real one)
+      static const char* const defaultLanguageCode;
+      
     protected:
       /* Replacement glyphs, both used to substitute missing or erroneous
        * values of some description. These are UTF-8 Encoded.
