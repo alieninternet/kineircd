@@ -24,6 +24,7 @@
 #include "kineircd/kineircdconf.h"
 
 #include "kineircd/listenerlist.h"
+#include "socket/sockets.h"
 #include "debug.h"
 
 using namespace Kine;
@@ -49,3 +50,123 @@ void ListenerList::startAll(void)
       }
    }
 }
+
+
+   // "LISTEN" class
+const ConfigParser::defTable_type ListenerList::configClassDefs = {
+     {
+	"ALLOWSERVERS",
+	  0,
+	  0,
+	  0,
+	  0
+     },
+     {
+	"ALLOWSERVICES",
+	  0,
+	  0,
+	  0,
+	  0
+     },
+     {
+	"ALLOWUSERS",
+	  0,
+	  0,
+	  0,
+	  0
+     },
+     {
+	"PORT",
+	  0,
+	  0,
+	  0,
+	  0
+     },
+     {
+	"SECURE",
+	  0,
+	  0,
+	  0,
+	  0
+     },
+     {
+	0,
+	  0,
+	  0,
+	  0,
+	  0
+     }
+};
+
+
+/* classHandleListen
+ * Original 11/08/2002 simonb
+ */
+CONFIG_CLASS_HANDLER(ListenerList::configClassHandler)
+{
+   // Check if the first value is empty (the listen type field)
+   if (values.empty() || values.front().empty()) {
+      // Get cranky
+      errString = "You must specify the domain/address type for listening";
+      return false;
+   }
+
+   // Upper-case the domain for easy checking
+   String domain = values.front().toUpper();
+
+   // The socket we will be listening on, it cannot be null
+   Socket *socket = 0;
+   
+   // Try and determine the domain
+#ifdef KINE_HAVE_SOCKET_IPV4_TCP
+   if ((domain == "IPV4") || (domain == "TCP/IPV4")) {
+# ifdef KINE_DEBUG_PSYCHO
+      debug("ListenerList::configClassHandler() - TCP/IPv4 domain chosen");
+# endif
+      socket = new SocketIPv4TCP();
+   } else 
+#endif
+#ifdef KINE_HAVE_SOCKET_IPV6_TCP
+   if ((domain == "IPV6") || (domain == "TCP/IPV6")) {
+# ifdef KINE_DEBUG_PSYCHO
+      debug("ListenerList::configClassHandler() - TCP/IPv6 domain chosen");
+# endif
+      socket = new SocketIPv6TCP();
+   } else
+#endif
+#ifdef KINE_HAVE_SOCKET_IPX_SPX
+   if ((domain == "IPX") || (domain == "SPX") || (domain == "IPX/SPX")) {
+# ifdef KINE_DEBUG_PSYCHO
+      debug("ListenerList::configClassHandler() - IPX/SPX domain chosen");
+# endif
+      socket = new SocketIPXSPX();
+   } else
+#endif
+#ifdef KINE_HAVE_SOCKET_UNIX
+   if (domain == "UNIX") {
+# ifdef KINE_DEBUG_PSYCHO
+      debug("ListenerList::configClassHandler() - UNIX domain chosen");
+# endif
+      socket = new SocketUNIX();
+   } else
+#endif
+   {
+      // No idea what they want, complain
+      errString = "Unknown or unsupported domain/address type: '" + 
+	values.front() + '\'';
+      return false;
+   }
+
+#ifdef KINE_DEBUG_ASSERT
+   // Make sure we are not going insane
+   assert(socket != 0);
+#endif
+   
+   // uhh something here, simon.
+   
+   // Throw the listener stuff over to the configuration parser..
+   return ConfigParser::parse(configData, position, (void *)(configClassDefs),
+			      dataClass); // <=- that is temporary :(
+}
+
+

@@ -65,8 +65,8 @@ namespace Config {
 	   "LISTEN",
 	     0,
 	     0,
-	     &defClassListen,
-	     0
+	     0,
+	     &ListenerList::configClassHandler
 	},
 	{
 	   "LOGGING",
@@ -185,54 +185,6 @@ namespace Config {
    // "ARBITERS.SERVERS" class
    const Kine::ConfigParser::defTable_type
      Kine::Config::defClassArbitersServers = {
-	{
-	   0,
-	     0,
-	     0,
-	     0,
-	     0
-	}
-   };
-
-
-   // "LISTEN" class
-   const Kine::ConfigParser::defTable_type
-     Kine::Config::defClassListen = {
-	{
-	   "ALLOWSERVERS",
-	     0,
-	     0,
-	     0,
-	     0
-	},
-	{
-	   "ALLOWSERVICES",
-	     0,
-	     0,
-	     0,
-	     0
-	},
-	{
-	   "ALLOWUSERS",
-	     0,
-	     0,
-	     0,
-	     0
-	},
-	{
-	   "PORT",
-	     0,
-	     0,
-	     0,
-	     0
-	},
-	{
-	   "SECURE",
-	     0,
-	     0,
-	     0,
-	     0
-	},
 	{
 	   0,
 	     0,
@@ -724,7 +676,7 @@ CONFIG_CLASS_HANDLER(Kine::Config::classHandleModule)
 #endif
    
    // Check if the first value is empty (the filename field)
-   if (values.front().empty()) {
+   if (values.empty() || values.front().empty()) {
       // Get cranky
       errString = "No module filename supplied!";
       return false;

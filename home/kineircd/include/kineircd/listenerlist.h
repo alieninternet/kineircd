@@ -31,6 +31,7 @@
 # endif
 
 # include "kineircd/listener.h"
+# include "kineircd/configparser.h"
 
 namespace Kine {
    class ListenerList {
@@ -41,7 +42,10 @@ namespace Kine {
       typedef std::list <Listener> listeners_type;
 # endif
       listeners_type listeners;
-      
+
+      // The list of definitions for the configuration handler
+      static const ConfigParser::defTable_type configClassDefs;
+
     public:
       // Constructor
       ListenerList(void)
@@ -53,6 +57,9 @@ namespace Kine {
 
       // Start all listeners listening
       void startAll(void);
+
+      // The class handler for the configuration class
+      static CONFIG_CLASS_HANDLER(configClassHandler);
    };
 };
 
