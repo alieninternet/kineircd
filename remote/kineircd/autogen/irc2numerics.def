@@ -3523,29 +3523,6 @@ irc2numerics = {
 };
 
 irc2numerics = {
-   name		= "RPL_HELP";
-   numeric	= "680";
-   origin	= "KineIRCd";
-   contact	= "kineircd@alien.net.au";
-   format	= "[<command> | '*'] :<text>";
-   comment	= "Reply to the HELP command, sent using a numeric rather "
-                  "than NOTICE so a client can format it appropriately. "
-		  "KineIRCd uses this to send only the correct parameter "
-		  "format of a command.";
-};
-
-irc2numerics = {
-   name		= "RPL_MOREHELP";
-   numeric	= "681";
-   origin	= "KineIRCd";
-   contact	= "kineircd@alien.net.au";
-   format	= "[<command> | '*'] :<text>";
-   comment	= "Optional detailed information about a command (may be "
-                  "used more than once). KineIRCd uses this to send "
-		  "information about a command following RPL_HELP";
-};
-
-irc2numerics = {
    name		= "RPL_NETWORKS";
    numeric	= "682";
    origin	= "KineIRCd";

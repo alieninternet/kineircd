@@ -688,12 +688,6 @@ tag = {
 };
 
 tag = {
-   name		= "irc2_RPL_ENDOF_GENERIC_HELP";
-   components	= "mod_irc2user";
-   data_en	= "End of HELP";
-};
-
-tag = {
    name		= "irc2_RPL_ENDOF_GENERIC_LANGUAGE";
    components	= "mod_irc2user";
    data_en	= "End of LANGUAGE list";
