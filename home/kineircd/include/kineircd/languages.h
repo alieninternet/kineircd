@@ -77,6 +77,18 @@ namespace Kine {
        * prior to being returned back to the software.
        */
       typedef std::vector < const parameter_type* > parameterList_type;
+
+      /* The call-out function used for multi-call get's.
+       * Inherit from this, and use the operator() to do whatever you need
+       * with each call. Each call is given a string, and must return a true
+       * if you are willing to accept more data, or false to stop iterating
+       * through the string and generating calls.
+       */
+      struct callFunction_type {
+	 callFunction_type(void) {};
+	 virtual ~callFunction_type(void) {};
+	 virtual bool operator()(const std::string& data) = 0;
+      };
       
       /* Language data class, this holds information about the language, along
        * with the tag data. It also provides basic look-up functions per
@@ -99,11 +111,21 @@ namespace Kine {
 
 	 //! Merge the given language data "over" this language data
 	 void mergeWith(const LanguageData& newData);
+
+	 //! Process the given string (deal with substitutions and so forth)
+	 const std::string
+	   process(const std::string& data,
+		   const parameterList_type* const parameters) const;
 	 
 	 //! Look for a given TID's data, and return it if possible
 	 const std::string
 	   get(const tagID_type tagID,
 	       const parameterList_type* const parameters = 0) const;
+
+	 //! Look for a given TID's data, and call the given function as needed
+	 bool get(const tagID_type tagID,
+		  callFunction_type& callFunction,
+		  const parameterList_type* const parameters = 0) const;
 
        public:
 	 //! Constructor
@@ -247,6 +269,12 @@ namespace Kine {
 	    const tagID_type tagID,
 	    const parameterList_type* const parameters = 0) const;
 
+      //! Handle a multi-call tag with the given language data
+      void get(const LanguageData* const languageData,
+	       const tagID_type tagID,
+	       callFunction_type& callFunction,
+	       const parameterList_type* const parameters = 0) const;
+      
       //! Return the given language data, from a language in the given list
       const std::string
 	get(const languageDataList_type& languageDataList,
@@ -259,6 +287,16 @@ namespace Kine {
 	    const tagID_type tagID,
 	    const parameterList_type* const parameters = 0) const
 	{ return get(findByCode(languageCode), tagID, parameters); };
+
+      //! Handle a multi-call tag with the given language data (by code)
+      const void get(const std::string& languageCode,
+		     const tagID_type tagID,
+		     callFunction_type& callFunction,
+		     const parameterList_type* const parameters = 0) const
+	{ 
+	   return get(findByCode(languageCode), tagID, callFunction, 
+		      parameters);
+	};
 
       //! Lazy functions for use when you have one to five parameters..
       template <class T>

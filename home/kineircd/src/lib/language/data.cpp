@@ -107,62 +107,40 @@ void Languages::LanguageData::mergeWith(const Languages::LanguageData& newData)
    }
 }
 
-/* getTag - Look for a given TID's data, and return it if possible
+
+/* process - Process the given string (deal with substitutions and so forth)
  * Original 16/03/2003 simonb
  */
 const std::string
-  Languages::LanguageData::get(const Languages::tagID_type tagID,
-			       const Languages::parameterList_type* const
-			       parameters) const
+  Languages::LanguageData::process(const std::string& data,
+				   const parameterList_type* const
+				   parameters) const
 {
-#ifdef KINE_DEBUG
-   debug("Languages::LanguageData::get() - Requested TID #" +
-	 String::convert(tagID) + " from language " + languageCode);
-#endif
-
-   // Make sure the tag is valid..
-   if ((tagID == 0) || (tagID > tagData.size())) {
-#ifdef KINE_DEBUG
-      debug("Languages::LanguageData::findTag() - Invalid TID given");
-#endif
-      return "";
-   }
-   
-#ifdef KINE_DEBUG
-   std::ostringstream out;
-   out << "Languages::LanguageData::findTag() - Returning data @ " << 
-     (void *)tagData[tagID - 1];
-   debug(out.str());
-#endif
-   
-   // Remember what is found at this TID..
-   const std::string* const tag = tagData[tagID - 1];
-   
    /* If the null character (used to mark necessary substitutions) is missing
     * from the tag data, then we do not need to do any processing. Is this
     * wise to run over the string potentially twice here? In doing this, I'm
     * presuming the majority of tags would not require substitutions..
     */
-   if (tag->find('\0') == (std::string::size_type)-1) {
-      // Simply return the string, no further work is necessary..
-      return *tag;
+   if (data.find('\0') == (std::string::size_type)-1) {
+      // Simply return the string, no further work is necessary.. easy :)
+      return data;
    }
    
    // Our output string; this is what we will return after processing
    std::string output;
    
    // Run through the tag data string and substitute anything we can
-   for (std::string::size_type i = 0; i < tag->length(); i++) {
+   for (std::string::size_type i = 0; i < data.length(); i++) {
       // Is this a substitution?
-      if ((*tag)[i] == parameterMarkerChar) {
+      if (data[i] == parameterMarkerChar) {
 	 // Make sure there is more on the line..
-	 if ((i + 1) >= tag->length()) {
+	 if ((i + 1) >= data.length()) {
 	    // Just skip it - eek!
 	    break;
 	 }
 	 
 	 // What do we do with this substitution?
-	 switch ((*tag)[++i]) {
+	 switch (data[++i]) {
 	  case 'a': // The name of the server's administrator
 	    output += config().getAdministratorName();
 	    continue;
@@ -200,12 +178,12 @@ const std::string
 	     * there?
 	     */
 	    if ((parameters != 0) &&
-		(i <= tag->length()) &&
-		(isdigit((*tag)[i]))) {
+		(i <= data.length()) &&
+		(isdigit(data[i]))) {
 	       unsigned char paramNumber;
 	       
 	       // Work out the base parameter number..
-	       switch ((*tag)[i - 1]) {
+	       switch (data[i - 1]) {
 		case 'p':
 		  paramNumber = 0;
 		  break;
@@ -220,7 +198,7 @@ const std::string
 	       }
 	       
 	       // Add on the supplementary parameter number
-	       paramNumber += (unsigned char)((*tag)[i] - 0x30);
+	       paramNumber += (unsigned char)(data[i] - 0x30);
 	       
 	       // Do we have this parameter in our list??
 	       if ((parameterList_type::size_type)(paramNumber + 1) <=
@@ -244,16 +222,121 @@ const std::string
 	    output += replacementCharacterGlyph;
 	    continue;
 	 }
-      } else if ((*tag)[i] == newLineMarkerChar) {
+      } else if (data[i] == newLineMarkerChar) {
 	 // We are not supposed to see this..
 	 output += replacementCharacterGlyph;
 	 continue;
       }
       
       // Copy this char flat
-      output += (*tag)[i];
+      output += data[i];
    }
    
    // Return the processed output
    return output;
+}
+  
+  
+/* getTag - Look for a given TID's data, and return it if possible
+ * Original 16/03/2003 simonb
+ */
+const std::string
+  Languages::LanguageData::get(const Languages::tagID_type tagID,
+			       const Languages::parameterList_type* const
+			       parameters) const
+{
+#ifdef KINE_DEBUG
+   debug("Languages::LanguageData::get() - Requested TID #" +
+	 String::convert(tagID) + " from language " + languageCode);
+#endif
+
+   // Make sure the tag is valid..
+   if ((tagID == 0) || (tagID > tagData.size())) {
+#ifdef KINE_DEBUG
+      debug("Languages::LanguageData::findTag() - Invalid TID given");
+#endif
+      return "";
+   }
+   
+#ifdef KINE_DEBUG
+   std::ostringstream out;
+   out << "Languages::LanguageData::findTag() - Returning data @ " << 
+     (void *)tagData[tagID - 1];
+   debug(out.str());
+#endif
+   
+   // Remember what is found at this TID..
+//   const std::string* const tag = tagData[tagID - 1];
+
+   // Process the data and return it
+   return process(*(tagData[tagID - 1]), parameters);
+}
+
+
+/* getTag - Look for a given TID's data, and call the given function as needed
+ * Original 16/03/2003 simonb
+ */
+bool Languages::LanguageData::get(const Languages::tagID_type tagID,
+				  callFunction_type& callFunction,
+				  const Languages::parameterList_type* const
+				  parameters) const
+{
+#ifdef KINE_DEBUG
+   debug("Languages::LanguageData::get() - Requested TID #" +
+	 String::convert(tagID) + " from language " + languageCode +
+	 " (multi-call)");
+#endif
+
+   // Make sure the tag is valid..
+   if ((tagID == 0) || (tagID > tagData.size())) {
+#ifdef KINE_DEBUG
+      debug("Languages::LanguageData::findTag() - Invalid TID given");
+#endif
+      return false;
+   }
+   
+#ifdef KINE_DEBUG
+   std::ostringstream out;
+   out << "Languages::LanguageData::findTag() - Returning data @ " << 
+     (void *)tagData[tagID - 1];
+   debug(out.str());
+#endif
+   
+   // Remember what is found at this TID..
+   const std::string* const tag = tagData[tagID - 1];
+
+   // Our starting and ending positions..
+   std::string::size_type startPosition = 0, endPosition;
+   
+   for (;;) {
+      // Find the next segment char..
+      endPosition = tag->find(newLineMarkerChar, startPosition);
+      
+#ifdef KINE_DEBUG
+      std::ostringstream out;
+      out << "Languages::LanguageData::get() - Call out substring (" <<
+	startPosition << " to " << endPosition << " of " << tag->length() <<
+	')';
+      debug(out.str());
+#endif
+      
+      // Send this string.. (if we get a false, the call out says "no more")
+      if (!callFunction(process(tag->substr(startPosition,
+					    endPosition - startPosition),
+				parameters))) {
+	 // The end!
+	 return true;
+      }
+
+      // Make sure we have something else to send - if not, return..
+      if (endPosition >= tag->length()) {
+	 return true;
+      }
+      
+      // Remember where to start during the next loop
+      startPosition = endPosition + 1;
+   }
+   
+   // Umm, we should never get here.. *shrugs*
+   return true;
 }

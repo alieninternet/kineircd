@@ -560,7 +560,7 @@ const std::string
 		 const tagID_type tagID,
 		 const parameterList_type* const parameters) const
 {
-   // Did we find the language?
+   // Is the given language data valid?
    if (languageData != 0) {
 #ifdef KINE_DEBUG
       debug("Languages::get() - Attempting to get data from " + 
@@ -594,6 +594,44 @@ const std::string
 
    // Give up! Return a replacement object character..
    return replacementObjectGlyph;
+}
+
+
+/* get - Handle a multi-call tag with the given language data
+ * Original 06/04/2003 simonb
+ */
+void Languages::get(const LanguageData* const languageData,
+		    const tagID_type tagID,
+		    callFunction_type& callFunction,
+		    const parameterList_type* const parameters) const
+{
+   // Is the given language data valid?
+   if (languageData != 0) {
+#ifdef KINE_DEBUG
+      debug("Languages::get() - Attempting to get data from " + 
+	    languageData->getLanguageCode());
+#endif
+
+      // Okay, try to grab it from the language data..
+      if (languageData->get(tagID, callFunction, parameters)) {
+	 return;
+      }
+      
+      // Can we try the default language instead?
+      if (defaultLanguage != 0) {
+#ifdef KINE_DEBUG
+	 debug("Languages::get() - Attempting to get data from default "
+	       "language");
+#endif
+	 
+	 if (defaultLanguage->get(tagID, callFunction, parameters)) {
+	    return;
+	 }
+      }
+   }
+
+   // Give up! Use the call function to send a replacement object glyph
+   (void)(callFunction)(replacementObjectGlyph);
 }
 
 
