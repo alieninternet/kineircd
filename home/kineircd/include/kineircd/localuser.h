@@ -49,7 +49,7 @@ namespace Kine {
       virtual const AIS::Util::Time& getLastAwake(void) const = 0;
       
       //! Return the server this user is connect to (that is, us!)
-      Server& getServer(void);
+      Server& getServer(void) const;
    }; // class LocalUser
 }; // namespace Kine
 

@@ -53,7 +53,7 @@ namespace Kine {
 	{ return 0; };
       
       //! Return a pointer to the server this denizen is connected to/through
-      virtual Server& getServer(void) = 0;
+      virtual Server& getServer(void) const = 0;
    }; // class Denizen
 }; // namespace Kine
 

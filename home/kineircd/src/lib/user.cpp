@@ -219,7 +219,7 @@ const Error::error_type
 /* getServer - Return the server local users are connected to (ie. 'my server')
  * Original 20/06/2003 simonb
  */
-Server& LocalUser::getServer(void) 
+Server& LocalUser::getServer(void) const
 {
    return myServer();
 }
