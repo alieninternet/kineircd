@@ -28,6 +28,7 @@
 # include <kineircd/registrant.h>
 
 # include "libkineircd_irc2/protocol.h"
+# include "libkineircd_irc2/numerics.h"
 # include "mod_irc2user/user.h"
 
 namespace Kine {

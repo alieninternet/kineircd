@@ -92,8 +92,8 @@ EXTRA_DIST=\
 	doc/rfc2813.txt \
 	include/kineircd/kineircdconf.h.in \
 	src/libkineircd/loggerconfig.cpp.tpl \
-	src/libkineircd/regnumerics.h.tpl \
-	src/libkineircd/version.cpp.tpl
+	src/libkineircd/version.cpp.tpl \
+	src/libkineircd/numerics.h.tpl
 
 	
 
@@ -131,6 +131,16 @@ rfc%.txt:
 
 
 
+# Stuff we really need, but automake is too stupid to work out for itself
+BUILT_SOURCES=\
+	include/kineircd/config.h \
+	include/kineircd/errors.h \
+	include/kineircd/logger.h \
+	include/kineircd/server.h \
+	src/libkineircd_irc2/numerics.h
+
+
+
 ###############################################################################
 # 'libkineircd' library
 ###############################################################################
@@ -141,14 +151,6 @@ if KINEIRCD_COMPILE_LIB_DEBUG
  KINEIRCD_SOURCE_LIB_DEBUG_CPP=src/libkineircd/debug.cpp
  KINEIRCD_SOURCE_LIB_DEBUG_H=src/libkineircd/debug.h
 endif
-
-# Stuff we really need, but automake is too stupid to work out for itself
-BUILT_SOURCES=\
-	include/kineircd/config.h \
-	include/kineircd/errors.h \
-	include/kineircd/logger.h \
-	include/kineircd/server.h \
-	src/libkineircd/regnumerics.h
 
 # Includes..
 libkineircd_la_INCLUDES=\
@@ -254,12 +256,6 @@ src/libkineircd/loggerconfig.cpp: src/libkineircd/loggerconfig.cpp.tpl $(AUTOGEN
 		-T src/libkineircd/loggerconfig.cpp.tpl \
 		$(AUTOGEN_DEF_DIR)/logger.def
 		
-src/libkineircd/regnumerics.h: src/libkineircd/regnumerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
-	$(AUTOGEN) \
-		-b $(basename $@) \
-		-T src/libkineircd/regnumerics.h.tpl \
-		$(AUTOGEN_DEF_DIR)/irc2numerics.def
-		
 
 
 ###############################################################################
@@ -267,15 +263,22 @@ src/libkineircd/regnumerics.h: src/libkineircd/regnumerics.h.tpl $(AUTOGEN_DEF_D
 ###############################################################################
 libkineircd_irc2_la_SOURCES=\
 	src/libkineircd_irc2/modes.h \
+	src/libkineircd_irc2/numerics.h \
 	src/libkineircd_irc2/protocol.cpp \
 	src/libkineircd_irc2/protocol.h \
 	src/libkineircd_irc2/servermodes.cpp
 
 libkineircd_irc2_la_LDFLAGS=\
-	-version-info @LIBKINEIRCD_VERSION@:@LIBKINEIRCD_REVISION@:@LIBKINEIRCD_AGE@
+	-version-info @LIBKINEIRCD_IRC2_VERSION@:@LIBKINEIRCD_IRC2_REVISION@:@LIBKINEIRCD_IRC2_AGE@
 
 libkineircd_irc2_la_LIBADD=\
 	# libkineircd.la
+		
+src/libkineircd_irc2/numerics.h: src/libkineircd_irc2/numerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T src/libkineircd_irc2/numerics.h.tpl \
+		$(AUTOGEN_DEF_DIR)/irc2numerics.def
 
 
 

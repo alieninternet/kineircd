@@ -35,7 +35,6 @@
 #include "kineircd/protocolinfo.h"
 #include "kineircd/daemon.h"
 #include "libkineircd/registrar.h"
-#include "libkineircd/regnumerics.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
@@ -262,7 +261,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseCAPAB)
 {
    // Make sure we were given at least one parameter
    if (parameters.empty()) {
-      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "CAPAB");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "CAPAB");
       return;
    }
 
@@ -291,14 +290,14 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-      sendNumeric(RegistrationNumerics::ERR_ALREADYREGISTERED);
+      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED);
       connection.goodbye();
       return;
    }
 
    // Check there are enough tokens. We consider the description field optional
    if (parameters.size() < 6) {
-      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "IIRCN");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "IIRCN");
       return;
    }
    
@@ -353,7 +352,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
 {
    // Check the parameter list, there must be one parameter at least..
    if (parameters.empty()) {
-      sendNumeric(RegistrationNumerics::ERR_NONICKNAMEGIVEN);
+      sendNumeric(LibIRC2::Numerics::ERR_NONICKNAMEGIVEN);
       return;
    }
    
@@ -418,7 +417,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePASS)
    
    // We need at least one parameter here (the password itself, duh!)
    if (parameters.empty()) {
-      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "PASS");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "PASS");
       return;
    }
    
@@ -502,7 +501,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-      sendNumeric(RegistrationNumerics::ERR_ALREADYREGISTERED);
+      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED);
       connection.goodbye();
       return;
    }
@@ -511,7 +510,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
     * RFC1459. However, we consider the info/description field optional.
     */
    if (parameters.size() < 3) {
-      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "SERVER");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "SERVER");
       return;
    }
 
@@ -571,14 +570,14 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-      sendNumeric(RegistrationNumerics::ERR_ALREADYREGISTERED);
+      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED);
       connection.goodbye();
       return;
    }
    
    // Check there are enough tokens
    if (parameters.size() < 6) {
-      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "SERVICE");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "SERVICE");
       return;
    }
 
@@ -634,14 +633,14 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-      sendNumeric(RegistrationNumerics::ERR_ALREADYREGISTERED);
+      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED);
       connection.goodbye();
       return;
    }
    
    // Check there are enough tokens
    if (parameters.size() < 4) {
-      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "USER");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "USER");
       return;
    }
    

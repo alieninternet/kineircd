@@ -29,7 +29,7 @@
 # include "kineircd/registrant.h"
 # include "kineircd/config.h"
 # include "libkineircd_irc2/protocol.h"
-# include "libkineircd/regnumerics.h"
+# include "libkineircd_irc2/numerics.h"
 
 # define KINE_LIB_REGISTRAR_FUNCTION(x) \
      void x(const Kine::LibIRC2::Protocol::parameters_type& parameters)
@@ -65,7 +65,7 @@ namespace Kine {
       } static const commandTable[];
 
       // Send a numeric
-      void sendNumeric(const RegistrationNumerics::numeric_type numeric)
+      void sendNumeric(const LibIRC2::Numerics::numeric_type numeric)
 	{
 	   sendMessage(config().getOptionsServerName(),
 		       (registrantData.name.empty() ? '*' :
@@ -73,7 +73,7 @@ namespace Kine {
 		       numeric, ':');
 	};
       
-      void sendNumeric(const RegistrationNumerics::numeric_type numeric,
+      void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 		       const char* const data)
 	{
 	   sendMessage(config().getOptionsServerName(),
