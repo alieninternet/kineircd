@@ -63,11 +63,15 @@ void Registrar::sendError(const char* const error)
 {
    std::ostringstream output;
    
-   // Assemble the line, nicely terminated..
+   // Assemble the line, neatly terminated..
    output << "ERROR :" << error << "\r\n";
    
    // Throw the line onto the output queue
    outputQueue.push(output.str());
+   
+#ifdef KINE_DEBUG_PSYCHO
+   debug("Registrar::sendError() - " + output.str());
+#endif
    
    // Disconnect..
    connection.goodbye();
@@ -222,19 +226,19 @@ void Registrar::parseMessage(const std::string& origin,
      protocolInfo->createProtocol(registrantData, connection, inputQueue,
 				  output);
       
-   // That protocol instance may not have been created, so let's just check..
-   if (newProtocol != 0) {
 #ifdef KINE_DEBUG_PSYCHO
-      std::ostringstream out;
-      out << "Registrar::parseLine() - Doing protocol hand-over (" << this <<
-	" to " << newProtocol << ')';
-      debug(out.str());
+   std::ostringstream out;
+   out << "Registrar::parseLine() - Attempting protocol hand-over (" << this <<
+     " to " << newProtocol << ')';
+   debug(out.str());
 #endif
       
+   // That protocol instance may not have been created, so let's just check..
+   if (newProtocol != 0) {
       // Do the protocol hand-over
       connection.setProtocol(*newProtocol);
       
-      // Delete ourself..
+      // Delete ourself.. (suicide? ;)
       delete this;
       
       // Bye bye!
