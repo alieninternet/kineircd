@@ -870,6 +870,13 @@ tag = {
 };
 
 tag = {
+   name		= "irc2_RPL_YOURLANGUAGEIS";
+   fields	= "0 = language name";
+   components	= "mod_irc2user";
+   data_en	= "Your primary language is '%p0'";
+};
+
+tag = {
    name		= "irc2registrar_ERROR_BAD_PONG";
    components	= "mod_irc2registrar";
    data_en	= "Bad pong reply - Did you really think you could fool me?";
