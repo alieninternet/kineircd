@@ -37,18 +37,18 @@
 using namespace Kine;
 
 [+DEFINE output-class-definition-table+]const AISutil::ConfigParser::defTable_type Config::[+tableClass+] = {[+FOR definition+]
-[+IF condition+]#ifdef [+condition+]
+[+IF .condition+]#ifdef [+condition+]
 [+ENDIF+]     {
 	"[+(string-upcase (get "name"))+]", (sizeof("[+name+]") - 1),
-	  [+IF hasVariable+](void*)&Config::def[+IF variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+][+ELSE+]0[+ENDIF+],
-	  [+IF varHandler+]&[+varHandler+][+ELSE+]0[+ENDIF+],
+	  [+IF .hasVariable+](void*)&Config::def[+IF .variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+][+ELSE+]0[+ENDIF+],
+	  [+IF .varHandler+]&[+varHandler+][+ELSE+]0[+ENDIF+],
 	  [+IF .definition+]&defClass[+(getPrefix)+][+name+][+ELSE+]0[+ENDIF+],
-	  [+IF classHandler+]&[+classHandler+][+ELSE+]0[+ENDIF+]
+	  [+IF .classHandler+]&[+classHandler+][+ELSE+]0[+ENDIF+]
      },[+IF condition+]
 #endif // [+condition+][+ENDIF+][+ENDFOR+]
      {
 	0, 0,
-	  [+IF defaultDefinition.variable+](void*)&Config::[+defaultDefinition.variable+][+ELSE+]0[+ENDIF+],
+	  [+IF .defaultDefinition.variable+](void*)&Config::[+defaultDefinition.variable+][+ELSE+]0[+ENDIF+],
 	  0,
 	  0,
 	  0
@@ -85,7 +85,7 @@ using namespace Kine;
    (define currentIteration 0)
  +]
 Config::Config(void)
-[+DEFINE output-variable-defaults+][+FOR definition+][+IF hasVariable+][+IF defaultValue+][+
+[+DEFINE output-variable-defaults+][+FOR definition+][+IF .hasVariable+][+IF .defaultValue+][+
    ; Is this is the first iteration?
    (if (= currentIteration 0)
       ; Output the start..
@@ -97,7 +97,7 @@ Config::Config(void)
    ; Increase the iteration counter
    (set! currentIteration
       (+ currentIteration 1))
- +]def[+IF variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+]([+defaultValue+])[+ENDIF+][+ENDIF+][+IF .definition+][+
+ +]def[+IF .variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+]([+defaultValue+])[+ENDIF+][+ENDIF+][+IF .definition+][+
    ; Push this prefix to the start of our prefix stack
    (set! tablePrefixStack
       (append
