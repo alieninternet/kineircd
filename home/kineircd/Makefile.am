@@ -154,6 +154,7 @@ BUILT_SOURCES=\
 	src/ircd/options.h \
 	src/libkineircd_irc2/language.h \
 	src/mod_irc2registrar/language.h \
+	src/mod_irc2user/commands.h \
 	src/mod_irc2user/language.h \
 	src/mod_irc2user/protocol.h
 
@@ -492,6 +493,12 @@ src/mod_irc2user/commandlist.cpp: src/mod_irc2user/commandlist.cpp.tpl src/mod_i
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T src/mod_irc2user/commandlist.cpp.tpl \
+		src/mod_irc2user/commands.def
+
+src/mod_irc2user/commands.h: src/mod_irc2user/commands.h.tpl src/mod_irc2user/commands.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T src/mod_irc2user/commands.h.tpl \
 		src/mod_irc2user/commands.def
 
 src/mod_irc2user/language.cpp src/mod_irc2user/language.h: $(AUTOGEN_DIR)/language.tpl $(AUTOGEN_DIR)/language.def

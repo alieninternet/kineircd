@@ -1,3 +1,4 @@
+[+ AutoGen5 template h +]
 /* $Id$
  * 
  * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
@@ -21,8 +22,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_MOD_IRC2USER_COMMANDS_H_
-# define _SRC_MOD_IRC2USER_COMMANDS_H_ 1
+[+(make-header-guard "kine")+]
 
 # include <kineircd/kineircdconf.h>
 # include <kineircd/languages.h>
@@ -149,5 +149,13 @@ namespace Kine {
    }; // namespace mod_irc2user
 }; // namespace Kine
 
-#endif // _SRC_MOD_IRC2USER_COMMANDS_H_
+
+// These defines help determine what commands are available[+FOR commands+]
+# define KINE_MOD_IRC2USER_HAVE_CMD_[+
+   (string-upcase
+      (get "command"))
+ +] 1[+ENDFOR+]
+
+
+#endif // [+(. header-guard)+]
    

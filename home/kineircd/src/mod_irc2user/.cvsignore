@@ -1,4 +1,5 @@
 commandlist.cpp
+commands.h
 language.cpp
 language.h
 protocol.h
