@@ -1,0 +1,132 @@
+/* $Id$
+ *
+ * This file is Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
+ *
+ * This file is PUBLIC DOMAIN, to benifit the IRC developer community. If you
+ * modify this file, please state your name and modifications here in order
+ * for people to be able to distinguish between your version and this version.
+ *
+ * For more information or corrections, please contact the author.
+ */
+autogen definitions servermodes;
+
+/* The following format is used through-out this file. The first two fields
+ * ('irc2char' and 'name') are manditory, the others may or may not exist.
+ *
+ * The server_only field denotes whether or not the mode can be modified by
+ * a server only. If it is not set, or set to 'no', then operators can
+ * possibly modify them.
+ *
+ * The broadcast field specifies whether the mode is broadcast to other
+ * servers on the network or not.
+ *
+ * servermodes = {
+ *    irc2char     = "<mode char for irc2 based protocol(s)>";
+ *    name         = "<mode name>";
+ *  [ origin       = "<where the mode was found>"; ]
+ *  [ contact      = "<point of contact associated with the mode>"; ]
+ *  [ information  = "<url where to find more information>"; ]
+ *  [ parameter    = "<parameter name>"; ]
+ *  [ comment      = "<comments, history etc>"; ]
+ *  [ server_only  = "yes"; ]
+ *  [ broadcast	   = "yes"; ]
+ *  [ conflict     = "yes"; ]
+ *  [ obsolete     = "yes"; ]
+ * }
+ */
+
+
+revision	= "$Revision$";
+lastupdated	= "$Date$";
+
+
+servermodes = {
+   irc2char	= "a";
+   name		= "AUTOCONNECT";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   comment	= "Follow the autoconnect rules - When set on, the server should follow autoconnect parameters given in the configuration file to maintain its connection to the network.";
+   broadcast	= "yes";
+};
+
+servermodes = {
+   irc2char	= "A";
+   name		= "AUTO_TBS";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   comment	= "Automatically switch bone/tendril links. This is used in association with server to server protocols which have redundant links to specify whether or not the server should be actively monitoring links to see if a better 'bone' can be selected. When on, this gives the server the right to switch bone connections around to benifit the network.";
+   broadcast	= "yes";
+};
+
+servermodes = {
+   irc2char	= "D";
+   name		= "DEBUGGING";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   comment	= "Turns debugging on.";
+   broadcast	= "yes";
+};
+
+servermodes = {
+   irc2char	= "F";
+   name		= "FULL";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   comment	= "A server turns toggles this depending on its 'fullness'. If the server is full, either no more file descriptors are left, or all connection classes are full, then this is a warning to other servers not to redirect clients to it.";
+   server_only	= "yes";
+   broadcast	= "yes";
+};
+
+servermodes = {
+   irc2char	= "h";
+   name		= "HIDDEN";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   comment	= "When set, the server should be completely hidden to users. This is different to masking the server's name. This allows for invisible hubs, or invisible servers which host network services, etc.";
+   broadcast	= "yes";
+};
+
+servermodes = {
+   irc2char	= "l";
+   name		= "LAZY_LEAF";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   comment	= "Server should consider itself a lazy leaf link to the network. This means only one connection can be made to the server, and it runs on lazy principles. The idea for lazy leafs comes from Hybrid.";
+   broadcast	= "yes";
+};
+
+servermodes = {
+   irc2char	= "L";
+   name		= "MODES_LOCKED";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   comment	= "The server modes are locked, and can only be changed by other servers. This is useful when servers shouldn't not be touched by operators.";
+   broadcast	= "yes";
+};
+
+servermodes = {
+   irc2char	= "m";
+   name		= "SHORT_MOTD";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   comment	= "Do not send the full MOTD upon connection. Rather, send a short minature MOTD stating that the user should read the full MOTD if they have not read it."; 
+   broadcast	= "yes";
+};
+
+servermodes = {
+   irc2char	= "M";
+   name		= "REMOTE_MOTD";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   comment	= "Allow the MOTD to be viewed remotely. Some administrators may not want their MOTD to be remotely viewed by users.";
+   broadcast	= "yes";
+};
+
+servermodes = {
+   irc2char	= "n";
+   name		= "NO_OPER";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   comment	= "When set, the OPER command is rendered useless";
+   broadcast	= "yes";
+};
