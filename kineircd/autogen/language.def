@@ -1281,6 +1281,12 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_RPL_ENDOFHELP";
+   component	= "mod_irc2user";
+   data_en	= "End of HELP";
+};
+
+tags = {
    name		= "irc2_RPL_ENDOFINFO";
    component	= "mod_irc2user";
    data_en	= "End of INFO list";
