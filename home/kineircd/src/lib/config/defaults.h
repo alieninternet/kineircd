@@ -1,7 +1,10 @@
-/* vars.cpp
- * Configuration variable handlers
+/* configdefault.h
+ * Default configuration stuff
  * 
- * Copyright (c) 2002 AustHex Development Team
+ * It is not recommended to edit this file. Instead, edit your configuration
+ * file properly.
+ * 
+ * Copyright (c) 2002 AustHex Development Team 
  * (See DEV-TEAM file for details)
  *
  * This file is a part of AustHex.
@@ -21,27 +24,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#ifndef __SRC_CONFIG_CONFIGDEFAULT_H__
+# define __SRC_CONFIG_CONFIGDEFAULT_H__
 
-#include "config.h"
-#include "configdefault.h"
-#include "log.h"
+# include "autoconf.h"
 
+// "ADMINISTRATOR" class
+# define DEFAULT_ADMIN_EMAIL \
+   "nobody@nowhere"
+# define DEFAULT_ADMIN_LOCATION \
+   "I need to configure my server"
+# define DEFAULT_ADMIN_NAME \
+   "Mr. Nobody"
 
-// Our constructor
-Config::Config(const String &f)
-  : parser(&Config::topDefs, f),
-    defAdminEmail(DEFAULT_ADMIN_EMAIL),
-    defAdminLocation(DEFAULT_ADMIN_LOCATION),
-    defAdminName(DEFAULT_ADMIN_NAME),
-    defLoggingLog(0)
-{
-   defLoggingLog = new LoggerFile("/dev/stderr");  // temporary
-};
+#endif
 
-
-// This is temporary.
-CONFIG_DEF_HANDLER(Config::defVarNONE)
-{
-   return true;
-}

@@ -37,9 +37,6 @@
 /* Defaults for the Config class :) Change at will, but be careful.
  * It is HIGHLY RECOMMENDED you just edit your configuration file.
  */
-# define DEFAULT_CONFIG_ADMIN_EMAIL		"nobody@nowhere"
-# define DEFAULT_CONFIG_ADMIN_LOCATION		"I need to configure my server"
-# define DEFAULT_CONFIG_ADMIN_NAME		"Mr. Nobody"
 
 /* Stuff that will be in the Config Class, just not yet. */
 # define DEFAULT_CONFIG_SERVER_DESCRIPTION	"Mystery unconfigured server"
