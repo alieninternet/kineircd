@@ -35,10 +35,9 @@ using namespace Kine;
 Connection::Connection(Daemon& d, Socket& s)
 : daemon(d),
   socket(s),
+  protocol(0),
   sentBytes(0),
-  sentMessages(0),
   receivedBytes(0),
-  receivedMessages(0),
   connectedTime(d.getTime().tv_sec),
   lastSpoke(connectedTime)
 {
@@ -55,6 +54,10 @@ Connection::Connection(Daemon& d, Socket& s)
  */
 bool Connection::handleInput(void)
 {
+#ifdef KINE_DEBUG_ASSERT
+   assert(protocol != 0);
+#endif
+   
    // Read a line from the socket buffer (this should change)
    std::stringstream line;
    if (!socket.read(line)) {
@@ -68,12 +71,11 @@ bool Connection::handleInput(void)
    // Make sure we have a whole line - we only want to deal with full lines
    if (!line.str().empty()) {
       // Increment our input counters
-      receivedMessages++;
       receivedBytes += line.str().length();
       daemon.addReceivedBytes(line.str().length());
-      debug("Read: " + line.str());
-//      // Handle the data (finally!)
-//      handler->parseLine(line);
+
+      // Throw the data at the protocol routines
+      protocol->handleInput(line);
    }
    
    // All is well!

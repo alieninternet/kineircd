@@ -57,6 +57,7 @@ VER_FLG=-DBUILD_STRING="\"`date -u +%04Y%02m%02d%02H%02M%02S`\"" \
 SOURCES=\
 	connection.cpp \
 	daemon.cpp \
+	register.cpp \
 	sha1.cpp \
 	signals.cpp \
 	str.cpp \
@@ -66,7 +67,6 @@ SOURCES_NOT_YET=\
 	channel.cpp \
 	langtags.cpp \
 	language.cpp \
-	register.cpp \
 	server.cpp \
 	user.cpp
 	

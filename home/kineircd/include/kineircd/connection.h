@@ -28,6 +28,10 @@
 
 # include <queue>
 
+namespace Kine {
+   class Protocol;
+};
+
 # include "kineircd/socket.h"
 # include "kineircd/daemon.h"
 
@@ -36,14 +40,12 @@ namespace Kine {
     private:
       Daemon& daemon;			// Call-back to the daemon
       Socket& socket;			// The connected socket
-
+      Protocol* protocol;		// The protocol we are running
+      
       std::queue <String> outputQueue;	// Output data queue
       
       unsigned long long sentBytes;	// Number of bytes sent
-      unsigned long sentMessages;	// Number of messages sent (lines)
-      
       unsigned long long receivedBytes;	// Number of bytes received
-      unsigned long receivedMessages;	// Number of messages sent (lines)
       
       const time_t connectedTime;	// Time connection was established
       time_t lastSpoke;			// Time the connection last spoke
@@ -60,10 +62,18 @@ namespace Kine {
       ~Connection(void) 
 	{ delete &socket; };
 
+      // Return the daemon
+      Daemon& getDaemon(void)
+	{ return daemon; };
+      
       // Return the socket
       const Socket& getSocket(void) const
 	{ return socket; };
 
+      // Replace the protocol with something new
+      void setProtocol(Protocol& p)
+	{ protocol = &p; };
+      
       // Return the connection time
       const time_t getConnectedTime(void) const 
 	{ return connectedTime; };
@@ -76,6 +86,9 @@ namespace Kine {
       bool handleInput(void);
    };
 };
-   
+
+// Complete forwarded declarations
+# include "kineircd/protocol.h"
+
 #endif // _INCLUDE_KINEIRCD_CONNECTION_H_ 
 

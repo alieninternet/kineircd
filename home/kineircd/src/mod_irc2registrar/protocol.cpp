@@ -23,390 +23,118 @@
 
 #include "kineircd/kineircdconf.h"
 
-#include "kineircd/register.h"
-#include "kineircd/daemon.h"
-#include "kineircd/numerics.h"
-#include "kineircd/lang.h"
-#include "kineircd/utils.h"
+#include "register.h"
 #include "debug.h"
 
 using namespace Kine;
 
 
-// Functions table
-struct registerHandler::functionTableStruct const 
-  registerHandler::functionsTable[] = {
-     { "CAPAB",		parseCAPAB },
-     { "NICK",		parseNICK },
-     { "PASS",		parsePASS },
-#ifdef USER_CONNECTION_PINGPONG
-     { "PONG",		parsePONG },
-#endif
-     { "QUIT",		parseQUIT },
-#ifdef ALLOW_SERVER_CONNECTIONS
-     { "SERVER",	parseSERVER },
-#endif
-#ifdef ALLOW_SERVICE_CONNECTIONS
-     { "SERVICE",	parseSERVICE },
-#endif
-     { "SQUIT",		parseQUIT }, // an alias, essentially
-#ifdef ALLOW_CLIENT_CONNECTIONS
-     { "USER",		parseUSER },
-#endif
-     { 0 }
+// Master command table (zero terminated, ordered alphabetically)
+const Register::commandTable_type Register::commandTable[] = {
+     { "CAPAB",		&Register::parseCAPAB },
+     { "IIRCN",		&Register::parseIIRCN },
+     { "NICK",		&Register::parseNICK },
+     { "PASS",		&Register::parsePASS },
+     { "PONG",		&Register::parsePONG },
+     { "QUIT",		&Register::parseQUIT },
+     { "SERVER",	&Register::parseSERVER },
+     { "SERVICE",	&Register::parseSERVICE },
+     { "USER",		&Register::parseUSER },
+     { 0, 0 }
 };
 
 
-/* registerHandler - Constructor for the register handler sub-class
- * Original 12/08/01 simonb
- */
-registerHandler::registerHandler(Connection *c)
-: Handler(c),
-  password(""),
-#ifdef ALLOW_CLIENT_CONNECTIONS
-  nickname(""),
-#endif
-  username(""),
-  hostname(c->socket->getRemoteAddressStr()),
-  realname(""),
-#ifdef ALLOW_SERVICE_CONNECTIONS
-  distribution(""),
-#endif
-#ifdef USER_CONNECTION_PINGPONG
-  pingpong(""),
-  gotPong(false),
-#endif
-  modes(""),
-  protocol(0),
-  startStamp(0),
-  linkStamp(0),
-#ifdef MAX_REGISTRATION_LINES
-  numLines(0),
-#endif
-  regmode(IN_PROGRESS)
-{
-#ifdef KINE_DEBUG
-   debug("New Handler: registerHandler");
-#endif
-
-   // gline, kline checking here
-   // dns checking initiation here
-   // class determination here
-}
-
-
-/* sendGeneric - Minature generic send routine
- * Original 16/08/01 simonb
- * Note: Double-up? Sort of, this one works a little differently than the
- *       irc2userHandler:: one
- */ 
-void registerHandler::sendGeneric(char const *command, 
-				  String const &line) const
-{
-   getConnection()->sendRaw(command +
-#ifdef ALLOW_CLIENT_CONNECTIONS
-			    ' ' + (nickname.empty() ? '*' : nickname) + ' ' +
-#else
-			    ' * ' +
-#endif
-			    line + REGISTRATION_EOL_CHARS);
-}
-
-
-/* sendNumeric - Minature sendNumeric routine 'cause of no send handler
- * Original 12/08/01 simonb
- * Note: We do a cheap thing here with the numeric because we know it will
- * 	 be three digits and suffer no 0-prepadding issues.
- */
-void registerHandler::sendNumeric(Numerics::numeric_t numeric, User *to, 
-				  String const &line) const
-{
-   getConnection()->sendRaw(':' + Daemon::myServer()->getHostname() + ' ' +
-			    String::convert(numeric) +
-#ifdef ALLOW_CLIENT_CONNECTIONS
-			    ' ' + (nickname.empty() ? '*' : nickname) + ' ' +
-#else
-			    " * " +
-#endif
-			    line + REGISTRATION_EOL_CHARS);
-}
-
-
 /* parseLine - Parse an incoming line
- * Original 12/08/01 simonb
+ * Original 12/08/2001 simonb
  */
-void registerHandler::parseLine(String const &line)
+void Register::parseLine(const String& line)
 {
-#ifdef MAX_REGISTRATION_LINES
-   // Increase and check the line counter
-   if (++numLines > MAX_REGISTRATION_LINES) {
-      // Boot them off
-# ifdef KINE_DEBUG_EXTENDED
-      debug("Registration overstepped MAX_REGISTRATION_LINES limit");
-# endif
-      getConnection()->goodbye();
-      return;
-   }
-#endif
-   
    bool found = false;
+   
+   // Tokenise the line, and grab the command
    StringTokens st(line);
    String command = st.nextToken().toUpper();
-   
+
    // Run through the list and find a function..
-   for (int i = 0; functionsTable[i].command != 0; i++) {
-      if (command == functionsTable[i].command) {
-	 functionsTable[i].function(this, &st);
+   for (int i = 0; commandTable[i].command != 0; i++) {
+      if (command == commandTable[i].command) {
 	 found = true;
+	 (this->*(commandTable[i].handler))(st);
 	 break;
       }
    }
-   
-#if 0
-   /* If we got a command, and we have at least a hostname and a username,
-    * we can check if it is time to follow through with a registration
-    */
-   if (found && username.length() && hostname.length()) {
-      Handler *newHandler = 0;
-      
-      switch (regmode) {
-#ifdef ALLOW_CLIENT_CONNECTIONS
-       case CLIENT:
-	 if (nickname.length() &&
-# ifdef USER_CONNECTION_PINGPONG
-	     gotPong &&
-# endif
-	     realname.length()) {
-	    // Check if we need to find a password here!!!
-	    if (password.length()) {
-	       // something here.
-	       sendNumeric(Numerics::ERR_PASSWDMISMATCH, 0,
-			   Lang::lang(LangTags::L_ERR_PASSWDMISMATCH));
-# ifdef KINE_DEBUG_EXTENDED
-	       debug("Invalid password, terminating!");
-# endif
-	       
-	       // wrong password, bye bye
-	       getConnection()->goodbye();
-	       return;
-	    }
-	    
-	    // Check if we are not full up on clients at the moment
-	    if (getConnection()->socket->getFD() > MAX_FD_NO_MORE_USERS) {
-	       sendNumeric(Numerics::ERR_SERVERTOOFULL, 0, String(":") +
-			   Lang::lang(LangTags::L_ERR_SERVERTOOFULL));
-# ifdef KINE_DEBUG
-	       debug("Server is too full, no more clients!");
-# endif
-	       getConnection()->goodbye();
-	       return;
-	    }
-	    
-	    // Create a new user
-	    User *user = new User(nickname, username, "", hostname,
-				  User::makeVWorld(hostname), realname,
-				  Daemon::getTime(), Daemon::myServer(),
-				  "foo", "bah");
-	    
-	    // Set up the connection name
-	    getConnection()->name = &user->nickname;
-	    
-	    // Create the new handler for this user
-	    newHandler = new irc2userHandler(getConnection(), user, modes);
-	 }
-	 break;
-#endif
-#ifdef ALLOW_SERVER_CONNECTIONS
-       case SERVER:
-	 // We MUST have a password before hitting here.
-	 if (password.length()) {
-	    // Check the password here.
-	    if (false) {
-# ifdef KINE_DEBUG
-	       debug("Invalid password, terminating!");
-# endif
-	       getConnection()->goodbye();
-	       return;
-	    }
-
-	    // Okay, check if we support the protocol
-	    switch (protocol) {
-# ifdef HAVE_P13SERVER_PROTOCOL
-	     case 13: // P13
-	       break;
-# endif
-	     default: // Unknown protocol, terminate connection
-# ifdef KINE_DEBUG
-	       debug("Unsupported protocol (" + String::convert(protocol) + 
-		     "), terminating!");
-# endif
-	       getConnection()->goodbye();
-	       return;
-	    }
-	    
-	    // Try to find the server record
-	    Server *server = 0;
-	    server = Daemon::getServer(username);
-	    
-	    // Check if we got it
-	    if (!server) {
-# ifdef KINE_DEBUG_EXTENDED
-	       debug("Server not in list; Will add it..");
-# endif
-	       // Create a new server
-	       server = new Server(username, realname, protocol, 1);
-
-	       // Add this server to the server list
-	       Daemon::addServer(server);
-	    } else {
-	       // Check if this server is already connected here
-	       if (server->isLocal()) {
-# ifdef KINE_DEBUG
-		  debug("Server " + username + " is already connected!");
-# endif
-		  getConnection()->goodbye();
-	       }
-# ifdef KINE_DEBUG
-	       else {
-		  debug("Server already in list, fixing local handler...");
-	       }
-# endif
-	    }
-	    
-	    // Okay, try to find a direct link to the handler they need
-	    switch (protocol) {
-# ifdef HAVE_P13SERVER_PROTOCOL
-	     case 13: // P13
-	       // Create the new handler for this user
-	       newHandler = new p13serverHandler(getConnection(), server,
-						 startStamp, linkStamp);
-	       break;
-# endif
-# ifdef KINE_DEBUG
-	     default: // Unknown protocol, sanity check :)
-	       debug("Unknown protocol found, however we should have ditched "
-		     "this connection already - VERY BAD?!?!!!");
-	       return;
-# endif
-	    }
-	    
-	    // Set up the connection name
-	    getConnection()->name = &server->hostname;
-	    
-	    // Fix server handler pointer
-	    if (!server->resetHandler(newHandler)) {
-# ifdef KINE_DEBUG
-	       debug("Server is already connected locally - woops!!");
-# endif
-	       getConnection()->goodbye();
-	       return;
-	    }
-	 } else {
-	    // Dodgey connection, no password...
-# ifdef KINE_DEBUG_EXTENDED
-	    debug("No password, terminating!");
-# endif
-	    getConnection()->goodbye();
-	    return;
-	 }
-	 break;
-#endif
-#ifdef ALLOW_SERVICE_CONNECTIONS
-       case SERVICE:
-	 // We MUST have a password before hitting here.
-	 if (password.length()) {
-	    // Check the password here.
-	    if (false) {
-# ifdef KINE_DEBUG
-	       debug("Invalid password, terminating!");
-# endif
-	       getConnection()->goodbye();
-	       return;
-	    }
-	    
-	    // stuff here!
-	 } else {
-	    // Dodgey connection, no password...
-# ifdef KINE_DEBUG_EXTENDED
-	    debug("No password, terminating!");
-# endif
-	    getConnection()->goodbye();
-	    return;
-	 }
-	 break;
-#endif
-       default:
-	 // Nothing to do here.
-	 return;
-      }
-      
-      // If we got here, we should cross over to the new handler, if we can
-      if (newHandler) {
-	 // Decrease the unknown connection counter
-	 Daemon::numUnknown--;
-	 
-	 // Copy the new handler across
-	 getConnection()->handler = newHandler;
-	 
-	 // Bye bye!
-	 delete this;
-      }
-   }
-#endif
 }
 
 
 /* parseCAPAB - Requested capabilities
- * Original 16/08/01 simonb
+ * Original 16/08/2001 simonb
  * Note: Capability formatting depends on the protocol usually, so we
  *       don't deal with it here but rather just give it to the protocol
  *       handler upon initialisation for it to grok.
  */
-void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
+KINE_LIB_REGISTER_FUNCTION(Register::parseCAPAB)
 {
-   // Make sure we were given at least one parameter
-   if (!(tokens->countTokens() >= 2)) {
-      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-			   "CAPAB :" + 
-			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
+//   // Make sure we were given at least one parameter
+//   if (!(tokens->countTokens() >= 2)) {
+//      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
+//			   "CAPAB :" + 
+//			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
+//      return;
+//   }
+//
+//   /* Run through the requested capabilities list and look for stuff we can
+//    * recognise
+//    */
+//   for (String ability = tokens->nextToken(); ability.length();
+//	ability = tokens->nextToken()) {
+//#ifdef KINE_DEBUG_EXTENDED
+//      debug(" -=>  Capability: " + ability);
+//#endif
+//   }
+}
+
+
+/* parseIIRCN
+ * Original 05/08/2002 simonb
+ */
+KINE_LIB_REGISTER_FUNCTION(Register::parseIIRCN)
+{
+   // Make sure this connection has not already been given a registration mode
+   if (registrationType != RegistrationType::NONE) {
+//      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
+//			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
+//      handler->getConnection()->goodbye();
       return;
    }
 
-   /* Run through the requested capabilities list and look for stuff we can
-    * recognise
-    */
-   for (String ability = tokens->nextToken(); ability.length();
-	ability = tokens->nextToken()) {
-#ifdef KINE_DEBUG_EXTENDED
-      debug(" -=>  Capability: " + ability);
-#endif
-   }
+   // Set the registration mode
+   registrationType = RegistrationType::IIRCN;
 }
 
 
 /* parseNICK
- * Original 12/08/01 simonb
+ * Original 12/08/2001 simonb
  */
-void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
+KINE_LIB_REGISTER_FUNCTION(Register::parseNICK)
 {
-#ifdef ALLOW_CLIENT_CONNECTIONS
+//#ifdef ALLOW_CLIENT_CONNECTIONS
    // Rip the nick out, ignoring anything after a space
-   String nick = tokens->nextToken();
+   String nick = line.nextToken();
    
    // Check we got a nickname from that..
-   if (!nick.length()) {
-      handler->sendNumeric(Numerics::ERR_NONICKNAMEGIVEN, 0, ':' +
-			   Lang::lang(LangTags::L_ERR_NONICKNAMEGIVEN));
+   if (nick.empty()) {
+//      handler->sendNumeric(Numerics::ERR_NONICKNAMEGIVEN, 0, ':' +
+//			   Lang::lang(LangTags::L_ERR_NONICKNAMEGIVEN));
       return;
    }
    
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
-   if (!User::okName(nick)) {
-      handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
-			   nick + " :" +
-			   Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME));
-      return;
-   }
+//   if (!User::okName(nick)) {
+//      handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
+//			   nick + " :" +
+//			   Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME));
+//      return;
+//   }
    
    // Check that the nickname is not used by a service (from service list)
    ///////////////////////////////////////////////////////////////////////
@@ -416,200 +144,198 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    ///////////////////////////////////////////////////////////////////////
    
    // Check for nicks that are not allowed here (from config)
-   String reason = Daemon::failedNickname(nick);
-   if (reason.length()) {
-      handler->
-	sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
-		    nick + " :" + 
-		    Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME) + " (" +
-		    reason + ')');
-      return;
-   }
+//   String reason = Daemon::failedNickname(nick);
+//   if (reason.length()) {
+//      handler->
+//	sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
+//		    nick + " :" + 
+//		    Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME) + " (" +
+//		    reason + ')');
+//      return;
+//   }
    
    // Check that the nickname is not already in use
-   if (Daemon::getUser(nick)) {
-      handler->sendNumeric(Numerics::ERR_NICKNAMEINUSE, 0,
-			   nick + " :" +
-			   Lang::lang(LangTags::L_ERR_NICKNAMEINUSE));
-      return;
-   }
+//   if (Daemon::getUser(nick)) {
+//      handler->sendNumeric(Numerics::ERR_NICKNAMEINUSE, 0,
+//			   nick + " :" +
+//			   Lang::lang(LangTags::L_ERR_NICKNAMEINUSE));
+//      return;
+//   }
    
    // If we got here, the nick was ok - allow it
-   handler->nickname = nick;
-# ifdef KINE_DEBUG_EXTENDED
+   nickname = nick;
+# ifdef KINE_DEBUG_PSYCHO
    debug(" -=>         Nick: " + nick);
 # endif
    
-# ifdef USER_CONNECTION_PINGPONG
-   // Make up some dodgey random stuff with xor!
-   handler->pingpong = 
-     String::printf("%08lX",
-		    ((unsigned long)Daemon::getTime() ^
-		     (unsigned long)(((0xFFFFFFFE + 1.0) * rand()) / 
-				     RAND_MAX)));
+//# ifdef USER_CONNECTION_PINGPONG
+//   // Make up some dodgey random stuff with xor!
+//   handler->pingpong = 
+//     String::printf("%08lX",
+//		    ((unsigned long)Daemon::getTime() ^
+//		     (unsigned long)(((0xFFFFFFFE + 1.0) * rand()) / 
+//				     RAND_MAX)));
    
    // Send a PING out to make sure we are dealing with a 'real' client
-   handler->
-     sendGeneric("NOTICE",
-		 String::printf((char *)Lang::L_PINGPONG_NOTICE,
-				handler->pingpong.c_str(), 
-				handler->pingpong.c_str(),
-				Daemon::myServer()->getHostname().c_str()));
-   handler->getConnection()->sendRaw("PING :" + handler->pingpong + "\r\n");
-# endif
-#else
-   // We are not allowed to accept client connections, so bye bye!
-   handler->getConnection()->goodbye();
-   // ... maybe we should have been a little friendlier?
-#endif
+//   handler->
+//     sendGeneric("NOTICE",
+//		 String::printf((char *)Lang::L_PINGPONG_NOTICE,
+//				handler->pingpong.c_str(), 
+//				handler->pingpong.c_str(),
+//				Daemon::myServer()->getHostname().c_str()));
+//   handler->getConnection()->sendRaw("PING :" + handler->pingpong + "\r\n");
+//# endif
+//#else
+//   // We are not allowed to accept client connections, so bye bye!
+//   handler->getConnection()->goodbye();
+//   // ... maybe we should have been a little friendlier?
+//#endif
 }
 
 
 /* parsePASS
- * Original 31/08/01 simonb
+ * Original 31/08/2001 simonb
  */
-void registerHandler::parsePASS(registerHandler *handler, StringTokens *tokens)
+KINE_LIB_REGISTER_FUNCTION(Register::parsePASS)
 {
-#ifdef STRICT_REGISTRATIONS
-   // Have we already got the password?!
-   if (handler->password.length()) {
+   // Have we already got the password?
+   if (!password.empty()) {
       // Drop this connection..
-      handler->getConnection()->goodbye();
+//      handler->getConnection()->goodbye();
       return;
    }
-#endif
    
    // Grab the password from the line (we do not care if it is blank)
-   handler->password = tokens->nextColonToken();
+   password = line.nextColonToken();
    
-#ifdef KINE_DEBUG_EXTENDED
-   debug(" -=>     Password: " + handler->password);
+#ifdef KINE_DEBUG_PSYCHO
+   debug(" -=>     Password: " + password);
 #endif
 }
 
 
-#ifdef USER_CONNECTION_PINGPONG
 /* parsePONG
- * Original 16/08/01 simonb
+ * Original 16/08/2001 simonb
  */
-void registerHandler::parsePONG(registerHandler *handler, StringTokens *tokens)
+KINE_LIB_REGISTER_FUNCTION(Register::parsePONG)
 {
-   // Grab the pong reply
-   String pongpong = tokens->nextColonToken();
+   // Were we expecting a pong reply?
+   if (pongsLeft == 0) {
+      // Drop this connection..
+//      handler->getConnection()->goodbye();
+      return;
+   }
    
    // Make sure this pong is valid
-   if (pongpong == handler->pingpong) {
-      handler->gotPong = true;
+   if (line.nextColonToken() == pongMatch) {
+      pongsLeft--;
+   }
+   
+   // Do we need to send another pong?
+   if (pongsLeft > 0) {
+      // Send another pong.
    }
 }
-#endif
 
 
 /* parseQUIT
- * Original 12/08/01 simonb
+ * Original 12/08/2001 simonb
  */
-void registerHandler::parseQUIT(registerHandler *handler, StringTokens *tokens)
+KINE_LIB_REGISTER_FUNCTION(Register::parseQUIT)
 {
    // Close the connection. No goodbye or anything
-   handler->getConnection()->goodbye();
+//   handler->getConnection()->goodbye();
 }
 
 
-#ifdef ALLOW_SERVER_CONNECTIONS
 /* parseSERVER
- * Original 12/08/01 simonb
+ * Original 12/08/2001 simonb
  */
-void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens)
+KINE_LIB_REGISTER_FUNCTION(Register::parseSERVER)
 {
-# ifdef STRICT_REGISTRATIONS
    // Make sure this connection has not already been given a registration mode
-   if (handler->regmode > IN_PROGRESS) {
-      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
-			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
-      handler->getConnection()->goodbye();
+   if (registrationType != RegistrationType::NONE) {
+//      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
+//			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
+//      handler->getConnection()->goodbye();
       return;
    }
-# endif
    
    // Check there are enough tokens
-   if (!(tokens->countTokens() >= 7)) {
-      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-			   "SERVER :" +
-			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
+   if (line.countTokens() < 7) {
+//      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
+//			   "SERVER :" +
+//			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
       return;
    }
 
    // Grab the variables
-   handler->username = tokens->nextToken();
-   int hops = tokens->nextToken().toInt();
-   handler->startStamp = tokens->nextToken().toLong();
-   handler->linkStamp = tokens->nextToken().toLong();
-   handler->protocol = String(tokens->nextToken().substr(1)).toInt();
-   handler->realname = tokens->nextColonToken().substr(0, MAXLEN_SERVERDESC);
+   username = line.nextToken();
+   int hops = line.nextToken().toInt();
+   startStamp = line.nextToken().toLong();
+   linkStamp = line.nextToken().toLong();
+   protocol = line.nextToken();
+//   realname = 
+//     line.nextColonToken().substr(0, 
+//				  connection.getDaemon().getConfig().
+//				  getOptionsLimitsServersMaxDescriptionLength());
    
-# ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG_PSYCHO
    // Send what we got to the debugging output
-   debug(" -=>       Server: " + handler->username);
+   debug(" -=>       Server: " + username);
    debug(" -=>         Hops: " + String::convert(hops));
-   debug(" -=>   startStamp: " + String::convert(handler->startStamp));
-   debug(" -=>    linkStamp: " + String::convert(handler->linkStamp) +
-	 " (My time is " + String::convert(Daemon::getTime()) + ')');
-   debug(" -=>     Protocol: " + String::convert(handler->protocol));
-   debug(" -=>         Name: " + handler->realname);
-# endif
+   debug(" -=>   startStamp: " + String::convert(startStamp));
+   debug(" -=>    linkStamp: " + String::convert(linkStamp));
+   debug(" -=>     Protocol: " + protocol);
+   debug(" -=>         Name: " + realname);
+#endif
    
    // Check the integers variables are ok
-   if ((hops != 1) ||
-       (handler->startStamp == 0) ||
-       (handler->linkStamp == 0)) {
-# ifdef KINE_DEBUG_EXTENDED
+   if ((hops != 1) || (startStamp <= 0) || (linkStamp <= 0)) {
+#ifdef KINE_DEBUG_EXTENDED
       debug("Variables are invalid!");
-# endif
-      handler->getConnection()->goodbye();
+#endif
+//      handler->getConnection()->goodbye();
       return;
    }
    
    // Set the registration mode
-   handler->regmode = SERVER;
+   registrationType = RegistrationType::SERVER;
 }
-#endif
 
 
-#ifdef ALLOW_SERVICE_CONNECTIONS
 /* parseSERVICE
- * Original 28/10/01 simonb
+ * Original 28/10/2001 simonb
  */
-void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *tokens)
+KINE_LIB_REGISTER_FUNCTION(Register::parseSERVICE)
 {
-# ifdef STRICT_REGISTRATIONS
    // Make sure this connection has not already been given a registration mode
-   if (handler->regmode > IN_PROGRESS) {
-      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
-			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
-      handler->getConnection()->goodbye();
+   if (registrationType != RegistrationType::NONE) {
+//      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
+//			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
+//      handler->getConnection()->goodbye();
       return;
    }
-# endif
    
    // Check there are enough tokens
-   if (!(tokens->countTokens() >= 7)) {
-      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-			   "SERVICE :" + 
-			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
+   if (line.countTokens() < 7) {
+//      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
+//			   "SERVICE :" + 
+//			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
       return;
    }
 
    // Grab the service name (nickname/whatever)
-   String name = tokens->nextToken();
+   String name = line.nextToken();
 
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
-   if (!User::okName(name)) {
-      handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
-			   name + " :" +
-			   Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME));
-      return;
-   }
-
+//   if (!User::okName(name)) {
+//      handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
+//			   name + " :" +
+//			   Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME));
+//      return;
+//   }
+ 
    // Make sure that the nickname is on the service list
    ///////////////////////////////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////
@@ -619,71 +345,119 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
    ///////////////////////////////////////////////////////////////////////
    
    // Ok, that name should be ok
-   handler->username = name;
+   username = name;
  
-   // Rip out the rest of the variables
-   String res1 = tokens->nextToken(); // ignored.. (RFC-2812: reserved)
-   handler->distribution = tokens->nextToken();
-   String type = tokens->nextToken(); // ignored.. (RFC-2812: type)
-   String res2 = tokens->nextToken(); // ignored (RFC-2812: reserved)
-   handler->realname = tokens->nextColonToken().substr(0, MAXLEN_REALNAME);
+// Rip out the rest of the variables
+   (void)line.nextToken(); // ignored.. (RFC-2812: reserved)
+   distribution = line.nextToken();
+   (void)line.nextToken(); // ignored.. (RFC-2812: type)
+   (void)line.nextToken(); // ignored (RFC-2812: reserved)
+   realname = 
+     line.nextColonToken().substr(0, 
+				  connection.getDaemon().getConfig().
+				  getOptionsLimitsUsersMaxRealNameLength());
    
-# ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG_PSYCHO
    // Send what we got to the debugging output
-   debug(" -=>      Service: " + handler->username);
-   debug(" -=> (reserved 1): " + res1);
-   debug(" -=> Distribution: " + handler->distribution);
-   debug(" -=>       (type): " + type);
-   debug(" -=> (reserved 2): " + res2);
-   debug(" -=>  Information: " + handler->realname);
-# endif
+   debug(" -=>      Service: " + username);
+   debug(" -=> Distribution: " + distribution);
+   debug(" -=>  Description: " + realname);
+#endif
    
    // Set the registration mode
-   handler->regmode = SERVICE;
+   registrationType = RegistrationType::SERVICE;
 }
-#endif
 
 
-#ifdef ALLOW_CLIENT_CONNECTIONS
 /* parseUSER
- * Original 12/08/01 simonb
+ * Original 12/08/2001 simonb
  */
-void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
+KINE_LIB_REGISTER_FUNCTION(Register::parseUSER)
 {
-# ifdef STRICT_REGISTRATIONS
    // Make sure this connection has not already been given a registration mode
-   if (handler->regmode > IN_PROGRESS) {
-      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
-			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
-      handler->getConnection()->goodbye();
+   if (registrationType != RegistrationType::NONE) {
+//      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
+//			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
+//      handler->getConnection()->goodbye();
       return;
    }
-# endif
    
    // Check there are enough tokens
-   if (!(tokens->countTokens() >= 5)) {
-      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-			   "USER :" +
-			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
+   if (line.countTokens() < 5) {
+//      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
+//			   "USER :" +
+//			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
       return;
    }
    
    // Rip the command apart
-   handler->username = tokens->nextToken();
-   handler->modes = tokens->nextToken();
-   (void)tokens->nextToken(); // We ignore this one, we will get our own host
-   handler->realname = 
-     tokens->nextColonToken().substr(0, 
-				     Daemon::getConfig().getOptionsLimitsUsersMaxRealNameLength());
+   username = line.nextToken();
+   modes = line.nextToken();
+   (void)line.nextToken(); // We ignore this one, we will get our own host
+   realname = 
+     line.nextColonToken().substr(0, 
+				  connection.getDaemon().getConfig().
+				  getOptionsLimitsUsersMaxRealNameLength());
 
-# ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG_PSYCHO
    // Output what we got for debugging purposes
-   debug(" -=>         User: " + handler->username);
-   debug(" -=>        Modes: " + handler->modes);
-   debug(" -=>     Realname: " + handler->realname);
-# endif
+   debug(" -=>         User: " + username);
+   debug(" -=>        Modes: " + modes);
+   debug(" -=>     Realname: " + realname);
+#endif
    
    // Set the registration mode
-   handler->regmode = CLIENT;
+   registrationType = RegistrationType::CLIENT;
 }
-#endif
+
+
+/* handleInput - Handle incoming data
+ * Original 11/08/2001 simonb
+ * Note: This could be more efficient :(
+ */
+void Register::handleInput(std::stringstream& data)
+{
+   for (;;) {
+      // Make sure the stream has something left..
+      if (data.peek() == -1) {
+	 return;
+      }
+
+      // Check for special chars..
+      if (data.peek() == '\0') {
+	// Quietly ignore it and move along..
+	(void)data.ignore();
+      } else if ((data.peek() == '\r') || (data.peek() == '\n')) {
+	 // Skip it - we are at the end of a line
+	 (void)data.ignore();
+	 
+	 // If the next char is also a part of it (ie. a \r\n sequence) skip it
+	 if ((data.peek() == '\r') || (data.peek() == '\n')) {
+	    (void)data.ignore();
+	 }
+
+	 // Check if the buffer has something in it (perhaps a command?)
+	 if (!buffer.empty()) {
+	    // Hand the data over to the parser (as a single line
+	    parseLine(buffer);
+	    
+	    // Clear the buffer
+	    buffer.clear();
+	 }
+      } else {
+	 // Just add the char to the buffer
+	 buffer += (char)data.get();
+      }
+   }
+}
+
+
+/* Register - Constructor for the registration mini-protocol class
+ * Original 12/08/2001 simonb
+ */
+Register::Register(Connection& c)
+  : Protocol(c),
+    registrationType(RegistrationType::NONE),
+    pongsLeft(0)
+{
+}

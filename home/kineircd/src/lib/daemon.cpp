@@ -39,12 +39,13 @@ extern "C" {
 #include "kineircd/daemon.h"
 #include "kineircd/version.h"
 #include "debug.h"
+#include "register.h"
 
 using namespace Kine;
 
 
 /* Daemon - Init the server
- * Original 11/08/01 simonb
+ * Original 11/08/2001 simonb
  */
 Daemon::Daemon(Config& conf, Signals& sigs)
   : runlevel(RUNLEVEL_INIT),
@@ -74,7 +75,7 @@ Daemon::Daemon(Config& conf, Signals& sigs)
 
 
 /* ~Daemon - Deinit the server
- * Original 11/08/01 simonb
+ * Original 11/08/2001 simonb
  */
 Daemon::~Daemon(void)
 {
@@ -124,7 +125,9 @@ void Daemon::newConnection(Listener& listener)
    }
    
    // Add the socket to the connections list
-   connections.push_front(new Connection(*this, *newSocket));
+   Connection* newConnection = new Connection(*this, *newSocket);
+   newConnection->setProtocol(*(new Register(*newConnection)));
+   connections.push_front(newConnection);
 }
 
 
