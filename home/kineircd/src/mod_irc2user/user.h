@@ -43,6 +43,13 @@ namespace Kine {
 
 	 // Events we want to know about
 	 void doEventAwayToggle(void);
+	 void doEventChannelJoin(const Channel& channel,
+				 const Client& client);
+	 void doEventChannelPart(const Channel& channel,
+				 const Client& client,
+				 const std::string* const reason);
+	 void doEventChannelTopicChange(const Channel& channel,
+					const Entity& entity);
 	 void doEventLanguageChange(void);
 	 
        public:

@@ -58,6 +58,97 @@ void User::doEventAwayToggle(void)
 }
 
 
+/* doEventChannelJoin - Called when someone (maybe us) is joining a channel
+ * Original 05/05/2003 simonb
+ */
+void User::doEventChannelJoin(const Channel& channel,
+			      const Client& client)
+{
+   static const char* const commandName = "JOIN";
+   
+   protocol.sendMessageFrom(client, commandName,
+			    channel.getName());
+   
+   // If this is us, then we need to send information about the channel
+   if (&client == this) {
+      // Send the names on the channel...
+      protocol.sendNames(channel);
+      
+      // Send the end of names numeric (most important as sendNAMES does not!)
+      protocol.sendNumeric(LibIRC2::Numerics::RPL_ENDOFNAMES,
+			   channel.getName(),
+			   GETLANG(irc2_RPL_ENDOFNAMES));
+
+      // Send the channel mode information
+      protocol.sendNumeric(LibIRC2::Numerics::RPL_CHANNELMODEIS,
+			   channel.getName(),
+			   "+" /* <=- evil; needs to be fixed */);
+
+      // Does this channel have a topic set?
+      if (channel.hasTopic()) {
+	 // Send the channel topic
+	 protocol.sendNumeric(LibIRC2::Numerics::RPL_TOPIC,
+			      channel.getName(),
+			      channel.getTopic());
+	 
+	 // Send the person who set the topic, and the time it was set
+	 protocol.sendNumeric(LibIRC2::Numerics::RPL_TOPICWHOTIME,
+			      channel.getName(),
+			      channel.getTopicChanger(),
+			      channel.getTopicChangeTime().seconds);
+      }
+      
+      // Send the channel creation time
+      protocol.sendNumeric(LibIRC2::Numerics::RPL_CREATIONTIME,
+			   channel.getName(),
+			   channel.getCreationTime().seconds);
+      
+      // Does this channel have a URL?
+      if (channel.hasURL()) {
+	 // Send the channel's URL
+	 protocol.sendNumeric(LibIRC2::Numerics::RPL_CHANNEL_URL,
+			      channel.getName(),
+			      *channel.getURL());
+      }
+   }
+}
+
+
+/* doEventChannelPart - Called when someone (maybe us) is parting a channel
+ * Original 05/05/2003 simonb
+ */
+void User::doEventChannelPart(const Channel& channel,
+			      const Client& client,
+			      const std::string* const reason)
+{
+   static const char* const commandName = "PART";
+   
+   // Send the a part message, depending on whether or not a reason was given
+   if (reason == 0) {
+      protocol.sendMessageFrom(client, commandName,
+			       channel.getName());
+   } else {
+      protocol.sendMessageFrom(client, commandName,
+			       channel.getName(),
+			       *reason);
+   }
+}
+
+
+/* doEventChannelTopicChange - Called when the topic on a channel has changed
+ * Original 05/05/2003 simonb
+ */
+void User::doEventChannelTopicChange(const Channel& channel,
+				     const Entity& entity)
+{
+   static const char* const commandName = "TOPIC";
+
+   protocol.sendMessageFrom(entity.getName(), commandName,
+			    channel.getName(),
+			    channel.getTopic());
+}
+
+
 /* doEventLanguageChange - Called when the language list has been modified
  * Original 16/04/2003 simonb
  */
