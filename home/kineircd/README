@@ -46,8 +46,32 @@
     planned.
 
 
+ 2. Why the name "Kine?"
+    --------------------
+    
+    It may surprise you to know that over time, this question is getting
+    harder to answer. Lately, I've thought to simply forego the explanations
+    and just leave it at a brief statement such as, "well, it's a rather 
+    catch name, isn't it?"
+    
+    However, my pedantism forbids me, somewhat, in doing this, so I will
+    attempt to outline some of the suggested meanings:
+    
+     - "Kine" is old-english for the plural word for "cow" (now, "cows").
+       This makes the word unusual, and suitable for a geeky name. For
+       old-timer IRC'ers, the "cow fad" of the early/mid-1990's would have
+       been recalled instantly.
+       
+     - "Da kine" is "Hawaiian Pidgin," used to replace words which cannot be
+       remembered (or are not known). Oddly enough, I didn't know this fact
+       when I was searching for any old 'thing' to call the package.
+     
+     - Cows (Kine), geese, bison, grubs, wildebeest (gnus), quaggas, gnats,
+       nautili, zebras, and so on; Am I listing various animalia, or subtly
+       listing GNU/GPL projects?
+       
 
- 1. Package requirements
+ 3. Package requirements
     --------------------
     
     The following requirements need to be forfilled for this package to work
@@ -128,7 +152,7 @@
        NET-SNMP can be found at http://net-snmp.sourceforge.net/
        
        
- 2. Configuration of the package
+ 4. Configuration of the package
     ----------------------------
     
     The configuration of the server's compilation time settings can be
@@ -138,10 +162,10 @@
     
     
     
- 3. Building the package
+ 5. Building the package
     --------------------
     
- 4. Installation
+ 6. Installation
     ------------
     
  5. Configuration of the server
