@@ -34,7 +34,7 @@ namespace Kine {
       namespace ServerModes {
          // The masks
          enum type {[+ FOR servermodes +]
-	    [+ (sprintf "%-25s = 0x%08X%s // +%s"
+	    [+ (sprintf "%-25s = 0x%08X%s //!< (+%s)"
 	          (get "name")
 		  (expt 2 (for-index))		; calculate the bitmask
 		  (if (last-for?) " " ",")	; no comma on last iteration

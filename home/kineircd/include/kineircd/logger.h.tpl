@@ -39,10 +39,12 @@ namespace Kine {
       // Bitmask list for a mask (type of log message)
       struct Mask { // <=- should be namespace!
          // The masks
-         enum type {[+ FOR logger_masks "," +]
-	    [+ (sprintf "%-25s = 0x%08X"
+         enum type {[+ FOR logger_masks +]
+	    [+ (sprintf "%-25s = 0x%08X%s //!< %s"
 	          (get "name")
-		  (expt 2 (for-index)))
+		  (expt 2 (for-index))
+		  (if (last-for?) " " ",")
+		  (get "comment"))
              +][+ ENDFOR logger_masks +]
          };
 	 
@@ -56,10 +58,10 @@ namespace Kine {
 
       // The table holding our mask to name to character translations
       struct MaskMapper {
-	 const Mask::type mask;			// The mask
-	 const char character;			// Character for the mask
-	 const char* const name;		// Name of the mask
-	 const char* const nameUpper;		// Name of the mask (uppercase)
+	 const Mask::type mask;			//!< The mask
+	 const char character;			//!< Character for the mask
+	 const char* const name;		//!< Name of the mask
+	 const char* const nameUpper;		//!< Name as above, uppercased
       } static const maskTable[maskTableSize];
 
       // Handy functions for grabbing data in the table above
@@ -76,12 +78,12 @@ namespace Kine {
       	                   const Mask::type mask) = 0;
       
     public:
-      // Constructor
+      //! Constructor
       Logger(const Mask::lazy_type mask)
 	: logMask(mask)
 	{};
 
-      // Destructor
+      //! Destructor
       virtual ~Logger(void) 
 	{};
    
