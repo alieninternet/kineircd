@@ -751,7 +751,13 @@ irc2numerics = {
    numeric	= "256";
    origin	= "RFC1459";
    format	= "<server> :<info>";
-   comment	= "Start of an RPL_ADMIN* reply";
+   comment	= "Start of an RPL_ADMIN* reply. In practise, the server "
+                  "parameter is often never given, and instead the info "
+		  "field contains the text 'Administrative info about "
+		  "<server>'. Newer daemons seem to follow the RFC and output "
+		  "the server's hostname in the 'server' parameter, but also "
+		  "output the server name in the text as per traditional "
+		  "daemons.";
 };
 
 irc2numerics = {
@@ -2096,7 +2102,11 @@ irc2numerics = {
    numeric	= "423";
    origin	= "RFC1459";
    format	= "<server> :<reason>";
-   comment	= "Returned by a server in response to an ADMIN request when no information is available";
+   comment	= "Returned by a server in response to an ADMIN request when "
+                  "no information is available. RFC1459 mentions this in the "
+		  "list of numerics. While it's not listed as a valid reply "
+		  "in section 4.3.7 ('Admin command'), it's confirmed to "
+		  "exist in the real world.";
 };
 
 irc2numerics = {
