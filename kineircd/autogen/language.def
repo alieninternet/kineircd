@@ -210,6 +210,13 @@ tag = {
 };
 
 tag = {
+   name		= "irc2_ERR_TOOMANYMATCHES";
+   components	= "mod_irc2user";
+   data_en	= "There were many matches in your query, the output has been "
+                  "truncated. Consider restricting your query.";
+};
+
+tag = {
    name		= "irc2_ERR_NOMOTD";
    components	= "libkineircd_irc2";
    data_en	= "MOTD File is missing";
