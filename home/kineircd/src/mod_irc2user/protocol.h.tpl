@@ -82,6 +82,20 @@ namespace Kine {
 	   { return &user.getName(); };
 	 
 	 
+	 // Send a numeric (with raw data - I don't like this)
+	 template <class T>
+	   void sendNumericRaw(const LibIRC2::Numerics::numeric_type numeric,
+			       const T& parameters)
+	   {
+	      std::ostringstream output;
+	      output << ':' << config().getOptionsServerName() <<
+		' ' << std::setfill('0') << std::setw(3) << numeric <<
+		' ' << user.getNickname() << ' ' << parameters <<
+		lineTerminator;
+	      sendRawMessage(output.str());
+	   };
+	   
+	   
 	 // Send a numeric
 	 void sendNumeric(const LibIRC2::Numerics::numeric_type numeric)
 	   {

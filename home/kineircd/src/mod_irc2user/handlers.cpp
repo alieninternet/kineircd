@@ -143,7 +143,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
    
    // Check if we weren't given any parameters
    if (parameters.empty()) {
-      mask = replacementCharacter;
+      mask = "*";
    } else {
       // Check if the first char is a '-' (for extended help)
       if (parameters[0][0] == '-') {
@@ -774,8 +774,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleRESTART)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleSERVLIST)
 {
-   // Our mask for service names to match (initially presume everything)
-   StringMask nameMask("*");
+   // Our mask for service names to match
+   StringMask nameMask;
    
    // The type bitmask to match..
    long type = 0;
@@ -789,6 +789,9 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSERVLIST)
 	 // Convert the type integer across
 	 type = std::atol(parameters[1].c_str());
       }
+   } else {
+      // Match everything
+      nameMask = "*";
    }
    
    // Iterate over the list of services
@@ -1182,24 +1185,388 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHO)
 {
    static const char* const commandName = "WHO";
    
-   // Mask of users to match (presume everything, initially)
-   StringMask mask("*");
+   // Mask of users to match
+   StringMask mask;
+   
+   // Stuff that determines how the output is filtered
+   union {
+      struct {
+	 bool operators:1;			// Match IRC operators only
+      };
+      
+      unsigned int conflux;
+   } filterFlags;
+   filterFlags.conflux = 0;
+   
+   // Determine which fields are supposed to be checked for matches
+   union {
+      struct {
+	 bool address:1;			// Match the IP address
+	 bool description:1;			// Match the 'real name' field
+	 bool hostname:1;			// Match the user host
+	 bool nick:1;				// Match the nickname
+	 bool server:1;				// Match the server's name
+	 bool username:1;			// Match the user's name
+      };
+      
+      unsigned int conflux;
+   } matchFlags;
+   matchFlags.conflux = 0;
+   
+   // These determine what gets sent to the user (which fields they want)
+   union {
+      struct {
+	 bool address:1;			// The IP address
+	 bool channelName:1;			// (First) channel's name
+	 bool description:1;			// The user's description field
+	 bool flags:1;				// All of the user's flags
+	 bool hops:1;				// The distance (hop count)
+	 bool hostname:1;			// The hostname
+	 bool idleTime:1;			// The idle time (if its local)
+	 bool nickname:1;			// The nickname
+	 bool queryType:1;			// The query type in the reply
+	 bool server:1;				// The server name
+	 bool username:1;			// The user name (maybe with ~)
+      };
+      
+      unsigned int conflux;
+   } outputFlags;
+   outputFlags.conflux = 0;
+   
+   // The 'query type' field (which may be over-written later)
+   std::string queryType(replacementParameter);
    
    // Were we given a mask?
    if (parameters.size() >= 1) {
-      // Set the mask to the given mask
+      // Copy the given mask over
       mask = parameters[0];
       
       // Options?
       if (parameters.size() >= 2) {
-	 // something..
+	 std::string::size_type pos = (std::string::size_type)-1;
+	 
+	 // Run over the options parameter, and expect filter flags
+	 while ((++pos < parameters[1].length()) &&
+		(parameters[1][pos] != '%') &&
+		(parameters[1][pos] != ',')) {
+	    switch (parameters[1][pos]) {
+	     // Match the hostname field
+	     case 'h':
+	     case 'H':
+	       matchFlags.hostname = true;
+	       continue;
+	       
+	     // Match the address field
+	     case 'i':
+	     case 'I':
+	       matchFlags.address = true;
+	       continue;
+	       
+	     // Match the nickname field
+	     case 'n':
+	     case 'N':
+	       matchFlags.nick = true;
+	       continue;
+
+	     // Filter out IRC operators
+	     case 'o':
+	     case 'O':
+	       filterFlags.operators = true;
+	       continue;
+	       
+	     // Match the description field
+	     case 'r':
+	     case 'R':
+	       matchFlags.description = true;
+	       continue;
+	       
+	     // Match the server name field
+	     case 's':
+	     case 'S':
+	       matchFlags.server = true;
+	       continue;
+
+	     // Match the username field
+	     case 'u':
+	     case 'U':
+	       matchFlags.username = true;
+	       continue;
+	    }
+	 }
+	 
+	 // Do we need to process any output flags?
+	 if (parameters[1][pos] == '%') {
+	    while ((++pos < parameters[1].length()) &&
+		   (parameters[1][pos] != ',')) {
+	       switch (parameters[1][pos]) {
+		// Output the channel name?
+		case 'c':
+		case 'C':
+		  outputFlags.channelName = true;
+		  continue;
+		  
+		// Output the hop count?
+		case 'd':
+		case 'D':
+		  outputFlags.hops = true;
+		  continue;
+		  
+		// Output the flags?
+		case 'f':
+		case 'F':
+		  outputFlags.flags = true;
+		  continue;
+		  
+		// Output the hostname?
+		case 'h':
+		case 'H':
+		  outputFlags.hostname = true;
+		  continue;
+		  
+		// Output the IP address?
+		case 'i':
+		case 'I':
+		  outputFlags.address = true;
+		  continue;
+		  
+		// Output the user's idle time?
+		case 'l':
+		case 'L':
+		  outputFlags.idleTime = true;
+		  continue;
+		  
+		// Output the nickname?
+		case 'n':
+		case 'N':
+		  outputFlags.nickname = true;
+		  continue;
+		  
+		// Output the description field?
+		case 'r':
+		case 'R':
+		  outputFlags.description = true;
+		  continue;
+		  
+		// Output the server name?
+		case 's':
+		case 'S':
+		  outputFlags.server = true;
+		  continue;
+		  
+		// Output the given query type field?
+		case 't':
+		case 'T':
+		  outputFlags.queryType = true;
+		  continue;
+		  
+		// Output the user name?
+		case 'u':
+		case 'U':
+		  outputFlags.username = true;
+		  continue;
+	       }
+	    }
+	 }
+	 
+	 // Do we have a query type field?
+	 if ((parameters[1][pos] == ',') &&
+	     (++pos < parameters[1].length())) {
+	    queryType = parameters[1].substr(pos);
+	 }
       }
+   } else {
+      // Match everything we can.. *sigh*...
+      mask = "*";
    }
-   
+
+   // If we were not given any fields to match, match them all (*sigh*)
+   if (matchFlags.conflux == 0) {
+      matchFlags.conflux = (unsigned int)-1;
+   }
+
    // The number of lines left before we truncate the output
    unsigned int linesLeft = 100; // <=- configuration variable?!
    
-   for (;;) {
+   // Run over the user list
+   for (Registry::users_type::const_iterator it = registry().getUsers().begin();
+	it != registry().getUsers().end();
+	++it) {
+      // Does this user match? (ick, this logic is pretty ugly..)
+      if ((mask != "0") &&
+	  !((matchFlags.address &&
+	     false) ||
+	    (matchFlags.description &&
+	     mask.matches(it->second->getDescription())) ||
+	    (matchFlags.hostname &&
+	     (it->second->hideHostFrom(user) ?
+	      mask.matches(it->second->getVirtualHostname()) :
+	      (mask.matches(it->second->getHostname()) ||
+	       mask.matches(it->second->getVirtualHostname())))) ||
+	    (matchFlags.nick &&
+	     mask.matches(it->second->getNickname())) ||
+	    (matchFlags.server &&
+	     false) ||
+	    (matchFlags.username &&
+	     mask.matches(it->second->getUsername())))) {
+	 // After all that, there was no match..
+	 continue;
+      }
+      
+      // Okay, if we got here the user matches.. Make sure the user can be seen
+      if (it->second->isHidden() && !user.isOperator()) {
+	 continue;
+      }
+      
+      // Check this user against our filters
+      if (filterFlags.operators && !it->second->isOperator()) {
+	 continue;
+      }
+      
+      // Stuff we (may) need
+      const Channel* firstVisibleChannel = 0;
+      std::string flags;
+      
+      // Do we need to assemble flags?
+      if ((outputFlags.conflux == 0) || outputFlags.flags) {
+	 // The user flags start with whether or not the user is here or gone
+	 flags += (it->second->isAway() ? 'G' : 'H');
+	 
+	 // If the user is an IRC operator, they get an asterick (lucky them!)
+	 if (it->second->isOperator()) {
+	    flags += '*';
+	 }
+	 
+	 // If we found a channel, check their membership status for anything..
+	 if (firstVisibleChannel != 0) {
+	    // Find the user's prominent membership status char (if any)
+	    // something.
+	 }
+	 
+	 // If the user is 'deaf' (they have selective hearing), add a 'd'
+	 if (it->second->hasSelectiveHearing()) {
+	    flags += 'd';
+	 }
+      }
+      
+      // Work out if we are giving the user a special output or a 'normal' one
+      if (outputFlags.conflux == 0) {
+	 // Nothing special, return a normal reply a la RFC1459
+	 sendNumeric(LibIRC2::Numerics::RPL_WHOREPLY,
+		     ((firstVisibleChannel != 0) ?
+		      firstVisibleChannel->getChannelName() :
+		      replacementParameter),
+		     it->second->getUsername(),
+		     (it->second->hideHostFrom(user) ?
+		      it->second->getVirtualHostname() :
+		      it->second->getHostname()),
+		     "server.name",
+		     it->second->getNickname(),
+		     flags,
+		     String::convert(it->second->getHopCount()) + ' ' +
+		     it->second->getDescription());
+      } else {
+	 // We must assemble the output specially, in a predetermined order..
+	 std::ostringstream output;
+	 
+	 // Did the user want the query type field?
+	 if (outputFlags.queryType) {
+	    output << queryType;
+	 }
+	 
+	 // Did the user want the channel name field?
+	 if (outputFlags.channelName) {
+	    if (!output.str().empty()) {
+	       output << ' ';
+	    }
+	    output << ((firstVisibleChannel != 0) ?
+		       firstVisibleChannel->getChannelName() :
+		       replacementParameter);
+	 }
+	 
+	 // Did the user want the 'username' field?
+	 if (outputFlags.username) {
+	    if (!output.str().empty()) {
+	       output << ' ';
+	    }
+	    output << it->second->getUsername();
+	 }
+	 
+	 // Did the user want the 'address' field
+	 if (outputFlags.address) {
+	    if (!output.str().empty()) {
+	       output << ' ';
+	    }
+	    output << replacementCharacter; // fix me
+	 }
+	 
+	 // Did the user want the 'hostname' field?
+ 	 if (outputFlags.hostname) {
+	    if (!output.str().empty()) {
+	       output << ' ';
+	    }
+	    output << (it->second->hideHostFrom(user) ?
+		       it->second->getVirtualHostname() :
+		       it->second->getHostname());
+	 }
+	 
+	 // Did the user want the server name field?
+	 if (outputFlags.server) {
+	    if (!output.str().empty()) {
+	       output << ' ';
+	    }
+	    output << "server.name"; // fix me
+	 }
+	 
+	 // Did the user want the nickname field?
+	 if (outputFlags.nickname) {
+	    if (!output.str().empty()) {
+	       output << ' ';
+	    }
+	    output << it->second->getNickname();
+	 }
+	 
+	 // Did the user want the flags?
+	 if (outputFlags.flags) {
+	    if (!output.str().empty()) {
+	       output << ' ';
+	    }
+	    output << flags;
+	 }
+	 
+	 // Did the user want the hop count?
+	 if (outputFlags.hops) {
+	    if (!output.str().empty()) {
+	       output << ' ';
+	    }
+	    output << it->second->getHopCount();
+	 }
+	 
+	 // Did the user want the user's idle time?
+	 if (outputFlags.idleTime) {
+	    if (!output.str().empty()) {
+	       output << ' ';
+	    }
+	    output << ((it->second->getLocalSelf() != 0) ?
+		       (daemon().getTime() -
+			it->second->getLocalSelf()->getLastAwake()).seconds :
+		       0);
+	 }
+	 
+	 // Did the user want the 'real name' field?
+	 if (outputFlags.description) {
+	    if (!output.str().empty()) {
+	       output << ' ';
+	    }
+	    output << ':' << it->second->getDescription();
+	 }
+	 
+	 /* Send the info using a 'special' form (ick, will this break any
+	  * portability issues??)
+	  */
+	 sendNumericRaw(LibIRC2::Numerics::RPL_WHOSPCRPL,
+			output.str());
+      }
+      
       // Is the user is not allowed to match endlessly?
       if (!user.isOperator()) {
 	 // Decrease and check the lines left counter..
