@@ -1,0 +1,144 @@
+/* $Id$
+ *
+ * Copyright (c) 2001,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2003 KineIRCd Development Team
+ * (See DEV-TEAM file for details)
+ *
+ * This file is a part of KineIRCd.
+ * 
+ * KineIRCd is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * KineIRCd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with KineIRCd; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+autogen definitions events;
+
+
+mask = {
+   name		= "CHANNEL_CREATION";
+   comment	= "Channel creation events";
+};
+
+mask = {
+   name		= "CHANNEL_DESTRUCTION";
+   comment	= "Channel destruction events";
+};
+
+mask = {
+   name		= "CHANNEL_MODE_CHANGE";
+   comment	= "Channel mode changes";
+};
+
+mask = {
+   name		= "CHANNEL_TOPIC_CHANGE";
+   comment	= "Channel topic changes";
+};
+
+mask = {
+   name		= "CONFIGURATION_CHANGE";
+   comment	= "Configuration changes (i.e. rehashing, module load/unload)";
+};
+
+mask = {
+   name		= "NETWORK_SIGNOFF";
+   comment	= "Disconnection of a network";
+};
+
+mask = {
+   name		= "NETWORK_SIGNON";
+   comment	= "Connection of a network";
+};
+
+mask = {
+   name		= "SERVER_LINK_UP";
+   comment	= "Server link connection (may be a minor link)";
+};
+
+mask = {
+   name		= "SERVER_LINK_DOWN";
+   comment	= "Server link disconnection (may be a minor link)";
+};
+
+mask = {
+   name		= "SERVER_MODE_CHANGE";
+   comment	= "Server mode changes";
+};
+
+mask = {
+   name		= "SERVER_SIGNOFF";
+   comment	= "Disconnection of a server (no links at all)";
+};
+
+mask = {
+   name		= "SERVER_SIGNON";
+   comment	= "Connection of a server (first link)";
+};
+
+mask = {
+   name		= "SERVICE_SIGNOFF";
+   comment	= "Disconnection of a service";
+};
+
+mask = {
+   name		= "SERVICE_SIGNON";
+   comment	= "Connection of a service";
+};
+
+mask = {
+   name		= "SHUTDOWN";
+   comment	= "IRC Daemon is shutting down";
+};
+
+mask = {
+   name		= "SIGNAL_USER_1";
+   comment	= "User-defined signal 1 called (SIGUSR1)";
+};
+
+mask = {
+   name		= "SIGNAL_USER_2";
+   comment	= "User-defined signal 2 called (SIGUSR2)";
+};
+
+mask = {
+   name		= "USER_AWAY_TOGGLE";
+   comment	= "User setting going away/coming back";
+};
+
+mask = {
+   name		= "USER_LANGUAGE_CHANGE";
+   comment	= "User changing their language preferences";
+};
+
+mask = {
+   name		= "USER_MODE_CHANGE";
+   comment	= "User mode changes";
+};
+
+make = {
+   name		= "USER_SIGNOFF_LOCAL";
+   comment	= "Disconnection of a user (to us, this server)";
+};
+
+mask = {
+   name		= "USER_SIGNOFF_REMOTE";
+   comment	= "Disconnection of a user (on another server)";
+};
+
+mask = {
+   name		= "USER_SIGNON_LOCAL";
+   comment	= "Connection of a user (to us, this server)";
+};
+
+mask = {
+   name		= "USER_SIGNON_REMOTE";
+   comment	= "Connection of a user (on another server)";
+};
