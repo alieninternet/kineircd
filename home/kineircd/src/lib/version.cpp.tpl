@@ -88,7 +88,7 @@ namespace Kine {
        *       copyright).
        */
       const char* const versionInfo[] = {
-[+read-file-as-array file='libkineircd/version.txt'+]	 0
+[+read-file-as-array file='src/libkineircd/version.txt'+]	 0
       };
       
       /* Special version mark thingy whatsit string doohickey.. thingamejig...
