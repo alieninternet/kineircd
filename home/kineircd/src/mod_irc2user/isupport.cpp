@@ -33,6 +33,7 @@
 #include <kineircd/languages.h>
 
 #include "mod_irc2user/isupport.h"
+#include "mod_irc2user/commands.h"
 
 using namespace Kine::mod_irc2user;
 using AISutil::String;
@@ -44,18 +45,41 @@ ISupport* ISupport::instance = 0;
 
 // Our "pre-init" table, which holds ISUPPORT information we always know about
 const char* const ISupport::preInitInfo[] = {
+   "STD=i-d",				// RPL_ISUPPORT standard
    "FNC",				// Forced nickname changes
    "INVEX",				// Channel invite exception lists
    "EXCEPTS",				// Channel ban exception lists
+   "PENALTY",				// Commands have different penalties
    "CHARSET=UTF-8",			// We output using UTF-8 encoding
+   "CASEMAPPING=rfc1459",
    "PREFIX=(.ohv).@%+",
    "CHANTYPES=&#!+.~",
    "CHIDLEN=5",
-   "CHANMODES=beI,k,l,imnpsta",
+#if (defined(HAVE_MOD_IRC2USER_HAVE_CMD_PRIVMSG) || \
+     defined(HAVE_MOD_IRC2USER_HAVE_CMD_NOTICE))
    "STATUSMSG=+%@",
-   "CASEMAPPING=rfc1459",
-   "EXCEPTS",
-   "MODES=0",
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_MODE
+   "CHANMODES=beI,k,l,imnpsta",
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_WALLCHOPS
+   "WALLCHOPS",
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_USERIP
+   "USERIP",
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_CPRIVMSG
+   "CPRIVMSG",
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_CNOTICE
+   "CNOTICE",
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_KNOCK
+   "KNOCK",
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_WHO
+   "WHOX",
+#endif
    0
 };
 
@@ -89,31 +113,55 @@ void ISupport::initInfo(void)
    }
    
    // Tack on information about our configuration
-   info.push_back("NICKLEN=" + 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_NICK
+   info.push_back("NICKLEN=" +
 		  String::convert((int)config().
 				  getLimitsUsersMaxNickNameLength()));
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_TOPIC
    info.push_back("TOPICLEN=" +
 		  String::convert(config().getLimitsChannelsMaxTopicLength()));
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_KICK
    info.push_back("KICKLEN=" +
 		  String::convert(config().getLimitsMaxKickReasonLength()));
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_JOIN
    info.push_back("CHANNELLEN=" +
 		  String::convert(config().getLimitsChannelsMaxNameLength()));
    info.push_back("MAXCHANNELS=" +
 		  String::convert(config().getLimitsUsersMaxChannels()));
-   info.push_back("MAXBANS=" +
-		  String::convert(config().getLimitsChannelsMaxBans()));
+#endif
+#if (defined(HAVE_MOD_IRC2USER_HAVE_CMD_PRIVMSG) || \
+     defined(HAVE_MOD_IRC2USER_HAVE_CMD_NOTICE))
    info.push_back("MAXTARGETS=" +
 		  String::convert((int)config().getLimitsMaxTargets()));
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_SILENCE
    info.push_back("SILENCE=" +
 		  String::convert(config().getLimitsUsersMaxSilences()));
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_ACCEPT
    info.push_back("CALLERID=" +
 		  String::convert(config().getLimitsUsersMaxAccepts()));
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_WATCH
+   info.push_back("WATCH=" +
+		  String::convert(config().getLimitsUsersMaxWatches()));
+#endif
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_MODE
+   info.push_back("MAXBANS=" +
+		  String::convert(config().getLimitsChannelsMaxBans()));
+   info.push_back("MODES=" +
+		  String::convert((int)0)); // <=- fix this
+#endif
 
    // If there's a network name, then append that too
    if (!config().getNetworkName().empty()) {
       info.push_back("NETWORK=" + config().getNetworkName());
    }
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_LANGUAGE
    // Start assembling the language information
    std::ostringstream languageInfo;
    languageInfo <<
@@ -137,4 +185,5 @@ void ISupport::initInfo(void)
 
    // Add it to the list
    info.push_back(languageInfo.str());
+#endif // KINE_MOD_IRC2USER_HAVE_CMD_LANGUAGE
 }
