@@ -30,4 +30,4 @@
 CVSROOT cat >/dev/null
 
 # Default setting
-DEFAULT /cvsbin/austhex/loginfo.sh %{sVv}
+DEFAULT /cvsbin/austhex/loginfo.sh $USER $CVSROOT %{sVv}
