@@ -26,6 +26,7 @@
 
 # include <string>
 # include <aisutil/sha1.h>
+# include <kineircd/entity.h>
 # include <kineircd/client.h>
 
 namespace Kine {
