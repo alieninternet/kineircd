@@ -3378,6 +3378,21 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "ERR_BADCHARENCODING";
+   numeric	= "980";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   format	= "<command> <charset> :<info>";
+   comment	= "Returned by any command which may have had the given data "
+                  "modified because one or more glyphs were incorrectly "
+		  "encoded in the current charset (given). Such a use would "
+		  "be where an invalid UTF-8 sequence was given which may be "
+		  "considered insecure, or defines a character which is "
+		  "invalid within that context. For safety reasons, the "
+		  "invalid character is not returned to the client.";
+};
+
+irc2numerics = {
    name		= "ERR_NOMORELANGS";
    numeric	= "981";
    origin	= "KineIRCd";

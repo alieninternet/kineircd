@@ -78,6 +78,13 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_ERR_BADCHARENCODING";
+   component	= "mod_irc2user";
+   data_en	= "Given text contained one or more incorrectly encoded "
+                  "characters and as been modified.";
+};
+
+tags = {
    name		= "irc2_ERR_BADMASK";
    component	= "mod_irc2user";
    data_en	= "Bad server/host mask";
