@@ -937,13 +937,13 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_GLIST";
    numeric	= "280";
-   origin	= "Undernet";
+   origin	= "ircu";
 };
 
 irc2numerics = {
    name		= "RPL_ENDOFGLIST";
    numeric	= "281";
-   origin	= "Undernet";
+   origin	= "ircu";
    conflict	= "yes";
 };
 
@@ -963,7 +963,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_JUPELIST";
    numeric	= "282";
-   origin	= "Undernet";
+   origin	= "ircu";
    conflict	= "yes";
 };
 
@@ -976,7 +976,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_ENDOFJUPELIST";
    numeric	= "283";
-   origin	= "Undernet";
+   origin	= "ircu";
    conflict	= "yes";
 };
 
