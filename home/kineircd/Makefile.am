@@ -225,7 +225,6 @@ libkineircd_la_SOURCES=\
 	$(KINEIRCD_SOURCE_LIB_DEBUG_H) \
 	src/lib/logger.cpp \
 	src/lib/myserver.cpp \
-	src/lib/myserver.h \
 	src/lib/name.cpp \
 	src/lib/registry.cpp \
 	src/lib/todo.cpp \

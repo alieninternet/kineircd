@@ -25,10 +25,44 @@
 # define _INCLUDE_KINEIRCD_MYSERVER_H_ 1
 
 # include <kineircd/server.h>
+# include <kineircd/config.h>
 
 namespace Kine {
+   //! 'My Server' -- Our server instance, representing ourself
+   class MyServer : public Server {
+    private:
+      //! Our instance
+      static MyServer* instance;
+      
+      //! Constructor
+      MyServer(void);
+      
+    public:
+      //! Destructor
+      ~MyServer(void)
+	{};
+      
+      // Create the single instance of this class
+      static void initInstance(void);
+      
+      //! Return out instance
+      static MyServer& getInstance(void)
+	{ return *instance; };
+      
+      
+      //! Return the server's description
+      const std::string& getDescription(void) const
+	{ return config().getServerDescription(); };
+      
+      //! Return the server we're "connected to" (technically, that's us)
+      Server& getServer(void) const
+	{ return const_cast<MyServer&>(*this); };
+   }; // class MyServer
+
+
    //! Return the 'my' server (the server that is this daemon)
-   extern Server& myServer(void);
+   inline static MyServer& myServer(void)
+     { return MyServer::getInstance(); };
 };
 
 #endif // _INCLUDE_KINEIRCD_MYSERVER_H_

@@ -26,22 +26,15 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
+#include "kineircd/myserver.h"
 #include "kineircd/daemon.h"
-#include "lib/myserver.h"
 #include "lib/debug.h"
 
-using namespace Kine::Internal;
+using namespace Kine;
 
 
 // Our instance...
 MyServer* MyServer::instance = 0;
-
-
-namespace Kine {
-   // Return the instance.. I don't like this though :(
-   Server& myServer(void)
-     { return MyServer::getInstance(); }
-}
 
 
 /* MyServer - Constructor
