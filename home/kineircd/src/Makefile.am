@@ -125,7 +125,7 @@ libkineircd_la_LIBADD=\
 	-laisutil \
 	@ssl_lib@
 
-# Customised .tpl to .cpp rules, since the template and the defs do not match
+# Customised .tpl to .cpp rules
 libkineircd/regnumerics.h: libkineircd/regnumerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
@@ -309,7 +309,7 @@ mod_syslog_la_LDFLAGS=\
 mod_syslog_la_LIBADD=\
 	libkineircd.la
 
-# Customised .tpl to .cpp rules, since the template and the defs do not match
+# Customised .tpl to .cpp rules
 mod_syslog/syslog.cpp: mod_syslog/syslog.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
