@@ -37,19 +37,22 @@
  * then the daemon pointer will be null.
  */
 # define SIGNAL_HANDLER_FUNC(x)	\
-	void x(const int signal, Kine::Signals::mask_type signalMask)
+	void x(const int signal, const Kine::Signals::mask_type signalMask)
 
 namespace Kine {
    class Signals {
     public:
+      // The type of a mask
+      typedef unsigned char mask_type;
+      
       // Signal masks (what you want to receive)
-      enum mask_type {
-	 SIGNAL_USER_1			= 0x01,
-	 SIGNAL_USER_2			= 0x02,
-	 SIGNAL_VIOLENT_DEATH		= 0x04,
-	 SIGNAL_PEACEFUL_DEATH		= 0x08,
-	 SIGNAL_REHASH			= 0x10,
-	 SIGNAL_ALL			= 0xFF // Use this for 'ALL signals'
+      enum {
+	 USER_1			= 0x01,
+	 USER_2			= 0x02,
+	 VIOLENT_DEATH		= 0x04,
+	 PEACEFUL_DEATH		= 0x08,
+	 REHASH			= 0x10,
+	 ALL			= 0xFF // Use this for 'ALL signals'
       };
       
       // This defines your signal handler (must be static) and what to receive

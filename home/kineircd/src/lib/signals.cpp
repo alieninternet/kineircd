@@ -93,7 +93,7 @@ static RETSIGTYPE signalHandler(int signum)
       switch (signum) {
 	 // Rehash
        case SIGHUP:
-	 maskBit = Signals::SIGNAL_REHASH;
+	 maskBit = Signals::REHASH;
 	 break;
 	 
 	 // Violent Death
@@ -121,7 +121,7 @@ static RETSIGTYPE signalHandler(int signum)
 #ifdef SIGXFSZ
        case SIGXFSZ:
 #endif
-	 maskBit = Signals::SIGNAL_VIOLENT_DEATH;
+	 maskBit = Signals::VIOLENT_DEATH;
 	 break;
 	 
 	 // Peaceful death
@@ -129,15 +129,15 @@ static RETSIGTYPE signalHandler(int signum)
        case SIGQUIT:
        case SIGTERM:
        case SIGABRT:
-	 maskBit = Signals::SIGNAL_PEACEFUL_DEATH;
+	 maskBit = Signals::PEACEFUL_DEATH;
 	 break;
 	 
 	 // The user-defined signals
        case SIGUSR1:
-	 maskBit = Signals::SIGNAL_USER_1;
+	 maskBit = Signals::USER_1;
 	 break;
        case SIGUSR2:
-	 maskBit = Signals::SIGNAL_USER_2;
+	 maskBit = Signals::USER_2;
 	 break;
 	 
 	 // Everything else we should have already handled by now!
