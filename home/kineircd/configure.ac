@@ -578,46 +578,6 @@ dnl -------------------------------------------------------------------------
 dnl  Determining compilation configuration parameters
 dnl -------------------------------------------------------------------------
 dnl
-dnl Stuff that effects the following arguments
-dnl
-AC_MSG_CHECKING([lower-cpu parameter])
-AC_ARG_ENABLE(lower-cpu,[
-  --enable-lower-cpu                         (Default is disabled)
-    With this enabled, it will effect the defaults of some of the feature
-    settings below in order to reduce cpu usage. The change will not be
-    very dramatic, however.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     kineircd_test_lower_cpu="yes"
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
- ])
-
-
-AC_MSG_CHECKING([lower-memory parameter])
-AC_ARG_ENABLE(lower-memory,[
-  --enable-lower-memory                      (Default is disabled)
-    With this enabled, like the option above, it will effect the default
-    setting of some of the feature settings below, however this option
-    will reduce any additional memory usage instead. Similar to the option
-    above, this change will not be a dramatic one.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     kineircd_test_lower_memory="yes"
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
- ])
-
-
-dnl
 dnl Misc feature settings
 dnl
 AC_MSG_CHECKING([accept-unknown-langs parameter])
@@ -751,12 +711,8 @@ AC_ARG_ENABLE(convert-motd-tabs,[
      AC_DEFINE(CONVERT_MOTD_TABS)
    fi
  ],[
-   if test "$kineircd_test_lower_cpu" = "yes"; then
-     AC_MSG_RESULT([no (lower-cpu default)])
-   else
-     AC_MSG_RESULT([yes (default)])
-     AC_DEFINE(CONVERT_MOTD_TABS)
-   fi
+   AC_MSG_RESULT([yes (default)])
+   AC_DEFINE(CONVERT_MOTD_TABS)
  ])
 
 AC_MSG_CHECKING([default-config-file parameter])
@@ -820,12 +776,8 @@ AC_ARG_ENABLE(floodlock-accept-msg,[
      fi
    fi
  ],[
-   if test "$kineircd_test_lower_cpu" = "yes"; then
-     AC_MSG_RESULT([off (lower-cpu default)])
-   else
-     AC_MSG_RESULT([120 seconds (default)])
-     AC_DEFINE(FLOODLOCK_ACCEPT_MSG, 120)
-   fi
+   AC_MSG_RESULT([120 seconds (default)])
+   AC_DEFINE(FLOODLOCK_ACCEPT_MSG, 120)
  ])
 
 AC_MSG_CHECKING([floodlock-away-reply parameter])
@@ -852,14 +804,8 @@ AC_ARG_ENABLE(floodlock-away-reply,[
      fi
    fi
  ],[
-   if test "$kineircd_test_lower_cpu" = "yes"; then
-     AC_MSG_RESULT([off (lower-cpu default)])
-   elif test "$kineircd_test_lower_memory" = "yes"; then
-     AC_MSG_RESULT([off (lower-memory default)])
-   else
-     AC_MSG_RESULT([60 seconds (default)])
-     AC_DEFINE(FLOODLOCK_AWAY_REPLY, 60)
-   fi
+   AC_MSG_RESULT([60 seconds (default)])
+   AC_DEFINE(FLOODLOCK_AWAY_REPLY, 60)
  ])
 
 AC_MSG_CHECKING([floodlock-away-set parameter])
@@ -891,12 +837,8 @@ AC_ARG_ENABLE(floodlock-away-set,[
      fi
    fi
  ],[
-   if test "$kineircd_test_lower_memory" = "yes"; then
-     AC_MSG_RESULT([off (lower-memory default)])
-   else
-     AC_MSG_RESULT([45 seconds (default)])
-     AC_DEFINE(FLOODLOCK_AWAY_SET, 45)
-   fi
+   AC_MSG_RESULT([45 seconds (default)])
+   AC_DEFINE(FLOODLOCK_AWAY_SET, 45)
  ])
 
 AC_MSG_CHECKING([floodlock-knock-msg parameter])
@@ -920,12 +862,8 @@ AC_ARG_ENABLE(floodlock-knock-msg,[
      fi
    fi
  ],[
-   if test "$kineircd_test_lower_cpu" = "yes"; then
-     AC_MSG_RESULT([off (lower-cpu default)])
-   else
-     AC_MSG_RESULT([300 seconds (default)])
-     AC_DEFINE(FLOODLOCK_KNOCK_MSG, 300)
-   fi
+   AC_MSG_RESULT([300 seconds (default)])
+   AC_DEFINE(FLOODLOCK_KNOCK_MSG, 300)
  ])
 
 AC_MSG_CHECKING([force-motd parameter])
@@ -1187,12 +1125,8 @@ AC_ARG_ENABLE(time-to-be-idle,[
      fi
    fi
  ],[
-   if test "$kineircd_test_lower_cpu" = "yes"; then
-     AC_MSG_RESULT([off (lower-cpu default)])
-   else
-     AC_MSG_RESULT([30 seconds (default)])
-     AC_DEFINE(TIME_TO_BE_IDLE, 30)
-   fi
+   AC_MSG_RESULT([30 seconds (default)])
+   AC_DEFINE(TIME_TO_BE_IDLE, 30)
  ])
 
 AC_MSG_CHECKING([traceroute parameter])
@@ -1385,12 +1319,8 @@ if test "$kineircd_test_enable_client_protocols" = "yes"; then
          AC_DEFINE(HAVE_IRC2USER_MATCH_COUNTING)
        fi
      ],[
-       if test "$kineircd_test_lower_cpu" = "yes"; then
-         AC_MSG_RESULT([no (lower-cpu default)])
-       else
-         AC_MSG_RESULT([yes (default)])
-         AC_DEFINE(HAVE_IRC2USER_MATCH_COUNTING)
-       fi
+       AC_MSG_RESULT([yes (default)])
+       AC_DEFINE(HAVE_IRC2USER_MATCH_COUNTING)
      ])
   fi
 else
