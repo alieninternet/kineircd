@@ -24,6 +24,9 @@
 #ifndef _INCLUDE_KINEIRCD_RECEIVER_H_
 # define _INCLUDE_KINEIRCD_RECEIVER_H_ 1
 
+# include <kineircd/entity.h>
+# include <kineircd/errors.h>
+
 namespace Kine {
    //! Abstract base class for objects which can receive messages
    class Receiver {
@@ -36,6 +39,17 @@ namespace Kine {
       //! Destructor
       virtual ~Receiver(void)
 	{};
+      
+      //! Send a message from a generic entity
+      virtual const Error::error_type sendMessage(const Entity& from,
+						  const std::string& message)
+	{ return Error::UNSUPPORTED_BY_ENTITY; };
+
+   
+      //! Send a notice from a generic entity
+      virtual const Error::error_type sendNotice(const Entity& from,
+						 const std::string& message)
+	{ return Error::UNSUPPORTED_BY_ENTITY; };
    }; // class Receiver
 }; // namespace Kine
 

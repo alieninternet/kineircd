@@ -26,6 +26,7 @@
 
 # include <aisutil/string/mask.h>
 # include <kineircd/client.h>
+# include <kineircd/errors.h>
 
 namespace Kine {
    //! A service (refinement of a client)
@@ -52,6 +53,12 @@ namespace Kine {
       //! Return the service 'type' bitmask
       const long getServiceType(void) const
 	{ return 0; /* replace this! */ };
+      
+      
+      //! Send a query to this service from a client
+      virtual const Error::error_type sendQuery(const Client& from,
+						const std::string& message)
+	{ return Error::UNSUPPORTED_BY_ENTITY; };
    }; // class Service
 }; // namespace Kine
 
