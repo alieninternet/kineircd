@@ -25,7 +25,7 @@
 [+(dne " * ")+]
  */
 
-#include "libkineircd/language/subst.h"
+#include "lib/language/subst.h"
 
 using namespace Kine::Internal;
  

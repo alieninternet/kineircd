@@ -24,7 +24,7 @@
 #ifndef _SRC_MOD_LIBKINEIRCD_IRC2_LANG_H_
 # define _SRC_MOD_LIBKINEIRCD_IRC2_LANG_H_ 1
 
-# include "libkineircd_irc2/language.h"
+# include "lib_irc2/language.h"
 
 
 // Dodgey macros to grab language stuff

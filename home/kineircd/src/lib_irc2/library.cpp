@@ -26,7 +26,7 @@
 #endif
 
 #include "kineircd/irc2/library.h"
-#include "libkineircd_irc2/language.h"
+#include "lib_irc2/language.h"
 
 namespace {
    // This is the number of time we have been 'referenced'

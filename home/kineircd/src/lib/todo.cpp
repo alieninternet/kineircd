@@ -27,7 +27,7 @@
 #include "kineircd/kineircdconf.h"
 
 #include "kineircd/todo.h"
-#include "libkineircd/debug.h"
+#include "lib/debug.h"
 
 using namespace Kine;
 

@@ -32,7 +32,7 @@
 #include "kineircd/user.h"
 #include "kineircd/registry.h"
 #include "kineircd/myserver.h"
-#include "libkineircd/debug.h"
+#include "lib/debug.h"
 
 using namespace Kine;
 using AISutil::String;

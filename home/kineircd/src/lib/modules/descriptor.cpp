@@ -29,7 +29,7 @@
 #include <ltdl.h>
 
 #include "kineircd/moduledescriptor.h"
-#include "libkineircd/debug.h"
+#include "lib/debug.h"
 
 using namespace Kine;
 using AISutil::String;

@@ -26,8 +26,8 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
-#include "libkineircd/myserver.h"
-#include "libkineircd/debug.h"
+#include "lib/myserver.h"
+#include "lib/debug.h"
 
 using namespace Kine;
 

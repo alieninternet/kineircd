@@ -37,8 +37,8 @@
 #endif
 #include <aisutil/socket/sockets.h>
 
-#include "libkineircd/listener/config.h"
-#include "libkineircd/debug.h"
+#include "lib/listener/config.h"
+#include "lib/debug.h"
 
 using namespace Kine;
 using AISutil::String;

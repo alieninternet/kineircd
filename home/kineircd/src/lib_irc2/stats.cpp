@@ -48,8 +48,8 @@
 #include <kineircd/daemon.h>
 #include <kineircd/languages.h>
 
-#include "libkineircd_irc2/stats.h"
-#include "libkineircd_irc2/lang.h"
+#include "lib_irc2/stats.h"
+#include "lib_irc2/lang.h"
 
 using namespace Kine::LibIRC2;
 using AISutil::String;

@@ -28,7 +28,7 @@
 
 #include "kineircd/connection.h"
 #include "kineircd/daemon.h"
-#include "libkineircd/debug.h"
+#include "lib/debug.h"
 
 using namespace Kine;
 using AISutil::String;

@@ -42,8 +42,8 @@
 #include "kineircd/daemon.h"
 #include "kineircd/config.h"
 #include "kineircd/version.h"
-#include "libkineircd/debug.h"
-#include "libkineircd/myserver.h"
+#include "lib/debug.h"
+#include "lib/myserver.h"
 
 using namespace Kine;
 using AISutil::String;

@@ -25,7 +25,7 @@
 [+(dne " * ")+]
  */
 
-#include "libkineircd/constants.h"
+#include "lib/constants.h"
 
 using namespace Kine;
  

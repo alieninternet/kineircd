@@ -41,7 +41,7 @@ ENDDEF+]
 #include <aisutil/aisutilconf.h>
 
 #include "kineircd/version.h"
-#include "libkineircd/version.h"
+#include "lib/version.h"
 
 namespace Kine {
    namespace Version {
@@ -92,7 +92,7 @@ namespace Kine {
        *       copyright).
        */
       const char* const versionInfo[] = {
-[+read-file-as-array file='src/libkineircd/version.txt'+]	 0
+[+read-file-as-array file='src/lib/version.txt'+]	 0
       };
       
       /* Special version mark thingy whatsit string doohickey.. thingamejig...

@@ -49,8 +49,8 @@
 #include <kineircd/version.h>
 
 #include "kineircd/irc2/protocol.h"
-#include "libkineircd_irc2/lang.h"
-#include "libkineircd_irc2/stats.h"
+#include "lib_irc2/lang.h"
+#include "lib_irc2/stats.h"
 
 using namespace Kine::LibIRC2;
 using AISutil::String;

@@ -32,7 +32,7 @@
 #include "kineircd/channelname.h"
 #include "kineircd/clientname.h"
 #include "kineircd/config.h"
-#include "libkineircd/constants.h"
+#include "lib/constants.h"
 
 using namespace Kine;
 using AISutil::String;

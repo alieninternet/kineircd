@@ -34,8 +34,8 @@
 #include "kineircd/languages.h"
 #include "kineircd/config.h"
 #include "kineircd/myserver.h"
-#include "libkineircd/debug.h"
-#include "libkineircd/language/subst.h"
+#include "lib/debug.h"
+#include "lib/language/subst.h"
 
 using namespace Kine;
 using AISutil::String;

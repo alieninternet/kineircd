@@ -31,8 +31,8 @@
 #include "kineircd/kineircdconf.h"
 
 #include "kineircd/config.h"
-#include "libkineircd/language/config.h"
-#include "libkineircd/listener/config.h"
+#include "lib/language/config.h"
+#include "lib/listener/config.h"
 
 using namespace Kine;
 
