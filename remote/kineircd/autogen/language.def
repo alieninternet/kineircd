@@ -1154,6 +1154,41 @@ tag = {
    data_en	= "Registration timed out";
 };
 
+tag = {
+   name		= "irc2registrar_NOTICE_ANTI_SPOOF_PING_HELP";
+   fields	= "1 = random ping data, 0 = support email address";
+   components	= "mod_irc2registrar";
+   data_en	= "*** If you are having problems connecting due to 'Ping "
+                  "Timeout' errors, please reply manually, eg. type "
+		  "'\\b/quote PING %p0\\b' or '\\b/raw PING %p0\\b'. If you "
+		  "are still having problems, please email %p1 and include "
+		  "the name and version of the software you are using.";
+};
+
+tag = {
+   name		= "irc2registrar_NOTICE_WAIT_DNS_CHECK";
+   components	= "mod_irc2registrar";
+   data_en	= "*** Resolving your hostname...";
+};
+
+tag = {
+   name		= "irc2registrar_NOTICE_WAIT_DNS_FOUND";
+   components	= "mod_irc2registrar";
+   data_en	= "*** Found your hostname";
+};
+
+tag = {
+   name		= "irc2registrar_NOTICE_WAIT_IDENT_CHECK";
+   components	= "mod_irc2registrar";
+   data_en	= "*** Checking your identification...";
+};
+
+tag = {
+   name		= "irc2registrar_NOTICE_WAIT_IDENT_FOUND";
+   components	= "mod_irc2registrar";
+   data_en	= "*** Received identification reply";
+};
+
 
 
 /*****************************************************************************
