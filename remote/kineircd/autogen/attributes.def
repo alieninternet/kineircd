@@ -24,7 +24,7 @@ autogen definitions attributes;
 
 
 chars = {
-   char		= "\\002";
+   char		= "002";
    name		= "Bold";
    description	= "Print text in boldface (some terminals may simply brighten "
                   "the colour of the text instead)";
@@ -32,7 +32,7 @@ chars = {
 };
 
 chars = {
-   char		= "\\003";
+   char		= "003";
    name		= "mIRC Colour";
    description	= "Colour changing sequence (this is the '^C[<fg>[,<bg>]]' "
                   "format created for mIRC)";
@@ -40,7 +40,7 @@ chars = {
 };
 
 chars = {
-   char		= "\\004";
+   char		= "004";
    name		= "RGB Colour";
    description	= "Colour changing sequence (this is the RGB form, "
                   "'^D[RRGGBB[,RRGGBB]]')";
@@ -48,28 +48,28 @@ chars = {
 };
 
 chars = {
-   char		= "\\006";
+   char		= "006";
    name		= "Flash";
    description	= "Flash text";
    langtag_code	= "f";
 };
 
 chars = {
-   char		= "\\007";
+   char		= "007";
    name		= "Beep";
    description	= "Emit a beep or play a predefined sound file";
    langtag_code	= "g";
 };
 
 chars = {
-   char		= "\\017";
+   char		= "017";
    name		= "Reset";
    description	= "Turn off or reset all text attributes";
    langtag_code	= "o";
 };
 
 chars = {
-   char		= "\\026";
+   char		= "026";
    name		= "Reverse";
    description	= "Reverse background/foreground colours (sometimes this will "
                   "only toggle black on white/white on black text)";
@@ -77,7 +77,7 @@ chars = {
 };
 
 chars = {
-   char		= "\\035";
+   char		= "035";
    name		= "Italics";
    description	= "Reverse background/foreground colours (sometimes this will "
                   "only toggle black on white/white on black text)";
@@ -85,7 +85,7 @@ chars = {
 };
 
 chars = {
-   char		= "\\037";
+   char		= "037";
    name		= "Underline";
    description	= "Underline text (some terminals may italicise, discolour, "
                   "or enbold the text)";
