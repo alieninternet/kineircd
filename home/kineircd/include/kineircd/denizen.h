@@ -1,7 +1,7 @@
 /* $Id$
  * 
- * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2003 KineIRCd Development Team
+ * Copyright (c) 2003,2004 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2003,2004 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -149,24 +149,6 @@ namespace Kine {
        * \return The server the denizen is connected to
        */
       virtual Server& getServer(void) const = 0;
-      
-      
-      /*!
-       * \brief Abruptly quit the network
-       *
-       * This marks an unfortunately abrupt disconnection for this denizen
-       * on the network. Most likely, the denizen has been disconnected
-       * for reasons out of our control, such as the physical network
-       * connection being broken, or an unrecoverable protocol error.
-       * 
-       * This should be used \b only for abrupt and uncontrollable problems.
-       * Each entity normally has its own method of leaving the network, and
-       * if the entity is leaving/deregistering normally, those methods must
-       * be used instead.
-       * 
-       * \param reason The reason for this denizen's decampment
-       */
-      virtual void decamp(void) = 0;
    }; // class Denizen
 }; // namespace Kine
 
