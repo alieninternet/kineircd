@@ -28,6 +28,7 @@ extern "C" {
 };
 
 #include "kineircd/moduledescriptor.h"
+#include "debug.h"
 
 using namespace Kine;
 
@@ -53,6 +54,10 @@ ModuleDescriptor::~ModuleDescriptor(void)
 ModuleDescriptor *ModuleDescriptor::loadModule(const String &moduleFile, 
 					       String &errorReturn) 
 {
+#ifdef KINE_DEBUG_PSYCHO
+   debug("ModuleDescriptor::loadModule() - Trying to load " + moduleFile);
+#endif
+   
    // Try and load the given module
    void *moduleHandle = dlopen(moduleFile.c_str(), RTLD_NOW);
    
@@ -81,6 +86,11 @@ ModuleDescriptor *ModuleDescriptor::loadModule(const String &moduleFile,
       return 0;
    }
    
+#ifdef KINE_DEBUG_PSYCHO
+   debug("ModuleDescriptor::loadModule() - Running the init file in " +
+	 moduleFile);
+#endif
+
    // Initialise the module and grab its info!
    const Module *moduleInfo = (*initFunction)();
 
