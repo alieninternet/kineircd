@@ -42,7 +42,7 @@ void ListenerList::startAll(void)
    // Run through the list of modules and call their start functions
    for (listeners_type::iterator it = listeners.begin(); 
 	it != listeners.end(); it++) {
-      if (!(*it).listen()) {
+      if (!(*it)->listen()) {
 #ifdef KINE_DEBUG
 	 debug("ListenerList::startAll() - oops");
 #endif

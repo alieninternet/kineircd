@@ -33,6 +33,12 @@
 namespace Kine {
    class ListenerConfig : public ConfigData {
     private:
+      // The protocol used to locate any service's name in getservbyname()
+      static const char* tcpProtocolName;
+      
+      // The list of definitions for the configuration handler
+      static const ConfigParser::defTable_type classDefs;
+
       // The address to bind to (optional)
       String varAddress;
       
@@ -48,9 +54,6 @@ namespace Kine {
       // Should this port be configured as secure if possible? (SSL etc)
       bool varSecure;
       
-      // The list of definitions for the configuration handler
-      static const ConfigParser::defTable_type classDefs;
-
       // A helper to set the socket up
       bool setupSocket(Socket& socket, String& errString, int port = 0);
       

@@ -36,9 +36,9 @@ namespace Kine {
    class ListenerList {
     private:
 # ifdef KINE_STL_HAS_SLIST
-      typedef std::slist <Listener> listeners_type;
+      typedef std::slist <Listener*> listeners_type;
 # else
-      typedef std::list <Listener> listeners_type;
+      typedef std::list <Listener*> listeners_type;
 # endif
       listeners_type listeners;
 

@@ -24,12 +24,23 @@
 #include "kineircd/kineircdconf.h"
 
 #include <cstdlib>
+#include <cstring>
+#include <cerrno> // temporary
+
+extern "C" {
+#include "netdb.h"
+#include "netinet/in.h"
+};
 
 #include "listener/config.h"
 #include "socket/sockets.h"
 #include "debug.h"
 
 using namespace Kine;
+
+
+// Protocol names used when getting information via getservent()
+const char* ListenerConfig::tcpProtocolName = "TCP";
 
 
 // "LISTEN" class
@@ -115,8 +126,8 @@ bool ListenerConfig::setupSocket(Socket& socket, String& errString, int port)
    if (!varAddress.empty()) {
       if (!socket.setLocalAddress(varAddress)) {
 	 // Delete the socket and complain
-	 delete &socket;
 	 errString = "Invalid socket address '" + varAddress + '\'';
+	 delete &socket;
 	 return false;
       }
    }
@@ -125,8 +136,8 @@ bool ListenerConfig::setupSocket(Socket& socket, String& errString, int port)
    if (port != 0) {
       if (!socket.setLocalPort(port)) {
 	 // Delete the socket and complain
-	 delete &socket;
 	 errString = "Invalid port number '" + varPort + '\'';
+	 delete &socket;
 	 return false;
       }
    }
@@ -134,8 +145,9 @@ bool ListenerConfig::setupSocket(Socket& socket, String& errString, int port)
    // Bind
    if (!socket.bind()) {
       // Delete the socket and complain
+      errString = "Unable to bind on '" + socket.getLocalAddressStr() + '\'';
+cout << " ****** port = " << strerror(errno) << endl;
       delete &socket;
-      errString = "Unable to bind on '" + varAddress + '\'';
       return false;
    }
    
@@ -296,7 +308,7 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
       
       // Add it to the list
       (dataClass.*((ListenerList ConfigData::*)dataVariable)).listeners.
-	push_front(Listener(*socket, flags));
+	push_front(new Listener(*socket, flags));
       return true;
    }
 #endif
@@ -304,59 +316,154 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
    // Try and convert the port number over (note the base variable on strtol())
    char *portEndPtr = 0;
    int port = strtol(config.varPort.c_str(), &portEndPtr, 0);
-
+   bool lookupNames = false;
+   
    // Check if that worked
    if (*portEndPtr != 0) {
-      errString = "bah.";
-      std::cout << "************************** IS TEXT" << std::endl;
-      return false;
-   }
-   
-   // Check the port is greater than 0
-   if (port <= 0) {
-      errString = "Invalid port number '" + config.varPort + '\'';
-//      return false;
-return true; // temporary.
+      /* Mark this boolean true, which tells us (later) that this port needs to
+       * be looked up through the getservent() suite of functions, which
+       * usually means doing a lookup from /etc/services
+       */
+      lookupNames = true;
+   } else {
+      // Check the port is greater than 0
+      if (port <= 0) {
+	 errString = "Invalid port number '" + config.varPort + '\'';
+	 return false;
+      }
    }
 
-#ifdef KINE_DEBUG_PSYCHO
-   debug("Port discovered was " + String::convert(port));
-#endif
-   
-   /* Okay, well the port number was valid, and being a single number we
-    * will only need to create ONE instance of this listener, rather than
-    * look up the port(s) and potentially create multiple instances.
-    */
-   Socket *socket = 0;
-#ifdef KINE_HAVE_SOCKET_IPV4_TCP
-   if (domainType == DOMAIN_IPV4) {
-      socket = new SocketIPv4TCP();
-   } else
-#endif   
-#ifdef KINE_HAVE_SOCKET_IPV6_TCP
-   if (domainType == DOMAIN_IPV6) {
-      socket = new SocketIPv6TCP();
-   } else
-#endif
+   // If we are looking up names, make the protocols file stay open
+   if (lookupNames) {
 #ifdef KINE_HAVE_SOCKET_IPX_SPX
-   if (domainType == DOMAIN_IPX) {
-      socket = new SocketIPXSPX();
-   } else
+      // If the socket domain type is IPX, we cannot accept this.
+      if (domainType == DOMAIN_IPX) {
+	 errString = 
+	   "Unable to look up the given port name, you must specify a number";
+	 return false;
+      };
 #endif
-   { /* explode? */ };
-   
-#ifdef KINE_DEBUG_ASSERT
-   // Make sure we are not insane - we must have gotten a socket here.
-   assert(socket != 0);
-#endif
-   
-   if (!config.setupSocket(*socket, errString, port)) {
-      return false;
+
+      setservent(1);
    }
    
-   // Add it to the list
-   (dataClass.*((ListenerList ConfigData::*)dataVariable)).listeners.
-     push_front(Listener(*socket, flags));
+   // Too many errors for the one poor little error string?
+   unsigned int manyErrors = 0;
+   
+   // We will use this if we are looking up names..
+   servent* serviceEntry = 0;
+   
+   // This will cause us to loop through the protocols list, if necessary
+   for (;;) {
+
+      // Do we need to look up a name?
+      if (lookupNames) {
+	 // Loop until we find something useful..
+	 while ((serviceEntry = getservent()) != 0) {
+	    // First, make sure the protocol is the one we are looking for...
+	    if (!strcasecmp(serviceEntry->s_proto, tcpProtocolName)) {
+	       // Check the primary name..
+	       if (!strcasecmp(serviceEntry->s_name, config.varPort.c_str())) {
+		  // Set the port..
+		  port = ntohs(serviceEntry->s_port);
+	       } else {
+		  // Loop to check the aliases (if any) for a match
+		  for (unsigned int i = 0; serviceEntry->s_aliases[i] != 0;
+		       i++) {
+		     // Check for a match..
+		     if (!strcasecmp(serviceEntry->s_aliases[i],
+				     config.varPort.c_str())) {
+			port = ntohs(serviceEntry->s_port);
+			break;
+		     }
+		  }
+	       }
+	    }
+	    
+	    // If we got a valid port, break the loop
+	    if (port > 0) {
+	       break;
+	    }
+	 }
+	 
+	 // If the loop returned with no service data, break the loop..
+	 if (serviceEntry == 0) {
+	    // Break out of the loop..
+	    break;
+	 }
+      }
+      
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Port discovered was " + String::convert(port));
+#endif
+      
+      /* Okay, well the port number was valid, and being a single number we
+       * will only need to create ONE instance of this listener, rather than
+       * look up the port(s) and potentially create multiple instances.
+       */
+      Socket *socket = 0;
+#ifdef KINE_HAVE_SOCKET_IPV4_TCP
+      if (domainType == DOMAIN_IPV4) {
+	 socket = new SocketIPv4TCP();
+      } else
+#endif   
+#ifdef KINE_HAVE_SOCKET_IPV6_TCP
+      if (domainType == DOMAIN_IPV6) {
+         socket = new SocketIPv6TCP();
+      } else
+#endif
+#ifdef KINE_HAVE_SOCKET_IPX_SPX
+      if (domainType == DOMAIN_IPX) {
+         socket = new SocketIPXSPX();
+      } else
+#endif
+      { 
+	 // explode? we should never reach here to be honest..
+#ifdef KINE_DEBUG
+	 debug("Woops, we hit somewhere we shouldn't have.");
+#endif
+	 abort();
+      };
+   
+#ifdef KINE_DEBUG_ASSERT
+      // Make sure we are not insane - we must have gotten a socket here.
+      assert(socket != 0);
+#endif
+      
+      // Configure the socket...
+      if (!config.setupSocket(*socket, errString, port)) {
+	 // If we are not looking up names, terminate unhappily now..
+	 if (!lookupNames) {
+	    return false;
+	 } else {
+	    manyErrors++;
+	 }
+      }
+      
+      // Add it to the list
+      (dataClass.*((ListenerList ConfigData::*)dataVariable)).listeners.
+	push_front(new Listener(*socket, flags));
+      
+      // If we are not looping through the names, break out now..
+      if (!lookupNames) {
+	 break;
+      } else {
+	 /* We might be looping again.. This time, set the port -2 so we know
+	  * this is not the first port we have discovered from the services
+	  * list..
+	  */
+	 port = -2;
+      }
+   }
+
+   // Check if there were errors we couldn't deal with
+   if (manyErrors > 1) {
+      errString = 
+	"There are some errors, some or all ports many not have been opened.";
+      return false;
+   } else if (manyErrors == 1) {
+      return false;
+   }
    
    // All is well
    return true;

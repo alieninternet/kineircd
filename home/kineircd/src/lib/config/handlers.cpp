@@ -69,13 +69,13 @@ namespace Config {
 	     &defClassLanguages,
 	     0
 	},
-//	{
-//	   "LISTEN",
-//	     (void *)&Config::defListenerList,
-//	     0,
-//	     0,
-//	     &ListenerConfig::classHandler
-//	},
+	{
+	   "LISTEN",
+	     (void *)&Config::defListenerList,
+	     0,
+	     0,
+	     &ListenerConfig::classHandler
+	},
 	{
 	   "LOGGING",
 	     0,
