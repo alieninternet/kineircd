@@ -21,18 +21,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_REGISTER_H_
-# define _SRC_LIB_REGISTER_H_ 1
+#ifndef _SRC_LIB_REGISTRAR_H_
+# define _SRC_LIB_REGISTRAR_H_ 1
 
 # include "kineircd/protocol.h"
 # include "kineircd/listener.h"
 # include "kineircd/str.h"
 
-# define KINE_LIB_REGISTER_FUNCTION(x) \
+# define KINE_LIB_REGISTRAR_FUNCTION(x) \
      void x(Kine::StringTokens& line)
 
 namespace Kine {
-   class Register : public Protocol {
+   class Registrar : public Protocol {
     private:
       Listener& listener;			// The listener who invoked us
       
@@ -64,12 +64,12 @@ namespace Kine {
       String pongMatch;				// Pong string to match
       
       // The type of a handler, for handy use later..
-      typedef KINE_LIB_REGISTER_FUNCTION(handler_type);
+      typedef KINE_LIB_REGISTRAR_FUNCTION(handler_type);
       
       // A list of command parsing functions
       struct commandTable_type {
 	 const char* const command;			// Command name
-	 const handler_type Register::* const handler;	// Parser/Handler
+	 const handler_type Registrar::* const handler;	// Parser/Handler
       } static const commandTable[];
 
       // Appropriately parse a line of protocol
@@ -88,10 +88,10 @@ namespace Kine {
       
     public:
       // Constructor
-      Register(Connection& c, Listener& l);
+      Registrar(Connection& c, Listener& l);
       
       // Destructor
-      ~Register(void)
+      ~Registrar(void)
 	{};
       
       // Handle incoming data
@@ -99,5 +99,5 @@ namespace Kine {
    };
 };
    
-#endif // _SRC_LIB_REGISTER_H_
+#endif // _SRC_LIB_REGISTRAR_H_
    

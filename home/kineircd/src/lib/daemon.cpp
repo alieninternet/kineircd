@@ -39,7 +39,7 @@ extern "C" {
 #include "kineircd/daemon.h"
 #include "kineircd/version.h"
 #include "debug.h"
-#include "register.h"
+#include "registrar.h"
 
 using namespace Kine;
 
@@ -126,7 +126,7 @@ void Daemon::newConnection(Listener& listener)
    
    // Add the socket to the connections list
    Connection* newConnection = new Connection(*this, *newSocket);
-   newConnection->setProtocol(*(new Register(*newConnection, listener)));
+   newConnection->setProtocol(*(new Registrar(*newConnection, listener)));
    connections.push_front(newConnection);
 }
 

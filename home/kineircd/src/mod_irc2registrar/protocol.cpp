@@ -23,23 +23,23 @@
 
 #include "kineircd/kineircdconf.h"
 
-#include "register.h"
+#include "registrar.h"
 #include "debug.h"
 
 using namespace Kine;
 
 
 // Master command table (zero terminated, ordered alphabetically)
-const Register::commandTable_type Register::commandTable[] = {
-     { "CAPAB",		&Register::parseCAPAB },
-     { "IIRCN",		&Register::parseIIRCN },
-     { "NICK",		&Register::parseNICK },
-     { "PASS",		&Register::parsePASS },
-     { "PONG",		&Register::parsePONG },
-     { "QUIT",		&Register::parseQUIT },
-     { "SERVER",	&Register::parseSERVER },
-     { "SERVICE",	&Register::parseSERVICE },
-     { "USER",		&Register::parseUSER },
+const Registrar::commandTable_type Registrar::commandTable[] = {
+     { "CAPAB",		&Registrar::parseCAPAB },
+     { "IIRCN",		&Registrar::parseIIRCN },
+     { "NICK",		&Registrar::parseNICK },
+     { "PASS",		&Registrar::parsePASS },
+     { "PONG",		&Registrar::parsePONG },
+     { "QUIT",		&Registrar::parseQUIT },
+     { "SERVER",	&Registrar::parseSERVER },
+     { "SERVICE",	&Registrar::parseSERVICE },
+     { "USER",		&Registrar::parseUSER },
      { 0, 0 }
 };
 
@@ -47,10 +47,10 @@ const Register::commandTable_type Register::commandTable[] = {
 /* parseLine - Parse an incoming line
  * Original 12/08/2001 simonb
  */
-void Register::parseLine(const String& line)
+void Registrar::parseLine(const String& line)
 {
 #ifdef KINE_DEBUG_PSYCHO
-   debug("Register::parseLine() <- " + line);
+   debug("Registrar::parseLine() <- " + line);
 #endif
    
    bool found = false;
@@ -76,7 +76,7 @@ void Register::parseLine(const String& line)
  *       don't deal with it here but rather just give it to the protocol
  *       handler upon initialisation for it to grok.
  */
-KINE_LIB_REGISTER_FUNCTION(Register::parseCAPAB)
+KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseCAPAB)
 {
 //   // Make sure we were given at least one parameter
 //   if (!(tokens->countTokens() >= 2)) {
@@ -101,7 +101,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseCAPAB)
 /* parseIIRCN
  * Original 05/08/2002 simonb
  */
-KINE_LIB_REGISTER_FUNCTION(Register::parseIIRCN)
+KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
 {
    // Does the port this person connected to accept this type of connection?
    if (!(listener.getFlags() & Listener::Flags::ALLOW_NETWORKS)) {
@@ -126,7 +126,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseIIRCN)
 /* parseNICK
  * Original 12/08/2001 simonb
  */
-KINE_LIB_REGISTER_FUNCTION(Register::parseNICK)
+KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
 {
 //#ifdef ALLOW_CLIENT_CONNECTIONS
    // Rip the nick out, ignoring anything after a space
@@ -207,7 +207,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseNICK)
 /* parsePASS
  * Original 31/08/2001 simonb
  */
-KINE_LIB_REGISTER_FUNCTION(Register::parsePASS)
+KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePASS)
 {
    // Have we already got the password?
    if (!password.empty()) {
@@ -228,7 +228,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parsePASS)
 /* parsePONG
  * Original 16/08/2001 simonb
  */
-KINE_LIB_REGISTER_FUNCTION(Register::parsePONG)
+KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePONG)
 {
    // Were we expecting a pong reply?
    if (pongsLeft == 0) {
@@ -252,7 +252,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parsePONG)
 /* parseQUIT
  * Original 12/08/2001 simonb
  */
-KINE_LIB_REGISTER_FUNCTION(Register::parseQUIT)
+KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseQUIT)
 {
    // Close the connection. No goodbye or anything
    connection.goodbye();
@@ -262,7 +262,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseQUIT)
 /* parseSERVER
  * Original 12/08/2001 simonb
  */
-KINE_LIB_REGISTER_FUNCTION(Register::parseSERVER)
+KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
 {
    // Does the port this person connected to accept this type of connection?
    if (!(listener.getFlags() & Listener::Flags::ALLOW_SERVERS)) {
@@ -325,7 +325,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseSERVER)
 /* parseSERVICE
  * Original 28/10/2001 simonb
  */
-KINE_LIB_REGISTER_FUNCTION(Register::parseSERVICE)
+KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
 {
    // Does the port this person connected to accept this type of connection?
    if (!(listener.getFlags() & Listener::Flags::ALLOW_SERVICES)) {
@@ -397,7 +397,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseSERVICE)
 /* parseUSER
  * Original 12/08/2001 simonb
  */
-KINE_LIB_REGISTER_FUNCTION(Register::parseUSER)
+KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
 {
    // Does the port this person connected to accept this type of connection?
    if (!(listener.getFlags() & Listener::Flags::ALLOW_USERS)) {
@@ -447,7 +447,7 @@ KINE_LIB_REGISTER_FUNCTION(Register::parseUSER)
  * Original 11/08/2001 simonb
  * Note: This could be more efficient :(
  */
-void Register::handleInput(std::stringstream& data)
+void Registrar::handleInput(std::stringstream& data)
 {
    for (;;) {
       // Make sure the stream has something left..
@@ -484,10 +484,10 @@ void Register::handleInput(std::stringstream& data)
 }
 
 
-/* Register - Constructor for the registration mini-protocol class
+/* Registrar - Constructor for the registration mini-protocol class
  * Original 12/08/2001 simonb
  */
-Register::Register(Connection& c, Listener& l)
+Registrar::Registrar(Connection& c, Listener& l)
   : Protocol(c),
     listener(l),
     registrationType(RegistrationType::NONE),
