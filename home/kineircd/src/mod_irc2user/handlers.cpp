@@ -169,6 +169,25 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 }
 
 
+/* handlePING
+ * Original 25/08/2001 simonb
+ * 03/04/2001 simonb - Imported from old code
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
+{
+   // If we were given a parameter, send it back (simple as that!)
+   if (!parameters.empty()) {
+      sendMessage("PONG",
+		  parameters[0]);
+      return;
+   }
+   
+   // Umm, return a complaint as per standards, even if it is technically wrong
+   sendNumeric(LibIRC2::Numerics::ERR_NOORIGIN,
+	       GETLANG(irc2_ERR_NOORIGIN));
+}
+
+
 /* handleVERSION
  * Original 24/08/2001 simonb
  * 03/04/2001 simonb - Imported from old code
