@@ -74,7 +74,8 @@ namespace Kine {
        * necessary.
        * 
        * \return The validity of the name
-       * \retval Kine::Error::NO_ERROR The name is considered to be valid
+       * \retval Kine::Error::NO_ERROR
+       *    The name is considered to be valid
        */
       virtual const Error::error_type checkValidity(void) const = 0;
    }; // class Name
