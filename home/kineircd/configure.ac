@@ -431,7 +431,7 @@ AC_CACHE_CHECK([for an SGI compliant slist<> in your STL],
 if test "$kineircd_cv_lib_stl_sgi_slist" = "yes"; then
   AC_SUBST(KINEIRCD_DEFINE__KINE_STL_HAS_SLIST,
            ["# define KINE_STL_HAS_SLIST 1"])
-  AC_DEFINE(KINEIRCD_DEFINE__KINE_STL_HAS_SLIST, 1,
+  AC_DEFINE(KINE_STL_HAS_SLIST, 1,
             [Define if your C++ STL has an SGI-compatible slist<> template])
 else	  
   AC_SUBST(KINEIRCD_DEFINE__KINE_STL_HAS_SLIST,
@@ -500,7 +500,7 @@ AM_CONDITIONAL(KINEIRCD_COMPILE_LIB_CONFIG_OLDCONFIG,
 if test "$kineircd_test_old_config_subparser" = "yes"; then
   AC_SUBST(KINEIRCD_DEFINE__KINE_OLD_CONFIG_SUBPARSER,
            ["# define KINE_OLD_CONFIG_SUBPARSER 1"])
-  AC_DEFINE(KINEIRCD_DEFINE__KINE_OLD_CONFIG_SUBPARSER, 1,
+  AC_DEFINE(KINE_OLD_CONFIG_SUBPARSER, 1,
             [Define if you wish to compile the old-style config parser])
 else	  
   AC_SUBST(KINEIRCD_DEFINE__KINE_OLD_CONFIG_SUBPARSER,
