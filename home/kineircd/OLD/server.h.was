@@ -1,0 +1,64 @@
+/* src/include/server.h
+ * User class
+ */
+
+#ifndef __SERVER_H_
+# define __SERVER_H_
+
+class Server;
+
+# include "handler.h"
+# include "str.h"
+# include "modes.h"
+
+# define SERVERFLAG_STAR	0x0001		// Star topology?
+# define SERVERFLAG_TENDRIL	0x0002		// Link is a 'tendril'?
+
+typedef unsigned short TYPE_SERVERFLAGS;
+
+class Server {
+ public:
+   String hostname;				// Server hostname
+   String description;				// Server description
+   TYPE_SERVERFLAGS flags;			// Server flags
+   TYPE_SERVERMODES modes;			// Server modes
+   Handler *handler;				// Link into user handler
+   unsigned char numHops;			// Number of hops away
+   unsigned long numUsers;			// Number of users connected
+
+ public:
+   // Constructors
+   Server(void)
+     : hostname(""), 
+       description(""), 
+       flags(0), 
+       modes(0), 
+       handler(0),
+       numHops(0),
+       numUsers(0)
+     {};
+   
+   Server(String const &ho, String const &d, unsigned char hops)
+     : hostname(ho),
+       description(d),
+       flags(0),
+       modes(0),
+       handler(0),
+       numHops(hops),
+       numUsers(0)
+     {};
+
+   // Copy constructor
+   Server(Server const &s)
+     : hostname(s.hostname),
+       description(s.description),
+       flags(s.flags),
+       modes(s.modes),
+       handler(s.handler),
+       numHops(s.numHops),
+       numUsers(s.numUsers)
+     {};
+};
+
+#endif
+

@@ -1,0 +1,55 @@
+/* src/include/operator.h
+ * Operator class
+ */
+
+#ifndef __OPERATOR_H_
+# define __OPERATOR_H_
+
+# include "str.h"
+
+/* Note that the nickname of the operator is stored as the key of the map
+ * that uses this structure
+ */
+
+class Operator {
+ private:
+   String const name;				// Name of this operator
+   String const password;			// Password
+   bool const global;				// Global?
+
+ public:
+   // Constructor   
+   Operator(String const &n, String const &p, bool g)
+     : name(n),
+       password(p),
+       global(g)
+     {};
+   
+   // Copy Constructor
+   Operator(Operator const &o)
+     : name(o.name),
+       password(o.password),
+       global(o.global)
+     {};
+   
+   // Return the operator name (description)
+   String const &getName(void) const
+     {
+	return name;
+     };
+   
+   // Return the password string
+   String const &getPassword(void) const
+     {
+	return password;
+     };
+   
+   // Return whether or not this operator is global
+   bool isGlobal(void) const
+     {
+	return global;
+     };
+};
+
+#endif
+

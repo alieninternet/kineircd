@@ -1,0 +1,223 @@
+/* src/include/user.h
+ * User class
+ */
+
+#ifndef __USER_H_
+# define __USER_H_
+
+# include <time.h>
+# include <map.h>
+
+# ifdef STL_HAS_HASH
+#  include <hash_set>
+# else
+#  include <set.h>
+# endif
+
+# ifdef STL_HAS_SLIST
+#  include <slist>
+# else
+#  include <list.h>
+# endif
+
+class User;
+class LocalUser;
+
+# include "daemon.h"
+# include "str.h"
+# include "modes.h"
+# include "server.h"
+# include "channel.h"
+# include "handler.h"
+
+
+// Main user class
+class User {
+ public:
+   // DO NOT CHANGE THIS! P14 relies on it!!!
+   typedef unsigned long long modes_t;
+   typedef map <String, Channel *> channel_map_t;
+# ifdef STL_HAS_SLIST
+   typedef slist <StringMask> silence_list_t;
+# else
+   typedef list <StringMask> silence_list_t;
+# endif
+   
+ public:
+   String nickname;				// User nickname
+   String username;				// User name
+   String hostname;				// Host name
+   String vwhostname;				// Virtual world host name
+   String realname;				// User real name
+   modes_t modes;				// User modes
+   
+   time_t signonTime;				// Time user signed on
+   time_t lastNickChange;			// Last nickname change
+
+   String awayMessage;				// /AWAY message
+   unsigned char status;			// Status
+   
+   Server *server;				// Server user is connected to
+   LocalUser *local;				// Link into local user class
+   
+   channel_map_t channels;			// Channels this user is on
+   
+   silence_list_t silences;			// Silence list
+
+ public:
+   // Constructor
+   User(String const &nick, String const &user, String ip, String host, 
+	String vwhost, String real, time_t signon, Server *serv,
+	TYPE_USERMODES mode = 0, unsigned char stat = 0)
+     : nickname(nick),
+       username(user),
+       hostname(host),
+       vwhostname(vwhost),
+       realname(real),
+       modes(mode),
+       signonTime(signon),
+       lastNickChange(signonTime),
+       awayMessage(""),
+       status(stat),
+       server(serv),
+       local(0)
+     {
+	channels.clear();
+	silences.clear();
+     };
+   
+   // Destructor
+   ~User(void)
+     {
+	channels.clear();
+	silences.clear();
+     };
+
+   // Access checking
+   bool showVW(User *destination)
+     {
+	if (isOper(destination) ||
+	    !(modes & USERMODE_VWORLD) ||
+	    this == destination) {
+	   return false;
+	}
+	return true;
+     };
+   
+   static bool const isOper(User *u)
+     {
+	return ((u->modes & USERMODE_GLOBALOPER) ||
+		(u->modes & USERMODE_LOCALOPER));
+     };
+   
+   static bool const isGlobalOper(User *u)
+     {
+	return (u->modes & USERMODE_GLOBALOPER);
+     };
+
+   static bool const isHelper(User *u)
+     {
+	return ((u->modes & USERMODE_HELPER) ||
+		(u->modes & USERMODE_GLOBALOPER) ||
+		(u->modes & USERMODE_LOCALOPER));
+     };
+      
+   // Variable access
+   String getAddress(User *destination)		// Return appropriate address
+     { 
+	return (showVW(destination) ? getVWAddress() : getAddress());
+     };
+   
+   String getAddress(void)			// Return address (x!y@z)
+     {
+	return (nickname + "!" + username + "@" + hostname);
+     };
+   
+   String getVWAddress(void)			// Above, but w/ virtual-world
+     {
+	return (nickname + "!" + username + "@" + vwhostname);
+     };
+
+   String getHost(User *destination)
+     {
+	return (showVW(destination) ? vwhostname : hostname);
+     };
+   
+   String getHost(void) const			// Return hostname
+     {
+	return hostname;
+     };
+   
+   String getVWHost(void) const			// Return vworld hostname
+     {
+	return vwhostname;
+     };
+   
+   Channel *getChannel(String *);		// Return a channel
+
+   void markAway(String *);			// Set/Unset away message
+   
+   bool isSilencing(User *);			// Silencing a user?
+};
+
+
+// Locally connected user class
+class LocalUser {
+ public:
+# ifdef STL_HAS_HASH
+   typedef hash_set <String> watch_set_t;
+# else
+   typedef set <String> watch_set_t;
+# endif
+
+ public:
+   User *user;					// Link into main user class
+   Handler *handler;				// Link into user handler
+
+   snotice_bitmask_t serverNotices;		// Server notices to receive
+   
+   watch_set_t watches;				// Watching these nicknames
+ 
+ public:
+   // Constructor
+   LocalUser(User *u, Handler *h)
+     : user(u),
+       handler(h),
+       serverNotices(0)
+     {
+	watches.clear();
+     };
+   
+   // Destructor
+   ~LocalUser(void)
+     {
+	watches.clear();
+     };
+
+   // Add to the watch list
+   void addWatch(const String &target)
+     {
+	watches.insert(target);
+     };
+   
+   // Remote from the watch list
+   void delWatch(const String &target)
+     {
+	watches.erase(target);
+     };
+   
+   // Wipe the watches list
+   void wipeWatches(void)
+     {
+	watches.clear();
+     };
+   
+   // Check for a watched nick
+   bool watching(String const &target)
+     {
+	return ((watches.find(target) != watches.end()) ? true : false);
+     };
+};
+
+#endif
+

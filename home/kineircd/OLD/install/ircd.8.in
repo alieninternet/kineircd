@@ -1,0 +1,40 @@
+.\" ./src/doc/ircd.8.in
+.\" AustHex IRC Daemon Manual Page
+.\" Author: Simon Butcher <pickle@austnet.org>
+.\" 
+.TH ircd 8 "10 Sep 2001" ""
+.\" -----------------------------------------------------------------
+.SH NAME
+.B ircd
+- AustHex Internet Relay Chat Daemon (server)
+.\" -----------------------------------------------------------------
+.SH SYNOPSIS
+.B ircd
+.RB [ options ]
+.\" -----------------------------------------------------------------
+.SH DESCRIPTION
+The Internet Relay Chat blah blah. Need to write this, obviously
+.\" -----------------------------------------------------------------
+.SH OPTIONS
+.TP
+.B -h
+Displays information on command line options
+.\" -----------------------------------------------------------------
+.SH FILES
+.TP
+.B @IRCD_ETC@/@CONF_FILE@
+Main server configuration file
+.TP
+.B @IRCD_ETC@/@MOTD_FILE@
+MOTD (Message Of The Day) file, displayed upon user connection
+.\" -----------------------------------------------------------------
+.SH BUGS
+Please report all bugs, abnormal behaviour or feature requests to
+.SB dev@austnet.org
+.\" -----------------------------------------------------------------
+.SH COPYING
+Copyright information here :)
+.\" -----------------------------------------------------------------
+.SH "SEE ALSO"
+.BR ircpasswd (8),
+.BR @CONF_FILE@ (5)

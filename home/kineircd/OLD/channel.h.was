@@ -1,0 +1,144 @@
+/* src/include/channel.h
+ * Channel class
+ */
+
+#ifndef __CHANNEL_H_
+# define __CHANNEL_H_
+
+# include <time.h>
+
+# ifdef STL_HAS_HASH
+#  include <hash_map>
+# else
+#  include <map.h>
+# endif
+
+# ifdef STL_HAS_SLIST
+#  include <slist>
+# else
+#  include <list.h>
+# endif
+
+class Channel;
+class ChannelMember;
+
+# include "str.h"
+# include "user.h"
+# include "handler.h"
+# include "modes.h"
+
+
+// A channel member class
+class ChannelMember {
+ public:
+   User *user;					// Link into user record
+   TYPE_CHANMEMMODES modes;			// User modes on channel
+
+ public:
+   // Constructors
+   ChannelMember(void)
+     : user(0),
+       modes(0)
+     {};
+   
+   ChannelMember(User *u, TYPE_CHANMEMMODES m = 0)
+     : user(u),
+       modes(m)
+     {};
+};
+
+
+// A channel mask (+b/+d/+e/+I etc)
+class ChannelMask {
+ public:
+   StringMask mask;				// The actual mask
+   String whoset;				// Nick/server who set this
+   time_t whenset;				// Time this was set
+
+ public:
+   // Constructors
+   ChannelMask(StringMask sm, String *who, time_t when)
+     : mask(sm),
+       whoset(*who),
+       whenset(when)
+     {};
+};
+
+
+// THE channel class
+class Channel {
+ public:
+# ifdef STL_HAS_HASH
+   typedef hash_map <String, ChannelMember *> member_map_t;
+# else
+   typedef map <String, ChannelMember *> member_map_t;
+# endif
+
+# ifdef STL_HAS_SLIST
+   typedef slist <ChannelMask *> mask_list_t;
+# else
+   typedef list <ChannelMask *> mask_list_t;
+# endif
+   
+ public:
+   String name;					// Name of the channel + prefix
+   TYPE_CHANMODES modes;			// Channel mode flags
+   time_t creationTime;				// Time channel was created
+
+   String topic;				// Channel topic
+   String topicWho;				// Who set this topic
+   time_t topicTime;				// When was this topic set
+   
+   String key;					// Channel key, blank for none
+   unsigned long limit;				// Member limit, 0 for none
+
+   mask_list_t bans;				// Ban list
+   mask_list_t exceptions;			// Ban exceptions list
+   mask_list_t invites;				// Invite allowance list
+
+   member_map_t members;			// List of channel members
+
+   Daemon *daemon;				// Hook back into the daemon
+
+ public:
+   // Constructor
+   Channel(String const &n, time_t ct, Daemon *d)
+     : name(n),
+       modes(0),
+       creationTime(ct),
+       topic(""),
+       topicWho(""),
+       topicTime(0),
+       key(""),
+       limit(0),
+       daemon(d)
+     {
+	bans.clear();
+	exceptions.clear();
+	invites.clear();
+	members.clear();
+     };
+
+   ~Channel(void);   				// Destructor
+
+   // Access checking
+   static bool isHidden(Channel *c)
+     {
+	return ((c->modes & CHANMODE_PRIVATE) ||
+		(c->modes & CHANMODE_SECRET));
+     };
+   
+   ChannelMember *getMember(User *);		// Grab a channel member record
+   void processModes(Handler *, User *, 
+		     String *, StringTokens *);	// Process a MODE change
+   
+   bool onBan(User *);				// Is a user banned
+   bool onBanExcept(User *);			// Is a user ban excepted
+   bool onInvite(User *);			// Is a user 'auto-invited'
+   
+   void sendNotice(User *, String *);		// Send a NOTICE to this chan
+   void sendPrivmsg(User *, String *);		// Send a PRIVMSG to this chan
+};
+
+#endif
+

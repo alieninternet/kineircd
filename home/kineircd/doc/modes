@@ -1,0 +1,249 @@
+(last edited 21/08/01)
+
+OK OK! Finally I've written this to compile a list of modes that austhex
+knows and some descriptions of what they do, how they work. Hopefully this
+should make more sense to the bitwise illiterate :)
+
+Before I continue, some things you need to know. An 'identity mask' is a
+mask in the form of nickname!username@hostname, eg *!*@* is the same as *
+(everyone). foo!*@* is the nickname 'foo' from anywhere, *!*@*.aol.com is
+the whole of aol.com :) 
+
+
+____________________________________________________________________________
+Channel modes, or chanmodes:
+
+a - Anonymous
+Sets the channel as 'anonymous'. Here we follow the RFC formulation of this
+rather than the hybrid concept (which hides ops only). Everyone on the
+channel who can speak will have their output to other users changed so that
+it is coming from an anonymous source, so the PRIVMSG to the channel comes
+from the'anonymous!anonymous@anonymous' identity mask. Good for.. well I
+don't know, but people like having it, even for a laugh :) It could have its
+purpose with 'anonymous voting' or something..
+
+b - Ban (has parameter - identity mask to ban)
+Ban a mask from the channel, we all know this one.
+
+d - Deny (has parameter - 'real name' mask)
+Quickly becoming a 'standard' to complete bans - this is a mask to ban via
+'real names'. Eg. if you had a bunch of clones joining a channel all with
+different nicknames, usernames and host names, what can you do? Oh wait,
+their realnames are all "I h/\V3 aN 3l|+3 scR|pt0Rzzz" - then you can ban
+that with /mode #channel +d *3l|+3* would do the job. 
+
+e - Ban Exception (has parameter - identity mask to make exempt ban)
+New to austnet, this is a ban exception identity mask. Say you did /mode
+#channel +b *!*@*, this bans everyone. You can then do /mode #channel +e
+mymate!*@* to allow someone with the name 'mymate' into the channel,
+essentially an exception to the original ban rule.. Get it? :)
+
+E - Channel Event
+Original austnet feature. When set, people in the channel who are not
+opped/halfopped/voiced cannot change their nickname. It's rumoured to set
+off fireworks in some middle-eastern country when the mode is set, but no
+firm reports have come in..
+
+h - Half Oper (has parameter - nickname of person to half-op)
+Half opers! Why? What are they? They've appeared all over the place, and they
+do have a purpose and will no doubt appear in the next RFC (probably
+scheduled to be worse than the year 2000 one, and arrive just as late and
+remain just as outdated) Basically they're oppers, chopped roughly in half
+access wise. That is, chopped in half by someone who has a lot of trouble
+seeing, since they really have all the same access a full oper has except
+for a few small things. They cannot kick a full oper, they cannot remove ops
+from a full oper. Think of them as "your mate as an oper, but without the
+power to become a channel take over prick" :)
+
+i - Invite Only Channel
+We all know this one, when set users must be invited to the channel via
+/INVITE to gain access, unless they have...
+
+I - Invite Exception (has parameter - identity mask to make exempt of the +i)
+These little blighters are a way around channels which are invite only (+i).
+Say you did /mode #channel +i, but you had a friend who goes a little insane
+when he has to ask to be invited into your channel all the time. Do a
+/mode #channel +I friend!*@* and 'friend' is allowed in without having to be
+invited.
+
+k - Channel key (has parameter - channel 'password' or 'key')
+Lock the channel up with a password! /mode #channel +k password
+Users joining the channel must specify the key to join, and turning the key
+off requires the key to be the same as the one set.
+
+l - Channel user limit (has parameter - number of users to limit to)
+Limit the number of people in the channel; /mode #channel +l 1234 limits the
+channel to 1234 people. When the channel reaches 1234 people, access is
+denied.
+(Note: I need to check if +I people can get around this?)
+
+m - Moderated
+In a moderated channel, only opers/halfopers/voiced people can talk.
+Everyone else can just listen :)
+
+n - No outside messages
+This stops messages from outside of the channel being sent in. If a channel
+does not have +n set then someone who is not on the channel can easily /msg
+it. With this on, only people in a channel (who can talk) are allowed to
+send messages to a channel
+
+o - Channel operator (has parameter - nickname to oper)
+Make someone a full channel operator
+
+O - Channel creator
+Cannot currently be modified, except by servers. This specifies someone as a 
+channel creator. Planned to be used in the future, damned sketchy RFC's :(
+
+p - Private channel
+Mark the channel as 'private'.
+Unlike other ircd's this can be used with +s at the same time
+
+q - Quiet channel
+Channels with +q receive no joins/parts/quits, hense 'quiet'. Only
+PRIVMSG/NOTICE's can be sent/received to/from these channels. This cannot be
+toggled at this point in time, except by servers.
+
+R - Registered nicknames only
+With this set, only people who have registered nicknames and are identified
+are allowed to join the channel.
+
+s - Secret channel
+Mark the channel as 'secret'.
+Unlike other ircd's this can be used with +p at the same time.
+
+t - Topic lock
+Topic is locked and can only be set by servers/opers/half-opers.
+
+v - Voice (has parameter - identity mask of person to give voice to)
+Give someone a 'voice'; allows them to talk while the channel is +m, and
+also allows them to change their nicknames during a channel event (+E)
+
+
+____________________________________________________________________________
+User Modes, or umodes as everyone likes to call them:
+
+d - Deaf
+Deaf. Cannot hear what's happening on channels, but can receive private
+messages.
+
+g - Ignoring (or 'Caller-ID')
+Magic ircd-hybrid ignoring thing. Hybrid call it caller id because that's
+how it works. With +g you ignore EVERYONE (except services/opers/channels etc)
+and to listen to certain people you just use the ACCEPT command to add a
+nick name. This is a reverse of dalnet/undernet's command 'SILENCE' which
+also exists in austhex8.
+
+h - Helper
+Cannot be set, can be unset. Designates a user as a 'helper' on the network.
+
+k - Non-Kick/Deop/Killable
+Cannot be toggled; Only servers can change this. Users posessing this flag
+are immune from kicks/deops/kills
+
+i - Invisible
+umm.. invisible :)
+
+I - Identified
+Cannot be set, cannot be unset. Can only be changed by a server (eg.
+services.austnet.org)
+
+n - No IDENTD reply
+Cannot be toggled, set upon connection determined by identd responce.
+
+o - Local oper
+Set by /oper, unset by /mode. This is 'o' or 'l' in normal ircds.
+
+O - Global oper
+Set by /oper, unset by /mode. This is 'o' in normal ircds.
+
+r - Restricted
+Cannot be set. Used to mark a user as 'quaranteened', they cannot perform
+many functions (including turning this mode off!)
+
+R - Receive messages from Registers Nicks Only
+Similar to channel mode +R, this means the user can only accept private 
+messages from people who have been identifed (have +I)
+
+s - Receive server notices
+Receive server destined notices
+
+S - Secure
+Cannot be toggled; Set upon connection. This mode means the connection is
+'secure', eg. via SSL (ircs connection)
+
+v - V-world sheild
+True identity mask of someone with +v will not shown to anyone but
+themselves and operators.
+
+w - Wallops
+See wallop messages.
+
+
+____________________________________________________________________________
+Server modes
+
+YES! I said server modes. These are new, an austnet first. I didn't like the
+set command, so I just decided to use server modes. Operators can set modes
+on their server, or if they are global on other servers. There are only a
+handful at the moment though, but no doubt this will grow very quickly.
+These are designed to temporarily modify the original configuration, and do
+not directly edit the ircd.conf! Be aware of that!
+
+Just as channel modes you can receive them by /mode #channel, and user modes
+you can check by /mode nickname, you can check these by a simple 
+/mode server.name
+
+Onto the modes:
+
+a - Automatically swap bones and tendrils (TBS = Tendril/Bone Swap)
+Woah confused? I am. :) This is for P14, where the servers are automatically
+able to determine a least-cost/least-lag path to another server and if they
+are connected locally (eg. as a tendril) can automatically swap the bone
+link to that server and the tendril link to that server. WTF am I on about?
+WTF am I on? Try and work out my following ramblings:
+
+serverA.foo.bah is connected to serverB.foo.bah
+serverC.foo.bah is connected to serverB.foo.bah
+serverD.foo.bah is connected to serverB.foo.bah
+serverD.foo.bah is ALSO connected to serverA.foo.bah
+ 
+Bone path from serverD to serverC is currently serverA->serverC. From
+serverD to serverC is 100 ms, but if it was serverB->serverC 
+(via the serverB tendril) this is only 50 ms lag. The server can notice this,
+then swap the bone and tendril links around to obtain a faster route. Ok,
+it's more complicated than this since it takes into account user loads,
+server numbers via different routes, hop counts, lag differencials etc etc
+etc but that's basically what it does.
+
+Phew.
+
+h - Hidden
+Hide the server from the network. Opers can still see it, though
+
+L - Server Modes Lock
+Locks the server modes so nobody can change them. This can only be toggled by
+servers or in the configuration file. Once set, operators (local and remote)
+will NOT be able to change ANY server modes. Use this if you are setting up
+a server you don't want people to fiddle with, or if the server modes on
+your network are to be controlled by a centralised services server or
+something similar (eg. Sprint on AustNet perhaps?).
+
+m - Short MOTD
+In periods of high-traffic it might be necessary to toggle this on to avoid
+the server flooding its outbound connection with MOTD's as users connect,
+especially in the event of a clone-bot attack. This is not recommended to be
+left on, however. This simply changes the MOTD given upon connection to a
+short notice instructing the user that they should read the MOTD file by
+using the '/motd' command. The MOTD can be read at anytime with the /motd
+command, naturally.
+
+M - Allow remote MOTD
+Allows the MOTD to be viewed remotely on the network (via '/motd
+server.name'). Since this is an obvious attack point to chew down the
+network it might be a wise security idea to turn this off, however some
+servers might need it (eg. a motd file for a specific country in a specific
+language, or an overall network motd file like '/motd austnet.org' on
+austnet returns).
+
+n - NOOP replacement
+"Look to the future!"

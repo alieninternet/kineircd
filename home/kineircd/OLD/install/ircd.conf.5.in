@@ -1,0 +1,314 @@
+.\" ./src/doc/ircd.conf.5.in
+.\" AustHex IRC daemon Configuration File Manual Page
+.\" Author: Simon Butcher <pickle@austnet.org>
+.\" 
+.TH @CONF_FILE@ 5 "10 Sep 2001" "AustNet"
+.\" -----------------------------------------------------------------
+.SH NAME
+.B @CONF_FILE@
+- Configuration file for AustHex Internet Relay Chat Daemon
+.\" -----------------------------------------------------------------
+.SH OVERVIEW
+The austhex.servd8 configuration file format represents a long needed change
+in configuration of the austhex IRC daemon. The new format offers many
+advantages over the old format, especially in readability, and offers
+features that were not available in the previous configuration file. 
+
+The new format looks and works similar to many other configuration files
+available today, such as the more recent 
+.I "BIND 8"
+and
+.I "DHCPD"
+configurations.
+.SS Syntax
+The main three aspects of the austhex8 configuration format are classes,
+assignments and comments. Many classes contain sub-classes, as you will see
+shortly.
+.SS Classes
+Classes are specified by a name, followed by the class' content contained
+within two brace characters ('{' and '}'). Classes can be nested, and
+depending on the class nested sub-classes may or may not be required for a
+complete configuration of that class.
+
+There are three types of classes. The first type contains variable
+assignments, the second contains simple entry assignments and the third is
+simply a sub-class container which does not contain any assignments of its
+own. No class is a mixture of the two assignment types, but maybe a
+combination of an assignment plus a sub-class container.
+
+For readability reasons and to remain compatible with some automated 
+mass-configuration software packages available, you are allowed to place a
+semi-colon immediately after the closing brace character of a class ('}'). 
+It is not strictly required, and is simply ignored.
+.SS Assignments
+As noted in the classes overview, assignments come in two forms - 
+.I "variable assignments" 
+and
+.I "entry assignments."
+Variable assignments come in the form of variable name, the equals
+character ('='), then the data to assign that variable, followed by the
+terminating semi-colon character (';'). Entry assignments come in the simple
+form of the entry, followed by the semi-colon character.
+
+Data that is being assigned to a variable can be in three basic forms,
+either text, a number, or a boolean value. Boolean values are usually in the
+form of the words 'true', 'yes' or 'on' and 'false', 'no' or 'off'
+(representing the true and false states respectively).
+
+All data assignments can be enclosed within quote characters (", ' and `
+characters), as long as the data begins and ends with exactly the same quote
+character per assignment. (Eg. 'foo' is valid, but `foo' is invalid).
+
+It is good practice with text assignments, however, to enclose the data 
+within quotes to keep its original form. Comment characters within the
+quotes are not treated as comments, therefore "//" would be treated
+literally. Note that without quotes, text with spaces will have the spaces 
+removed.
+.SS Comments
+Comments may appear anywhere and be of either C or C++ style. Comments of
+shell or perl style (those beginning with a '#' on the start of a line) are
+not valid due to the significance of the hash character ('#') within the IRC
+protocol itself as a channel marker.
+
+'C' styled comments start with the two characters '/*' (a forward-slash and
+an astericks), and are terminated with the two characters '*/' (an astericks
+followed by a forward-slash). This form of commenting can be contained on
+one line, or can be used to comment out many lines at once. 'C' styled 
+comments cannot be nested.
+
+'C++' styled comments start with the two characters '//' (two
+forward-slashes) and are terminated at the end of the line. These comments
+can only be used to comment out a single line at a time, or a partial
+section of a line (for example from the middle of a line to the end of a
+line).
+.SS Example
+Here is an example of the three main constructors of the configuration file.
+Note that names used within this example do not represent names used within
+the real configuration file.
+
+.BD -literal -offset indent
+ class_name {
+  variable1 = "Variable 1 Data";
+  variable2 = true;
+
+ // This is a C++ style comment. 
+ // This and the next line are both ignored.
+  //variable3 = 'yes';
+
+  sub-class_name {
+
+   another_variable = 12345;
+
+   /* 
+      This is a C styled comment. Notice how it 
+      can easily span multiple lines. This is very 
+      handy for commenting out large portions of the 
+      configuration file such as an entire class
+      with little effort.
+    */
+ 
+   another_sub-class {
+    entry1;
+    entry2;
+    entry3;
+   }
+  }; // <- This semi-colon is not strictly needed, but is acceptable
+ }
+.ED
+.\" -----------------------------------------------------------------
+.SH STRUCTURE
+.SS Class: ARBITER (aka ARBITERS, ARBITRATOR, ARBITRATORS) [OPTIONAL]
+
+
+
+.SS Class: ADMIN (aka ADMINISTRATION, ADMINISTRATOR) [REQUIRED]
+The
+.I ADMIN
+class is used to configure the administrator of this IRC server. It is a
+variable assignment class with simple textual assignment variables.
+.TP
+.B Variable: email [REQUIRED]
+Text; Administrator's e-mail address
+.TP
+.B Variable: location [OPTIONAL]
+Text; Location of the server
+.TP 
+.B Variable: name [REQUIRED]
+Text; Name of the administrator
+.SS Class: CONF (aka CONFIG, CONFIGURATION) [REQUIRED]
+The
+.I CONF
+class is a simple variable assignment class with many options that 
+.TP
+.B Variable: description (aka desc) [RECOMMENDED]
+Text; Short description of this server used in server listings
+.TP
+.B Variable: autobone [OPTIONAL]
+Boolean; When set true, the server will automatically hunt for faster 'bones'
+in the P14 server protocol and swap tendrils/bones accordingly. This feature
+means nothing in P13 and lower server protocols.
+.I "Default is 'true'."
+.TP
+.B Variable: hidden [OPTIONAL]
+Boolean; Set true if this server is to be hidden within the network. When
+set this server will not appear within server listings. 
+.I "Default is 'false'."
+.TP
+.B Variable: motd [OPTIONAL]
+Text; Full path and filename to the MOTD file, used during client connections
+.TP
+.B Variable: network (aka networkname) [RECOMMENDED]
+Text; One word name of the network this server is being connected to. Used
+in the
+.I ISUPPORT
+line upon user connection.
+.TP
+.B Variable: noop (aka nooper) [OPTIONAL]
+Boolean; When set true, the /OPER command will not be available on this
+server. This is a good idea for a server which has no operators such as a
+dedicated hubbing server on the network. Remember this can be changed with
+the
+.I '-n'
+server mode.
+.I "Default is 'false'."
+.TP
+.B Variable: servername
+Text; The server's name (hostname) [REQUIRED]
+.SS Class: FAIL (aka FAILOBJECTS, PROHIBIT) [OPTIONAL]
+The
+.I FAIL
+class is a sub-class container class used to mark certain objects as
+unavailable for general use. Operators/Helpers are usually able to over-ride
+these restrictions depending on the object in question. Each sub-class is a
+variable assignment class where the variable name is the object or
+object-mask being marked as unavaiable, and the data as a textual reason why
+the object(s) is/are unavaiable.
+
+Object masks are case insensitive, and follow standard metacharacter masking
+rules. For example '*bah*' would match 'bah', 'foobah', 'bAh', 'bAhBaZqUx'
+et cetra.
+
+Any number of failed objects can be specified, in any of the object type
+sub-classes. Note that prohibited objects are checked
+.Bafter
+checking for a redirection on the given object. This means that a channel
+that is listed both in the redirects and fail lists, for example, will only
+redirect and hense the entry in the fail list is simply a waste.
+
+Example:
+
+.BD -literal -offset indent
+ fail {
+  channels {
+   // This will stop anyone access any local channels
+   &* = "We do not allow local channels, sorry";
+   // This will block a channel of any type 
+   // with the name 'hax0rs' being used
+   ?hax0rs = "Script kiddies are not welcome";
+  }
+  nicks {
+   // Fail anyone who thinks they are an IRC Operator
+   *IRCOP* = "Reserved for *real* IRC operators";
+  }
+ }
+.ED
+.TP
+.B Sub-Class: CHANNELS (aka CHANNEL) [OPTIONAL]
+Channels and channel-masks that are unavailable.
+.TP
+.B Sub-Class: NICKNAMES (aka NICKNAME, NICKS, NICK) [OPTIONAL]
+Nicknames and nickname-masks that are unavailable.
+.SS Class: LISTEN (aka LISTENON, LISTENTO) [REQUIRED]
+.SS Class: OPERS (aka OPERATORS) [OPTIONAL]
+The
+.I OPERS
+class is used to define IRC Operators that are allowed to use this server.
+This class is simply a sub-class container class where the name of the
+sub-classes is equal to the nick name of the operator being given access.
+
+Any number of operators can be defined.
+
+Example:
+
+.BD -literal -offset indent
+ operators {
+  bob {
+   Name = "Mr. Bob";
+   type = global;
+   password = "0vDBl~0MHVRj001k%d0s6>[v0%-=1(";
+   
+   hosts {
+    127.*; // anyone on localhost
+    bob@*.bobcorp.com;
+    203.57.43/24;
+   }
+  }
+  foo {
+   type = local;
+   password = "0iXzj408Y]*A0p>3Po0=lg#y0%(Br<";
+   
+   hosts {
+    // This guy moves around a lot :)
+    foobloke@*.au;
+    foobloke@203.32.212/24;
+    // This guy also connects via IPv6
+    foobloke@3ffe:1200:3028:80b7::/64;
+   }
+  }
+ }
+.ED
+
+Operator sub-class objects are as follows:
+
+.TP
+.B Variable: name [OPTIONAL]
+Text; Used to give the operator a more meaningful name. This could be used
+in a generic form such as used as a place holder for an e-mail address or
+other information.
+.TP
+.B Variable: password [REQUIRED]
+Text; Generated by the
+.I ircpasswd
+utility included in the
+.I AustHex
+package.
+.TP
+.B Variable: type [OPTIONAL]
+Boolean; ('local' or 'global') Defaults to 'local' for security reasons.
+This is the type of operator being defined. Local operators only have access
+to this server, where as global operators have access to the entire network
+via this server.
+.TP
+.B Sub-Class: HOSTS [REQUIRED]
+The
+.I HOSTS
+Sub-Class of the operator defines which hosts (and identities) the operator
+is allowed to identify themselves from and obtain operator status
+sucessfully via entry assignments. The format is basic, "user@hostmask". If 
+the user and the at ('@') delimeter are omitted then they are assumed to be 
+'anything' and will be replaced with '*@'. 
+
+The hostmask may be in several formats, including DNS
+host mask, IP hostmask (using standard meta characters) or IP hostmask using
+standard IPv4 and IPv6 netmask bit-lengths. See the example above.
+.SS Class: REDIRECT (aka REDIRECTION) [OPTIONAL]
+
+
+
+.SS Class: SSL [OPTIONAL]
+
+
+
+.SS Class: STATUS (aka RANK) [OPTIONAL]
+
+
+
+.\" -----------------------------------------------------------------
+.SH FILES
+.TP
+.B @IRCD_ETC@/@CONF_FILE@
+Main server configuration file
+.\" -----------------------------------------------------------------
+.SH "SEE ALSO"
+.BR ircd (8),
+.BR ircpasswd (8)

@@ -1,0 +1,80 @@
+(last edited 20/08/01)
+
+List of chars after the /version information, since they are laborious and
+annoying. Many of these follow original irc standards, but most don't.
+
+Why have these lil' blighters? They can help other IRC operators or
+developers quickly determine why a function of the server is or isn't working,
+or why something is working in a different way without having to waste a lot
+of time.
+
+Most if not all letters are set by defines in config.h; As you can tell
+these are NOT to determine the current settings in the ircd.conf file, since
+there are other ways of looking at them (the STATS command for example).
+These are used to see what options this IRCd has compiled in, and what needs
+a recompilation to change
+
+On to the letters!
+
+ 0 =
+ 1 =
+ 2 =
+ 3 =
+ 4 =
+ 5 =
+ 6 =
+ 7 =
+ 8 =
+ 9 =
+ a =
+ A =
+ b =
+ B =
+ c = ALLOW_LOCALOP_CONNECT
+ C = ALLOW_GLOBALOP_CONNECT
+ d = DROP_BRAINDEAD_SERVERS
+ D = DEBUG
+ e = DEBUG_EXTENDED (major big headache debugging mode)
+ E =
+ f =
+ F =
+ g =
+ G =
+ h = HELPERS_CAN_SEE_USER_MODES
+ H = STL_HAS_HASH
+ i =
+ I = BLOODY_IRCII_KLUGE
+ j =
+ J =
+ k = ALLOW_LOCALOP_GLOBAL_KILL (tba)
+ K = ALLOW_GLOBALOP_GLOBAL_KILL (tba)
+ l = ALLOW_LOCALOP_LOCAL_KILL (tba)
+ L = ALLOW_GLOBALOP_LOCAL_KILL (tba)
+ m = SHORT_MOTD
+ M = FORCE_MOTD
+ n = NOTIFY_ON_CMD_STATS
+ N = STRICT_CHANNEL_NAMES
+ o =
+ O =
+ p = PASSIVE_REGISTRATION
+ P = NOTIFY_PARANOID_OPERS_ON_WHOIS
+ q = ALLOW_LOCALOP_SQUIT (tba)
+ Q = ALLOW_GLOBALOP_SQUIT (tba)
+ r = STRICT_REGISTRATIONS
+ R = WARN_UNKNOWN_COMMANDS_IN_REGISTRATION
+ s = USER_CONNECTION_PINGPONG
+ S = HAVE_OPENSSL
+ t = CONVERT_MOTD_TABS
+ T = ALLOW_OPER_TRACEROUTE
+ u =
+ U =
+ v =
+ V =
+ w = ALLOW_OPER_WALLOPS
+ W = 
+ x = ALLOW_LOCALOP_DIE (tba)
+ X = ALLOW_GLOBALOP_DIE (tba)
+ y =
+ Y = LOG_TO_SYSLOG
+ z = DO_MATCH_COUNTING
+ Z =
