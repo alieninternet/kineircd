@@ -166,6 +166,13 @@ Control tags
 
 Substitutions within tag data
 -----------------------------
+  
+  Most characters are valid, escape for a few which may cause problems with
+ some clients. These include the 'null' character (#0), vertical tab,
+ backspace, form-feed, carrage return, new line, and the four data control
+ characters (DC1-DC4). Horizontal tabs may cause problems with some clients,
+ but shouldn't cause major problems.
+
 
     %p0 -> %p9	- Parameters, depending on the tag. (params 1..10)
     %P0 -> %p9	- More parameters, rarely used (params 11..20)
@@ -179,7 +186,7 @@ Substitutions within tag data
 	%N	- The name of the network
 
 	\\	- A slash
-       \nnn	- An escaped character. All characters, except #0, are valid.
+       \nnn	- An escaped character. See above for valid characters.
         \b	- Toggle bold (same as \002)
 	\c	- Beginning of colour sequence (not recommended; Same as \003)
 	\g	- Beep (only supported on some IRC clients; same as \007)
