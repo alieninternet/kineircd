@@ -132,8 +132,13 @@ void Protocol::parseMessage(const std::string& origin,
 	 if (commandInfo->hasAccess(user)) {
 	    // Do we have enough parameters?
 	    if (parameters.size() >= commandInfo->minimumParams) {
-	       // Okay, I guess we can run it
-	       (this->*(commandInfo->handler))(parameters);
+	       // Okay, I guess we can run it. Increase its call count first
+	       ++commandInfo->callCount;
+	       
+	       // Is it a built-in command?
+	       if (commandInfo->handler != 0) {
+		  (this->*(commandInfo->handler))(parameters);
+	       }
 	       
 	       // We're done!
 	       return;
