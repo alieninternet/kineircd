@@ -27,7 +27,7 @@
 # include <kineircd/errors.h>
 
 namespace Kine {
-   class Entity;
+   class Denizen;
    
    //! Abstract base class for objects which can receive messages
    class Receiver {
@@ -42,18 +42,18 @@ namespace Kine {
 	{};
       
       //! Send a message from a generic entity
-      virtual const Error::error_type sendMessage(Entity& from,
+      virtual const Error::error_type sendMessage(Denizen& from,
 						  const std::string& message)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
 
    
       //! Send a notice from a generic entity
-      virtual const Error::error_type sendNotice(Entity& from,
+      virtual const Error::error_type sendNotice(Denizen& from,
 						 const std::string& message)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
    }; // class Receiver
 }; // namespace Kine
 
-# include <kineircd/entity.h>
+# include <kineircd/denizen.h>
 
 #endif // _INCLUDE_KINEIRCD_RECEIVER_H_

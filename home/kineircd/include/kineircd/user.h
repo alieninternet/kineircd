@@ -66,31 +66,31 @@ namespace Kine {
 	{};
 
       //! An event called if we are marked away or returning from away
-      virtual void doEventAwayToggle(const Entity& changer)
+      virtual void doEventAwayToggle(const Denizen& changer)
 	{};
 
       //! An event called whenever the language list is modified
-      virtual void doEventLanguageChange(const Entity& changer)
+      virtual void doEventLanguageChange(const Denizen& changer)
 	{};
 
       //! An event called whenever a user's nickname has been changed (maybe us)
-      virtual void doEventNicknameChange(const Entity& changer,
+      virtual void doEventNicknameChange(const Denizen& changer,
 					 const User& user,
 					 const ClientName& newNickname)
 	{};
       
       //! An event called when a message was successfully sent to us
-      virtual void doEventReceivePrivateMessage(Entity& from,
+      virtual void doEventReceivePrivateMessage(Denizen& from,
 						const std::string& message)
 	{};
-      
+
       //! An event called when a notice was successfully sent to us
-      virtual void doEventReceivePrivateNotice(Entity& from,
+      virtual void doEventReceivePrivateNotice(Denizen& from,
 					       const std::string& message)
 	{};
 
       //! An event called whenever the staff status is changed/turned on or off
-      virtual void doEventStaffStatusChange(const Entity& changer)
+      virtual void doEventStaffStatusChange(const Denizen& changer)
 	{};
       
     public:
@@ -119,7 +119,7 @@ namespace Kine {
 
       
       //! Change this user's nickname
-      const Error::error_type changeNickname(const Entity& changer,
+      const Error::error_type changeNickname(const Denizen& changer,
 					     const ClientName& newNickname);
       
 
@@ -153,11 +153,11 @@ namespace Kine {
 	{ return (!getAwayMessage().empty()); };
 
       //! Set this user 'away' (with the given string as the reason)
-      const Error::error_type setAway(const Entity& changer,
+      const Error::error_type setAway(const Denizen& changer,
 				      const std::string& reason);
 
       //! Set this user as 'here' (or in IRC terminology, 'UNAWAY' ;)
-      const Error::error_type setHere(const Entity& changer); 
+      const Error::error_type setHere(const Denizen& changer); 
  
       
       //! Return the user's staff status
@@ -169,11 +169,11 @@ namespace Kine {
 	{ return (!staffStatus.empty()); };
       
       //! Change a user's staff status. Empty status is equal to setStaffOff()
-      const Error::error_type changeStaffStatus(const Entity& changer,
+      const Error::error_type changeStaffStatus(const Denizen& changer,
 						const std::string& status);
 
       //! Remove the user's staff status, if it was even set
-      const Error::error_type setStaffOff(const Entity& changer);
+      const Error::error_type setStaffOff(const Denizen& changer);
       
       
       //! Return the languages list
@@ -182,7 +182,7 @@ namespace Kine {
       
       //! Set the language list to the given list (replaces the list)
       const Error::error_type
-	setLanguageList(const Entity& changer,
+	setLanguageList(const Denizen& changer,
 			const Languages::languageDataList_type& languages,
 			const bool secret = false);
       
@@ -198,11 +198,11 @@ namespace Kine {
       
       // Handle the reception of a message
       const Error::error_type
-	sendMessage(Entity& from, const std::string& message);
+	sendMessage(Denizen& from, const std::string& message);
       
       // Handle the reception of a notice
       const Error::error_type
-	sendNotice(Entity& from, const std::string& message);
+	sendNotice(Denizen& from, const std::string& message);
    }; // class User
 }; // namespace Kine
 

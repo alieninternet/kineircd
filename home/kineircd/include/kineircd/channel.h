@@ -29,8 +29,9 @@
 
 # include <kineircd/entity.h>
 # include <kineircd/receiver.h>
-# include <kineircd/errors.h>
+# include <kineircd/denizen.h>
 # include <kineircd/channelname.h>
+# include <kineircd/errors.h>
 
 namespace Kine {
    class Client;
@@ -158,12 +159,12 @@ namespace Kine {
 	{ return (!topic.empty()); };
       
       //! Change the topic on the channel
-      const Error::error_type changeTopic(const Entity& who,
+      const Error::error_type changeTopic(const Denizen& who,
 					  const std::string& newTopic)
 	{ return Error::UNKNOWN_ERROR; };
       
       //! Remove the topic on the channel (same as setting an empty topic)
-      const Error::error_type removeTopic(const Entity& who)
+      const Error::error_type removeTopic(const Denizen& who)
 	{ return Error::UNKNOWN_ERROR; };
 
       

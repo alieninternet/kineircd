@@ -25,6 +25,7 @@
 # define _INCLUDE_KINEIRCD_IRC2_UTILITY_H_ 1
 
 # include <string>
+# include <kineircd/user.h>
 # include <kineircd/receiver.h>
 
 namespace Kine {

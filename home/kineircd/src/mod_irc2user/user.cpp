@@ -42,7 +42,7 @@ using namespace Kine::mod_irc2user;
 /* doEventAwayToggle - Called when we are going away/returning away
  * Original 16/04/2003 simonb
  */
-void User::doEventAwayToggle(const Entity& changer)
+void User::doEventAwayToggle(const Denizen& changer)
 {
    // Have we gone away or are we returning?
    if (isAway()) {
@@ -147,7 +147,7 @@ void User::doEventChannelPart(const Channel& channel,
  * Original 05/05/2003 simonb
  */
 void User::doEventChannelTopicChange(const Channel& channel,
-				     const Entity& entity)
+				     const Denizen& entity)
 {
    static const char* const commandName = "TOPIC";
 
@@ -160,7 +160,7 @@ void User::doEventChannelTopicChange(const Channel& channel,
 /* doEventLanguageChange - Called when the language list has been modified
  * Original 16/04/2003 simonb
  */
-void User::doEventLanguageChange(const Entity& changer)
+void User::doEventLanguageChange(const Denizen& changer)
 {
    protocol.sendLanguageList();
 }
@@ -169,7 +169,7 @@ void User::doEventLanguageChange(const Entity& changer)
 /* doEventNicknameChange - Called when a nickname has been changed
  * Original 16/05/2003 simonb
  */
-void User::doEventNicknameChange(const Entity& changer,
+void User::doEventNicknameChange(const Denizen& changer,
 				 const Kine::User& user,
 				 const ClientName& newNickname)
 {
@@ -184,7 +184,7 @@ void User::doEventNicknameChange(const Entity& changer,
 /* doEventReceiveChannelMessage - Called when a channel has received a message
  * Original 01/08/2001 simonb
  */
-void User::doEventReceiveChannelMessage(Entity& from, const Channel& to,
+void User::doEventReceiveChannelMessage(Denizen& from, const Channel& to,
 					const std::string& message)
 {
    static const char* const commandName = "PRIVMSG";
@@ -210,7 +210,7 @@ void User::doEventReceiveChannelMessage(Entity& from, const Channel& to,
 /* doEventReceiveChannelNotice - Called when a channel has received a notice
  * Original 01/08/2001 simonb
  */
-void User::doEventReceiveChannelNotice(Entity& from, const Channel& to,
+void User::doEventReceiveChannelNotice(Denizen& from, const Channel& to,
 				       const std::string& message)
 {
    static const char* const commandName = "NOTICE";
@@ -236,7 +236,7 @@ void User::doEventReceiveChannelNotice(Entity& from, const Channel& to,
 /* doEventReceivePrivateMessage - Called when we have received a message
  * Original 01/08/2001 simonb
  */
-void User::doEventReceivePrivateMessage(Entity& from,
+void User::doEventReceivePrivateMessage(Denizen& from,
 					const std::string& message)
 {
    static const char* const commandName = "PRIVMSG";
@@ -262,7 +262,7 @@ void User::doEventReceivePrivateMessage(Entity& from,
 /* doEventReceivePrivateNotice - Called when we have received a notice
  * Original 01/08/2001 simonb
  */
-void User::doEventReceivePrivateNotice(Entity& from,
+void User::doEventReceivePrivateNotice(Denizen& from,
 				       const std::string& message)
 {
    static const char* const commandName = "NOTICE";

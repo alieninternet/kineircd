@@ -44,7 +44,7 @@ const std::string::size_type User::maxStaffStatusLength = 32;
 /* changeNickname - Change this user's nickname
  * Original 16/05/2003 simonb
  */
-const Error::error_type User::changeNickname(const Entity& changer,
+const Error::error_type User::changeNickname(const Denizen& changer,
 					     const ClientName& newNickname)
 {
    // Check the nickname is valid
@@ -79,7 +79,7 @@ const Error::error_type User::changeNickname(const Entity& changer,
 /* setAway - Mark the user as being away
  * Original 13/08/2001 simonb
  */
-const Error::error_type User::setAway(const Entity& changer,
+const Error::error_type User::setAway(const Denizen& changer,
 				      const std::string& reason)
 {
    // Copy the message across (check it??)
@@ -97,7 +97,7 @@ const Error::error_type User::setAway(const Entity& changer,
 /* setHere - Mark the user as returning from being away
  * Original 13/08/2001 simonb
  */
-const Error::error_type User::setHere(const Entity& changer)
+const Error::error_type User::setHere(const Denizen& changer)
 {
    // Clear the away message
    awayMessage.clear();
@@ -115,7 +115,7 @@ const Error::error_type User::setHere(const Entity& changer)
  * Original 16/04/2003 simonb
  */
 const Error::error_type
-  User::setLanguageList(const Entity& changer,
+  User::setLanguageList(const Denizen& changer,
 			const Languages::languageDataList_type& languages,
 			const bool secret)
 {
@@ -136,7 +136,7 @@ const Error::error_type
 /* changeStaffStatus - Change the staff status
  * Original 29/04/2003 simonb
  */
-const Error::error_type User::changeStaffStatus(const Entity& changer,
+const Error::error_type User::changeStaffStatus(const Denizen& changer,
 						const std::string& status)
 {
    // Naughty chars we consider a delimeter
@@ -171,7 +171,7 @@ const Error::error_type User::changeStaffStatus(const Entity& changer,
 /* setStaffOff - Remove the staff status
  * Original 29/04/2003 simonb
  */
-const Error::error_type User::setStaffOff(const Entity& changer)
+const Error::error_type User::setStaffOff(const Denizen& changer)
 {
    // Clear the status..
    staffStatus.clear();
@@ -190,7 +190,7 @@ const Error::error_type User::setStaffOff(const Entity& changer)
  * Original 12/05/2003 simonb
  */
 const Error::error_type
-  User::sendMessage(Entity& from, const std::string& message)
+  User::sendMessage(Denizen& from, const std::string& message)
 {
    // Lazy for now, just accept the message
    doEventReceivePrivateMessage(from, message);
@@ -203,7 +203,7 @@ const Error::error_type
  * Original 12/05/2003 simonb
  */
 const Error::error_type
-  User::sendNotice(Entity& from, const std::string& message)
+  User::sendNotice(Denizen& from, const std::string& message)
 {
    // Lazy for now, just accept the notice
    doEventReceivePrivateNotice(from, message);

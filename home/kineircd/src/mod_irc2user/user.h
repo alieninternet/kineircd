@@ -42,25 +42,25 @@ namespace Kine {
 	 AISutil::Time lastAwake;		// Time user was last awake
 
 	 // Events we want to know about
-	 void doEventAwayToggle(const Entity& changer);
+	 void doEventAwayToggle(const Denizen& changer);
 	 void doEventChannelJoin(const Channel& channel,
 				 const Client& client);
 	 void doEventChannelPart(const Channel& channel,
 				 const Client& client,
 				 const std::string* const reason);
 	 void doEventChannelTopicChange(const Channel& channel,
-					const Entity& entity);
-	 void doEventLanguageChange(const Entity& changer);
-	 void doEventNicknameChange(const Entity& changer,
+					const Denizen& entity);
+	 void doEventLanguageChange(const Denizen& changer);
+	 void doEventNicknameChange(const Denizen& changer,
 				    const Kine::User& user,
 				    const ClientName& newNickname);
-	 void doEventReceiveChannelMessage(Entity& from, const Channel& to,
+	 void doEventReceiveChannelMessage(Denizen& from, const Channel& to,
 					   const std::string& message);
-	 void doEventReceiveChannelNotice(Entity& from, const Channel& to,
+	 void doEventReceiveChannelNotice(Denizen& from, const Channel& to,
 					  const std::string& message);
-	 void doEventReceivePrivateMessage(Entity& from,
+	 void doEventReceivePrivateMessage(Denizen& from,
 					   const std::string& message);
-	 void doEventReceivePrivateNotice(Entity& from,
+	 void doEventReceivePrivateNotice(Denizen& from,
 					  const std::string& message);
 	 
        public:

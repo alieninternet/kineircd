@@ -68,17 +68,17 @@ namespace Kine {
 
       //! An event called whenever a channel's topic has changed
       virtual void doEventChannelTopicChange(const Channel& channel,
-					     const Entity& entity)
+					     const Denizen& entity)
 	{};
       
       //! An event called when a message was successfully sent to a channel
-      virtual void doEventReceiveChannelMessage(Entity& from,
+      virtual void doEventReceiveChannelMessage(Denizen& from,
 						const Channel& to,
 						const std::string& message)
 	{};
       
       //! An event called when a notice was successfully sent to a channel
-      virtual void doEventReceiveChannelNotice(Entity& from,
+      virtual void doEventReceiveChannelNotice(Denizen& from,
 					       const Channel& to,
 					       const std::string& message)
 	{};
