@@ -78,6 +78,7 @@ AC_PROG_GCC_TRADITIONAL
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
+AC_PROG_LIBTOOL
 AC_PROG_LN_S
 AC_CHECK_PROG(RM, rm, rm -f, del)
 AC_CHECK_PROG(LD, ld, ld)
@@ -87,9 +88,9 @@ AC_CACHE_SAVE
 dnl  -------------------------------------------------------------------------
 echo " -=> Checking compiler and system characteristics"
 dnl  -------------------------------------------------------------------------
-AC_AIX
-AC_MINIX
-AC_ISC_POSIX
+dnl AC_AIX
+dnl AC_MINIX
+dnl AC_ISC_POSIX
 AC_SYS_LONG_FILE_NAMES
 AC_SYS_RESTARTABLE_SYSCALLS
 AC_EXEEXT

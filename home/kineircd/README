@@ -72,15 +72,6 @@
        this these days, so this shouldn't be an issue.
 
 
-     - GNU LibTool:
-     
-       To compile AustHex with module support, you will need GNU LibTool
-       installed. LibTool has been used to allow AustHex to easily be
-       compiled on a large variety of systems.
-       
-       GNU LibTool can be found at http://www.gnu.org/software/libtool/
-
-
      - DNS host resolver library (libresolv):
      
        Foo.

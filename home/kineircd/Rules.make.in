@@ -6,6 +6,7 @@
 RM=@RM@
 FIND=find
 CXX=@CXX@
+LIBTOOL=@LIBTOOL@
 LD=@LD@
 
 AUTOGEN=autogen
