@@ -220,6 +220,7 @@ Substitutions within tag data
 	\f	- Flash (only supported by some clients; same as \006)
 	\g	- Beep (only supported by some clients; same as \007)
 	\n	- New section (only useful on tags used for multi-call output)
+	\o	- Turn off/reset all text attributes (same as \017)
 	\r	- Toggle reversed (same as \026)
 	\s	- A space (same as \040 or ' ', used to force a space)
 	\t	- A horizontal tab (not supported on all clients; same as \011)
