@@ -191,10 +191,12 @@ struct {
 #ifdef SIGCLD
      { SIGCLD,		true },	// Child stopped or terminated (SIGCHLD)
 #endif
+#ifndef KINE_DEBUG // Only compile this bit if we are not debugging
      { SIGCONT,		true },	// Continue if stopped
      { SIGTSTP,		true },	// Stop typed at tty
      { SIGTTIN,		true },	// tty input for background process
      { SIGTTOU,		true },	// tty output for background process
+#endif
 #ifdef SIGBUS
      { SIGBUS,		true },	// Bus error (bad memory access)
 #endif
