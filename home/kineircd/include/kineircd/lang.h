@@ -47,7 +47,7 @@ namespace Kine {
 # ifdef STL_HAS_HASH
       typedef std::hash_map <String, LangData *> languages_map_t;
 # else
-      typedef std::hash_map <String, LangData *> languages_map_t;
+      typedef std::map <String, LangData *> languages_map_t;
 # endif
       
       // private:
