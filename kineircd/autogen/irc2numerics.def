@@ -1671,6 +1671,19 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "RPL_NAMREPLY_";
+   numeric	= "355";
+   origin	= "QuakeNet";
+   format	= "( '=' / '*' / '@' ) <channel> ' ' : [ '@' / '+' ] <nick> "
+                  "*( ' ' [ '@' / '+' ] <nick> )";
+   comment	= "Reply to the \"NAMES -d\" command - used to show invisible "
+   		  "users (when the channel is set +D, QuakeNet relative). The "
+		  "proper define name for this numeric is unknown at this "
+		  "time";
+   seealso	= "353";
+};
+
+irc2numerics = {
    name		= "RPL_MAP";
    numeric	= "357";
    origin	= "AustHex";
