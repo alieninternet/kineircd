@@ -535,16 +535,20 @@ AC_MSG_CHECKING([which modules to compile])
 dnl This macro will help us reduce repeated code..
 dnl use: AC_KINE_MODULE_CHECK(mod_name, [the name of the module])
 AC_DEFUN([AC_KINE_MODULE_CHECK],[
+  echo 
+  echo $ECHO_N "        $1 $ECHO_C"
   AC_ARG_ENABLE($1,
                 AC_HELP_STRING([--disable-$1],
                                [Disable $2]),
    [
     if test "$enableval" \!= "no"; then
-      echo -n "$1 "
+      echo $ECHO_N "(yes)$ECHO_C"
       AS_TR_SH(kineircd_test_compile_$1)=yes
+    else
+      echo $ECHO_N "(no)$ECHO_C"
     fi
    ],[
-    echo -n "$1 "
+    echo $ECHO_N " (yes)"
     AS_TR_SH(kineircd_test_compile_$1)=yes
    ])
   AM_CONDITIONAL(AS_TR_CPP(KINEIRCD_COMPILE_$1),
