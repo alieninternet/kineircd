@@ -150,15 +150,27 @@ void Protocol::parseMessage(const std::string& origin,
 		  user.updateLastAwake();
 	       }
 	       
+#if defined(KINE_MOD_IRC2USER_SCHEME_ENABLED) && defined(KINE_DEBUG_ASSERT)
+	       /* If we are doing scheme scripting, then a null handler
+		* is the sign of something being very very wrong... Break
+		* here to prove a point!
+		*/
+	       assert(commandInfo->handler != 0);
+#endif
+	       
+#ifdef KINE_MOD_IRC2USER_SCHEME_ENABLED
 	       // Is it a built-in command?
 	       if (commandInfo->handler != 0) {
+#endif
 		  // Call it..
 		  (this->*(commandInfo->handler))(parameters);
+#ifdef KINE_MOD_IRC2USER_SCHEME_ENABLED
 		  return;
 	       }
 	       
 	       // Check if this is an alias, or a scriping thingy, or something
-	    
+
+	       
 	       /* If we get here, there was not enough information about the
 		* command for us to do anything useful with it. In such a
 		* case, we should act 'dumb' and say we don't know about the
@@ -167,6 +179,7 @@ void Protocol::parseMessage(const std::string& origin,
 	       sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNCOMMAND,
 			   command,
 			   GETLANG(irc2_ERR_UNKNOWNCOMMAND));
+#endif
 	       return;
 	    }
 	    

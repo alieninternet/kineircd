@@ -296,6 +296,13 @@ AC_CHECK_FUNCS(
 	strerror \
 		)
 
+GUILE_FLAGS
+if test -n "$ac_cv_path_GUILE_CONFIG"; then
+  kineircd_cv_libguile_ok=yes
+else
+  kineircd_cv_libguile_ok=no
+fi
+
 AC_MSG_CHECKING([for Net-SNMP library/include path])
 AC_ARG_WITH(net-snmp,
             AC_HELP_STRING([--with-net-snmp=DIR],
@@ -586,6 +593,46 @@ fi
 
 dnl finish off the line
 echo
+
+
+dnl
+dnl Check options on the modules...
+dnl
+if test "$kineircd_test_compile_mod_irc2user" = "yes"; then
+  AC_MSG_CHECKING([if scheme in mod_irc2user is wanted])
+  
+  dnl If guile is not installed, the answer is obviously no
+  if test "$kineircd_cv_libguile_ok" = no; then
+    AC_MSG_RESULT([no (libguile missing or bad)])
+    kineircd_test_mod_irc2user_with_scheme="no"
+  else
+    dnl Check if they wanted it or not
+    AC_ARG_ENABLE(irc2user-scheme,
+                  AC_HELP_STRING([--enable-irc2user-scheme],
+                                 [Enable scheme extentions for mod_irc2user]),
+     [
+      if test "$enableval" \!= "no"; then
+        AC_MSG_RESULT(yes)
+        kineircd_test_mod_irc2user_with_scheme="yes"
+      else
+        AC_MSG_RESULT(no)
+        kineircd_test_mod_irc2user_with_scheme="no"
+      fi
+     ],[
+      AC_MSG_RESULT([no (default)])
+      kineircd_test_mod_irc2user_with_scheme="no"
+     ])
+  fi
+  
+  dnl If the answer was yes, make a #define to let the code know :)
+  if test "$kineircd_test_mod_irc2user_with_scheme" = "yes"; then
+    AC_DEFINE(KINE_MOD_IRC2USER_SCHEME_ENABLED, 1,
+              [Should mod_irc2user, include scheme (guile) scripting support?])
+  fi
+fi
+AM_CONDITIONAL(KINEIRCD_MOD_IRC2USER_WITH_SCHEME,
+               [test "x$kineircd_test_mod_irc2user_with_scheme" = "xyes"])
+
 
 
 dnl -------------------------------------------------------------------------

@@ -26,6 +26,7 @@
 #endif
 
 #include <ctime>
+#include <libguile.h>
 #include <kineircd/module.h>
 #include <kineircd/daemon.h>
 #include <kineircd/irc2/library.h>
@@ -123,6 +124,21 @@ namespace {
 
 // The initialisation function, called by Kine
 KINE_MODULE_INIT {
+#ifdef KINE_MOD_IRC2USER_SCHEME_ENABLED
+   /* Initialise libguile. Guile needs to know where the base of our stack is,
+    * but unfortunately we do not have a nice way to do this without being
+    * able to initialise ourself within the original main() - ick. Since guile
+    * is hell-bent on garbage collection (and the stack is a key to it doing
+    * garbage collection), we are stuck with using this 'non-portable' method
+    * for initialising guile. While not being portable, we have no other
+    * option!
+    */
+   scm_init_guile();
+   
+   // Advertise that our features are available..
+   scm_add_feature("kineircd_mod_irc2user");
+#endif 
+   
    // Fire up the commands singleton (important to do this before configuring)
    Kine::mod_irc2user::Commands::initInstance();
    

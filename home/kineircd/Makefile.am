@@ -101,12 +101,12 @@ EXTRA_DIST=\
 	include/kineircd/kineircdconf.h.in \
 	src/libkineircd/version.cpp.tpl
 
-	
 
 
 # Stuff we don't want distributed
 dist-hook:
 	rm -rf $(distdir)/kineircd/kineircdconf.h
+
 
 
 # Subdirectories to recurse into..
@@ -129,6 +129,7 @@ install/.lang: install/language.tpl $(AUTOGEN_DIR)/language.def
 		-b install/ \
 		-T install/language.tpl \
 		$(AUTOGEN_DIR)/language.def
+
 
 
 # A rule to download RFCs :)
@@ -462,6 +463,16 @@ src/mod_irc2registrar/language.cpp src/mod_irc2registrar/language.h: $(AUTOGEN_D
 ###############################################################################
 # 'mod_irc2user' module
 ###############################################################################
+# Extra flags and stuff
+if KINEIRCD_MOD_IRC2USER_WITH_SCHEME
+ KINEIRCD_MOD_IRC2USER_SCHEME_CFLAGS=@GUILE_CFLAGS@
+ KINEIRCD_MOD_IRC2USER_SCHEME_LDFLAGS=@GUILE_LDFLAGS@
+ KINEIRCD_MOD_IRC2USER_SCHEME_SOURCES=\
+	src/mod_irc2user/scheme.cpp \
+	src/mod_irc2user/scheme.h
+endif
+
+
 mod_irc2user_la_SOURCES=\
 	src/mod_irc2user/access.cpp \
 	src/mod_irc2user/access.h \
@@ -480,15 +491,21 @@ mod_irc2user_la_SOURCES=\
 	src/mod_irc2user/protocol.h \
 	src/mod_irc2user/protocolinfo.h \
 	src/mod_irc2user/user.cpp \
-	src/mod_irc2user/user.h
+	src/mod_irc2user/user.h \
+	$(KINEIRCD_MOD_IRC2USER_SCHEME_SOURCES)
 
 mod_irc2user_la_LDFLAGS=\
 	-avoid-version \
-	-module
+	-module \
+	$(KINEIRCD_MOD_IRC2USER_SCHEME_LDFLAGS)
 
 mod_irc2user_la_LIBADD=\
 	libkineircd.la \
 	libkineircd_irc2.la
+
+# I do not like how automake manages this..
+mod_irc2user_la_CFLAGS=\
+	$(KINEIRCD_MOD_IRC2USER_SCHEME_CFLAGS)
 
 src/mod_irc2user/commandlist.cpp: src/mod_irc2user/commandlist.cpp.tpl src/mod_irc2user/commands.def
 	$(AUTOGEN) \
