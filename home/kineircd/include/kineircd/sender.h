@@ -24,8 +24,6 @@
 #ifndef _INCLUDE_KINEIRCD_SENDER_H_
 # define _INCLUDE_KINEIRCD_SENDER_H_ 1
 
-# include <string>
-
 namespace Kine {
    class Entity;
    
