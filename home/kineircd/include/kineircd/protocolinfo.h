@@ -56,50 +56,40 @@ namespace Kine {
     */
    class ProtocolInfo {
     public:
-      /* The 'description' protocol. This takes on several roles.. If the
-       * protocol specified through sane means, this can be the key to
-       * resolving any ambiguity, and probably save a lot of time. This
-       * string must be in capital letters.
-       */
-      struct Description {
-	 const char* const name;
+      struct Type { // <=- should be namespace?
+	 enum type {
+	    REGISTRAR_EXTENSION = 1,	//!< Protocol extends the registrar
+	    STANDALONE_EXTENSION,	//!< Protocol has its own registrar
+	    NETWORK,			//!< A network<->network protocol
+	    SERVER,			//!< A server<->server protocol
+	    SERVICE,			//!< A server<->service protocol
+	    USER			//!< A server<->user protocol
+	 };
+      };
 	 
-	 struct Type { // <=- should be namespace?
-	    enum type {
-	       UNKNOWN = 0,		//!< Unset, or unknown
-		 REGISTRAR_EXTENSION,	//!< Protocol extends the registrar
-		 STANDALONE_EXTENSION,	//!< Protocol has its own registrar
-		 USER,			//!< A server<->user protocol
-		 NETWORK,		//!< A network<->network protocol
-		 SERVER,		//!< A server<->server protocol
-		 SERVICE		//!< A server<->service protocol
-	    };
+      union Description {
+	 struct {
+	    // The type of protocol this is (see the enumeration above)
+	    const Type::type type;
+	    
+	    // The name of the protocol - all letters must be upper-cased
+	    const char* const name;
 	 };
 	 
-	 // The type of protocol this is (see the enumeration above)
-	 const Type::type type;
-
-	 // Constructor
-	 Description(const char* const n, Type::type t)
-	   : name(n),
-	     type(t)
-	   {};
+	 // A "key" - this is a trick to save time (Note: The enum starts at 1)
+	 const char* const key;
       
-	 // Equal-to operator
-	 bool operator==(const Description& a) const
-	   { return ((a.type == type) && (strcmp(a.name, name) == 0)); };
-	 
-	 // Less-than operator
-	 bool operator<(const Description& a) const
-	   { 
-	      return ((a.type == type) ?
-		      (strcmp(a.name, name) < 0) : (a.type < type));
-	   };
-      };
+	 // Constructor
+	 Description(Type::type t, const char* const n)
+	   : type(t),
+	     name(n)
+	   {};
+      } const description;
       
     protected:
       // Constructor
-      ProtocolInfo(void)
+      ProtocolInfo(Type::type t, const char* const n)
+	: description(t, n)
 	{};
 	 
     public:

@@ -61,9 +61,6 @@ namespace Kine {
          RUNLEVEL_SHUTDOWN		// The daemon is shutting down
       };
       
-      typedef std::map < ProtocolInfo::Description, ProtocolInfo* const >
-	protocols_type;
-      
     private:
       runlevel_type runlevel;			// What stage is the daemon in
       
@@ -86,6 +83,7 @@ namespace Kine {
       connections_type connections;
 
       // The protocol list
+      typedef std::map <const char* const, ProtocolInfo* const>	protocols_type;
       protocols_type protocols;
       
     public: // <=- temporary, for crappy pre-poller class code :(
@@ -139,12 +137,10 @@ namespace Kine {
 	{ receivedBytes += bytes; };
 
       // Protocol set manipulators, for the registrar and modules to tap into
-      bool registerProtocol(const ProtocolInfo::Description& description,
-			    ProtocolInfo& info);
-      bool deregisterProtocol(const ProtocolInfo::Description& description);
-      ProtocolInfo* const 
-	findProtocol(const ProtocolInfo::Description::Type::type type,
-		     const std::string& name) const;
+      bool registerProtocol(ProtocolInfo& info);
+      void deregisterProtocol(const ProtocolInfo& info);
+      ProtocolInfo* const findProtocol(const ProtocolInfo::Type::type type,
+				       const std::string& name) const;
 
       // Logger set manipulators
       bool registerLogger(Logger& logger);

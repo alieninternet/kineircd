@@ -173,27 +173,27 @@ void Daemon::newConnection(Listener& listener)
 /* registerProtocol - Register a new protocol on the protocol list
  * Original 02/10/2002 simonb
  */
-bool Daemon::registerProtocol(const ProtocolInfo::Description& description,
-			      ProtocolInfo& info)
+bool Daemon::registerProtocol(ProtocolInfo& info)
 {
 #ifdef KINE_DEBUG_PSYCHO
    std::ostringstream output;
    output << "Daemon::registerProtocol() - Attemping to add protocol '" <<
-     description.name << "' of type " << description.type;
+     info.description.name << "' of type #" << info.description.type;
    debug(output.str());
 #endif
    
    // Look for the protocol first - see if it is not already added
-   if (protocols.find(description) != protocols.end()) {
+   if (protocols.find(info.description.key) != protocols.end()) {
 #ifdef KINE_DEBUG_EXTENDED
       debug("Daemon::registerProtocol() - Unable to register '" +
-	    String(description.name) + '\'');
+	    String(info.description.name) + '\'');
 #endif
       return false;
    }
 
    // Okay, add the protocol then
-   (void)protocols.insert(protocols_type::value_type(description, &info));
+   (void)protocols.insert(protocols_type::value_type(info.description.key,
+						     &info));
    
    return false;
 }
@@ -204,15 +204,14 @@ bool Daemon::registerProtocol(const ProtocolInfo::Description& description,
  * Note: This needs to scan the connections for any which are using this
  *       protocol too.. Kinda important :)
  */
-bool Daemon::deregisterProtocol(const ProtocolInfo::Description& description)
+void Daemon::deregisterProtocol(const ProtocolInfo& info)
 {
 #ifdef KINE_DEBUG_PSYCHO
    debug("Daemon::deregisterProtocol() - Attempting to remove protocol '" +
-	 String(description.name) + '\'');
+	 String(info.description.name) + '\'');
 #endif
-   
-   // Return false for now - we cannot safely deregister :(
-   return false;
+
+   // Something here, Simon? :)
 }
 
 
@@ -220,19 +219,18 @@ bool Daemon::deregisterProtocol(const ProtocolInfo::Description& description)
  * Original 04/10/2002 simonb
  * Note: This needs optimisation :)
  */
-ProtocolInfo* const 
-  Daemon::findProtocol(const ProtocolInfo::Description::Type::type type,
-		       const std::string& name) const
+ProtocolInfo* const Daemon::findProtocol(const ProtocolInfo::Type::type type,
+					 const std::string& name) const
 {
 #ifdef KINE_DEBUG_PSYCHO
    debug("Daemon::findProtocol() - Looking for protocol '" +
-	 name + "'; type #" + String::convert(type));
+	 name + "' of type type #" + String::convert(type));
 #endif
 
    // Find the protocol, maybe (this is ugly IMHO)
    protocols_type::const_iterator proto =
-     protocols.find(ProtocolInfo::Description(name.c_str(), type));
-   
+     protocols.find(ProtocolInfo::Description(type, name.c_str()).key);
+
    // Check if we found the protocol, more often we will have
    if (proto != protocols.end()) {
       return proto->second;

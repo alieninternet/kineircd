@@ -198,12 +198,12 @@ void Registrar::parseLine(const String& line)
        */
       if (registrantData.protocol.empty()) {
 	 protocolInfo =
-	   daemon().findProtocol(ProtocolInfo::Description::Type::USER,
+	   daemon().findProtocol(ProtocolInfo::Type::USER,
 				 config().
 				 getOptionsRegistrarUserProtocolDefault());
       } else {
 	 protocolInfo = 
-	   daemon().findProtocol(ProtocolInfo::Description::Type::USER,
+	   daemon().findProtocol(ProtocolInfo::Type::USER,
 				 registrantData.protocol.toUpper());
       }
 
@@ -232,7 +232,7 @@ void Registrar::parseLine(const String& line)
        * the appropriate protocol is easy.
        */
       if ((protocolInfo = 
-	   daemon().findProtocol(ProtocolInfo::Description::Type::NETWORK,
+	   daemon().findProtocol(ProtocolInfo::Type::NETWORK,
 				 registrantData.protocol.toUpper())) == 0) {
 	 // Complain
 	 sendError("Requested IIRC protocol unavailable");
