@@ -31,19 +31,25 @@
 
 namespace Kine {
    namespace mod_irc2user {
+      class Protocol;
+      
       // A locally connected user, using the IRC-2 server <-> user protocol
       class User : public Kine::LocalUser {
        private:
+	 Protocol& protocol;			// Connection we are bound to
+	 
 	 std::string description;		// Description/real name field
-	 AISutil::Time lastAwake;			// Time user was last awake
+	 AISutil::Time lastAwake;		// Time user was last awake
 	 
        public:
 	 // Constructor
-	 User(const Kine::Registrant& _registrant,
+	 User(Protocol& _protocol,
+	      const Kine::Registrant& _registrant,
 	      const std::string& _hostname)
 	   : LocalUser(_registrant.name,
 		       _registrant.username,
 		       _hostname),
+	     protocol(_protocol),
 	     description(_registrant.description),
 	     lastAwake(Kine::daemon().getTime())
 	   {};
@@ -66,6 +72,8 @@ namespace Kine {
       }; // class User
    }; // namespace mod_irc2user
 }; // namespace Kine
-   
+
+# include "mod_irc2user/protocol.h"
+
 #endif // _SRC_MOD_IRC2USER_USER_H_
    

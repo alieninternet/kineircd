@@ -47,7 +47,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 		   Kine::Connection& connection, std::string& inputQueue,
 		   std::string& outputQueue)
   : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue),
-    user(registrant, connection.getSocket().getRemoteAddress()),
+    user(*this, registrant, connection.getSocket().getRemoteAddress()),
     maxMessageSize(512) // <=- should really be configurable
 {
    // Attempt to register the user to the registry..
