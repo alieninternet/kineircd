@@ -10,9 +10,9 @@ AUTOCONF_SCRIPT=./configure
 AUTOCONF_HEADER=./include/autoconf.h.in
 
 bootstrap:
+	libtoolize --copy --force --ltdl
 	aclocal -I $(AUTOCONF_DIR)
-	autoheader --localdir=$(AUTOCONF_DIR) $(AUTOCONF_FILE) \
-			> $(AUTOCONF_HEADER)
+	autoheader $(AUTOCONF_FILE) > $(AUTOCONF_HEADER)
 	automake --add-missing --copy --include-deps --foreign
 	autoconf -I $(AUTOCONF_DIR) -o $(AUTOCONF_SCRIPT) $(AUTOCONF_FILE)
 	-chmod 755 $(AUTOCONF_SCRIPT)

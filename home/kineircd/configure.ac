@@ -28,7 +28,7 @@ dnl Initialise the autoconf thingamebobs
 AC_INIT([KineIRCd], [ ], [kineircd@alien.net.au])
 AM_INIT_AUTOMAKE([1.7 foreign no-installinfo no-installman nostdinc subdir-objects])
 AC_COPYRIGHT([Portions Copyright (c) 2001,2002 KineIRCd Development Team])
-AC_PREREQ(2.54)
+AC_PREREQ(2.57)
 AC_CONFIG_AUX_DIR(config)
 AM_CONFIG_HEADER(include/autoconf.h)
 AC_REVISION([$Revision$])
@@ -217,10 +217,13 @@ AC_CACHE_SAVE
 dnl -------------------------------------------------------------------------
 dnl  Configure libtool utility
 dnl -------------------------------------------------------------------------
-AC_DISABLE_FAST_INSTALL
 AC_LIBTOOL_DLOPEN
+AC_LIBLTDL_INSTALLABLE
 dnl AC_LIBTOOL_WIN32_DLL
 AC_PROG_LIBTOOL
+AC_SUBST(LTDLINCL)
+AC_SUBST(LIBLTDL)
+AC_CONFIG_SUBDIRS(libltdl)
 
 
 dnl -------------------------------------------------------------------------
@@ -247,7 +250,6 @@ AC_HEADER_TIME
 AC_HEADER_SYS_WAIT
 AC_HEADER_DIRENT
 AC_CHECK_HEADERS( \
-	dlfcn.h \
 	errno.h \
 	fcntl.h \
 	limits.h \

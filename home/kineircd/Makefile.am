@@ -103,6 +103,12 @@ dist-hook:
 	rm -rf $(distdir)/kineircd/kineircdconf.h
 
 
+# Subdirectories to recurse into..
+SUBDIRS=\
+	libltdl \
+	.
+
+
 
 # Customised .tpl rules
 install/example.conf: install/example.conf.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
@@ -139,6 +145,10 @@ endif
 # Stuff we really need, but automake is too stupid to work out for itself
 BUILT_SOURCES=\
 	src/libkineircd/regnumerics.h
+
+# Includes..
+libkineircd_la_INCLUDES=\
+	$(LTDLINCL)
 
 # Source/header files
 libkineircd_la_SOURCES=\
@@ -205,7 +215,7 @@ libkineircd_la_LDFLAGS=\
 	@ssl_ldflags@
 libkineircd_la_LIBADD=\
 	libkineircd_irc2.la \
-	-ldl \
+	$(LIBLTDL) \
 	-laisutil \
 	@ssl_lib@
 
