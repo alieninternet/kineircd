@@ -71,7 +71,7 @@ Language codes:
 005 Numeric (RPL_ISUPPORT) addition:
 ------------------------------------
  
-      LANGUAGE=<max langs>,<entry>,<entry>...
+      LANGUAGE=[<max langs>],<entry>,<entry>...
  
   This shows that the LANGUAGE command is available for changing the
  language of the replies, and details the languages available. One language
@@ -86,7 +86,10 @@ Language codes:
  LANGUAGE command may support more than one language being specified, both to
  find the best language available but for WHOIS information to show which
  languages a person can speak. This has been done due to the large number of
- bi-lingual IRC denizens. This field may not exist, see below.
+ multilingual IRC users. It also provides alternative languages for bots and
+ IRC servers to respond in. Initially the client should presume only one 
+ language can be set at a time until told otherwise. This field may not exist,
+ if there are a large amount of language codes -- see below.
  
   The two special language codes, 'i-default' and 'none', always exist, and
  therefore should not be listed here.
@@ -99,14 +102,15 @@ Language codes:
   When many too many languages to fit within the line limits of the IRC-2
  protocol exist, LANGUAGE lines can be broken up, with the second line onwards
  simply missing the 'max langs' field. If the 'max langs' field is not present
- in the first line, you may safely presume only one language can be set at a
- time.
+ on any of the LANGUAGE lines, you may safely presume only one language can be
+ set at a time.
 
  eg. LANGUAGE=6,en,*tr,de,fr
      LANGUAGE=,en-scouse,zh,zh-yue
      
-  Six languages may be selected, from English, Turkish, German, French,
- English with a scouse accent, Standard Chinese and Cantonese (also Chinese).
+  Six languages may be selected, from English, Turkish (the default), German,
+ French, English with a scouse accent, Standard Chinese and Cantonese (also
+ Chinese).
 
 
 
