@@ -32,7 +32,8 @@ using namespace Kine;
 /* loadModule - Load a module, check it and add it to our list if it is okay
  * Original 21/07/2002 simonb
  */
-bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
+ModuleDescriptor *ModuleList::loadModule(const String &moduleFile,
+					 String &errorReturn)
 {
 #ifdef KINE_DEBUG_PSYCHO
    debug("ModuleList::loadModule() - Trying to load " + moduleFile);
@@ -44,7 +45,7 @@ bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
    
    // Make sure it loaded happily
    if (moduleDesc == 0) {
-      return false;
+      return 0;
    }
 
 #ifdef KINE_DEBUG_EXTENDED
@@ -58,7 +59,7 @@ bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
       errorReturn = moduleDesc->getModule()->getVersionString() +
 	" can only be loaded once";
       delete moduleDesc;
-      return false;
+      return 0;
    }
 
    // Okay then, if we got this far we can add this module to the list
@@ -73,7 +74,7 @@ bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
 #endif
    
    // Smile, it all worked out okay
-   return true;
+   return moduleDesc;
 }
 
 
