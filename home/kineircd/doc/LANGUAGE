@@ -85,7 +85,7 @@ Numerics
 --------
 
 687 - RPL_YOURLANGUAGEIS
-      <code(s)> * :<info>
+      <code(s)> :<info>
       
        Reply to a LANGUAGE command denoting the language selected by the
       server. Along with a 'LANGUAGE' reply, this signifies to that client
@@ -93,9 +93,6 @@ Numerics
       information, and confirms a change (if any). The code(s) are the same as
       defined in BCP-0047.
 
-       The next field, '*' should be ignored by the client and may be used in
-      the future. 
-      
        The info is usually the name of the language (as written in the
       language data file), same as used in RPL_LANGUAGE. If additional 
       information about the language is available file (such as a note or 
@@ -122,11 +119,11 @@ Numerics
       used for just a nickname if the author does not wish to be contactable 
       by e-mail, however that is probably a matter of network policy. 
 
-       The '*' is a field for possible future use and should be ignored for 
-      now. The name is given to show the name/variation of the language.
+      The name is given to show the name/variation of the language.
       The flags are a bunch of case sensitive characters in a row with
       special meaning. If no flags are set on a language, '*' will be 
-      replaced instead (as with RPL_TIMEONSERVERIS).
+      replaced instead (as with RPL_TIMEONSERVERIS). If there is no known
+      maintainer information, it too will be replaced with a '*'.
       
        Currently the following flags are possible:
         'd' - Default language and is selected upon connection
@@ -136,15 +133,13 @@ Numerics
 
 
 
-690 - RPL_WHOIS_LANGUAGE
-      <nickname> <language codes>
-      
+690 - RPL_WHOISLANGUAGE
+      <nickname> <language codes> [:speaks these languages]
+
        This is an optional extra to the WHOIS output, showing what language
       a user is using. The 'language codes' field is a comma-delimetered list
       of languages a person can speak (in order of preference, highest
       first, lowest last). 
-      
-       Additional fields may be added to this in the future.
 
 
 Function

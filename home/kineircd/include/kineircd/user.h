@@ -26,6 +26,7 @@
 # define _INCLUDE_KINEIRCD_USER_H_ 1
 
 # include <kineircd/client.h>
+# include <kineircd/languages.h>
 
 namespace Kine {
    class User : public Client {
@@ -34,6 +35,9 @@ namespace Kine {
       std::string username;			//!< User's username
       std::string hostname;			//!< User's hostname
       std::string awayMessage;			//!< Away message (empty = off)
+
+      //! Languages in use by the user
+      Languages::languageDataList_type languageList;
       
     protected:
       //! Constructor
@@ -75,6 +79,10 @@ namespace Kine {
       //! Check if this user is away
       const bool isAway(void) const
 	{ return (!getAwayMessage().empty()); };
+      
+      //! Return the languages list
+      const Languages::languageDataList_type& getLanguageList(void) const
+	{ return languageList; };
    }; // class User
 }; // namespace Kine
 
