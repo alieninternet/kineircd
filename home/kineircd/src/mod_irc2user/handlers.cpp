@@ -136,8 +136,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleDIE)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 {
-   static const char* const commandName = "HELP";
-
    bool extended = false;
    AISutil::StringMask mask;
    
@@ -164,14 +162,20 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
        * command in the first place!
        */
       if (mask.matches(it->first) && it->second.hasAccess(user)) {
+	 // Create a prefix for this command's output
+	 std::ostringstream prefix;
+	 prefix << '\002' << it->first << "\002: ";
+	 
 	 // Send the user the usage help for this function, if we can
 	 if (it->second.helpUsage == 0) {
-	    sendNumeric(LibIRC2::Numerics::RPL_HELP,
-			it->first,
+	    sendMessage("NOTICE",
+			user.getNickname(),
+			prefix.str() +
 			GETLANG(irc2user_HELP_NO_PARAMETERS));
 	 } else {
-	    sendNumeric(LibIRC2::Numerics::RPL_HELP,
-			it->first,
+	    sendMessage("NOTICE",
+			user.getNickname(),
+			prefix.str() +
 			GETLANG_BY_ID(*(it->second.helpUsage)));
 	 }
 	 
@@ -184,12 +188,11 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	    std::string::size_type startPosition = 0;
 	    std::string::size_type endPosition;
 	    
-	    // The max number of chars we can send.. (is this algo okay??)
+	    // The max number of chars we can send..
 	    const std::string::size_type maxChars =
 	      maxMessageSize -
-	      Kine::myServer().getName().length() -
-	      user.getNickname().length() -
-	      25;
+	      15 - /* "NOTICE :" plus a bit of room for dodgy clients */
+	      user.getNickname().length();
 	    
 	    // Loop until we have no more text left..
 	    for (;;) {
@@ -204,8 +207,9 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	       }
 	       
 	       // Send this bit..
-	       sendNumeric(LibIRC2::Numerics::RPL_MOREHELP,
-			   it->first,
+	       sendMessage("NOTICE",
+			   user.getNickname(),
+			   prefix.str() +
 			   help.substr(startPosition,
 				       (endPosition - startPosition)));
 	       
@@ -220,11 +224,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	 }
       }
    }
-   
-   // Say bye bye
-   sendNumeric(LibIRC2::Numerics::RPL_ENDOF_GENERIC,
-	       commandName, mask,
-	       GETLANG(irc2_RPL_ENDOF_GENERIC_HELP));
 }
 #endif
 
