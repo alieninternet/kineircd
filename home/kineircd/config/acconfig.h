@@ -47,7 +47,78 @@
  */
 
 /* This is the environment variable we may need to check for a config file */
+/* Define this if you want the LANGUAGE command to accept languages that are 
+ * not defined/loaded by this server. This is wise to cut down abuse..
+ * (eg. x-dickheads doesn't exist and probably never will :)
+ */
+# define ACCEPT_UNKNOWN_LANGS
+  
+  
 # define CONFIG_FILE_ENV_VAR			"KINEIRCD_CONF"
+
+/* Define these with an amount in seconds for each flood-lock timeout,
+ * or undefine to disable the flood-lock.
+ */
+# define FLOODLOCK_ACCEPT_MSG 120
+# define FLOODLOCK_AWAY_REPLY 60
+# define FLOODLOCK_AWAY_SET 45
+# define FLOODLOCK_KNOCK_MSG 300 
+
+/* # define FORCE_MOTD */
+  
+/* Define this if you want to allow IRC operators to use the WALLOPS command.
+ * Usually it's ok to allow this, but some networks do not like this very much
+ * as it is often abused. Many clients/scripts turn +w on automatically like
+ * BitchX to be 'cool' and 'hip' with the 'oper scene', when in actual fact
+ * these days most of the network server notices, global operator messages etc
+ * are shuffled via local server notices and global notices.
+ */
+/* # define ALLOW_OPER_WALLOPS */
+
+
+/* Define this if you want strict channel names to be allowed. This means
+ * channel names are not allowed to have any control characters in them, nor
+ * the character 0xA0, which is a blank character in the windows character set.
+ * The result of this is nobody can fake 'official' channels without it
+ * looking like an obvious fake.
+ */
+/* # define STRICT_CHANNEL_NAMES */
+
+
+/* When this is defined, idle information will not be presented unless the
+ * idle time is greater than or equal to the given time (in seconds)
+ */
+# define TIME_TO_BE_IDLE 30
+  
+ 
+/* Define this if you want connections to be strict. This means someone who
+ * connects as 'SERVER' first, then changes their mind to 'USER' will be
+ * booted off with a "cannot re-register" message. This can minimise damage
+ * caused by some attacks which exploit the fact that the server is so
+ * braindead and flood the connection with registration requests.
+ */
+# define STRICT_REGISTRATIONS
+
+
+/* Define this if you want helpers and operators to be able to 'see' user
+ * modes. This means a helper/operator can /mode nickname to receive the modes
+ * a user has currently set, but the helper/operator CANNOT change the modes
+ * for the user.
+ */
+# define HELPERS_CAN_SEE_USER_MODES
+
+  
+/* Define this if your operators are paranoid and cannot live their lives
+ * without knowing who is doing a /WHOIS on them. This only works locally,
+ * but is enough to satisfy those paranoid +O's by telling them when someone
+ * does a /WHOIS that will contain their idle time.
+ */
+ # define NOTIFY_PARANOID_OPERS_ON_WHOIS
+
+
+/* Socket listen maximum backlog.. */
+# define LISTEN_MAXQUEUE 25
+
 
 /* Stuff that will be in the Config Class, just not yet. */
 # define DEFAULT_CONFIG_SERVER_DESCRIPTION	"Mystery unconfigured server"
@@ -79,6 +150,13 @@
 # define LANG_FILE_PREFIX_LEN		9
 
 
+/* Define this if you want the server to send a ping with a random value to
+ * the client upon connection and wait until a responce is returned before
+ * allowing them to continue registration. 
+ */
+# define USER_CONNECTION_PINGPONG
+
+
 /***************************************************************************
  ***************************************************************************
  ***************************************************************************/
@@ -106,41 +184,6 @@
 /* Maximum protocol line lengths (pre-compressor) */
 # define MAXLEN_IRC2USER_OUTPUT		512
 # define MAXLEN_P13SERVER_OUTPUT	2048
-
-
-/* Number of descriptors off the max to stop incoming user connections */
-# define MAX_FD_SAFETY_NUM		32
-
-
-/* Number of descriptors off the max to stop all connections in/out. Why
- * this many below? Well linux and other unicies I've noticed CANNOT close()
- * after the maximum has been reached. I cannot explain it, but it happens,
- * so it appears that these descriptors must always be wasted
- */
-# define MAX_FD_PEAK_CUTOFF		4 
-
-
-/* Number of descriptors off the max where we should start to get worried.
- * Usually 512 off the max is enough, but if you have a kernel that supports
- * something like 4096 you may want to increase this to say warn around 3072
- * descriptors etc
- */
-# define MAX_FD_WARN_LEFT		512
-
-
-/* Work out our levels for FD sizes, best to leave these alone.. */
-# define MAX_FD_NO_MORE_USERS		MAX_FD_PER_PROCESS - MAX_FD_SAFETY_NUM
-# define MAX_FD_NO_MORE_CONNS		MAX_FD_PER_PROCESS - MAX_FD_PEAK_CUTOFF
-# define MAX_FD_HIGH_WATERMARK		MAX_FD_PER_PROCESS - MAX_FD_WARN_LEFT
-
-
-/* Fix up select()'s fd_set size. Surprisingly some unicies set this to a
- * level that's quite low. In many cases the default standard of 1024 will not
- * match the file descriptor limit set by the system (usually)... 64-bit
- * applications usually have FD_SETSIZE set to 65536, which is excessive
- * compared to our use. This should fix everything to a reasonable level.
- */
-/* # define FD_SETSIZE			MAX_FD_PER_PROCESS + 1 */
 
 
 /* Define this to limit the connection data during a registration to the
@@ -197,235 +240,7 @@
 
 @TOP@
 
-/* This is the location of the configuration file. It can be overwritten
- * with the '-f' command line option, so don't stress too much about this.
- * Here, we set it to whatever is in the local directory for this test version
- */
-# undef DEFAULT_CONFIG_FILE
 
-
-/* This is the location to the PID file, generated upon startup. Edit to fit
- * your operating system, or undefine this if you do not want a PID file to 
- * be created at all - it's handy to have, though, if you want to kill the 
- * server from a script or something.
- */
-# undef PID_FILE
-
-
-/* Define this if you want the LANGUAGE command to accept languages that are 
- * not defined/loaded by this server. This is wise to cut down abuse..
- * (eg. x-dickheads doesn't exist and probably never will :)
- */
-# undef ACCEPT_UNKNOWN_LANGS
-  
-  
-/* When enabled, this turns on logging to the syslog interface. When
- * disabled, logging will not occur. A string must be specified with this
- * define - it will be the identity of the process as far as syslog is 
- * concerned.
- */
-# undef SYSLOG_IDENT
-
-
-  /* Socket listen maximum backlog.. */
-# undef LISTEN_MAXQUEUE
-
-
-/* Define these depending on what commands you want available */
-# undef ALLOW_COMMAND_DIE
-
-  
-/* Define these with an amount in seconds for each flood-lock timeout,
- * or undefine to disable the flood-lock.
- */
-# undef FLOODLOCK_ACCEPT_MSG
-# undef FLOODLOCK_AWAY_REPLY
-# undef FLOODLOCK_AWAY_SET
-# undef FLOODLOCK_KNOCK_MSG  
-  
-  
-/* Define this if you want the MOTD to be 'forced', eg. using a numeric
- * other than RPL_MOTD. This stops some irc clients from hiding the MOTD
- * at start-up which may result in people ignoring policies they should be
- * aware of, etc.
- * 
- * Remember: You can lead a horse to water, but you can't make it drink
- */
-# undef FORCE_MOTD
-
-  
-/* When this is defined, idle information will not be presented unless the
- * idle time is greater than or equal to the given time (in seconds)
- */
-# undef TIME_TO_BE_IDLE			
-  
- 
-/* Define this if you want the server to send a ping with a random value to
- * the client upon connection and wait until a responce is returned before
- * allowing them to continue registration. 
- */
-# undef USER_CONNECTION_PINGPONG
-
-
-/* Define this if your operators are paranoid and cannot live their lives
- * without knowing who is doing a /WHOIS on them. This only works locally,
- * but is enough to satisfy those paranoid +O's by telling them when someone
- * does a /WHOIS that will contain their idle time.
- */
-# undef NOTIFY_PARANOID_OPERS_ON_WHOIS
-
-
-/* Define this if you want strict channel names to be allowed. This means
- * channel names are not allowed to have any control characters in them, nor
- * the character 0xA0, which is a blank character in the windows character set.
- * The result of this is nobody can fake 'official' channels without it
- * looking like an obvious fake.
- */
-# undef STRICT_CHANNEL_NAMES
-
-
-/* Define this if you want to drop servers which are out of sync, or appear
- * out of sync by sending 'spoofed' messages that come from users, servers,
- * or channels that are not in the local server's lists.
- * 
- * This could be bad on large networks were vague discrepancies just happen
- */
-# undef DROP_BRAINDEAD_SERVERS
-
-
-/* Define this if you want connections to be strict. This means someone who
- * connects as 'SERVER' first, then changes their mind to 'USER' will be
- * booted off with a "cannot re-register" message. This can minimise damage
- * caused by some attacks which exploit the fact that the server is so
- * braindead and flood the connection with registration requests.
- */
-# undef STRICT_REGISTRATIONS
-
-
-/* Define this if you want to allow IRC operators to use the WALLOPS command.
- * Usually it's ok to allow this, but some networks do not like this very much
- * as it is often abused. Many clients/scripts turn +w on automatically like
- * BitchX to be 'cool' and 'hip' with the 'oper scene', when in actual fact
- * these days most of the network server notices, global operator messages etc
- * are shuffled via local server notices and global notices.
- */
-# undef ALLOW_OPER_WALLOPS
-
-
-/* Define this if you want operators to be able to use the TRACEROUTE command
- * on this server. Sometimes this may 'clash' with network policies or it might
- * be abused; Whatever the reason, here is your chance to turn it off.
- */
-# undef HAVE_CMD_TRACEROUTE
-
-
-/* Define this if you want helpers and operators to be able to 'see' user
- * modes. This means a helper/operator can /mode nickname to receive the modes
- * a user has currently set, but the helper/operator CANNOT change the modes
- * for the user.
- */
-# undef HELPERS_CAN_SEE_USER_MODES
-
-  
-/* Define these depending on which transport types you wish to support */
-# undef HAVE_TRANSPORT_TCP_IPV4
-# undef HAVE_TRANSPORT_TCP_IPV6
-# undef HAVE_TRANSPORT_SPX_IPX
-  
-  
-/* Define these depending on what protocols you want compiled in */
-# if 0
-#  undef HAVE_IRC2USER_PROTOCOL
-#  undef HAVE_IRC3USER_PROTOCOL
-#  undef HAVE_P13SERVER_PROTOCOL
-#  undef HAVE_P14SERVER_PROTOCOL
-# endif
-  
-/* Define these depending on what compression you want added to the above */
-# ifdef HAVE_IRC2USER_PROTOCOL
-#  undef HAVE_IRC2USER_IRCII_KLUGE
-#  undef HAVE_IRC2USER_MATCH_COUNTING
-# endif
-# ifdef HAVE_P13SERVER_PROTOCOL
-#  undef HAVE_P13SERVER_COMPRESS
-#  undef HAVE_P13SERVER_EXTENDED
-# endif
-# ifdef HAVE_P14SERVER_PROTOCOL
-#  undef HAVE_P14SERVER_COMPRESS
-# endif
-
-  
-/* Define if we want to compile the old-style configuration subparser. When
- * compiled in, users will be able to add a line like this to their config
- * file to include an old-style configuration file of the same format used by
- * other/older IRC daemons:
- *
- * includeOldConfig "oldircd.conf";
- * 
- * It's the same format used by traditional irc servers and seems to have 
- * quite an amazing lifespan considering it is often considered quite a 
- * confusing configuration file format. Hey, people still like it for some 
- * reason! It's considered obsolete, but for the sake of completeness support 
- * is available.
- */
-# undef OLD_CONFIG_SUBPARSER
-  
-  
-/* Define if the function tzset() and variables timezone and daylight exist */
-# undef HAVE_TZSET_AND_FRIENDS
-  
-
-/* Define if the C++ compiler has STL (Standard Template Library) support */
-# undef HAVE_CXX_STL
-
-  
-/* Define if you have the variant of the STL which includes hash/hash_map */
-# undef STL_HAS_HASH
-
-  
-/* Define if you have the variant of the STL which includes slist */
-# undef STL_HAS_SLIST
-
-  
-/* Define if signal() has a third variable (struct sigcontext *) */
-# undef HAVE_STRUCT_SIGCONTEXT
-
-  
-/* Define if the signal SIGCHLD is dodgey */
-# undef SIGCHLD_BRAIN_DAMAGE
-
-  
-/* The total number of file descriptors allowed per process on this machine */
-# undef MAX_FD_PER_PROCESS
-
-  
-/* The total number of bits in the fd_set bitset for select() */
-# undef SELECT_FDSET_NUMFDS
-
-  
-/* Define if OpenSSL is installed */
-# undef HAVE_OPENSSL
-  
-  
-/* Define if SSL support is allowed */
-# undef WITH_SSL
-
-  
-/* Define if we are going to incorporate SNMP stuff */
-# undef HAVE_SNMP_AGENT
-  
-  
-/* Define if the SNMP agent is to be a master and not a subagent? */
-# undef HAVE_SNMP_AGENT_MASTER
-# ifdef HAVE_SNMP_AGENT_MASTER
-#  undef HAVE_SNMP_AGENT_MASTER_PORT
-# endif
-  
-  
-/* Define if /dev/urandom does not exist */
-# undef MUST_INIT_PRNG
-
-  
 /* Define if we are going to do debugging. 
  * Note: DEBUG must be define if the others are also wanted 
  */
@@ -465,34 +280,9 @@
 # endif
 
   
-/* Work out some true level values for our maximum file descriptor checks */
-# ifndef MAX_FD_PER_PROCESS
-#  warning "No MAX_FD_PER_PROCESS defined: Presuming 256 File Descriptors!!"
-#  define MAX_FD_PER_PROCESS		256
-# endif
-
-  
-/* Double check the default TTL is appropriate */
-# if DEFAULT_CONFIG_SERVER_MAX_TTL > 64
-#  error "DEFAULT_CONFIG_SERVER_MAX_TTL is greater than 64! 64 is the maximum."
-# endif
-
-  
 /* Fix the server name mask if it is not here */
 # ifndef SERVER_NAME_MASK
 #  define SERVER_NAME_MASK		"*"
 # endif
-
   
-/* Work out the highest protocol major number we support */
-# ifdef HAVE_P14SERVER_PROTOCOL
-#  define HIGHEST_SUPPORTED_SERVER_PROTOCOL 14
-# else
-#  if HAVE_P13SERVER_PROTOCOL
-#   define HIGHEST_SUPPORTED_SERVER_PROTOCOL 13
-#  else
-#   define HIGHEST_SUPPORTED_SERVER_PROTOCOL 0 /* blind */
-#  endif
-# endif
-
 #endif

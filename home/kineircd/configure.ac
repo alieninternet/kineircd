@@ -24,7 +24,7 @@ dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 dnl -------------------------------------------------------------------------
 dnl  Getting ready to configure...
 dnl -------------------------------------------------------------------------
-AC_PREREQ(2.52)
+AC_PREREQ(2.53)
 AC_INIT(src/Makefile.in)
 AC_CONFIG_AUX_DIR(autoconf)
 AC_CONFIG_HEADER(include/kineircd/kineircdconf.h)
@@ -144,7 +144,8 @@ AC_CACHE_CHECK([whether signal SIGCHLD is brain-damaged],
    ])
  ])
 if test "$kineircd_cv_sys_sigchld_braindamaged" = "yes"; then
-  AC_DEFINE(SIGCHLD_BRAIN_DAMAGE) 
+  AC_DEFINE(SIGCHLD_BRAIN_DAMAGE, 1,
+            [Define if the signal SIGCHLD is dodgey])
 fi
 
 AC_C_BIGENDIAN
@@ -173,52 +174,7 @@ if test "$ac_cv_sizeof_long_long" -eq 0; then
   AC_MSG_ERROR([No size of 'long long' found - We need a 'long long' here])
 fi
 
-AC_CACHE_CHECK([maximum number of files I can open at once],
- kineircd_cv_sys_maxfds,[
-  dnl Try a brute-force method
-  AC_LANG_C
-  AC_TRY_RUN([
-	#include <sys/types.h>
-	#include <sys/stat.h>
-	#include <fcntl.h>
-	#include <unistd.h>
-	#include <stdio.h>
-	#include <string.h>
-	
-	int main(void) {
-	   FILE *outfd;
-	   int fd;
-	   int count = 6;
-	   /* ^^^^ = stdin + stdout + stderr + outfd + configure + config.log */
-	   
-	   /* open a file for our own purposes, while we can */
-	   outfd = fopen("conftestval", "w");
-	   
-	   if (!outfd) {
-	      exit(1);
-	   }
-	   
-	   /* Open as many files as we can */
-	   while ((fd = open("conftestval", O_RDONLY)) != -1) {
-	      count++;
-	   }
-	
-	   /* Write to the file, finally. */
-	   fprintf(outfd, "%d\n", count);
-	   
-	   exit(0);
-	}
-   ],[
-     kineircd_cv_sys_maxfds=`cat conftestval`
-   ],[
-     kineircd_cv_sys_maxfds=256
-     AC_MSG_WARN([Making the assumption of 256 bits could be wrong.])
-     echo "  It is recommended that you edit autoconf.h manually to correct this"
-   ])
- ])
-AC_DEFINE_UNQUOTED(MAX_FD_PER_PROCESS, $kineircd_cv_sys_maxfds)
-
-AC_CACHE_CHECK([default select() file fd_set bit-size],
+AC_CACHE_CHECK([current select() file fd_set bit-size],
  kineircd_cv_sys_fdset_numfds,[
   AC_LANG_C
   AC_TRY_RUN([
@@ -238,8 +194,7 @@ AC_CACHE_CHECK([default select() file fd_set bit-size],
 	   }
 
 	   /* Calculate the size of the fdset and output the value we got */
-	   fprintf(outfd, "%d\n", 
-	   	   (sizeof(testset) * 8));
+	   fprintf(outfd, "%d\n", (sizeof(testset) * 8));
 	   
 	   exit(0);
 	}
@@ -251,10 +206,11 @@ AC_CACHE_CHECK([default select() file fd_set bit-size],
      echo "  It is recommended that you edit autoconf.h manually to correct this"
    ])
  ])
-AC_DEFINE_UNQUOTED(SELECT_FDSET_NUMFDS, $kineircd_cv_sys_fdset_numfds)
+AC_DEFINE_UNQUOTED(SELECT_FDSET_NUMFDS, $kineircd_cv_sys_fdset_numfds,
+                   [Number of file descriptors safely usable with select()])
 
 AC_CACHE_CHECK([for tzset() and timezone/daytime variables],
- kineircd_cv_sys_tzset_and_friends,[
+ kineircd_cv_sys_tzset,[
   AC_LANG_CPLUSPLUS
   AC_TRY_RUN([
 	#include <time.h>
@@ -272,13 +228,14 @@ AC_CACHE_CHECK([for tzset() and timezone/daytime variables],
 	   exit(0);
 	}
    ],[
-     kineircd_cv_sys_tzset_and_friends=yes
+     kineircd_cv_sys_tzset=yes
    ],[
-     kineircd_cv_sys_tzset_and_friends=no
+     kineircd_cv_sys_tzset=no
    ])
  ])
-if test "$kineircd_cv_sys_tzset_and_friends" = "yes"; then
-  AC_DEFINE(HAVE_TZSET_AND_FRIENDS) 
+if test "$kineircd_cv_sys_tzset" = "yes"; then
+  AC_DEFINE(HAVE_TZSET, 1,
+            [Define if the function tzset() and its variables exist])
 fi
 
 AC_CACHE_SAVE
@@ -356,52 +313,52 @@ AC_CHECK_FUNCS(
 	strerror \
 		)
 
-AC_MSG_CHECKING([snmp-agent parameter])
-AC_ARG_ENABLE(snmp-agent,[
-  --enable-snmp-agent=[agentx|master]        (Default is disabled)
-    SNMP additions to the server allow you to monitor the server remotely
-    via the standard SNMP protocols. This will requre you to have the 
-    NET-SNMP libraries installed, however. Specifying agentx here will allow
-    the server's SNMP component to connect to a master agent (eg. snmpd) which
-    will proxy the requests to the server (this is recommended). Specifying
-    master here will allow this server to become a master SNMP agent itself.
-    For better control, it is preferred that you use the agentx method.
-    Anything else specified here will automatically presume 'agentx'.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-     kineircd_test_have_snmp_agent=no
-   else
-     dnl "Master or agentx?"
-     if test "$enableval" = "master"; then
-       AC_MSG_RESULT([yes (master agent)])
-       AC_DEFINE(HAVE_SNMP_AGENT_MASTER)
-       AC_DEFINE(HAVE_SNMP_AGENT_MASTER_PORT, 161)
-     else
-       AC_MSG_RESULT([yes (agentx)])
-       AC_DEFINE(HAVE_SNMP_AGENT)
-     fi
-     
-     dnl We want to know if we have a valid snmp library here..
-dnl     AC_CHECK_LIB(ucdagent, init_agent,[
-       AC_DEFINE(HAVE_SNMP_AGENT)
-       kineircd_test_have_snmp_agent=yes
-       snmp_lib="-lucdagent -lucdmibs -lsnmp -ldl"
-       snmp_ldflags="-L/usr/local/lib -L/usr/lib"
-       kineircd_test_need_openssl=yes
-dnl      ],[
-dnl       AC_MSG_WARN([Could not find the appropriate SNMP libraries --
-dnl                    SNMP disabled])
-dnl       kineircd_test_have_snmp_agent=no
-dnl      ])
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
-   kineircd_test_have_snmp_agent=no
- ]) 
-AC_SUBST(kineircd_test_have_snmp_agent)
-AC_SUBST(snmp_lib)
-AC_SUBST(snmp_ldflags)
+dnl AC_MSG_CHECKING([snmp-agent parameter])
+dnl AC_ARG_ENABLE(snmp-agent,[
+dnl   --enable-snmp-agent=[agentx|master]        (Default is disabled)
+dnl     SNMP additions to the server allow you to monitor the server remotely
+dnl     via the standard SNMP protocols. This will requre you to have the 
+dnl     NET-SNMP libraries installed, however. Specifying agentx here will allow
+dnl     the server's SNMP component to connect to a master agent (eg. snmpd) which
+dnl     will proxy the requests to the server (this is recommended). Specifying
+dnl     master here will allow this server to become a master SNMP agent itself.
+dnl     For better control, it is preferred that you use the agentx method.
+dnl     Anything else specified here will automatically presume 'agentx'.
+dnl  ],[
+dnl    if test "$enableval" = "no"; then
+dnl      AC_MSG_RESULT(no)
+dnl      kineircd_test_have_snmp_agent=no
+dnl    else
+dnl      dnl "Master or agentx?"
+dnl      if test "$enableval" = "master"; then
+dnl        AC_MSG_RESULT([yes (master agent)])
+dnl        AC_DEFINE(HAVE_SNMP_AGENT_MASTER)
+dnl        AC_DEFINE(HAVE_SNMP_AGENT_MASTER_PORT, 161)
+dnl      else
+dnl        AC_MSG_RESULT([yes (agentx)])
+dnl        AC_DEFINE(HAVE_SNMP_AGENT)
+dnl      fi
+dnl      
+dnl      dnl We want to know if we have a valid snmp library here..
+dnl dnl     AC_CHECK_LIB(ucdagent, init_agent,[
+dnl        AC_DEFINE(HAVE_SNMP_AGENT)
+dnl        kineircd_test_have_snmp_agent=yes
+dnl        snmp_lib="-lucdagent -lucdmibs -lsnmp -ldl"
+dnl        snmp_ldflags="-L/usr/local/lib -L/usr/lib"
+dnl        kineircd_test_need_openssl=yes
+dnl dnl      ],[
+dnl dnl       AC_MSG_WARN([Could not find the appropriate SNMP libraries --
+dnl dnl                    SNMP disabled])
+dnl dnl       kineircd_test_have_snmp_agent=no
+dnl dnl      ])
+dnl    fi
+dnl  ],[
+dnl    AC_MSG_RESULT([no (default)])
+dnl    kineircd_test_have_snmp_agent=no
+dnl  ]) 
+dnl AC_SUBST(kineircd_test_have_snmp_agent)
+dnl AC_SUBST(snmp_lib)
+dnl AC_SUBST(snmp_ldflags)
 
 AC_MSG_CHECKING([for OpenSSL library/include path])
 AC_ARG_WITH(openssl,[  --with-openssl=DIR      location of OpenSSL library/include files],
@@ -454,24 +411,19 @@ if test "$kineircd_test_need_openssl" = "yes"; then
         AC_MSG_RESULT([$ssl_dir (support turned off though)])
       else
         AC_MSG_RESULT($ssl_dir)
-        AC_DEFINE(HAVE_OPENSSL)
-        AC_DEFINE(WITH_SSL)
         INCDIRS="$INCDIRS -I$ssl_dir/include"
       fi
       ssl_lib="-lssl -lcrypto"
       ssl_ldflags="-L$ssl_libs"
       LDFLAGS="$LDFLAGS $ssl_ldflags"
       AC_CHECK_LIB(ssl,SSL_accept,[
-        AC_MSG_CHECKING([for /dev/urandom])
-        dnl /dev/urandom must be a 'char' file, eg. definately a device
-        if test -c /dev/urandom; then
-          AC_MSG_RESULT(yes)
-        else
-          AC_MSG_RESULT(no)
-  	  AC_DEFINE(MUST_INIT_PRNG)
-        fi
+        AC_MSG_RESULT(yes)
+        AC_DEFINE(HAVE_OPENSSL, 1,
+	          [Define if the OpenSSL library is available])
+        AC_DEFINE(WITH_SSL, 1,
+	          [Define if SSL support is requested in the daemon])
       ],[
-        AC_MSG_RESULT(unknown)
+        AC_MSG_RESULT(no)
         AC_MSG_WARN([Your OpenSSL installation seems incomplete!])
         kineircd_test_openssl_broken=yes
        ])
@@ -521,9 +473,7 @@ AC_CACHE_CHECK([for a working C++ Standard Template Library],
      kineircd_cv_lib_stl_ok=no
    ])
  ])
-if test "$kineircd_cv_lib_stl_ok" = "yes"; then
-  AC_DEFINE(HAVE_CXX_STL) 
-else
+if test "$kineircd_cv_lib_stl_ok" = "no"; then
   AC_MSG_ERROR([Sorry, you need a working Standard Template Library])
 fi
 
@@ -545,10 +495,11 @@ AC_CACHE_CHECK([for an SGI compliant hash capability in your STL],
    ])
  ])
 if test "$kineircd_cv_lib_stl_sgi_hash" = "yes"; then
-  AC_DEFINE(STL_HAS_HASH)
+  AC_DEFINE(STL_HAS_HASH, 1,
+            [Define if your C++ STL has the SGI-compatible hashing extensions])
 fi
 
-AC_CACHE_CHECK([for an SGI compliant single list template in your STL],
+AC_CACHE_CHECK([for an SGI compliant slist<> in your STL],
  kineircd_cv_lib_stl_sgi_slist,[
   AC_LANG_CPLUSPLUS
   AC_TRY_RUN([
@@ -568,7 +519,8 @@ AC_CACHE_CHECK([for an SGI compliant single list template in your STL],
    ])
  ])
 if test "$kineircd_cv_lib_stl_sgi_slist" = "yes"; then
-  AC_DEFINE(STL_HAS_SLIST)
+  AC_DEFINE(STL_HAS_SLIST, 1,
+            [Define if your C++ STL has an SGI-compatible slist<> template])
 fi
 
 AC_CACHE_SAVE
@@ -580,50 +532,6 @@ dnl -------------------------------------------------------------------------
 dnl
 dnl Misc feature settings
 dnl
-AC_MSG_CHECKING([accept-unknown-langs parameter])
-AC_ARG_ENABLE(accept-unknown-langs,[
-  --enable-accept-unknown-langs              (Default is disabled)
-    When enabled, this allows languages that are unknown to this server to
-    be set by a user and become visible to other servers, users and services
-    on the network. This can be good in the case of other servers/services
-    on the network being aware of more languages than are known locally
-    (eg. the langages being requested). This can be bad in the respect that
-    it leaves the language command open to abuse with users being able to
-    select rediculous languages that don't exist (the server does not check
-    against existing language codes). This probably isn't worthwhile if
-    the linguistic dialogs are remotely updated over the network (which means
-    every server on the network would be updated with the same
-    specifications).
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(ACCEPT_UNKNOWN_LANGS)
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
- ])
-
-AC_MSG_CHECKING([command-die parameter])
-AC_ARG_ENABLE(command-die,[
-  --enable-command-die                       (Default is enabled)
-    This enables the 'DIE' IRC Operator command. This command is one which
-    many server administrators do not like since disgruntled operators can
-    easily wipe out the server. On the other hand, the command is here out
-    of pure convenience.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(ALLOW_COMMAND_DIE)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(ALLOW_COMMAND_DIE)
- ])
-
 AC_MSG_CHECKING([default-config-file parameter])
 AC_ARG_ENABLE(default-config-file,[
   --enable-default-config-file=file          (Default is "ircd.conf")
@@ -633,206 +541,17 @@ AC_ARG_ENABLE(default-config-file,[
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT([ircd.conf (default, fixed)])
-     AC_DEFINE(DEFAULT_CONFIG_FILE, "ircd.conf")
+     kineircd_test_default_config_file = "ircd.conf"
    else
      AC_MSG_RESULT(yes)
-     AC_DEFINE(DEFAULT_CONFIG_FILE, $enableval)
+     kineircd_test_default_config_file = $enableval
    fi
  ],[
    AC_MSG_RESULT([ircd.conf (default)])
-   AC_DEFINE(DEFAULT_CONFIG_FILE, "ircd.conf")
+   kineircd_test_default_config_file = "ircd.conf"
  ])
-
-AC_MSG_CHECKING([drop-lame-servers parameter])
-AC_ARG_ENABLE(drop-lame-servers,[
-  --enable-drop-lame-servers                 (Default is disabled)
-    This allows your server to drop other servers that are potentially
-    'spoofing' data, however this may also be produced by major 'out-of-sync'
-    conditions which can temporarily exist on lagging connections. Arguably
-    having this on is a good idea, but may become a disasterous nightmare
-    on large networks with soggy links, especially networks based on a
-    star-topology. Do not set this unless you know what you're doing.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(DROP_BRAINDEAD_SERVERS)
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
- ])
-
-AC_MSG_CHECKING([floodlock-accept-msg parameter])
-AC_ARG_ENABLE(floodlock-accept-msg,[
-  --enable-floodlock-accept-msg=seconds      (Default is '120')
-    This enabled the accept-request message flood-lock. When in the
-    'caller-id' user mode (+g), as user that is not on your ACCEPT list who
-    is trying to send a message to you will cause a message to be sent to you
-    notifying their request to talk to you. The period of time between those
-    request messages can be limited here (a number in seconds) to avoid
-    people being able to flood while you're trying to 'ignore' them.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(off)
-   else
-     if test "$enableval" -gt 0; then
-       AC_MSG_RESULT([$enableval seconds])
-       AC_DEFINE_UNQUOTED(FLOODLOCK_ACCEPT_MSG, $enableval)
-     else
-       AC_MSG_RESULT([120 seconds (default)])
-       AC_DEFINE(FLOODLOCK_ACCEPT_MSG, 120)
-     fi
-   fi
- ],[
-   AC_MSG_RESULT([120 seconds (default)])
-   AC_DEFINE(FLOODLOCK_ACCEPT_MSG, 120)
- ])
-
-AC_MSG_CHECKING([floodlock-away-reply parameter])
-AC_ARG_ENABLE(floodlock-away-reply,[
-  --enable-floodlock-away-reply=seconds      (Default is '60')
-    This enabled the away-reply flood-lock. When talking to someone who is
-    marked as away, the server sends you a message notifying you of the
-    user being away. This makes the server only send a 'user is away' reply
-    to a message upon the first message, and then only after this flood-lock
-    timeout (in seconds) has expired. This can reduce the amount of traffic 
-    leaving the server dramatically, but does use a tiny bit more memory. 
-    Disabling this feature follows the traditional functionality -- one away 
-    notification reply per message sent.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(off)
-   else
-     if test "$enableval" -gt 0; then
-       AC_MSG_RESULT([$enableval seconds])
-       AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, $enableval)
-     else
-       AC_MSG_RESULT([60 seconds (default)])
-       AC_DEFINE(FLOODLOCK_AWAY_REPLY, 60)
-     fi
-   fi
- ],[
-   AC_MSG_RESULT([60 seconds (default)])
-   AC_DEFINE(FLOODLOCK_AWAY_REPLY, 60)
- ])
-
-AC_MSG_CHECKING([floodlock-away-set parameter])
-AC_ARG_ENABLE(floodlock-away-set,[
-  --enable-floodlock-away-set=seconds        (Default is '45')
-    This enabled the away-set flood-lock, which reduces the amount of time
-    between a user being able to set /AWAY. The user will be able to change
-    their away message twice before having to wait the amount of time given
-    in this flood-lock (in seconds) to change their away message. The
-    flood-lock remains in place if they unset their away message, which they
-    can do anytime regardless of the flood-lock state. This mainly effects
-    server to server output, as the away message is broadcast over the network
-    to maintain network synchronicity. Many scripts these days will change
-    their away message every couple of seconds to acheive an 'idle time'
-    counter in their away message (which is highly wasteful since WHOIS
-    already does this). This uses a slight bit more memory, but the server
-    protocol output can be dramatically reduced. Disabling this will allow
-    anyone to change their away message whenever they like.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(off)
-   else
-     if test "$enableval" -gt 0; then
-       AC_MSG_RESULT([$enableval seconds])
-       AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_SET, $enableval)
-     else
-       AC_MSG_RESULT([45 seconds (default)])
-       AC_DEFINE(FLOODLOCK_AWAY_SET, 45)
-     fi
-   fi
- ],[
-   AC_MSG_RESULT([45 seconds (default)])
-   AC_DEFINE(FLOODLOCK_AWAY_SET, 45)
- ])
-
-AC_MSG_CHECKING([floodlock-knock-msg parameter])
-AC_ARG_ENABLE(floodlock-knock-msg,[
-  --enable-floodlock-knock-msg=seconds       (Default is '300')
-    This enabled the channel KNOCK message flood-lock, to avoid flooders
-    taking advantage of the KNOCK command and using it to flood a channel
-    while they are not allowed in (invite only). When disabled, users are
-    able to KNOCK as many times as they like. When enabled, they can only
-    send one KNOCK per time given above in seconds, per channel.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(off)
-   else
-     if test "$enableval" -gt 0; then
-       AC_MSG_RESULT([$enableval seconds])
-       AC_DEFINE_UNQUOTED(FLOODLOCK_KNOCK_MSG, $enableval)
-     else
-       AC_MSG_RESULT([300 seconds (default)])
-       AC_DEFINE(FLOODLOCK_KNOCK_MSG, 300)
-     fi
-   fi
- ],[
-   AC_MSG_RESULT([300 seconds (default)])
-   AC_DEFINE(FLOODLOCK_KNOCK_MSG, 300)
- ])
-
-AC_MSG_CHECKING([force-motd parameter])
-AC_ARG_ENABLE(force-motd,[
-  --enable-force-motd                        (Default is disabled)
-    This enables the Message of the Day (MOTD) to be 'forcefully' sent to the
-    user upon connection. This is very different from toggling the server mode
-    which turns the MOTD on/off upon connection. What this this does is
-    changes the numeric of the MOTD so that clients which ignore the MOTD by
-    hiding it upon connection cannot hide it (due to it seeming like a
-    different numeric). This is a dirty kluge, and is likely to be
-    circumvented by a lot of scripts. In anycase, it may be useful still.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(FORCE_MOTD)
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
- ])
-
-AC_MSG_CHECKING([helpers-see-umodes parameter])
-AC_ARG_ENABLE(helpers-see-umodes,[
-  --enable-helpers-see-umodes                (Default is enabled)
-    This enabled helpers and operators to be able to see user modes via
-    the /mode commands (eg. /mode nickname). This command has the potential
-    to be abused, but can be very handy in instances where a user needs help
-    and does not know how to see what modes they have enabled.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(HELPERS_CAN_SEE_USER_MODES)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(HELPERS_CAN_SEE_USER_MODES)
- ])
-
-AC_MSG_CHECKING([max-listen-queue parameter])
-AC_ARG_ENABLE(max-listen-queue,[
-  --enable-max-listen-queue=sockets          (Default is 25)
-    This option defines how many sockets are allowed to be pending connection
-    in the TCP/IP stack. This option cannot be disabled. If you do not
-    know what this does, it is best to leave it alone.
- ],[
-   if test "$enableval" -gt 0 -a "$enableval" -lt 1000; then
-     AC_MSG_RESULT([$enableval sockets])
-     AC_DEFINE_UNQUOTED(LISTEN_MAXQUEUE, $enableval)
-   else
-     AC_MSG_RESULT([25 sockets (default, fixed)])
-     AC_DEFINE(LISTEN_MAXQUEUE, 25)
-   fi
- ],[
-   AC_MSG_RESULT([25 sockets (default)])
-   AC_DEFINE(LISTEN_MAXQUEUE, 25)
- ])
+AC_DEFINE(DEFAULT_CONFIG_FILE, $kineircd_test_default_config_file,
+          [This is the default file to use when loading the config file])
 
 dnl
 dnl Should any developer pick up the old-style ircd.conf configuration
@@ -856,7 +575,6 @@ dnl      AC_MSG_RESULT(no)
 dnl      kineircd_test_old_config_subparser=no
 dnl    else
 dnl      AC_MSG_RESULT(yes)
-dnl      AC_DEFINE(OLD_CONFIG_SUBPARSER)
 dnl      kineircd_test_old_config_subparser=yes
 dnl    fi
 dnl  ],[
@@ -864,48 +582,10 @@ dnl    AC_MSG_RESULT([no (default)])
    kineircd_test_old_config_subparser=no
 dnl  ])
 AC_SUBST(kineircd_test_old_config_subparser)
-
-AC_MSG_CHECKING([oper-wallops parameter])
-AC_ARG_ENABLE(oper-wallops,[
-  --enable-oper-wallops                      (Default is enabled)
-    Following IRC protocol specifications nobody but servers are allowed to
-    generate WALLOPS messages (sent to anyone with usermode +w set).
-    Fortunately we can bend the rules a little from the older days of IRC
-    and allow IRC operators to use WALLOPS to send messages about the network
-    to people. The reason for this being disabled in the IRC specifications
-    is to avoid the abuse which is so common with this command, so the
-    option exists to disable it.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(ALLOW_OPER_WALLOPS)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(ALLOW_OPER_WALLOPS)
- ])
-
-AC_MSG_CHECKING([paranoid-opers parameter])
-AC_ARG_ENABLE(paranoid-opers,[
-  --enable-paranoid-opers                    (Default is enabled)
-    This feature sends a notification to operators when they are being
-    'checked out' via WHOIS. When a user executes a WHOIS on an operator while
-    they are on-line, they will receive notification that someone has looked
-    at their WHOIS information. Currently this does not effect any other
-    commands but may in the future.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(NOTIFY_PARANOID_OPERS_ON_WHOIS)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(NOTIFY_PARANOID_OPERS_ON_WHOIS)
- ])
+dnl if test "$kineircd_test_old_config_subparser" = "yes"; then
+dnl   AC_DEFINE(OLD_CONFIG_SUBPARSER, 1,
+dnl             [Define if you also want to use old-style configuration files])
+dnl fi
 
 AC_MSG_CHECKING([pid-file parameter])
 AC_ARG_ENABLE(pid-file,[
@@ -921,51 +601,11 @@ AC_ARG_ENABLE(pid-file,[
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT($enableval)
-     AC_DEFINE(PID_FILE)
+     AC_DEFINE(PID_FILE, $enableval,
+               [If defined, the daemon will write its PID to this file])
    fi
  ],[
    AC_MSG_RESULT([no (default)])
- ])
-
-AC_MSG_CHECKING([strict-channel-names parameter])
-AC_ARG_ENABLE(strict-channel-names,[
-  --enable-strict-channel-names              (Default is enabled)
-    This enabled stricter channel name checking than usual. This stops
-    channels with potentially nasty characters being created, such as any
-    control character, and the mysterious 'extra-space' (nbsp) character
-    which exists in the standard ISO-8859-1 and derivative character sets.
-    This will stop many fake channels being created and has been requested
-    by many users.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(STRICT_CHANNEL_NAMES)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(STRICT_CHANNEL_NAMES)
- ])
-
-AC_MSG_CHECKING([strict-registration parameter])
-AC_ARG_ENABLE(strict-registration,[
-  --enable-strict-registration               (Default is enabled)
-    This enabled a stricter registration process. Once a connection type
-    has been established (user/server/service etc) it cannot be changed.
-    The can stop many registration-attacks which exploit the fact that the
-    server is a little brain-dead during the registration phase, or attempt 
-    to exploit the single-parser issues of other IRC daemons.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(STRICT_REGISTRATIONS)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(STRICT_REGISTRATIONS)
  ])
 
 dnl this really should check if syslog is AVAILABLE!! .. right? :(
@@ -983,62 +623,17 @@ AC_ARG_ENABLE(syslog-logging,[
      AC_MSG_RESULT(no)
    elif test "$enableval" = "yes"; then
      AC_MSG_RESULT([yes, identity: ircd])
-     AC_DEFINE(SYSLOG_IDENT, "ircd")
+     kineircd_test_syslog_ident = "ircd"
    else
      AC_MSG_RESULT([yes, identity: $enableval])
-     AC_DEFINE(SYSLOG_IDENT, $enableval)
+     kineircd_test_syslog_ident = $enableval
    fi
  ],[
    AC_MSG_RESULT([yes, identity: ircd (default)])
-   AC_DEFINE(SYSLOG_IDENT, "ircd")
+   kineircd_test_syslog_ident = "ircd"
  ])
-
-AC_MSG_CHECKING([time-to-be-idle parameter])
-AC_ARG_ENABLE(time-to-be-idle,[
-  --enable-time-to-be-idle=seconds           (Default is '30')
-    When enabled, idle information will only be considered/shown when the
-    idle time of a user is greater than the given time (in seconds). This
-    is a small addition to the code and will lower some bandwidth output.
-    When disabled, idle times will always be shown (even if a person is only
-    idle 0 seconds).
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(off)
-   else
-     if test "$enableval" -gt 0 -a "$enableval" -lt 1000000; then
-       AC_MSG_RESULT([$enableval seconds])
-       AC_DEFINE_UNQUOTED(TIME_TO_BE_IDLE, $enableval)
-     else
-       AC_MSG_RESULT([30 seconds (default)])
-       AC_DEFINE(TIME_TO_BE_IDLE, 30)
-     fi
-   fi
- ],[
-   AC_MSG_RESULT([30 seconds (default)])
-   AC_DEFINE(TIME_TO_BE_IDLE, 30)
- ])
-
-AC_MSG_CHECKING([traceroute parameter])
-AC_ARG_ENABLE(traceroute,[
-  --enable-traceroute                        (Default is enabled)
-    This enabled the traceroute command for network routing staff to use.
-    This command can be used to probe other networks so it is a command
-    that has the potential to be abused. Also, on some servers, it may not
-    be worth enabled it since it is common to firewall ICMP to the server
-    to avoid some attacks. This command can be useful, however, for
-    detecting quality of links to other servers in instances where a simple
-    ping isn't enough.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(HAVE_CMD_TRACEROUTE)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(HAVE_CMD_TRACEROUTE)
- ])
+AC_DEFINE(SYSLOG_IDENT, $kineircd_test_syslog_ident,
+          [This is the identity to use when sending messages to syslog])
 
 AC_MSG_CHECKING([transport-tcp-ipv4 parameter])
 AC_ARG_ENABLE(transport-tcp-ipv4,[
@@ -1050,15 +645,17 @@ AC_ARG_ENABLE(transport-tcp-ipv4,[
      kineircd_test_have_tcp_ipv4_transport=no
    else
      AC_MSG_RESULT(yes)
-     AC_DEFINE(HAVE_TRANSPORT_TCP_IPV4)
      kineircd_test_have_tcp_ipv4_transport=yes
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(HAVE_TRANSPORT_TCP_IPV4)
    kineircd_test_have_tcp_ipv4_transport=yes
  ])
 AC_SUBST(kineircd_test_have_tcp_ipv4_transport)
+if test "$kineircd_test_have_tcp_ipv4_transport" = "yes"; then
+  AC_DEFINE(HAVE_TRANSPORT_TCP_IPV4, 1,
+            [Define if you want TCP/IPv4 transport])
+fi
 
 AC_MSG_CHECKING([transport-tcp-ipv6 parameter])
 AC_ARG_ENABLE(transport-tcp-ipv6,[
@@ -1071,7 +668,6 @@ AC_ARG_ENABLE(transport-tcp-ipv6,[
      kineircd_test_have_tcp_ipv6_transport=no
    else
      AC_MSG_RESULT(yes)
-     AC_DEFINE(HAVE_TRANSPORT_TCP_IPV6)
      kineircd_test_have_tcp_ipv6_transport=yes
    fi
  ],[
@@ -1079,6 +675,10 @@ AC_ARG_ENABLE(transport-tcp-ipv6,[
    kineircd_test_have_tcp_ipv6_transport=no
  ])
 AC_SUBST(kineircd_test_have_tcp_ipv6_transport)
+if test "$kineircd_test_have_tcp_ipv6_transport" = "yes"; then
+  AC_DEFINE(HAVE_TRANSPORT_TCP_IPV6, 1,
+            [Define if you want TCP/IPv6 transport])
+fi
 
 AC_MSG_CHECKING([transport-spx-ipx parameter])
 AC_ARG_ENABLE(transport-spx-ipx,[
@@ -1090,7 +690,6 @@ AC_ARG_ENABLE(transport-spx-ipx,[
      kineircd_test_have_spx_ipx_transport=no
    else
      AC_MSG_RESULT(yes)
-     AC_DEFINE(HAVE_TRANSPORT_SPX_IPX)
      kineircd_test_have_spx_ipx_transport=yes
    fi
  ],[
@@ -1098,256 +697,21 @@ AC_ARG_ENABLE(transport-spx-ipx,[
    kineircd_test_have_spx_ipx_transport=no
  ])
 AC_SUBST(kineircd_test_have_spx_ipx_transport)
-
-AC_MSG_CHECKING([user-conn-ping parameter])
-AC_ARG_ENABLE(user-conn-ping,[
-  --enable-user-conn-ping                    (Default is enabled)
-    This feature will force clients to reply to a PING request with random
-    data upon connection to the server before allowing the client to
-    proceed and complete registration. This can trip up poorly programmed
-    bots which cannot reply to server requests like a PING by not allowing
-    them onto the network.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(USER_CONNECTION_PINGPONG)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(USER_CONNECTION_PINGPONG)
- ])
+if test "$kineircd_test_have_spx_ipx_transport" = "yes"; then
+  AC_DEFINE(HAVE_TRANSPORT_SPX_IPX, 1,
+            [Define if you want IPX/SPX transport])
+fi
 
 dnl
 dnl Protocol toggles
 dnl
-AC_MSG_CHECKING([irc2user-protocol parameter])
-dnl if test "$kineircd_test_enable_client_protocols" = "yes"; then
-  AC_ARG_ENABLE(irc2user-protocol,[
-  --enable-irc2user-protocol                 (Default is enabled)
-    The IRC-2 protocol is used with every irc client these days. Unless the
-    server is being set up for something specific (such as hubbing) it would
-    be wise to leave this enabled.
-   ],[
-     if test "$enableval" = "no"; then
-       AC_MSG_RESULT(no)
-       kineircd_test_have_irc2user_protocol=no
-     else
-       AC_MSG_RESULT(yes)
-       AC_DEFINE(HAVE_IRC2USER_PROTOCOL)
-       kineircd_test_have_irc2user_protocol=yes
-     fi
-   ],[
-     AC_MSG_RESULT([yes (default)])
-     AC_DEFINE(HAVE_IRC2USER_PROTOCOL)
-     kineircd_test_have_irc2user_protocol=yes
-   ])
 
-  dnl If we are using the protocol, we may need some more stuff...
-  if test "$kineircd_test_have_irc2user_protocol" = "yes"; then
-    AC_MSG_CHECKING([irc2user-ircii-kluge parameter])
-    AC_ARG_ENABLE(irc2user-ircii-kluge,[
-  --enable-irc2user-ircii-kluge              (Default is enabled)
-    This enables a kluge (a workaround) to allow the old ircII client and
-    other technically broken clients to connect by adding additional data
-    to the server's output. This unfortunate anomaly was created during the
-    change-over from the IRC-1 protocol to the IRC-2 protocol, and will
-    generate a very slight increase in outgoing client data. This kluge
-    is arguably not necessary these days as the effected clients are
-    practically extinct.
-     ],[
-       if test "$enableval" = "no"; then
-         AC_MSG_RESULT(no)
-       else
-         AC_MSG_RESULT(yes)
-         AC_DEFINE(HAVE_IRC2USER_IRCII_KLUGE)
-       fi
-     ],[
-       AC_MSG_RESULT([yes (default)])
-       AC_DEFINE(HAVE_IRC2USER_IRCII_KLUGE)
-     ])
-     
-    AC_MSG_CHECKING([irc2user-match-counting parameter])
-    AC_ARG_ENABLE(irc2user-match-counting,[
-  --enable-irc2user-match-counting           (Default is enabled)
-    This enabled an aesthetics option to many commands that involve a
-    variable list of items, such as HELP, NAMES, WHO etc. Instead of a
-    simple 'End of X list' (where X is the command name), it will add the
-    number of matches if there is more than one match, or a 'no matches'
-    message if there were no matches. This uses only a very slight amount of
-    CPU usage, but if you're being tight on the CPU usage you may wish to
-    disable this as it does not effect any commands' functionality.
-     ],[
-       if test "$enableval" = "no"; then
-         AC_MSG_RESULT(no)
-       else
-         AC_MSG_RESULT(yes)
-         AC_DEFINE(HAVE_IRC2USER_MATCH_COUNTING)
-       fi
-     ],[
-       AC_MSG_RESULT([yes (default)])
-       AC_DEFINE(HAVE_IRC2USER_MATCH_COUNTING)
-     ])
-  fi
-dnl else
-dnl   AC_MSG_RESULT([no (clients disallowed)])
-dnl   kineircd_test_have_irc2user_protocol=no
-dnl fi
-AC_SUBST(kineircd_test_have_irc2user_protocol)
+dnl FIX ME! ;)
 
-AC_MSG_CHECKING([irc3user-protocol parameter])
-if test "$kineircd_test_enable_client_protocols" = "yes"; then
-  AC_ARG_ENABLE(irc3user-protocol,[
-  --enable-irc3user-protocol                 (Default is disabled)
-    The IRC-3 protocol is currently highly experimental and is not used
-    in any available clients. The protocol is still on the drawing boards
-    so this function should be ignored.
-   ],[
-     if test "$enableval" = "no"; then
-       AC_MSG_RESULT(no)
-       kineircd_test_have_irc3user_protocol=no
-     else
-       AC_MSG_RESULT(yes)
-       AC_DEFINE(HAVE_IRC3USER_PROTOCOL)
-       kineircd_test_have_irc3user_protocol=yes
-     fi
-   ],[
-     AC_MSG_RESULT([no (default)])
-     kineircd_test_have_irc3user_protocol=no
-   ])
-else
-  AC_MSG_RESULT([no (clients disallowed)])
-  kineircd_test_have_irc3user_protocol=no
-fi
-AC_SUBST(kineircd_test_have_irc3user_protocol)
- 
-AC_MSG_CHECKING([p13server-protocol parameter])
-AC_ARG_ENABLE(p13server-protocol,[
-  --enable-p13server-protocol                (Default is enabled)
-    This protocol is obsolete and may be removed soon, depending on demand.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-     kineircd_test_have_p13server_protocol=no
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(HAVE_P13SERVER_PROTOCOL)
-     kineircd_test_have_p13server_protocol=yes
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(HAVE_P13SERVER_PROTOCOL)
-   kineircd_test_have_p13server_protocol=yes
- ])
-AC_SUBST(kineircd_test_have_p13server_protocol)
 
-if test "$kineircd_test_have_p13server_protocol" = "yes"; then
-  AC_MSG_CHECKING([p13server-compress parameter])
-  AC_ARG_ENABLE(p13server-compress,[
-  --enable-p13server-compress                (Default is enabled)
-    This allows server to server links using the P13 protocol (above) to be
-    negotiated for compression which will significantly reduce the amount of
-    data being transferred. Unfortunately due to the nature of this protocol
-    and the tightness of the compression it will add a large amount of 
-    memory usage and CPU load to the server, but it should not be noticable 
-    on properly set up servers.
-   ],[
-     if test "$enableval" = "no"; then
-       AC_MSG_RESULT(no)
-       kineircd_test_have_p13server_compress=no
-     else
-       AC_MSG_RESULT(yes)
-       AC_DEFINE(HAVE_P13SERVER_COMPRESS)
-       kineircd_test_have_p13server_compress=yes
-     fi
-   ],[
-     AC_MSG_RESULT([yes (default)])
-     AC_DEFINE(HAVE_P13SERVER_COMPRESS)
-     kineircd_test_have_p13server_compress=yes
-   ])
-
-  AC_MSG_CHECKING([p13server-extended parameter])
-  AC_ARG_ENABLE(p13server-extended,[
-  --enable-p13server-extended                (Default is enabled)
-    Previous versions of the P13 server to server protocol have certain
-    flaws and absenses of commands. To correct this, the new additions to
-    P13 allow backwards compatibility while fixing many of those problems.
-    Unfortunately some servers cannot handle the new corrections and may
-    work eratically, or become out of sync. The additions include
-    compatibility with IPv6 and work around some very nasty byte-ordering
-    issues that had become an issue. It is not recommended to disable this,
-    however it may become necessary as a temporary solution. Some
-    functionality may be lost with reverting to the non-extended P13.
-   ],[
-     if test "$enableval" = "no"; then
-       AC_MSG_RESULT(no)
-     else
-       AC_MSG_RESULT(yes)
-       AC_DEFINE(HAVE_P13SERVER_EXTENDED)
-     fi
-   ],[
-     AC_MSG_RESULT([yes (default)])
-     AC_DEFINE(HAVE_P13SERVER_EXTENDED)
-   ])
-else
-  kineircd_test_have_p13server_compress=no
-fi
-AC_SUBST(kineircd_test_have_p13server_compress)
- 
-AC_MSG_CHECKING([p14server-protocol parameter])
-AC_ARG_ENABLE(p14server-protocol,[
-  --enable-p14server-protocol                (Default is disabled)
-    The P14 protocol is a major advancement in IRC server to server
-    protocols. While being tightly implemented, it allows for endless
-    expandability using variable width identifiers, and helps assist security
-    and lower bandwidth network-wide. The major component of this protocol
-    is that it no longer requires a star-topology network design by
-    implementing 'bone' and 'tendril' links thus allowing for well designed
-    virtually split-free network design with minimal lag.
-    This protocol is currently experimental and incomplete.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-     kineircd_test_have_p14server_protocol=no
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(HAVE_P14SERVER_PROTOCOL)
-     kineircd_test_have_p14server_protocol=yes
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
-   kineircd_test_have_p14server_protocol=no
- ]) 
-AC_SUBST(kineircd_test_have_p14server_protocol)
-
-if test "$kineircd_test_have_p14server_protocol" = "yes"; then
-  AC_MSG_CHECKING([p14server-compress parameter])
-  AC_ARG_ENABLE(p14server-compress,[
-  --enable-p14server-compress                (Default is enabled)
-    This allows server to server links using the P14 protocol (above) to be
-    negotiated for compression which will reduce the amount of data being 
-    transferred. This compression is tight and will use noticable amounts of
-    CPU usage.
-   ],[
-     if test "$enableval" = "no"; then
-       AC_MSG_RESULT(no)
-       kineircd_test_have_p14server_compress=no
-     else
-       AC_MSG_RESULT(yes)
-       AC_DEFINE(HAVE_P14SERVER_COMPRESS)
-       kineircd_test_have_p14server_compress=yes
-     fi
-   ],[
-     AC_MSG_RESULT([yes (default)])
-     AC_DEFINE(HAVE_P14SERVER_COMPRESS)
-     kineircd_test_have_p14server_compress=yes
-   ])
-else
-  kineircd_test_have_p14server_compress=no
-fi
-AC_SUBST(kineircd_test_have_p14server_compress)
-
+dnl
+dnl Developer stuff
+dnl
 AC_MSG_CHECKING([debugging parameter])
 AC_ARG_ENABLE(debugging,[
   --enable-debugging[=level]                 (Default is disabled)
