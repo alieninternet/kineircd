@@ -57,7 +57,7 @@ namespace Kine {
 	 VIOLENT_DEATH		= 0x04,
 	 PEACEFUL_DEATH		= 0x08,
 	 REHASH			= 0x10,
-	 ALL			= 0xFF // Use this for 'ALL signals'
+	 ALL			= 0xFF //!< Use this for 'ALL signals'
       };
       
       // This defines your signal handler (must be static) and what to receive
@@ -65,7 +65,7 @@ namespace Kine {
        public:
 	 const handlerPtr_type handler;
 	 const mask_type mask;
-	 void *foo;			// Variable for your own use
+	 void *foo;			//!< Variable for your own use
 
 	 // Constructor
 	 handlerInfo(const handlerPtr_type h, const mask_type m, void *f)

@@ -31,10 +31,10 @@ namespace Kine {
     public:
       struct Flags { // <=- Should be namespace?
 	 enum type {
-	    ALLOW_NETWORKS	= 0x00000001,	// IIRC links allowed?
-	    ALLOW_SERVERS	= 0x00000002,	// Servers allowed?
-	    ALLOW_SERVICES	= 0x00000004,	// Services allowed?
-	    ALLOW_USERS		= 0x00000008	// Users allowed?
+	    ALLOW_NETWORKS	= 0x00000001,	//!< IIRC links allowed?
+	    ALLOW_SERVERS	= 0x00000002,	//!< Servers allowed?
+	    ALLOW_SERVICES	= 0x00000004,	//!< Services allowed?
+	    ALLOW_USERS		= 0x00000008	//!< Users allowed?
 	 };
       };
       typedef unsigned int flags_type;

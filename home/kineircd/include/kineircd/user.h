@@ -32,8 +32,8 @@
 namespace Kine {
    class User : public Client {
     private:
-      std::string virtualHostname;		// Virtual Hostname
-      std::string awayMessage;			// Away message (blank for off)
+      std::string virtualHostname;		//!< Virtual Hostname
+      std::string awayMessage;			//!< Away message (empty = off)
 
     public:
       // Constructor

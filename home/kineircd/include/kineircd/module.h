@@ -47,8 +47,8 @@ namespace Kine {
       // Flags to determine how this module needs to be configured
       struct Flags { // <=- should be namespace?
 	 enum type {
-	    NONE = 0,			      // No flags set
-	    UNIQUE_INSTANCE	= 0x00000001  // No multiple instances
+	    NONE = 0,			      //!< No flags set
+	    UNIQUE_INSTANCE	= 0x00000001  //!< No multiple instances
 	 };
       };
       

@@ -36,9 +36,9 @@ namespace Kine {
       
     private:
       // DO NOT CHANGE THIS, unless you want to be hurt very painfully :(
-      static const char delim = '\0';		// Security delimeter :)
-      
-      digest_type const password;		// Password (hashed)
+      static const char delim = '\0';		//!< Security delimeter :)
+
+      digest_type const password;		//!< Password (hashed)
       
     public:
       // Constructor   

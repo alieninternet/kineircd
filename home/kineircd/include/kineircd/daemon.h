@@ -56,19 +56,19 @@ namespace Kine {
    class Daemon {
     public:
       enum runlevel_type {
-	 RUNLEVEL_INIT,			// Initialising the daemon
-	 RUNLEVEL_NORMAL,		// Running normally
-         RUNLEVEL_SHUTDOWN		// The daemon is shutting down
+	 RUNLEVEL_INIT,			//!< Initialising the daemon
+	 RUNLEVEL_NORMAL,		//!< Running normally
+         RUNLEVEL_SHUTDOWN		//!< The daemon is shutting down
       };
       
     private:
-      runlevel_type runlevel;			// What stage is the daemon in
+      runlevel_type runlevel;			//!< What stage is the daemon in
       
-      const long startTime;			// Time the daemon started
-      timeval currentTime;			// The time now
+      const long startTime;			//!< Time the daemon started
+      timeval currentTime;			//!< The time now
 
-      unsigned long long sentBytes;		// Total bytes sent
-      unsigned long long receivedBytes;		// Total bytes received
+      unsigned long long sentBytes;		//!< Total bytes sent
+      unsigned long long receivedBytes;		//!< Total bytes received
       
       // The list of loggers (this should be hidden)
       typedef std::set <Logger*> loggerList_type;
@@ -88,9 +88,9 @@ namespace Kine {
       
     public: // <=- temporary, for crappy pre-poller class code :(
       // For select()
-      fd_set inFDSET, outFDSET;			// Input/Output descriptor sets
+      fd_set inFDSET, outFDSET;			//!< Input/Output descriptor sets
     private: // <=- temporary
-      int maxDescriptors;			// Highest descriptor to check
+      int maxDescriptors;			//!< Highest descriptor to check
       
       // Set the current time
       void setTime(void) 

@@ -32,10 +32,8 @@
 namespace Kine {
    class LocalUser : public User {
     private:
-      time_t lastNickChange;			// Last nickname change time
-      time_t lastAwake;				// Time this user was 'awake'
-      
-      std::string awayMessage;			// Away message (blank for off)
+      time_t lastNickChange;			//!< Last nickname change time
+      time_t lastAwake;				//!< Time this user was 'awake'
       
     public:
       // Constructor

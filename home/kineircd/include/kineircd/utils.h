@@ -39,7 +39,8 @@ namespace Kine {
       typedef unsigned char base_type;
       
     private:
-      Utils(void) {};				// Constructor (cannot be run)
+      // Constructor (cannot be run)
+      Utils(void) {};
       
     public:
       // Convert to another base

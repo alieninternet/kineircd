@@ -36,9 +36,9 @@
 namespace Kine {
    class Client : public Entity, public Sender, public Receiver {
     private:
-      std::string nickname;			// Nickname
-      std::string description;			// Description/GECOS/Real name
-      Server* server;				// Server this client is on
+      std::string nickname;			//!< Nickname
+      std::string description;			//!< Description/Real name
+      Server* server;				//!< Server this client is on
       
       // The channel list for this client
       typedef std::map < std::string, Channel* const > channels_type;

@@ -93,14 +93,14 @@ namespace Kine {
 	 typedef std::vector < std::string* > tagData_type;
 	 
        private:
-	 std::string languageCode;		// RFC-3066 compliant code
-	 std::string languageName;		// Name of the language (UTF-8)
-	 std::string languageNote;		// Optional notice
-	 std::string maintainer;		// Maintainer of the file
-	 long fileRevision;			// File revision
-	 unsigned long tagCount;		// *real* number of tags
+	 std::string languageCode;		//!< RFC-3066 compliant code
+	 std::string languageName;		//!< Name of the language
+	 std::string languageNote;		//!< Optional notice
+	 std::string maintainer;		//!< Maintainer of the file
+	 long fileRevision;			//!< File revision
+	 unsigned long tagCount;		//!< *real* number of tags
 	 
-	 tagData_type tagData;			// The tag data itself!
+	 tagData_type tagData;			//!< The tag data itself!
 
 	 // Merge the given language data "over" this language data
 	 void mergeWith(const LanguageData& newData);

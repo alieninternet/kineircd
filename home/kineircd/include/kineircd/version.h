@@ -27,19 +27,19 @@
 
 namespace Kine {
    namespace Version {
-      extern const char* const build;			// Build information
-      extern const char* const programName;		// Program name
-      extern const char* const programNameFull;		// Full program name
-      extern const unsigned short versionMajor;		// Version major number
-      extern const unsigned short versionMinor;		// Version minor number
-      extern const char* const version;			// Version identity
-      extern const char* const versionFull;		// Full version string
-      extern const unsigned char libVersion;		// Library API version
-      extern const unsigned char libRevision;		// Library API revision
-      extern const unsigned char libAge;		// Library API age
-      extern const char* const bugsEmail;		// Bug report e-mail
-      extern const char* const versionInfo[];		// Information (/INFO)
-      extern const char* const versionChars;		// Version chars 
+      extern const char* const build;		//!< Build information
+      extern const char* const programName;	//!< Program name
+      extern const char* const programNameFull;	//!< Full program name
+      extern const unsigned short versionMajor;	//!< Version major number
+      extern const unsigned short versionMinor;	//!< Version minor number
+      extern const char* const version;		//!< Version identity
+      extern const char* const versionFull;	//!< Full version string
+      extern const unsigned char libVersion;	//!< Library API version
+      extern const unsigned char libRevision;	//!< Library API revision
+      extern const unsigned char libAge;	//!< Library API age
+      extern const char* const bugsEmail;	//!< Bug report e-mail
+      extern const char* const versionInfo[];	//!< Information (/INFO)
+      extern const char* const versionChars;	//!< Version chars 
    };
 };
    

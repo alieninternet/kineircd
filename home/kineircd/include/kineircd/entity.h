@@ -31,8 +31,8 @@
 namespace Kine {
    class Entity {
     private:
-      std::string hostname;			// Hostname
-      time_t signonTime;			// Time of connection
+      std::string hostname;			//!< Hostname
+      time_t signonTime;			//!< Time of connection
       
     protected:
       // Constructor

@@ -70,7 +70,7 @@ namespace Kine {
       static const MaskMapper& getMaskMapper(const char* const n);
 
     protected:
-      const Mask::lazy_type logMask;			// OK log message types
+      const Mask::lazy_type logMask;			//!< OK log message types
       
     private:
       // Log a string of text
