@@ -27,9 +27,11 @@
 
 #include <sstream>
 #include <iomanip>
+#include <cmath>
 #include <aisutil/time.h>
 #include <aisutil/string/string.h>
 #include <kineircd/daemon.h>
+#include <kineircd/languages.h>
 
 #include "libkineircd_irc2/stats.h"
 #include "libkineircd_irc2/lang.h"
@@ -41,11 +43,45 @@ using AISutil::Time;
 
 // List of statistics requests we can handle
 const Stats::statsCommand_type Stats::statsCommands[] = {
+     { "languages",		2,	handleLanguages },
      { "listconnections",	1,	handleListConnections },
      { "operators",		1,	handleOperators },
      { "uptime",		1,	handleUptime },
      { 0, 0, 0 }
 };
+
+
+/* handleLanguages - List the languages and a bit of info about them
+ * Original 19/05/2003 simonb
+ */
+KINE_IRC2_STATS_HANDLER(Stats::handleLanguages)
+{
+   // Run through the known languages list
+   for (Languages::languageDataMap_type::const_iterator it =
+	languages().getLanguageDataMap().begin();
+	it != languages().getLanguageDataMap().end();
+	++it) {
+      // Work out the completeness percentile of this language
+      std::ostringstream percentComplete;
+      percentComplete <<
+	(int)rintf(((float)it->second->getTagCount() /
+		    languages().getHighestTagID()) * 100) <<
+	'%';
+      
+      // Output the data we have on this language
+      protocol.sendNumeric(user, Numerics::RPL_NONE,
+			   it->second->getLanguageCode(),
+			   (it->second->getMaintainer().empty() ?
+			    "*" : it->second->getMaintainer()),
+			   it->second->getFileRevision(),
+			   it->second->getTagCount(),
+			   percentComplete.str(),
+			   (it->second->getLanguageNote().empty() ?
+			    it->second->getLanguageName() :
+			    (it->second->getLanguageName() + " (" +
+			     it->second->getLanguageNote() + ")")));
+   }
+}
 
 
 /* handleListConnections - List connections (RFC1459)

@@ -48,6 +48,7 @@ namespace Kine {
 	 } extern const statsCommands[];
 	 
 	 // Statistical request handler functions
+	 extern handler_type handleLanguages;
 	 extern handler_type handleListConnections;
 	 extern handler_type handleOperators;
 	 extern handler_type handleUptime;
