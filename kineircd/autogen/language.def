@@ -25,6 +25,7 @@ autogen definitions language;
 
 tags = {
    name		= "irc2_RPL_CREATED";
+   fields	= "0 = date";
    component	= "mod_irc2user";
 };
 
@@ -40,6 +41,7 @@ tags = {
 
 tags = {
    name		= "irc2_RPL_LUSERCLIENT";
+   fields	= "0 = # of users, 1 = # of services, 2 = # of servers";
    component	= "mod_irc2user";
 };
 
@@ -50,6 +52,7 @@ tags = {
 
 tags = {
    name		= "irc2_RPL_LUSERME";
+   fields	= "0 = clients, 1 = servers";
    component	= "mod_irc2user";
 };
 
@@ -65,6 +68,7 @@ tags = {
 
 tags = {
    name		= "irc2_RPL_MOTDSTART";
+   fields	= "0 = server name";
    component	= "mod_irc2user";
 };
 
@@ -75,11 +79,13 @@ tags = {
 
 tags = {
    name		= "irc2_RPL_WELCOME";
+   fields	= "0 = nick, 1 = user, 2 = host";
    component	= "mod_irc2user";
 };
 
 tags = {
    name		= "irc2_RPL_YOURHOST";
+   fields	= "0 = server name, 1 = version";
    component	= "mod_irc2user";
 };
 
