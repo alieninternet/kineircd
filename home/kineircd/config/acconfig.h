@@ -38,6 +38,9 @@
  * It is HIGHLY RECOMMENDED you just edit your configuration file.
  */
 
+/* This is the environment variable we may need to check for a config file */
+# define CONFIG_FILE_ENV_VAR			"AUSTHEX_CONF"
+
 /* Stuff that will be in the Config Class, just not yet. */
 # define DEFAULT_CONFIG_SERVER_DESCRIPTION	"Mystery unconfigured server"
 # define DEFAULT_CONFIG_SERVER_MAX_TTL		64 /* 64 is the maximum */
