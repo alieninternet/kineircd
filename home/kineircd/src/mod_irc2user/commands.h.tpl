@@ -94,7 +94,7 @@ namespace Kine {
 	    Flags::lazy_type flags;			// Flags
 	    mutable unsigned long long callCount;	// # times used
 	    
-	    // Copy constructor to aid in initialisation
+	    // Construct CommandInfo's from hard-coded pre-initialisation stuff
 	    CommandInfo(const preInitCommand_type& info)
 	      : handler(info.handler),
 	        access(info.access),
