@@ -81,10 +81,10 @@ namespace Kine {
 
 	 // Flags to determine how this module needs to be configured
 	 enum flags_type {
-	    FLAG_NONE = 0,			// No flags set
-	    FLAG_NEEDS_ROOT_START = 0x00000001,	// Needs root access to start
-	    FLAG_NEEDS_ROOT_RUN = 0x00000002,	// Needs root to run
-	    FLAG_ALL = 0xFFFFFFFF		// All flags set (can be nasty)
+	    FLAG_NONE = 0,			      // No flags set
+	    FLAG_NEEDS_ROOT_START	= 0x00000001, // Must be SUID to start
+	    FLAG_NEEDS_ROOT_RUN		= 0x00000002, // Must be superuser always
+            FLAG_UNIQUE_INSTANCE	= 0x00000004  // No multiple instances
 	 } const flags;
 	 
 	 // The two required functions - start and stop
