@@ -589,6 +589,12 @@ else
   AM_CONDITIONAL(KINEIRCD_COMPILE_MOD_SYSLOG, [false])
 fi
 
+dnl Best not to change these..
+AC_DEFINE(KINE_LANGTAGS_INTERNAL_CHARSET, "UCS-4",
+          [Internal representation of unicode])
+AC_DEFINE(KINE_LANGTAGS_LANGFILE_CHARSET, "UTF-8",
+          [Representation of unicode within the language files])
+
 
 dnl -------------------------------------------------------------------------
 dnl  Creating files

@@ -97,7 +97,7 @@ void Languages::LanguageData::mergeWith(const Languages::LanguageData& newData)
 	 }
 	 
 	 // Make a new string (ick, I don't like this at all)
-	 tagData[i] = new std::string(*newData.tagData[i]);
+	 tagData[i] = new std::wstring(*newData.tagData[i]);
       }
    }
    
@@ -115,8 +115,8 @@ void Languages::LanguageData::mergeWith(const Languages::LanguageData& newData)
 /* process - Process the given string (deal with substitutions and so forth)
  * Original 16/03/2003 simonb
  */
-const std::string
-  Languages::LanguageData::process(const std::string& data,
+const std::wstring
+  Languages::LanguageData::process(const std::wstring& data,
 				   const parameterList_type* const
 				   parameters) const
 {
@@ -125,13 +125,14 @@ const std::string
     * wise to run over the string potentially twice here? In doing this, I'm
     * presuming the majority of tags would not require substitutions..
     */
-   if (data.find('\0') == (std::string::size_type)-1) {
+   if (data.find(Internal::LangTags::parameterMarkerChar) ==
+       (std::string::size_type)-1) {
       // Simply return the string, no further work is necessary.. easy :)
       return data;
    }
    
    // Our output string; this is what we will return after processing
-   std::string output;
+   std::wstring output;
    
    // Run through the tag data string and substitute anything we can
    for (std::string::size_type i = 0; i < data.length(); ++i) {
@@ -145,28 +146,29 @@ const std::string
 	 
 	 // What do we do with this substitution?
 	 switch (data[++i]) {
+#warning "Substitutions are not in effect"
 	  case 'a': // The name of the server's administrator
-	    output += config().getAdministratorName();
+//	    output += config().getAdministratorName();
 	    continue;
 	    
 	  case 'A': // The contact point of the server's administrator (e-mail)
-	    output += config().getAdministratorContact();
+//	    output += config().getAdministratorContact();
 	    continue;
 	    
 	  case 'd': // The description of the server
-	    output += myServer().getDescription();
+//	    output += myServer().getDescription();
 	    continue;
 	    
 	  case 'L': // The location of the server
-	    output += config().getAdministratorLocation();
+//	    output += config().getAdministratorLocation();
 	    continue;
 	    
 	  case 'n': // The name of the server (its hostname)
-	    output += myServer().getName();
+//	    output += myServer().getName();
 	    continue;
 	    
 	  case 'N': // The name of the network (if there is one)
-	    output += config().getNetworkName();
+//	    output += config().getNetworkName();
 	    continue;
 	    
 	  case 'p':
@@ -219,16 +221,16 @@ const std::string
 	    }
 	    
 	    // Throw a replacement char in place..
-	    output += replacementCharacterGlyph;
+	    output += Internal::LangTags::replacementCharacterGlyph;
 	    continue;
 	      
 	  default: // NFI what this is supposed to be, use a replacement char
-	    output += replacementCharacterGlyph;
+	    output += Internal::LangTags::replacementCharacterGlyph;
 	    continue;
 	 }
       } else if (data[i] == Internal::LangTags::newLineMarkerChar) {
 	 // We are not supposed to see this..
-	 output += replacementCharacterGlyph;
+	 output += Internal::LangTags::replacementCharacterGlyph;
 	 continue;
       }
       
@@ -244,7 +246,7 @@ const std::string
 /* getTag - Look for a given TID's data, and return it if possible
  * Original 16/03/2003 simonb
  */
-const std::string
+const std::wstring
   Languages::LanguageData::get(const Languages::tagID_type tagID,
 			       const Languages::parameterList_type* const
 			       parameters) const
@@ -264,7 +266,7 @@ const std::string
 #endif
       
       // Remember what is found at this TID..
-      const std::string* const tag = tagData[tagID - 1];
+      const std::wstring* const tag = tagData[tagID - 1];
       
       // Make sure the tag is not null
       if (tag != 0) {
@@ -274,7 +276,7 @@ const std::string
    }
       
    // Return nothing special
-   return "";
+   return std::wstring();
 }
 
 
@@ -308,7 +310,7 @@ bool Languages::LanguageData::get(const Languages::tagID_type tagID,
 #endif
    
    // Remember what is found at this TID..
-   const std::string* const tag = tagData[tagID - 1];
+   const std::wstring* const tag = tagData[tagID - 1];
 
    // Our starting and ending positions..
    std::string::size_type startPosition = 0, endPosition;

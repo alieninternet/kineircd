@@ -31,6 +31,7 @@
 #include <fstream>
 #include <cctype>
 #include <cstdlib>
+#include <cstring>
 #include <aisutil/string/tokens.h>
 #include <aisutil/utils.h>
 
@@ -42,6 +43,8 @@ using namespace Kine;
 using AIS::Util::String;
 using AIS::Util::StringTokens;
 
+// The conversion output buffer incremental size (Note: # of wchar_t's)
+#define ICONV_BUFFER_STEP_SIZE 512 // 512 * 4 = 2kB if wchar_t is 32-bits long
 
 // Our instance...
 Languages* Languages::instance = 0;
@@ -54,16 +57,6 @@ const char* const Languages::nullLanguageCode =
 // The code which will reference the default language (see RFC2277)
 const char* const Languages::defaultLanguageCode =
   "i-default";
-
-
-// Replacement object glyph (will appear as nothing to clients)
-const char* const Languages::replacementObjectGlyph = 
-  "\357\277\274"; // <=- Unicode U+0FFFC; UTF-8 0xEF 0xBF 0xBC
-
-// Replacement character glyph (shown to the client)
-const char* const Languages::replacementCharacterGlyph =
-  "\357\277\275"; // <=- Unicode U+0FFFD; UTF-8 0xEF 0xBF 0xBD
-
 
 
 /* initInstance - Create the single instance of this class
@@ -135,17 +128,36 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
       errString = "Could not open the file";
       return false;
    }
+
+   // Open our conversion descriptor for iconv()
+#ifdef KINE_DEBUG
+   debug("Languages::loadFile() - Opening iconv() conversion descriptor");
+#endif
+   iconv_t convDesc = iconv_open(KINE_LANGTAGS_INTERNAL_CHARSET,
+				 KINE_LANGTAGS_LANGFILE_CHARSET);
+   
+   // Make sure the conversion descriptor opened happily
+   if (convDesc == (iconv_t)(-1)) {
+      errString =
+	"Could not open conversion descriptor for " 
+	KINE_LANGTAGS_LANGFILE_CHARSET " -> " KINE_LANGTAGS_INTERNAL_CHARSET
+	" (";
+      errString += strerror(errno);
+      errString += ')';
+      return false;
+   }
    
 #ifdef KINE_DEBUG
    debug("Languages::loadFile() - Beginning read loop");
 #endif
    
-   // Stuff we need during the read
-   String line;
-   String tag;
-   String data;
+   // Line number counter (for error message convenience)
    unsigned long lineNum = 0;
 
+   // Output buffer for iconv()
+   size_t convOutBufferSize = 256;
+   wchar_t convOutBuffer[convOutBufferSize];
+   
    // Create what may be either our permanent or temporary home for this data
    LanguageData* languageData = new LanguageData();
    
@@ -158,6 +170,9 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 
    // Loop through the file..
    for (;;) {
+      // Line we read into
+      String line;
+      
       // Read the line
       std::getline(file, line);
 
@@ -180,13 +195,13 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
       
       // Rip out the two sides to the token
       StringTokens st(line);
-      tag = st.nextToken('=').trim().toUpper();
-      data = st.rest().trim();
+      String tag = st.nextToken('=').trim().toUpper();
+      String data = st.rest().trim();
 
       // Clear the line variable.. We will reuse it soon..
       line.clear();
-      
-      // Process the data: substitute anything we know now
+
+      // Process the data: substitute anything we know
       for (std::string::size_type i = 0; i < data.length(); ++i) {
 	 if (data[i] == '%') {
 	    /* Check the next character. If it's another percentage sign, let
@@ -246,36 +261,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	       continue;
 	    }
 	 }
-	    
-	 // Make sure this character isn't going to cause problems..
-	 if ((data[i] == '\0') ||
-	     (data[i] == '\001') ||
-	     (data[i] == '\b') ||
-	     (data[i] == '\n') ||
-	     (data[i] == '\v') ||
-	     (data[i] == '\f') ||
-	     (data[i] == '\r') ||
-	     ((data[i] >= '\021') && (data[i] <= '\024'))) {
-	    /* Okay, it's a naughty char, we must replace it. Following
-	     * Unicode specifications, here we replace the bad character
-	     * with the "replacement" character.
-	     * 
-	     * Since all these bad chars are in the control char region,
-	     * I have considered up-converting them to their symbols, so
-	     * they'd appear like a dumb terminal in debug mode. It would
-	     * be fairly easy, since all you need to do is add 0x2400 and
-	     * convert it to UTF-8. I reconsidered this, since the
-	     * characters aren't supposed to be there anyway, so a single,
-	     * boring, replacement character does the job.
-	     * 
-	     * Then again, in the time it's taken me to write out my
-	     * reasoning, I probably could have written, and tested an
-	     * upconverter.. Hmm.. :)
-	     */
-	    line += replacementCharacterGlyph;
-	    continue;
-	 } 
-	    
+
 	 // If we got here, just copy the char over
 	 line += data[i];
       }
@@ -285,16 +271,77 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	    " data: '" + line + '\'');
 #endif
 
-#ifdef KINE_SECURITY_CONSCIOUS
-      // Make sure the data contains valid UTF-8 sequences..
-      if (!AIS::Util::Utils::validateUTF8(line)) {
-	 // Wuss out - this is not a nice file to have loaded
-	 errString =
-	   "File contains invalid UTF-8 sequence(s) and poses a potential "
-	   "security problem";
-	 return false;
+      // Stuff needed for iconv()'ing the data
+      size_t convInBytes = line.length();
+      size_t convOutBytes = convOutBufferSize * sizeof(wchar_t);
+      char* convInPtr = const_cast<char*>(line.data());
+      char* convOutPtr = reinterpret_cast<char*>(convOutBuffer);
+
+      // Initialise the conversion descriptor for this run
+      (void)iconv(convDesc, NULL, NULL, &convOutPtr, &convOutBytes);
+   
+      // Convert the data
+      for (;;) {
+	 const size_t convVal = iconv(convDesc,
+				      &convInPtr, &convInBytes,
+				      &convOutPtr, &convOutBytes);
+
+	 // Is iconv happy?
+	 if (convVal != (size_t)(-1)) {
+	    // Yay, all converted - break the loop
+	    break;
+	 }
+
+#warning "No code to expand output iconv buffer"
+	 abort(); // No code written for this yet - panic.
       }
-#endif
+      
+      // Make a new data string from the conversion buffer
+      std::wstring* const convertedData = new std::wstring(/* ? */);
+
+      // Run over the tag data (erk, again - I *REALLY* do not like this)
+      for (std::wstring::size_type i = 0; i < convertedData->length(); ++i) {
+	 /* If the character is one of those naughty control characters,
+	  * up-convert it into the pictoral range so it will be viewed
+	  * graphically, but not thrown around. These are worst-case naughty
+	  * chars from the C0 control set, and should be stomped on.
+	  */
+	 if (((*convertedData)[i] == 0x0000) || // NUL
+	     ((*convertedData)[i] == 0x0001) || // SOH
+	     ((*convertedData)[i] == 0x0008) || // BS
+	     (((*convertedData)[i] >= 0x000A) &&
+	      ((*convertedData)[i] <= 0x000D)) || // LF, VT, FF, CR
+	     (((*convertedData)[i] >= 0x0011) &&
+	      ((*convertedData)[i] <= 0x0014))) { // DC1 -> DC4
+	    /* The pictoral range for the C1 controls is 0x2400 -> 0x2419,
+	     * and directly correspond with the C1 controls themselves
+	     * (0x00 -> 0x2419), so we simply need to add 0x2400 to change
+	     * these.
+	     */
+	    (*convertedData)[i] += 0x2400;
+	    continue;
+	 }
+	 
+	 // DEL chars are equally bad, but have their own special control pic
+	 if ((*convertedData)[i] == 0x007F) {
+	    (*convertedData)[i] = 0x2421;
+	    continue;
+	 }
+	 
+	 /* There are some other naughty chars, such as those you find in the
+	  * C1 control group (ISO 6429, and of course ISO 2022), and UCS
+	  * specials. These don't have pretty pictoral forms elsewhere in the
+	  * UCS range yet, so we just have to munge them into one, very boring,
+	  * replacement character.
+	  */
+	 if (((*convertedData)[i] == 0x0085) || // NEL
+	     ((*convertedData)[i] == 0x008D) || // RI
+	     (((*convertedData)[i] >= 0xFFFC) &&
+	      ((*convertedData)[i] <= 0xFFFF))) { // UCS Specials
+	    (*convertedData)[i] =
+	      Internal::LangTags::replacementCharacterGlyph;
+	 } 
+      }
       
       // Check the first letter of the tag...
       if (tag[0] == '.') {
@@ -311,14 +358,17 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	    languageData->languageCode =
 	      data.toLower().substr(0, data.find(' '));
 	 } else if (tag == "LANGNAME") {
-	    languageData->languageName = data;
+	    languageData->languageName = *convertedData;
 	 } else if (tag == "LANGNOTE") {
-	    languageData->languageNote = data;
+	    languageData->languageNote = *convertedData;
 	 } else if (tag == "MAINTAINER") {
-	    languageData->maintainer = data;
+	    languageData->maintainer = *convertedData;
 	 } else if (tag == "REVISION") {
 	    languageData->fileRevision = atol(data.c_str());
 	 }
+	 
+	 // Free the converted tag data - it would have been ignored/copied..
+	 delete convertedData;
       } else {
 	 tagID_type tagID;
 	 
@@ -354,8 +404,8 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	    languageData->tagData.resize(tagID);
 	 }
 	 
-	 // Copy the tag's data into this language's tag data vector
-	 languageData->tagData[tagID - 1] = new std::string(line);
+	 // Copy the tag's data pointer into this language's tag data vector
+	 languageData->tagData[tagID - 1] = convertedData;
 
 	 // Increase the tag counter..
 	 ++languageData->tagCount;
@@ -404,6 +454,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
     * the tag maps to be updated, otherwise any new tags that were needed and
     * now actually exist won't be discovered automatically..
     */
+#warning "Language maps are processed, regardless of config().isConfiguring()"
 //   if (!config().isConfiguring()) {
       processMaps();
 //   }
@@ -417,11 +468,11 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
  * Original 11/04/2003 simonb
  */
 const Languages::tagID_type
-  Languages::getTagID(const AIS::Util::String& tagName) const
+  Languages::getTagID(const std::string& tagName) const
 {
    // Try to find this tag in the tag dictionary
    tagDictionary_type::const_iterator it =
-     tagDictionary.find(tagName.toUpper());
+     tagDictionary.find(static_cast<AIS::Util::String>(tagName).toUpper());
       
    // Did we find it?
    if (it == tagDictionary.end()) {
@@ -551,7 +602,7 @@ Languages::LanguageData* const
 /* get - Return the given language data, from the given language
  * Original 15/03/2003 simonb
  */
-const std::string
+const std::wstring
   Languages::get(const LanguageData* const languageData,
 		 const tagID_type tagID,
 		 const parameterList_type* const parameters) const
@@ -564,7 +615,7 @@ const std::string
 #endif
 
       // Okay, try to grab it from the language data..
-      std::string tagData = languageData->get(tagID, parameters);
+      std::wstring tagData = languageData->get(tagID, parameters);
       
       // If we got some data, return it
       if (!tagData.empty()) {
@@ -579,7 +630,7 @@ const std::string
 #endif
 	 
 	 // Urgh, try to find it in the default language then
-	 std::string tagData = defaultLanguage->get(tagID, parameters);
+	 tagData = defaultLanguage->get(tagID, parameters);
 	 
 	 // If we got some data, return it
 	 if (!tagData.empty()) {
@@ -589,7 +640,7 @@ const std::string
    }
 
    // Give up! Return a replacement object character..
-   return replacementObjectGlyph;
+   return std::wstring(1, Internal::LangTags::replacementObjectGlyph);
 }
 
 
@@ -627,14 +678,15 @@ void Languages::get(const LanguageData* const languageData,
    }
 
    // Give up! Use the call function to send a replacement object glyph
-   (void)(callFunction)(replacementObjectGlyph);
+   (void)((callFunction)
+	  (std::wstring(1, Internal::LangTags::replacementObjectGlyph)));
 }
 
 
 /* get - Return the given language data, from a language in the given list
  * Original 04/04/2003 simonb
  */
-const std::string
+const std::wstring
   Languages::get(const languageDataList_type& languageDataList,
 		 const tagID_type tagID,
 		 const parameterList_type* const parameters) const
@@ -644,10 +696,10 @@ const std::string
     */
    if (languageDataList.empty() ||
        (languageDataList[0] == 0)) {
-      return replacementObjectGlyph;
+      return std::wstring(1, Internal::LangTags::replacementObjectGlyph);
    }
    
-   std::string tagData;
+   std::wstring tagData;
    
    // Okay.. run through the list of languages and see what happens..
    for (languageDataList_type::const_iterator it = languageDataList.begin();
@@ -655,7 +707,7 @@ const std::string
 	++it) {
       // If it's null, break
       if ((*it) == 0) {
-	 return replacementObjectGlyph;
+	 return std::wstring(1, Internal::LangTags::replacementObjectGlyph);
       }
       
       // Try to grab the data from this language
@@ -680,5 +732,5 @@ const std::string
    }
    
    // Return whatever we got..
-   return replacementObjectGlyph;
+   return std::wstring(1, Internal::LangTags::replacementObjectGlyph);
 }

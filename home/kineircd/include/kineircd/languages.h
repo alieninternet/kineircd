@@ -34,7 +34,6 @@
 # endif
 # include <string>
 # include <vector>
-# include <aisutil/string/string.h>
 
 
 namespace Kine {
@@ -99,7 +98,7 @@ namespace Kine {
       
       //@{
       //! The type of a 'parameter' (used in substitutions)
-      typedef std::string parameter_type;
+      typedef std::wstring parameter_type;
       
       /* The type of a 'parameter list'. Parameter lists are sent along side
        * a request to return language data in order to substitute parameter
@@ -119,7 +118,7 @@ namespace Kine {
       struct callFunction_type {
 	 callFunction_type(void) {};
 	 virtual ~callFunction_type(void) {};
-	 virtual bool operator()(const std::string& data) = 0;
+	 virtual bool operator()(const std::wstring& data) = 0;
       };
       
       
@@ -130,13 +129,13 @@ namespace Kine {
       class LanguageData {
        public:
 	 //! Tag data type
-	 typedef std::vector < std::string* > tagData_type;
+	 typedef std::vector < std::wstring* > tagData_type;
 	 
        private:
 	 std::string languageCode;		//!< RFC-3066 compliant code
-	 std::string languageName;		//!< Name of the language
-	 std::string languageNote;		//!< Optional notice
-	 std::string maintainer;		//!< Maintainer of the file
+	 std::wstring languageName;		//!< Name of the language
+	 std::wstring languageNote;		//!< Optional notice
+	 std::wstring maintainer;		//!< Maintainer of the file
 	 long fileRevision;			//!< File revision
 	 unsigned long tagCount;		//!< *real* number of tags
 	 
@@ -146,12 +145,12 @@ namespace Kine {
 	 void mergeWith(const LanguageData& newData);
 
 	 //! Process the given string (deal with substitutions and so forth)
-	 const std::string
-	   process(const std::string& data,
+	 const std::wstring
+	   process(const std::wstring& data,
 		   const parameterList_type* const parameters) const;
 	 
 	 //! Look for a given TID's data, and return it if possible
-	 const std::string
+	 const std::wstring
 	   get(const tagID_type tagID,
 	       const parameterList_type* const parameters = 0) const;
 
@@ -175,15 +174,15 @@ namespace Kine {
 	   { return languageCode; };
 	 
 	 //! Return the name of the language, as said in its own language
-	 const std::string& getLanguageName(void) const
+	 const std::wstring& getLanguageName(void) const
 	   { return languageName; };
 	 
 	 //! Return a note, if any, associated with this language
-	 const std::string& getLanguageNote(void) const
+	 const std::wstring& getLanguageNote(void) const
 	   { return languageNote; };
 	 
 	 //! Return the contact address (email/url/etc) of a maintainer, if any
-	 const std::string& getMaintainer(void) const
+	 const std::wstring& getMaintainer(void) const
 	   { return maintainer; };
 	 
 	 //! Return the unique revision number of this data
@@ -217,13 +216,6 @@ namespace Kine {
       //! The code associated with the default language (not the real one)
       static const char* const defaultLanguageCode;
       
-    protected:
-      /* Replacement glyphs, both used to substitute missing or erroneous
-       * values of some description. These are UTF-8 Encoded.
-       */
-      static const char* const replacementObjectGlyph;
-      static const char* const replacementCharacterGlyph;
-
     private:
       // A set full of language tag name to tag ID mapping arrays
       typedef std::set < tagMap_type* > tagMaps_type;
@@ -285,7 +277,7 @@ namespace Kine {
 	{ return highestTagID; };
       
       //! Find a tag by its name (It's recommended to use a tag map, below)
-      const tagID_type getTagID(const AIS::Util::String& name) const;
+      const tagID_type getTagID(const std::string& name) const;
       
       //! Add/remove/process tag name/ID correlation maps
       bool registerMap(tagMap_type map);
@@ -304,7 +296,7 @@ namespace Kine {
       LanguageData* const findByCode(const std::string& code) const;
       
       //! Return the given language data, from the given language data
-      const std::string
+      const std::wstring
 	get(const LanguageData* const languageData,
 	    const tagID_type tagID,
 	    const parameterList_type* const parameters = 0) const;
@@ -316,13 +308,13 @@ namespace Kine {
 	       const parameterList_type* const parameters = 0) const;
       
       //! Return the given language data, from a language in the given list
-      const std::string
+      const std::wstring
 	get(const languageDataList_type& languageDataList,
 	    const tagID_type tagID,
 	    const parameterList_type* const parameters = 0) const;
 
       //! Return the given language data, from the given language (by code)
-      const std::string
+      const std::wstring
 	get(const std::string& languageCode,
 	    const tagID_type tagID,
 	    const parameterList_type* const parameters = 0) const
@@ -340,65 +332,65 @@ namespace Kine {
 
       //! Lazy functions for use when you have one to six parameters..
       template <class T>
-	const std::string get(const T& languageCode,
-			      const tagID_type tagID,
-			      const parameter_type& p0) const
+	const std::wstring get(const T& languageCode,
+			       const tagID_type tagID,
+			       const parameter_type& p0) const
 	{
 	   parameterList_type parameters;
 	   parameters.push_back(&p0);
-	   std::string output(get(languageCode, tagID, &parameters));
+	   std::wstring output(get(languageCode, tagID, &parameters));
 	   return output;
 	};
       template <class T>
-	const std::string get(const T& languageCode,
-			      const tagID_type tagID,
-			      const parameter_type& p0,
-			      const parameter_type& p1) const
+	const std::wstring get(const T& languageCode,
+			       const tagID_type tagID,
+			       const parameter_type& p0,
+			       const parameter_type& p1) const
 	{
 	   parameterList_type parameters;
 	   parameters.push_back(&p0);
 	   parameters.push_back(&p1);
-	   std::string output(get(languageCode, tagID, &parameters));
+	   std::wstring output(get(languageCode, tagID, &parameters));
 	   return output;
 	};
       template <class T>
-	const std::string get(const T& languageCode,
-			      const tagID_type tagID,
-			      const parameter_type& p0,
-			      const parameter_type& p1,
-			      const parameter_type& p2) const
+	const std::wstring get(const T& languageCode,
+			       const tagID_type tagID,
+			       const parameter_type& p0,
+			       const parameter_type& p1,
+			       const parameter_type& p2) const
 	{
 	   parameterList_type parameters;
 	   parameters.push_back(&p0);
 	   parameters.push_back(&p1);
 	   parameters.push_back(&p2);
-	   std::string output(get(languageCode, tagID, &parameters));
+	   std::wstring output(get(languageCode, tagID, &parameters));
 	   return output;
 	};
       template <class T>
-	const std::string get(const T& languageCode,
-			      const tagID_type tagID,
-			      const parameter_type& p0,
-			      const parameter_type& p1,
-			      const parameter_type& p2,
-			      const parameter_type& p3) const
+	const std::wstring get(const T& languageCode,
+			       const tagID_type tagID,
+			       const parameter_type& p0,
+			       const parameter_type& p1,
+			       const parameter_type& p2,
+			       const parameter_type& p3) const
 	{
 	   parameterList_type parameters;
 	   parameters.push_back(&p0);
 	   parameters.push_back(&p1);
 	   parameters.push_back(&p2);
 	   parameters.push_back(&p3);
-	   std::string output(get(languageCode, tagID, &parameters));
+	   std::wstring output(get(languageCode, tagID, &parameters));
 	   return output;
 	};
       template <class T>
-	const std::string get(const T& languageCode,
-			      const tagID_type tagID,
-			      const parameter_type& p0,
-			      const parameter_type& p1,
-			      const parameter_type& p2,
-			      const parameter_type& p3,
-			      const parameter_type& p4) const
+	const std::wstring get(const T& languageCode,
+			       const tagID_type tagID,
+			       const parameter_type& p0,
+			       const parameter_type& p1,
+			       const parameter_type& p2,
+			       const parameter_type& p3,
+			       const parameter_type& p4) const
 	{
 	   parameterList_type parameters;
 	   parameters.push_back(&p0);
@@ -406,18 +398,18 @@ namespace Kine {
 	   parameters.push_back(&p2);
 	   parameters.push_back(&p3);
 	   parameters.push_back(&p4);
-	   std::string output(get(languageCode, tagID, &parameters));
+	   std::wstring output(get(languageCode, tagID, &parameters));
 	   return output;
 	};
       template <class T>
-	const std::string get(const T& languageCode,
-			      const tagID_type tagID,
-			      const parameter_type& p0,
-			      const parameter_type& p1,
-			      const parameter_type& p2,
-			      const parameter_type& p3,
-			      const parameter_type& p4,
-			      const parameter_type& p5) const
+	const std::wstring get(const T& languageCode,
+			       const tagID_type tagID,
+			       const parameter_type& p0,
+			       const parameter_type& p1,
+			       const parameter_type& p2,
+			       const parameter_type& p3,
+			       const parameter_type& p4,
+			       const parameter_type& p5) const
 	{
 	   parameterList_type parameters;
 	   parameters.push_back(&p0);
@@ -426,7 +418,7 @@ namespace Kine {
 	   parameters.push_back(&p3);
 	   parameters.push_back(&p4);
 	   parameters.push_back(&p5);
-	   std::string output(get(languageCode, tagID, &parameters));
+	   std::wstring output(get(languageCode, tagID, &parameters));
 	   return output;
 	};
    }; // class Languages

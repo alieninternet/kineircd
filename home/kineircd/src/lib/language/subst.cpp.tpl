@@ -39,10 +39,3 @@ const LangTags::SubstitutionChar LangTags::substitutionMap[] = {
    { '[+langtag_code+]',	'\[+char+]' },		// [+name+][+ENDFOR+]
    { 0, 0 }
 };
-
-
-// Marker chars
-const char LangTags::parameterMarkerChar =
-  '\000'; // NUL
-const char LangTags::newLineMarkerChar =
-  '\001'; // SOH

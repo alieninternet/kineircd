@@ -34,8 +34,18 @@ namespace Kine {
 	 } extern const substitutionMap[];
 
 	 // Marker chars, substituted for internal processing of the strings
-	 extern const char parameterMarkerChar;
-	 extern const char newLineMarkerChar;
+	 static const wchar_t parameterMarkerChar =
+	   0x0000;
+	 static const wchar_t newLineMarkerChar =
+	   0x0001;
+
+	 /* Replacement glyphs, both used to substitute missing or erroneous
+	  * values of some description.
+	  */
+	 static const wchar_t replacementObjectGlyph =
+	   0xFFFC;
+	 static const wchar_t replacementCharacterGlyph =
+	   0xFFFD;
       }; // namespace LangTags
    }; // namespace Internal
 }; // namespace Kine
