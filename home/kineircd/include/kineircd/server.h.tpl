@@ -51,7 +51,8 @@ namespace Kine {
       
     protected:
       //! Constructor
-      Server(void)
+      Server(const AISutil::Time& _signonTime)
+	: Entity(_signonTime)
 	{};
 
     public:

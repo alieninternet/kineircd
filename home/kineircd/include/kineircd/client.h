@@ -39,8 +39,6 @@ namespace Kine {
    //! An abstract class defining a client, since there are a few types
    class Client : public Denizen, public Sender, public Receiver {
     private:
-      const AISutil::Time signonTime;		//!< Time this client connected
-      
       // The channel list for this client
       typedef std::map < std::string, Channel* const > channels_type;
       channels_type channels;
@@ -48,7 +46,7 @@ namespace Kine {
     protected:
       //! Constructor
       Client(const AISutil::Time& _signonTime)
-	: signonTime(_signonTime)
+	: Denizen(_signonTime)
 	{};
       
     public:
@@ -65,10 +63,6 @@ namespace Kine {
       
       //! Return the client's user name
       virtual const std::string& getUsername(void) const = 0;
-
-      //! Return the time this entity initially connected to the network
-      const AISutil::Time& getSignonTime(void) const
-	{ return signonTime; };
    }; // class Client
 }; // namespace Kine
 

@@ -32,7 +32,8 @@ namespace Kine {
    class Denizen : public Entity {
     protected:
       //! Constructor
-      Denizen(void)
+      Denizen(const AISutil::Time& _signonTime)
+	: Entity(_signonTime)
 	{};
       
     public:

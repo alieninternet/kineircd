@@ -51,7 +51,7 @@ namespace Kine {
 	   const std::string& _hostname,
 	   const AISutil::Time& _signonTime)
 	: Client(_signonTime),
-          nickname(_nickname),
+	  nickname(_nickname),
           username(_username),
           hostname(_hostname)
 	{};

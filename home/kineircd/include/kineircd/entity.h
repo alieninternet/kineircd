@@ -31,8 +31,11 @@ namespace Kine {
    //! Abstract base class for objects - stuff that is common to all objects
    class Entity {
     protected:
+      const AISutil::Time signonTime;		//!< Time this entity connected
+      
       //! Constructor
-      Entity(void)
+      Entity(const AISutil::Time& _signonTime)
+	: signonTime(_signonTime)
 	{};
       
     public:
@@ -50,7 +53,8 @@ namespace Kine {
       virtual const std::string& getDescription(void) const = 0;
 
       //! Return the time this entity initially connected to the network
-      virtual const AISutil::Time& getSignonTime(void) const = 0;
+      const AISutil::Time& getSignonTime(void) const
+	{ return signonTime; };
    }; // class Entity
 }; // namespace Kine
 

@@ -25,14 +25,13 @@
 # define _INCLUDE_KINEIRCD_SERVICE_H_ 1
 
 # include <kineircd/client.h>
-# include <kineircd/daemon.h>
 
 namespace Kine {
    //! A service (refinement of a client)
    class Service : public Client {
     protected:
       //! Constructor
-      Service(const timeval& _signonTime = daemon().getTime())
+      Service(const AISutil::Time& _signonTime)
 	: Client(_signonTime)
 	{};
       
