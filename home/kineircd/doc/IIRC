@@ -1,0 +1,61 @@
+These are dirty notes for implementing IIRC, the inter-irc network stuff.
+
+ * Accepted are numerics and the PRIVMSG, NOTICE, and WHOIS commands
+ 
+ * *NO* bursts, connections are totally stateless unless the optional IIRC
+   channels are used.. ('~' prefixed channels).
+   
+ * Network names, not domains, are used to identify remote nicknames. Since
+   the same nickname can exist on multiple networks, all remote nicknames
+   have the "#<network name>" suffix. 
+
+    Eg. "nick#networkA" and "nick#networkB" are different, and if you are
+    on networkC then "nick#networkC" and "nick" are the same thing.
+    
+ * Local users should not have the #<network name> suffix, but it should still
+   be accepted by both servers and clients.
+   
+ * IIRC ('~' prefixed) channels will operate similar to # channels, except
+   no anonymous mode ('+a') should be allowed.
+   
+ * SILENCE and ACCEPT commands on the server *must* be able to block from
+   remote networks..
+
+    
+Example conversation: 'foo' is on networkA, 'bah' is on networkB
+
+from foo's perspective:
+  < PRIVMSG bah#networkB :Hello there, how are you?
+  > bah#networkB!baz@somehost.com PRIVMSG foo :Hello! I'm good thanks.
+  
+from bah's perspective:
+  > foo#networkA!fooey@anotherhost.com PRIVMSG bah :Hello there, how are you?
+  < PRIVMSG foo#networkA :Hello! I'm good thanks.
+  
+This should integrate nicely with existing clients. In such time as the
+trailing user@host can be removed (via CAPAB) that can also be dropped..
+
+
+Example channel join: 'foo' and 'bah' are the same people
+
+from foo's perspective (joining):
+  < JOIN ~qux
+  > foo!fooey@anotherhost.com JOIN :~qux
+  > :server.networkA 332 foo ~qux :This is a topic
+  > :server.networkA 333 foo ~qux bah#networkB 1023180774
+  > :server.networkA 353 foo = ~qux :foo @bah#networkB +bazza#networkB
+  > :server.networkA 366 foo ~qux :End of NAMES list
+  < PRIVMSG ~qux :Hello everyone!
+  > bah#networkB!baz@somehost.com PRIVMSG ~qux :Hey foo!
+  
+from bah's perspective (already in the channel):
+  < TOPIC ~qux :This is a topic
+  > :server.networkB 332 bah ~qux :This is a topic
+   (check the topic to prove a point - note the name of the person setting it)
+  < TOPIC ~qux
+  > :server.networkB 332 bah ~qux :This is a topic
+  > :server.networkB 333 bah ~qux bah 1023180774
+   (foo joins)
+  > foo#networkA!fooey@anotherhost.com JOIN :~qux
+  > foo#networkA!fooey@anotherhost.com PRIVMSG ~qux :Hello everyone!
+  < PRIVMSG ~qux :Hey foo!
