@@ -1,7 +1,12 @@
 [+ AutoGen5 template lang +][+
-   ;; Our tag counting variable
+   ;;; Our tag counting variable
    (define tagCount 0)
- +][+ FOR languages +][+
+
+   ;;; Make the variable we are looking for, in the form of data_<langcode>
+   (define (makeDataVariable code)
+      (sprintf "data_%s"
+         code))
+ +][+ DEFINE generate-file +][+
    ;; Tell the console what we're up to
    (for-each
       display
@@ -9,14 +14,14 @@
          "-=> Generating langtags file for '"
          (get "langName")
          "' ("
-         (get "langCode")
+         (get "code")
          ")..."))
 
    ;; Switch over to a new language file, using the language code in its name
    (out-push-new
       (sprintf "%s%s.lang" 
          (base-name)
-	 (get "langCode")))
+	 (get "code")))
 
    ;; Reset the tag count
    (set! tagCount 0)
@@ -48,16 +53,9 @@
 #
 [+(dne "# ")+]
 #
-[+
-
-   ;;; Make the variable we are looking for, in the form of data_<langcode>
-   (define (makeDataVariable)
-      (sprintf "data_%s"
-         (get "langCode")))
-
- +]
-.LangCode	= [+langCode+]
-.LangName	= [+langName+][+ IF (exist? "langNote") +]
+.LangCode	= [+code+]
+.LangName	= [+langName+][+ IF (exist? "dialect_name") +]
+.LangNote	= [+dialect_name+][+ ELIF (exist? "langNote") +]
 .LangNote	= [+langNote+][+ ENDIF +][+ IF (exist? "langMaintainer") +]
 .Maintainer	= [+langMaintainer+][+ ENDIF +]
 .Revision	= [+
@@ -66,24 +64,42 @@
       (gmtime 
          (current-time)))
  +]
-
 [+ FOR tag +][+ IF
    ;; Make sure there is data for this tag
    (or
       (exist? "data")
       (exist? 
-         (makeDataVariable)))
+         (makeDataVariable
+	    (get "code")))
+      (and
+         (exist? "fallback")
+	 (exist?
+	    (makeDataVariable
+	       (get "fallback")))))
  +][+
    ;; Increase the tag count
    (set! tagCount
       (+ tagCount 1))
  +][+tagPrefix+][+name+] = [+
-   ;; Grab the right data - some tags may not include language specific stuff
+   ;; Grab the right data
    (if
       (exist? "data")
       (get "data")
-      (get
-         (makeDataVariable)))
+      (if
+         (exist? "fallback")
+	 (if
+	    (exist?
+	       (makeDataVariable
+	          (get "code")))
+	    (get
+	       (makeDataVariable
+	          (get "code")))
+	    (get
+	       (makeDataVariable
+	          (get "fallback"))))
+         (get
+            (makeDataVariable
+	       (get "code")))))
  +]
 [+ ENDIF +][+ ENDFOR +][+
    ;; Output the number of tags generated and end the line on the console
@@ -97,4 +113,14 @@
 
    ;; Write to this language file
    (out-pop)
- +][+ ENDFOR +]
+ +][+ ENDDEF +][+ FOR languages +][+ INVOKE
+   generate-file
+     code=(get "langCode")
+ +][+ FOR dialects +][+ INVOKE
+   generate-file
+     code=(sprintf "%s-%s"
+             (get "langCode")
+	     (get "dialect"))
+     dialect_name=(get "name")
+     fallback=(get "langCode")
+ +][+ ENDFOR +][+ ENDFOR +]
