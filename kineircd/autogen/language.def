@@ -1284,16 +1284,17 @@ tag = {
  *****************************************************************************/
 
 tag = {
-   name		= "irc2user_ERROR_CLOSING_LINK";
+   name		= "irc2user_ERROR_CLOSING_LINK_QUIT";
+   fields	= "0 = nickname, 1 = username, 2 = hostname";
    components	= "mod_irc2user";
-   data_en	= "Closing link";
+   data_en	= "Closing link: %p0[%p1@%p2]";
 };
 
 tag = {
-   name		= "irc2user_ERROR_CLOSING_LINK_WITH_REASON";
-   fields	= "0 = quit reason";
+   name		= "irc2user_ERROR_CLOSING_LINK_QUIT_WITH_REASON";
+   fields	= "0 = nickname, 1 = username, 2 = hostname, 3 = quit reason";
    components	= "mod_irc2user";
-   data_en	= "Closing link: %p0";
+   data_en	= "Closing link: %p0[%p1@%p2] (%p3)";
 };
 
 tag = {
@@ -2179,16 +2180,25 @@ tag = {
 
 tag = {
    name		= "irc2user_SNOTICE_KILL_LOCAL";
-   fields	= "0 = killer, 1 = victim, 2 = reason";
+   fields	= "0 = killer nickname, 1 = killer username, "
+                  "2 = killer hostname, 3 = victim nickname, "
+		  "4 = victim username, 7 = victim hostname, "
+		  "6 = reason";
    components	= "mod_irc2user";
-   data_en	= "*** Notice -- Local KILL for %p1 by %p0 (%p2\\o)";
+   data_en	= "*** Notice -- Local KILL for %p4!%p5@%p6%%%n by "
+                  "%p0!%p1@%p2%%%n (%p8\\o)";
 };
 
 tag = {
    name		= "irc2user_SNOTICE_KILL_REMOTE";
-   fields	= "0 = killer, 1 = victim, 2 = reason";
+   fields	= "0 = killer nickname, 1 = killer username, "
+                  "2 = killer hostname, 3 = killer server name, "
+		  "4 = victim nickname, 5 = victim username, "
+		  "6 = victim hostname, 7 = victim server name, "
+		  "8 = reason";
    components	= "mod_irc2user";
-   data_en	= "*** Notice -- Received KILL for %p1 by %p0 (%p2\\o)";
+   data_en	= "*** Notice -- Received KILL for %p4!%p5@%p6%%%p7 by "
+                  "%p0!%p1@%p2%%%p3 (%p8\\o)";
 };
 
 tag = {
