@@ -150,6 +150,16 @@ servermodes = {
 };
 
 servermodes = {
+   irc2char	= "s";
+   name		= "SERVICE";
+   origin	= "ircu";
+   comment	= "When set, the server is a 'service' (as in, it only "
+   		  "provides services)";
+   server_only	= "yes";
+   broadcast	= "yes";
+};
+
+servermodes = {
    irc2char	= "T";
    name		= "TESTLINK";
    origin	= "KineIRCd";
