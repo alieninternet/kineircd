@@ -199,7 +199,10 @@ void Protocol::doSUMMON(const User& user, const std::string& who)
  */
 void Protocol::doTIME(const User& user)
 {
-   // Make up a "human readable" time string
+   // Firstly, send the RPL_TIMEONSERVERIS thing
+   sendTimeOnServer(user);
+   
+   // Make up the "human readable" time string for the old RPL_TIME..
    struct tm currentTime;
    currentTime = *gmtime((const time_t*)&daemon().getTime());
    
@@ -233,9 +236,6 @@ void Protocol::doTIME(const User& user)
    sendNumeric(user, LibIRC2::Numerics::RPL_TIME,
 	       config().getOptionsServerName(),
 	       text.str());
-   
-   // Also send the RPL_TIMEONSERVERIS
-   sendTimeOnServer(user);
 }
 
 
