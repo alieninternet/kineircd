@@ -36,9 +36,9 @@ namespace Kine {
        */
       class Output : public Kine::Protocol::Output {
        public:
-	 static const char* const EOL_CR_LF;	//!< '\\r\\n' end of line (common)
-	 static const char* const EOL_CR;	//!< '\\r' end of line (rare)
-	 static const char* const EOL_LF;	//!< '\\n' end of line
+	 static const char* const EOL_CR_LF;	//!< '\\r\\n' end of line (MS-DOS Derived)
+	 static const char* const EOL_CR;	//!< '\\r' end of line (Mac)
+	 static const char* const EOL_LF;	//!< '\\n' end of line (Unix)
 
        private:
 	 //! The output data queue
