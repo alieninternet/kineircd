@@ -544,6 +544,23 @@ AC_ARG_ENABLE(mod-http,
 AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_MOD_HTTP,
 	       [test x$kineircd_test_compile_mod_http = xyes])
 
+AC_ARG_ENABLE(mod-irc2user,
+              AC_HELP_STRING([--disable-mod-irc2user],
+                             [Disable the IRC/2 user protocol module]),
+ [
+   if test "$enableval" \!= "yes"; then
+     echo -n "mod_irc2user "
+     kineircd_test_compile_mod_irc2user=yes
+     kineircd_test_compile_lib_irc2=yes
+   fi
+ ],[
+   echo -n "mod_irc2user "
+   kineircd_test_compile_mod_irc2user=yes
+   kineircd_test_compile_lib_irc2=yes
+ ])
+AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_MOD_IRC2USER,
+	       [test x$kineircd_test_compile_mod_irc2user = xyes])
+
 if test "$kineircd_test_netsnmp_broken" = "no"; then
   AC_ARG_ENABLE(mod-snmp,
                 AC_HELP_STRING([--disable-mod-snmp],
@@ -565,6 +582,15 @@ AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_MOD_SNMP,
 
 dnl finish off the line
 echo
+
+dnl Work out which module libraries we need
+AC_MSG_CHECKING([which module libraries to compile])
+
+if test "$kineircd_test_compile_lib_irc2" = "yes"; then
+  echo -n "lib_irc2 "
+fi
+AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_LIB_IRC2,
+	       [test x$kineircd_test_compile_lib_irc2 = xyes])
 
 dnl
 dnl Developer stuff
@@ -625,6 +651,4 @@ AC_OUTPUT([
 	src/Makefile
 	src/lib/Makefile
 	src/modules/Makefile
-	src/modules/mod_http/Makefile
-	src/modules/mod_snmp/Makefile
 	])
