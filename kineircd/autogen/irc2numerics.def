@@ -3263,7 +3263,7 @@ irc2numerics = {
 };
 
 irc2numerics = {
-   name		= "RPL_WHOIS_LANGUAGE";
+   name		= "RPL_WHOISLANGUAGE";
    numeric	= "690";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
