@@ -59,7 +59,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 		     Kine::Version::version) << "\r\n:" <<
      config().getOptionsServerName() << " 003 " << registrant.name <<
      " :" << GETLANG(irc2_RPL_CREATED,
-		     Kine::Version::build) << "\r\n:" <<
+		     Kine::Version::buildTime) << "\r\n:" <<
      config().getOptionsServerName() << " 004 " << registrant.name <<
      " :?\r\n:" <<
      config().getOptionsServerName() << " 251 " << registrant.name <<

@@ -43,8 +43,8 @@ ENDDEF+]
 
 namespace Kine {
    namespace Version {
-      // Build information
-      const char* const build = BUILD_STRING;
+      // Build time in ISO-8601 format (yyyymmddThhmmssZ)
+      const char* const buildTime = BUILD_TIME;
       
       // Program name
       const char* const programName = PACKAGE;
@@ -57,9 +57,9 @@ namespace Kine {
       // Version information (program name and version number, in its entirity)
       const char* const version = PACKAGE KINEIRCD_VERSION_STRING;
       
-      // Full version identity (includes build number)
+      // Full version identity (includes build time)
       const char* const versionFull = 
-	PACKAGE KINEIRCD_VERSION_STRING "#" BUILD_STRING;
+	PACKAGE KINEIRCD_VERSION_STRING "#" BUILD_TIME;
       
       // Library version information (raw)
       const unsigned char libVersion = KINEIRCD_LIB_VERSION;

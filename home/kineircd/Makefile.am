@@ -234,7 +234,7 @@ libkineircd_la_LIBADD=\
 
 # Preprocessor flags (how can I target version.cpp alone??)
 libkineircd_la_CPPFLAGS=\
-	-DBUILD_STRING="\"`date -u +%Y%m%d%H%M`\""
+	-DBUILD_TIME="\"`date -u +%Y%m%dT%H%MZ`\""
 
 # Customised .tpl rules
 include/kineircd/config.h: include/kineircd/config.h.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
