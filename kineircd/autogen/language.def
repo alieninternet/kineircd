@@ -884,7 +884,7 @@ tag = {
    name		= "irc2_RPL_NOWAWAY_WITH_MESSAGE";
    fields	= "0 = the given away message";
    components	= "mod_irc2user";
-   data_en	= "You're now away (%p0)";
+   data_en	= "You're now away (%p0\\o)";
 };
 
 tag = {
