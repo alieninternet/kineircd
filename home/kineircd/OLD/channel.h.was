@@ -130,7 +130,7 @@ class Channel {
    
    ChannelMember *getMember(User *);		// Grab a channel member record
    void processModes(Handler *, User *, 
-		     String *, StringTokens *);	// Process a MODE change
+		     String &, StringTokens *); // Process a MODE change
    
    bool onBan(User *);				// Is a user banned
    bool onBanExcept(User *);			// Is a user ban excepted

@@ -286,8 +286,10 @@ class Daemon {
    void quitUser(User *, String const &, bool);	// User quitting IRC
    void killUser(User *, String const &, 
 		 String const &);		// Kill a user off the network
-   bool addUserSilence(User *, StringMask *);	// Add/Broadcast a user silence
-   bool delUserSilence(User *, StringMask *);	// Delete a user silence
+   bool addUserSilence(User *, 
+		       StringMask const &);	// Add/Broadcast a user silence
+   bool delUserSilence(User *, 
+		       StringMask const &);	// Delete a user silence
    void snapshotUser(User *, Whowas::type_t,
 		     String const &);		// Snapshot a user for WHOWAS
    
@@ -309,7 +311,7 @@ class Daemon {
    void addServer(Server *);			// Add a server to the list
    Server *getServer(char);			// Grab a server record
    Server *getServer(String const &);
-   Server *getServer(StringMask *);
+   Server *getServer(StringMask const &);
    void changeServerMode(Server *, Server *, String const &,
 			 StringTokens *);	// Change a server mode
    void changeServerMode(Server *, Handler *, User *, String const &, 

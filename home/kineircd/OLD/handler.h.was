@@ -57,25 +57,29 @@ class Handler {
    virtual void sendNewNick(User *) {};		// Send a signon notification
    virtual void sendNickChange(User *, String const &) 
      {};					// Send a nickname change
-   virtual void sendNotice(String *, String *, 
+   virtual void sendNotice(Server *, User *, 
 			   String const &) {};	// Send a NOTICE
-   virtual void sendNotice(String, String *, String const &) {};
-   virtual void sendNotice(User *, String *, String const &) {};
+   virtual void sendNotice(User *, Channel *, String const &) {};
+   virtual void sendNotice(User *, User *, String const &) {};
+   virtual void sendNotice(User *, StringMask const &, String const &) {};
+   virtual void sendNoticeAnon(Channel *, String const &) {};
    virtual void sendNumeric(Server *, short, User *,
 			    String const &) {};	// Send a numeric reply
    virtual void sendPart(Channel *, User *,
 			 String const &) {};	// Send a channel part
    virtual void sendPing(void) {};		// Send a ping request
-   virtual void sendPrivmsg(String *, String *, 
+   virtual void sendPrivmsg(Server *, User *, 
 			    String const &) {};	// Send a PRIVMSG
-   virtual void sendPrivmsg(String, String *, String const &) {};
-   virtual void sendPrivmsg(User *, String *, String const &) {};
+   virtual void sendPrivmsg(User *, Channel *, String const &) {};
+   virtual void sendPrivmsg(User *, User *, String const &) {};
+   virtual void sendPrivmsg(User *, StringMask const &, String const &) {};
+   virtual void sendPrivmsgAnon(Channel *, String const &) {};
    virtual void sendQuit(User *, 
 			 String const &) {};	// Send a network quit
    virtual void sendServerMode(Server *, Server *, String const &) 
      {};					// Send a channel mode change
    virtual void sendServerMode(Server *, User *, String const &) {};
-   virtual void sendSilence(User *, bool, StringMask *) {};
+   virtual void sendSilence(User *, bool, StringMask const &) {};
    virtual void sendTopic(Channel *, Server *,
 			  String const &) {};	// Send a channel topic change
    virtual void sendTopic(Channel *, User *, String const &) {};	
@@ -97,13 +101,13 @@ class Handler {
    // These are responces to requests by either remote or local users
    static void doADMIN(Handler *, User *);
    static void doINFO(Handler *, User *);
-   static void doLINKS(Handler *, User *, String *);
-   static void doLUSERS(Handler *, User *, String *);
+   static void doLINKS(Handler *, User *, String const &);
+   static void doLUSERS(Handler *, User *, String const &);
    static void doMOTD(Handler *, User *);
-   static void doSTATS(Handler *, User *, String *);
+   static void doSTATS(Handler *, User *, String const &);
    static void doTIME(Handler *, User *);
    static void doVERSION(Handler *, User *);
-   static void doWHOIS(Handler *, User *, String *);
+   static void doWHOIS(Handler *, User *, String const &);
 };
 
 
@@ -123,12 +127,12 @@ class irc2userHandler : public Handler {
    }; 
    static functionTableStruct functionsTable[];
    
-   String processUserModes(String *, StringTokens *,
+   String processUserModes(String &, StringTokens *,
 			   bool = false);	// Process a usermode request
    
    void sendGoodbye(String const &);		// Closing link message
    void sendNumeric(short, String const &);	// Send numeric, breif
-   void sendPong(String);			// PING reply
+   void sendPong(String const &);		// PING reply
    void sendWhoReply(User *, Channel *,
 		     ChannelMember *);		// WHO reply
 
@@ -201,19 +205,23 @@ class irc2userHandler : public Handler {
    void sendKick(Channel *, User *, User *, String const &);
    void sendKill(User *, String const &, String const &);
    void sendNickChange(User *, String const &);
-   void sendNotice(String *, String *, String const &);
-   void sendNotice(String, String *, String const &);
-   void sendNotice(User *, String *, String const &);
+   void sendNotice(Server *, User *, String const &);
+   void sendNotice(User *, Channel *, String const &);
+   void sendNotice(User *, User *, String const &);
+   void sendNotice(User *, StringMask const &, String const &);
+   void sendNoticeAnon(Channel *, String const &);
    void sendNumeric(Server *, short, User *, String const &);
    void sendPart(Channel *, User *, String const &);
    void sendPing(void);
-   void sendPrivmsg(String *, String *, String const &);
-   void sendPrivmsg(String, String *, String const &);
-   void sendPrivmsg(User *, String *, String const &);
+   void sendPrivmsg(Server *, User *, String const &);
+   void sendPrivmsg(User *, Channel *, String const &);
+   void sendPrivmsg(User *, User *, String const &);
+   void sendPrivmsg(User *, StringMask const &, String const &);
+   void sendPrivmsgAnon(Channel *, String const &);
    void sendQuit(User *, String const &);
    void sendServerMode(Server *, Server *, String const &);
    void sendServerMode(Server *, User *, String const &);
-   void sendSilence(User *, bool, StringMask *);
+   void sendSilence(User *, bool, StringMask const &);
    void sendUserMode(User *, String const &);
    void sendTopic(Channel *, Server *, String const &);
    void sendTopic(Channel *, User *, String const &);
@@ -247,9 +255,9 @@ class p13serverHandler : public Handler {
 
    String modeWrapper(User *);			// Fix up user modes
    
-   void sendJoin(String *, User *);		// Send a multiple join message
-   void sendPong(String);			// PING reply
-   void sendSQUIT(String *, Server *, 
+   void sendJoin(String const &, User *);	// Send a multiple join message
+   void sendPong(String const &);		// PING reply
+   void sendSQUIT(String const &, Server *, 
 		  String const &);		// Closing link message
  
    // Protocol input
@@ -300,10 +308,10 @@ class p13serverHandler : public Handler {
    void sendAway(User *);
    void sendJoin(Channel *, User *);
    void sendNewNick(User *);
-   void sendNotice(User *, String *, String const &);
+   void sendNotice(User *, User *, String const &);
    void sendNumeric(Server *, short, User *, String const &);
    void sendPing(void);
-   void sendPrivmsg(User *, String *, String const &);
+   void sendPrivmsg(User *, User *, String const &);
    
    // Protocol input
    void parseLine(String const &);
@@ -362,7 +370,8 @@ class registerHandler : public Handler {
    
    static functionTableStruct functionsTable[];
    
-   void sendGeneric(const char *, String);	// Generic send routine
+   void sendGeneric(const char *, 
+		    String const &);		// Generic send routine
    void sendNumeric(short, User *, 
 		    String const &);		// Minature send-numeric
 

@@ -387,6 +387,15 @@
 //# define GIVE_MODES_LOCALOP
 
 
+/* These are just for over-the-top confirmation, probably best to leave this
+ * as is, but they might need to be 'tweaked' later
+ */
+# define REGISTRATION_EOL_CHARS		"\r\n"
+// IRC2USER_EOL_CHARS is determined automatically (below)
+# define P13SERVER_EOL_CHARS		"\n"
+# define P14SERVER_EOL_CHARS		"\n"
+
+
 /******************************************************************************
 *                                                                             *
 * Hey wait!  Stuff below here is determined by the auto-configuration script! *

@@ -28,9 +28,9 @@ bool isIRCspecial(char c)
 /* isChannel - Blunt channel checking routine that just checks the first char
  * Original 22/08/01, Simon Butcher <pickle@austnet.org>
  */
-bool isChannel(String *channel)
+bool isChannel(String const &channel)
 {
-   switch ((*channel)[0]) {
+   switch (channel[0]) {
     case '#':
     case '&':
     case '+':
@@ -45,21 +45,21 @@ bool isChannel(String *channel)
 /* okNickname - Check if a nickname contains ok characters and is short enough
  * Original 12/08/01, Simon Butcher <pickle@austnet.org>
  */
-bool okNickname(String *nick)
+bool okNickname(String const &nick)
 {
    // Check that the nickname is within limits
-   if (!nick || (nick->length() > MAXLEN_NICKNAME)) {
+   if (nick.length() > MAXLEN_NICKNAME) {
       return false;
    }
 
    // Check the first char, it cannot be a number
-   if (isdigit((*nick)[0])) {
+   if (isdigit(nick[0])) {
       return false;
    }
    
    // Run through the nickname and look for nasty characters
-   for (String::length_t i = 0; i < nick->length(); i++) {
-      char c = (*nick)[i];
+   for (String::length_t i = nick.length(); i--;) {
+      char c = nick[i];
 
       if (!(isalnum(c) || 
 	    isIRCspecial(c) ||
@@ -75,10 +75,10 @@ bool okNickname(String *nick)
 /* okChannel - Check if a channel name is ok
  * Original 20/08/01, Simon Butcher <pickle@austnet.org>
  */
-bool okChannel(String *channel)
+bool okChannel(String const &channel)
 {
    // Check that the nickname is within limits
-   if (!channel || (channel->length() > MAXLEN_CHANNELNAME)) {
+   if (channel.length() > MAXLEN_CHANNELNAME) {
       return false;
    }
 
@@ -88,7 +88,7 @@ bool okChannel(String *channel)
    }
 
    // Run through the nickname and look for nasty characters
-   for (String::length_t i = 1; i < channel->length(); i++) {
+   for (String::length_t i = channel.length(); i--;) {
 #ifdef STRICT_CHANNEL_NAMES
       /* Check for nasty chars. Notice the second check is for a blank char
        * ("No-Break Space" according to the ISO), and people use it especially
@@ -96,12 +96,12 @@ bool okChannel(String *channel)
        * and to spoof channels, eg. "#Foo " in a channel list can look like 
        * "#Foo" in many, if not all clients.
        */
-      if ((*channel)[i] < 33) {
+      if (channel[i] < 33) {
 	 return false;
       }
 #endif
       
-      switch ((*channel)[i]) {
+      switch (channel[i]) {
 #ifdef STRICT_CHANNEL_NAMES
        case char(0xA0): // Used by a lot of people as an alternative space
 #else
@@ -158,9 +158,9 @@ unsigned long getRandom(unsigned long max)
  * Original 21/09/01, Simon Butcher <pickle@austnet.org>
  * Note: This is very rough.
  */
-bool toBool(String *word, bool defaultBool)
+bool toBool(String const &word, bool defaultBool)
 {
-   String newWord = word->toUpper();
+   String newWord = word.toUpper();
    
    if ((newWord == "YES") ||
        (newWord == "TRUE") ||
@@ -181,28 +181,28 @@ bool toBool(String *word, bool defaultBool)
 /* makeOperPassword - Transform the nickname and password pair into SHA1 output
  * Original 08/09/01, Simon Butcher <pickle@austnet.org>
  */
-String makeOperPassword(String *nickname, String *password)
+String makeOperPassword(String const &nickname, String const &password)
 {
    String compiled = String::printf("%s" MAGIC_OPER_PASSWD_STRING "%s",
-				    (const char *)(nickname->IRCtoLower()),
-				    (const char *)(*password));
+				    (const char *)nickname.IRCtoLower(),
+				    (const char *)password);
    
-   return generateSHA1(&compiled);
+   return generateSHA1(compiled);
 }
 
 
 /* fixToIdentityMask - Transform a normal mask into an 'identity mask'
  * Original , Simon Butcher <pickle@austnet.org>
  */
-StringMask fixToIdentityMask(String *inMask)
+StringMask fixToIdentityMask(String const &inMask)
 {
-   StringMask ret(*inMask);
+   StringMask ret(inMask);
    return ret;
    
    String nick = "", user = "", host = "", temp1 = "", temp2 = "", temp3 = "";
    
    // Run through the given mask
-   for (String::length_t i = 0; i < inMask->length(); i++) {
+   for (String::length_t i = inMask.length(); i--;) {
 
    }
    

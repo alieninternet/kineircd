@@ -420,8 +420,7 @@ void Daemon::broadcastServerNotice(snotice_bitmask_t type,
       // Check if this user is to receive server notices
       if ((*it).second->serverNotices & type) {
 	 // Send the message via the notice interface
-	 (*it).second->handler->sendNotice(&server->hostname,
-					   &(*it).second->user->nickname,
+	 (*it).second->handler->sendNotice(server, (*it).second->user, 
 					   message);
       }
    }
@@ -949,19 +948,19 @@ void Daemon::killUser(User *user, String const &caller,
 /* addUserSilence - Add a mask to a user's silence list and broadcast it
  * Original 24/09/01, Simon Butcher <pickle@austnet.org>
  */
-bool Daemon::addUserSilence(User *user, StringMask *mask)
+bool Daemon::addUserSilence(User *user, StringMask const &mask)
 {
    // Make sure this is not already in the list (eg. a waste of time)
    for (User::silence_list_t::iterator it = user->silences.begin();
 	it != user->silences.end(); it++) {
       // Is this the mask we are adding?
-      if (*mask == *it) {
+      if (mask == *it) {
 	 return false;
       }
    }
    
    // If we got here it is not on the list already, just add it
-   user->silences.push_front(*mask);
+   user->silences.push_front(mask);
    
    // Broadcast the change to servers
 	 
@@ -972,13 +971,13 @@ bool Daemon::addUserSilence(User *user, StringMask *mask)
 /* delUserSilence - Delete a mask from a user's silence list and broadcast it
  * Original 24/09/01, Simon Butcher <pickle@austnet.org>
  */
-bool Daemon::delUserSilence(User *user, StringMask *mask)
+bool Daemon::delUserSilence(User *user, StringMask const &mask)
 {
    // Run through the list to find the mask to delete
    for (User::silence_list_t::iterator it = user->silences.begin();
 	it != user->silences.end(); it++) {
       // Is this the mask we are deleting?
-      if (*mask == *it) {
+      if (mask == *it) {
 	 user->silences.erase(it);
 	 
 	 // Broadcast the change to servers
@@ -1389,13 +1388,13 @@ Server *Daemon::getServer(String const &hostname)
    return 0;
 }
 
-Server *Daemon::getServer(StringMask *hostmask)
+Server *Daemon::getServer(StringMask const &hostmask)
 {
    // Run through the list of servers to find this server
    for (server_map_t::iterator it = servers.begin();
 	it != servers.end(); it++) {
       // Check for a match
-      if (hostmask->matches((*it).second->hostname)) {
+      if (hostmask.matches((*it).second->hostname)) {
 	 return (*it).second;
       }
    }
@@ -1407,9 +1406,9 @@ Server *Daemon::getServer(StringMask *hostmask)
 /* processServerModes - Support routine for the change server modes below
  * Original 21/09/01, Simon Butcher <pickle@austnet.org>
  */
-inline String Daemon::processServerModes(Server *server, Handler *handler, 
-					 String const &modes, 
-					 StringTokens *tokens)
+String Daemon::processServerModes(Server *server, Handler *handler, 
+				  String const &modes, 
+				  StringTokens *tokens)
 {
    bool toggle = true;
    int numModes = 0;

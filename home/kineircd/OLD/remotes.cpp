@@ -75,15 +75,15 @@ void Handler::doINFO(Handler *handler, User *from)
  *       old IRC networks, the data is meaningless and all that matters are
  *       the hops.
  */
-void Handler::doLINKS(Handler *handler, User *from, String *request)
+void Handler::doLINKS(Handler *handler, User *from, String const &request)
 {
    // Grab the appropriate mask requested
    String maskStr = "";
    
-   if (!request || !request->length()) {
+   if (!request.length()) {
       maskStr = "*";
    } else {
-      maskStr = request->toLower();
+      maskStr = request.toLower();
    }
    
    StringMask mask(maskStr);
@@ -107,14 +107,14 @@ void Handler::doLINKS(Handler *handler, User *from, String *request)
    
    // End of the list
    handler->sendNumeric(TO_DAEMON->server, RPL_ENDOFLINKS, from, 
-			*request + LNG_RPL_ENDOFLINKS);
+			request + LNG_RPL_ENDOFLINKS);
 }
 
    
 /* doLUSERS
  * Original 13/08/01, Simon Butcher <pickle@austnet.org>
  */
-void Handler::doLUSERS(Handler *handler, User *from, String *request)
+void Handler::doLUSERS(Handler *handler, User *from, String const &request)
 {
    handler->sendNumeric(TO_DAEMON->server, RPL_LUSERCLIENT, from,
 			String::printf(LNG_RPL_LUSERCLIENT,
@@ -336,16 +336,16 @@ struct {
 /* doSTATS
  * Original 14/08/01, Simon Butcher <pickle@austnet.org>
  */
-void Handler::doSTATS(Handler *handler, User *from, String *request)
+void Handler::doSTATS(Handler *handler, User *from, String const &request)
 {
    // Fix up the request for easy searching
-   StringMask requestMask(request->toUpper());
+   StringMask requestMask(request.toUpper());
 
 #ifdef NOTIFY_ON_CMD_STATS
    // Send a server notice out regarding this stats request
    TO_DAEMON->
      broadcastServerNotice(String::printf(LNG_SERVNOTICE_NOTIFY_ON_CMD_STATS,
-					  (char const *)(*request),
+					  (char const *)request,
 					  (char const *)from->nickname,
 					  (char const *)from->getAddress()));
 #endif
@@ -361,7 +361,7 @@ void Handler::doSTATS(Handler *handler, User *from, String *request)
 
    // Send the footer
    handler->sendNumeric(TO_DAEMON->server, RPL_ENDOFSTATS, from, 
-			*request + LNG_RPL_ENDOFSTATS);
+			request + LNG_RPL_ENDOFSTATS);
 }
 
 
@@ -454,10 +454,10 @@ void Handler::doVERSION(Handler *handler, User *from)
  * Note: Needs 'is an ircop', 'is an austnet service' etc etc added
  *       Also needs channel display code to be fixed!!
  */
-void Handler::doWHOIS(Handler *handler, User *from, String *request)
+void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 {
    // Rip out the two token sequences
-   StringTokens users(*request);
+   StringTokens users(request);
    
    // Run through the parameter tokens
    for (String user = users.nextToken(','); user.length();
@@ -563,8 +563,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String *request)
 					    (char const *)from->nickname,
 					    (char const *)from->getAddress());
 	    u->local->handler->
-	      sendNotice(&TO_DAEMON->server->hostname, &from->nickname, 
-			 message);
+	      sendNotice(TO_DAEMON->server, from, message);
 			 
 	 }
 #endif
@@ -581,6 +580,6 @@ void Handler::doWHOIS(Handler *handler, User *from, String *request)
    
    // Send the footer
    handler->sendNumeric(TO_DAEMON->server, RPL_ENDOFWHOIS, from,
-			*request + LNG_RPL_ENDOFWHOIS);
+			request + LNG_RPL_ENDOFWHOIS);
 }
 

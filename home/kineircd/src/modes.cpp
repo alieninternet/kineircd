@@ -476,7 +476,7 @@ bool toggleChanmodeBAN(bool setting, Handler *handler, Channel *channel, Channel
       }
 
       // Create a new mask and add it to the list
-      channel->bans.push_front(new ChannelMask(fixToIdentityMask(param),
+      channel->bans.push_front(new ChannelMask(fixToIdentityMask(*param),
 					       *setter,
 					       channel->daemon->getTime()));
 
@@ -553,7 +553,7 @@ bool toggleChanmodeBANEXCEPT(bool setting, Handler *handler, Channel *channel, C
       }
 
       // Create a new mask and add it to the list
-      channel->exceptions.push_front(new ChannelMask(fixToIdentityMask(param),
+      channel->exceptions.push_front(new ChannelMask(fixToIdentityMask(*param),
 						     *setter,
 						     channel->daemon->getTime()));
 
@@ -894,7 +894,7 @@ bool toggleChanmodeINVITEALLOW(bool setting, Handler *handler, Channel *channel,
       }
 
       // Create a new mask and add it to the list
-      channel->invites.push_front(new ChannelMask(fixToIdentityMask(param), 
+      channel->invites.push_front(new ChannelMask(fixToIdentityMask(*param),
 						  *setter,
 						  channel->daemon->getTime()));
 

@@ -10,7 +10,7 @@
 /* generateVWorld - Generate a virtual world hash on the given hostname
  * Original , Simon Butcher <pickle@austnet.org>
  */
-String generateVWorld(String *hostname)
+String generateVWorld(String const &hostname)
 {
-   return String("vw1234.") + *hostname;
+   return String("vw1234.") + hostname;
 }

@@ -200,12 +200,12 @@ void SHA1final(char digest[20], SHA1_CTX *context)
  * Note: Top 6th char per dword will either be 0 or 1, this is just what
  *       happens with an obscure base like 80.
  */
-String generateSHA1(String *line)
+String generateSHA1(String const &line)
 {
    /* Make sure we got something. The SHA1 generator doesn't like to be fed
     * nothings
     */
-   if (!line || !line->length()) {
+   if (!line.length()) {
       return "";
    }
    
@@ -218,7 +218,7 @@ String generateSHA1(String *line)
    String output = "";
    
    SHA1init(&context);
-   SHA1update(&context, *line, line->length() - 1);
+   SHA1update(&context, (char *)line, line.length() - 1);
    SHA1final(digest.c, &context);
    
    for (unsigned char i = 0; i < 5; i++) {

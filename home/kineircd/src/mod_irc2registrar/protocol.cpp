@@ -64,15 +64,16 @@ registerHandler::registerHandler(Connection *c)
  * Note: Double-up? Sort of, this one works a little differently than the
  *       irc2userHandler:: one
  */ 
-void registerHandler::sendGeneric(char const *command, String line)
+void registerHandler::sendGeneric(char const *command, String const &line)
 {
-   getConnection()->sendRaw(String::printf(":%s %s %s %s\r\n",
-				      (char const *)getConnection()->getDaemon()->myServer()->hostname,
-				      command,
-				      (nickname.length() ?
-				       (char const *)nickname :
-				       "*"),
-				      (char const *)line));
+   getConnection()->
+     sendRaw(String::printf(":%s %s %s %s" REGISTRATION_EOL_CHARS,
+			    (char const *)getConnection()->getDaemon()->myServer()->hostname,
+			    command,
+			    (nickname.length() ?
+			     (char const *)nickname :
+			     "*"),
+			    (char const *)line));
 }
 
 
@@ -83,13 +84,14 @@ void registerHandler::sendGeneric(char const *command, String line)
  */
 void registerHandler::sendNumeric(short numeric, User *to, String const &line)
 {
-   getConnection()->sendRaw(String::printf(":%s %d %s %s\r\n",
-				      (char const *)getConnection()->getDaemon()->myServer()->hostname,
-				      numeric,
-				      (nickname.length() ?
-				       (char const *)nickname :
-				       "*"),
-				      (char const *)line));
+   getConnection()->
+     sendRaw(String::printf(":%s %d %s %s" REGISTRATION_EOL_CHARS,
+			    (char const *)getConnection()->getDaemon()->myServer()->hostname,
+			    numeric,
+			    (nickname.length() ?
+			     (char const *)nickname :
+			     "*"),
+			    (char const *)line));
 }
 
 
@@ -184,7 +186,7 @@ void registerHandler::parseLine(String const &line)
 	    
 	    // Create a new user
 	    User *user = new User(nickname, username, "", hostname, 
-				  generateVWorld(&hostname), realname,
+				  generateVWorld(hostname), realname,
 				  getConnection()->getDaemon()->getTime(),
 				  getConnection()->getDaemon()->myServer());
 
@@ -337,7 +339,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    }
    
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
-   if (!okNickname(&nick)) {
+   if (!okNickname(nick)) {
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else

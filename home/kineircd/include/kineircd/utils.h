@@ -18,29 +18,30 @@
 // utils.cc
 extern bool isIRCspecial(char);
 
-extern bool isChannel(String *);
+extern bool isChannel(String const &);
 
-extern bool okNickname(String *);
-extern bool okChannel(String *);
+extern bool okNickname(String const &);
+extern bool okChannel(String const &);
 
 extern String baseXStr(unsigned long, 
 		       unsigned short);		// Convert to another base
 
 extern unsigned long getRandom(unsigned long);	// Generate a random number
 
-extern bool toBool(String *, bool);		// Convert a string to boolean
+extern bool toBool(String const &, bool);	// Convert a string to boolean
 
-extern String makeOperPassword(String *, 
-			       String *);	// Generate an IRC Op password
+extern String makeOperPassword(String const &, 
+			       String const &);	// Generate an IRC Op password
 
-extern StringMask fixToIdentityMask(String *);	// Fix a mask into an id mask
+extern StringMask 
+  fixToIdentityMask(String const &);		// Fix a mask into an id mask
 
 // sha1.cc
-extern String generateSHA1(String *);		// SHA1 from as string
+extern String generateSHA1(String const &);	// SHA1 from as string
    
 
 // vworld.cc
-extern String generateVWorld(String *);		// vworld host from a hostname
+extern String generateVWorld(String const &);	// vworld host from a hostname
 
 
 #endif

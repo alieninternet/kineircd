@@ -71,7 +71,7 @@ ChannelMember *Channel::getMember(User *u)
  * Original 30/08/01, Simon Butcher <pickle@austnet.org>
  */
 void Channel::processModes(Handler *handler, User *user,
-			   String *modes, StringTokens *tokens)
+			   String &modes, StringTokens *tokens)
 {
    // This channel must support modes... check this first
    if (name[0] == '+') {
@@ -118,9 +118,9 @@ void Channel::processModes(Handler *handler, User *user,
    String toggleParamsOff = "";
    
    for (String::length_t i = 0;
-	((i < modes->length()) && (numModes < MAX_MODES_PER_COMMAND));
+	((i < modes.length()) && (numModes < MAX_MODES_PER_COMMAND));
 	i++) {
-      switch ((*modes)[i]) {
+      switch (modes[i]) {
        case '+':
 	 toggle = true;
 	 continue;
@@ -133,7 +133,7 @@ void Channel::processModes(Handler *handler, User *user,
 	 
 	 // Run though the channel mode list
 	 for (int ii = 0; channelModeTable[ii].letter != 0; ii++) {
-	    if (channelModeTable[ii].letter == (*modes)[i]) {
+	    if (channelModeTable[ii].letter == modes[i]) {
 	       // Can we modify this mode?
 	       if ((handler && channelModeTable[ii].userToggle) ||
 		   !handler) {
@@ -151,14 +151,14 @@ void Channel::processModes(Handler *handler, User *user,
 						   &user->nickname, &param)) {
 		     // Check which toggle string to add this to
 		     if (toggle) {
-			toggleOnStr = toggleOnStr + String((*modes)[i]);
+			toggleOnStr = toggleOnStr + String(modes[i]);
 			
 			// If this mode had a parameter, add it to the list
 			if (param.length()) {
 			   toggleParamsOn = toggleParamsOn + " " + param;
 			}
 		     } else {
-			toggleOffStr = toggleOffStr + String((*modes)[i]);
+			toggleOffStr = toggleOffStr + String(modes[i]);
 			
 			// If this mode had a parameter, add it to the list
 			if (param.length()) {
@@ -172,7 +172,7 @@ void Channel::processModes(Handler *handler, User *user,
 		     handler->sendNumeric(TO_DAEMON->myServer(),
 					  ERR_CANNOTCHANGECHANMODE, 0,
 					  String::printf(LNG_ERR_CANNOTCHANGECHANMODE,
-							 (*modes)[i]));
+							 modes[i]));
 		  }
 	       }
 	       
@@ -185,7 +185,7 @@ void Channel::processModes(Handler *handler, User *user,
 	    handler->sendNumeric(TO_DAEMON->myServer(),
 				 ERR_UNKNOWNMODE, 0,
 				 String::printf(LNG_ERR_UNKNOWNMODE,
-						(*modes)[i], 
+						modes[i], 
 						(char const *)name));
 	 }
       }
@@ -289,14 +289,13 @@ void Channel::sendNotice(User *from, String const &message)
       if ((*it).second->user->local) {
 	 // Real users?
 	 if (!(modes & CHANMODE_ANONYMOUS)) {
-	    (*it).second->user->local->handler->sendNotice(from, &name, 
+	    (*it).second->user->local->handler->sendNotice(from, this,
 							   message);
 	    continue;
 	 }
 	 
 	 // Send the message under anonymous mask instead
-	 (*it).second->user->local->handler->sendNotice(ANONYMOUS_CHANNEL_MASK,
-							&name, message);
+	 (*it).second->user->local->handler->sendNoticeAnon(this, message);
 	 continue;
       } 
       
@@ -321,14 +320,13 @@ void Channel::sendPrivmsg(User *from, String const &message)
       if ((*it).second->user->local) {
 	 // Real users?
 	 if (!(modes & CHANMODE_ANONYMOUS)) {
-	    (*it).second->user->local->handler->sendPrivmsg(from, &name, 
+	    (*it).second->user->local->handler->sendPrivmsg(from, this, 
 							    message);
 	    continue;
 	 }
 	 
 	 // Send the message under anonymous mask instead
-	 (*it).second->user->local->handler->
-	   sendPrivmsg(ANONYMOUS_CHANNEL_MASK, &name, message);
+	 (*it).second->user->local->handler->sendPrivmsgAnon(this, message);
 	 continue;
       }
       
