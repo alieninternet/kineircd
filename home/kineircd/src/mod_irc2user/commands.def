@@ -303,11 +303,11 @@ commands = {
 //   access		= "OPERATOR";
 //};
 
-//commands = {
-//   command		= "USERHOST";
-//   defaultPenalty	= 2;
-//   minimumParams	= 1;
-//};
+commands = {
+   command		= "USERHOST";
+   defaultPenalty	= 2;
+   minimumParams	= 1;
+};
 
 //commands = {
 //   command		= "USERIP";

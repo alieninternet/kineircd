@@ -938,6 +938,112 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERS)
 #endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_USERHOST
+/* handleUSERHOST
+ * Original 21/08/2001 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleUSERHOST)
+{
+   unsigned int count = 0;
+   std::ostringstream output;
+   
+   // Run through the parameters
+   for (parameters_type::const_iterator it = parameters.begin();
+	it != parameters.end();
+	++it) {
+      // Make sure we have not overstepped the maximum parameter count
+      if (++count > 5/* config? */) {
+	 break;
+      }
+      
+      // Try to find this user
+      const Kine::User* const foundUser = registry().findUser(*it);
+      
+      // Did we find this user?
+      if (foundUser != 0) {
+	 // Prepend a space delimeter if necessary
+	 if (!output.str().empty()) {
+	    output << ' ';
+	 }
+	 
+	 // Output the nickname..
+	 output << foundUser->getName();
+	 
+	 // If the user is an operator, add a '*' to the end of their nickname
+	 if (foundUser->isOperator()) {
+	    output << '*';
+	 }
+	 
+	 // Output the rest
+	 output << '=' <<
+	   (foundUser->isAway() ? '-' : '?') <<
+	   foundUser->getUsername() << '@' <<
+	   (foundUser->hideHostFrom(user) ? 
+	    foundUser->getVirtualHostname() :
+	    foundUser->getHostname());
+      }
+   }
+   
+   // Send the reply to the user
+   sendNumeric(LibIRC2::Numerics::RPL_USERHOST,
+	       output.str());
+}
+#endif
+
+
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_USERIP
+/* handleUSERIP
+ * Original 21/08/2001 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleUSERIP)
+{
+   unsigned int count = 0;
+   std::ostringstream output;
+   
+   // Run through the parameters
+   for (parameters_type::const_iterator it = parameters.begin();
+	it != parameters.end();
+	++it) {
+      // Make sure we have not overstepped the maximum parameter count
+      if (++count > 5/* config? */) {
+	 break;
+      }
+      
+      // Try to find this user
+      const Kine::User* const foundUser = registry().findUser(*it);
+      
+      // Did we find this user?
+      if (foundUser != 0) {
+	 // Prepend a space delimeter if necessary
+	 if (!output.str().empty()) {
+	    output << ' ';
+	 }
+	 
+	 // Output the nickname..
+	 output << foundUser->getName();
+	 
+	 // If the user is an operator, add a '*' to the end of their nickname
+	 if (foundUser->isOperator()) {
+	    output << '*';
+	 }
+	 
+	 // Output the rest
+	 output << '=' <<
+	   (foundUser->isAway() ? '-' : '?') <<
+	   foundUser->getUsername() << '@' <<
+	   (foundUser->hideHostFrom(user) ? 
+	    foundUser->getVirtualNetworkAddress() :
+	    foundUser->getNetworkAddress());
+      }
+   }
+   
+   // Send the reply to the user
+   sendNumeric(LibIRC2::Numerics::RPL_USERHOST,
+	       output.str());
+}
+#endif
+
+
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_VERSION
 /* handleVERSION
  * Original 24/08/2001 simonb
