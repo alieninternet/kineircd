@@ -29,9 +29,9 @@ class User {
  public:
    typedef map <String, Channel *> channel_map_t;
 # ifdef STL_HAS_SLIST
-   typedef slist <StringMask> silence_list_t;
+   typedef slist <StringMask> mask_list_t;
 # else
-   typedef list <StringMask> silence_list_t;
+   typedef list <StringMask> mask_list_t;
 # endif
    
    // User mode type - do not change this - P14 needs this to be the same
@@ -70,8 +70,11 @@ class User {
    
    channel_map_t channels;			// Channels this user is on
    
-   silence_list_t silences;			// Silence list
-
+   mask_list_t silences;			// SILENCE list
+   mask_list_t accepts;				// ACCEPT list
+   
+   bool onMaskList(mask_list_t *, User *);	// Is a user on a mask list?
+   
    // User mode change routines
    static bool toggleModeDEAF(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
    static bool toggleModeGOT_IDENTD(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
@@ -136,6 +139,7 @@ class User {
      {
 	channels.clear();
 	silences.clear();
+	accepts.clear();
      };
    
    // Destructor
@@ -143,6 +147,7 @@ class User {
      {
 	channels.clear();
 	silences.clear();
+	accepts.clear();
      };
 
    // Access checking
@@ -244,7 +249,17 @@ class User {
    
    void markAway(String const &);		// Set/Unset away message
    
-   bool isSilencing(User *);			// Silencing a user?
+   // Silencing a user?
+   bool isSilencing(User *u)
+     {   
+	return onMaskList(&silences, u);
+     }
+   
+   // Is this user 'accepted'?
+   bool isAccepting(User *u)
+     {
+	return onMaskList(&accepts, u);
+     }
 
    static bool okName(String const &);		// Ok nickname?
 

@@ -291,6 +291,10 @@ class Daemon {
 		       StringMask const &);	// Add/Broadcast a user silence
    bool delUserSilence(User *, 
 		       StringMask const &);	// Delete a user silence
+   bool addUserAccept(User *, 
+		      StringMask const &);	// Add/Broadcast a user silence
+   bool delUserAccept(User *, 
+		      StringMask const &);	// Delete a user silence
    void snapshotUser(User *, Whowas::type_t,
 		     String const &);		// Snapshot a user for WHOWAS
    

@@ -146,7 +146,7 @@
        on large networks, especially networks based on a star-topology.
        
 
-     --enable-floodlock-away-reply (default = 30)
+     --enable-floodlock-away-reply (default = 60)
      --disable-floodlock-away-reply
      
        This enables the away-reply flood-lock. When talking to someone who's

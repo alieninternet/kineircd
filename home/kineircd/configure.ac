@@ -11,10 +11,19 @@ AC_INIT(src/Makefile.in)
 AC_CONFIG_AUX_DIR(autoconf)
 AC_CONFIG_HEADER(include/config.h)
 
+dnl
+dnl Grab version information
+dnl
 PROGNAME=austhex.servd
-VERSION=8.0
+VERSION_MAJOR=8
+VERSION_MINOR=0
+VERSION_EXTRA=.prealpha
 AC_SUBST(PROGNAME)
-AC_SUBST(VERSION)
+AC_SUBST(VERSION_MAJOR)
+AC_SUBST(VERSION_MINOR)
+AC_SUBST(VERSION_EXTRA)
+echo "Configuring $PROGNAME$VERSION_MAJOR.$VERSION_MINOR$VERSION_EXTRA"
+
 
 dnl Save the LDFLAGS since we will be making a mess of it soon..
 LDFLAGS_SAVE="$LDFLAGS"
@@ -545,8 +554,8 @@ AC_ARG_ENABLE(floodlock-away-reply,[  --enable-floodlock-away-reply set the away
        AC_MSG_RESULT([$enableval seconds])
        AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, $enableval)
      else
-       AC_MSG_RESULT([30 seconds (default)])
-       AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, 30)
+       AC_MSG_RESULT([60 seconds (default)])
+       AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, 60)
      fi
    fi
  ],[
@@ -555,8 +564,8 @@ AC_ARG_ENABLE(floodlock-away-reply,[  --enable-floodlock-away-reply set the away
    elif test "$austhex_test_lower_memory" = "yes"; then
      AC_MSG_RESULT([off (lower-memory default)])
    else
-     AC_MSG_RESULT([30 seconds (default)])
-     AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, 30)
+     AC_MSG_RESULT([60 seconds (default)])
+     AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, 60)
    fi
  ])
 
@@ -770,44 +779,57 @@ if test "$austhex_test_enable_user_protocols" = "yes"; then
    [
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)
+       austhex_test_have_protocol_irc2user=no
      else
        AC_MSG_RESULT(yes)
        AC_DEFINE(HAVE_PROTOCOL_IRC2USER)
+       austhex_test_have_protocol_irc2user=yes
      fi
    ],[
      AC_MSG_RESULT([yes (default)])
      AC_DEFINE(HAVE_PROTOCOL_IRC2USER)
+     austhex_test_have_protocol_irc2user=yes
    ])
 else
   AC_MSG_RESULT([no (clients disallowed)])
+  austhex_test_have_protocol_irc2user=no
 fi
+AC_SUBST(austhex_test_have_protocol_irc2user)
 
 AC_MSG_CHECKING([protocol-p13server parameter])
 AC_ARG_ENABLE(protocol-p13server,[  --enable-protocol-p13server   allow the P13 server protocol],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
+     austhex_test_have_protocol_p13server=no
    else
      AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_PROTOCOL_P13SERVER)
+     austhex_test_have_protocol_p13server=yes
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
    AC_DEFINE(HAVE_PROTOCOL_P13SERVER)
+   austhex_test_have_protocol_p13server=yes
  ])
+AC_SUBST(austhex_test_have_protocol_p13server)
  
 AC_MSG_CHECKING([protocol-p14server parameter])
 AC_ARG_ENABLE(protocol-p14server,[  --enable-protocol-p14server   allow the P14 server protocol],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
+     austhex_test_have_protocol_p14server=no
    else
      AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_PROTOCOL_P14SERVER)
+     austhex_test_have_protocol_p14server=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
+   austhex_test_have_protocol_p14server=no
  ]) 
+AC_SUBST(austhex_test_have_protocol_p14server)
 
 
 dnl  -------------------------------------------------------------------------

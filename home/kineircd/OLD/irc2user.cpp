@@ -25,11 +25,12 @@ struct irc2userHandler::functionTableStruct const
   irc2userHandler::functionsTable[] = {
      { "ACCEPT",	parseACCEPT,		1,
 	  ANYONE,
-	  "{ <nickname> | -<nickname> | * } ( SPACE { nickname | -nickname "
-	  "| * } )",
+	  "[ '-' ] <mask> ( SPACE [ '-' ] <mask> )",
 	  "This command is only useful with the user mode '+g' set. When set, "
 	  "this command allows you to accept people, thus enabling them to "
-	  "talk to you while you are ignoring everyone with user-mode '+g'."
+	  "talk to you while you are ignoring everyone with user-mode '+g'. "
+	  "If no parameters are given, a list of currently accepted masks "
+	  "will be sent."
      },
      { "ADMIN",		parseADMIN,		2,
 	  ANYONE,
@@ -259,11 +260,11 @@ struct irc2userHandler::functionTableStruct const
 	  "This will restart the server. This command will load an entirely "
 	  "new process for the IRC Daemon."
      },
-     { "SERVLIST",	parseSERVLIST,		2,	
-	  ANYONE,
-	  "[ <mask>  [ <type> ] ]",
-	  0
-     },
+//     { "SERVLIST",	parseSERVLIST,		2,	
+//	  ANYONE,
+//	  "[ <mask>  [ <type> ] ]",
+//	  0
+//     },
      { "SILENCE",	parseSILENCE,		1,
 	  ANYONE,
 	  "{ { '+' | '-' } { <mask> | <nickname } } | [ <nickname > ]",
@@ -464,13 +465,14 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 //			      "USERIP "			// (7chrs)
 			      "WATCH=%d "		// (~10chrs)
 			      "SILENCE=%d "		// (~11chrs)
+			      "ACCEPT=%d "		// (~11chrs)
 			      "CHANTYPES=%s "		// (~15chrs)
 			      "MAXCHANNELS=%d " 	// (~16chrs)
 			      "MAXBANS=%d "     	// (~11chrs)
 			      "CHARSET=rfc1459 " 	// (16chrs)
 			      "MODES=%d "		// (~9chrs)
 			      "PREFIX=%s "		// (~20chrs)
-			      "%s",		 	// (=~196chrs + tag)
+			      "%s",		 	// (=~207chrs + tag)
 			      MAXLEN_NICKNAME,
 			      MAXLEN_TOPIC,
 			      MAXLEN_KICK_REASON,
@@ -482,6 +484,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			       ""),
 			      MAX_WATCHES_PER_USER,
 			      MAX_SILENCES_PER_USER,
+			      100,
 			      CHANNEL_TYPES,
 			      MAX_CHANNELS_PER_USER, 
 			      MAX_BANS_PER_CHANNEL,
@@ -1399,11 +1402,71 @@ void irc2userHandler::parseLine(String const &line)
 
 
 /* parseACCEPT - Accept a user for receiving messages (efnet +g style)
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original 23/10/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens)
 {
-   handler->sendNumeric(999, ":Oops, sorry, havn't coded this yet :(");
+   // Check we have a parameter
+   if (tokens->countTokens() < 2) {
+      // Send ACCEPT list
+      for (User::mask_list_t::iterator it = handler->user->accepts.begin();
+	   it != handler->user->accepts.end(); it++) {
+	 // Send this entry
+	 handler->
+	   sendNumeric(999,
+		       String::printf("%s %s",
+				      (char const *)handler->user->nickname,
+				      (char const *)(*it).getMask()));
+      }
+      return;
+   }
+
+   StringMask mask;
+   
+   // Run through the parameters
+   for (String maskstr = tokens->nextToken().IRCtoLower(); maskstr.length();
+	maskstr = tokens->nextToken().IRCtoLower()) {
+      // Are we removing a mask?
+      if (maskstr[0] == '-') {
+	 // Fix the string appropriately
+	 maskstr = maskstr.subString(1);
+	
+	 // Make sure there is a string left to do stuff with
+	 if (!maskstr.length()) {
+	    continue;
+	 }
+	 
+	 // Make the mask up
+	 mask = Utils::fixToIdentityMask(maskstr);
+	 
+	 // Delete the mask
+	 if (TO_DAEMON->delUserAccept(handler->user, mask)) {
+	    handler->sendNumeric(999, maskstr + " :Removed mask message");
+	 }
+	 
+	 continue;
+      }
+
+      // If we got here we are adding.. Check if this is explicit (+ prefixed)
+      if (maskstr[0] == '+') {
+	 // Fix the string appropriately
+	 maskstr = maskstr.subString(1);
+
+	 // Make sure there is a string left to do stuff with
+	 if (!maskstr.length()) {
+	    continue;
+	 }
+      }
+
+      // Make the mask up
+      mask = Utils::fixToIdentityMask(maskstr);
+
+      // Add the mask
+      if (TO_DAEMON->addUserAccept(handler->user, mask)) {
+	 // Send confirmation to the client
+	 handler->sendNumeric(999, maskstr + " :Accepted mask message");
+      }
+   }
 }
 
 
@@ -2721,9 +2784,11 @@ void irc2userHandler::parseNOTICE(irc2userHandler *handler, StringTokens *tokens
 		  continue;
 	       }
 	       
-	       // Check if this user is doing the caller-id thing (+g)
-	       if (u->modes & User::MODE_IGNORING) {
-		  // This really needs to be completed.
+	       /* Check if this user is doing the caller-id thing (+g) and
+		* we are on their ACCEPT list to be able to send to them...
+		*/
+	       if (u->isModeSet(User::MODE_IGNORING) &&
+		   !u->isAccepting(handler->user)) {
 		  continue;
 	       }
 
@@ -3073,9 +3138,14 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 		  continue;
 	       }
 	       
-	       // Check if this user is doing the caller-id thing (+g)
-	       if (u->modes & User::MODE_IGNORING) {
-		  // This really needs to be completed.
+	       /* Check if this user is doing the caller-id thing (+g) and
+		* we are on their ACCEPT list to be able to send to them...
+		*/
+	       if (u->isModeSet(User::MODE_IGNORING) &&
+		   !u->isAccepting(handler->user)) {
+		  // Tell the user that their message was not delivered
+		  handler->sendNumeric(999, 
+				       ":Message about not ACCEPTed here");
 		  continue;
 	       }
 
@@ -3273,7 +3343,7 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
    }
    
    // If we got here we must be listing the masks
-   for (User::silence_list_t::iterator it = u->silences.begin();
+   for (User::mask_list_t::iterator it = u->silences.begin();
 	it != u->silences.end(); it++) {
       // Send this entry
       handler->sendNumeric(RPL_SILELIST,

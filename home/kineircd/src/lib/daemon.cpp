@@ -958,7 +958,7 @@ void Daemon::killUser(User *user, String const &caller,
 bool Daemon::addUserSilence(User *user, StringMask const &mask)
 {
    // Make sure this is not already in the list (eg. a waste of time)
-   for (User::silence_list_t::iterator it = user->silences.begin();
+   for (User::mask_list_t::iterator it = user->silences.begin();
 	it != user->silences.end(); it++) {
       // Is this the mask we are adding?
       if (mask == *it) {
@@ -981,11 +981,56 @@ bool Daemon::addUserSilence(User *user, StringMask const &mask)
 bool Daemon::delUserSilence(User *user, StringMask const &mask)
 {
    // Run through the list to find the mask to delete
-   for (User::silence_list_t::iterator it = user->silences.begin();
+   for (User::mask_list_t::iterator it = user->silences.begin();
 	it != user->silences.end(); it++) {
       // Is this the mask we are deleting?
       if (mask == *it) {
 	 user->silences.erase(it);
+	 
+	 // Broadcast the change to servers
+	 
+	 return true;
+      }
+   }
+
+   return false;
+}
+
+
+/* addUserAccept - Add a mask to a user's ACCEPT list and broadcast it
+ * Original 23/10/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Daemon::addUserAccept(User *user, StringMask const &mask)
+{
+   // Make sure this is not already in the list (eg. a waste of time)
+   for (User::mask_list_t::iterator it = user->accepts.begin();
+	it != user->accepts.end(); it++) {
+      // Is this the mask we are adding?
+      if (mask == *it) {
+	 return false;
+      }
+   }
+   
+   // If we got here it is not on the list already, just add it
+   user->accepts.push_front(mask);
+   
+   // Broadcast the change to servers
+	 
+   return true;
+}
+
+
+/* delUserAccept - Delete a mask from a user's ACCEPT list and broadcast it
+ * Original 23/10/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Daemon::delUserAccept(User *user, StringMask const &mask)
+{
+   // Run through the list to find the mask to delete
+   for (User::mask_list_t::iterator it = user->accepts.begin();
+	it != user->accepts.end(); it++) {
+      // Is this the mask we are deleting?
+      if (mask == *it) {
+	 user->accepts.erase(it);
 	 
 	 // Broadcast the change to servers
 	 

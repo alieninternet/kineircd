@@ -353,7 +353,7 @@ class p13serverHandler : public Handler {
 # endif
 
 
-//# ifdef HAVE_PROTOCOL_P14SERVER
+# ifdef HAVE_PROTOCOL_P14SERVER
 // P14-handler sub-class
 class p14serverHandler : public Handler {
  private:
@@ -370,7 +370,7 @@ class p14serverHandler : public Handler {
    p14serverHandler(Connection *, Server *);	// Constructor
    ~p14serverHandler(void);			// Destructor
 };
-//# endif
+# endif
 
 
 // Register-handler sub-class

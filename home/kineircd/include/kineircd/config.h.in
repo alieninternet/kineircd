@@ -281,8 +281,8 @@
 /* Define these with an amount in seconds for each flood-lock timeout,
  * or undefine to disable the flood-lock.
  */
-# undef FLOODLOCK_AWAY_REPLY		/* .. for receiving away replies */
-# undef FLOODLOCK_AWAY_SET		/* .. for setting away messages */
+# undef FLOODLOCK_AWAY_REPLY
+# undef FLOODLOCK_AWAY_SET
   
   
 /* When this is defined, idle information will not be presented unless the
