@@ -385,9 +385,9 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
    // If we were given a parameter, send it back (simple as that!)
    if (!parameters.empty()) {
       // Send the reply (pong) in full form
-      sendMessageTo(config().getOptionsServerName(), 
-		    config().getOptionsServerName(), 
-		    "PONG", parameters[0]);
+      sendMessageFrom(config().getOptionsServerName(), "PONG",
+		      config().getOptionsServerName(), 
+		      parameters[0]);
       return;
    }
    

@@ -69,19 +69,19 @@ namespace Kine {
 	 // Send a numeric
 	 void sendNumeric(const LibIRC2::Numerics::numeric_type numeric)
 	   {
-	      sendMessageTo(config().getOptionsServerName(),
-			    (registrantData.name.empty() ? 
-			     '*' : registrantData.name),
-			    numeric, "");
+	      sendMessageFrom(config().getOptionsServerName(), numeric,
+			      (registrantData.name.empty() ? 
+			       '*' : registrantData.name),
+			      "");
 	   };
 	 
 	 void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			  const char* const data)
 	   {
-	      sendMessageTo(config().getOptionsServerName(),
-			    (registrantData.name.empty() ? 
-			     '*' : registrantData.name),
-			    numeric, data);
+	      sendMessageFrom(config().getOptionsServerName(), numeric,
+			      (registrantData.name.empty() ? 
+			       '*' : registrantData.name),
+			      data);
 	   };
 	 
 	 // Send an error message and disconnect

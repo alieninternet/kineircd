@@ -104,120 +104,106 @@ namespace Kine {
 	      outputQueue.push(output.str());
 	   };
 
-	 // Send a properly formatted message with TO/FROM (I don't like this)
-	 template <class To, class Td, class Tc>
-	   void sendMessageTo(const To& origin, const Td& destination,
-			      const Tc& command)
+	 // Send a properly formatted message with FROM field
+	 template <class To, class Tc>
+	   void sendMessageFrom(const To& origin, const Tc& command)
 	     {
 		std::ostringstream output;
-		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << lineTerminator;
+		output << ':' << origin << ' ' << command << lineTerminator;
 		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tc,
+	 template <class To, class Tc,
 	           class Tpa>
-	   void sendMessageTo(const To& origin, const Td& destination,
-			      const Tc& command,
-			      const Tpa& pa)
+	   void sendMessageFrom(const To& origin, const Tc& command,
+				const Tpa& pa)
 	     {
 		std::ostringstream output;
-		output << ':' << origin << ' ' << command << ' ' <<
-		  destination << " :" << pa << lineTerminator;
-		outputQueue.push(output.str());
-	     };
-	 template <class To, class Td, class Tc,
-	           class Tpa, class Tpb>
-	   void sendMessageTo(const To& origin, const Td& destination,
-			      const Tc& command,
-			      const Tpa& pa, const Tpb& pb)
-	     {
-		std::ostringstream output;
-		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << ' ' << pa << " :" << pb << lineTerminator;
-		outputQueue.push(output.str());
-	     };
-	 template <class To, class Td, class Tc,
-	           class Tpa, class Tpb, class Tpc>
-	   void sendMessageTo(const To& origin, const Td& destination,
-			      const Tc& command,
-			      const Tpa& pa, const Tpb& pb, const Tpc& pc)
-	     {
-		std::ostringstream output;
-		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << ' ' << pa << ' ' << pb << " :" << pc <<
+		output << ':' << origin << ' ' << command << " :" << pa <<
 		  lineTerminator;
 		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tc,
+	 template <class To, class Tc,
+	           class Tpa, class Tpb>
+	   void sendMessageFrom(const To& origin, const Tc& command,
+				const Tpa& pa, const Tpb& pb)
+	     {
+		std::ostringstream output;
+		output << ':' << origin << ' ' << command << ' ' << pa <<
+		  " :" << pb << lineTerminator;
+		outputQueue.push(output.str());
+	     };
+	 template <class To, class Tc,
+	           class Tpa, class Tpb, class Tpc>
+	   void sendMessageFrom(const To& origin, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc)
+	     {
+		std::ostringstream output;
+		output << ':' << origin << ' ' << command << ' ' << pa <<
+		  ' ' << pb << " :" << pc << lineTerminator;
+		outputQueue.push(output.str());
+	     };
+	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc, class Tpd>
-	   void sendMessageTo(const To& origin, const Td& destination,
-			      const Tc& command,
-			      const Tpa& pa, const Tpb& pb, const Tpc& pc,
-			      const Tpd& pd)
+	   void sendMessageFrom(const To& origin, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd)
 	     {
 		std::ostringstream output;
-		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << ' ' << pa << ' ' << pb << ' ' << pc << 
-		  " :" << pd << lineTerminator;
+		output << ':' << origin << ' ' << command << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << " :" << pd << lineTerminator;
 		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tc,
+	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe>
-	   void sendMessageTo(const To& origin, const Td& destination,
-			      const Tc& command,
-			      const Tpa& pa, const Tpb& pb, const Tpc& pc,
-			      const Tpd& pd, const Tpe& pe)
+	   void sendMessageFrom(const To& origin, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd, const Tpe& pe)
 	     {
 		std::ostringstream output;
-		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << ' ' << pa << ' ' << pb << ' ' << pc <<
-		  ' ' << pd << " :" << pe << lineTerminator;
+		output << ':' << origin << ' ' << command << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << ' ' << pd << " :" << pe <<
+		  lineTerminator;
 		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tc,
+	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
 	           class Tpf>
-	   void sendMessageTo(const To& origin, const Td& destination,
-			      const Tc& command,
-			      const Tpa& pa, const Tpb& pb, const Tpc& pc,
-			      const Tpd& pd, const Tpe& pe, const Tpf& pf)
+	   void sendMessageFrom(const To& origin, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd, const Tpe& pe, const Tpf& pf)
 	     {
 		std::ostringstream output;
-		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << ' ' << pa << ' ' << pb << ' ' << pc << 
-		  ' ' << pd << ' ' << pe << " :" << pf << lineTerminator;
+		output << ':' << origin << ' ' << command << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
+		  " :" << pf << lineTerminator;
 		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tc,
+	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
 	           class Tpf, class Tpg>
-	   void sendMessageTo(const To& origin, const Td& destination,
-			      const Tc& command,
-			      const Tpa& pa, const Tpb& pb, const Tpc& pc,
-			      const Tpd& pd, const Tpe& pe, const Tpf& pf,
-			      const Tpg& pg)
+	   void sendMessageFrom(const To& origin, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd, const Tpe& pe, const Tpf& pf,
+				const Tpg& pg)
 	     {
 		std::ostringstream output;
-		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << ' ' << pa << ' ' << pb << ' ' << pc << 
-		  ' ' << pd << ' ' << pe << ' ' << pf << " :" << pg <<
-		  lineTerminator;
+		output << ':' << origin << ' ' << command << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe << 
+		  ' ' << pf << " :" << pg << lineTerminator;
 		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tc,
+	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
 	           class Tpf, class Tpg, class Tph>
-	   void sendMessageTo(const To& origin, const Td& destination,
-			      const Tc& command,
-			      const Tpa& pa, const Tpb& pb, const Tpc& pc,
-			      const Tpd& pd, const Tpe& pe, const Tpf& pf,
-			      const Tpg& pg, const Tph& ph)
+	   void sendMessageFrom(const To& origin, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd, const Tpe& pe, const Tpf& pf,
+				const Tpg& pg, const Tph& ph)
 	     {
 		std::ostringstream output;
-		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << ' ' << pa << ' ' << pb << ' ' << pc <<
-		  ' ' << pd << ' ' << pe << ' ' << pf << ' ' << pg <<
-		  " :" << ph << lineTerminator;
+		output << ':' << origin << ' ' << command << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
+		  ' ' << pf << ' ' << pg << " :" << ph << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 
@@ -226,9 +212,9 @@ namespace Kine {
 			  const Numerics::numeric_type numeric)
 	   {
 	      std::ostringstream output;
-	      output << ':' << config().getOptionsServerName() << ' ' <<
-		std::setfill('0') << std::setw(3) << numeric << ' ' <<
-		destination.getNickname() << lineTerminator;
+	      output << ':' << config().getOptionsServerName() << 
+		' ' << std::setfill('0') << std::setw(3) << numeric << 
+		' ' << destination.getNickname() << lineTerminator;
 	      outputQueue.push(output.str());
 	   };
 	 template <class Ta>
@@ -237,9 +223,10 @@ namespace Kine {
 			    const Ta& pa)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() << ' ' <<
-		  std::setfill('0') << std::setw(3) << numeric << ' ' <<
-		  destination.getNickname() << " :" << pa << lineTerminator;
+		output << ':' << config().getOptionsServerName() << 
+		  ' ' << std::setfill('0') << std::setw(3) << numeric << 
+		  ' ' << destination.getNickname() << 
+		  " :" << pa << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class Ta, class Tb>
@@ -248,10 +235,10 @@ namespace Kine {
 			    const Ta& pa, const Tb& pb)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() << ' ' <<
-		  std::setfill('0') << std::setw(3) << numeric << ' ' <<
-		  destination.getNickname() << ' ' << pa << " :" << pb <<
-		  lineTerminator;
+		output << ':' << config().getOptionsServerName() << 
+		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
+		  ' ' << destination.getNickname() << ' ' << pa <<
+		  " :" << pb << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc>
@@ -260,10 +247,10 @@ namespace Kine {
 			    const Ta& pa, const Tb& pb, const Tc& pc)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() << ' ' <<
-		  std::setfill('0') << std::setw(3) << numeric << ' ' <<
-		  destination.getNickname() << ' ' << pa << ' ' << pb << 
-		  " :" << pc << lineTerminator;
+		output << ':' << config().getOptionsServerName() <<
+		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
+		  ' ' << destination.getNickname() << ' ' << pa <<
+		  ' ' << pb << " :" << pc << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td>
@@ -273,10 +260,10 @@ namespace Kine {
 			    const Td& pd)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() << ' ' <<
-		  std::setfill('0') << std::setw(3) << numeric << ' ' <<
-		  destination.getNickname() << ' ' << pa << ' ' << pb <<
-		  ' ' << pc << " :" << pd << lineTerminator;
+		output << ':' << config().getOptionsServerName() <<
+		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
+		  ' ' << destination.getNickname() << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << " :" << pd << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te>
@@ -286,10 +273,11 @@ namespace Kine {
 			    const Td& pd, const Te& pe)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() << ' ' <<
-		  std::setfill('0') << std::setw(3) << numeric << ' ' <<
-		  destination.getNickname() << ' ' << pa << ' ' << pb <<
-		  ' ' << pc << ' ' << pd << " :" << pe << lineTerminator;
+		output << ':' << config().getOptionsServerName() <<
+		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
+		  ' ' << destination.getNickname() << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << ' ' << pd << " :" << pe <<
+		  lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf>
@@ -299,11 +287,11 @@ namespace Kine {
 			    const Td& pd, const Te& pe, const Tf& pf)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() << ' ' <<
-		  std::setfill('0') << std::setw(3) << numeric << ' ' <<
-		  destination.getNickname() << ' ' << pa << ' ' << pb <<
-		  ' ' << pc << ' ' << pd << ' ' << pe << " :" << pf <<
-		  lineTerminator;
+		output << ':' << config().getOptionsServerName() <<
+		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
+		  ' ' << destination.getNickname() << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
+		  " :" << pf << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
@@ -315,11 +303,11 @@ namespace Kine {
 			    const Tg& pg)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() << ' ' <<
-		  std::setfill('0') << std::setw(3) << numeric << ' ' <<
-		  destination.getNickname() << ' ' << pa << ' ' << pb <<
-		  ' ' << pc << ' ' << pd << ' ' << pe << ' ' << pf <<
-		  " :" << pg << lineTerminator;
+		output << ':' << config().getOptionsServerName() << 
+		  ' ' << std::setfill('0') << std::setw(3) << numeric << 
+		  ' ' << destination.getNickname() << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
+		  ' ' << pf << " :" << pg << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
@@ -331,12 +319,11 @@ namespace Kine {
 			    const Tg& pg, const Th& ph)
 	     {
 		std::ostringstream output;
-		output << ':' << config().getOptionsServerName() << ' ' <<
-		  std::setfill('0') << std::setw(3) << numeric << ' ' <<
-		  destination.getNickname() << ' ' << pa << ' ' << pb <<
-		  ' ' << pc << ' ' << pd << ' ' << pe << ' ' << pf << ' ' <<
-		  pg << " :" << ph <<
-		  lineTerminator;
+		output << ':' << config().getOptionsServerName() <<
+		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
+		  ' ' << destination.getNickname() << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
+		  ' ' << pf << ' ' << pg << " :" << ph << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 
