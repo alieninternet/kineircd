@@ -16,23 +16,6 @@
 ******************************************************************************/
 
 
-/* This is the location of the configuration file. It can be overwritten
- * with the '-f' command line option, so don't stress too much about this.
- * Here, we set it to whatever is in the local directory for this test version
- */
-# define DEFAULT_CONFIG_FILE		"ircd.conf"
-
-
-/* Define this if you want the MOTD to be 'forced', eg. using a numeric
- * other than RPL_MOTD. This stops some irc clients from hiding the MOTD
- * at start-up which may result in people ignoring policies they should be
- * aware of, etc.
- * 
- * Remember: You can lead a horse to water, but you can't make it drink
- */
-# define FORCE_MOTD
-
-  
 /* Define this if you want PRIVMSG and NOTICE to work traditionally for IRC
  * operators in the respect that they cannot send simply to $* or #*, but need
  * to include at least one decimal point, eg #*.au for all users from 
@@ -263,6 +246,13 @@
 
 @TOP@
 
+/* This is the location of the configuration file. It can be overwritten
+ * with the '-f' command line option, so don't stress too much about this.
+ * Here, we set it to whatever is in the local directory for this test version
+ */
+# define DEFAULT_CONFIG_FILE		"ircd.conf"
+
+
 /* This is the location to the PID file, generated upon startup. Edit to fit
  * your operating system, or undefine this if you do not want a PID file to 
  * be created at all - it's handy to have, though, if you want to kill the 
@@ -298,7 +288,7 @@
 # undef SYSLOG_IDENT
 
 
-/* Socket listen maximum backlog.. */
+  /* Socket listen maximum backlog.. */
 # undef LISTEN_MAXQUEUE
 
 
@@ -316,6 +306,16 @@
 # undef FLOODLOCK_AWAY_SET
 # undef FLOODLOCK_KNOCK_MSG  
   
+  
+/* Define this if you want the MOTD to be 'forced', eg. using a numeric
+ * other than RPL_MOTD. This stops some irc clients from hiding the MOTD
+ * at start-up which may result in people ignoring policies they should be
+ * aware of, etc.
+ * 
+ * Remember: You can lead a horse to water, but you can't make it drink
+ */
+# undef FORCE_MOTD
+
   
 /* When this is defined, idle information will not be presented unless the
  * idle time is greater than or equal to the given time (in seconds)

@@ -620,6 +620,25 @@ AC_ARG_ENABLE(convert-motd-tabs,[
    fi
  ])
 
+AC_MSG_CHECKING([default-config-file parameter])
+AC_ARG_ENABLE(default-config-file,[
+  --enable-default-config-file=file          (Default is "ircd.conf")
+    This is the default configuration file to load at runtime. It can be
+    overridden on the command line. This option cannot be disabled.
+
+ ],[
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT([ircd.conf (default, fixed)])
+     AC_DEFINE(DEFAULT_CONFIG_FILE, "ircd.conf")
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(DEFAULT_CONFIG_FILE, $enableval)
+   fi
+ ],[
+   AC_MSG_RESULT([ircd.conf (default)])
+   AC_DEFINE(DEFAULT_CONFIG_FILE, "ircd.conf")
+ ])
+
 AC_MSG_CHECKING([drop-lame-servers parameter])
 AC_ARG_ENABLE(drop-lame-servers,[
   --enable-drop-lame-servers                 (Default is disabled)
@@ -768,6 +787,27 @@ AC_ARG_ENABLE(floodlock-knock-msg,[
      AC_MSG_RESULT([300 seconds (default)])
      AC_DEFINE(FLOODLOCK_KNOCK_MSG, 300)
    fi
+ ])
+
+AC_MSG_CHECKING([force-motd parameter])
+AC_ARG_ENABLE(force-motd,[
+  --enable-force-motd                        (Default is disabled)
+    This enables the Message of the Day (MOTD) to be 'forcefully' sent to the
+    user upon connection. This is very different from toggling the server mode
+    which turns the MOTD on/off upon connection. What this this does is
+    changes the numeric of the MOTD so that clients which ignore the MOTD by
+    hiding it upon connection cannot hide it (due to it seeming like a
+    different numeric). This is a dirty kluge, and is likely to be
+    circumvented by a lot of scripts. In anycase, it may be useful still.
+ ],[
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(FORCE_MOTD)
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
  ])
 
 AC_MSG_CHECKING([helpers-see-umodes parameter])
