@@ -55,7 +55,6 @@ const char* const ISupport::preInitInfo[] = {
    "CHARSET=UTF-8",			// We output using UTF-8 encoding
    "CASEMAPPING=rfc1459",
    "PREFIX=(!uohv)!.@%+",
-   "CHIDLEN=5",
 #if (defined(HAVE_MOD_IRC2USER_HAVE_CMD_PRIVMSG) || \
      defined(HAVE_MOD_IRC2USER_HAVE_CMD_NOTICE))
    "STATUSMSG=+%@",
@@ -130,7 +129,7 @@ void ISupport::initInfo(void)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_JOIN
    if (/* !something.empty() */ false) {
       info.push_back("CHANTYPES=" /*+
-		     something */"&#!+.~");
+		     something */"&#+.~");
    }
    info.push_back("CHANNELLEN=" +
 		  String::convert(config().getLimitsChannelsMaxNameLength()));
