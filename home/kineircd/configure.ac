@@ -404,7 +404,7 @@ AC_SUBST(snmp_lib)
 AC_SUBST(snmp_ldflags)
 
 AC_MSG_CHECKING([for OpenSSL library/include path])
-AC_ARG_WITH(ssl,[  --with-openssl[=DIR]    location of OpenSSL library/include files],
+AC_ARG_WITH(openssl,[  --with-openssl=DIR      location of OpenSSL library/include files],
  [
    dnl Just run with the given path.. we will check it soon
    ssl_dir="$withval"
