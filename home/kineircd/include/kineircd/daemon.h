@@ -35,11 +35,10 @@
 # include <string>
 # include <set>
 # include <map>
-# include <ctime>
-# include <aisutil/string/string.h>
-# include <sys/time.h>
 # include <sys/types.h>
 # include <unistd.h>
+# include <aisutil/string/string.h>
+# include <aisutil/time.h>
 
 # include <kineircd/listener.h>
 # include <kineircd/logger.h>
@@ -59,8 +58,8 @@ namespace Kine {
     private:
       runlevel_type runlevel;			//!< What stage is the daemon in
       
-      const long startTime;			//!< Time the daemon started
-      timeval currentTime;			//!< The time now
+      const AISutil::Time startTime;		//!< Time the daemon started
+      AISutil::Time currentTime;		//!< The time now
 
       unsigned long long sentBytes;		//!< Total bytes sent
       unsigned long long receivedBytes;		//!< Total bytes received
@@ -89,7 +88,7 @@ namespace Kine {
       
       //! Set the current time
       void setTime(void) 
-	{ (void)gettimeofday(&currentTime, NULL); };
+	{ currentTime.setTime(); };
 
       //! Process a new connection
       void newConnection(Listener& listener);
@@ -116,11 +115,11 @@ namespace Kine {
 	{ return runlevel; };
       
       //! Grab our 'uptime'
-      unsigned long getUptime(void) const
-	{ return (unsigned long)(currentTime.tv_sec - startTime); };
+      const AISutil::Time getUptime(void) const
+	{ return currentTime - startTime; };
 
       //! Grab the time now
-      const timeval& getTime(void) const
+      const AISutil::Time& getTime(void) const
 	{ return currentTime; };
 
       //! Increase the sent bytes count

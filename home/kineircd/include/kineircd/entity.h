@@ -25,7 +25,7 @@
 # define _INCLUDE_KINEIRCD_ENTITY_H_ 1
 
 # include <string>
-# include <sys/time.h>
+# include <aisutil/time.h>
 
 namespace Kine {
    //! Abstract base class for objects - stuff that is common to all objects
@@ -50,7 +50,7 @@ namespace Kine {
       virtual const std::string& getDescription(void) const = 0;
 
       //! Return the time this entity initially connected to the network
-      virtual const timeval& getSignonTime(void) const = 0;
+      virtual const AISutil::Time& getSignonTime(void) const = 0;
    }; // class Entity
 }; // namespace Kine
 

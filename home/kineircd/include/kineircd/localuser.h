@@ -24,8 +24,6 @@
 #ifndef _INCLUDE_KINEIRCD_LOCALUSER_H_
 # define _INCLUDE_KINEIRCD_LOCALUSER_H_ 1
 
-# include <sys/time.h>
-
 # include <kineircd/user.h>
 # include <kineircd/daemon.h>
 
@@ -37,7 +35,7 @@ namespace Kine {
       LocalUser(const std::string& _nickname,
 		const std::string& _username,
 		const std::string& _hostname,
-		const timeval& _signonTime = daemon().getTime())
+		const AISutil::Time& _signonTime = daemon().getTime())
 	: User(_nickname, _username, _hostname, _signonTime)
         {};
       
@@ -47,7 +45,7 @@ namespace Kine {
 	{};
       
       //! Return the last time this user was known to be not idle
-      virtual const timeval& getLastAwake(void) const = 0;
+      virtual const AISutil::Time& getLastAwake(void) const = 0;
    }; // class LocalUser
 }; // namespace Kine
 

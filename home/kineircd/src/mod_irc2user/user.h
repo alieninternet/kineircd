@@ -25,6 +25,7 @@
 # define _SRC_MOD_IRC2USER_USER_H_ 1
 
 # include <string>
+# include <aisutil/time.h>
 # include <kineircd/localuser.h>
 # include <kineircd/registrant.h>
 
@@ -34,7 +35,7 @@ namespace Kine {
       class User : public Kine::LocalUser {
        private:
 	 std::string description;		// Description/real name field
-	 timeval lastAwake;			// Time user was last awake
+	 AISutil::Time lastAwake;			// Time user was last awake
 	 
        public:
 	 // Constructor
@@ -56,7 +57,7 @@ namespace Kine {
 	   { return description; };
 	 
 	 // Return the time the user was last 'awake'
-	 const timeval& getLastAwake(void) const
+	 const AISutil::Time& getLastAwake(void) const
 	   { return lastAwake; };
 	 
 	 // Prod the last awake field with the current time

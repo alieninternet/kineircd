@@ -44,7 +44,7 @@ namespace Kine {
       User(const Name& _nickname,
 	   const std::string& _username,
 	   const std::string& _hostname,
-	   const timeval& _signonTime)
+	   const AISutil::Time& _signonTime)
 	: Client(_signonTime),
           nickname(_nickname),
           username(_username),

@@ -26,7 +26,7 @@
 
 # include <string>
 # include <map>
-# include <sys/time.h>
+# include <aisutil/time.h>
 
 # include <kineircd/denizen.h>
 # include <kineircd/sender.h>
@@ -39,7 +39,7 @@ namespace Kine {
    //! An abstract class defining a client, since there are a few types
    class Client : public Denizen, public Sender, public Receiver {
     private:
-      const timeval signonTime;			//!< Time this client connected
+      const AISutil::Time signonTime;		//!< Time this client connected
       
       // The channel list for this client
       typedef std::map < std::string, Channel* const > channels_type;
@@ -47,7 +47,7 @@ namespace Kine {
       
     protected:
       //! Constructor
-      Client(const timeval& _signonTime)
+      Client(const AISutil::Time& _signonTime)
 	: signonTime(_signonTime)
 	{};
       
@@ -67,7 +67,7 @@ namespace Kine {
       virtual const std::string& getUsername(void) const = 0;
 
       //! Return the time this entity initially connected to the network
-      const timeval& getSignonTime(void) const
+      const AISutil::Time& getSignonTime(void) const
 	{ return signonTime; };
    }; // class Client
 }; // namespace Kine

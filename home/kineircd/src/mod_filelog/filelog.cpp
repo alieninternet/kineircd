@@ -69,9 +69,9 @@ void FileLog::logLine(const std::string& str,
       
       // Break up the time, depending on what timezone setting the user has
       if (config.getUTC()) {
-	 currentTime = *gmtime((const time_t *)&daemon().getTime().tv_sec);
+	 currentTime = *gmtime((const time_t *)&daemon().getTime().seconds);
       } else {
-	 currentTime = *localtime((const time_t *)&daemon().getTime().tv_sec);
+	 currentTime = *localtime((const time_t *)&daemon().getTime().seconds);
       }
 
       // Process the format and output the line
@@ -197,7 +197,7 @@ void FileLog::logLine(const std::string& str,
 	       continue;
 	       
 	     case 's':	// Number of seconds since the 'unix epoch'
-	       logFile << daemon().getTime().tv_sec;
+	       logFile << daemon().getTime().seconds;
 	       continue;
 	       
 	     case 'S':	// Number of seconds (00..61, 0 pre-pad)

@@ -24,9 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_CONNECTION_H_
 # define _INCLUDE_KINEIRCD_CONNECTION_H_ 1
 
-# include <kineircd/kineircdconf.h>
-
 # include <aisutil/socket/socket.h>
+# include <aisutil/time.h>
 
 namespace Kine {
    class Protocol;
@@ -40,8 +39,8 @@ namespace Kine {
       unsigned long long sentBytes;	//!< Number of bytes sent
       unsigned long long receivedBytes;	//!< Number of bytes received
       
-      const time_t connectedTime;	//!< Time connection was established
-      time_t lastSpoke;			//!< Time the connection last spoke
+      const AISutil::Time connectedTime;//!< Time connection was established
+      AISutil::Time lastSpoke;		//!< Time the connection last spoke
 
       bool connected;			//!< Are we connected?
       
@@ -61,11 +60,11 @@ namespace Kine {
 	{ protocol = &p; };
       
       //! Return the connection time
-      const time_t getConnectedTime(void) const 
+      const AISutil::Time& getConnectedTime(void) const 
 	{ return connectedTime; };
       
       //! Return the last time this connection 'spoke'
-      time_t getLastSpoke(void) const 
+      const AISutil::Time& getLastSpoke(void) const 
 	{ return lastSpoke; };
 
       //! Handle input on connection

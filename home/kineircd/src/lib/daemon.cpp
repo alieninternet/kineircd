@@ -70,7 +70,7 @@ Daemon::Daemon(void)
    setTime();
 
    // Seed the random thingy for rand() - this is kinda dodgey
-   srand(getTime().tv_sec);
+   srand(getTime().seconds);
    
    // We are ready to go, go into normal running runlevel
    runlevel = RUNLEVEL_NORMAL;

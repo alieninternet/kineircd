@@ -25,7 +25,7 @@
 # define _INCLUDE_KINEIRCD_TODO_H_ 1
 
 # include <map>
-# include <sys/time.h>
+# include <aisutil/time.h>
 
 namespace Kine {
    /*! To-do task list - schedule tasks to be done at a later time
@@ -58,7 +58,7 @@ namespace Kine {
       
     private:
       //! The list of pending tasks (the map is to sort it by its due time)
-      typedef std::map < const unsigned int, Task* > tasks_type;
+      typedef std::map < const unsigned long, Task* > tasks_type;
       tasks_type tasks;
       
       //! Our instance
@@ -80,7 +80,7 @@ namespace Kine {
 	{ return *instance; };
       
       //! Schedule a task to be executed at the given time ('when')
-//      bool schedule(Task& task, const timeval when);
+//      bool schedule(Task& task, const AISutil::Time when);
       
       //! Schedule a task to be executed 'seconds' seconds from now
 //      bool schedule(Task& task, const unsigned int second);

@@ -42,7 +42,7 @@ Connection::Connection(AISutil::Socket& s)
   protocol(0),
   sentBytes(0),
   receivedBytes(0),
-  connectedTime(daemon().getTime().tv_sec),
+  connectedTime(daemon().getTime()),
   lastSpoke(connectedTime),
   connected(socket.isOkay())
 {
@@ -96,7 +96,7 @@ bool Connection::handleInput(void)
       daemon().addReceivedBytes(line.str().length());
 
       // Update the 'last spoke' variable
-      lastSpoke = daemon().getTime().tv_sec;
+      lastSpoke = daemon().getTime();
       
       // Throw the data at the protocol routines
       protocol->handleInput(line);
