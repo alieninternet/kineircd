@@ -113,7 +113,15 @@ namespace Kine {
       // Get the single instance of this class
       static Registry& getInstance(void)
 	{ return *instance; };
+
       
+      /*-------------------------------------------------------*/
+      // Remove these soon - do not use these in your own code
+      const Error::error_type removeUser(const User& entity);
+      const Error::error_type addUser(User& entity);
+      const Error::error_type changeUserNickname(User& user, const ClientName& newNickname);
+      /*-------------------------------------------------------*/
+
       
       //! Find the given user, by its name
       User* const findUser(const ClientName& name) const;

@@ -238,6 +238,7 @@ libkineircd_la_SOURCES=\
 	src/lib/myserver.cpp \
 	src/lib/name.cpp \
 	src/lib/registry.cpp \
+	src/lib/server.cpp \
 	src/lib/todo.cpp \
 	src/lib/user.cpp \
 	src/lib/version.cpp

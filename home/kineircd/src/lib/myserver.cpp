@@ -66,3 +66,13 @@ void MyServer::initInstance(void)
    debug(debugOut.str());
 #endif
 }
+
+
+/* addUser - Add the given locally connected user
+ * Original 13/09/2003
+ */
+const Error::error_type MyServer::addUser(LocalUser& user)
+{
+   // Fob this off to the addUser function
+   return Server::addUser(user);
+}

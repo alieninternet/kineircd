@@ -101,7 +101,6 @@ void Registry::initInstance(void)
 
 
 #warning "This file is crappy"
-#ifdef EIAFAIEHFIAEFIAIEHFIAEFIHAEIFIAEFIHAEFIAIEFIAEFIUAEIHIAUEFA
 /* changeUserNickname - Change a user's nickname (may involve a key change)
  * Original 16/05/2003
  */
@@ -194,7 +193,7 @@ const Error::error_type Registry::addUser(User& entity)
 #endif
 
    // Complain
-   return Error::CLIENT_EXISTS;
+   return Error::ENTITY_EXISTS;
 }
 
 
@@ -234,7 +233,6 @@ const Error::error_type Registry::removeUser(const User& entity)
    // Complain about the user not existing
    return Error::UNREGISTERED_ENTITY;
 }
-#endif // AKKAFEKEFAHKAKHHAFEAFHFEAHKFAHAFHKAFKHEAFAKAFEKHAEHKAAEF blah
 
 
 /* findUser - Find the a user by its name
