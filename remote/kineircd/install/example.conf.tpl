@@ -157,7 +157,7 @@
 [+DEFINE output-config-stuff+][+FOR .definition+][+IF (not (exist? "hidden"))+][+IF .definition+][+IF (not (first-for?))+]
 [+ENDIF+][+IF .comment+][+IF (not (first-for?))+]
 [+ENDIF+][+(formatComment (get "comment"))+][+ENDIF+]
-[+(lineIndent)+][+make-def-name+] = {[+(pushPrefix (get "name"))+][+output-config-stuff+][+(popPrefix)+]
+[+(lineIndent)+][+make-def-name+] {[+(pushPrefix (get "name"))+][+output-config-stuff+][+(popPrefix)+]
 [+(lineIndent)+]}[+ELSE+][+IF
    (and 
       (exist? "hasVariable")
