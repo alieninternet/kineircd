@@ -78,6 +78,7 @@ int main(int argc, char **argv)
    std::cout << "Nickname: " << std::flush;
    std::cin >> nickname;
 
+#ifdef HAVE_TCGETATTR
    /* Stop the standard input echo, just in case someone is reading over
     * the users shoulder :)
     */
@@ -86,13 +87,16 @@ int main(int argc, char **argv)
    stdinNewIOS = stdinOrigIOS;
    stdinNewIOS.c_lflag &= ~ECHO;
    tcsetattr(0, TCSANOW, &stdinNewIOS);
+#endif
    
    // Read in the password
    std::cout << "Password: " << std::flush;
    std::cin >> password;
-   
+
+#ifdef HAVE_TCGETATTR
    // Restore the standard input IOS modes (some TTYs may appreciate this)
    tcsetattr(0, TCSANOW, &stdinOrigIOS);
+#endif
    
    // Output what to add to the configuration file
    std::cout << "\n\nConfiguration data for OPERATORS class:\n\t" << 
