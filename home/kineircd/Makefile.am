@@ -44,6 +44,7 @@ endif
 # Libraries and modules to build
 lib_LTLIBRARIES=\
 	libkineircd.la \
+	libkineircd_clbp.la \
 	libkineircd_irc2.la \
 	$(KINEIRCD_TARGET_MOD_BOVINI1) \
 	$(KINEIRCD_TARGET_MOD_CHANNELLOG) \
@@ -315,6 +316,21 @@ src/libkineircd/version.h:
 
 
 ###############################################################################
+# 'libkineircd_clbp' library
+###############################################################################
+libkineircd_clbp_la_SOURCES=\
+	include/kineircd/clbp/protocol.h \
+	src/libkineircd_clbp/protocol.cpp
+
+libkineircd_clbp_la_LDFLAGS=\
+	-version-info @LIBKINEIRCD_CLBP_VERSION@:@LIBKINEIRCD_CLBP_REVISION@:@LIBKINEIRCD_CLBP_AGE@
+
+libkineircd_clbp_la_LIBADD=\
+	libkineircd.la
+		
+
+
+###############################################################################
 # 'libkineircd_irc2' library
 ###############################################################################
 libkineircd_irc2_la_SOURCES=\
@@ -336,7 +352,8 @@ libkineircd_irc2_la_LDFLAGS=\
 	-version-info @LIBKINEIRCD_IRC2_VERSION@:@LIBKINEIRCD_IRC2_REVISION@:@LIBKINEIRCD_IRC2_AGE@
 
 libkineircd_irc2_la_LIBADD=\
-	libkineircd.la
+	libkineircd.la \
+	libkineircd_clbp.la
 		
 include/kineircd/irc2/numerics.h: include/kineircd/irc2/numerics.h.tpl $(AUTOGEN_DIR)/irc2numerics.def
 	$(AUTOGEN) \
@@ -422,7 +439,8 @@ mod_http_la_LDFLAGS=\
 	-module
 
 mod_http_la_LIBADD=\
-	libkineircd.la
+	libkineircd.la \
+	libkineircd_clbp.la
 
 
 

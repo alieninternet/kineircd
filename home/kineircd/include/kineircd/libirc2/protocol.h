@@ -30,7 +30,7 @@
 # include <sstream>
 # include <iomanip>
 # include <aisutil/string/string.h>
-# include <kineircd/protocol.h>
+# include <kineircd/clbp/protocol.h>
 # include <kineircd/user.h>
 # include <kineircd/config.h>
 # include <kineircd/irc2/numerics.h>
@@ -39,7 +39,7 @@
 namespace Kine {
    namespace LibIRC2 {
       //! The IRC-2 protocol suite base class
-      class Protocol : public Kine::Protocol {
+      class Protocol : public Kine::LibCLBP::Protocol {
        public:
 	 typedef unsigned int messageSize_type;
 	 const char* lineTerminator;
@@ -51,12 +51,6 @@ namespace Kine {
        protected:
 	 // The type of a 'parameter list'
 	 typedef std::vector < AISutil::String > parameters_type;
-	 
-	 // Our input queue..
-	 std::string inputQueue;
-
-	 // The output data queue
-	 std::queue < std::string > outputQueue;
 
        private:
 	 // Message counters
@@ -75,14 +69,19 @@ namespace Kine {
        protected:
 	 // Constructor
 	 Protocol(Kine::Connection& c)
-	   : Kine::Protocol(c),
+	   : Kine::LibCLBP::Protocol(c),
 	     lineTerminator("\r\n"),
 	     sentMessageCount(0),
 	     receivedMessageCount(0)
 	   {};
 
 	 // Constructor (for migrating I/O queues)
-	 Protocol(Kine::Connection& c, std::string& iq, std::string& oq);
+	 Protocol(Kine::Connection& c, std::string& iq, std::string& oq)
+	   : Kine::LibCLBP::Protocol(c, iq, oq),
+	     lineTerminator("\r\n"),
+	     sentMessageCount(0),
+	     receivedMessageCount(0)
+	   {};
 
 	 
 	 //! Insert a message into the output queue (raw)
@@ -97,18 +96,6 @@ namespace Kine {
 	 virtual ~Protocol(void)
 	   {};
 	 
-	 
-	 // Handle incoming data
-	 virtual void handleInput(std::stringstream& data);
-	 
-	 
-	 // Remove up to the amount of octets given from the output queue
-	 std::string withdrawOutput(AISutil::Socket::blockSize_type amount);
-	 
-	 // Return true should there be anything in the output queue to send
-	 bool moreOutput(void) const
-	   { return (!outputQueue.empty()); };
-
 	 
 	 // Return the number of messages sent through this protocol
 	 const messageCount_type getSentMessageCount(void) const
