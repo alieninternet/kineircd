@@ -119,16 +119,13 @@ namespace Kine {
       
 
       //! Add the given service
-      Error::error_type addService(Service& entity)
-	{ return Error::UNKNOWN_ERROR; /* temporary */ };
+      Error::error_type addService(Service& entity);
       
       //! Remove the given service
-      Error::error_type removeService(const Service& entity)
-	{ return Error::UNKNOWN_ERROR; /* temporary */ };
+      Error::error_type removeService(const Service& entity);
 
       //! Find the given service, by its name
-      Service* const findService(const Name& name) const
-	{ return 0; /* temporary */ };
+      Service* const findService(const Name& name) const;
       
       
       //! Find the given client, by its name

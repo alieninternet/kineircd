@@ -104,13 +104,13 @@ Error::error_type Registry::addUser(User& entity)
 {
 #ifdef KINE_DEBUG
    std::ostringstream debugOut;
-   debugOut << "Registry::add() - Trying to add user @ " << &entity <<
+   debugOut << "Registry::addUser() - Trying to add user @ " << &entity <<
      " (" << users.size() << " users known)";
    debug(debugOut.str());
 #endif
 
    // Make sure the client doesn't already exist..
-   if (findClient(entity.getNickname()) == 0) {
+   if (findClient(entity.getName()) == 0) {
       // Add the user to the list
       (void)users.
 	insert(users_type::value_type(entity.getNickname().IRCtoLower(),
@@ -137,7 +137,7 @@ Error::error_type Registry::addUser(User& entity)
    }
    
 #ifdef KINE_DEBUG
-   debug("Registry::add() - Client already exists (name conflict)");
+   debug("Registry::addUser() - Client already exists (name conflict)");
 #endif
 
    // Complain
@@ -152,7 +152,8 @@ Error::error_type Registry::removeUser(const User& entity)
 {
 #ifdef KINE_DEBUG
    std::ostringstream debugOut;
-   debugOut << "Registry::add() - Trying to remove user @ " << &entity;
+   debugOut << "Registry::removeUser() - Trying to remove user @ " <<
+     &entity << " (" << entity.getName() << ')';
    debug(debugOut.str());
 #endif
 
@@ -174,7 +175,7 @@ Error::error_type Registry::removeUser(const User& entity)
    }
    
 #ifdef KINE_DEBUG
-   debug("Registry::remove() - Given user was not found");
+   debug("Registry::removeUser() - Given user was not found");
 #endif
 
    // Complain about the user not existing
@@ -187,11 +188,117 @@ Error::error_type Registry::removeUser(const User& entity)
  */
 User* const Registry::findUser(const Name& name) const
 {
-   // Look up the given use from the local user list
+   // Look up the given user from the user list
    users_type::const_iterator it = users.find(name.IRCtoLower());
    
    // Make sure we found something..
    if (it != users.end()) {
+      return it->second;
+   }
+   
+   // Not found
+   return 0;
+}
+
+
+/* addService - Add the given service
+ * Original 08/04/2003
+ */
+Error::error_type Registry::addService(Service& entity)
+{
+#ifdef KINE_DEBUG
+   std::ostringstream debugOut;
+   debugOut << "Registry::addService() - Trying to add service @ " <<
+     &entity << " (" << users.size() << " services known)";
+   debug(debugOut.str());
+#endif
+
+   // Make sure the client doesn't already exist..
+   if (findClient(entity.getName()) == 0) {
+      // Add the service to the list
+      (void)services.
+	insert(services_type::value_type(entity.getNickname().IRCtoLower(),
+					 &entity));
+
+      // If the service count is higher than the peak, fix the peak
+      if (services.size() > serviceCountPeak) {
+	 serviceCountPeak = services.size();
+      }
+      
+      // If this is a local service, we should increase the local counter too
+      if (/* */ true) {
+	 // Increase the local service count
+	 ++localServiceCount;
+	 
+	 // If the local counter is higher than the peak, fix this peak too
+	 if (localServiceCount > localServiceCountPeak) {
+	    localServiceCountPeak = localServiceCount;
+	 }
+      }
+      
+      // All done!
+      return Error::NO_ERROR;
+   }
+   
+#ifdef KINE_DEBUG
+   debug("Registry::addService() - Client already exists (name conflict)");
+#endif
+
+   // Complain
+   return Error::CLIENT_EXISTS;
+}
+
+
+/* removeService - Remove the given user
+ * Original 08/04/2003
+ */
+Error::error_type Registry::removeService(const Service& entity)
+{
+#ifdef KINE_DEBUG
+   std::ostringstream debugOut;
+   debugOut << "Registry::addService() - Trying to remove service @ " <<
+     &entity << " (" << entity.getName() << ')';
+   debug(debugOut.str());
+#endif
+
+   // Find the local user
+   services_type::iterator it = 
+     services.find(entity.getNickname().IRCtoLower());
+   
+   // Make sure we found something
+   if (it != services.end()) {
+      // .. and also from the users list
+      (void)services.erase(it);
+      
+      // If this is a local service, we should decrease the local counter
+      if (/* */ true) {
+	 // Decrease the local service count
+	 --localServiceCount;
+      }
+      
+      // Done
+      return Error::NO_ERROR;
+   }
+   
+#ifdef KINE_DEBUG
+   debug("Registry::removeService() - Given service was not found");
+#endif
+
+   // Complain about the user not existing
+   return Error::UNREGISTERED_ENTITY;
+}
+
+
+/* findService - Find the a service by its name
+ * Original 08/04/2003
+ */
+Service* const Registry::findService(const Name& name) const
+{
+   // Look up the given service from the service list
+   services_type::const_iterator it = services.find(name.IRCtoLower());
+   
+   // Make sure we found something..
+   if (it != services.end()) {
       return it->second;
    }
    
