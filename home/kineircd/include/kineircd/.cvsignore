@@ -2,4 +2,4 @@ config.h
 errors.h
 kineircdconf.h
 logger.h
-servermodes.h
+server.h

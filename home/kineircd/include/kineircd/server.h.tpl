@@ -1,3 +1,4 @@
+[+ AutoGen5 template h +]
 /* $Id$
  * A server
  * 
@@ -20,6 +21,9 @@
  * You should have received a copy of the GNU General Public License
  * along with KineIRCd; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+[+(dne " * ")+]
  */
 
 #ifndef _INCLUDE_KINEIRCD_SERVER_H_
@@ -31,6 +35,25 @@
 namespace Kine {
    class Server : public Entity, public Sender {
     public:
+      //! Server modes type 
+      typedef unsigned long modes_type;
+      
+      // Server modes...
+      namespace Mode {
+	 enum mode_type {[+ FOR servermodes +]
+	    [+ (sprintf "%-25s = 0x%08X%s //!< (+%s)"
+	          (get "name")
+		  (expt 2 (for-index))		;; calculate the bitmask
+		  (if (last-for?) " " ",")	;; no comma on last iteration
+		  (get "irc2char"))
+	     +][+ ENDFOR servermodes +]
+	 };
+      };
+      
+    private:
+      modes_type modes;				//!< Server modes bit mask
+      
+    public:
       //! Constructor
       Server(void)
 	{};
@@ -38,6 +61,14 @@ namespace Kine {
       //! Destructor
       virtual ~Server(void)
 	{};
+      
+      //! Return the server modes
+      const modes getModes(void) const
+	{ return modes; };
+      
+      //! Check if the given mode is set
+      const bool isModeSet(const Mode::mode_type mode) const
+	{ return (modes & mode); };
    }; // class Server
 }; // namespace Kine
 

@@ -147,7 +147,6 @@ BUILT_SOURCES=\
 	include/kineircd/config.h \
 	include/kineircd/errors.h \
 	include/kineircd/logger.h \
-	include/kineircd/servermodes.h \
 	src/libkineircd/regnumerics.h
 
 # Includes..
@@ -181,7 +180,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/receiver.h \
 	include/kineircd/sender.h \
 	include/kineircd/server.h \
-	include/kineircd/servermodes.h \
 	include/kineircd/service.h \
 	include/kineircd/signals.h \
 	include/kineircd/str.h \
@@ -230,6 +228,12 @@ include/kineircd/config.h: include/kineircd/config.h.tpl $(AUTOGEN_DEF_DIR)/conf
 		-T include/kineircd/config.h.tpl \
 		-S $(AUTOGEN_DEF_DIR)/config.scm \
 		$(AUTOGEN_DEF_DIR)/config.def
+
+include/kineircd/server.h: include/kineircd/server.h.tpl $(AUTOGEN_DEF_DIR)/servermodes.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T include/kineircd/server.h.tpl \
+		$(AUTOGEN_DEF_DIR)/servermodes.def
 
 src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
 	$(AUTOGEN) \
