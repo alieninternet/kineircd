@@ -160,15 +160,8 @@ using namespace Kine;
    (define currentIteration 0)
  +]
 Config::Config(void)
-[+DEFINE output-variable-defaults+][+FOR definition+][+IF (exist? ".hasVariable")+][+IF (exist? ".defaultValue")+][+
-   ; Is this is the first iteration?
-   (if (= currentIteration 0)
-      ; Output the start..
-      "  : "
-
-      ; Output a comma, a new line, and the indentation
-      ",\n    ")
- +][+  
+  : configuring(false)[+DEFINE output-variable-defaults+][+FOR definition+][+IF (exist? ".hasVariable")+][+IF (exist? ".defaultValue")+],
+    [+  
    ; Increase the iteration counter
    (set! currentIteration
       (+ currentIteration 1))

@@ -167,9 +167,18 @@ Kine::Config* Kine::Config::instance = 0;
  */
 bool Kine::Config::configure(void)
 {
+   // Tell anyone who is interested that we are now configuring..
+   configuring = true;
+   
    // The config parser instance we will use
    AISutil::ConfigParser parser(*this, &topDefs, configFile);
    
    // Configure this thing :)
-   return parser.configure();
+   bool happy = parser.configure();
+   
+   // We are no longer configuring!
+   configuring = false;
+   
+   // Return whatever the parser had to say..
+   return happy;
 }

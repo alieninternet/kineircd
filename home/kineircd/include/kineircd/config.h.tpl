@@ -66,6 +66,9 @@ namespace Kine {
     private:
       // The config file to use..
       std::string configFile;
+      
+      // Are we configuring?
+      bool configuring;
 [+DEFINE output-variables+][+FOR definition+][+
  IF (or
        (exist? ".definition")
@@ -118,7 +121,11 @@ namespace Kine {
       // Grab the configuration file name
       const std::string& getConfigFile(void) const
 	{ return configFile; };
-      
+
+      // Are we in the middle of configuration?
+      const bool isConfiguring(void) const
+        { return configuring; };
+
       // Load/parse the config (from the parser routines)
       bool configure(void);
       bool configure(const std::string& file)
