@@ -1,8 +1,8 @@
 /* $Id$
- * The IRC-2 user protocol class
+ * A locally connected user, using the IRC-2 server <-> user protocol
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -22,37 +22,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_MOD_IRC2USER_PROTOCOL_H_
-# define _SRC_MOD_IRC2USER_PROTOCOL_H_ 1
+#ifndef _SRC_MOD_IRC2USER_USER_H_
+# define _SRC_MOD_IRC2USER_USER_H_ 1
 
-# include <kineircd/registrant.h>
-
-# include "libkineircd_irc2/protocol.h"
-# include "mod_irc2user/user.h"
+# include <kineircd/localuser.h>
 
 namespace Kine {
    namespace mod_irc2user {
-      class Protocol : public Kine::LibIRC2::Protocol {
-       private:
-	 // Appropriately parse a protocol message
-	 void parseMessage(const std::string& origin,
-			   const std::string& destination,
-			   const std::string& command,
-			   const Kine::LibIRC2::Protocol::parameters_type&
-			   parameters);
-	 
+      class User : public Kine::LocalUser {
        public:
-	 // Constructor (init the connection)
-	 Protocol(const Kine::Registrant& registrant,
-		  Kine::Connection& connection, std::string& inputQueue,
-		  std::string& outputQueue);
+	 // Constructor
+	 User(void)
+	   {};
 	 
 	 // Destructor
-	 ~Protocol(void)
+	 ~User(void)
 	   {};
-      }; // class Protocol
+      }; // class User
    }; // namespace mod_irc2user
 }; // namespace Kine
    
-#endif // _SRC_MOD_IRC2USER_PROTOCOL_H_
+#endif // _SRC_MOD_IRC2USER_USER_H_
    

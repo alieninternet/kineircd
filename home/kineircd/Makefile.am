@@ -371,7 +371,8 @@ mod_irc2user_la_SOURCES=\
 	src/mod_irc2user/module.h \
 	src/mod_irc2user/protocol.cpp \
 	src/mod_irc2user/protocol.h \
-	src/mod_irc2user/protocolinfo.h
+	src/mod_irc2user/protocolinfo.h \
+	src/mod_irc2user/user.h
 
 mod_irc2user_la_LDFLAGS=\
 	-avoid-version \
