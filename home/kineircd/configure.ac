@@ -61,6 +61,7 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
 AC_CHECK_PROG(RM, rm, rm -f, del)
+AC_CHECK_PROG(LD, ld, ld)
 AC_CACHE_SAVE
 
 
@@ -1660,6 +1661,7 @@ AC_OUTPUT([
 	Makefile
 	install/Makefile
 	src/Makefile
+	src/config/Makefile
 	src/generator/Makefile
 	src/protocols/Makefile
 	src/protocols/server/Makefile
