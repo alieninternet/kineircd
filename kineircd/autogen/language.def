@@ -627,6 +627,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFNAMES";
+   components	= "mod_irc2user";
    data_en	= "End of NAMES list";
    data_tr	= "NAMES (isimler) listesinin sonu";
 };
