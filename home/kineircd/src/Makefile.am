@@ -61,7 +61,8 @@ INCLUDES=\
 # Stuff that needs to go into the distribution but isn't implied
 EXTRA_DIST=\
 	lib/loggerconfig.cpp.tpl \
-	lib/regnumerics.h.tpl
+	lib/regnumerics.h.tpl \
+	lib/version.cpp.tpl
 
 
 

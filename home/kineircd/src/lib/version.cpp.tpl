@@ -1,3 +1,4 @@
+[+ AutoGen5 template cpp +]
 /* $Id$
  * Version and Compile information
  * 
@@ -19,6 +20,9 @@
  * You should have received a copy of the GNU General Public License
  * along with KineIRCd; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+[+(dne " * ")+]
  */
 
 #ifdef HAVE_CONFIG_H
@@ -34,21 +38,21 @@
 namespace Kine {
    namespace Version {
       // Build information
-      const char *build = BUILD_STRING;
+      const char* const build = BUILD_STRING;
       
       // Program name
-      const char *programName = PACKAGE;
-      const char *programNameFull = KINEIRCD_VERSION_NAME_FULL;
+      const char* const programName = PACKAGE;
+      const char* const programNameFull = KINEIRCD_VERSION_NAME_FULL;
       
       // Program version numbers (raw)
       const unsigned short versionMajor = KINEIRCD_VERSION_MAJOR;
       const unsigned short versionMinor = KINEIRCD_VERSION_MINOR;
 
       // Version information (program name and version number, in its entirity)
-      const char *version = PACKAGE KINEIRCD_VERSION_STRING;
+      const char* const version = PACKAGE KINEIRCD_VERSION_STRING;
       
       // Full version identity (includes build number)
-      const char *versionFull = 
+      const char* const versionFull = 
 	PACKAGE KINEIRCD_VERSION_STRING "#" BUILD_STRING;
       
       // Library version information (raw)
@@ -57,7 +61,7 @@ namespace Kine {
       const unsigned char libAge = KINEIRCD_LIB_AGE;
       
       // E-mail address to where bug reports should wind up
-      const char *bugsEmail = PACKAGE_BUGREPORT;
+      const char* const bugsEmail = PACKAGE_BUGREPORT;
       
       /* Information for INFO command (note: no colon prefixes for any 
        * protocol)
@@ -74,7 +78,7 @@ namespace Kine {
        *       development team list (as it is an integral part of the primary
        *       copyright).
        */
-      const char *versionInfo[] = {
+      const char* const versionInfo[] = {
 "            (__)     _  __              ___ ____   ____    _",
 "            {oo}    | |/ /_ _ __   ___ |   |  _ \\ / ___|__| |",
 "      ,------\\/     | ' /| | '_ \\ / . \\ | || |_) | |   / _` |",
@@ -101,7 +105,7 @@ namespace Kine {
        * to me so far. Yes!!!! That's right, that means I don't want your
        * comments on how #ifdef's are considered obsolete in C++! :)
        */
-      const char *versionChars =
+      const char* const versionChars =
 	// Configuration characters     
 #ifdef KINE_DEBUG
 				"D"
@@ -124,7 +128,6 @@ namespace Kine {
      				",IPv6"
 #endif
 					; // The end, phew!
-   };
-   
-};
+   }; // namespace Version
+}; // namespace Kine
 
