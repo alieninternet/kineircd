@@ -28,6 +28,7 @@
 #include <kineircd/module.h>
 
 #include "mod_syslog/module.h"
+#include "mod_syslog/syslog.h"
 
 
 namespace {

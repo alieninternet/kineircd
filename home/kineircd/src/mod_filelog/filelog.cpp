@@ -29,7 +29,6 @@
 #include "mod_filelog/filelog.h"
 
 using namespace Kine::mod_filelog;
-using AISutil::String;
 
 
 /* FileLog - Generic file logger component constructor
@@ -58,7 +57,7 @@ FileLog::~FileLog(void)
  * 04/04/2002 simonb - Added debugging info
  * Note: This logging output sucks.
  */
-void FileLog::logLine(const AISutil::String& str,
+void FileLog::logLine(const std::string& str,
 		      const Kine::Logger::Mask::type mask)
 {
    if (ok()) {

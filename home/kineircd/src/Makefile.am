@@ -144,12 +144,17 @@ mod_snmp_la_LIBADD=\
 mod_syslog_la_SOURCES=\
 	mod_syslog/module.cpp \
 	mod_syslog/module.h \
+	mod_syslog/syslog.cpp \
 	mod_syslog/syslog.h
 mod_syslog_la_LDFLAGS=\
 	-avoid-version \
 	-module
 mod_syslog_la_LIBADD=\
 	lib/libkineircd.la
+
+# Customised .tpl to .cpp rules, since the template and the defs do not match
+mod_syslog/syslog.cpp: mod_syslog/syslog.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
+	$(AUTOGEN) -b $(basename $@) -T $< $(AUTOGEN_DEF_DIR)/logger.def
 
 
 

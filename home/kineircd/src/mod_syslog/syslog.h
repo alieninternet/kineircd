@@ -28,34 +28,39 @@
 # endif
 
 // Only continue if we actually have syslog support on this system
-# ifdef HAVE_SYSLOG_H
+# ifndef HAVE_SYSLOG_H
+#  error "Cannot compile syslog logging module without syslog support"
+# endif
 
 extern "C" {
-#  include <syslog.h>
+# include <syslog.h>
 }
    
-#  include "kineircd/logger.h"
+# include "kineircd/logger.h"
 
 
 namespace Kine {
-   
-   // The syslog logging class
-   class LoggerSyslog : public Logger {
-    private:
-      // Log a string of text
-      void logLine(const std::string& str, const Logger::Mask::type);
-      
-    public:
-      LoggerSyslog(Logger::Mask::type, const char *, const bool);// Constructor
-      ~LoggerSyslog(void);				// Destructor
-   
-      // Is the log ok?
-      bool ok(void) const
-	{ return true; };
-   };
+   namespace mod_syslog {
+      // The syslog logging class
+      class Syslog : public Kine::Logger {
+       private:
+	 // Log a string of text
+	 void logLine(const std::string& str, const Kine::Logger::Mask::type);
+	 
+       public:
+	 // Constructor
+	 Syslog(Kine::Logger::Mask::type, const char *, const bool);
+	 
+	 // Destructor
+	 ~Syslog(void)
+	   { closelog(); };
+	 
+	 // Is the log ok? We presume so :)
+	 bool ok(void) const
+	   { return true; };
+      };
+   }; // namespace mod_syslog
+}; // namespace Kine
 
-};
-   
-# endif // HAVE_SYSLOG_H
 #endif // _SRC_LIB_LOGGER_SYSLOG_H_
    

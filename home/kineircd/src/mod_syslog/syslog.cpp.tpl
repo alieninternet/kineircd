@@ -28,48 +28,23 @@
 # include "autoconf.h"
 #endif
 
-// Make sure we are being compiled OK
-#ifndef HAVE_SYSLOG_H
-# warning "Compiling syslog logging feature without syslog support!!"
-#endif
+#include "mod_syslog/syslog.h"
 
-#include "logger/syslog.h"
-#include "debug.h"
-
-using namespace Kine;
-using AISutil::String;
+using namespace Kine::mod_syslog;
 
 
-/* LoggerSyslog - Syslog logger component constructor
+/* Syslog - Syslog logger component constructor
  * Original 16/02/2000 simonb
  * 04/04/2002 simonb - Added PID boolean option
  * 04/04/2002 simonb - Added debugging info
  */
-LoggerSyslog::LoggerSyslog(Logger::Mask::type mask, const char *processName, 
-			   const bool showPid)
-  : Logger(mask)
+Syslog::Syslog(Kine::Logger::Mask::type mask, const char *processName, 
+	       const bool showPid)
+ : Logger(mask)
 {
    int option = LOG_NDELAY;
 
-#ifdef KINE_DEBUG_EXTENDED
-   debug("LoggerSyslog::LoggerSyslog(): openlog()");
-#endif
-   
    openlog(processName, (showPid ? (option | LOG_PID) : option), LOG_DAEMON);
-}
-
-
-/* ~LoggerSyslog - Syslog logger component destructor
- * Original 16/02/2000 simonb
- * 04/04/2002 simonb - Added debugging info
- */
-LoggerSyslog::~LoggerSyslog(void)
-{
-#ifdef KINE_DEBUG_EXTENDED
-   debug("LoggerSyslog::~LoggerSyslog(): closelog()");
-#endif
-
-   closelog();
 }
 
 
@@ -78,12 +53,9 @@ LoggerSyslog::~LoggerSyslog(void)
  * 04/04/2002 simonb - Modified for use with new String class
  * 04/04/2002 simonb - Added debugging info
  */
-void LoggerSyslog::logLine(const String& str, const Logger::Mask::type mask)
+void Syslog::logLine(const std::string& str,
+		     const Kine::Logger::Mask::type mask)
 {
-#ifdef KINE_DEBUG_PSYCHO
-   debug("LoggerSyslog::log(" + str + ')');
-#endif
-
    // Determine what the syslog-relative priority should be (this is shit)
    int priority;
    switch (mask) {[+ FOR logger_masks +]
