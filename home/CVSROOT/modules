@@ -24,3 +24,5 @@
 # character to interpose another module into the current module.  This
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
+CVSROOT CVSROOT
+austhex.servd8.0 -a servd8.0 -i /cvsbin/austhex/fixperms.sh austhex.servd8.0
