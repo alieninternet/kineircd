@@ -46,6 +46,7 @@ extern "C" {
 
 #include <kineircd/signals.h>
 #include <kineircd/languages.h>
+#include <kineircd/registry.h>
 #include <kineircd/config.h>
 #include <kineircd/daemon.h>
 
@@ -87,6 +88,9 @@ int main(int argc, char **argv)
    
    // Create the all important languages interface class prior to configuration
    Languages::initInstance();
+
+   // Create the registry, where all the entities live
+   Registry::initInstance();
    
    // Attempt to load and parser the configuration file
    if (!config().configure(OPT_ARG(CONFIG_FILE))) {
@@ -98,7 +102,7 @@ int main(int argc, char **argv)
       
       exit(ircd::Exit::ERR_CONFIG_LOAD);
    }
-   
+
    // Now that the config file has been loaded happily, init the daemon
    Daemon::initInstance();
 
