@@ -84,7 +84,8 @@ namespace Kine {
 	 // Constructor
 	 explicit Description(Type::type t, const char* const n)
 	   : type(t),
-	     name(n)
+	     name(n),
+	     key(0)
 	   {};
       } const description;
       
