@@ -104,7 +104,8 @@ Numerics
       
        Note that the codes are returned in order of use. The first is always 
       the one replies will be made in (with the exception of 'none', where 
-      some replies may be made with the second language on the list).
+      some replies may be made with the second language on the list). The
+      codes are returned in a comma delimetered list.
 
 
 688 - RPL_LANGUAGE
@@ -134,7 +135,6 @@ Numerics
       The list is terminated with numeric 666 (command = 'LANGUAGE')
 
 
-
 690 - RPL_WHOISLANGUAGE
       <nickname> <language codes> [:speaks these languages]
 
@@ -142,6 +142,20 @@ Numerics
       a user is using. The 'language codes' field is a comma-delimetered list
       of languages a person can speak (in order of preference, highest
       first, lowest last). 
+
+
+981 - ERR_TOOMANYLANGUAGES
+      <max languages> :Too many language codes specified
+      
+      Tell the client it cannot set any more languages, the maximum given.
+      
+      
+982 - ERR_NOLANGUAGE
+      <language code> :is an unknown language to me
+      
+      Report to the client that the language given was unknown and will not
+      be used, or shown in the WHOIS output.
+
 
 
 Function
