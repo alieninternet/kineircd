@@ -34,7 +34,7 @@
 namespace Kine {
    class Connection {
     private:
-      const Daemon& daemon;		// Call-back to the daemon
+      Daemon& daemon;			// Call-back to the daemon
       Socket& socket;			// The connected socket
 
       std::queue <String> outputQueue;	// Output data queue
@@ -54,12 +54,16 @@ namespace Kine {
       
     public:
       // Class constructor
-      Connection(const Daemon& d, Socket& s);
+      Connection(Daemon& d, Socket& s);
       
       // Shutdown connection
       ~Connection(void) 
 	{ delete &socket; };
-      
+
+      // Return the socket
+      const Socket& getSocket(void) const
+	{ return socket; };
+
       // Return the connection time
       const time_t getConnectedTime(void) const 
 	{ return connectedTime; };
@@ -69,7 +73,7 @@ namespace Kine {
 	{ return lastSpoke; };
 
       // Handle input on connection
-      void handleInput(void);
+      bool handleInput(void);
    };
 };
    

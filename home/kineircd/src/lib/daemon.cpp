@@ -50,7 +50,9 @@ Daemon::Daemon(Config& conf, Signals& sigs)
   : runlevel(RUNLEVEL_INIT),
     config(conf),
     signals(sigs),
-    startTime(time(NULL))
+    startTime(time(NULL)),
+    sentBytes(0),
+    receivedBytes(0)
 {
 #ifdef KINE_DEBUG_ASSERT
    // Check the STL stuff are really empty
@@ -80,6 +82,11 @@ Daemon::~Daemon(void)
    debug("Shutting down server");
 #endif
 
+   // Run through any connections that might be lingering
+   while (!connections.empty()) {
+      delete connections.front();
+      connections.erase(connections.begin());
+   }
 }
 
 
@@ -109,15 +116,25 @@ void Daemon::newConnection(Listener& listener)
 	 "; Remote address is " + newSocket->getRemoteAddress() +
 	 " on port " + String::convert(newSocket->getRemotePort()));
 #endif
+
+   // We should be adding the socket to the poller here..
+   FD_SET(newSocket->getFD(), &inFDSET);
+   if (newSocket->getFD() >= maxDescriptors) {
+      maxDescriptors = newSocket->getFD() + 1;
+   }
    
-   // and.. throw it away :(
-   delete newSocket;
+   // Add the socket to the connections list
+   connections.push_front(new Connection(*this, *newSocket));
 }
 
 
 /* run - The main loop
  * Original 11/08/2001 simonb
- * Note: Unfortuantely not a very nice looking routine..
+ * Note: Unfortuantely not a very nice looking routine.. Much of this code is
+ *       temporary and hense thrown together. Further down the road I will
+ *       code a dedicated set of poller routines (including support for other
+ *       methods such as poll(), /dev/epoll etc.). At this stage it's to get 
+ *       the show on the road sooner rather than later)
  */
 Exit::status_type Daemon::run(void)
 {
@@ -180,10 +197,6 @@ Exit::status_type Daemon::run(void)
 	 break;
 	 
        default:
-#ifdef KINE_DEBUG_PSYCHO
-	 debug("Daemon::run() - Select returned with a change!");
-#endif
-	 
 	 if (runlevel >= RUNLEVEL_NORMAL) {
 	    // Check for a new connection: Run through the listeners
 	    for (ListenerList::listeners_type::const_iterator it = 
@@ -196,26 +209,32 @@ Exit::status_type Daemon::run(void)
 	    }
 	    
 	    // Check for activity on connections
-//	    for (connection_list_t::iterator it = connections.begin();
-//		 it != connections.end(); it++) {
-#ifdef DEBUG_EXTENDED
-//	       if (!(*it) || !(*it)->socket) {
-//		  debug("broken?!");
-//		  continue;
-//	       }
+	    for (connections_type::iterator it = connections.begin();
+		 it != connections.end(); it++) {
+#ifdef KINE_DEBUG_ASSERT
+	       // Make sure the connection is sane. It should always be!
+	       assert(*it != 0);
 #endif
-	       
+
 	       // Check for input waiting
-//	       if (CheckInput((*it)->socket->getFD())) {
-//		  (*it)->handleInput();
-//	       }
+	       if (FD_ISSET((*it)->getSocket().getFD(), &inFDtemp)) {
+		  // Tell the connection it has stuff waiting to read
+		  if (!(*it)->handleInput()) {
+		     // The operation did not work, so we will delete this
+		     FD_CLR((*it)->getSocket().getFD(), &inFDSET);
+		     FD_CLR((*it)->getSocket().getFD(), &outFDSET);
+		     delete *it;
+		     connections.erase(it++);
+		     continue;
+		  }
+	       }
 	       
 	       // Check for OK to send and something in the queue
 //	       if (CheckOutput((*it)->socket->getFD())) {
 //		  (*it)->sendQueue();
 //	       }
+	    }
 	 }
-
       }
       
       // Check if we are in shutdown mode
@@ -232,4 +251,3 @@ Exit::status_type Daemon::run(void)
    
    return Exit::NO_ERROR;
 }
-

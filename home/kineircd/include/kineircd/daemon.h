@@ -70,11 +70,14 @@ namespace Kine {
       const long startTime;			// Time the daemon started
       timeval currentTime;			// The time now
 
+      unsigned long long sentBytes;		// Total bytes sent
+      unsigned long long receivedBytes;		// Total bytes received
+      
       // The list of connections
 # ifdef STL_HAS_SLIST
-      typedef std::slist <Connection> connections_type;
+      typedef std::slist <Connection*> connections_type;
 # else
-      typedef std::list <Connection> connections_type;
+      typedef std::list <Connection*> connections_type;
 # endif
       connections_type connections;
       
@@ -115,6 +118,14 @@ namespace Kine {
       // Grab the time now
       const timeval& getTime(void) const
 	{ return currentTime; };
+
+      // Increase the sent bytes count
+      void addSentBytes(const unsigned int bytes)
+	{ sentBytes += bytes; };
+      
+      // Increase the sent bytes count
+      void addReceivedBytes(const unsigned int bytes)
+	{ receivedBytes += bytes; };
       
       // Main loop
       Exit::status_type run(void);

@@ -32,7 +32,7 @@ using namespace Kine;
 /* Connection - Initialise new connection
  * Original 12/08/2001 simonb
  */
-Connection::Connection(const Daemon& d, Socket& s)
+Connection::Connection(Daemon& d, Socket& s)
 : daemon(d),
   socket(s),
   sentBytes(0),
@@ -53,34 +53,29 @@ Connection::Connection(const Daemon& d, Socket& s)
 /* handleInput - Handle data input on connection
  * Original 12/08/2001 simonb
  */
-void Connection::handleInput(void)
+bool Connection::handleInput(void)
 {
-//   // Catch a dead connection here
-//   if (socket->isConnected()) {
-//      // Read a line from the socket buffer (this should change!!!)
-//      String line = socket->io->read();
-//
-//      // Make sure we have a whole line - we only want to deal with full lines
-//      if (line.length()) {
-//	 // Increment our input counters
-//	 receivedMessages++;
-//	 receivedBytes += line.length();
-//	 Daemon::receivedBytes += line.length();
-//      
-//	 // Handle the data (finally!)
-//	 handler->parseLine(line);
-//      }
-//      
-//      return;
-//   }
-//   
-//   /* Dead connection, the socket has been closed;
-//    * Uncheck the connected flag and remove us from any file descriptor sets
-//    * we may be on..
-//    */
-//#ifdef KINE_DEBUG_EXTENDED
-//   debug(String::printf("[%d] handleInput(): Dead connection",
-//			socket->getFD()));
-//#endif
-//   Daemon::delOutputFD(socket->getFD());
+   // Read a line from the socket buffer (this should change)
+   std::stringstream line;
+   if (!socket.read(line)) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Connection::handleInput() - Read failed on fd " + 
+	    String::convert(socket.getFD()));
+#endif
+      return false;
+   }
+   
+   // Make sure we have a whole line - we only want to deal with full lines
+   if (!line.str().empty()) {
+      // Increment our input counters
+      receivedMessages++;
+      receivedBytes += line.str().length();
+      daemon.addReceivedBytes(line.str().length());
+      debug("Read: " + line.str());
+//      // Handle the data (finally!)
+//      handler->parseLine(line);
+   }
+   
+   // All is well!
+   return true;
 }
