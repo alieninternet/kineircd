@@ -32,8 +32,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
-
-extern "C" {
 //#ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 //#endif
@@ -41,8 +39,6 @@ extern "C" {
 # include <unistd.h>
 //#endif
 #include <ltdl.h>
-}
-
 #include <kineircd/signals.h>
 #include <kineircd/languages.h>
 #include <kineircd/registry.h>

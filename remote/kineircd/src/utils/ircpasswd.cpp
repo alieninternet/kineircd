@@ -28,16 +28,12 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-
-extern "C" {
 #ifdef HAVE_TERMIOS_H
 # include <termios.h>
 #endif
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
-}
-   
 #include <kineircd/password.h>
 #include <kineircd/config.h>
 #include <kineircd/version.h>

@@ -24,13 +24,10 @@
 #include <iostream>
 #include <aisutil/version.h>
 #include <kineircd/version.h>
-
-extern "C" {
 #ifdef KINE_HAVE_OPENSSL
 # include <openssl/opensslv.h>
 #endif
 #include <options.h>
-}
 
 #include "ircd/bits.h"
 
