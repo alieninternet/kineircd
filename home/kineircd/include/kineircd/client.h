@@ -48,6 +48,22 @@ namespace Kine {
       Client(const AISutil::Time& _signonTime)
 	: Denizen(_signonTime)
 	{};
+
+      //! An event called when someone (maybe us) has joined a channel
+      virtual void doEventChannelJoin(const Channel& channel,
+				      const Client& client)
+	{};
+
+      //! An event called when someone (maybe us) has parted a channel
+      virtual void doEventChannelPart(const Channel& channel,
+				      const Client& client,
+				      const std::string* const reason)
+	{};
+
+      //! An event called whenever a channel's topic has changed
+      virtual void doEventChannelTopicChange(const Channel& channel,
+					     const Entity& entity)
+	{};
       
     public:
       //! Destructor
