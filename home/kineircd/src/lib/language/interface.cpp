@@ -139,8 +139,34 @@ const std::string Languages::get(const std::string& languageCode,
 				 const tagID_type tagID,
 				 const parameterList_type* const parameters)
 {
-   // Return 'unknown' - we have no idea what to put here..
-   return replacementObjectGlyph;
+   // Check if the tag ID is 0, or larger than the highest known TID..
+   if ((tagID == 0) /*|| (tagID > something)*/) {
+      /* Return 'unknown' - we have no idea what to put here.. This is most
+       * likely a missing tag from the language file(s), or a programmer has
+       * done something nasty..
+       */
+      return replacementObjectGlyph;
+   }
+   
+   // Find the tag..
+//   const std::string& tagData = something;
+   const std::string tagData("This is tag data");
+   
+   /* If the null character (used to mark necessary substitutions) is missing
+    * from the tag data, then we do not need to do any processing. Is this
+    * wise to run over the string potentially twice here? In doing this, I'm
+    * presuming the majority of tags would not require substitutions..
+    */
+   if (tagData.find('\0') == (std::string::size_type)-1) {
+      // Simply return the string, no further work is necessary..
+      return tagData;
+   }
+   
+   // Our "reply string" - this is what we will return after processing
+   std::string reply("Tag was supposed to be processed");
+   
+   // Return the processed output
+   return reply;
 }
 
   

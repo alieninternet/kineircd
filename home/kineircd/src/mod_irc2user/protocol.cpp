@@ -43,6 +43,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
   : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue)
 {
    // vv temporary :)
+   std::cout << "irc2user is pushing stuff to the output queue" << std::endl;
    std::ostringstream output;
    std::ostringstream output2;
    output <<
