@@ -35,81 +35,84 @@
 
 # include "kineircd/str.h"
 
+namespace Kine {
 
-// The top Logger class the actual loggers are derived from
-class Logger {
- public:
-   // Bitmask list for a mask (type of log message)
-   enum mask_type {
-      MASK_NONE = 0x00000000,[+ (define bitvalue 1) +][+ FOR logger_masks +]
-      MASK_[+name+] = [+
-	 (define newbitvalue (* bitvalue 2))
-	 (define bitvalue newbitvalue)
-         (sprintf "0x%08X" (/ newbitvalue 2))
-       +], // +[+char+][+ ENDFOR logger_masks +]
-      MASK_ALL = 0xFFFFFFFF
-   };
+   // The top Logger class the actual loggers are derived from
+   class Logger {
+    public:
+      // Bitmask list for a mask (type of log message)
+      enum mask_type {
+	 MASK_NONE = 0x00000000,[+ (define bitvalue 1) +][+ FOR logger_masks +]
+	 MASK_[+name+] = [+
+	    (define newbitvalue (* bitvalue 2))
+	    (define bitvalue newbitvalue)
+            (sprintf "0x%08X" (/ newbitvalue 2))
+          +], // +[+char+][+ ENDFOR logger_masks +]
+         MASK_ALL = 0xFFFFFFFF
+      };
    
-   // Logger types (each logger class must set itself to one of these)
-   enum type_type {
-      TYPE_OTHER,				// Other; eg. module extension
+      // Logger types (each logger class must set itself to one of these)
+      enum type_type {
+	 TYPE_OTHER,				// Other; eg. module extension
 # ifdef HAVE_SYSLOG_H
-      TYPE_SYSLOG,				// Syslog interface
+	 TYPE_SYSLOG,				// Syslog interface
 # endif
-      TYPE_FILE,				// Generic file based log
-      TYPE_SNOTICE				// Server Notice (via daemon)
+	 TYPE_FILE,				// Generic file based log
+	 TYPE_SNOTICE				// Server Notice (via daemon)
+      };
+      
+      static const unsigned char maskTableSize = [+ 
+         (count "logger_masks")
+       +];
+
+      // The table holding our mask to name to character translations
+      struct maskTable_type {
+	 const char *name;			// Name of the mask
+	 const char chr;			// Character for the mask
+	 const mask_type mask;			// The mask itself
+      } static const maskTable[maskTableSize];
+      
+    private:
+      const type_type logType;				// Type of log this is
+      const mask_type logMask;				// OK log message types
+      
+      // Log a string of text
+      virtual void logLine(const String &, const mask_type = MASK_HOUSEKEEPING)
+	{};
+      
+    public:
+      // Constructor
+      Logger(type_type t, mask_type m)
+	: logType(t),
+          logMask(m)
+	{};
+      
+      // Destructor
+      virtual ~Logger(void) 
+	{};
+   
+      // Grab logging type
+      const type_type getType(void) const
+	{ return logType; };
+      
+      // Grab logging mask
+      const mask_type getMask(void) const
+	{ return logMask; };
+      
+      // Is the log ok?
+      virtual bool ok(void) const
+	{ return true; };
+
+      // Pass a line of text to the logging function if it matches our mask
+      void log(const String &line, const mask_type mask = MASK_HOUSEKEEPING)
+	{
+	   if (logMask & mask) {
+	      logLine(line, mask);
+	   }
+	};
    };
-
-   static const unsigned char maskTableSize = [+ 
-      (count "logger_masks")
-    +];
-
-   // The table holding our mask to name to character translations
-   struct maskTable_type {
-      const char *name;				// Name of the mask
-      const char chr;				// Character for the mask
-      const mask_type mask;			// The mask itself
-   } static const maskTable[maskTableSize];
-
- private:
-   const type_type logType;				// Type of log this is
-   const mask_type logMask;				// OK log message types
- 
-   // Log a string of text
-   virtual void logLine(const String &, const mask_type = MASK_HOUSEKEEPING)
-     {};
-
- public:
-   // Constructor
-   Logger(type_type t, mask_type m)
-     : logType(t),
-       logMask(m)
-     {};
    
-   // Destructor
-   virtual ~Logger(void) 
-     {};
-   
-   // Grab logging type
-   const type_type getType(void) const
-     { return logType; };
-
-   // Grab logging mask
-   const mask_type getMask(void) const
-     { return logMask; };
-
-   // Is the log ok?
-   virtual bool ok(void) const
-     { return true; };
-
-   // Pass a line of text to the logging function if it matches our mask
-   void log(const String &line, const mask_type mask = MASK_HOUSEKEEPING)
-     {
-        if (logMask & mask) {
-	   logLine(line, mask);
-	}
-     };
 };
-
+   
 #endif
 

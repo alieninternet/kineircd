@@ -24,7 +24,9 @@
 #ifndef _INCLUDE_KINEIRCD_HANDLER_H_
 # define _INCLUDE_KINEIRCD_HANDLER_H_
 
-class Handler;
+namespace Kine {
+   class Handler;
+};
 
 # include "kineircd/numerics.h"
 # include "kineircd/connection.h"
@@ -34,106 +36,110 @@ class Handler;
 # include "kineircd/channel.h"
 
 
-class Handler {
- protected:
-   Connection *connection;			// Recursive back up
-
- public:
-   // Initialise the base class
-   Handler(Connection *c)
-     : connection(c)
-       {};
+namespace Kine {
    
-   // Destructor
-   virtual ~Handler(void) {};
-
-   // Return the connection link
-   Connection *getConnection(void) const {
-      return connection;
+   class Handler {
+    protected:
+      Connection *connection;			// Recursive back up
+      
+    public:
+      // Initialise the base class
+      Handler(Connection *c)
+	: connection(c)
+	  {};
+      
+      // Destructor
+      virtual ~Handler(void) {};
+      
+      // Return the connection link
+      Connection *getConnection(void) const {
+	 return connection;
+      };
+      
+      virtual void goodbye(String const &) {};	// Handle a goodbye
+      virtual void kill(String const &, 
+			String const &) {};	// Kill the connection (sharp)
+      
+      // Connection relevant stamp
+      virtual time_t getStamp(void) {
+	 return 0;
+      };
+      
+      // Server relevant stamp
+      virtual time_t returnStamp(time_t) {
+	 return 0;
+      };
+      
+      // Protocol output routines
+      virtual void sendAccept(User *, User *) const {};
+      virtual void sendAway(User *) const {};
+      virtual void sendChannelMode(Channel *, User *, String const &) const {};
+      virtual void sendInvite(User *, Channel *, User *, time_t) const {};
+      virtual void sendJoin(Channel *, User *) const {};
+      virtual void sendKick(Channel *, User *, User *, String const &) const {};
+      virtual void sendKill(User *, String const &, String const &) const {};
+      virtual void sendKnock(User *, Channel *, String const &) const {};
+      virtual void sendLanguage(User *, String const &, String const &) const {};
+      virtual void sendNewNick(User *) const {};
+      virtual void sendNickChange(User *, String const &) const {};
+      virtual void sendNotice(Server *, User *, String const &) const {};
+      virtual void sendNotice(User *, Channel *, String const &) const {};
+      virtual void sendNotice(User *, User *, String const &) const {};
+      virtual void sendNotice(User *, StringMask const &, String const &) const
+	{};
+      virtual void sendNoticeAnon(Channel *, String const &) const {};
+      virtual void sendNumeric(Server *, Numerics::numeric_t, User *, 
+			       String const &) const {};
+      virtual void sendPart(Channel *, User *, String const &) const {};
+      virtual void sendPing(void) const {};
+      virtual void sendPrivmsg(Server *, User *, String const &) const {};
+      virtual void sendPrivmsg(User *, Channel *, String const &) const {};
+      virtual void sendPrivmsg(User *, User *, String const &) const {};
+      virtual void sendPrivmsg(User *, StringMask const &, String const &) const 
+	{};
+      virtual void sendPrivmsgAnon(Channel *, String const &) const {};
+      virtual void sendQuit(User *, String const &) const {};
+      virtual void sendServerMode(Server *, Server *, String const &) const {};
+      virtual void sendServerMode(Server *, User *, String const &) const {};
+      virtual void sendSilence(User *, bool, StringMask const &) const {};
+      virtual void sendTopic(Channel *, Server *, String const &) const {};
+      virtual void sendTopic(Channel *, User *, String const &) const {};	
+      virtual void sendUserMode(User *, String const &) const {};
+      virtual void sendWallops(Server *, String const &) const {};
+      virtual void sendWallops(User *, String const &) const {};
+      virtual void sendWatchOff(Server *) const {};
+      virtual void sendWatchOff(Channel *) const {};
+      virtual void sendWatchOff(User *) const {};
+      virtual void sendWatchOn(Server *) const {};
+      virtual void sendWatchOn(User *, String const & = "") const {};
+      virtual void sendWatchOn(Channel *, String const &) const {};
+      
+      // Calls for remotes (similar to sends, really)
+      virtual void callADMIN(Server *, User *) const {};
+      virtual void callINFO(Server *, User *) const {};
+      virtual void callLUSERS(Server *, User *, String const &) const {};
+      virtual void callMAP(Server *, User *) const {};
+      virtual void callMOTD(Server *, User *) const {};
+      virtual void callSTATS(Server *, User *, String const &) const {};
+      virtual void callTIME(Server *, User *) const {};
+      virtual void callVERSION(Server *, User *) const {};
+      virtual void callWHOIS(Server *, User *, String const &) const {};
+      
+      // Parse a line
+      virtual void parseLine(String const &) {};
+      
+      // These are responces to requests by either remote or local users
+      static void doADMIN(Handler *, User *);
+      static void doLUSERS(Handler *, User *, String const &);
+      static void doMAP(Handler *, User *);
+      static void doMOTD(Handler *, User *);
+      static void doSTATS(Handler *, User *, String const &);
+      static void doTIME(Handler *, User *);
+      static void doVERSION(Handler *, User *);
+      static void doWHOIS(Handler *, User *, String const &);
    };
-
-   virtual void goodbye(String const &) {};	// Handle a goodbye
-   virtual void kill(String const &, 
-		     String const &) {};	// Kill the connection (sharp)
    
-   // Connection relevant stamp
-   virtual time_t getStamp(void) {
-      return 0;
-   };
-   
-   // Server relevant stamp
-   virtual time_t returnStamp(time_t) {
-      return 0;
-   };
-
-   // Protocol output routines
-   virtual void sendAccept(User *, User *) const {};
-   virtual void sendAway(User *) const {};
-   virtual void sendChannelMode(Channel *, User *, String const &) const {};
-   virtual void sendInvite(User *, Channel *, User *, time_t) const {};
-   virtual void sendJoin(Channel *, User *) const {};
-   virtual void sendKick(Channel *, User *, User *, String const &) const {};
-   virtual void sendKill(User *, String const &, String const &) const {};
-   virtual void sendKnock(User *, Channel *, String const &) const {};
-   virtual void sendLanguage(User *, String const &, String const &) const {};
-   virtual void sendNewNick(User *) const {};
-   virtual void sendNickChange(User *, String const &) const {};
-   virtual void sendNotice(Server *, User *, String const &) const {};
-   virtual void sendNotice(User *, Channel *, String const &) const {};
-   virtual void sendNotice(User *, User *, String const &) const {};
-   virtual void sendNotice(User *, StringMask const &, String const &) const
-     {};
-   virtual void sendNoticeAnon(Channel *, String const &) const {};
-   virtual void sendNumeric(Server *, Numerics::numeric_t, User *, 
-			    String const &) const {};
-   virtual void sendPart(Channel *, User *, String const &) const {};
-   virtual void sendPing(void) const {};
-   virtual void sendPrivmsg(Server *, User *, String const &) const {};
-   virtual void sendPrivmsg(User *, Channel *, String const &) const {};
-   virtual void sendPrivmsg(User *, User *, String const &) const {};
-   virtual void sendPrivmsg(User *, StringMask const &, String const &) const 
-     {};
-   virtual void sendPrivmsgAnon(Channel *, String const &) const {};
-   virtual void sendQuit(User *, String const &) const {};
-   virtual void sendServerMode(Server *, Server *, String const &) const {};
-   virtual void sendServerMode(Server *, User *, String const &) const {};
-   virtual void sendSilence(User *, bool, StringMask const &) const {};
-   virtual void sendTopic(Channel *, Server *, String const &) const {};
-   virtual void sendTopic(Channel *, User *, String const &) const {};	
-   virtual void sendUserMode(User *, String const &) const {};
-   virtual void sendWallops(Server *, String const &) const {};
-   virtual void sendWallops(User *, String const &) const {};
-   virtual void sendWatchOff(Server *) const {};
-   virtual void sendWatchOff(Channel *) const {};
-   virtual void sendWatchOff(User *) const {};
-   virtual void sendWatchOn(Server *) const {};
-   virtual void sendWatchOn(User *, String const & = "") const {};
-   virtual void sendWatchOn(Channel *, String const &) const {};
-   
-   // Calls for remotes (similar to sends, really)
-   virtual void callADMIN(Server *, User *) const {};
-   virtual void callINFO(Server *, User *) const {};
-   virtual void callLUSERS(Server *, User *, String const &) const {};
-   virtual void callMAP(Server *, User *) const {};
-   virtual void callMOTD(Server *, User *) const {};
-   virtual void callSTATS(Server *, User *, String const &) const {};
-   virtual void callTIME(Server *, User *) const {};
-   virtual void callVERSION(Server *, User *) const {};
-   virtual void callWHOIS(Server *, User *, String const &) const {};
-
-   // Parse a line
-   virtual void parseLine(String const &) {};
-   
-   // These are responces to requests by either remote or local users
-   static void doADMIN(Handler *, User *);
-   static void doLUSERS(Handler *, User *, String const &);
-   static void doMAP(Handler *, User *);
-   static void doMOTD(Handler *, User *);
-   static void doSTATS(Handler *, User *, String const &);
-   static void doTIME(Handler *, User *);
-   static void doVERSION(Handler *, User *);
-   static void doWHOIS(Handler *, User *, String const &);
 };
-
+   
 #endif
-
+   

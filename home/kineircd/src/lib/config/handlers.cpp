@@ -28,13 +28,14 @@
 #include "kineircd/config.h"
 #include "kineircd/debug.h"
 #include "configdefault.h"
-#include "handlerhelp.h"
 
+using namespace Kine;
 
 namespace Config {
 
    // Top definitions
-   const ConfigParser::defTable_type Config::topDefs = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::topDefs = {
 	{
 	   "ADMINISTRATOR",
 	     0,
@@ -120,7 +121,8 @@ namespace Config {
 
 
    // "ADMINISTRATOR" class
-   const ConfigParser::defTable_type Config::defClassAdministrator = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassAdministrator = {
 	{
 	   "EMAIL",
 	     (void *)&Config::defAdminEmail,
@@ -153,7 +155,8 @@ namespace Config {
 
 
    // "ARBITERS" class
-   const ConfigParser::defTable_type Config::defClassArbiters = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassArbiters = {
 	{
 	   "SERVERS",
 	     0,
@@ -171,7 +174,8 @@ namespace Config {
    };
 
    // "ARBITERS.SERVERS" class
-   const ConfigParser::defTable_type Config::defClassArbitersServers = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassArbitersServers = {
 	{
 	   0,
 	     0,
@@ -183,7 +187,8 @@ namespace Config {
 
 
    // "LISTEN" class
-   const ConfigParser::defTable_type Config::defClassListen = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassListen = {
 	{
 	   "ALLOWSERVERS",
 	     0,
@@ -230,7 +235,8 @@ namespace Config {
 
 
    // "LOGGING" class
-   const ConfigParser::defTable_type Config::defClassLogging = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassLogging = {
 	{
 	   0,
 	     0,
@@ -242,7 +248,8 @@ namespace Config {
 
 
    // "NETWORK" class
-   const ConfigParser::defTable_type Config::defClassNetwork = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassNetwork = {
 	{
 	   "NAME",
 	     (void *)&Config::defNetworkName,
@@ -261,7 +268,8 @@ namespace Config {
 
 
    // "OPERATORS" class
-   const ConfigParser::defTable_type Config::defClassOperators = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassOperators = {
 	{
 	   0,
 	     0,
@@ -272,7 +280,8 @@ namespace Config {
    };
 
    // "OPERATORS.*" generic class
-   const ConfigParser::defTable_type Config::defClassOperatorsGeneric = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassOperatorsGeneric = {
 	{
 	   "HOSTS",
 	     0,
@@ -311,7 +320,8 @@ namespace Config {
    };
 
    // "OPERATORS.*.HOSTS" generic class
-   const ConfigParser::defTable_type Config::defClassOperatorsGenericHosts = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassOperatorsGenericHosts = {
 	{
 	   0,
 	     0,
@@ -323,7 +333,8 @@ namespace Config {
 
 
    // "OPTIONS" class
-   const ConfigParser::defTable_type Config::defClassOptions = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassOptions = {
 	{
 	   "DESCRIPTION",
 	     (void *)&Config::defOptionsDescription,
@@ -397,7 +408,8 @@ namespace Config {
    };
 
    // "OPTIONS.LIMITS" class
-   const ConfigParser::defTable_type Config::defClassOptionsLimits = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassOptionsLimits = {
 	{
 	   "CHANNELS",
 	     0,
@@ -443,7 +455,8 @@ namespace Config {
    };
 
    // "OPTIONS.LIMITS.CHANNELS" class
-   const ConfigParser::defTable_type Config::defClassOptionsLimitsChannels = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassOptionsLimitsChannels = {
 	{
 	   "MAXBANS",
 	     (void *)&Config::defOptionsLimitsChannelsMaxBans,
@@ -489,7 +502,8 @@ namespace Config {
    };
 
    // "OPTIONS.LIMITS.USERS" class
-   const ConfigParser::defTable_type Config::defClassOptionsLimitsUsers = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassOptionsLimitsUsers = {
 	{
 	   "MAXACCEPTS",
 	     (void *)&Config::defOptionsLimitsUsersMaxAccepts,
@@ -550,7 +564,8 @@ namespace Config {
 
 
    // "REDIRECTION" class
-   const ConfigParser::defTable_type Config::defClassRedirection = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassRedirection = {
 	{
 	   "CHANNELS",
 	     0,
@@ -568,7 +583,8 @@ namespace Config {
    };
 
    // "REDIRECTION.CHANNELS" class
-   const ConfigParser::defTable_type Config::defClassRedirectionChannels = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassRedirectionChannels = {
 	{
 	   0,
 	     0,
@@ -581,7 +597,8 @@ namespace Config {
 
 #ifdef WITH_SSL
    // "SSL" class
-   const ConfigParser::defTable_type Config::defClassSSL = {
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassSSL = {
 	{
 	   "CERTIFICATE",
 	     0,
@@ -604,7 +621,7 @@ namespace Config {
 /* Config - Configuration class constructor (mainly to load defaults if any)
  * Original 11/04/2002 simonb
  */
-Config::Config(const String &f)
+Kine::Config::Config(const String &f)
   : parser(*this, &Config::topDefs, f),
 
     // "ADMIN" class
@@ -651,7 +668,7 @@ Config::Config(const String &f)
 /* varHandleNetworkName - Read a network name (front value) and check it
  * Original 13/04/2002 simonb
  */
-CONFIG_VARIABLE_HANDLER(Config::varHandleNetworkName)
+CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleNetworkName)
 {
 #ifdef DEBUG_ASSERT
    assert(dataVariable != 0);

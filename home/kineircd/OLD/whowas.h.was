@@ -26,131 +26,137 @@
 
 # include <ctime>
 
-class Whowas;
+namespace Kine {
+   class Whowas;
+};
 
 # include "kineircd/user.h"
 # include "kineircd/str.h"
 
-/* Whowas entry. Notice how these values are not pointers - the reason for
- * this is firstly the user will no longer be available - this is a 'snapshot'
- * of a user. Also, the server may have split, therefore that server record
- * might not exist as well, so a real server is used. The quit reason is
- * a KineIRCd extension.
- */
-class Whowas {
- public:
-   typedef unsigned int type_t;			// Type of whowas type (!)
+namespace Kine {
 
-   // Types - The protocol relies on these, do not change them!
-   enum {
-      TYPE_QUIT = 0,			// The user signed off
-      TYPE_CONNECTION_ERROR = 1,	// There was a connection error
-      TYPE_NETSPLIT = 2,		// There was a netsplit
-      TYPE_KILLED = 3,			// The user was killed
-      TYPE_NICK_CHANGE = 4		// The user changed their nickname
-   };
+   /* Whowas entry. Notice how these values are not pointers - the reason for
+    * this is firstly the user will no longer be available - this is a 
+    * 'snapshot' of a user. Also, the server may have split, therefore that 
+    * server record might not exist as well, so a real server is used. The 
+    * quit reason is a KineIRCd extension.
+    */
+   class Whowas {
+    public:
+      typedef unsigned int type_t;		// Type of whowas type (!)
+      
+      // Types - The protocol relies on these, do not change them!
+      enum {
+	 TYPE_QUIT = 0,			// The user signed off
+	 TYPE_CONNECTION_ERROR = 1,	// There was a connection error
+	 TYPE_NETSPLIT = 2,		// There was a netsplit
+	 TYPE_KILLED = 3,		// The user was killed
+	 TYPE_NICK_CHANGE = 4		// The user changed their nickname
+      };
+      
+    private:
+      String const nickname;			// User nickname
+      String const username;			// User name
+      String const hostname;			// Host name
+      String const vwhostname;			// Virtual world host name
+      String const realname;			// User real name
+      String const server;			// Empty if 'hidden'
+      String const awayMessage;			// Away message (if any)
+      String const details;			// Details of departure
+      bool const hideDetails;			// Hidden details?
+      bool const hideHostname;			// Hidden hostname (vworld)
+      bool const hideServer;			// Hidden server?
+      type_t const type;			// Type of details stored
+      time_t const signoffTime;			// Time user signed off
+      
+    public:
+      // Constructor
+      Whowas(String const &nn, String const &un, String const &hn, 
+	     String const &vwhn, String const &rn, String const &s,
+	     String const &d, bool hd, bool hh, bool hs, type_t t, time_t sot)
+	: nickname(nn),
+          username(un),
+          hostname(hn),
+          vwhostname(vwhn),
+          realname(rn),
+          server(s),
+          details(d),
+          hideDetails(hd),
+          hideHostname(hh),
+          hideServer(hs),
+          type(t),
+          signoffTime(sot)
+	{};
 
- private:
-   String const nickname;			// User nickname
-   String const username;			// User name
-   String const hostname;			// Host name
-   String const vwhostname;			// Virtual world host name
-   String const realname;			// User real name
-   String const server;				// Empty if 'hidden'
-   String const awayMessage;			// Away message (if any)
-   String const details;			// Details of departure
-   bool const hideDetails;			// Hidden details?
-   bool const hideHostname;			// Hidden hostname (vworld)
-   bool const hideServer;			// Hidden server?
-   type_t const type;				// Type of details stored
-   time_t const signoffTime;			// Time user signed off
+      // Grab the nickname
+      String getNickname(void) const {
+	 return nickname;
+      };
+      
+      // Grab the username
+      String getUsername(void) const {
+	 return username;
+      };
 
- public:
-   // Constructor
-   Whowas(String const &nn, String const &un, String const &hn, 
-	  String const &vwhn, String const &rn, String const &s,
-	  String const &d, bool hd, bool hh, bool hs, type_t t, time_t sot)
-     : nickname(nn),
-       username(un),
-       hostname(hn),
-       vwhostname(vwhn),
-       realname(rn),
-       server(s),
-       details(d),
-       hideDetails(hd),
-       hideHostname(hh),
-       hideServer(hs),
-       type(t),
-       signoffTime(sot)
-     {};
-
-   // Grab the nickname
-   String getNickname(void) const {
-      return nickname;
-   };
-
-   // Grab the username
-   String getUsername(void) const {
-      return username;
-   };
-
-   // Grab the appropriate hostname, based on the given user
-   String getHostname(User *u) {
-      return ((hideHostname && !User::isHelper(u)) ?
-	      vwhostname : hostname);
+      // Grab the appropriate hostname, based on the given user
+      String getHostname(User *u) {
+	 return ((hideHostname && !User::isHelper(u)) ?
+		 vwhostname : hostname);
+      };
+   
+      // Grab the hostname
+      String getHostname(void) const {
+	 return hostname;
+      };
+      
+      // Grab the virtual-world hostname
+      String getVWHostname(void) const {
+	 return vwhostname;
+      };
+      
+      // Grab the 'real name' field
+      String getRealname(void) const {
+	 return realname;
+      };
+      
+      // Grab the server, if it is not hidden or the user can see it
+      String getServer(User *u) {
+	 return ((hideServer && !User::isHelper(u)) ?
+		 String('*') : server);
+      };
+      
+      // Grab the server
+      String getServer(void) const {
+	 return server;
+      };
+      
+      // Check if there is an away message available
+      bool hasAwayMessage(void) const {
+	 return awayMessage.length();
+      };
+      
+      // Get the away message (could be blank)
+      String getAwayMessage(void) const {
+	 return awayMessage;
+      };
+      
+      // Grab the details
+      String getDetails(void) const {
+	 return details;
+      };
+      
+      // Grab the type of 'was' :)
+      type_t getType(void) const {
+	 return type;
+      };
+      
+      // Grab the time this user 'signed off'
+      time_t getSignoffTime(void) const {
+	 return signoffTime;
+      };
    };
    
-   // Grab the hostname
-   String getHostname(void) const {
-      return hostname;
-   };
-   
-   // Grab the virtual-world hostname
-   String getVWHostname(void) const {
-      return vwhostname;
-   };
-
-   // Grab the 'real name' field
-   String getRealname(void) const {
-      return realname;
-   };
-
-   // Grab the server, if it is not hidden or the user can see it
-   String getServer(User *u) {
-      return ((hideServer && !User::isHelper(u)) ?
-	      String('*') : server);
-   };
-   
-   // Grab the server
-   String getServer(void) const {
-      return server;
-   };
-
-   // Check if there is an away message available
-   bool hasAwayMessage(void) const {
-      return awayMessage.length();
-   };
-   
-   // Get the away message (could be blank)
-   String getAwayMessage(void) const {
-      return awayMessage;
-   };
-   
-   // Grab the details
-   String getDetails(void) const {
-      return details;
-   };
-
-   // Grab the type of 'was' :)
-   type_t getType(void) const {
-      return type;
-   };
-   
-   // Grab the time this user 'signed off'
-   time_t getSignoffTime(void) const {
-      return signoffTime;
-   };
 };
-
+   
 #endif
 

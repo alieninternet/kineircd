@@ -32,7 +32,7 @@
 #  include "kineircd/str.h"
 
 // Output/Broadcast debug line
-extern void debug(String const &);
-
+extern void debug(Kine::String const &);
+   
 # endif
 #endif

@@ -34,6 +34,8 @@
 #include "kineircd/loggersyslog.h"
 #include "kineircd/debug.h"
 
+using namespace Kine;
+
 
 /* LoggerSyslog - Syslog logger component constructor
  * Original 16/02/2000 simonb

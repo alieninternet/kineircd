@@ -29,6 +29,8 @@
 
 #include "kineircd/utils.h"
 
+using namespace Kine;
+
 
 /* baseXStr - Convert a number to another base (output a string) up to base 85
  * Original 17/01/2001 simonb

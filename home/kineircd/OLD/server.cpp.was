@@ -25,6 +25,8 @@
 
 #include "kineircd/server.h"
 
+using namespace Kine;
+
 
 // Server modes
 char const *Server::modeStr = 

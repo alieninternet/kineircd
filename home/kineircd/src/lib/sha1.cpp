@@ -23,6 +23,8 @@
 # include <openssl/sha.h>
 #else
 
+using namespace Kine;
+
 # define SHA_DIGEST_LENGTH	20	// 160 bits.
 
 // This stuff should move..

@@ -27,6 +27,8 @@
 #include "kineircd/loggerfile.h"
 #include "kineircd/debug.h"
 
+using namespace Kine;
+
 
 /* LoggerFile - Generic file logger component constructor
  * Original 18/02/2000 simonb

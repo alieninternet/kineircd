@@ -33,20 +33,25 @@
 #  include "kineircd/logger.h"
 
 
-// The syslog logging class
-class LoggerSyslog : public Logger {
- private:
-   void logLine(const String &, 
-		const mask_type = MASK_HOUSEKEEPING);	// Log a string of text
-
- public:
-   LoggerSyslog(mask_type, const char *, const bool);	// Constructor
-   ~LoggerSyslog(void);					// Destructor
+namespace Kine {
    
-   // Is the log ok?
-   bool ok(void) const
-     { return true; };
-};
+   // The syslog logging class
+   class LoggerSyslog : public Logger {
+    private:
+      void logLine(const String &, 
+		   const mask_type = MASK_HOUSEKEEPING);// Log a string of text
+      
+    public:
+      LoggerSyslog(mask_type, const char *, const bool);// Constructor
+      ~LoggerSyslog(void);				// Destructor
+   
+      // Is the log ok?
+      bool ok(void) const
+	{ return true; };
+   };
 
+};
+   
 # endif
 #endif
+   

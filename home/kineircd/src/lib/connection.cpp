@@ -32,6 +32,8 @@
 #include "kineircd/daemon.h"
 #include "kineircd/utils.h"
 
+using namespace Kine;
+
 
 /* Connection - Initialise new connection
  * Original 12/08/01 simonb

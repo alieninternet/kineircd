@@ -32,6 +32,8 @@
 #include "kineircd/lang.h"
 #include "kineircd/utils.h"
 
+using namespace Kine;
+
 
 // Functions table
 struct registerHandler::functionTableStruct const 

@@ -30,6 +30,8 @@
 #ifndef _LANGTAGS_H_
 # define _LANGTAGS_H_
 
+namespace Kine {
+
 class LangTags {
  public:
    /* Corresponding numbers for the language data vector
@@ -41,6 +43,8 @@ class LangTags {
         [+tag_name+],[+ ENDFOR langtags +]
 	_END_
    };
+};
+
 };
 
 #endif
@@ -77,21 +81,24 @@ class LangTags {
 
 #include "kineircd/lang.h"
 
+using namespace Kine;
 
-namespace Lang {
-   /* This is a list of language tags so that the language parser
-    * knows where to shove the language data.
-    * WARNING!!! This list is kept in sync with the list in
-    * the accompanying header file by being automatically generated.
-    * DO NOT EDIT THIS!
-    */
-   Lang::languageTagsStruct languageTags[LangTags::_END_] =
-     {[+ FOR langtags "," +]
-          { "[+tag_name+]",
-	    [+tag_required+], [+tag_oneword+]
-	  }[+ ENDFOR langtags +]
-     };
-}
+namespace Kine {
+   namespace Lang {
+      /* This is a list of language tags so that the language parser
+       * knows where to shove the language data.
+       * WARNING!!! This list is kept in sync with the list in
+       * the accompanying header file by being automatically generated.
+       * DO NOT EDIT THIS!
+       */
+      Kine::Lang::languageTagsStruct languageTags[LangTags::_END_] =
+        {[+ FOR langtags "," +]
+             { "[+tag_name+]",
+  	       [+tag_required+], [+tag_oneword+]
+ 	     }[+ ENDFOR langtags +]
+        };
+   };
+};
 
 /* End of generated output */
 [+ ESAC +]

@@ -31,6 +31,8 @@
 #include "kineircd/lang.h"
 #include "kineircd/utils.h"
 
+using namespace Kine;
+
 
 // User modes -- IMPORTANT: Update the mode strings as you update the table!
 char const *User::modeStr = 

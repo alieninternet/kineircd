@@ -30,6 +30,8 @@
 #include "kineircd/utils.h"
 #include "kineircd/lang.h"
 
+using namespace Kine;
+
 
 // Channel modes -- IMPORTANT: Update the mode strings as you update the table!
 char const *Channel::modeStr = 

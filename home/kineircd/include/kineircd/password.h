@@ -27,33 +27,39 @@
 # include "kineircd/str.h"
 # include "kineircd/utils.h"
 
-class Password {
- public:
-   typedef Utils::SHA1::digest_type digest_type;
-   
- private:
-   // DO NOT CHANGE THIS, unless you want to be hurt very painfully :(
-   static const char delim = '\0';		// Security delimeter :)
-   
-   digest_type const password;			// Password (hashed)
 
- public:
-   // Constructor   
-   Password(const digest_type &p)
-     : password(p)
-     {};
+namespace Kine {
    
-   // Return the password digest
-   const digest_type &getPassword(void) const {
-      return password;
+   class Password {
+    public:
+      typedef Utils::SHA1::digest_type digest_type;
+      
+    private:
+      // DO NOT CHANGE THIS, unless you want to be hurt very painfully :(
+      static const char delim = '\0';		// Security delimeter :)
+      
+      digest_type const password;		// Password (hashed)
+      
+    public:
+      // Constructor   
+      Password(const digest_type &p)
+	: password(p)
+	  {};
+      
+      // Return the password digest
+      const digest_type &getPassword(void) const {
+	 return password;
+      };
+      
+      // Transform the nickname and password pair into SHA1 output
+      static digest_type makePassword(String const &nickname,
+				      String const &password) {
+	 return Utils::SHA1::generate(nickname.IRCtoLower() + delim + 
+				      password);
+      };
    };
    
-   // Transform the nickname and password pair into SHA1 output
-   static digest_type makePassword(String const &nickname,
-				   String const &password) {
-      return Utils::SHA1::generate(nickname.IRCtoLower() + delim + password);
-   };
 };
-
+   
 #endif
-
+   

@@ -30,7 +30,9 @@
 #  include <set>
 # endif
 
-class LocalUser;
+namespace Kine {
+   class LocalUser;
+};
 
 # include "kineircd/user.h"
 # include "kineircd/channel.h"
@@ -40,173 +42,176 @@ class LocalUser;
 # include "kineircd/utils.h"
 # include "kineircd/logger.h"
 
-
-// An 'invitation' (for channel invites)
-class LocalUserInvitation {
- private:
-   String const inviter;			// Sender of the invitation
-   int const timeout;				// Seconds this is valid or -1
-
- public:
-   LocalUserInvitation(String const &i, long t)
-     : inviter(i),
-       timeout(t)
-     {};
+namespace Kine {
    
-   // Variable access
-   String const &getInviter(void) const {
-      return inviter;
-   };
-   
-   long const getTimeout(void) const {
-      return timeout;
-   };
-};
-
-
-// Locally connected user class
-class LocalUser {
- public:
-# ifdef STL_HAS_HASH
-   typedef std::hash_set <String> watch_set_t;
-# else
-   typedef std::set <String> watch_set_t;
-# endif
-   
-   // The invitations list should never get long enough to warrant hashing
-   typedef std::map <String, LocalUserInvitation *> invitation_map_t;
-   
-   typedef std::map <String, time_t> floodlock_reply_map_t;
-
- public:
-   User *user;					// Link into main user class
-   Handler *handler;				// Link into user handler
-   LangData *language;				// Language dialogue data
-   
-   Logger::mask_type serverNoticeMask;		// Server notices to receive
-   
-   watch_set_t watches;				// Watching these nicknames
-   invitation_map_t invitations;		// Invitations to channels
-   
-# ifdef FLOODLOCK_ACCEPT_MSG
-   floodlock_reply_map_t acceptFloodlocks;	// Timeout on accept requests
-# endif
-# ifdef FLOODLOCK_AWAY_REPLY
-   floodlock_reply_map_t awayReplyFloodlocks;	// Timeout on 'x is away' msgs
-# endif
-# ifdef FLOODLOCK_KNOCK_MSG
-   floodlock_reply_map_t knockFloodlocks;	// Timeout on knock requests
-# endif
-   
-   bool onReplyFloodlockMap(floodlock_reply_map_t &, time_t, 
-			    String const &);	// Check an away-reply lock
-
- public:
-   // Constructor
-   LocalUser(User *u, Handler *h, LangData *l)
-     : user(u),
-       handler(h),
-       language(l),
-       serverNoticeMask(Logger::MASK_NONE)
-     {
-	watches.clear();
-	invitations.clear();
-# ifdef FLOODLOCK_ACCEPT_MSG
-	acceptFloodlocks.clear();
-# endif
-# ifdef FLOODLOCK_AWAY_REPLY
-	awayReplyFloodlocks.clear();
-# endif
-# ifdef FLOODLOCK_KNOCK_MSG
-	knockFloodlocks.clear();
-# endif
-     };
-   
-   // Destructor
-   ~LocalUser(void) {
-      watches.clear();
-      invitations.clear();
-# ifdef FLOODLOCK_ACCEPT_MSG
-      acceptFloodlocks.clear();
-# endif
-# ifdef FLOODLOCK_AWAY_REPLY
-      awayReplyFloodlocks.clear();
-# endif
-# ifdef FLOODLOCK_KNOCK_MSG
-      knockFloodlocks.clear();
-# endif
-   };
-
-   // Add to the watch list
-   void addWatch(const String &target) {
-      watches.insert(target);
-   };
-   
-   // Remote from the watch list
-   void delWatch(const String &target) {
-      watches.erase(target);
-   };
-   
-   // Wipe the watches list
-   void wipeWatches(void) {
-      watches.clear();
-   };
-   
-   // Check for a watched nick
-   bool watching(String const &target) const {
-      return ((watches.find(target) != watches.end()) ? true : false);
-   };
-
-   
-   void addInvitation(Channel *, User *, 
-		      time_t);			// Invite us to a channel
-   
-   // Delete a channel invitation
-   void delInvitation(Channel *channel) {
-      invitations.erase(channel->getName());
-   };
-
-   bool invitedTo(Channel *);			// Check an invitation
-
-# ifdef FLOODLOCK_ACCEPT_MSG
-   // Check if a channel is on our accept request floodlock map
-   bool onAcceptMessageFloodlock(User *);
-# endif
-   
-# ifdef FLOODLOCK_AWAY_REPLY
-   // Check if a user is on our away-reply floodlock map
-   bool onAwayReplyFloodlock(User *);
-# endif
-   
-# ifdef FLOODLOCK_KNOCK_MSG
-   // Check if a channel is on our knock-request floodlock map
-   bool onKnockMessageFloodlock(Channel *c) {
-      return onReplyFloodlockMap(knockFloodlocks, FLOODLOCK_KNOCK_MSG,
-				 c->getName().IRCtoLower());
-   };
-# endif
-
-   // Set the language setting
-   void setLang(LangData *ld) {
-      language = ld;
-   };
-   
-   // Return true if there is no language
-   bool noLang(void) {
-      return (language == NULL);
-   };
-   
-   // Grab a language string
-   String lang(LangTags::tag_t const &t) {
-      // Return it from the language dialogue data if we can
-      if (language) { 
-	 return language->get(t);
-      }
+   // An 'invitation' (for channel invites)
+   class LocalUserInvitation {
+    private:
+      String const inviter;			// Sender of the invitation
+      int const timeout;			// Seconds this is valid or -1
       
-      // Oh well
-      return "-";
+    public:
+      LocalUserInvitation(String const &i, long t)
+	: inviter(i),
+          timeout(t)
+	{};
+      
+      // Variable access
+      String const &getInviter(void) const {
+	 return inviter;
+      };
+      
+      long const getTimeout(void) const {
+	 return timeout;
+      };
    };
+   
+
+   // Locally connected user class
+   class LocalUser {
+    public:
+# ifdef STL_HAS_HASH
+      typedef std::hash_set <String> watch_set_t;
+# else
+      typedef std::set <String> watch_set_t;
+# endif
+   
+      // The invitations list should never get long enough to warrant hashing
+      typedef std::map <String, LocalUserInvitation *> invitation_map_t;
+      
+      typedef std::map <String, time_t> floodlock_reply_map_t;
+      
+    public:
+      User *user;				// Link into main user class
+      Handler *handler;				// Link into user handler
+      LangData *language;			// Language dialogue data
+      
+      Logger::mask_type serverNoticeMask;	// Server notices to receive
+      
+      watch_set_t watches;			// Watching these nicknames
+      invitation_map_t invitations;		// Invitations to channels
+      
+# ifdef FLOODLOCK_ACCEPT_MSG
+      floodlock_reply_map_t acceptFloodlocks;	// Timeout on accept requests
+# endif
+# ifdef FLOODLOCK_AWAY_REPLY
+      floodlock_reply_map_t awayReplyFloodlocks;// Timeout on 'x is away' msgs
+# endif
+# ifdef FLOODLOCK_KNOCK_MSG
+      floodlock_reply_map_t knockFloodlocks;	// Timeout on knock requests
+# endif
+      
+      bool onReplyFloodlockMap(floodlock_reply_map_t &, time_t, 
+			       String const &);	// Check an away-reply lock
+      
+    public:
+      // Constructor
+      LocalUser(User *u, Handler *h, LangData *l)
+	: user(u),
+          handler(h),
+          language(l),
+          serverNoticeMask(Logger::MASK_NONE)
+	{
+	   watches.clear();
+	   invitations.clear();
+# ifdef FLOODLOCK_ACCEPT_MSG
+	   acceptFloodlocks.clear();
+# endif
+# ifdef FLOODLOCK_AWAY_REPLY
+	   awayReplyFloodlocks.clear();
+# endif
+# ifdef FLOODLOCK_KNOCK_MSG
+	   knockFloodlocks.clear();
+# endif
+	};
+      
+      // Destructor
+      ~LocalUser(void) {
+	 watches.clear();
+	 invitations.clear();
+# ifdef FLOODLOCK_ACCEPT_MSG
+	 acceptFloodlocks.clear();
+# endif
+# ifdef FLOODLOCK_AWAY_REPLY
+	 awayReplyFloodlocks.clear();
+# endif
+# ifdef FLOODLOCK_KNOCK_MSG
+	 knockFloodlocks.clear();
+# endif
+      };
+      
+      // Add to the watch list
+      void addWatch(const String &target) {
+	 watches.insert(target);
+      };
+      
+      // Remote from the watch list
+      void delWatch(const String &target) {
+	 watches.erase(target);
+      };
+      
+      // Wipe the watches list
+      void wipeWatches(void) {
+	 watches.clear();
+      };
+   
+      // Check for a watched nick
+      bool watching(String const &target) const {
+	 return ((watches.find(target) != watches.end()) ? true : false);
+      };
+      
+   
+      void addInvitation(Channel *, User *, 
+			 time_t);		// Invite us to a channel
+      
+      // Delete a channel invitation
+      void delInvitation(Channel *channel) {
+	 invitations.erase(channel->getName());
+      };
+      
+      bool invitedTo(Channel *);			// Check an invitation
+      
+# ifdef FLOODLOCK_ACCEPT_MSG
+      // Check if a channel is on our accept request floodlock map
+      bool onAcceptMessageFloodlock(User *);
+# endif
+      
+# ifdef FLOODLOCK_AWAY_REPLY
+      // Check if a user is on our away-reply floodlock map
+      bool onAwayReplyFloodlock(User *);
+# endif
+      
+# ifdef FLOODLOCK_KNOCK_MSG
+      // Check if a channel is on our knock-request floodlock map
+      bool onKnockMessageFloodlock(Channel *c) {
+	 return onReplyFloodlockMap(knockFloodlocks, FLOODLOCK_KNOCK_MSG,
+				    c->getName().IRCtoLower());
+      };
+# endif
+      
+      // Set the language setting
+      void setLang(LangData *ld) {
+	 language = ld;
+      };
+      
+      // Return true if there is no language
+      bool noLang(void) {
+	 return (language == NULL);
+      };
+      
+      // Grab a language string
+      String lang(LangTags::tag_t const &t) {
+	 // Return it from the language dialogue data if we can
+	 if (language) { 
+	    return language->get(t);
+	 }
+	 
+	 // Oh well
+	 return "-";
+      };
+   };
+   
 };
-
+   
 #endif
-
+   

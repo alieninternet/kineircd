@@ -39,20 +39,23 @@
 #include "kineircd/lang.h"
 #include "kineircd/numerics.h"
 
+using namespace Kine;
+
 
 // Variables
+namespace Kine {
 namespace Daemon {
    Config *config = 0;
    
-   Daemon::relationmask_list_t failNicknames;
-   Daemon::relationmask_list_t failChannels;
+   Kine::Daemon::relationmask_list_t failNicknames;
+   Kine::Daemon::relationmask_list_t failChannels;
    
-   Daemon::relationmask_list_t redirectChannels;
+   Kine::Daemon::relationmask_list_t redirectChannels;
    
-   Daemon::operator_map_t operators;
+   Kine::Daemon::operator_map_t operators;
    
-   Daemon::listen_list_t listens;
-   Daemon::connection_list_t connections;
+   Kine::Daemon::listen_list_t listens;
+   Kine::Daemon::connection_list_t connections;
    
    int maxDescriptors = 0;
    fd_set inFDSET;
@@ -66,7 +69,7 @@ namespace Daemon {
    time_t lastDataMarkTime = 0;
    unsigned long dataRate = 0;
    
-   Daemon::stages stage = Daemon::STAGE_INIT;
+   Kine::Daemon::stages stage = Kine::Daemon::STAGE_INIT;
    
    struct timeval currentTime;
    String timeZone = "+0000"; // Assume GMT to start with..
@@ -79,15 +82,15 @@ namespace Daemon {
    
    Server *server = 0;
    
-   Daemon::server_map_t servers;
+   Kine::Daemon::server_map_t servers;
    
-   Daemon::channel_map_t channels;
-   Daemon::channel_map_t localChannels;
+   Kine::Daemon::channel_map_t channels;
+   Kine::Daemon::channel_map_t localChannels;
    
-   Daemon::user_map_t users;
-   Daemon::localuser_map_t localUsers;
+   Kine::Daemon::user_map_t users;
+   Kine::Daemon::localuser_map_t localUsers;
    
-   Daemon::whowas_deque_t whowas;
+   Kine::Daemon::whowas_deque_t whowas;
    time_t whowasDecay = DEFAULT_CONFIG_WHOWAS_DECAY;
    unsigned short whowasMaxEntries = DEFAULT_CONFIG_WHOWAS_MAX_ENTRIES;
    
@@ -104,14 +107,15 @@ namespace Daemon {
    unsigned int numUnknown = 0;
    unsigned int numHelpers = 0;
    
-   Daemon::motd_t motd;
+   Kine::Daemon::motd_t motd;
+};
 };
 
 
 /* ~Daemon - Deinit the server
  * Original 11/08/01 simonb
  */
-Daemon::~Daemon(void)
+Kine::Daemon::~Daemon(void)
 {
 #ifdef DEBUG
    debug("Shutting down server");
@@ -177,7 +181,7 @@ Daemon::~Daemon(void)
 /* init - Init the server
  * Original 11/08/01 simonb
  */
-bool Daemon::init(Config &conf)
+bool Kine::Daemon::init(Config &conf)
 {
 #ifdef DEBUG
    cerr << "Initialising new server" << endl;
@@ -303,7 +307,7 @@ bool Daemon::init(Config &conf)
  * Original 17/08/01 simonb
  * Note: the goto's are more efficient
  */
-void Daemon::garbo(bool called)
+void Kine::Daemon::garbo(bool called)
 {
 #ifdef MAX_GARBO_RUN_ITEMS
    int items = 0;
@@ -393,7 +397,7 @@ check_connections:
 /* checkClock - Check the extended clock information (for RPL_TIMEONSERVERIS)
  * Original 25/10/01 simonb
  */
-void Daemon::checkClock(void)
+void Kine::Daemon::checkClock(void)
 {
 #ifdef HAVE_TZSET_AND_FRIENDS
    // For the timezone information to be initialised (or re-initialised)
@@ -424,7 +428,7 @@ void Daemon::checkClock(void)
 /* rehash - Rehash the server
  * Original 19/09/01 simonb
  */
-void Daemon::rehash(Handler *handler, User *user)
+void Kine::Daemon::rehash(Handler *handler, User *user)
 {
    // If we got a user, we can assume this was called by someone
    if (user) {
@@ -459,7 +463,7 @@ void Daemon::rehash(Handler *handler, User *user)
 /* restart - Rehash the server
  * Original  simonb
  */
-void Daemon::restart(Handler *handler, User *user)
+void Kine::Daemon::restart(Handler *handler, User *user)
 {
 }
 
@@ -467,7 +471,7 @@ void Daemon::restart(Handler *handler, User *user)
 /* makeISUPPORT - Generate an ISUPPORT line using current variables
  * Original 24/10/01 simonb
  */
-String Daemon::makeISUPPORT(void)
+String Kine::Daemon::makeISUPPORT(void)
 {
    return String::printf("NICKLEN=%d"				// (~11chrs)
 			 " TOPICLEN=%d"				// (~13chrs)
@@ -510,7 +514,7 @@ String Daemon::makeISUPPORT(void)
 /* serverNotice - [Various Forms] Broadcast a server notice to +s's
  * Original 18/09/01 simonb
  */
-//void Daemon::serverNotice(ServerNotice::servnotice_t type, String const &message)
+//void Kine::Daemon::serverNotice(ServerNotice::servnotice_t type, String const &message)
 //{
 //   // Run through the local user list
 //   for (localuser_map_t::iterator it = localUsers.begin();
@@ -563,7 +567,7 @@ String Daemon::makeISUPPORT(void)
 /* broadcastWallops - [Various Forms] Broadcast a WALLOPS to local +w's
  * Original 18/09/01 simonb
  */
-void Daemon::broadcastWallops(Server *from, String const &message)
+void Kine::Daemon::broadcastWallops(Server *from, String const &message)
 {
    // Run through the local user list
    for (localuser_map_t::iterator it = localUsers.begin();
@@ -585,7 +589,7 @@ void Daemon::broadcastWallops(Server *from, String const &message)
    }
 }
 
-void Daemon::broadcastWallops(User *from, String const &message)
+void Kine::Daemon::broadcastWallops(User *from, String const &message)
 {
    // Run through the local user list
    for (localuser_map_t::iterator it = localUsers.begin();
@@ -611,7 +615,7 @@ void Daemon::broadcastWallops(User *from, String const &message)
 /* addInputFD - Add a file descriptor to the input set
  * Original 11/08/01 simonb
  */
-void Daemon::addInputFD(int fd)
+void Kine::Daemon::addInputFD(int fd)
 {
    FD_SET(fd, &inFDSET);
    
@@ -628,7 +632,7 @@ void Daemon::addInputFD(int fd)
 /* delInputFD - Delete a file descriptor to the input set
  * Original 11/08/01 simonb
  */
-void Daemon::delInputFD(int fd)
+void Kine::Daemon::delInputFD(int fd)
 {
    FD_CLR(fd, &inFDSET);
 }
@@ -637,7 +641,7 @@ void Daemon::delInputFD(int fd)
 /* addOutputFD - Add a file descriptor to the output set
  * Original 11/08/01 simonb
  */
-void Daemon::addOutputFD(int fd)
+void Kine::Daemon::addOutputFD(int fd)
 {
    FD_SET(fd, &outFDSET);
 }
@@ -646,7 +650,7 @@ void Daemon::addOutputFD(int fd)
 /* delOutputFD - Delete a file descriptor to the output set
  * Original 11/08/01 simonb
  */
-void Daemon::delOutputFD(int fd)
+void Kine::Daemon::delOutputFD(int fd)
 {
    FD_CLR(fd, &outFDSET);
 }
@@ -655,7 +659,7 @@ void Daemon::delOutputFD(int fd)
 /* newConnection - Fire up a new connection from one of the listening sockets
  * Original 11/08/01 simonb
  */
-void Daemon::newConnection(Listen *l)
+void Kine::Daemon::newConnection(Listen *l)
 {
    // Accept the new connection
    Socket *newsock = l->socket->accept(l->secure);
@@ -710,7 +714,7 @@ void Daemon::newConnection(Listen *l)
  * Original 12/08/01 simonb
  * Note: I do not like this.
  */
-void Daemon::addUser(User *user)
+void Kine::Daemon::addUser(User *user)
 {
 #ifdef DEBUG_EXTENDED
    debug("addUser() <- " + user->getNickname() + " (" +
@@ -766,7 +770,7 @@ void Daemon::addUser(User *user)
 /* getUser - Get a user record from the users list, if we can
  * Original 14/08/01 simonb
  */
-User *Daemon::getUser(String const &nick)
+User *Kine::Daemon::getUser(String const &nick)
 {
    // Look for this nick
    String n = nick.IRCtoLower();
@@ -787,7 +791,7 @@ User *Daemon::getUser(String const &nick)
 /* changeUserNick - Change a user's nickname (may also mean replacing records)
  * Original 24/08/01 simonb
  */
-void Daemon::changeUserNick(User *user, String const &newnick, 
+void Kine::Daemon::changeUserNick(User *user, String const &newnick, 
 			    time_t changeTime)
 {
 #ifdef DEBUG_EXTENDED
@@ -902,7 +906,7 @@ void Daemon::changeUserNick(User *user, String const &newnick,
 /* delUser - Delete a user from the user list
  * Original 16/08/01 simonb
  */
-void Daemon::delUser(User *user)
+void Kine::Daemon::delUser(User *user)
 {
 #ifdef DEBUG_EXTENDED
    debug("delUser() <- " + user->getNickname() + " (" +
@@ -973,7 +977,7 @@ void Daemon::delUser(User *user)
 /* quitUser - Delete a user from the user list
  * Original 16/08/01 simonb
  */
-void Daemon::quitUser(User *user, String const &reason, bool broadcast)
+void Kine::Daemon::quitUser(User *user, String const &reason, bool broadcast)
 {
    /* We use a map here because it becomes faster to add things without
     * having to check for repeats (the STL does all this).. and besides
@@ -1045,7 +1049,7 @@ void Daemon::quitUser(User *user, String const &reason, bool broadcast)
 /* killUser - Kill a user off the network
  * Original 22/09/01 simonb
  */
-void Daemon::killUser(User *user, String const &caller, 
+void Kine::Daemon::killUser(User *user, String const &caller, 
 		      String const &reason)
 {
    // Same as the quit, use a map
@@ -1079,7 +1083,7 @@ void Daemon::killUser(User *user, String const &caller,
 /* addUserSilence - Add a mask to a user's silence list and broadcast it
  * Original 24/09/01 simonb
  */
-bool Daemon::addUserSilence(User *user, StringMask const &mask)
+bool Kine::Daemon::addUserSilence(User *user, StringMask const &mask)
 {
    // Make sure this is not already in the list (eg. a waste of time)
    for (User::silence_list_t::iterator it = user->silences.begin();
@@ -1102,7 +1106,7 @@ bool Daemon::addUserSilence(User *user, StringMask const &mask)
 /* delUserSilence - Delete a mask from a user's silence list and broadcast it
  * Original 24/09/01 simonb
  */
-bool Daemon::delUserSilence(User *user, StringMask const &mask)
+bool Kine::Daemon::delUserSilence(User *user, StringMask const &mask)
 {
    // Run through the list to find the mask to delete
    for (User::silence_list_t::iterator it = user->silences.begin();
@@ -1124,7 +1128,7 @@ bool Daemon::delUserSilence(User *user, StringMask const &mask)
 /* addUserAccept - Add a mask to a user's ACCEPT list and broadcast it
  * Original 23/10/01 simonb
  */
-bool Daemon::addUserAccept(User *user, User *target)
+bool Kine::Daemon::addUserAccept(User *user, User *target)
 {
    // Check that the target is not already on the list
    if (user->isAccepting(target)) {
@@ -1143,7 +1147,7 @@ bool Daemon::addUserAccept(User *user, User *target)
 /* delUserAccept - Delete a mask from a user's ACCEPT list and broadcast it
  * Original 23/10/01 simonb
  */
-bool Daemon::delUserAccept(User *user, User *target)
+bool Kine::Daemon::delUserAccept(User *user, User *target)
 {
    // Check that the target is on the list
    if (user->isAccepting(target)) {
@@ -1162,7 +1166,7 @@ bool Daemon::delUserAccept(User *user, User *target)
 /* snapshotUser - Take a 'snapshot' of a user for the whowas list
  * Original 08/10/01 simonb
  */
-void Daemon::snapshotUser(User *u, Whowas::type_t type, String const &details)
+void Kine::Daemon::snapshotUser(User *u, Whowas::type_t type, String const &details)
 {
    // Check the length of the whowas list, we may need to kill the oldest entry
    if (whowas.size() >= whowasMaxEntries) {
@@ -1176,7 +1180,7 @@ void Daemon::snapshotUser(User *u, Whowas::type_t type, String const &details)
 /* addChannel - Add a channel to the appropriate channel list
  * Original 15/08/01 simonb
  */
-void Daemon::addChannel(Channel *chan, String const &creator)
+void Kine::Daemon::addChannel(Channel *chan, String const &creator)
 {
 #ifdef DEBUG_EXTENDED
    debug("addChannel() <- " + chan->name);
@@ -1214,7 +1218,7 @@ void Daemon::addChannel(Channel *chan, String const &creator)
 /* getChannel - Grab a channel record from the appropriate channel list
  * Original 15/08/01 simonb
  */
-Channel *Daemon::getChannel(String const &channel)
+Channel *Kine::Daemon::getChannel(String const &channel)
 {
    // Look for this channel
    String chan = channel.IRCtoLower();
@@ -1247,7 +1251,7 @@ Channel *Daemon::getChannel(String const &channel)
  * Original 15/08/01 simonb
  * Note: Does not check if the user is already in the channel!!
  */
-void Daemon::joinChannel(Channel *c, User *u)
+void Kine::Daemon::joinChannel(Channel *c, User *u)
 {
 #ifdef DEBUG_EXTENDED
    debug("joinChannel() <- " + c->name + ", " + u->nickname);
@@ -1276,7 +1280,7 @@ void Daemon::joinChannel(Channel *c, User *u)
  * Original 15/08/01 simonb
  * Note: This shouldn't be called by a user handling routine.
  */
-void Daemon::leaveChannel(Channel *c, User *u)
+void Kine::Daemon::leaveChannel(Channel *c, User *u)
 {
 #ifdef DEBUG_EXTENDED
    debug("leaveChannel() <- " + c->name + ", " + u->nickname);
@@ -1329,7 +1333,7 @@ void Daemon::leaveChannel(Channel *c, User *u)
 /* partChannel - User leaving a channel via PART
  * Original 15/08/01 simonb
  */
-void Daemon::partChannel(Channel *c, User *u, String const &reason)
+void Kine::Daemon::partChannel(Channel *c, User *u, String const &reason)
 {
    // Broadcast the join to anyone locally connected
    for (Channel::member_map_t::iterator it = c->members.begin();
@@ -1349,7 +1353,7 @@ void Daemon::partChannel(Channel *c, User *u, String const &reason)
 /* kickChannelMember - User kicking another user out of a channel
  * Original 15/09/01 simonb
  */
-void Daemon::kickChannelMember(Channel *c, User *kicker, User *kickee,
+void Kine::Daemon::kickChannelMember(Channel *c, User *kicker, User *kickee,
 			       String const &reason)
 {
    // Trim this if we need to
@@ -1375,7 +1379,7 @@ void Daemon::kickChannelMember(Channel *c, User *kicker, User *kickee,
 /* changeChannelTopic - [Various Forms] User/Server changing a channel topic
  * Original 19/09/01 simonb
  */
-void Daemon::changeChannelTopic(Channel *c, User *from, String const &topic)
+void Kine::Daemon::changeChannelTopic(Channel *c, User *from, String const &topic)
 {
 #ifdef DEBUG_EXTENDED
    debug("changeChannelTopic() <- " + c->name + ", " + from->nickname + 
@@ -1407,7 +1411,7 @@ void Daemon::changeChannelTopic(Channel *c, User *from, String const &topic)
    // broadcast.
 }
 
-void Daemon::changeChannelTopic(Channel *c, Server *from, 
+void Kine::Daemon::changeChannelTopic(Channel *c, Server *from, 
 				String const &topic, String const &setter,
 				time_t settime)
 {
@@ -1440,7 +1444,7 @@ void Daemon::changeChannelTopic(Channel *c, Server *from,
 /* getOperator - Grab an operator record from the operators list
  * Original 08/09/01 simonb
  */
-Operator *Daemon::getOperator(String const &nickname)
+Operator *Kine::Daemon::getOperator(String const &nickname)
 {
    // Fix up the nickname string
    String nick = nickname.IRCtoLower();
@@ -1464,7 +1468,7 @@ Operator *Daemon::getOperator(String const &nickname)
 /* addServer - Add a server to the servers map
  * Original 10/09/01 simonb
  */
-void Daemon::addServer(Server *server)
+void Kine::Daemon::addServer(Server *server)
 {
 #ifdef DEBUG_EXTENDED
    debug("addServer() <- " + server->hostname);
@@ -1515,7 +1519,7 @@ void Daemon::addServer(Server *server)
  * P14 is done (it will most likely need to be reconsidered well before then
  * anyway, so hopefully I'm safe...) :(
  */
-void Daemon::delServer(Server *server)
+void Kine::Daemon::delServer(Server *server)
 {
 #ifdef DEBUG_EXTENDED
    debug("delServer() <- " + server->hostname);
@@ -1538,7 +1542,7 @@ void Daemon::delServer(Server *server)
 /* getServer - [Various Forms] Grab a record from the servers list if we can
  * Original 10/09/01 simonb
  */
-Server *Daemon::getServer(char magicChar)
+Server *Kine::Daemon::getServer(char magicChar)
 {
 //   // Run through the list of servers to find this server
 //   for (server_map_t::iterator it = servers.begin();
@@ -1552,7 +1556,7 @@ Server *Daemon::getServer(char magicChar)
    return NULL;
 }
 
-Server *Daemon::getServer(String const &hostname)
+Server *Kine::Daemon::getServer(String const &hostname)
 {
    // Fix up the hostname
    String servname = hostname.toLower();
@@ -1572,7 +1576,7 @@ Server *Daemon::getServer(String const &hostname)
    return NULL;
 }
 
-Server *Daemon::getServer(StringMask const &hostmask)
+Server *Kine::Daemon::getServer(StringMask const &hostmask)
 {
    // Run through the list of servers to find this server
    for (server_map_t::iterator it = servers.begin();
@@ -1590,7 +1594,7 @@ Server *Daemon::getServer(StringMask const &hostmask)
 /* processServerModes - Support routine for the change server modes below
  * Original 21/09/01 simonb
  */
-String Daemon::processServerModes(Server *server, Handler *handler, 
+String Kine::Daemon::processServerModes(Server *server, Handler *handler, 
 				  User *user, String const &modes,
 				  StringTokens *tokens)
 {
@@ -1693,7 +1697,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 /* changeServerMode - Broadcast and change a server mode modification
  * Original 21/09/01 simonb
  */
-void Daemon::changeServerMode(Server *server, Server *from, 
+void Kine::Daemon::changeServerMode(Server *server, Server *from, 
 			      String const &modes, StringTokens *tokens)
 {
    String modeStr = processServerModes(server, 0, 0, modes, tokens);
@@ -1725,7 +1729,7 @@ void Daemon::changeServerMode(Server *server, Server *from,
    // broadcast to servers
 }
 
-void Daemon::changeServerMode(Server *server, Handler *handler, User *from, 
+void Kine::Daemon::changeServerMode(Server *server, Handler *handler, User *from, 
 			      String const &modes, StringTokens *tokens)
 {
    String modeStr = processServerModes(server, handler, from, modes, tokens);
@@ -1761,7 +1765,7 @@ void Daemon::changeServerMode(Server *server, Handler *handler, User *from,
 /* routeTo - [Various Forms] Find a route to a particular object
  * Original 06/09/01 simonb
  */
-Handler *Daemon::routeTo(Server *server)
+Handler *Kine::Daemon::routeTo(Server *server)
 {
    // Check the obvious - is this server locally connected
    if (server->handler) {
@@ -1772,7 +1776,7 @@ Handler *Daemon::routeTo(Server *server)
    return NULL;
 }
 
-Handler *Daemon::routeTo(User *user)
+Handler *Kine::Daemon::routeTo(User *user)
 {
    // Check the obvious - is this user locally connected
    if (user->local) {
@@ -1787,7 +1791,7 @@ Handler *Daemon::routeTo(User *user)
 /* wipeFails - Clean the fail lists
  * Original 06/09/01 simonb
  */
-void Daemon::wipeFails(void)
+void Kine::Daemon::wipeFails(void)
 {
    RelationMask *rm;
 
@@ -1808,7 +1812,7 @@ void Daemon::wipeFails(void)
 /* wipeListens - Shutdown all of our listening sockets
  * Original 18/08/01 simonb
  */
-void Daemon::wipeListens(void)
+void Kine::Daemon::wipeListens(void)
 {
    Listen *l;
    
@@ -1824,7 +1828,7 @@ void Daemon::wipeListens(void)
 /* wipeOpers - Clean out the operators list
  * Original 08/09/01 simonb
  */
-void Daemon::wipeOpers(void)
+void Kine::Daemon::wipeOpers(void)
 {
    Operator *oper;
    
@@ -1839,7 +1843,7 @@ void Daemon::wipeOpers(void)
 /* wipeRedirects - Clean the redirects out
  * Original 13/09/01 simonb
  */
-void Daemon::wipeRedirects(void)
+void Kine::Daemon::wipeRedirects(void)
 {
    RelationMask *rm;
 
@@ -1854,7 +1858,7 @@ void Daemon::wipeRedirects(void)
 /* onRelationMaskList - Check if something is on the given relation list
  * Original 06/09/01 simonb
  */
-String Daemon::onRelationMaskList(relationmask_list_t *rmList, 
+String Kine::Daemon::onRelationMaskList(relationmask_list_t *rmList, 
 				  String const &item)
 {
    // Run through the list and check the masks
@@ -1875,7 +1879,7 @@ String Daemon::onRelationMaskList(relationmask_list_t *rmList,
 /* shutdown - Start the shutdown cycle
  * Original 11/08/01 simonb
  */
-void Daemon::shutdown(String const &reason)
+void Kine::Daemon::shutdown(String const &reason)
 {
 #ifdef DEBUG
    debug(String("shutdown() <- ") + reason);
@@ -1913,7 +1917,7 @@ void Daemon::shutdown(String const &reason)
  */
 #define CheckInput(x)	FD_ISSET(x, &inFDtemp)
 #define CheckOutput(x)	FD_ISSET(x, &outFDtemp)
-void Daemon::run(void)
+void Kine::Daemon::run(void)
 {
    /* Make sure the init was all happy, else there isn't much point us
     * going beyond this point really

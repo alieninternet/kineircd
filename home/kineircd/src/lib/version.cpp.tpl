@@ -25,35 +25,37 @@
 
 #include "kineircd/version.h"
 
-namespace Version {
-   // Build information
-   char const *build = BUILD_STRING;
-
-   // Program name
-   char const *programName = PACKAGE_NAME;
-   
-   // Program version numbers (raw)
-   unsigned short versionMajor = VERSION_MAJOR;
-   unsigned short versionMinor = VERSION_MINOR;
-
-   // Version information (program name and version number, in its entirity)
-   char const *version = PACKAGE_NAME PACKAGE_VERSION;
-
-   // Full version identity (includes build number)
-   char const *versionFull = PACKAGE_NAME PACKAGE_VERSION "#" BUILD_STRING;
-   
-   // E-mail address to where bug reports should wind up
-   char const *bugsEmail = PACKAGE_BUGREPORT;
-   
-   /* Information for INFO command (note: no colon prefixes for any protocol)
-    * Note: Try to make this work OK on a 80 column display (check in text
-    *       clients like EPIC/BitchX etc). Also keep this in UTF-8, or at
-    *       least ISO-8859-1 encoding in a vague attempt to try and keep it 
-    *       fairly standard to read for the various clients out there. This
-    *       is the reason for the special formatting..
-    *       PLEASE DO NOT EDIT THIS UNLESS YOU ARE TOLD TO!!! :)
-    */
-   char const *versionInfo[] = {
+namespace Kine {
+   namespace Version {
+      // Build information
+      char const *build = BUILD_STRING;
+      
+      // Program name
+      char const *programName = PACKAGE_NAME;
+      
+      // Program version numbers (raw)
+      unsigned short versionMajor = VERSION_MAJOR;
+      unsigned short versionMinor = VERSION_MINOR;
+      
+      // Version information (program name and version number, in its entirity)
+      char const *version = PACKAGE_NAME PACKAGE_VERSION;
+      
+      // Full version identity (includes build number)
+      char const *versionFull = PACKAGE_NAME PACKAGE_VERSION "#" BUILD_STRING;
+      
+      // E-mail address to where bug reports should wind up
+      char const *bugsEmail = PACKAGE_BUGREPORT;
+      
+      /* Information for INFO command (note: no colon prefixes for any 
+       * protocol)
+       * Note: Try to make this work OK on a 80 column display (check in text
+       *       clients like EPIC/BitchX etc). Also keep this in UTF-8, or at
+       *       least ISO-8859-1 encoding in a vague attempt to try and keep it 
+       *       fairly standard to read for the various clients out there. This
+       *       is the reason for the special formatting..
+       *       PLEASE DO NOT EDIT THIS UNLESS YOU ARE TOLD TO!!! :)
+       */
+      char const *versionInfo[] = {
 "          \026                     _   _               ___      \026",
 "          \026      __ _ _   _ ___| |_| |__   _____  _( _ )     \026",
 "          \026     / _` | | | / __| __|  _ \\ / _ \\ \\/ / _ \\     \026",
@@ -69,17 +71,17 @@ namespace Version {
 "",	
 " KineIRCd Development Team:",
 "  to be done.. hehe shh, it will come before release :)",
-      0
-   };
-   
-   /* Special version mark thingy whatsit string doohickey.. thingamejig...
-    * Yes! This is ugly. Yes!! I do know about that. Yes!!! It's more efficient
-    * than any other method anyone else has been able to suggest to me
-    * so far. Yes!!!! That's right, that means I don't want your comments on
-    * how #ifdef's are considered obsolete in C++! :)
-    */
-   char const *versionChars =
-// Configuration characters     
+	   0
+      };
+      
+      /* Special version mark thingy whatsit string doohickey.. thingamejig...
+       * Yes! This is ugly. Yes!! I do know about that. Yes!!! It's more 
+       * efficient than any other method anyone else has been able to suggest 
+       * to me so far. Yes!!!! That's right, that means I don't want your
+       * comments on how #ifdef's are considered obsolete in C++! :)
+       */
+      char const *versionChars =
+	// Configuration characters     
 #ifdef ALLOW_LOCALOP_CONNECT
 				"c"
 #endif
@@ -164,4 +166,7 @@ namespace Version {
      				",IPv6"
 #endif
 					; // The end, phew!
-}
+   };
+   
+};
+

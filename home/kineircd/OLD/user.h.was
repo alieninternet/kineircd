@@ -33,7 +33,9 @@
 #  include <list>
 # endif
 
-class User;
+namespace Kine {
+   class User;
+};
 
 # include "kineircd/localuser.h"
 # include "kineircd/str.h"
@@ -43,300 +45,306 @@ class User;
 # include "kineircd/langtags.h"
 
 
-// Main user class
-class User {
- public:
-   typedef std::map <String, Channel *> channel_map_t;
+namespace Kine {
+
+   // Main user class
+   class User {
+    public:
+      typedef std::map <String, Channel *> channel_map_t;
 # ifdef STL_HAS_SLIST
-   typedef std::slist <StringMask> silence_list_t;
+      typedef std::slist <StringMask> silence_list_t;
 # else
-   typedef std::list <StringMask> silence_list_t;
+      typedef std::list <StringMask> silence_list_t;
 # endif
 # ifdef STL_HAS_HASH
-   typedef std::hash_set <String> accept_set_t;
+      typedef std::hash_set <String> accept_set_t;
 # else
-   typedef std::set <String> accept_set_t;
+      typedef std::set <String> accept_set_t;
 # endif
 
-   // User mode type - do not change this - P14 needs this to be the same
-   typedef unsigned long long modes_t;
-   
-   typedef unsigned char status_t;
-
-// private:
- public:
-   // User mode table structure
-   struct modeTableStruct {
-      char letter;                 	// Letter of this mode
-      modes_t flag; 	         	// Flag used in bit-wise operations
-      bool hasParamOn;			// Requires a parameter to set?
-      bool hasParamOff;			// Requires a parameter to unset?
-      bool userToggle;			// Can users toggle this mode?
-      bool (*toggler)(bool setting, Handler *handler, User *user, char *modeChr, String *param);	// Function to toggle this mode
-   };
-   static struct modeTableStruct const modeTable[];
-   
-   String nickname;				// User nickname
-   String const username;			// User name
-   String const hostname;			// Host name
-   String const vwhostname;			// Virtual world host name
-//   String const ipaddress;			// IP Address
-//   String const vwipaddress;			// Virtual world IP address
-   String const realname;			// User real name
-   modes_t modes;				// User modes
-   
-   time_t signonTime;				// Time user signed on
-   time_t lastNickChange;			// Last nickname change
-
-   String awayMessage;				// /AWAY message
-   status_t status;				// Status
-
-   String langCharset;				// Language character set
-   String langList;				// List of langauges (WHOIS)
-   
-   Server *server;				// Server user is connected to
-   LocalUser *local;				// Link into local user class
-   
-   channel_map_t channels;			// Channels this user is on
-   
-   silence_list_t silences;			// SILENCE list
-   accept_set_t accepts;			// ACCEPT list
-   
-   // User mode change routines
-   static bool toggleModeDEAF(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeGOT_IDENTD(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeHELPER(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeIDENTIFIED(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeIGNORING(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeINVISIBLE(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeNONKICKABLE(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeOPER(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeREGNICKSMSG(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeRESTRICTED(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeROUTINGSTAFF(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeSECURE(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeSERVNOTICES(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeVWORLD(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-   static bool toggleModeWALLOPS(bool setting, Handler *handler, User *user, char *modeChr, String *param);
-
- public:
-   /* User modes (note modes that use paramters are not listed here)
-    * WARNING!! Do not change these once they are set! P14 relies on them
-    * being constant over ALL servers!
-    * Note that the first byte is set up specifically to make it easy to
-    * follow the irc2-user protocol for user registration in RFC 2812, so
-    * best not to touch them especially :)
-    */
-   static modes_t const M_WALLOPS		= 0x0000000000000004; // +w
-   static modes_t const M_INVISIBLE		= 0x0000000000000008; // +i
-   static modes_t const M_NONKICKABLE		= 0x0000000000000100; // +k
-   static modes_t const M_DEAF			= 0x0000000000000200; // +d
-   static modes_t const M_SECURE		= 0x0000000000000400; // +S
-   static modes_t const M_VWORLD		= 0x0000000000000800; // +v
-   static modes_t const M_LOCALOPER		= 0x0000000000001000; // +o
-   static modes_t const M_GLOBALOPER		= 0x0000000000002000; // +O
-   static modes_t const M_HELPER		= 0x0000000000004000; // +h
-   static modes_t const M_RESTRICTED		= 0x0000000000008000; // +r
-   static modes_t const M_IDENTIFIED		= 0x0000000000010000; // +I
-   static modes_t const M_GOT_IDENTD		= 0x0000000000020000; // +n
-   static modes_t const M_REGNICKSMSG		= 0x0000000000040000; // +R
-   static modes_t const M_IGNORING		= 0x0000000000080000; // +g
-   static modes_t const M_ROUTINGSTAFF		= 0x0000000000100000; // +­
-   
-   // User mode stuff
-   static char const *modeStr;
-   static char const *modeParamStr;
-
-   // Constructor
-   User(String const &nick, String const &user, String ip, String host, 
-	String vwhost, String real, time_t signon, Server *serv,
-	String const &langl, String const &langc, modes_t mode = 0,
-	unsigned char stat = 0)
-     : nickname(nick),
-       username(user),
-       hostname(host),
-       vwhostname(vwhost),
-       realname(real),
-       modes(mode),
-       signonTime(signon),
-       lastNickChange(signonTime),
-       awayMessage(""),
-       status(stat),
-       langCharset(langc),
-       langList(langl),
-       server(serv),
-       local(0)
-     {
-	channels.clear();
-	silences.clear();
-	accepts.clear();
-     };
-   
-   // Destructor
-   ~User(void)
-     {
-	channels.clear();
-	silences.clear();
-	accepts.clear();
-     };
-
-   // Access checking
-   bool showVW(User *destination) const {
-      if (isOper(destination) ||
-	  !(modes & M_VWORLD) ||
-	  this == destination) {
-	 return false;
-      }
-      return true;
-   };
-   
-   static bool const isOper(User *u) {
-      return ((u->modes & M_GLOBALOPER) ||
-	      (u->modes & M_LOCALOPER));
-   };
-   
-   static bool const isGlobalOper(User *u) {
-      return (u->modes & M_GLOBALOPER);
-   };
-
-   static bool const isRoutingStaff(User *u) {
-      return (u->modes & M_ROUTINGSTAFF);
-   };
-
-   static bool const isHelper(User *u) {
-      return ((u->modes & M_HELPER) ||
-	      (u->modes & M_GLOBALOPER) ||
-	      (u->modes & M_LOCALOPER));
-   };
+      // User mode type - do not change this - P14 needs this to be the same
+      typedef unsigned long long modes_t;
       
-   // Grab the nickname
-   String getNickname(void) const {
-      return nickname;
-   };
-
-   // Grab the username
-   String getUsername(void) const {
-      return username;
-   };
-   
-   // Return appropriate address
-   String getAddress(User *destination) const { 
-      return (showVW(destination) ? getVWAddress() : getAddress());
-   };
-   
-   // Return address (x!y@z)
-   String getAddress(void) const {
-      return (nickname + '!' + username + '@' + hostname);
-   };
-   
-   // Above, but w/ virtual-world
-   String getVWAddress(void) const {
-      return (nickname + '!' + username + '@' + vwhostname);
-   };
-
-   // Grab the appropriate hostname
-   String getHost(User *destination) const {
-      return (showVW(destination) ? vwhostname : hostname);
-   };
-   
-   // Return hostname
-   String getHost(void) const {
-      return hostname;
-   };
-   
-   // Return vworld hostname
-   String getVWHost(void) const {
-      return vwhostname;
-   };
-   
-   // Return the modes
-   modes_t getModes(void) const {
-      return modes;
-   };
-   
-   // Is a mode set?
-   bool isModeSet(modes_t mode) const {
-      return (modes & mode);
-   };
-   
-   Channel *getChannel(String &);		// Return a channel
-
-   // Get the server we are on
-   Server *getServer(void) const {
-      return server;
-   };
-   
-   // Are we a local user?
-   bool const isLocal(void) const {
-      return local;
-   };
-   
-   // Get LocalUser info (maybe)
-   LocalUser *getLocalInfo(void) const {
-      return local;
-   };
-
-   // Return the helper status variable
-   status_t getStatus(void) const {
-      return status;
-   };
-   
-   // Return the appropriate language information
-   String lang(LangTags::tag_t const &t) const {
-      // If this user is local, this is easy
-      if (local) {
-	 return local->lang(t);
-      }
+      typedef unsigned char status_t;
       
-      return "woops--fix-me";
+//    private:
+    public:
+      // User mode table structure
+      struct modeTableStruct {
+	 char letter;                 	// Letter of this mode
+	 modes_t flag; 	         	// Flag used in bit-wise operations
+	 bool hasParamOn;		// Requires a parameter to set?
+	 bool hasParamOff;		// Requires a parameter to unset?
+	 bool userToggle;		// Can users toggle this mode?
+	 bool (*toggler)(bool setting, Handler *handler, User *user, 
+			 char *modeChr, String *param);
+	 				// Function to toggle this mode
+      };
+      static struct modeTableStruct const modeTable[];
+      
+      String nickname;				// User nickname
+      String const username;			// User name
+      String const hostname;			// Host name
+      String const vwhostname;			// Virtual world host name
+//      String const ipaddress;			// IP Address
+//      String const vwipaddress;		// Virtual world IP address
+      String const realname;			// User real name
+      modes_t modes;				// User modes
+      
+      time_t signonTime;			// Time user signed on
+      time_t lastNickChange;			// Last nickname change
+      
+      String awayMessage;			// /AWAY message
+      status_t status;				// Status
+      
+      String langCharset;			// Language character set
+      String langList;				// List of langauges (WHOIS)
+      
+      Server *server;				// Server user is connected to
+      LocalUser *local;				// Link into local user class
+      
+      channel_map_t channels;			// Channels this user is on
+      
+      silence_list_t silences;			// SILENCE list
+      accept_set_t accepts;			// ACCEPT list
+      
+      // User mode change routines
+      static bool toggleModeDEAF(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeGOT_IDENTD(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeHELPER(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeIDENTIFIED(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeIGNORING(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeINVISIBLE(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeNONKICKABLE(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeOPER(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeREGNICKSMSG(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeRESTRICTED(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeROUTINGSTAFF(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeSECURE(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeSERVNOTICES(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeVWORLD(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      static bool toggleModeWALLOPS(bool setting, Handler *handler, User *user, char *modeChr, String *param);
+      
+    public:
+      /* User modes (note modes that use paramters are not listed here)
+       * WARNING!! Do not change these once they are set! P14 relies on them
+       * being constant over ALL servers!
+       * Note that the first byte is set up specifically to make it easy to
+       * follow the irc2-user protocol for user registration in RFC 2812, so
+       * best not to touch them especially :)
+       */
+      static modes_t const M_WALLOPS		= 0x0000000000000004; // +w
+      static modes_t const M_INVISIBLE		= 0x0000000000000008; // +i
+      static modes_t const M_NONKICKABLE	= 0x0000000000000100; // +k
+      static modes_t const M_DEAF		= 0x0000000000000200; // +d
+      static modes_t const M_SECURE		= 0x0000000000000400; // +S
+      static modes_t const M_VWORLD		= 0x0000000000000800; // +v
+      static modes_t const M_LOCALOPER		= 0x0000000000001000; // +o
+      static modes_t const M_GLOBALOPER		= 0x0000000000002000; // +O
+      static modes_t const M_HELPER		= 0x0000000000004000; // +h
+      static modes_t const M_RESTRICTED		= 0x0000000000008000; // +r
+      static modes_t const M_IDENTIFIED		= 0x0000000000010000; // +I
+      static modes_t const M_GOT_IDENTD		= 0x0000000000020000; // +n
+      static modes_t const M_REGNICKSMSG	= 0x0000000000040000; // +R
+      static modes_t const M_IGNORING		= 0x0000000000080000; // +g
+      static modes_t const M_ROUTINGSTAFF	= 0x0000000000100000; // +­
+      
+      // User mode stuff
+      static char const *modeStr;
+      static char const *modeParamStr;
+      
+      // Constructor
+      User(String const &nick, String const &user, String ip, String host, 
+	   String vwhost, String real, time_t signon, Server *serv,
+	   String const &langl, String const &langc, modes_t mode = 0,
+	   unsigned char stat = 0)
+	: nickname(nick),
+          username(user),
+          hostname(host),
+          vwhostname(vwhost),
+          realname(real),
+          modes(mode),
+          signonTime(signon),
+          lastNickChange(signonTime),
+          awayMessage(""),
+          status(stat),
+          langCharset(langc),
+          langList(langl),
+          server(serv),
+          local(0)
+	{
+	   channels.clear();
+	   silences.clear();
+	   accepts.clear();
+	};
+   
+      // Destructor
+      ~User(void)
+	{
+	   channels.clear();
+	   silences.clear();
+	   accepts.clear();
+	};
+
+      // Access checking
+      bool showVW(User *destination) const {
+	 if (isOper(destination) ||
+	     !(modes & M_VWORLD) ||
+	     this == destination) {
+	    return false;
+	 }
+	 return true;
+      };
+      
+      static bool const isOper(User *u) {
+	 return ((u->modes & M_GLOBALOPER) ||
+		 (u->modes & M_LOCALOPER));
+      };
+      
+      static bool const isGlobalOper(User *u) {
+	 return (u->modes & M_GLOBALOPER);
+      };
+      
+      static bool const isRoutingStaff(User *u) {
+	 return (u->modes & M_ROUTINGSTAFF);
+      };
+      
+      static bool const isHelper(User *u) {
+	 return ((u->modes & M_HELPER) ||
+		 (u->modes & M_GLOBALOPER) ||
+		 (u->modes & M_LOCALOPER));
+      };
+      
+      // Grab the nickname
+      String getNickname(void) const {
+	 return nickname;
+      };
+      
+      // Grab the username
+      String getUsername(void) const {
+	 return username;
+      };
+      
+      // Return appropriate address
+      String getAddress(User *destination) const { 
+	 return (showVW(destination) ? getVWAddress() : getAddress());
+      };
+      
+      // Return address (x!y@z)
+      String getAddress(void) const {
+	 return (nickname + '!' + username + '@' + hostname);
+      };
+      
+      // Above, but w/ virtual-world
+      String getVWAddress(void) const {
+	 return (nickname + '!' + username + '@' + vwhostname);
+      };
+      
+      // Grab the appropriate hostname
+      String getHost(User *destination) const {
+	 return (showVW(destination) ? vwhostname : hostname);
+      };
+      
+      // Return hostname
+      String getHost(void) const {
+	 return hostname;
+      };
+      
+      // Return vworld hostname
+      String getVWHost(void) const {
+	 return vwhostname;
+      };
+      
+      // Return the modes
+      modes_t getModes(void) const {
+	 return modes;
+      };
+      
+      // Is a mode set?
+      bool isModeSet(modes_t mode) const {
+	 return (modes & mode);
+      };
+      
+      Channel *getChannel(String &);		// Return a channel
+      
+      // Get the server we are on
+      Server *getServer(void) const {
+	 return server;
+      };
+      
+      // Are we a local user?
+      bool const isLocal(void) const {
+	 return local;
+      };
+      
+      // Get LocalUser info (maybe)
+      LocalUser *getLocalInfo(void) const {
+	 return local;
+      };
+      
+      // Return the helper status variable
+      status_t getStatus(void) const {
+	 return status;
+      };
+      
+      // Return the appropriate language information
+      String lang(LangTags::tag_t const &t) const {
+	 // If this user is local, this is easy
+	 if (local) {
+	    return local->lang(t);
+	 }
+	 
+	 return "woops--fix-me";
+      };
+      
+      void markAway(String const &);		// Set/Unset away message
+      
+      // Grab the language charset
+      String getLangCharset(void) const {
+	 return langCharset;
+      };
+      
+      // Grab the language charset
+      bool hasLangInfo(void) const {
+	 return (langList.length() > 0);
+      };
+      
+      // Grab language list, formatted nicely for WHOIS (comma delimetered etc)
+      String getLangList(void) const {
+	 return langList;
+      };
+      
+      void setLangInfo(String const &, 
+		       String const &);		// Set the language information
+      
+      bool isSilencing(User *u);		// Silencing a user?
+      
+      // Add to the ACCEPT list
+      void addAccept(User *u) {
+	 accepts.insert(u->nickname.IRCtoLower());
+      };
+      
+      // Remote from the ACCEPT list
+      void delAccept(User *u) {
+	 accepts.erase(u->nickname.IRCtoLower());
+      };
+      
+      // Is this user 'accepted'?
+      bool isAccepting(User *u) {
+	 return ((accepts.find(u->nickname.IRCtoLower()) != accepts.end()) ?
+		 true : false);
+      };
+      
+      static bool okName(String const &);	// Ok nickname?
+      
+      static String makeModes(modes_t);		// Make a + user mode string
+      static String makeModes(User *);		// Above, but includes params
+      
+      static String makeVWorld(String const &);	// vworld host from a host/ip
+      
    };
    
-   void markAway(String const &);		// Set/Unset away message
-   
-   // Grab the language charset
-   String getLangCharset(void) const {
-      return langCharset;
-   };
-   
-   // Grab the language charset
-   bool hasLangInfo(void) const {
-      return (langList.length() > 0);
-   };
-
-   // Grab language list, formatted nicely for WHOIS (comma delimetered etc)
-   String getLangList(void) const {
-      return langList;
-   };
-   
-   void setLangInfo(String const &, 
-		    String const &);		// Set the language information
-   
-   bool isSilencing(User *u);			// Silencing a user?
-
-   // Add to the ACCEPT list
-   void addAccept(User *u) {
-      accepts.insert(u->nickname.IRCtoLower());
-   };
-   
-   // Remote from the ACCEPT list
-   void delAccept(User *u) {
-      accepts.erase(u->nickname.IRCtoLower());
-   };
-
-   // Is this user 'accepted'?
-   bool isAccepting(User *u) {
-      return ((accepts.find(u->nickname.IRCtoLower()) != accepts.end()) ?
-	      true : false);
-   };
-     
-   static bool okName(String const &);		// Ok nickname?
-
-   static String makeModes(modes_t);		// Make a + user mode string
-   static String makeModes(User *);		// Above, but includes params
-
-   static String makeVWorld(String const &);	// vworld host from a host/ip
-
 };
-
+   
 #endif
-
+   

@@ -44,8 +44,9 @@
 #  include <openssl/ssl.h>
 # endif
 
-class Daemon;
-
+namespace Kine {
+   class Daemon;
+};
 
 # include "kineircd/config.h"
 # include "kineircd/user.h"
@@ -57,6 +58,7 @@ class Daemon;
 # include "kineircd/operator.h"
 # include "kineircd/whowas.h"
 
+namespace Kine {
 
 // A 'Listen' record
 class Listen {
@@ -336,8 +338,10 @@ class Daemon {
 
    friend class Handler;
    friend class Connection;
-   friend class statsFunctions; // in remotes.cpp
+   friend class Kine::statsFunctions; // in remotes.cpp
 };
 
+};
+   
 #endif
 

@@ -26,6 +26,8 @@
 
 # include "kineircd/handler.h"
 
+namespace Kine {
+
 // Register-handler sub-class
 class registerHandler : public Handler {
  private:
@@ -94,5 +96,7 @@ class registerHandler : public Handler {
    void parseLine(String const &);
 };
 
+};
+   
 #endif
 

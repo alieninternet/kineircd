@@ -31,29 +31,34 @@
  * that uses this structure
  */
 
-class Operator : public Password {
- private:
-   String const name;				// Name of this operator
-   const bool global;				// Global?
-
- public:
-   // Constructor   
-   Operator(const String &n, const Utils::SHA1::digest_type &p, const bool g)
-     : Password(p),
-       name(n),
-       global(g)
-     {};
+namespace Kine {
    
-   // Return the operator name (description)
-   const String &getName(void) const {
-      return name;
+   class Operator : public Password {
+    private:
+      String const name;			// Name of this operator
+      const bool global;			// Global?
+      
+    public:
+      // Constructor   
+      Operator(const String &n, const Utils::SHA1::digest_type &p, 
+	       const bool g)
+	: Password(p),
+          name(n),
+          global(g)
+	{};
+      
+      // Return the operator name (description)
+      const String &getName(void) const {
+	 return name;
+      };
+      
+      // Return whether or not this operator is global
+      bool isGlobal(void) const {
+	 return global;
+      };
    };
    
-   // Return whether or not this operator is global
-   bool isGlobal(void) const {
-      return global;
-   };
 };
-
+   
 #endif
-
+   

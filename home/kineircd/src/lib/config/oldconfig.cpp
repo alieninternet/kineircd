@@ -39,6 +39,8 @@
 // Warn the user. This file needs a developer :(
 #warning "This is majorly incomplete and will not serve any purpose. Sorry."
 
+using namespace Kine;
+
 
 /* varHandleOldConfig - Read/parse an old-style configuration file
  * Original 19/04/2002 simonb

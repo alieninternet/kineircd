@@ -34,16 +34,19 @@
 #include "kineircd/lang.h"
 #include "kineircd/debug.h"
 
-namespace Lang {
-   // The map with the languages in it..
-   Lang::languages_map_t languages;
-   
-   // Default language, start off with it being none...
-   LangData *defaultLanguage = 0;
-   
-   // Language tag list for ISUPPORT
-   String ISUPPORTcodes;
-}
+using namespace Kine;
+
+namespace Kine {
+   namespace Lang {
+      // The map with the languages in it..
+      Kine::Lang::languages_map_t languages;
+      
+      // Default language, start off with it being none...
+      LangData *defaultLanguage = 0;
+      
+      // Language tag list for ISUPPORT
+      String ISUPPORTcodes;
+   };
 
 /* Do not change these lines unless you know how they are used/referenced or
  * integrate with the IRC protocol etc. Often white-space before/after a
@@ -73,13 +76,14 @@ namespace Lang {
    char const *L_DEFAULT_QUIT_MESSAGE =
      "Leaving without a reason";
 };
+};
 
 
 /* loadLanguages - Seek and load language files in the given directory
  * Original 28/10/01 simonb
  */
-bool Lang::loadLanguages(String const &directory,
-			 String const &defaultCode)
+bool Kine::Lang::loadLanguages(String const &directory,
+			       String const &defaultCode)
 {
 #ifdef DEBUG
    debug("Loading language files...");
@@ -275,7 +279,7 @@ bool Lang::loadLanguages(String const &directory,
  * Note: The given code will be presumed to be in the appropriate case (lower)
  *       for searching, eg. 'en' not 'En' etc.
  */
-LangData *Lang::get(String const &code)
+LangData *Kine::Lang::get(String const &code)
 {
    // Find the language
    LangData *ld = languages[code];
@@ -296,7 +300,7 @@ LangData *Lang::get(String const &code)
  * Original 03/11/01 simonb
  * Notes: This should be inline...
  */
-String Lang::lang(LangTags::tag_t const &t)
+String Kine::Lang::lang(LangTags::tag_t const &t)
 {
    return (defaultLanguage ? defaultLanguage->get(t) : '*');
 };

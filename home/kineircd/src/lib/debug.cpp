@@ -26,12 +26,14 @@
 #include <iostream>
 
 #include "kineircd/debug.h"
-#include "kineircd/daemon.h"
+//#include "kineircd/daemon.h"
 
 // Little check to make sure we are being compiled sanely
 #ifndef DEBUG
 # warning "Compiling without DEBUG defined?!"
 #endif
+
+using namespace Kine;
 
 /* debug - Output a line of debugging information (and broadcast)
  * Original 25/09/01 simonb

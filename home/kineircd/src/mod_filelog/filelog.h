@@ -27,22 +27,26 @@
 
 # include "kineircd/logger.h"
 
-
-// The generic file logging class
-class LoggerFile : public Logger {
- private:
-   ofstream logFile;
+namespace Kine {
    
-   void logLine(const String &, 
-		const mask_type = MASK_HOUSEKEEPING);	// Log a string of text
-   
- public:
-   LoggerFile(mask_type, const char *);			// Constructor
-   ~LoggerFile(void);					// Destructor
+   // The generic file logging class
+   class LoggerFile : public Logger {
+    private:
+      ofstream logFile;
+      
+      void logLine(const String &, 
+		   const mask_type = MASK_HOUSEKEEPING);// Log a string of text
+      
+    public:
+      LoggerFile(mask_type, const char *);		// Constructor
+      ~LoggerFile(void);				// Destructor
+      
+      // Is the log ok?
+      bool ok(void) const
+	{ return logFile.good(); };
+   };
 
-   // Is the log ok?
-   bool ok(void) const
-     { return logFile.good(); };
 };
-
+   
 #endif
+   
