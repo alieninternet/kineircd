@@ -403,25 +403,29 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	 if (hideHost) {
 	    // Send the user details with the virtual hostname
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
-			foundUser->getNickname(),
-			foundUser->getUsername(),
-			foundUser->getVirtualHostname(),
+			foundClient->getNickname(),
+			foundClient->getUsername(),
+			((foundUser != 0) ?
+			 foundUser->getVirtualHostname() :
+			 "*"), // <=- simply mask the service hostname
 			'*',
-			foundUser->getDescription());
+			foundClient->getDescription());
 	 } else {
 	    // Send the user entry as normal
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
-			foundUser->getNickname(),
-			foundUser->getUsername(),
-			foundUser->getHostname(),
+			foundClient->getNickname(),
+			foundClient->getUsername(),
+			foundClient->getHostname(),
 			'*',
-			foundUser->getDescription());
+			foundClient->getDescription());
 	    
-	    // Also send the virtual host details
-	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOIS_HIDDEN,
-			foundUser->getNickname(),
-			foundUser->getVirtualHostname(),
-			GETLANG(irc2_RPL_WHOIS_HIDDEN));
+	    // If this is a user, also send the virtual host details
+	    if (foundUser != 0) {
+	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOIS_HIDDEN,
+			   foundUser->getNickname(),
+			   foundUser->getVirtualHostname(),
+			   GETLANG(irc2_RPL_WHOIS_HIDDEN));
+	    }
 	 }
 
 	 /* If the client is a normal user (or the caller is an operator),
