@@ -213,9 +213,14 @@ libkineircd_la_SOURCES=\
 	src/libkineircd/signals.cpp \
 	src/libkineircd/utils.cpp \
 	src/libkineircd/version.cpp
+	
+# Flags..
 libkineircd_la_LDFLAGS=\
+	-version-info @LIBKINEIRCD_VERSION@:@LIBKINEIRCD_REVISION@:@LIBKINEIRCD_AGE@ \
 	@LDFLAGS@ \
 	@ssl_ldflags@
+	
+# Libraries..
 libkineircd_la_LIBADD=\
 	libkineircd_irc2.la \
 	$(LIBLTDL) \
@@ -267,7 +272,7 @@ libkineircd_irc2_la_SOURCES=\
 	src/libkineircd_irc2/servermodes.cpp
 
 libkineircd_irc2_la_LDFLAGS=\
-	-avoid-version
+	-version-info @LIBKINEIRCD_VERSION@:@LIBKINEIRCD_REVISION@:@LIBKINEIRCD_AGE@
 
 libkineircd_irc2_la_LIBADD=\
 	# libkineircd.la
