@@ -31,7 +31,8 @@
 namespace Kine {
    class ModuleList {
     private:
-      std::multimap <const char *, ModuleDescriptor *> modules;
+      typedef std::multimap <const char *, ModuleDescriptor *> modulesMap_type;
+      modulesMap_type modules;
       
     public:
       // Constructor

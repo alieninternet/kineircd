@@ -37,17 +37,42 @@ bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
 #ifdef KINE_DEBUG_PSYCHO
    debug("ModuleList::loadModule() - Trying to load " + moduleFile);
 #endif
-   
-   ModuleDescriptor *desc =
+
+   // Load the module
+   ModuleDescriptor *moduleDesc =
      ModuleDescriptor::loadModule(moduleFile, errorReturn);
    
    // Make sure it loaded happily
-   if (desc == 0) {
+   if (moduleDesc == 0) {
       return false;
    }
 
 #ifdef KINE_DEBUG_EXTENDED
    debug("ModuleList::loadModule() - Loaded module: " + moduleFile);
+#endif
+
+   // We need to check if this module must only be loaded once
+   if (moduleDesc->getModule()->getBasicInfo().flags & 
+       Module::basicInfo_type::FLAG_UNIQUE_INSTANCE) {
+      // Make sure it is not loaded more than once
+      if (modules.count(moduleDesc->getModule()->getKeyName()) > 
+	  1) {
+	 // Be all upset on the module's behalf
+	 errorReturn = moduleDesc->getModule()->getVersionString() +
+	   " can only be loaded once";
+	 return false;
+      }
+   }
+   
+   // Okay then, if we got this far we can add this module to the list
+   (void)modules.insert(modulesMap_type::value_type
+			(moduleDesc->getModule()->getKeyName(), moduleDesc));
+   
+#ifdef KINE_DEBUG_PSYCHO
+   debug("ModuleList::loadModule() - Added " + 
+	 moduleDesc->getModule()->getVersionString() + 
+	 " to the module list (" + String::convert(modules.size()) +
+	 " modules currently loaded)");
 #endif
    
    // Smile, it all worked out okay
