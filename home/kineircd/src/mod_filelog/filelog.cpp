@@ -35,10 +35,12 @@ using namespace Kine::mod_filelog;
  * Original 18/02/2000 simonb
  * 04/04/2002 simonb - Added debugging info
  */
-FileLog::FileLog(Kine::Logger::Mask::lazy_type mask, const char *fileName)
-  : Kine::Logger(mask)
+FileLog::FileLog(Config& c)
+  : Kine::Logger(c.getLogMask()),
+    config(c)
 {
-   logFile.open(fileName);
+   logFile.open(c.getFilename().c_str(),
+		std::ofstream::out | std::ofstream::ate);
 }
 
 

@@ -35,6 +35,7 @@ include_HEADERS=\
 	include/kineircd/listenerlist.h \
 	include/kineircd/localuser.h \
 	include/kineircd/logger.h \
+	include/kineircd/loggerconfig.h \
 	include/kineircd/module.h \
 	include/kineircd/moduledescriptor.h \
 	include/kineircd/modulelist.h \

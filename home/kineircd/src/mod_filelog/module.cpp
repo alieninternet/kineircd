@@ -28,6 +28,7 @@
 #include <kineircd/module.h>
 
 #include "mod_filelog/module.h"
+#include "mod_filelog/config.h"
 #include "mod_filelog/filelog.h"
 
 
@@ -48,12 +49,13 @@ namespace {
       Kine::Module::Flags::UNIQUE_INSTANCE,
 
       // Configuration stuff
-      0
+      &Kine::mod_filelog::Config::definitionTable
    };
 
 
    class mod_filelog : public Kine::Module {
     private:
+      Kine::mod_filelog::Config config;
       Kine::Daemon* daemon;
       Kine::mod_filelog::FileLog* logger;
       
@@ -80,6 +82,10 @@ namespace {
       const Kine::Module::Info& getInfo(void) const
 	{ return info; };
 
+      // Return the configuration data class
+      AISutil::ConfigData* const getConfigData(void)
+	{ return &config; };
+      
       /* moduleStart - Fire up the module
        * Original 15/10/2002 simonb
        */
@@ -88,8 +94,7 @@ namespace {
 	 daemon = &d;
 	 
 	 // Make our logging class
-	 logger = new Kine::mod_filelog::FileLog(Kine::Logger::Mask::Everything,
-						 "./testlog.log");
+	 logger = new Kine::mod_filelog::FileLog(config);
 
 	 // Make sure that worked..
 	 if (logger == 0) {

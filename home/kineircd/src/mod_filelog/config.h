@@ -1,7 +1,7 @@
 /* $Id$
- * Logging functions via a given file
+ * Config data for mod_filelog
  * 
- * Copyright (c) 2000,2002 Alien Internet Services
+ * Copyright (c) 2002 Alien Internet Services
  *
  * This file is a part of KineIRCd.
  * 
@@ -20,40 +20,43 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_MOD_FILELOG_LOGGER_H_
-# define _SRC_MOD_FILELOG_LOGGER_H_ 1
+#ifndef _SRC_MOD_FILELOG_CONFIG_H_
+# define _SRC_MOD_FILELOG_CONFIG_H_ 1
 
-# include <fstream>
-# include <kineircd/logger.h>
-
-# include "mod_filelog/config.h"
+# include <kineircd/loggerconfig.h>
+# include <aisutil/string/string.h>
 
 namespace Kine {
    namespace mod_filelog {
-      // The generic file logging class
-      class FileLog : public Kine::Logger {
+      class Config : public Kine::LoggerConfig {
+       public:
+	 // The definition table, given to Kine's config parserr
+	 static const AISutil::ConfigParser::defTable_type definitionTable;
+
        private:
-	 Config& config;
-	 
-	 std::ofstream logFile;
-	 
-	 // Log a string of text
-	 void logLine(const std::string& str,
-		      const Kine::Logger::Mask::type mask);
+	 // Variables..
+	 AISutil::String defFilename;
+	 AISutil::String defPrefixFormat;
 	 
        public:
 	 // Constructor
- 	 FileLog(Config& c);
+	 Config(void)
+	   : defFilename("./ircd.log"),
+	     defPrefixFormat("%Y%m%d%H%M%S ")
+	   {};
 	 
 	 // Destructor
-	 ~FileLog(void);				
+	 ~Config(void)
+	   {};
 	 
-	 // Is the log ok?
-	 bool ok(void) const
-	   { return logFile.good(); };
+	 // Return the variables
+	 const AISutil::String& getFilename(void) const
+	   { return defFilename; };
+	 const AISutil::String& getPrefixFormat(void) const
+	   { return defPrefixFormat; };
       };
    }; // namespace mod_filelog
 }; // namespace Kine
    
-#endif // _SRC_MOD_FILELOG_LOGGER_H_
+#endif // _SRC_MOD_FILELOG_CONFIG_H_
    
