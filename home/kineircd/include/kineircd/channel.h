@@ -27,6 +27,7 @@
 
 # include <kineircd/entity.h>
 # include <kineircd/receiver.h>
+# include <kineircd/user.h>
 
 namespace Kine {
    class Channel : public Receiver {
@@ -46,6 +47,34 @@ namespace Kine {
       //! Return the name of the channel, only with the prefix
       const std::string getChannelNameWithPrefix(void) const
 	{ return ""; };
+      
+      //! Return the topic on the channel
+      virtual const std::string& getTopic(void) const
+	{ return ""; };
+      
+      //! Return the number of users on the channel (0 = unknown/unavailable)
+      virtual const unsigned long getUserCount(void) const
+	{ return 0; };
+      
+      //! Is this channel hidden from public view (i.e. /whois, /list etc)
+      virtual const bool isHidden(void) const
+	{ return false; };
+      
+      //! Is the given user banned? (+b list)
+      virtual const bool isBanned(const User& who) const
+	{ return false; };
+      
+      //! Is the given user exempt from being banned? (+e list)
+      virtual const bool isBanExempt(const User& who) const
+	{ return false; };
+      
+      //! Is the given user automatically invited? (+I list)
+      virtual const bool isAutomaticallyInvited(const User& who) const
+	{ return false; };
+      
+      //! Is the given user currently invited to the channel?
+      virtual const bool isInvited(const User& who) const
+	{ return false; };
    }; // class Channel
 }; // namespace Kine
 
