@@ -91,6 +91,8 @@ int Kine::Daemon::run(void)
    for (;;) {
       // Do stuff here with the poller :)
       sleep(10); // temporary
+
+      debug("Doing nothing...");
       
       // Check if we are in shutdown mode
       if (stage == STAGE_SHUTDOWN) {
