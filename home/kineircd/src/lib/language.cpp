@@ -138,12 +138,15 @@ bool Kine::Lang::loadLanguages(String const &directory,
 	 // Reset some variables
 	 LangData *lang = new LangData();
 	 langData.clear();
-	 line = tag = data = "";
+	 line.clear();
+	 tag.clear();
+	 data.clear();
 	 lineNum = 0;
 	 
 	 while (!file.eof()) {
 	    // Clean-up
-	    tag = data = "";
+	    tag.clear();
+	    data.clear();
 	    
 	    // Read the line
 //	    file >> line;
@@ -257,7 +260,7 @@ bool Kine::Lang::loadLanguages(String const &directory,
    }
    
    // Generate the ISUPPORT info
-   ISUPPORTcodes = "";
+   ISUPPORTcodes.clear();
    for (languages_map_t::iterator it = languages.begin(); 
 	it != languages.end(); it++) {
       // If there is already something in the line, add a comma before the code

@@ -690,7 +690,7 @@ String irc2userHandler::processUserModes(String &modes, StringTokens *tokens,
 		      (!toggle && User::modeTable[ii].hasParamOff)) {
 		     param = tokens->nextToken();
 		  } else {
-		     param = "";
+		     param.clear();
 		  }
 		  
 		  // If this runs, we will need to add the output char
@@ -1368,7 +1368,7 @@ void irc2userHandler::doNAMES(String const &param)
 	       sendNumeric(Numerics::RPL_NAMREPLY, reply);
 	       
 	       // reset the reply
-	       reply = "";
+	       reply.clear();
 	    }
 	 }
 	 
@@ -1463,7 +1463,7 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
 	    handler->sendNumeric(Numerics::RPL_ACCEPTLIST, reply);
 
 	    // reset the reply
-	    reply = "";
+	    reply.clear();
 	 }
       }
 	 

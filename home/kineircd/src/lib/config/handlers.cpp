@@ -757,7 +757,7 @@ CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleNetworkName)
    // Check if the first value is empty
    if (values.front().empty()) {
       // Clear it (turn it off)
-      dataClass.*((String ConfigData::*)dataVariable) = "";
+      (dataClass.*((String ConfigData::*)dataVariable)).clear();
       return true;
    }
    

@@ -480,7 +480,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 				       u->nickname + " :" + channels);
 		  
 		  // reset the channel list string
-		  channels = "";
+		  channels.clear();
 	       }
 	    }
 	 }

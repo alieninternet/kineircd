@@ -288,7 +288,7 @@ void Channel::processModes(Handler *handler, User *user,
 		     param = tokens->nextToken();
 		  } else {
 		     // Reset the parameter thing
-		     param = "";
+		     param.clear();
 		  }
 		  
 		  // Run the toggler for this mode, checking if it worked
@@ -1129,8 +1129,8 @@ bool Channel::toggleModeKEY(bool setting, Handler *handler, Channel *channel, Ch
 	 return false;
       }
       
-      channel->key = "";
-      *param = "";
+      channel->key.clear();
+      param->clear();
       return true;
    }
 
@@ -1170,7 +1170,7 @@ bool Channel::toggleModeLIMIT(bool setting, Handler *handler, Channel *channel, 
       return true;
    } else if (!setting && (channel->limit > 0)) {
       channel->limit = 0;
-      *param = "";
+      param->clear();
       return true;
    }
    
