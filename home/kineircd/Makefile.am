@@ -85,6 +85,12 @@ dist-hook:
 
 
 
+# Customised .tpl rule, since the template and the defs do not match
+install/example.conf: install/example.conf.tpl $(AUTOGEN_DEF_DIR)/config.def
+	$(AUTOGEN) -b $(basename $@) -T $< $(AUTOGEN_DEF_DIR)/config.def
+
+
+
 # A rule to download RFCs :)
 RFC_LOCATION=http://www.rfc-editor.org/rfc
 WGET=wget
