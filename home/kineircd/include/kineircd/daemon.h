@@ -33,7 +33,7 @@
 # endif
 
 # include <string>
-# include <vector>
+# include <set>
 # include <map>
 # include <ctime>
 # include <aisutil/string/string.h>
@@ -82,7 +82,7 @@ namespace Kine {
       unsigned long long receivedBytes;		// Total bytes received
       
       // The list of loggers (this should be hidden)
-      typedef std::vector <Logger*> loggerList_type;
+      typedef std::set <Logger*> loggerList_type;
       loggerList_type loggers;
 
       // The list of connections (this should be hidden)
@@ -150,7 +150,9 @@ namespace Kine {
       ProtocolInfo* const findProtocol(const ProtocolName::Type::type type,
 				       const std::string& name) const;
 
-      // Log a line of text
+      // Logger set manipulators
+      bool registerLogger(Logger& logger);
+      bool deregisterLogger(Logger& logger);
       void log(const std::string& str,
 	       const Logger::Mask::type mask = Logger::Mask::Housekeeping);
       

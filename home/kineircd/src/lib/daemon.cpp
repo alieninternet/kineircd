@@ -31,6 +31,7 @@
 #include <cstring>
 #include <ctime>
 #include <cstdlib>
+#include <algorithm>
 
 extern "C" {
 #ifdef HAVE_UNISTD_H
@@ -141,7 +142,7 @@ void Daemon::newConnection(Listener& listener)
 
 
 /* registerProtocol - Register a new protocol on the protocol list
- * Original 02/10/2001 simonb
+ * Original 02/10/2002 simonb
  */
 bool Daemon::registerProtocol(const ProtocolName& name, ProtocolInfo& info)
 {
@@ -169,7 +170,7 @@ bool Daemon::registerProtocol(const ProtocolName& name, ProtocolInfo& info)
 
 
 /* deregisterProtocol - Remove a protocol from the protocol list
- * Original 02/10/2001 simonb
+ * Original 02/10/2002 simonb
  * Note: This needs to scan the connections for any which are using this
  *       protocol too.. Kinda important :)
  */
@@ -186,7 +187,7 @@ bool Daemon::deregisterProtocol(const ProtocolName& name)
 
 
 /* findProtocol - Find a protocol matching the given criteria
- * Original 04/10/2001 simonb
+ * Original 04/10/2002 simonb
  * Note: This needs optimisation :)
  */
 ProtocolInfo* const Daemon::findProtocol(const ProtocolName::Type::type type,
@@ -206,6 +207,59 @@ ProtocolInfo* const Daemon::findProtocol(const ProtocolName::Type::type type,
 };
 
 
+/* registerLogger - Add a logger to the logger list
+ * Original 17/10/2002 simonb
+ */
+bool Daemon::registerLogger(Logger& logger)
+{
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream output;
+   output << "Daemon::registerLogger() - Attemping to add logger @ " << 
+     &logger;
+   debug(output.str());
+#endif
+   
+   // Confirm the logger is not already registered
+   if (loggers.find(&logger) != loggers.end()) {
+#ifdef KINE_DEBUG_EXTENDED
+      debug("Daemon::registerLogger() - Logger already registered");
+#endif
+      return false;
+   }
+
+   // Add the logger
+   (void)loggers.insert(&logger);
+   
+   return false;
+}
+
+
+/* deregisterProtocol - Remove a logger from the logger list
+ * Original 17/10/2002 simonb
+ */
+bool Daemon::deregisterLogger(Logger& logger)
+{
+   return (loggers.erase(&logger) > 0);
+}
+
+
+// Helper for the log() function below
+struct logLine {
+   const std::string& str;
+   const Logger::Mask::type mask;
+   
+   // Constructor
+   logLine(const std::string& s, const Logger::Mask::type m)
+     : str(s),
+       mask(m)
+     {};
+   
+   // Pass the info to the given logger
+   void operator()(Logger* logger) const
+     { logger->log(str, mask); };
+};
+
+
 /* log - Send a log message to all the loggers in our loggers list
  * Original 09/04/2002 simonb
  */
@@ -217,11 +271,7 @@ void Daemon::log(const std::string& str, const Logger::Mask::type mask)
    
    // Only iterate through the list if it is not empty, else what is the point?
    if (!loggers.empty()) {
-//      // Run through the loggers to give them all the line
-//      for (loggerList_type::iterator it = loggers.begin();
-//	   it != loggers.end(); it++) {
-//	 (*it)->log(line, mask);
-//      }
+      (void)std::for_each(loggers.begin(), loggers.end(), logLine(str, mask));
    }
 }
 

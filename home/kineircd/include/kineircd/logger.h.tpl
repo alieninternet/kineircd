@@ -61,27 +61,24 @@ namespace Kine {
 	 const Mask::type mask;			// The mask itself
       } static const maskTable[maskTableSize];
       
-    private:
-      const Mask::type logMask;				// OK log message types
+    protected:
+      const Mask::lazy_type logMask;			// OK log message types
       
+    private:
       // Log a string of text
       virtual void logLine(const std::string& str,
       	                   const Mask::type mask) = 0;
       
     public:
       // Constructor
-      Logger(const Mask::type m)
-	: logMask(m)
+      Logger(const Mask::lazy_type mask)
+	: logMask(mask)
 	{};
 
       // Destructor
       virtual ~Logger(void) 
 	{};
    
-      // Grab logging mask
-      const Mask::type getMask(void) const
-	{ return logMask; };
-      
       // Is the log ok?
       virtual bool ok(void) const = 0;
 
