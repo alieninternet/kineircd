@@ -1,0 +1,33 @@
+#
+# This is an extract of the /etc/services file for IRC services. These are
+# officially allocated port numbers by the IANA (http://www.iana.org).
+#
+# The full version of this file can be found at the following website:
+# http://www.iana.org/assignments/port-numbers
+#
+# It is highly recommended that you add these entries to your /etc/services
+# file if they are not already present.
+#
+# This is current as of 16 March 2002
+#
+
+irc             194/tcp    Internet Relay Chat Protocol        
+irc             194/udp    Internet Relay Chat Protocol        
+#                          Jarkko Oikarinen <jto@TOLSUN.OULU.FI>
+irc-serv        529/tcp    IRC-SERV
+irc-serv        529/udp    IRC-SERV
+#                          Brian Tackett <cym@acrux.net>
+ircs		994/tcp    irc protocol over TLS/SSL
+ircs		994/udp    irc protocol over TLS/SSL
+#                          Christopher Allen <ChristopherA@consensus.com>
+ircu		6665/tcp   IRCU
+ircu		6665/udp   IRCU
+ircu		6666/tcp   IRCU
+ircu		6666/udp   IRCU
+ircu		6667/tcp   IRCU
+ircu		6667/udp   IRCU
+ircu		6668/tcp   IRCU
+ircu		6668/udp   IRCU
+ircu		6669/tcp   IRCU
+ircu		6669/udp   IRCU
+#			   Brian Tackett <cym@acrux.net>

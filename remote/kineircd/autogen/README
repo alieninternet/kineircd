@@ -1,0 +1,13 @@
+This directory contains definition files used by GNU AutoGen to generate
+certain files (from templates). They are only used by developers who need to
+regenerate parts of the source code. Files which are generated from these
+definition files (and their respective templates through-out the package)
+are generated prior to distribution, therefore it's most likely you don't
+need to even consider them.
+
+Note that all of these files are copyrighted. Some of them are licensed
+under GNU GPL, some are licensed as public domain. These public domain files
+are intended for use by other IRC developers, and can be included in any
+package as long as the copyright remains. The GNU GPL licensed files relate
+directly to KineIRCd, however, and are probably not useful outside of this
+package.

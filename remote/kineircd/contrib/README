@@ -1,0 +1,20 @@
+This directory contains contributed "stuff" which is good as a companion to
+the IRC daemon but is NOT SUPPORTED by the developers of the server. You
+will need to contact the specific author of the contributed "stuff" rather
+than the KineIRCd Development Team. Queries to the KineIRCd Development Team
+will most likely be ignored.
+
+Future plans are primarily that scripts which can correctly parse the IRC 
+Daemon's shortened server notice output and new numerics/commands will live
+here for various IRC clients. If anyone else has something small but very
+very useful they wish to have bundled with the IRC daemon, please contact 
+me - pickle@alien.net.au
+
+Description of files here:
+
+ File/Directory   | Description
+------------------+------------------------------------------------------------
+ services         | Extract from the /etc/services file relevant to IRC
+                  | Daemons. Includes all IRC related port assignments
+		  | currently registered with the IANA.
+                  |
