@@ -8,6 +8,21 @@
 
 // Top definitions
 const Config::defTable_type Config::topDefs = {
-     { "CONFIG",	     NULL,	     NULL },
-     { NULL }
+     { 
+	"ADMINISTRATOR",		NULL,
+	  NULL,				NULL
+     },
+     { 
+	"ARBITERS",			NULL,
+	  NULL,				NULL
+     },
+     { 
+	"CONFIG",			NULL,
+	  NULL,				NULL
+     },
+     {
+	"REDIRECTION",			NULL,
+	  NULL,				NULL
+     },
+     { NULL, NULL, NULL, NULL }
 };
