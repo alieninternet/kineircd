@@ -30,12 +30,13 @@
 
 namespace Kine {
    class Service : public Client {
-    public:
-      //! Constructor 
+    protected:
+      //! Constructor
       Service(const timeval& _signonTime = daemon().getTime())
 	: Client(_signonTime)
 	{};
       
+    public:
       //! Destructor
       virtual ~Service(void)
 	{};

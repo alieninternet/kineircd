@@ -50,11 +50,12 @@ namespace Kine {
 	 };
       };
       
-    public:
+    protected:
       //! Constructor
       Server(void)
 	{};
-      
+
+    public:
       //! Destructor
       virtual ~Server(void)
 	{};

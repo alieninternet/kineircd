@@ -30,11 +30,12 @@
 
 namespace Kine {
    class Network : public Denizen, public Sender {
-    public:
+    protected:
       //! Constructor
       Network(void)
 	{};
       
+    public:
       //! Destructor
       virtual ~Network(void)
 	{};

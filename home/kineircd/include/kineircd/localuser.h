@@ -34,7 +34,7 @@ extern "C" {
 
 namespace Kine {
    class LocalUser : public User {
-    public:
+    protected:
       //! Constructor
       LocalUser(const std::string& _nickname,
 		const std::string& _username,
@@ -43,6 +43,7 @@ namespace Kine {
 	: User(_nickname, _username, _hostname, _signonTime)
         {};
       
+    public:
       //! Destructor
       virtual ~LocalUser(void)
 	{};
