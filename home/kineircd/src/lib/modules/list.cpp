@@ -32,7 +32,8 @@ using namespace Kine;
 /* loadModule - Load a module, check it and add it to our list if it is okay
  * Original 21/07/2002 simonb
  */
-bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
+bool ModuleList::loadModule(const String &moduleFile, String &errorReturn,
+			    const bool beingConfigured)
 {
 #ifdef KINE_DEBUG_PSYCHO
    debug("ModuleList::loadModule() - Trying to load " + moduleFile);
@@ -51,19 +52,27 @@ bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
    debug("ModuleList::loadModule() - Loaded module: " + moduleFile);
 #endif
 
-   // We need to check if this module must only be loaded once
-   if (moduleDesc->getModule()->getBasicInfo().flags & 
-       Module::basicInfo_type::FLAG_UNIQUE_INSTANCE) {
-      // Make sure it is not loaded more than once
-      if (modules.count(moduleDesc->getModule()->getKeyName()) > 
-	  1) {
-	 // Be all upset on the module's behalf
-	 errorReturn = moduleDesc->getModule()->getVersionString() +
-	   " can only be loaded once";
-	 return false;
-      }
+   // Does this module only want to be loaded once?
+   if ((moduleDesc->getModule()->getBasicInfo().flags & 
+	Module::basicInfo_type::FLAG_UNIQUE_INSTANCE) &&
+       (modules.count(moduleDesc->getModule()->getKeyName()) > 1)) {
+      errorReturn = moduleDesc->getModule()->getVersionString() +
+	" can only be loaded once";
+      delete moduleDesc;
+      return false;
    }
-   
+
+   // Does this module demand to be configured?
+   if ((moduleDesc->getModule()->getBasicInfo().flags & 
+	Module::basicInfo_type::FLAG_CONFIGURE_MANDATORY) &&
+       !beingConfigured) {
+      // Be all upset on the module's behalf
+      errorReturn = moduleDesc->getModule()->getVersionString() +
+	" must be configured";
+      delete moduleDesc;
+      return false;
+   }
+
    // Okay then, if we got this far we can add this module to the list
    (void)modules.insert(modulesMap_type::value_type
 			(moduleDesc->getModule()->getKeyName(), moduleDesc));
