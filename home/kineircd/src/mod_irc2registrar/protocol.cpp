@@ -242,8 +242,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseCAPAB)
 
 #ifdef KINE_DEBUG_PSYCHO
    std::ostringstream out;
-   out << " -=>   Capability: " << registrantData.capabilities.back() << 
-     " (@ " << registrantData.capabilities.end() << ')';
+   out << " -=>   Capability: " << registrantData.capabilities.back();
    debug(out.str());
 #endif
 }
