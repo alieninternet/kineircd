@@ -44,28 +44,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
   : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue)
 {
    // vv temporary :)
-   static Languages::tagMap_type tags = {
-        { "test_naughty_chars_flat" },
-	{ "test_naughty_chars_escaped" },
-	{ "test_pretty_chars" },
-	{ "test_slash" },
-	{ "test_percent" },
-	{ "Test_BOLD" },
-	{ "test_underline" },
-	{ "test_beep" },
-	{ "test_reversed" },
-	{ "test_space" },
-	{ "test_tab" },
-	{ "test_colour" },
-	{ "test_params" },
-	{ "test_subs" },
-	{ 0 }
-   };
-   
    std::ostringstream output;
-   std::ostringstream output2;
-   
-   langs().registerMap(tags);
    
    output <<
      ':' << config().getOptionsServerName() << " 001 " << registrant.name <<
@@ -91,15 +70,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
      config().getOptionsServerName() << " 376 " << registrant.name <<
      " :?\r\n";
 
-   for (int i = 0; i <= 15; i++) {
-      output2 << ':' <<
-	config().getOptionsServerName() << " NOTICE " << registrant.name <<
-	" :Tag  " << i << ": " << 
-	langs().get("en", i, "foo", "bah", "baz") << "\r\n";
-   }
-   
    Protocol::outputQueue.push(output.str());
-   Protocol::outputQueue.push(output2.str());
    // ^^ temporary :)
 }
 
