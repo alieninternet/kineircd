@@ -3312,7 +3312,7 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    information	= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/kineircd/kineircd/doc/LANGUAGE?rev=HEAD";
-   format	= "<codes> * :<info>";
+   format	= "<code(s)> :<info>";
    comment	= "Reply to the LANGUAGE command, informing the client of the language(s) it has set";
 };
 
