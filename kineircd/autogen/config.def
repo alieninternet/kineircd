@@ -34,6 +34,7 @@ definition = {
       name = "Contact";
       hasVariable = yes;
       varType = "AISutil::String";
+      varHandler = "varHandleString";
       exampleValue = "\"unconfigured@server.foo.org\"";
       comment =
          "The contact address of the admin. This is normally an e-mail "
@@ -45,6 +46,7 @@ definition = {
       name = "Location";
       hasVariable = yes;
       varType = "AISutil::String";
+      varHandler = "varHandleString";
       exampleValue = "\"Server located in Woop-Woop, NoWhereLand\"";
       comment =
          "This is the location of the server. Commonly it is only used to "
@@ -58,6 +60,7 @@ definition = {
       name = "Name";
       hasVariable = yes;
       varType = "AISutil::String";
+      varHandler = "varHandleString";
       exampleValue = "Joe Bloggs";
       comment = 
          "The name of the administrator, or the name of the sponsor of the "
