@@ -38,8 +38,10 @@ chanmodes = {
    irc2char	= "a";
    name		= "ANONYMOUS";
    origin	= "RFC2811";
-   comment	= "Marks the channel to use anonymous conversations. All conversations, and people joining/parting are viewed all from 'anonymous!anonymous@anonymous'. Users quitting are seen as users parting the channel with no reason.";
-   conflict	= "yes";
+   comment	= "Marks the channel to use anonymous conversations. All "
+                  "conversations, and people joining/parting are viewed all "
+		  "from 'anonymous!anonymous@anonymous'. Users quitting are "
+		  "seen as users parting the channel with no reason.";
 };
 
 chanmodes = {
@@ -55,7 +57,8 @@ chanmodes = {
    name		= "CHANNEL_PROTECTION";
    origin	= "Unreal";
    parameter	= "Nickname";
-   comment	= "Gives the given nickname 'protection'; Cannot be kicked/deopped";
+   comment	= "Gives the given nickname 'protection'; Cannot be "
+                  "kicked/deopped";
    conflict	= "yes";
 };
 
@@ -77,7 +80,8 @@ chanmodes = {
    irc2char	= "c";
    name		= "NOCOLOUR";
    origin	= "Bahamut";
-   comment	= "Stops colour from being broadcast from the channel. Some implementations drop lines, some implementations strip it.";
+   comment	= "Stops colour from being broadcast from the channel. Some "
+                  "implementations drop lines, some implementations strip it.";
 };
 
 chanmodes = {
@@ -91,7 +95,31 @@ chanmodes = {
    irc2char	= "d";
    name		= "DENY";
    parameter	= "Real-name";
-   comment	= "Like ban, but apparently bans through matching the given one-word mask to the 'irc-name' or 'real name' field a client has.";
+   comment	= "Like ban, but apparently bans through matching the given "
+                  "one-word mask to the 'irc-name' or 'real name' field a "
+		  "client has.";
+   conflict	= "yes";
+};
+
+chanmodes = {
+   irc2char	= "d";
+   name		= "HAS_HIDDEN"; // what is the real name?
+   origin	= "QuakeNet";
+   comment	= "Set by the server when the channel mode +D (on QuakeNet) "
+                  "was removed, but there are still 'hidden' users in the "
+		  "channel";
+   server_on	= "yes";
+   server_off	= "yes";
+   conflict	= "yes";
+};
+
+chanmodes = {
+   irc2char	= "D";
+   name		= "DELJOINS";
+   origin	= "QuakeNet";
+   comment	= "When set, all joins are hidden until the user is given a "
+   		  "voice, oper status, until they speak, or change a topic "
+		  "etc.";
 };
 
 chanmodes = {
@@ -99,7 +127,9 @@ chanmodes = {
    name		= "EVENT";
    origin	= "AustHex";
    obsolete	= "yes";
-   comment	= "Stops users from changing their nicknames when set. AustNet considers this obsolete, due to the conflict between the more widely accepted use of the 'e' mode.";
+   comment	= "Stops users from changing their nicknames when set. "
+                  "AustNet considers this obsolete, due to the conflict "
+		  "between the more widely accepted use of the 'e' mode.";
 };
 
 chanmodes = {
@@ -107,7 +137,10 @@ chanmodes = {
    name		= "BAN_EXCEPTION";
    origin	= "RFC2811";
    parameter	= "n!u@h mask";
-   comment	= "Creates a ban exception using the given mask. Normally, if someone's identity fits a channel ban mask, they are banned. If their identity also matches the ban exception mask, they are allowed not banned (exempt from the ban)";
+   comment	= "Creates a ban exception using the given mask. Normally, "
+                  "if someone's identity fits a channel ban mask, they are "
+		  "banned. If their identity also matches the ban exception "
+		  "mask, they are allowed not banned (exempt from the ban)";
 };
 
 chanmodes = {
@@ -122,7 +155,8 @@ chanmodes = {
    irc2char	= "G";
    name		= "STRIP_BAD_WORDS";
    origin	= "Unreal";
-   comment	= "Strips profanity from messages broadcast through the channel";
+   comment	= "Strips profanity from messages broadcast through the "
+                  "channel";
 };
 
 chanmodes = {
@@ -137,14 +171,18 @@ chanmodes = {
    irc2char	= "H";
    name		= "NO_HIDING";
    origin	= "Unreal";
-   comment	= "When set, this stops users set umode +I (INVISIBLE_JOINPART) from being able to join or part a channel secretly";
+   comment	= "When set, this stops users set umode +I "
+                  "(INVISIBLE_JOINPART) from being able to join or part a "
+		  "channel secretly";
 };
 
 chanmodes = {
    irc2char	= "i";
    name		= "INVITE_ONLY";
    origin	= "RFC1459";
-   comment	= "Marks the channel as invite only. When set, clients must be invited using the INVITE command prior to being allowed to join the channel";
+   comment	= "Marks the channel as invite only. When set, clients must "
+                  "be invited using the INVITE command prior to being "
+		  "allowed to join the channel";
 };
 
 chanmodes = {
@@ -152,7 +190,9 @@ chanmodes = {
    name		= "INVITATION_MASK";
    origin	= "RFC2811";
    parameter	= "n!u@h mask";
-   comment	= "If the channel is marked as invite only, users matching the mask(s) set using this mode are allowed to enter without invitation.";
+   comment	= "If the channel is marked as invite only, users matching "
+                  "the mask(s) set using this mode are allowed to enter "
+		  "without invitation.";
 };
 
 chanmodes = {
@@ -160,7 +200,10 @@ chanmodes = {
    name		= "KEYLOCK";
    origin	= "RFC1459";
    parameter	= "Password";
-   comment	= "Locks the channel with the given password, which must be specified via the JOIN command to any clients attempting to join the channel when set. The correct key must be given when turning this mode off.";
+   comment	= "Locks the channel with the given password, which must be "
+                  "specified via the JOIN command to any clients attempting "
+		  "to join the channel when set. The correct key must be "
+		  "given when turning this mode off.";
 };
 
 chanmodes = {
@@ -174,8 +217,18 @@ chanmodes = {
    irc2char	= "l";
    name		= "LIMIT";
    origin	= "RFC1459";
-   parameter	= "32-bit unsigned number";
-   comment	= "Limits the channel to only allow the given number of members to be in the channel while the mode is set. Nobody else is allowed to join the channel while the channel membership count is greater than or equal to the number given with the mode, however some implementations allow IRC operators to circumvent that rule.";
+   parameter	= "Integer";
+   comment	= "Limits the channel to only allow the given number of "
+                  "members to be in the channel while the mode is set. "
+		  "Nobody else is allowed to join the channel while the "
+		  "channel membership count is greater than or equal to "
+		  "the number given with the mode, however some "
+		  "implementations allow IRC operators to circumvent that "
+		  "rule. Most traditional implementations accept only a "
+                  "signed integer here (using atoi()), however some more "
+                  "modern implementations may accept an unsigned integer "
+		  "(i.e. strtoul()), or even have machine variations on "
+		  "whether a 32-bit or 64-bit integer is accepted.";
 };
 
 chanmodes = {
@@ -190,7 +243,8 @@ chanmodes = {
    name		= "LINK";
    origin	= "Unreal";
    parameter	= "Channel name";
-   comment	= "If the channel is +l, and the channel is full, users will be redirected to the given channel";
+   comment	= "If the channel is +l, and the channel is full, users will "
+                  "be redirected to the given channel";
    conflict	= "yes";
 };
 
@@ -198,7 +252,9 @@ chanmodes = {
    irc2char	= "m";
    name		= "MODERATED";
    origin	= "RFC1459";
-   comment	= "The channel is being moderated. Only users who have a voice are able to talk (people who are voiced or channel operator members)";
+   comment	= "The channel is being moderated. Only users who have a "
+                  "voice are able to talk (people who are voiced or channel "
+		  "operator members)";
 };
 
 chanmodes = {
@@ -211,14 +267,16 @@ chanmodes = {
    irc2char	= "n";
    name		= "NO_EXTERNAL_MSGS";
    origin	= "RFC1459";
-   comment	= "Disallows messages from users who are not channel members entering the channel";
+   comment	= "Disallows messages from users who are not channel "
+                  "members entering the channel";
 };
    
 chanmodes = {
    irc2char	= "N";
    name		= "NO_NICK_CHANGE";
    origin	= "Unreal";
-   comment	= "Disallow nickname changes. This is similar to AustHex's obsolete +e ('event') mode";
+   comment	= "Disallow nickname changes. This is similar to "
+                  "AustHex's obsolete +e ('event') mode";
 };
 
 chanmodes = {
@@ -250,7 +308,10 @@ chanmodes = {
    irc2char	= "p";
    name		= "PRIVATE";
    origin	= "RFC1459";
-   comment	= "Marks the channel as private. Using this form, +p cannot be set with +s at the same time. Setting +p while +s is set turns off +s, and vice-versa. This is widely considered obsolete in favour of the secret mode (+s).";
+   comment	= "Marks the channel as private. Using this form, +p cannot "
+                  "be set with +s at the same time. Setting +p while +s is "
+		  "set turns off +s, and vice-versa. This is widely "
+		  "considered obsolete in favour of the secret mode (+s).";
    obsolete	= "yes";
 };
 
@@ -265,7 +326,11 @@ chanmodes = {
    irc2char	= "q";
    name		= "QUIET";
    origin	= "RFC2811";
-   comment	= "Sets the channel to be quiet. When set, it restricts what is sent to clients who are on the channel. Joins, parts, and nick changes are not broadcast. From the user's point of view, the channel only contains one user (them).";
+   comment	= "Sets the channel to be quiet. When set, it restricts "
+                  "what is sent to clients who are on the channel. Joins, "
+		  "parts, and nick changes are not broadcast. From the "
+		  "user's point of view, the channel only contains one user "
+		  "(them).";
    server_on	= "yes";
    server_off	= "yes";
    conflict	= "yes";
@@ -291,7 +356,15 @@ chanmodes = {
    irc2char	= "r";
    name		= "REOP";
    origin	= "RFC2811";
-   comment	= "This mode is used to prevent a channel from having no operator for an extended period of time. When set, any channel that has lost all its channel operators for a certain period of time automatically has some or all channel members given channel operator status. RFC2811 specifies this is only available to '!' channels, but some implementations are reported to use it on other channel types, since they use timestamping to avoid channel take-overs during network splits.";
+   comment	= "This mode is used to prevent a channel from having no "
+                  "operator for an extended period of time. When set, any "
+		  "channel that has lost all its channel operators for a "
+		  "certain period of time automatically has some or all "
+		  "channel members given channel operator status. RFC2811 "
+		  "specifies this is only available to '!' channels, but "
+		  "some implementations are reported to use it on other "
+		  "channel types, since they use timestamping to avoid "
+		  "channel take-overs during network splits.";
    conflict	= "yes";
 };
 
@@ -306,9 +379,21 @@ chanmodes = {
 };
 
 chanmodes = {
+   irc2char	= "r";
+   name		= "REGONLY";
+   origin	= "QuakeNet";
+   comment	= "Channel only allows registered nicknames to join/talk. "
+                  "Since there is a much greater prevalence for +R for the "
+		  "same task, +R may be a better choice.";
+   server_on	= "yes";
+   server_off	= "yes";
+   conflict	= "yes";
+};
+
+chanmodes = {
    irc2char	= "R";
-   name		= "NO_NON_REGISTERED";
-   origin	= "Bahamut, KineIRCd";
+   name		= "REGONLY";
+   origin	= "Bahamut, KineIRCd, tr-ircd";
    comment	= "Channel only allows registered nicknames to join/talk";
    server_on	= "yes";
    server_off	= "yes";
@@ -318,7 +403,11 @@ chanmodes = {
    irc2char	= "s";
    name		= "SECRET";
    origin	= "RFC1459";
-   comment	= "Marks the channel as secret. The channel will not appear in channel listings, the NAMES command will not list nicknames for users who are not channel members, and the channel will not appear in WHOIS unless WHOIS is called by a fellow channel member.";
+   comment	= "Marks the channel as secret. The channel will not appear "
+                  "in channel listings, the NAMES command will not list "
+		  "nicknames for users who are not channel members, and the "
+		  "channel will not appear in WHOIS unless WHOIS is called "
+		  "by a fellow channel member.";
 };
 
 chanmodes = {
@@ -332,7 +421,8 @@ chanmodes = {
    irc2char	= "t";
    name		= "TOPIC_LOCK";
    origin	= "RFC1459";
-   comment	= "Topic is locked, and can only be changed by channel operators";
+   comment	= "Topic is locked, and can only be changed by channel "
+                  "operators";
 };
 
 chanmodes = {
@@ -351,11 +441,22 @@ chanmodes = {
 };
 
 chanmodes = {
+   irc2char	= "u";
+   name		= "NOQUITPARTS";
+   origin	= "QuakeNet";
+   comment	= "When set, this hides all part messages (no part reasons "
+                  "are broadcast) and all quit reasons are simply replaced "
+		  "with a generic string such as \"Signed Off\".";
+   conflict	= "yes";
+};
+
+chanmodes = {
    irc2char	= "v";
    name		= "VOICE";
    origin	= "RFC1459";
    parameter	= "Nickname";
-   comment	= "Gives the specified nickname a voice. The user may then speak when the channel is being moderated (+m).";
+   comment	= "Gives the specified nickname a voice. The user may then "
+                  "speak when the channel is being moderated (+m).";
 };
 
 chanmodes = {
@@ -369,5 +470,6 @@ chanmodes = {
    irc2char	= "z";
    name		= "SECURED_ONLY";
    origin	= "Unreal";
-   comment	= "Only allows clients connected via secure connections to join (eg. SSL)";
+   comment	= "Only allows clients connected via secure connections to "
+                  "join (eg. SSL)";
 };
