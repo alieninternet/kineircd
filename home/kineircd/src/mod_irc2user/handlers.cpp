@@ -28,13 +28,15 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
-#include <aisutil/string/mask.h>
+#include <aisutil/string.h>
 
 #include "mod_irc2user/protocol.h"
 #include "mod_irc2user/language.h"
 #include "mod_irc2user/commands.h"
 
 using namespace Kine::mod_irc2user;
+using AISutil::String;
+using AISutil::StringTokens;
 
 
 /* handleADMIN
@@ -163,7 +165,9 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 
 /* handleLANGUAGE
  * Original 26/10/2001 simonb
- * 03/04/2003 simonb - Imported from old code (incompleted)
+ * 03/04/2003 simonb - Imported from old code
+ * Note: Needs to allow for the configuration option allowing unknown langs.
+ *       It also needs duplicates checks (i.e. /language en,en,en = crappy)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 {
@@ -191,10 +195,15 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 	    modes += 'd';
 	 }
 	 
-	 // If this is the current language, add a 's'
-//	 if (it->second == something) {
-//	    modes += 's';
-//	 }
+	 // If this language appears incomplete, add an 'i'
+	 if (it->second->getTagCount() < languages().getHighestTagID()) {
+	    modes += 'i';
+	 }
+	 
+	 // If this is the current primary language, add an 'S'
+	 if (it->second == user.getLanguageList()[0]) {
+	    modes += 'S';
+	 }
 	 
 	 // No modes? Fix it up with a blank thingy
 	 if (modes.empty()) {
@@ -230,6 +239,61 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 		  GETLANG(irc2_RPL_ENDOF_GENERIC_LANGUAGE));
       return;      
    }
+
+   // Start building a new language data list for the user
+   unsigned char languageCount = 0;
+   Languages::languageDataList_type languageList;
+   StringTokens langCodes(parameters[0]);
+   String code;
+   Languages::LanguageData* languageData = 0;
+   
+   // Run over the language codes list we've been given
+   while (langCodes.hasMoreTokens()) {
+      // Grab this code
+      code = langCodes.nextToken(',');
+
+      // Try to find this language, using the given code
+      languageData = languages().findByCode(code);
+
+      // Did we find the language?
+      if (languageData == 0) {
+	 // If the user is not looking for the null language, get cranky
+	 if (code.toLower() != Languages::nullLanguageCode) {
+	    // Complain
+	    sendNumeric(LibIRC2::Numerics::ERR_NOLANGUAGE,
+			code,
+			GETLANG(irc2_ERR_NOLANGUAGE));
+	    
+	    // Continue to the next token/code
+	    continue;
+	 }
+      }
+      
+      // Check for duplicates?
+      
+      // Are we still within the maximum number of languages limit?
+      if (++languageCount > config().getLimitsUsersMaxLanguages()) {
+	 // Whinge
+	 sendNumeric(LibIRC2::Numerics::ERR_TOOMANYLANGUAGES,
+		     (unsigned int)config().getLimitsUsersMaxLanguages(),
+		     GETLANG(irc2_ERR_TOOMANYLANGUAGES));
+	 return;
+      }
+
+      // Add the language to the list
+      languageList.push_back(languageData);
+   }
+
+   // If the language list is empty, forget about the whole thing..
+   if (languageList.empty()) {
+      return;
+   }
+   
+   // Set the new language list
+   user.setLanguageList(languageList);
+   
+   // Tell the user about their new language settings
+   sendLanguageList();
 }
 
 
