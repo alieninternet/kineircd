@@ -391,6 +391,12 @@ tag = {
 };
 
 tag = {
+   name		= "irc2_ERR_UNKNOWNERROR";
+   components	= "mod_irc2user";
+   data_en	= "Unknown error";
+};
+
+tag = {
    name		= "irc2_ERR_UNKNOWNMODE";
    fields	= "0 = channel";
    components	= "mod_irc2user";
