@@ -85,7 +85,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 	       /* stuff */
 	       GETLANG(irc2_RPL_ISUPPORT));
      
-   // And then.. other stuff..
+   // Send the LUSER output, for some reason some clients want this??
    output << ':' <<
      config().getOptionsServerName() << " 251 " << registrant.name <<
      " :?\r\n:" <<
@@ -96,14 +96,16 @@ Protocol::Protocol(const Kine::Registrant& registrant,
      config().getOptionsServerName() << " 254 0 " << registrant.name <<
      " :?\r\n:" <<
      config().getOptionsServerName() << " 255 " << registrant.name <<
-     " :?\r\n:" <<
+     " :?\r\n";
+   
+   // Send an MOTD, of some sort..
+   output << ':' <<
      config().getOptionsServerName() << " 375 " << registrant.name <<
      " :?\r\n:" <<
      config().getOptionsServerName() << " 376 " << registrant.name <<
      " :?\r\n";
 
-   Protocol::outputQueue.push(output.str());
-   // ^^ temporary :)
+   /* THIS IS TEMPORARY!! */ Protocol::outputQueue.push(output.str());
 }
 
 
