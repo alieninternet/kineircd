@@ -445,7 +445,7 @@ src/mod_syslog/syslog.cpp: src/mod_syslog/syslog.cpp.tpl $(AUTOGEN_DEF_DIR)/logg
 # 'ircd' binary
 ###############################################################################
 ircd_SOURCES=\
-	src/ircd.cpp
+	src/ircd/ircd.cpp
 
 ircd_LDADD=\
 	libkineircd.la
@@ -456,7 +456,7 @@ ircd_LDADD=\
 # 'ircpasswd' binary
 ###############################################################################
 ircpasswd_SOURCES=\
-	src/ircpasswd.cpp
+	src/utils/ircpasswd.cpp
 
 ircpasswd_LDADD=\
 	libkineircd.la
