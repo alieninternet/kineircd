@@ -422,8 +422,9 @@ chanmodes = {
    name		= "REOP_LIST";
    origin	= "IRCNet";
    parameter	= "n!u@h mask";
-   comment	= "Re-oper list - a list of identities to automatically set "
-                  "+o upon rejoining the channel (i.e. after a split)";
+   comment	= "Re-oper list - a list of identities used as a hint for "
+   		  "reop when a channel is opless for a long enough time. Only "
+		  "one of the matches is used for the reop.";
    conflict	= "yes";
 };
 
