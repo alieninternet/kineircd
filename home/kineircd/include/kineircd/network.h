@@ -29,7 +29,7 @@
 
 namespace Kine {
    //! A network
-   class Network : public Denizen, public Sender {
+   class Network : public Denizen {
     protected:
       //! Constructor
       Network(const AISutil::Time& _signonTime)
