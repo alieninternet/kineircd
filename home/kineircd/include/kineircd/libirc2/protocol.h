@@ -30,7 +30,7 @@
 # include <sstream>
 # include <aisutil/string/string.h>
 # include <kineircd/protocol.h>
-# include <kineircd/user.h>
+# include <kineircd/client.h>
 # include <kineircd/irc2/numerics.h>
 
 namespace Kine {
@@ -217,6 +217,95 @@ namespace Kine {
 		  ' ' << pd << ' ' << pe << ' ' << pf << ' ' << pg <<
 		  " :" << ph << lineTerminator;
 		outputQueue.push(output.str());
+	     };
+	 
+	 // Send a numeric
+	 void sendNumeric(const Client& destination,
+			  const Numerics::numeric_type numeric)
+	   {
+	      sendMessageTo(config().getOptionsServerName(),
+			    destination.getNickname(), numeric);
+	   };
+	 template <class Ta>
+	   void sendNumeric(const Client& destination,
+			    const Numerics::numeric_type numeric,
+			    const Ta& pa)
+	     {
+		sendMessageTo(config().getOptionsServerName(),
+			      destination.getNickname(), numeric,
+			      pa);
+	     };
+	 template <class Ta, class Tb>
+	   void sendNumeric(const Client& destination,
+			    const Numerics::numeric_type numeric,
+			    const Ta& pa, const Tb& pb)
+	     {
+		sendMessageTo(config().getOptionsServerName(),
+			      destination.getNickname(), numeric,
+			      pa, pb);
+	     };
+	 template <class Ta, class Tb, class Tc>
+	   void sendNumeric(const Client& destination,
+			    const Numerics::numeric_type numeric,
+			    const Ta& pa, const Tb& pb, const Tc& pc)
+	     {
+		sendMessageTo(config().getOptionsServerName(),
+			      destination.getNickname(), numeric,
+			      pa, pb, pc);
+	     };
+	 template <class Ta, class Tb, class Tc, class Td>
+	   void sendNumeric(const Client& destination,
+			    const Numerics::numeric_type numeric,
+			    const Ta& pa, const Tb& pb, const Tc& pc,
+			    const Td& pd)
+	     {
+		sendMessageTo(config().getOptionsServerName(),
+			      destination.getNickname(), numeric,
+			      pa, pb, pc, pd);
+	     };
+	 template <class Ta, class Tb, class Tc, class Td, class Te>
+	   void sendNumeric(const Client& destination,
+			    const Numerics::numeric_type numeric,
+			    const Ta& pa, const Tb& pb, const Tc& pc,
+			    const Td& pd, const Te& pe)
+	     {
+		sendMessageTo(config().getOptionsServerName(),
+			      destination.getNickname(), numeric,
+			      pa, pb, pc, pd, pe);
+	     };
+	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf>
+	   void sendNumeric(const Client& destination,
+			    const Numerics::numeric_type numeric,
+			    const Ta& pa, const Tb& pb, const Tc& pc,
+			    const Td& pd, const Te& pe, const Tf& pf)
+	     {
+		sendMessageTo(config().getOptionsServerName(),
+			      destination.getNickname(), numeric,
+			      pa, pb, pc, pd, pe, pf);
+	     };
+	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
+	           class Tg>
+	   void sendNumeric(const Client& destination,
+			    const Numerics::numeric_type numeric,
+			    const Ta& pa, const Tb& pb, const Tc& pc,
+			    const Td& pd, const Te& pe, const Tf& pf,
+			    const Tg& pg)
+	     {
+		sendMessageTo(config().getOptionsServerName(),
+			      destination.getNickname(), numeric,
+			      pa, pb, pc, pd, pe, pf, pg);
+	     };
+	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
+	           class Tg, class Th>
+	   void sendNumeric(const Client& destination,
+			    const Numerics::numeric_type numeric,
+			    const Ta& pa, const Tb& pb, const Tc& pc,
+			    const Td& pd, const Te& pe, const Tf& pf,
+			    const Tg& pg, const Th& ph)
+	     {
+		sendMessageTo(config().getOptionsServerName(),
+			      destination.getNickname(), numeric,
+			      pa, pb, pc, pd, pe, pf, pg, ph);	
 	     };
       };
    }; // namespace LibIRC2
