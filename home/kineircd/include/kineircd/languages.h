@@ -277,12 +277,16 @@ namespace Kine {
        *    ISO-8859-1 set
        * \return A string of wchar_t characters with the same value as the
        *    input string
+       * \warning This function sucks. It should not be used, as it should
+       *    be removed sometime soon.
        */
       static const std::wstring toWideStr(const std::string str)
 	{
 	   std::wstring output;
-	   output.reserve(str.length());
-	   (void)std::copy(str.begin(), str.end(), output.begin());
+	   for (std::string::const_iterator it = str.begin();
+		it != str.end(); ++it) {
+	      output += (wchar_t)(*it);
+	   }
 	   return output;
 	};
       
