@@ -27,16 +27,22 @@
 
 # include <aisutil/string/string.h>
 
+// This open dependance on ltdl publicly is disturbing. Hopefully it will
+// disappear if this file is removed from public view..
+extern "C" {
+# include <ltdl.h>
+}
+
 # include <kineircd/module.h>
 
 namespace Kine {
    class ModuleDescriptor {
     private:
-      void* const handle;			// Module handle from dlopen()
+      lt_dlhandle handle;			// Module handle from dlopen()
       Module& module;				// The module itself
       
       // Constructor
-      ModuleDescriptor(void* const h, Module& m)
+      ModuleDescriptor(lt_dlhandle& h, Module& m)
 	: handle(h),
           module(m)
 	{};

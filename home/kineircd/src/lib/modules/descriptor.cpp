@@ -28,9 +28,7 @@
 #include "kineircd/kineircdconf.h"
 
 extern "C" {
-#ifdef HAVE_DLFCN_H
-# include <dlfcn.h>
-#endif
+#include <ltdl.h>
 };
 
 #include "kineircd/moduledescriptor.h"
@@ -45,10 +43,8 @@ using AISutil::String;
  */
 ModuleDescriptor::~ModuleDescriptor(void)
 {
-   // Close the module if it appears to be still valid
-   if (handle != 0) {
-      (void)dlclose(handle);
-   }
+   // Close the module (presume it's valid)
+   (void)lt_dlclose(handle);
    
    // Delete the module
    delete &module;
@@ -61,19 +57,23 @@ ModuleDescriptor::~ModuleDescriptor(void)
 ModuleDescriptor* const ModuleDescriptor::loadModule(const String& filename,
 						     String& errString) 
 {
+   // Initialise the libtool dlopen mechanism incase it has not been done yet
+   if (lt_dlinit() != 0) {
+      errString = "Unable to initialise ltdl";
+      return 0;
+   }
+   
 #ifdef KINE_DEBUG_PSYCHO
    debug("ModuleDescriptor::loadModule() - Trying to load " + filename);
 #endif
    
    // Try and load the given module
-   void* const handle = dlopen(filename.c_str(), RTLD_NOW);
-   
-   // Check if the module loaded okay
-   if (handle == 0) {
+   lt_dlhandle handle;
+   if ((handle = lt_dlopen(filename.c_str())) == (void*)0) {
       // Set the error string
-      errString = dlerror();
+      errString = lt_dlerror();
 #ifdef KINE_DEBUG_PSYCHO
-      debug("ModuleDescriptor::loadModule() - dlopen() gave: " + errString);
+      debug("ModuleDescriptor::loadModule() - lt_dlopen() gave: " + errString);
 #endif
       return 0;
    }
@@ -83,16 +83,15 @@ ModuleDescriptor* const ModuleDescriptor::loadModule(const String& filename,
    // Attempt to find the init function
    KINE_MODULE_INIT_PROTOTYPE((* const initFunction)) =
      ((KINE_MODULE_INIT_PROTOTYPE((*)))
-      dlsym(handle, KINE_MODULE_INIT_SYMBOL_NAME));
+      lt_dlsym(handle, KINE_MODULE_INIT_SYMBOL_NAME));
    
    // Check if we found something
-   if ((initFunction == 0) || 
-       ((error = dlerror()) != 0)) {
+   if (initFunction == 0) {
       // Set the error string
       errString = error;
       
-      // Close the function
-      (void)dlclose(handle);
+      // Close the module
+      (void)lt_dlclose(handle);
       return 0;
    }
    
