@@ -15,31 +15,31 @@
 class Operator {
  private:
    String const name;				// Name of this operator
-   String const password;			// Password
-   bool const global;				// Global?
+   Utils::SHA1::digest_type const password;	// Password (hashed)
+   const bool global;				// Global?
 
  public:
    // Constructor   
-   Operator(String const &n, String const &p, bool g)
+   Operator(const String &n, const Utils::SHA1::digest_type &p, const bool g)
      : name(n),
        password(p),
        global(g)
      {};
    
    // Copy Constructor
-   Operator(Operator const &o)
+   Operator(const Operator &o)
      : name(o.name),
        password(o.password),
        global(o.global)
      {};
    
    // Return the operator name (description)
-   String const &getName(void) const {
+   const String &getName(void) const {
       return name;
    };
    
-   // Return the password string
-   String const &getPassword(void) const {
+   // Return the password digest
+   const Utils::SHA1::digest_type &getPassword(void) const {
       return password;
    };
    
@@ -49,10 +49,9 @@ class Operator {
    };
 
    // Transform the nickname and password pair into SHA1 output
-   static String makeOperPassword(String const &nickname,
-				  String const &password) {
-      return Utils::generateSHA1(nickname.IRCtoLower() +
-				 MAGIC_OPER_PASSWD_STRING + password);
+   static Utils::SHA1::digest_type makeOperPassword(String const &nickname,
+						    String const &password) {
+      return Utils::SHA1::generate(nickname.IRCtoLower() + password);
    };
 };
 

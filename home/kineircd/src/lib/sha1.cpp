@@ -18,54 +18,70 @@
 #include "utils.h"
 #include "str.h"
 
+// If we have OpenSSL, we can just use their SHA1 function -- YAY!
+#ifdef HAVE_OPENSSL
+# include <openssl/sha.h>
+#else
+
+# define SHA_DIGEST_LENGTH	20	// 160 bits.
 
 // This stuff should move..
-#define USE_LITTLE_ENDIAN /* This should be #define'd if true. */
-// #define SHA1HANDSOFF /* Copies data before messing with it. */
-// #define SHA1_REVERSE_BYTE_ORDER /* reverse the long byte order */     
-
-// Do not touch unless you know what you are doing
-#define SHA1_BASE	80
-#define SHA1_BASE_PAD	6			// MUST BE MAX OUTPUT OF BASE
+# define USE_LITTLE_ENDIAN /* This should be #define'd if true. */
 
 
 typedef struct {
    unsigned long state[5];
    unsigned long count[2];
-   char buffer[64];
-} SHA1_CTX;
+   unsigned char buffer[64];
+} context_type;
 
 
-#define rol(value, bits) (((value) << (bits)) | ((value) >> (32 - (bits))))
+# define rol(value, bits) \
+	(((value) << (bits)) | ((value) >> (32 - (bits))))
 
-/* blk0() and blk() perform the initial expand. */
-/* I got the idea of expanding during the round function from SSLeay */
-#ifdef USE_LITTLE_ENDIAN
-#define blk0(i) (block->l[i] = (rol(block->l[i],24)&0xFF00FF00) \
-    |(rol(block->l[i],8)&0x00FF00FF))
-#else
-#define blk0(i) block->l[i]
-#endif
-#define blk(i) (block->l[i&15] = rol(block->l[(i+13)&15]^block->l[(i+8)&15] \
-    ^block->l[(i+2)&15]^block->l[i&15],1))
+/* blk0() and blk() perform the initial expand.
+ * I got the idea of expanding during the round function from SSLeay
+ */
+# ifdef USE_LITTLE_ENDIAN
+#  define blk0(i) \
+	(block->l[i] = (rol(block->l[i], 24) & 0xFF00FF00) | \
+	(rol(block->l[i], 8) & 0x00FF00FF))
+# else
+#  define blk0(i) \
+	block->l[i]
+# endif
+# define blk(i) \
+	(block->l[i & 15] = rol(block->l[(i + 13) & 15] ^ \
+	block->l[(i + 8) & 15] ^ block->l[(i + 2) & 15] ^ \
+	block->l[i & 15], 1))
 
-/* (R0+R1), R2, R3, R4 are the different operations used in SHA1 */
-#define R0(v,w,x,y,z,i) z+=((w&(x^y))^y)+blk0(i)+0x5A827999+rol(v,5);w=rol(w,30);
-#define R1(v,w,x,y,z,i) z+=((w&(x^y))^y)+blk(i)+0x5A827999+rol(v,5);w=rol(w,30);
-#define R2(v,w,x,y,z,i) z+=(w^x^y)+blk(i)+0x6ED9EBA1+rol(v,5);w=rol(w,30);
-#define R3(v,w,x,y,z,i) z+=(((w|x)&y)|(w&x))+blk(i)+0x8F1BBCDC+rol(v,5);w=rol(w,30);
-#define R4(v,w,x,y,z,i) z+=(w^x^y)+blk(i)+0xCA62C1D6+rol(v,5);w=rol(w,30);
+// (R0+R1), R2, R3, R4 are the different operations used in SHA1
+# define R0(v,w,x,y,z,i) \
+	z += ((w & (x ^ y)) ^ y) + blk0(i) + 0x5A827999 + rol(v, 5); \
+	w=rol(w, 30);
+# define R1(v,w,x,y,z,i) \
+	z += ((w & (x ^ y)) ^ y) + blk(i) + 0x5A827999 + rol(v, 5); \
+	w=rol(w, 30);
+# define R2(v,w,x,y,z,i) \
+	z += (w ^ x ^ y) + blk(i) + 0x6ED9EBA1 + rol(v, 5); \
+	w = rol(w, 30);
+# define R3(v,w,x,y,z,i) \
+	z += (((w | x) & y) | (w & x)) + blk(i) + 0x8F1BBCDC + rol(v, 5); \
+	w=rol(w, 30);
+# define R4(v,w,x,y,z,i) \
+	z += (w ^ x ^ y) + blk(i) + 0xCA62C1D6 + rol(v, 5); \
+	w=rol(w, 30);
 
 
 /* transform - Transform a 512 bit string to SHA1 code
  * Original unknown (Steve Reid <steve@edmweb.com>, ported by scottm)
  */
-void SHA1transform(unsigned long state[5], char buffer[64])
+void SHA1transform(unsigned long state[5], unsigned char buffer[64])
 {
    unsigned long a, b, c, d, e;
    
    typedef union {
-      char c[64];
+      unsigned char c[64];
       unsigned long l[16];
    } CHAR64LONG16;
 
@@ -77,26 +93,86 @@ void SHA1transform(unsigned long state[5], char buffer[64])
    d = state[3];
    e = state[4];
 
-   R0(a,b,c,d,e, 0); R0(e,a,b,c,d, 1); R0(d,e,a,b,c, 2); R0(c,d,e,a,b, 3);
-   R0(b,c,d,e,a, 4); R0(a,b,c,d,e, 5); R0(e,a,b,c,d, 6); R0(d,e,a,b,c, 7);
-   R0(c,d,e,a,b, 8); R0(b,c,d,e,a, 9); R0(a,b,c,d,e,10); R0(e,a,b,c,d,11);
-   R0(d,e,a,b,c,12); R0(c,d,e,a,b,13); R0(b,c,d,e,a,14); R0(a,b,c,d,e,15);
-   R1(e,a,b,c,d,16); R1(d,e,a,b,c,17); R1(c,d,e,a,b,18); R1(b,c,d,e,a,19);
-   R2(a,b,c,d,e,20); R2(e,a,b,c,d,21); R2(d,e,a,b,c,22); R2(c,d,e,a,b,23);
-   R2(b,c,d,e,a,24); R2(a,b,c,d,e,25); R2(e,a,b,c,d,26); R2(d,e,a,b,c,27);
-   R2(c,d,e,a,b,28); R2(b,c,d,e,a,29); R2(a,b,c,d,e,30); R2(e,a,b,c,d,31);
-   R2(d,e,a,b,c,32); R2(c,d,e,a,b,33); R2(b,c,d,e,a,34); R2(a,b,c,d,e,35);
-   R2(e,a,b,c,d,36); R2(d,e,a,b,c,37); R2(c,d,e,a,b,38); R2(b,c,d,e,a,39);
-   R3(a,b,c,d,e,40); R3(e,a,b,c,d,41); R3(d,e,a,b,c,42); R3(c,d,e,a,b,43);
-   R3(b,c,d,e,a,44); R3(a,b,c,d,e,45); R3(e,a,b,c,d,46); R3(d,e,a,b,c,47);
-   R3(c,d,e,a,b,48); R3(b,c,d,e,a,49); R3(a,b,c,d,e,50); R3(e,a,b,c,d,51);
-   R3(d,e,a,b,c,52); R3(c,d,e,a,b,53); R3(b,c,d,e,a,54); R3(a,b,c,d,e,55);
-   R3(e,a,b,c,d,56); R3(d,e,a,b,c,57); R3(c,d,e,a,b,58); R3(b,c,d,e,a,59);
-   R4(a,b,c,d,e,60); R4(e,a,b,c,d,61); R4(d,e,a,b,c,62); R4(c,d,e,a,b,63);
-   R4(b,c,d,e,a,64); R4(a,b,c,d,e,65); R4(e,a,b,c,d,66); R4(d,e,a,b,c,67);
-   R4(c,d,e,a,b,68); R4(b,c,d,e,a,69); R4(a,b,c,d,e,70); R4(e,a,b,c,d,71);
-   R4(d,e,a,b,c,72); R4(c,d,e,a,b,73); R4(b,c,d,e,a,74); R4(a,b,c,d,e,75);
-   R4(e,a,b,c,d,76); R4(d,e,a,b,c,77); R4(c,d,e,a,b,78); R4(b,c,d,e,a,79);
+   R0(a, b, c, d, e, 0); 
+   R0(e, a, b, c, d, 1); 
+   R0(d, e, a, b, c, 2); 
+   R0(c, d, e, a, b, 3);
+   R0(b, c, d, e, a, 4); 
+   R0(a, b, c, d, e, 5);
+   R0(e, a, b, c, d, 6);
+   R0(d, e, a, b, c, 7);
+   R0(c, d, e, a, b, 8);
+   R0(b, c, d, e, a, 9);
+   R0(a, b, c, d, e, 10);
+   R0(e, a, b, c, d, 11);
+   R0(d, e, a, b, c, 12);
+   R0(c, d, e, a, b, 13);
+   R0(b, c, d, e, a, 14);
+   R0(a, b, c, d, e, 15);
+   R1(e, a, b, c, d, 16);
+   R1(d, e, a, b, c, 17);
+   R1(c, d, e, a, b, 18);
+   R1(b, c, d, e, a, 19);
+   R2(a, b, c, d, e, 20);
+   R2(e, a, b, c, d, 21);
+   R2(d, e, a, b, c, 22);
+   R2(c, d, e, a, b, 23);
+   R2(b, c, d, e, a, 24);
+   R2(a, b, c, d, e, 25);
+   R2(e, a, b, c, d, 26);
+   R2(d, e, a, b, c, 27);
+   R2(c, d, e, a, b, 28);
+   R2(b, c, d, e, a, 29);
+   R2(a, b, c, d, e, 30); 
+   R2(e, a, b, c, d, 31);
+   R2(d, e, a, b, c, 32); 
+   R2(c, d, e, a, b, 33);
+   R2(b, c, d, e, a, 34);
+   R2(a, b, c, d, e, 35);
+   R2(e, a, b, c, d, 36);
+   R2(d, e, a, b, c, 37);
+   R2(c, d, e, a, b, 38);
+   R2(b, c, d, e, a, 39);
+   R3(a, b, c, d, e, 40);
+   R3(e, a, b, c, d, 41);
+   R3(d, e, a, b, c, 42);
+   R3(c, d, e, a, b, 43);
+   R3(b, c, d, e, a, 44);
+   R3(a, b, c, d, e, 45);
+   R3(e, a, b, c, d, 46);
+   R3(d, e, a, b, c, 47);
+   R3(c, d, e, a, b, 48);
+   R3(b, c, d, e, a, 49);
+   R3(a, b, c, d, e, 50);
+   R3(e, a, b, c, d, 51);
+   R3(d, e, a, b, c, 52);
+   R3(c, d, e, a, b, 53);
+   R3(b, c, d, e, a, 54);
+   R3(a, b, c, d, e, 55);
+   R3(e, a, b, c, d, 56);
+   R3(d, e, a, b, c, 57);
+   R3(c, d, e, a, b, 58);
+   R3(b, c, d, e, a, 59);
+   R4(a, b, c, d, e, 60);
+   R4(e, a, b, c, d, 61);
+   R4(d, e, a, b, c, 62);
+   R4(c, d, e, a, b, 63);
+   R4(b, c, d, e, a, 64);
+   R4(a, b, c, d, e, 65);
+   R4(e, a, b, c, d, 66);
+   R4(d, e, a, b, c, 67);
+   R4(c, d, e, a, b, 68);
+   R4(b, c, d, e, a, 69);
+   R4(a, b, c, d, e, 70);
+   R4(e, a, b, c, d, 71);
+   R4(d, e, a, b, c, 72);
+   R4(c, d, e, a, b, 73);
+   R4(b, c, d, e, a, 74);
+   R4(a, b, c, d, e, 75);
+   R4(e, a, b, c, d, 76);
+   R4(d, e, a, b, c, 77);
+   R4(c, d, e, a, b, 78);
+   R4(b, c, d, e, a, 79);
 
    state[0] += a;
    state[1] += b;
@@ -109,44 +185,47 @@ void SHA1transform(unsigned long state[5], char buffer[64])
 
 /* init - Initialize new context
  * Original unknown (Steve Reid <steve@edmweb.com>, ported by scottm)
- * 22/01/01 scottm - Modified for evolution game engine use
- * 12/08/01 simonb - Modified for AustHex use
+ * 22/01/2001 scottm - Modified for evolution game engine use
+ * 12/08/2001 simonb - Modified for AustHex use
+ * 07/04/2002 simonb - Cleaned up a bit, made it a little safer..
  */
-void SHA1init(SHA1_CTX *context)
+void SHA1init(context_type &context)
 {
-   context->state[0] = 0x67452301;
-   context->state[1] = 0xEFCDAB89;
-   context->state[2] = 0x98BADCFE;
-   context->state[3] = 0x10325476;
-   context->state[4] = 0xC3D2E1F0;
-   context->count[0] = context->count[1] = 0;
+   context.state[0] = 0x67452301;
+   context.state[1] = 0xEFCDAB89;
+   context.state[2] = 0x98BADCFE;
+   context.state[3] = 0x10325476;
+   context.state[4] = 0xC3D2E1F0;
+   context.count[0] = context.count[1] = 0;
 }
 
 
 /* update - Add a string to the SHA1 checksum
  * Original unknown (Steve Reid <steve@edmweb.com>, ported by scottm)
- * 22/01/01 scottm - Modified for evolution game engine use
- * 12/08/01 simonb - Modified for AustHex use
+ * 22/01/2001 scottm - Modified for evolution game engine use
+ * 12/08/2001 simonb - Modified for AustHex use
+ * 06/04/2002 simonb - Fixed char -> unsigned char flaw
+ * 07/04/2002 simonb - Cleaned up a bit, made it a little safer..
  */
-void SHA1update(SHA1_CTX *context, char *data, unsigned int len)
+void SHA1update(context_type &context, unsigned char *data, unsigned int len)
 {
    unsigned long i, j;
    
-   j = (context->count[0] >> 3) & 63;
+   j = (context.count[0] >> 3) & 63;
    
-   if ((context->count[0] += len << 3) < (len << 3)) {
-      context->count[1]++;
+   if ((context.count[0] += len << 3) < (len << 3)) {
+      context.count[1]++;
    }
    
-   context->count[1] += (len >> 29);
+   context.count[1] += (len >> 29);
 
    if ((j + len) > 63) {
-      memcpy(&context->buffer[j], data, (i = 64-j));
+      memcpy(&context.buffer[j], data, (i = (64 - j)));
 
-      SHA1transform(context->state, context->buffer);
+      SHA1transform(context.state, context.buffer);
 
-      for ( ; i + 63 < len; i += 64) {
-	 SHA1transform(context->state, &data[i]);
+      for (; (i + 63) < len; i += 64) {
+	 SHA1transform(context.state, &data[i]);
       }
       
       j = 0;
@@ -154,85 +233,113 @@ void SHA1update(SHA1_CTX *context, char *data, unsigned int len)
       i = 0;
    }
    
-   memcpy(&context->buffer[j], &data[i], len - i);
-   
+   memcpy(&context.buffer[j], &data[i], len - i);
 }
 
 
 /* final - Finalise the SHA code
  * Original unknown (Steve Reid <steve@edmweb.com>, ported by scottm)
- * 22/01/01 scottm - Modified for evolution game engine use
- * 12/08/01 simonb - Modified for AustHex use
+ * 22/01/2001 scottm - Modified for evolution game engine use
+ * 12/08/2001 simonb - Modified for AustHex use
+ * 06/04/2002 simonb - Fixed char -> unsigned char flaw
+ * 07/04/2002 simonb - Cleaned up a bit, made it a little safer..
+ * 07/04/2002 simonb - Fixed word order endian reversal, eek!
  */
-void SHA1final(char digest[20], SHA1_CTX *context)
+void SHA1final(unsigned char digest[20], context_type &context)
 {
    unsigned long i, j;
-   char finalcount[8];
+   unsigned char finalcount[8];
    
    for (i = 0; i < 8; i++) {
-      finalcount[i] = (char)((context->count[(i >= 4 ? 0 : 1)]
-			      >> ((3-(i & 3)) * 8) ) & 255);
+      finalcount[i] = (char)
+	((context.count[(i >= 4 ? 0 : 1)] >> ((3-(i & 3)) * 8)) & 255);
    }
 
-   SHA1update(context, (char *)"\200", 1);
+   SHA1update(context, (unsigned char *)"\200", 1);
 
-   while ((context->count[0] & 504) != 448) {
-      SHA1update(context, (char *)"\0", 1);
+   while ((context.count[0] & 504) != 448) {
+      SHA1update(context, (unsigned char *)"\0", 1);
    }
 
    SHA1update(context, finalcount, 8); 
 
    for (i = 0; i < 20; i++) {
-#ifdef WORDS_BIGENDIAN // AutoConf      
+# ifdef WORDS_BIGENDIAN
       digest[i] = (char)
-	((context->state[i>>2] >> ((3-(i & 3)) * 8) ) & 255);
-#else
+	((context.state[i >> 2] >> (((i & 3)) * 8)) & 255);
+# else
       digest[i] = (char)
-	((context->state[i>>2] >> (((i & 3)) * 8) ) & 255);
-#endif      
-
+	((context.state[i >> 2] >> ((3 - (i & 3)) * 8)) & 255);
+# endif      
    }
 
    i = j = 0;
-   memset(context->buffer, 0, 64);
-   memset(context->state, 0, 20);
-   memset(context->count, 0, 8);
+   memset(context.buffer, 0, 64);
+   memset(context.state, 0, 20);
+   memset(context.count, 0, 8);
    memset(&finalcount, 0, 8);
 }
 
+#endif // HAVE_OPENSSL
 
-/* generateSHA1 - Wrapper for SHA1 generation
+// A null/empty digest
+const Utils::SHA1::digest_type Utils::SHA1::nullDigest = {
+  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+};
+
+
+/* generate - Wrapper for SHA1 generation
  * Original 22/01/2001 scottm
  * 19/07/2001 simonb - Modified for DumbOP use
  * 16/08/2001 simonb - Modified for austhex use
- * Note: Top 6th char per dword will either be 0 or 1, this is just what
- *       happens with an obscure base like 80.
+ * 18/03/2002 simonb - Fixed char -> unsigned char flaw
+ * 06/04/2002 simonb - Outputting digest (string generation migrated out)
+ * 07/04/2002 simonb - Removed string output, now returns the digest itself.
  */
-String Utils::generateSHA1(String const &line)
+Utils::SHA1::digest_type Utils::SHA1::generate(const String &line)
 {
    /* Make sure we got something. The SHA1 generator doesn't like to be fed
     * nothings
     */
    if (!line.empty()) {
-      union {
-	 char c[20];
-	 unsigned long l[5];
-      } digest;
+      digest_type digest;
       
-      SHA1_CTX context;
-      String output = "";
+#ifdef DEBUG
+      assert(sizeof(digest) == SHA_DIGEST_LENGTH);
+#endif
+
+#ifdef HAVE_OPENSSL
+      ::SHA1((unsigned char *)line.c_str(), line.length(), 
+	     (unsigned char *)&digest);
+#else
+      context_type context;
       
-      SHA1init(&context);
-      SHA1update(&context, (char *)line.c_str(), line.length() - 1);
-      SHA1final(digest.c, &context);
+      SHA1init(context);
+      SHA1update(context, (unsigned char *)line.c_str(), line.length());
+      SHA1final(digest.c, context);
+#endif
       
-      for (unsigned char i = 0; i < 5; i++) {
-	 output +=
-	   Utils::baseXStr(digest.l[i], SHA1_BASE).prepad(SHA1_BASE_PAD, '0');
-      }
-      
-      return output;
+      return digest;
    }
    
-   return "";
+   return nullDigest;
 }
+
+
+/* digestToStr - Convert a digest into a string of digits in some base
+ * Original 22/01/2001 scottm
+ * 07/04/2002 simonb - Separated from generate() function
+ */
+String Utils::SHA1::digestToStr(const digest_type &digest,
+				const base_type base,
+				const String::size_type pad)
+{
+   String output = "";
+   
+   for (unsigned char i = 5; i--;) {
+      cout << (int)i << ':' << hex << digest.l[i] << dec << endl;
+      output += Utils::baseXStr(digest.l[i], base).prepad(pad, '0');
+   }
+   
+   return output;
+};

@@ -1,6 +1,7 @@
 /* utils.cpp
  * General utilities
- * 
+ *
+ * Copyright (C) 2001,2002 Alien Internet Services
  * Copyright (c) 2001,2002 AustHex Development Team
  * (See DEV-TEAM file for details)
  *
@@ -29,16 +30,22 @@
 #include "utils.h"
 
 
-/* baseXStr - Convert a number to another base (output a string) up to base 84
- * Original 17/01/01 simonb
- * Notes: The charset is NOT mime/base64 compatible! Do not be fooled!!
+/* baseXStr - Convert a number to another base (output a string) up to base 85
+ * Original 17/01/2001 simonb
+ * 06/04/2001 simonb - Updated the baseChrs string to produce base-85 output
+ * Note: The charset is NOT mime/base64-encoding compatible!!!
  */
-#define MAXBASE 84
-String Utils::baseXStr(unsigned long n, unsigned short base)
+#define MAXBASE 85
+String Utils::baseXStr(unsigned long n, const base_type base)
 {
-   char const baseChrs[MAXBASE + 1] =
-     "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" // 62
-     "!?$#%&*+/-~[(<])>|';=";
+   const char baseChrs[MAXBASE + 1] =
+     "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" // 62 
+     "!?$#%&*+-/:<=>@:[]^{|}~";				// + 33 = 85 chars
+
+#ifdef DEBUG_ASSERT
+   // Make sure the base is within the limits..
+   assert((base > 1) && (base <= MAXBASE));
+#endif
    
    long digit;
    String tempStr = "";
@@ -57,7 +64,7 @@ String Utils::baseXStr(unsigned long n, unsigned short base)
  * Original 21/09/01 simonb
  * Note: This is very rough.
  */
-bool Utils::toBool(String const &word, bool defaultBool)
+bool Utils::toBool(const String &word, const bool defaultBool)
 {
    String newWord = word.toUpper();
    
@@ -80,7 +87,7 @@ bool Utils::toBool(String const &word, bool defaultBool)
 /* fixToIdentityMask - Transform a normal mask into an 'identity mask'
  * Original  simonb
  */
-StringMask Utils::fixToIdentityMask(String const &inMask)
+StringMask Utils::fixToIdentityMask(const String &inMask)
 {
    StringMask ret(inMask);
    return ret;

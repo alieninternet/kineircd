@@ -36,19 +36,51 @@
 
 // Utility class
 class Utils {
+ public:
+   // Type of a "base"
+   typedef unsigned char base_type;
+   
  private:
    Utils(void) {};				// Constructor (cannot be run)
    
  public:
-   // utils.cc
+   // utils.cpp
    static String baseXStr(unsigned long, 
-			  unsigned short);	// Convert to another base
-   static bool toBool(String const &, bool);	// Convert a string to boolean
+			  const base_type);	// Convert to another base
+   static bool toBool(const String &,
+		      const bool);		// Convert a string to boolean
    static StringMask 
-     fixToIdentityMask(String const &);		// Fix a mask into an id mask
+     fixToIdentityMask(const String &);		// Fix a mask into an id mask
 
-   // sha1.cc
-   static String generateSHA1(String const &);	// SHA1 from as string
+   // sha1.cpp
+   class SHA1 {
+    public:
+      // A digest. SHA1 returns 160 bits, this makes it easier to manage.
+      union digest_type {
+	 unsigned char c[20];
+	 unsigned long l[5];
+	 
+	 // Boolean equals operator
+	 bool operator==(const digest_type &d) const {
+	    return ((l[0] == d.l[0]) &&
+		    (l[1] == d.l[1]) &&
+		    (l[2] == d.l[2]) &&
+		    (l[3] == d.l[3]) &&
+		    (l[4] == d.l[4]) &&
+		    (l[5] == d.l[5]));
+	 };
+      };
+
+      // An empty digest
+      static const digest_type nullDigest;
+      
+      static digest_type generate(const 
+				  String &);	// SHA1 digest from a string
+      
+      // Convert an SHA1 digest output to particular base
+      static String digestToStr(const digest_type &, const base_type,
+				const String::size_type);
+   };
 };
 
 

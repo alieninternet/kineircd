@@ -171,19 +171,6 @@
 # define SELECT_TIMEOUT			1
 
 
-/* This define changes how operator password SHA1 hashes are generated.
- * Change if you like, but remember if you modify it your existing passwords
- * WILL NOT WORK! Likewise, they won't work with other servers unless they
- * have the same modification. The main idea of this is so that another oper
- * from another server can't look at your ircd.conf and nick passwords since
- * they are generated differently. The disadvantage is you will have to modify
- * this every time a new version comes out if you want to remain different.
- * Just remember: If you have already configured your server and you don't
- * want to re-do all your passwords, DON'T change this!
- */
-# define MAGIC_OPER_PASSWD_STRING	"!@#:)#@!"
-							       
-
 /* These define what 'extra' modes local and global operators get. Undefining
  * these do not give the operators any extra modes. Check the user.h include
  * file for what modes are available. These modes are given additional to the
