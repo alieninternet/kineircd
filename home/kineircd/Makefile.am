@@ -142,7 +142,7 @@ rfc%.txt:
 
 
 
-# Pre-dependency building dependancies... ? :)
+# Pre-dependency building dependancies...
 BUILT_SOURCES=\
 	include/kineircd/irc2/numerics.h \
 	include/kineircd/config.h \
@@ -152,6 +152,7 @@ BUILT_SOURCES=\
 	include/kineircd/server.h \
 	install/.lang \
 	src/ircd/options.h \
+	src/libkineircd_irc2/language.h \
 	src/mod_irc2registrar/language.h \
 	src/mod_irc2user/language.h \
 	src/mod_irc2user/protocol.h
@@ -303,6 +304,9 @@ libkineircd_irc2_la_SOURCES=\
 	include/kineircd/irc2/modes.h \
 	include/kineircd/irc2/numerics.h \
 	include/kineircd/irc2/protocol.h \
+	src/libkineircd_irc2/common.cpp \
+	src/libkineircd_irc2/language.cpp \
+	src/libkineircd_irc2/language.h \
 	src/libkineircd_irc2/protocol.cpp \
 	src/libkineircd_irc2/servermodes.cpp
 
@@ -317,6 +321,14 @@ include/kineircd/irc2/numerics.h: include/kineircd/irc2/numerics.h.tpl $(AUTOGEN
 		-b $(basename $@) \
 		-T include/kineircd/irc2/numerics.h.tpl \
 		$(AUTOGEN_DIR)/irc2numerics.def
+
+src/libkineircd_irc2/language.cpp src/libkineircd_irc2/language.h: $(AUTOGEN_DIR)/language.tpl $(AUTOGEN_DIR)/language.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $(AUTOGEN_DIR)/language.tpl \
+		-DCOMPONENT=libkineircd_irc2 \
+		-DNAMESPACE=LibIRC2 \
+		$(AUTOGEN_DIR)/language.def
 
 
 

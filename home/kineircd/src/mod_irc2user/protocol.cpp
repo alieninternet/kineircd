@@ -25,9 +25,7 @@
 # include "autoconf.h"
 #endif
 
-#include <ctime>
 #include <sstream>
-#include <iomanip>
 #include <kineircd/config.h>
 #include <kineircd/languages.h>
 #include <kineircd/registry.h>
@@ -91,13 +89,13 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    sendISUPPORT();
 
    // Tell the user the time on server
-   sendTimeOnServer();
+   sendTimeOnServer(user);
    
    // Send the LUSERS output, for some reason some clients want this??
-   sendLUSERS();
+   sendLUSERS(user);
    
    // Send an MOTD, of some sort.. maybe..
-   sendMOTD(true);
+   sendMOTD(user, true);
 }
 
 
@@ -246,101 +244,6 @@ void Protocol::sendISUPPORT(void)
 	       output.str(),
 	       suffix);
 }
-
-
-/* sendLUSERS - Send a LUSERS reply to the user
- * Original 13/08/2001 simonb
- */
-void Protocol::sendLUSERS(void)
-{
-   sendNumeric(LibIRC2::Numerics::RPL_LUSERCLIENT,
-	       GETLANG(irc2_RPL_LUSERCLIENT,
-		       String::convert(registry().getUsers().size()),
-		       String::convert(0),
-		       String::convert(0)));
-   sendNumeric(LibIRC2::Numerics::RPL_LUSEROP,
-	       0,
-	       GETLANG(irc2_RPL_LUSEROP));
-   sendNumeric(LibIRC2::Numerics::RPL_LUSERSTAFF,
-	       0,
-	       GETLANG(irc2_RPL_LUSERSTAFF));
-   sendNumeric(LibIRC2::Numerics::RPL_LUSERUNKNOWN,
-	       0,
-	       GETLANG(irc2_RPL_LUSERUNKNOWN));
-   sendNumeric(LibIRC2::Numerics::RPL_LUSERCHANNELS,
-	       0,
-	       GETLANG(irc2_RPL_LUSERCHANNELS));
-   sendNumeric(LibIRC2::Numerics::RPL_LUSERME,
-	       GETLANG(irc2_RPL_LUSERME,
-		       String::convert(registry().getLocalUsers().size()),
-		       String::convert(0)));
-   sendNumeric(LibIRC2::Numerics::RPL_LOCALUSERS,
-	       GETLANG(irc2_RPL_LOCALUSERS,
-		       String::convert(registry().getLocalUsers().size()),
-		       String::convert(0)));
-   sendNumeric(LibIRC2::Numerics::RPL_GLOBALUSERS,
-	       GETLANG(irc2_RPL_GLOBALUSERS,
-		       String::convert(registry().getUsers().size()),
-		       String::convert(0)));
-}
-
-
-/* sendMOTD - Send our MOTD to the user
- * Original 13/08/2001 simonb
- */
-void Protocol::sendMOTD(const bool justConnected)
-{
-   // Send the MOTD header
-   sendNumeric(LibIRC2::Numerics::RPL_MOTDSTART,
-	       GETLANG(irc2_RPL_MOTDSTART,
-		       config().getOptionsServerName()));
-
-   // Send this line
-   sendNumeric(LibIRC2::Numerics::RPL_MOTD,
-	       "- This is MOTD data");
-   
-   // Send the MOTD footer
-   sendNumeric(LibIRC2::Numerics::RPL_ENDOFMOTD,
-	       GETLANG(irc2_RPL_ENDOFMOTD));
-}
-
-
-/* sendTimeOnServer - Send RPL_TIMEONSERVERIS
- * Original 12/08/2003 simonb
- */
-void Protocol::sendTimeOnServer(void)
-{
-   std::ostringstream data;
-   
-   // Compile the time data (it's messy, so we compile the fields by hand)
-   data << 
-     daemon().getTime().seconds << ' ' <<
-     daemon().getTime().nanoseconds << ' ';
-   
-   /* Work out the timezone.. This is a pain in the arse, because the stupid
-    * Americans get timezones in C in seconds *WEST* of Greenwich. Sorry to say
-    * the Americans, in their infinite wisdom, have forgotten, once again,
-    * that the entire WORLD specifies timezones in terms of being *EAST* of
-    * Greenwich, as it has always been (it's no coincidence that the world
-    * rotates in such a direction for this to be logical). It's funny to note
-    * this seems just as stupid as the %D formatting code in strftime().
-    * At least you know why we're processing this integer backwards.
-    */
-   data <<
-     ((timezone > 0) ? '-' : '+') << std::setfill('0') <<
-     std::setw(2) << ((-timezone) / 3600) <<
-     std::setw(2) << (((-timezone) % 3600) / 60) <<
-     ' ';
-   
-   // Yes, no flags.. yet..
-   data << '*';
-   
-   // Send the time
-   sendNumeric(LibIRC2::Numerics::RPL_TIMEONSERVERIS,
-	       data.str(),
-	       GETLANG(irc2_RPL_TIMEONSERVERIS));
-}
-
 
 
 // Stuff not transferred yet..

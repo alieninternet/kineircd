@@ -142,9 +142,6 @@ namespace Kine {
 
 	 // Common stuff to send :)
 	 void sendISUPPORT(void);
-	 void sendLUSERS(void);
-	 void sendMOTD(const bool justConnected = false);
-	 void sendTimeOnServer(void);
 
 	 // Command handlers[+FOR commands+]
 	 handler_type handle[+command+];[+ENDFOR+]

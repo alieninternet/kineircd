@@ -31,6 +31,7 @@
 # include <aisutil/string/string.h>
 # include <kineircd/protocol.h>
 # include <kineircd/client.h>
+# include <kineircd/user.h>
 # include <kineircd/irc2/numerics.h>
 
 namespace Kine {
@@ -307,6 +308,15 @@ namespace Kine {
 			      destination.getNickname(), numeric,
 			      pa, pb, pc, pd, pe, pf, pg, ph);	
 	     };
+
+	 // Send the reply to the LUSERS command to the given client
+	 void sendLUSERS(const User& user);
+	 
+	 // Send our MOTD to the given client
+	 void sendMOTD(const User& user, const bool justConnected = false);
+	 
+	 // Send RPL_TIMEONSERVERIS to the given client
+	 void sendTimeOnServer(const User& user);
       };
    }; // namespace LibIRC2
 }; // namespace Kine
