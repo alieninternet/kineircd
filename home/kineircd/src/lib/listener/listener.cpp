@@ -31,7 +31,6 @@
 #include "debug.h"
 
 using namespace Kine;
-using AISutil::String;
 
 
 /* listen - Start listening on this listener socket
