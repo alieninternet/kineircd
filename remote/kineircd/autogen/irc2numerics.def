@@ -2074,12 +2074,11 @@ irc2numerics = {
    name		= "ERR_TOOMANYMATCHES";
    numeric	= "416";
    origin	= "IRCnet";
-   format	= "<command> :<info>";
+   format	= "<command> [<mask>] :<info>";
    comment	= "Returned when too many matches have been found for a "
                   "command and the output has been truncated. An example "
 		  "would be the WHO command, where by the mask '*' would "
 		  "match everyone on the network! Ouch!";
-   repeated	= "yes";
 };
 
 irc2numerics = {
@@ -2885,7 +2884,10 @@ irc2numerics = {
    numeric	= "520";
    origin	= "AustHex";
    contact	= "dev@austnet.org";
-   conflict	= "yes";
+   comment	= "This is considered obsolete in favour of "
+                  "ERR_TOOMANYMATCHES, and should no longer be used.";
+   seealso	= "416";
+   obsolete	= "yes";
 };
 
 irc2numerics = {
