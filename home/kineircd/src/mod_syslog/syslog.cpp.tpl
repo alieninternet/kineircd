@@ -28,7 +28,7 @@
 
 // Make sure we are being compiled OK
 #ifndef HAVE_SYSLOG_H
-# error "Cannot compile syslog logging feature without syslog support!"
+# warning "Compiling syslog logging feature without syslog support!!"
 #endif
 
 #include "kineircd/loggersyslog.h"

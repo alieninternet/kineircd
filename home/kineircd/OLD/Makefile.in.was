@@ -91,6 +91,7 @@ LANGTAGS_OUT_H=langtags.h
 ########################################################################
 
 include $(top_builddir)/make/rules
+include $(srcdir)/Makefile.deps
 
 .PHONY: _top_ subdirs $(SUB_DIRS) install distclean
 

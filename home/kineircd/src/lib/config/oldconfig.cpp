@@ -32,7 +32,7 @@
 
 // Are we compiled properly?
 #ifndef OLD_CONFIG_SUBPARSER
-# error "Cannot compile the old-style configuration sub-parser without support"
+# warning "Compiling the old-style configuration sub-parser without support"
 #endif
 
 
