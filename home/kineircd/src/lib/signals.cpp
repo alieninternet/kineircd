@@ -43,7 +43,7 @@ Signals *siggies = 0;
  * Original 09/07/2002 simonb
  */
 struct checkMask 
-  : public std::unary_function<const Signals::handlerInfo_type *, void> {
+  : public std::unary_function<const Signals::handlerInfo&, void> {
      const int signum;
      const Signals::mask_type maskBit;
      
@@ -53,10 +53,10 @@ struct checkMask
        {};
      
      // Analyser
-     void operator()(const Signals::handlerInfo_type *handlerInfo)
+     void operator()(const Signals::handlerInfo& handlerInfo)
        {
-	  if (handlerInfo->mask & maskBit) {
-	     (*handlerInfo->handler)(signum, maskBit, handlerInfo->foo);
+	  if (handlerInfo.mask & maskBit) {
+	     (*handlerInfo.handler)(signum, maskBit, handlerInfo.foo);
 	  }
        };
   };
@@ -283,24 +283,16 @@ Signals::~Signals(void)
 /* addHandler - Add a handler to the handlers list
  * Original 09/07/2002 simonb
  */
-bool Signals::addHandler(const handlerInfo_type &handler)
+bool Signals::addHandler(const handlerPtr_type handler,
+			 const mask_type mask, void* foo = 0)
 {
-   // Make sure the structure is okay
-   if (!handler.isOkay()) {
+   // Make sure the given data is okay
+   if ((handler) && (mask != 0)) {
       return false;
    }
-   
-   // Look for this in the handler list
-   handlerList_type::iterator result = 
-     std::find(handlers.begin(), handlers.end(), &handler);
-   
-   // Check.. If it already exists, complain
-   if (result != 0) {
-      return false;
-   }
-   
+
    // Okay, add it then
-   handlers.push_front(&handler);
+   handlers.push_front(handlerInfo(handler, mask, foo));
    
    return true;
 }

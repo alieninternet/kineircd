@@ -46,6 +46,9 @@ namespace Kine {
       // The type of a mask
       typedef unsigned char mask_type;
       
+      // The type of a handler's pointer
+      typedef KINE_SIGNAL_HANDLER_FUNC((*handlerPtr_type));
+      
       // Signal masks (what you want to receive)
       enum {
 	 USER_1			= 0x01,
@@ -57,10 +60,18 @@ namespace Kine {
       };
       
       // This defines your signal handler (must be static) and what to receive
-      struct handlerInfo_type {
-	 const KINE_SIGNAL_HANDLER_FUNC((*handler));
+      class handlerInfo {
+       public:
+	 const handlerPtr_type handler;
 	 const mask_type mask;
 	 void *foo;			// Variable for your own use
+
+	 // Constructor
+	 handlerInfo(const handlerPtr_type h, const mask_type m, void *f)
+	   : handler(h),
+	     mask(m),
+	     foo(f)
+	   {};
 	 
 	 // Is the structure OKAY?
 	 bool isOkay(void) const
@@ -70,9 +81,9 @@ namespace Kine {
     private:
       // Our list of signal handlers
 # ifdef KINE_STL_HAS_SLIST
-      typedef std::slist <const handlerInfo_type *> handlerList_type;
+      typedef std::slist <handlerInfo> handlerList_type;
 # else
-      typedef std::list <const handlerInfo_type *> handlerList_type;
+      typedef std::list <handlerInfo> handlerList_type;
 # endif
 
     public: // temporary
@@ -87,11 +98,12 @@ namespace Kine {
       ~Signals(void);
 
       // Add a handler to the handlers list (false if structure is invalid)
-      bool addHandler(const handlerInfo_type &handler);
+      bool addHandler(const handlerPtr_type handler,
+		      const mask_type mask, void* foo = 0);
 
-      // Remove a handler from the handlers list
-      void removeHandler(const handlerInfo_type &handler)
-	{ handlers.remove(&handler); };
+//      // Remove a handler from the handlers list
+//      void removeHandler(const handlerInfo &handler)
+//	{ handlers.remove(&handler); };
    };
 };
 
