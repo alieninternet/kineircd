@@ -25,6 +25,8 @@
 # include "autoconf.h"
 #endif
 
+#include <algorithm>
+
 #include "kineircd/clbp/output.h"
 
 using namespace Kine::LibCLBP;
@@ -42,22 +44,19 @@ const char* const Output::EOL_LF	= "\n";
  */
 std::string Output::withdrawOutput(AIS::Util::Socket::blockSize_type amount)
 {
-   std::string output;
+   // How much do we need to send?
+   const std::string::size_type length =
+     std::min(amount, outputQueue.length());
    
-   /* Append as much data as we can to the output without breaking the amount
-    * limit we were given
-    */
-   while (!outputQueue.empty() && (outputQueue.front().size() <= amount)) {
-      output += outputQueue.front();
-      amount -= outputQueue.front().size();
-      outputQueue.pop();
-   }
+   // Form the output..
+   const std::string output =
+     outputQueue.substr(0, length);
    
-   // Is there anything left we might also be able to send?
-   if (!outputQueue.empty() && (amount > 0)) {
-      --amount;
-      output += outputQueue.front().substr(0, amount);
-      outputQueue.front().erase(0, amount);
+   // If we need to, erase the bit we sent
+   if (amount <= outputQueue.length()) {
+      outputQueue.erase(0, length);
+   } else {
+      outputQueue.clear();
    }
    
    // Return the output

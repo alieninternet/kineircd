@@ -212,18 +212,11 @@ void Protocol::parseMessage(const std::string& origin,
    assert(protocolInfo != 0);
 #endif
     
-   // First, we need to assemble a string representing the old output queue
-   std::string output;
-   if (!outputQueue.empty()) {
-      output += outputQueue.front();
-      outputQueue.pop();
-   }
-   
-   // Second, we create the new protocol
+   // Create the new protocol
    Kine::Protocol* const newProtocol = 
      protocolInfo->createProtocol(registrantData, connection,
 				  getInputQueue(),
-				  output);
+				  getOutputQueue());
       
 #ifdef KINE_DEBUG
    std::ostringstream out;

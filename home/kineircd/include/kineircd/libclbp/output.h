@@ -24,7 +24,6 @@
 #ifndef _INCLUDE_KINEIRCD_CLBP_OUTPUT_H_
 # define _INCLUDE_KINEIRCD_CLBP_OUTPUT_H_ 1
 
-# include <queue>
 # include <string>
 # include <kineircd/protocol.h>
 
@@ -37,13 +36,14 @@ namespace Kine {
 	 static const char* const EOL_CR_LF;	//!< '\r\n' end of line (common)
 	 static const char* const EOL_CR;	//!< '\r' end of line (rare)
 	 static const char* const EOL_LF;	//!< '\n' end of line
-	 
+
+       private:
+	 //! The output data queue
+	 std::string outputQueue;
+
        protected:
 	 //! The character(s) used to terminate a line.
 	 const char* eolChars;
-
-	 //! The output data queue
-	 std::queue < std::string > outputQueue;
 
 
 	 //! Constructor
@@ -58,8 +58,9 @@ namespace Kine {
 			 const std::string& _outputQueue,
 			 const char* const _eolChars = EOL_CR_LF)
 	   : Kine::Protocol(_connection),
+	     outputQueue(_outputQueue),
 	     eolChars(_eolChars)
-	   { outputQueue.push(_outputQueue); };
+	   {};
 
        public:
 	 //! Destructor
@@ -69,7 +70,7 @@ namespace Kine {
        protected:
 	 // Add data to the output queue to be sent
 	 void outputRaw(const std::string& message)
-	   { outputQueue.push(message); };
+	   { outputQueue += message; };
 	 
 	 // Add a 'line' to the output queue to be sent (appends EOL chars)
 	 void outputLine(const std::string& message)
@@ -82,6 +83,11 @@ namespace Kine {
 	 //! Return true should there be anything in the output queue to send
 	 bool moreOutput(void) const
 	   { return (!outputQueue.empty()); };
+	 
+       protected:
+	 //! Grab a read-only version of the input queue
+	 const std::string& getOutputQueue(void) const
+	   { return outputQueue; };
       }; // class Output
    }; // namespace LibCLBP
 }; // namespace Kine
