@@ -28,8 +28,10 @@
 // Only continue if we actually have syslog support on this system
 # ifdef HAVE_SYSLOG_H
 
+extern "C" {
 #  include <syslog.h>
-
+}
+   
 #  include "kineircd/logger.h"
 
 

@@ -29,9 +29,11 @@
 #include <cstring>
 #include <ctime>
 
+extern "C" {
 #ifdef HAVE_OPENSSL
 # include <openssl/ssl.h>
 #endif
+}
 
 #include "kineircd/daemon.h"
 #include "kineircd/debug.h"

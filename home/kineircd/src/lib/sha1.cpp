@@ -15,12 +15,14 @@
 #include <cstring>
 #include <cstdlib>
 
-#include "kineircd/utils.h"
-#include "kineircd/str.h"
-
+extern "C" {
 #ifdef HAVE_OPENSSL
 # include <openssl/sha.h>
 #endif
+}
+
+#include "kineircd/utils.h"
+#include "kineircd/str.h"
 
 using namespace Kine;
 

@@ -23,14 +23,17 @@
 
 #include "kineircd/kineircdconf.h"
 
-#include <unistd.h>
-#include <sys/types.h>
-#include <dirent.h>
 #include <cstring>
 #include <iostream>
 #include <fstream>
 #include <cerrno>
 
+extern "C" {
+#include <unistd.h>
+#include <sys/types.h>
+#include <dirent.h>
+}
+   
 #include "kineircd/lang.h"
 #include "kineircd/debug.h"
 
