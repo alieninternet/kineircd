@@ -1883,7 +1883,7 @@ void Daemon::shutdown(String const &reason)
 
    // Make up a nice message
    String message = (reason.length() ?
-		     (String("Shutting down (") + reason + String(")")) :
+		     String("Shutting down (" + reason + ')') :
 		     String("Shutting down"));
    
    // Log our nice message
