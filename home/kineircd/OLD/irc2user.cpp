@@ -25,7 +25,7 @@ struct irc2userHandler::functionTableStruct const
   irc2userHandler::functionsTable[] = {
      { "ACCEPT",	parseACCEPT,		1,
 	  ANYONE,
-	  "[ '-' ] <mask> ( SPACE [ '-' ] <mask> )",
+	  "{ [ '+' | '-' ] <mask> ( ',' [ '+' | '-' ] <mask> ) } | '*'",
 	  "This command is only useful with the user mode '+g' set. When set, "
 	  "this command allows you to accept people, thus enabling them to "
 	  "talk to you while you are ignoring everyone with user-mode '+g'. "
@@ -133,6 +133,21 @@ struct irc2userHandler::functionTableStruct const
 	  "Kill the given nickname with the specified reason. The reason is "
 	  "manditory as you must have a reason for KILLing someone, "
 	  "naturally :)"
+     },
+     { "KNOCK",		parseKNOCK,		0,
+	  ANYONE,
+	  "<channel>  [ <reason> ]",
+	  "'Knock' on the 'door' of an invite-only channel. This only works "
+	  "when you are not able to enter normally (the channel is invite "
+	  "only and you are not on the invites list). You may also give a "
+	  "reason for requesting an invitation, however this reason may not "
+	  "be sent if the channel is set +n (no outside messages) to avoid "
+	  "spaming."
+     },
+     { "LANGUAGE",	parseLANGUAGE,		0,
+	  ANYONE,
+	  "[ <language name> | <language code> ]",
+	  "Select session language. TBA."
      },
      { "LINKS",		parseLINKS,		2,
 	  ANYONE,
@@ -455,42 +470,9 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			      Server::modeStr,
 			      Server::modeParamStr,
 			      getVersionChars));
-   sendNumeric(RPL_ISUPPORT,
-	       String::printf("NICKLEN=%d "		// (~11chrs)
-			      "TOPICLEN=%d "		// (~13chrs)
-			      "KICKLEN=%d "		// (~12chrs)
-			      "%s"			// NETWORK= (~30chrs)
-//			      "WHOX "			// (5chrs)
-//			      "WALLCHOPS "		// (10chrs)
-//			      "USERIP "			// (7chrs)
-			      "WATCH=%d "		// (~10chrs)
-			      "SILENCE=%d "		// (~11chrs)
-			      "ACCEPT=%d "		// (~11chrs)
-			      "CHANTYPES=%s "		// (~15chrs)
-			      "MAXCHANNELS=%d " 	// (~16chrs)
-			      "MAXBANS=%d "     	// (~11chrs)
-			      "CHARSET=rfc1459 " 	// (16chrs)
-			      "MODES=%d "		// (~9chrs)
-			      "PREFIX=%s "		// (~20chrs)
-			      "%s",		 	// (=~207chrs + tag)
-			      MAXLEN_NICKNAME,
-			      MAXLEN_TOPIC,
-			      MAXLEN_KICK_REASON,
-			      (getConnection()->getDaemon()->haveNetworkName() ?
-			       ((char const *)
-				(String("NETWORK=") +
-				 getConnection()->getDaemon()->getNetworkName() +
-				 " ")) :
-			       ""),
-			      MAX_WATCHES_PER_USER,
-			      MAX_SILENCES_PER_USER,
-			      100,
-			      CHANNEL_TYPES,
-			      MAX_CHANNELS_PER_USER, 
-			      MAX_BANS_PER_CHANNEL,
-			      MAX_MODES_PER_COMMAND,
-			      Channel::prefixStr,
-			      Language::L_RPL_ISUPPORT_TAG));
+   sendNumeric(RPL_ISUPPORT, 
+	       connection->getDaemon()->makeISUPPORT() +
+	       Language::L_RPL_ISUPPORT_TAG);
    
    // Assemble and send the current time on the server to the client
    TYPE_RPL_TIMEONSERVERIS_FLAGS tosiFlags = 0;
@@ -850,6 +832,21 @@ void irc2userHandler::sendKill(User *u, String const &caller,
 			    (char const *)caller,
 			    (char const *)user->nickname,
 			    (char const *)caller,
+			    (char const *)reason));
+}
+
+
+/* sendKnock - Send a channel knocking message
+ * Original 24/10/01, Simon Butcher <pickle@austnet.org>
+ */
+void irc2userHandler::sendKnock(User *u, Channel *c, 
+				String const &reason) const
+{
+   getConnection()->
+     sendRaw(String::printf(":%s KNOCK %s :%s"
+			    IRC2USER_EOL_CHARS,
+			    (char const *)u->getAddress(user),
+			    (char const *)c->getName(),
 			    (char const *)reason));
 }
 
@@ -1408,64 +1405,112 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
 {
    // Check we have a parameter
    if (tokens->countTokens() < 2) {
-      // Send ACCEPT list
-      for (User::mask_list_t::iterator it = handler->user->accepts.begin();
-	   it != handler->user->accepts.end(); it++) {
-	 // Send this entry
-	 handler->
-	   sendNumeric(999,
-		       String::printf("%s %s",
-				      (char const *)handler->user->nickname,
-				      (char const *)(*it).getMask()));
-      }
+      handler->sendNumeric(ERR_NEEDMOREPARAMS,
+			   "ACCEPT" LNG_ERR_NEEDMOREPARAMS);
       return;
    }
 
-   StringMask mask;
+   // Grab the parameter
+   String param = tokens->nextToken();
+   
+   // Are we listing?
+   if (param == "*") {
+      String reply = "";
+      
+      for (User::accept_set_t::iterator it = handler->user->accepts.begin();
+	   it != handler->user->accepts.end(); it++) {
+	 
+	 reply = reply + " " + *it;
+	 
+	 // Check if we are close to breaking a limit here
+	 if (reply.length() > 400) {
+	    handler->sendNumeric(RPL_ACCEPTLIST, reply);
+
+	    // reset the reply
+	    reply = "";
+	 }
+      }
+	 
+      // Is there anything left to send?
+      if (reply.length()) {
+	 handler->sendNumeric(RPL_ACCEPTLIST, reply);
+      }
+	 
+      // Send the end of list message
+      handler->sendNumeric(RPL_ENDOFACCEPT, Language::L_RPL_ENDOFACCEPT);
+      
+      return;
+   }
+   
+   // Tokenise..
+   StringTokens st(param);
    
    // Run through the parameters
-   for (String maskstr = tokens->nextToken().IRCtoLower(); maskstr.length();
-	maskstr = tokens->nextToken().IRCtoLower()) {
+   for (String nick = st.nextToken(',').IRCtoLower(); nick.length();
+	nick= st.nextToken(',').IRCtoLower()) {
       // Are we removing a mask?
-      if (maskstr[0] == '-') {
+      if (nick[0] == '-') {
 	 // Fix the string appropriately
-	 maskstr = maskstr.subString(1);
+	 nick = nick.subString(1);
 	
 	 // Make sure there is a string left to do stuff with
-	 if (!maskstr.length()) {
+	 if (!nick.length()) {
 	    continue;
 	 }
 	 
-	 // Make the mask up
-	 mask = Utils::fixToIdentityMask(maskstr);
+	 // Find this user
+	 User *u = TO_DAEMON->getUser(nick);
 	 
-	 // Delete the mask
-	 if (TO_DAEMON->delUserAccept(handler->user, mask)) {
-	    handler->sendNumeric(999, maskstr + " :Removed mask message");
+	 // Check
+	 if (!u) {
+	    handler->sendNumeric(ERR_NOSUCHNICK,
+				 nick + Language::L_ERR_NOSUCHNICK_NICK);
+	    continue;
 	 }
+	 
+	 // Delete the nick
+	 if (TO_DAEMON->delUserAccept(handler->user, u)) {
+	    // Done! Apparently we do not send any confirmation of this...
+	    continue;
+	 } 
+	 
+	 // Tell the user the nickname was not found
+	 handler->sendNumeric(ERR_ACCEPTNOT, 
+			      nick + Language::L_ERR_ACCEPTNOT);
 	 
 	 continue;
       }
 
       // If we got here we are adding.. Check if this is explicit (+ prefixed)
-      if (maskstr[0] == '+') {
+      if (nick[0] == '+') {
 	 // Fix the string appropriately
-	 maskstr = maskstr.subString(1);
+	 nick = nick.subString(1);
 
 	 // Make sure there is a string left to do stuff with
-	 if (!maskstr.length()) {
+	 if (!nick.length()) {
 	    continue;
 	 }
       }
-
-      // Make the mask up
-      mask = Utils::fixToIdentityMask(maskstr);
-
-      // Add the mask
-      if (TO_DAEMON->addUserAccept(handler->user, mask)) {
-	 // Send confirmation to the client
-	 handler->sendNumeric(999, maskstr + " :Accepted mask message");
+      
+      // Find this user
+      User *u = TO_DAEMON->getUser(nick);
+	 
+      // Check the user
+      if (!u) {
+	 handler->sendNumeric(ERR_NOSUCHNICK,
+			      nick + Language::L_ERR_NOSUCHNICK_NICK);
+	 continue;
       }
+      
+      // Add the nick
+      if (TO_DAEMON->addUserAccept(handler->user, u)) {
+	 // Done! Apparently we do not send any confirmation of this...
+	 continue;
+      }
+      
+      // The nick is already on the list, complain
+      handler->sendNumeric(ERR_ACCEPTEXIST,
+			   nick + Language::L_ERR_ACCEPTEXIST);
    }
 }
 
@@ -2218,7 +2263,7 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
  */
 void irc2userHandler::parseKILL(irc2userHandler *handler, StringTokens *tokens)
 {
-   // Check we have at least one parameter
+   // Check we have at least two parameters
    if (tokens->countTokens() < 3) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
 			   "KILL" LNG_ERR_NEEDMOREPARAMS);
@@ -2257,6 +2302,98 @@ void irc2userHandler::parseKILL(irc2userHandler *handler, StringTokens *tokens)
     */
    handler->sendNumeric(RPL_KILLDONE,
 			target + Language::L_RPL_KILLDONE);
+}
+
+
+/* parseKNOCK
+ * Original 24/10/01, Simon Butcher <pickle@austnet.org>
+ */
+void irc2userHandler::parseKNOCK(irc2userHandler *handler, StringTokens *tokens)
+{
+   // Check we have at least one parameter
+   if (tokens->countTokens() < 2) {
+      handler->sendNumeric(ERR_NEEDMOREPARAMS,
+			   "KNOCK" LNG_ERR_NEEDMOREPARAMS);
+      return;
+   }
+   
+   // Grab the variables
+   String channel = tokens->nextToken();
+   String reason = tokens->nextColonToken();
+
+   // Look up the channel
+   Channel *chan = TO_DAEMON->getChannel(channel);
+   
+   // Check the channel
+   if (!chan) {
+      handler->sendNumeric(ERR_NOSUCHNICK,
+			   channel + Language::L_ERR_NOSUCHNICK_CHANNEL);
+      return;
+   }
+
+   // Check if this user is a member of the channel
+   if (chan->getMember(handler->user)) {
+      handler->sendNumeric(ERR_NOKNOCK,
+			   channel + Language::L_ERR_NOKNOCK_ONCHANNEL);
+      return;
+   }
+   
+   // Check if the channel is open (not invite only)
+   if (!chan->isModeSet(Channel::MODE_INVITE)) {
+      handler->sendNumeric(ERR_NOKNOCK,
+			   channel + Language::L_ERR_NOKNOCK_OPENCHANNEL);
+      return;
+   }
+       
+   // Check if this user is on the channel invite list
+   if (chan->onInvite(handler->user) ||
+       handler->user->local->invitedTo(chan)) {
+      handler->sendNumeric(ERR_NOKNOCK,
+			   channel + Language::L_ERR_NOKNOCK_INVITED);
+      return;
+   }
+   
+   /* Check that this channel is not a registered-user-only channel and this
+    * user has not identified themselves
+    */
+   if (chan->isModeSet(Channel::MODE_REGNICKSONLY) &&
+       !handler->user->isModeSet(User::MODE_IDENTIFIED)) {
+      handler->sendNumeric(ERR_NOKNOCK,
+			   channel + Language::L_ERR_NOKNOCK_REGONLY);
+      return;
+   }
+   
+#ifdef FLOODLOCK_KNOCK_MSG
+   // Check if the user has not knocked too soon...
+   if (handler->user->local->onKnockMessageFloodlock(chan)) {
+      handler->sendNumeric(RPL_TRYAGAIN, 
+			   Language::L_RPL_TRYAGAIN_KNOCK);
+      return;
+   }
+#endif
+   
+   /* Check if this channel can receive outside messages, or there is no 
+    * reason to use, and replace the reason if necessary
+    */
+   if (chan->isModeSet(Channel::MODE_NOOUTSIDEMSG) ||
+       !reason.length()) {
+      reason = Language::L_DEFAULT_KNOCK_REASON;
+   }
+   
+   // OK! Finally, do the channel knock
+   chan->sendKnock(handler->user, reason);
+
+   // Confirm the knock
+   handler->sendNumeric(RPL_KNOCKING,
+			channel + Language::L_RPL_KNOCKING);
+}
+
+
+/* parseLANGUAGE
+ * Original , Simon Butcher <pickle@austnet.org>
+ */
+void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *tokens)
+{
 }
 
 
@@ -3144,8 +3281,22 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	       if (u->isModeSet(User::MODE_IGNORING) &&
 		   !u->isAccepting(handler->user)) {
 		  // Tell the user that their message was not delivered
-		  handler->sendNumeric(999, 
-				       ":Message about not ACCEPTed here");
+		  handler->sendNumeric(RPL_NOTACCEPTED, 
+				       u->getNickname() + 
+				       Language::L_RPL_NOTACCEPTED);
+		  
+		  // Send a request to the remote user
+#ifdef FLOODLOCK_ACCEPT_MSG
+		  if (!handler->user->local->onAcceptMessageFloodlock(u)) {
+#endif
+		     TO_DAEMON->routeTo(u)->
+		       sendNumeric(TO_DAEMON->myServer(),
+				   RPL_ACCEPTNOTICE, handler->user,
+				   String::printf((char *)Language::L_RPL_ACCEPTNOTICE,
+						  (char const *)handler->user->getNickname()));
+#ifdef FLOODLOCK_ACCEPT_MSG
+		  }
+#endif
 		  continue;
 	       }
 
@@ -3343,7 +3494,7 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
    }
    
    // If we got here we must be listing the masks
-   for (User::mask_list_t::iterator it = u->silences.begin();
+   for (User::silence_list_t::iterator it = u->silences.begin();
 	it != u->silences.end(); it++) {
       // Send this entry
       handler->sendNumeric(RPL_SILELIST,

@@ -261,6 +261,8 @@ class Daemon {
 	       int = LOGPRI_NOTICE);		// Log a string of text
 
    void rehash(Handler *, User *);		// Rehash
+
+   String makeISUPPORT(void);			// Make an ISUPPORT string
    
    void broadcastServerNotice(snotice_bitmask_t,
 			      String const &);	// Broadcast a server notice
@@ -291,10 +293,8 @@ class Daemon {
 		       StringMask const &);	// Add/Broadcast a user silence
    bool delUserSilence(User *, 
 		       StringMask const &);	// Delete a user silence
-   bool addUserAccept(User *, 
-		      StringMask const &);	// Add/Broadcast a user silence
-   bool delUserAccept(User *, 
-		      StringMask const &);	// Delete a user silence
+   bool addUserAccept(User *, User *);		// Add/Broadcast a user silence
+   bool delUserAccept(User *, User *);		// Delete a user silence
    void snapshotUser(User *, Whowas::type_t,
 		     String const &);		// Snapshot a user for WHOWAS
    

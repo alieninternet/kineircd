@@ -102,10 +102,6 @@
 # define MAXLEN_TOPIC			300	/* Keep these under 350 */
 # define MAXLEN_KICK_REASON		300
 # define MAX_CHANNELS_PER_USER		10
-# define MAX_BANS_PER_CHANNEL		50
-# define MAX_MODES_PER_COMMAND		6
-# define MAX_SILENCES_PER_USER		20
-# define MAX_WATCHES_PER_USER		128
 # define MIN_INVITE_TIMEOUT		30	/* 30 second min timeout */
 
 
@@ -271,6 +267,19 @@
 
 @TOP@
 
+/* Maximums for various things - see the INSTALL file for more info */
+# undef MAX_ACCEPTS_PER_USER
+# undef MAX_ACCEPTS_PER_USER_STR
+# undef MAX_BANS_PER_CHANNEL
+# undef MAX_BANS_PER_CHANNEL_STR
+# undef MAX_MODES_PER_COMMAND
+# undef MAX_MODES_PER_COMMAND_STR
+# undef MAX_SILENCES_PER_USER
+# undef MAX_SILENCES_PER_USER_STR
+# undef MAX_WATCHES_PER_USER
+# undef MAX_WATCHES_PER_USER_STR
+
+  
 /* Define these depending on what connections you want to allow/disallow */
 # undef ALLOW_CLIENT_CONNECTIONS
 # undef ALLOW_SERVER_CONNECTIONS
@@ -280,8 +289,10 @@
 /* Define these with an amount in seconds for each flood-lock timeout,
  * or undefine to disable the flood-lock.
  */
+# undef FLOODLOCK_ACCEPT_MSG
 # undef FLOODLOCK_AWAY_REPLY
 # undef FLOODLOCK_AWAY_SET
+# undef FLOODLOCK_KNOCK_MSG  
   
   
 /* When this is defined, idle information will not be presented unless the

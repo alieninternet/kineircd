@@ -109,14 +109,14 @@ void User::markAway(String const &message)
 }
 
 
-/* onMaskList - Check if the given user matches a mask a particular mask list
+/* isSilencing - Check if the given user matches a mask a particular mask list
  * Original 24/09/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::onMaskList(mask_list_t *maskList, User *target)
+bool User::isSilencing(User *target)
 {
    // Run through the list to find the mask
-   for (mask_list_t::iterator it = maskList->begin();
-	it != maskList->end(); it++) {
+   for (silence_list_t::iterator it = silences.begin();
+	it != silences.end(); it++) {
       // Check for a match on either the real or virtual world addresses
       if (it->matches(target->getAddress()) ||
 	  it->matches(target->getVWAddress())) {
@@ -606,11 +606,8 @@ bool LocalUser::invitedTo(Channel *channel)
  * Original 21/10/01, Simon Butcher <pickle@austnet.org>
  */
 bool LocalUser::onReplyFloodlockMap(LocalUser::floodlock_reply_map_t &lockmap,
-				    User *user)
+				    time_t timelen, String const &target)
 {
-   // Fix up the target
-   String target = user->getNickname();
-   
    // Try and look them up on the map
    time_t timeout = lockmap[target];
    
@@ -622,7 +619,7 @@ bool LocalUser::onReplyFloodlockMap(LocalUser::floodlock_reply_map_t &lockmap,
    }
    
    // If we got here, check that if the floodlock has timed out
-   if ((timeout + FLOODLOCK_AWAY_REPLY) >
+   if ((timeout + timelen) >
        handler->getConnection()->getDaemon()->getTime()) {
       // Timeout is still in effect
       return true;
@@ -632,3 +629,24 @@ bool LocalUser::onReplyFloodlockMap(LocalUser::floodlock_reply_map_t &lockmap,
    lockmap.erase(target);
    return false;
 }
+
+
+
+
+// These should be an inline....
+
+#ifdef FLOODLOCK_ACCEPT_MSG
+bool LocalUser::onAcceptMessageFloodlock(User *u)
+{
+   return onReplyFloodlockMap(acceptFloodlocks, FLOODLOCK_ACCEPT_MSG,
+			      u->getNickname().IRCtoLower());
+}
+#endif
+
+#ifdef FLOODLOCK_AWAY_REPLY
+bool LocalUser::onAwayReplyFloodlock(User *u)
+{
+   return onReplyFloodlockMap(awayReplyFloodlocks, FLOODLOCK_AWAY_REPLY,
+			      u->getNickname().IRCtoLower());
+}
+#endif

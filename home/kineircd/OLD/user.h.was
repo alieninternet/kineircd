@@ -29,9 +29,14 @@ class User {
  public:
    typedef map <String, Channel *> channel_map_t;
 # ifdef STL_HAS_SLIST
-   typedef slist <StringMask> mask_list_t;
+   typedef slist <StringMask> silence_list_t;
 # else
-   typedef list <StringMask> mask_list_t;
+   typedef list <StringMask> silence_list_t;
+# endif
+# ifdef STL_HAS_HASH
+   typedef hash_set <String> accept_set_t;
+# else
+   typedef set <String> accept_set_t;
 # endif
    
    // User mode type - do not change this - P14 needs this to be the same
@@ -70,10 +75,8 @@ class User {
    
    channel_map_t channels;			// Channels this user is on
    
-   mask_list_t silences;			// SILENCE list
-   mask_list_t accepts;				// ACCEPT list
-   
-   bool onMaskList(mask_list_t *, User *);	// Is a user on a mask list?
+   silence_list_t silences;			// SILENCE list
+   accept_set_t accepts;			// ACCEPT list
    
    // User mode change routines
    static bool toggleModeDEAF(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
@@ -189,6 +192,11 @@ class User {
      {
 	return nickname;
      };
+
+   String getUsername(void) const		// Grab the username
+     {
+	return username;
+     };
    
    String getAddress(User *destination)		// Return appropriate address
      { 
@@ -249,18 +257,27 @@ class User {
    
    void markAway(String const &);		// Set/Unset away message
    
-   // Silencing a user?
-   bool isSilencing(User *u)
-     {   
-	return onMaskList(&silences, u);
-     }
+   bool isSilencing(User *u);			// Silencing a user?
+
+   // Add to the ACCEPT list
+   void addAccept(User *u)
+     {
+	accepts.insert(u->nickname.IRCtoLower());
+     };
    
+   // Remote from the ACCEPT list
+   void delAccept(User *u)
+     {
+	accepts.erase(u->nickname.IRCtoLower());
+     };
+
    // Is this user 'accepted'?
    bool isAccepting(User *u)
      {
-	return onMaskList(&accepts, u);
-     }
-
+	return ((accepts.find(u->nickname.IRCtoLower()) != accepts.end()) ?
+		true : false);
+     };
+     
    static bool okName(String const &);		// Ok nickname?
 
    static String makeModes(modes_t);		// Make a + user mode string

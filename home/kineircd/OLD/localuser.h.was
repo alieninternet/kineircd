@@ -67,12 +67,18 @@ class LocalUser {
    watch_set_t watches;				// Watching these nicknames
    invitation_map_t invitations;		// Invitations to channels
    
+# ifdef FLOODLOCK_ACCEPT_MSG
+   floodlock_reply_map_t acceptFloodlocks;	// Timeout on accept requests
+# endif
 # ifdef FLOODLOCK_AWAY_REPLY
    floodlock_reply_map_t awayReplyFloodlocks;	// Timeout on 'x is away' msgs
 # endif
-
-   bool onReplyFloodlockMap(floodlock_reply_map_t &,
-			    User *);		// Check an away-reply lock
+# ifdef FLOODLOCK_KNOCK_MSG
+   floodlock_reply_map_t knockFloodlocks;	// Timeout on knock requests
+# endif
+   
+   bool onReplyFloodlockMap(floodlock_reply_map_t &, time_t, 
+			    String const &);	// Check an away-reply lock
 
  public:
    // Constructor
@@ -83,8 +89,14 @@ class LocalUser {
      {
 	watches.clear();
 	invitations.clear();
+# ifdef FLOODLOCK_ACCEPT_MSG
+	acceptFloodlocks.clear();
+# endif
 # ifdef FLOODLOCK_AWAY_REPLY
 	awayReplyFloodlocks.clear();
+# endif
+# ifdef FLOODLOCK_KNOCK_MSG
+	knockFloodlocks.clear();
 # endif
      };
    
@@ -93,8 +105,14 @@ class LocalUser {
      {
 	watches.clear();
 	invitations.clear();
+# ifdef FLOODLOCK_ACCEPT_MSG
+	acceptFloodlocks.clear();
+# endif
 # ifdef FLOODLOCK_AWAY_REPLY
 	awayReplyFloodlocks.clear();
+# endif
+# ifdef FLOODLOCK_KNOCK_MSG
+	knockFloodlocks.clear();
 # endif
      };
 
@@ -134,12 +152,23 @@ class LocalUser {
 
    bool invitedTo(Channel *);			// Check an invitation
 
+# ifdef FLOODLOCK_ACCEPT_MSG
+   // Check if a channel is on our accept request floodlock map
+   bool onAcceptMessageFloodlock(User *);
+# endif
+   
 # ifdef FLOODLOCK_AWAY_REPLY
    // Check if a user is on our away-reply floodlock map
-   bool onAwayReplyFloodlock(User *u)
+   bool onAwayReplyFloodlock(User *);
+# endif
+   
+# ifdef FLOODLOCK_KNOCK_MSG
+   // Check if a channel is on our knock-request floodlock map
+   bool onKnockMessageFloodlock(Channel *c)
      {
-	return onReplyFloodlockMap(awayReplyFloodlocks, u);
-     }
+	return onReplyFloodlockMap(knockFloodlocks, FLOODLOCK_KNOCK_MSG,
+				   c->getName().IRCtoLower());
+     };
 # endif
 };
 

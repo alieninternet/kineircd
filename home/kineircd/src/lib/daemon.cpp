@@ -388,6 +388,43 @@ void Daemon::rehash(Handler *handler, User *user)
 }
 
 
+/* makeISUPPORT - Generate an ISUPPORT line using current variables
+ * Original 24/10/01, Simon Butcher <pickle@austnet.org>
+ */
+String Daemon::makeISUPPORT(void)
+{
+   return String::printf("NICKLEN=%d"				// (~11chrs)
+			 " TOPICLEN=%d"				// (~13chrs)
+			 " KICKLEN=%d"				// (~12chrs)
+			 "%s"					// NETWORK= (~30chrs)
+//			 " WHOX"				// (5chrs)
+//			 " WALLCHOPS"				// (10chrs)
+//			 " USERIP"				// (7chrs)
+			 " LANGUAGE=(en)"			// (12chrs)
+			 " KNOCK"				// (6chrs)
+			 " WATCH=" MAX_WATCHES_PER_USER_STR	// (~10chrs)
+			 " SILENCE=" MAX_SILENCES_PER_USER_STR	// (~11chrs)
+			 " ACCEPT=" MAX_ACCEPTS_PER_USER_STR	// (~12chrs)
+			 " CHANTYPES=%s"			// (~15chrs)
+			 " MAXCHANNELS=%d" 			// (~16chrs)
+			 " MAXBANS=" MAX_BANS_PER_CHANNEL_STR	// (~11chrs)
+			 " CHARSET=rfc1459" 			// (16chrs)
+			 " MODES=" MAX_MODES_PER_COMMAND_STR	// (~9chrs)
+			 " PREFIX=%s",				// (~20chrs)
+			 	// (=~226chrs + tag)
+			 MAXLEN_NICKNAME,
+			 MAXLEN_TOPIC,
+			 MAXLEN_KICK_REASON,
+			 (haveNetworkName() ?
+			  ((char const *)
+			   (String(" NETWORK=") + getNetworkName())) :
+			  ""),
+			 CHANNEL_TYPES,
+			 MAX_CHANNELS_PER_USER, 
+			 Channel::prefixStr);
+}
+
+
 /* broadcastServerNotice - [Various Forms] Broadcast a server notice to +s's
  * Original 18/09/01, Simon Butcher <pickle@austnet.org>
  */
@@ -958,7 +995,7 @@ void Daemon::killUser(User *user, String const &caller,
 bool Daemon::addUserSilence(User *user, StringMask const &mask)
 {
    // Make sure this is not already in the list (eg. a waste of time)
-   for (User::mask_list_t::iterator it = user->silences.begin();
+   for (User::silence_list_t::iterator it = user->silences.begin();
 	it != user->silences.end(); it++) {
       // Is this the mask we are adding?
       if (mask == *it) {
@@ -981,7 +1018,7 @@ bool Daemon::addUserSilence(User *user, StringMask const &mask)
 bool Daemon::delUserSilence(User *user, StringMask const &mask)
 {
    // Run through the list to find the mask to delete
-   for (User::mask_list_t::iterator it = user->silences.begin();
+   for (User::silence_list_t::iterator it = user->silences.begin();
 	it != user->silences.end(); it++) {
       // Is this the mask we are deleting?
       if (mask == *it) {
@@ -1000,22 +1037,18 @@ bool Daemon::delUserSilence(User *user, StringMask const &mask)
 /* addUserAccept - Add a mask to a user's ACCEPT list and broadcast it
  * Original 23/10/01, Simon Butcher <pickle@austnet.org>
  */
-bool Daemon::addUserAccept(User *user, StringMask const &mask)
+bool Daemon::addUserAccept(User *user, User *target)
 {
-   // Make sure this is not already in the list (eg. a waste of time)
-   for (User::mask_list_t::iterator it = user->accepts.begin();
-	it != user->accepts.end(); it++) {
-      // Is this the mask we are adding?
-      if (mask == *it) {
-	 return false;
-      }
+   // Check that the target is not already on the list
+   if (user->isAccepting(target)) {
+      return false;
    }
    
-   // If we got here it is not on the list already, just add it
-   user->accepts.push_front(mask);
+   // Add the target to the list
+   user->addAccept(target);
    
-   // Broadcast the change to servers
-	 
+   // Broadcast the change
+   
    return true;
 }
 
@@ -1023,21 +1056,18 @@ bool Daemon::addUserAccept(User *user, StringMask const &mask)
 /* delUserAccept - Delete a mask from a user's ACCEPT list and broadcast it
  * Original 23/10/01, Simon Butcher <pickle@austnet.org>
  */
-bool Daemon::delUserAccept(User *user, StringMask const &mask)
+bool Daemon::delUserAccept(User *user, User *target)
 {
-   // Run through the list to find the mask to delete
-   for (User::mask_list_t::iterator it = user->accepts.begin();
-	it != user->accepts.end(); it++) {
-      // Is this the mask we are deleting?
-      if (mask == *it) {
-	 user->accepts.erase(it);
-	 
-	 // Broadcast the change to servers
-	 
-	 return true;
-      }
+   // Check that the target is on the list
+   if (user->isAccepting(target)) {
+      // Remove the target
+      user->delAccept(target);
+      
+      // Broadcast the change
+      
+      return true;
    }
-
+   
    return false;
 }
 

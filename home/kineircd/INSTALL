@@ -146,6 +146,16 @@
        on large networks, especially networks based on a star-topology.
        
 
+     --enable-floodlock-accept-msg (default = 120)
+     --disable-floodlock-accept-msg
+     
+       This enables the accept request message flood-lock. When in user mode
+       +g (caller-id 'ignore all' mode), a user that is not on your ACCEPT
+       list messaging you will send a message notifying you of their request
+       to talk to you. This can be limited to avoid people being able to 
+       flood you while you're trying to 'ignore' them.
+
+
      --enable-floodlock-away-reply (default = 60)
      --disable-floodlock-away-reply
      
@@ -173,6 +183,16 @@
        Disabling this will allow anyone to change their away message whenever 
        they like.
      
+     
+     --enable-floodlock-knock-msg (default = 300)
+     --disable-floodlock-knock-msg
+     
+       This enables the channel KNOCK message flood-lock, to avoid flooders
+       taking advantage of the KNOCK command and using it to flood a channel
+       while they are not allowed on (invite only). When disabled, users are
+       able to use KNOCK as many times as they like. WHen enabled, they can
+       only send one knock every <seconds> given, per channel.
+
 
      --enable-helpers-see-umodes (default)
      --disable-helpers-see-umodes
@@ -204,7 +224,14 @@
        a very slight amount of CPU usage, but if you're being tight on the
        CPU usage you may wish to disable this as it does not effect the
        commands in any way except for the matches count message at the end.
+
        
+     --enable-max-accepts-per-user (default = 100)
+     --enable-max-bans-per-channel (default = 50)
+     --enable-max-modes-per-command (default = 6)
+     --enable-max-silences-per-user (default = 20)
+     --enable-max-watches-per-user (default = 128)
+
       
      --enable-oper-wallops (default)
      --disable-oper-wallops

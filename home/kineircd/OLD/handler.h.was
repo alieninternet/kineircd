@@ -53,12 +53,14 @@ class Handler {
      };
 
    // Protocol output routines
+   virtual void sendAccept(User *, User *) const {};
    virtual void sendAway(User *) const {};
    virtual void sendChannelMode(Channel *, User *, String const &) const {};
    virtual void sendInvite(User *, Channel *, User *, time_t) const {};
    virtual void sendJoin(Channel *, User *) const {};
    virtual void sendKick(Channel *, User *, User *, String const &) const {};
    virtual void sendKill(User *, String const &, String const &) const {};
+   virtual void sendKnock(User *, Channel *, String const &) const {};
    virtual void sendNewNick(User *) const {};
    virtual void sendNickChange(User *, String const &) const {};
    virtual void sendNotice(Server *, User *, String const &) const {};
@@ -169,6 +171,8 @@ class irc2userHandler : public Handler {
    static void parseJOIN(irc2userHandler *handler, StringTokens *tokens);
    static void parseKICK(irc2userHandler *handler, StringTokens *tokens);
    static void parseKILL(irc2userHandler *handler, StringTokens *tokens);
+   static void parseKNOCK(irc2userHandler *handler, StringTokens *tokens);
+   static void parseLANGUAGE(irc2userHandler *handler, StringTokens *tokens);
    static void parseLINKS(irc2userHandler *handler, StringTokens *tokens);
    static void parseLIST(irc2userHandler *handler, StringTokens *tokens);
    static void parseLOCOPS(irc2userHandler *handler, StringTokens *tokens);
@@ -222,6 +226,7 @@ class irc2userHandler : public Handler {
    void sendChannelMode(Channel *, User *, String const &) const;
    void sendKick(Channel *, User *, User *, String const &) const;
    void sendKill(User *, String const &, String const &) const;
+   void sendKnock(User *, Channel *, String const &) const;
    void sendNickChange(User *, String const &) const;
    void sendNotice(Server *, User *, String const &) const;
    void sendNotice(User *, Channel *, String const &) const;

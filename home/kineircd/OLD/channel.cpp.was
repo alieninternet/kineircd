@@ -459,6 +459,29 @@ void Channel::sendPrivmsg(User *from, String const &message)
 }
 
 
+/* sendKnock - Send a KNOCK request to this channel
+ * Original 24/10/01, Simon Butcher <pickle@austnet.org>
+ */
+void Channel::sendKnock(User *from, String const &reason)
+{
+   for (Channel::member_map_t::iterator it = members.begin();
+	it != members.end(); it++) {
+      // Check if this is the user who sent the message (we do not echo)
+      if ((*it).second->user == from) {
+	 continue;
+      }
+      
+      // If this user is local, then this is very easy!
+      if ((*it).second->user->local) {
+	 (*it).second->user->local->handler->sendKnock(from, this, reason);
+	 continue;
+      }
+      
+      // stuff to route this message here.
+   }
+}
+
+
 /* makeModes - Create a string of channel modes according to what is set
  * Original 24/08/01, Simon Butcher <pickle@austnet.org>
  */

@@ -290,7 +290,7 @@ AC_CHECK_FUNCS(
 		)
 
 AC_MSG_CHECKING([for OpenSSL library/include path])
-AC_ARG_ENABLE(ssl,[  --enable-ssl=DIRECTORY        location of SSL library/include files],
+AC_ARG_ENABLE(ssl,[  --enable-ssl=DIRECTORY * * * * location of SSL library/include files],
  [
  	dnl Check the given path
 	if test -f "$enableval/include/openssl/ssl.h"; then
@@ -433,7 +433,7 @@ dnl
 dnl Stuff that effects the following arguments
 dnl
 AC_MSG_CHECKING([lower-cpu parameter])
-AC_ARG_ENABLE(lower-cpu,[  --enable-lower-cpu            bias defaults to lower cpu usage],
+AC_ARG_ENABLE(lower-cpu,[  --enable-lower-cpu             bias defaults to lower cpu usage],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -447,7 +447,7 @@ AC_ARG_ENABLE(lower-cpu,[  --enable-lower-cpu            bias defaults to lower 
 
 
 AC_MSG_CHECKING([lower-memory parameter])
-AC_ARG_ENABLE(lower-memory,[  --enable-lower-memory         bias defaults to lower memory usage],
+AC_ARG_ENABLE(lower-memory,[  --enable-lower-memory          bias defaults to lower memory usage],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -464,7 +464,7 @@ dnl
 dnl Misc feature settings
 dnl
 AC_MSG_CHECKING([allow-clients parameter])
-AC_ARG_ENABLE(allow-clients,[  --enable-allow-clients        allow connections from users (clients)],
+AC_ARG_ENABLE(allow-clients,[  --enable-allow-clients         allow connections from users (clients)],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -484,7 +484,7 @@ AC_ARG_ENABLE(allow-clients,[  --enable-allow-clients        allow connections f
  ])
 
 AC_MSG_CHECKING([allow-servers parameter])
-AC_ARG_ENABLE(allow-servers,[  --enable-allow-servers        allow connections from servers],
+AC_ARG_ENABLE(allow-servers,[  --enable-allow-servers         allow connections from servers],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -498,7 +498,7 @@ AC_ARG_ENABLE(allow-servers,[  --enable-allow-servers        allow connections f
  ])
 
 AC_MSG_CHECKING([allow-services parameter])
-AC_ARG_ENABLE(allow-services,[  --enable-allow-services       allow connections from services (clients)],
+AC_ARG_ENABLE(allow-services,[  --enable-allow-services        allow connections from services (clients)],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -514,7 +514,7 @@ AC_ARG_ENABLE(allow-services,[  --enable-allow-services       allow connections 
  ])
 
 AC_MSG_CHECKING([convert-motd-tabs parameter])
-AC_ARG_ENABLE(convert-motd-tabs,[  --enable-convert-motd-tabs    fix motd tabs into spaces for dumb GUI clients],
+AC_ARG_ENABLE(convert-motd-tabs,[  --enable-convert-motd-tabs     fix motd tabs into spaces for dumb GUI clients],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -532,7 +532,7 @@ AC_ARG_ENABLE(convert-motd-tabs,[  --enable-convert-motd-tabs    fix motd tabs i
  ])
 
 AC_MSG_CHECKING([drop-lame-servers parameter])
-AC_ARG_ENABLE(drop-lame-servers,[  --enable-drop-lame-servers    drop out of sync (lame) servers],
+AC_ARG_ENABLE(drop-lame-servers,[  --enable-drop-lame-servers     drop out of sync (lame) servers],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -544,8 +544,31 @@ AC_ARG_ENABLE(drop-lame-servers,[  --enable-drop-lame-servers    drop out of syn
    AC_MSG_RESULT([no (default)])
  ])
 
+AC_MSG_CHECKING([floodlock-accept-msg parameter])
+AC_ARG_ENABLE(floodlock-accept-msg,[  --enable-floodlock-accept-msg  set the accept request message floodlock timeout],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(off)
+   else
+     if test "$enableval" -gt 0; then
+       AC_MSG_RESULT([$enableval seconds])
+       AC_DEFINE_UNQUOTED(FLOODLOCK_ACCEPT_MSG, $enableval)
+     else
+       AC_MSG_RESULT([120 seconds (default)])
+       AC_DEFINE(FLOODLOCK_ACCEPT_MSG, 120)
+     fi
+   fi
+ ],[
+   if test "$austhex_test_lower_cpu" = "yes"; then
+     AC_MSG_RESULT([off (lower-cpu default)])
+   else
+     AC_MSG_RESULT([120 seconds (default)])
+     AC_DEFINE(FLOODLOCK_ACCEPT_MSG, 120)
+   fi
+ ])
+
 AC_MSG_CHECKING([floodlock-away-reply parameter])
-AC_ARG_ENABLE(floodlock-away-reply,[  --enable-floodlock-away-reply set the away-reply floodlock timeout],
+AC_ARG_ENABLE(floodlock-away-reply,[  --enable-floodlock-away-reply  set the away-reply floodlock timeout],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(off)
@@ -555,7 +578,7 @@ AC_ARG_ENABLE(floodlock-away-reply,[  --enable-floodlock-away-reply set the away
        AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, $enableval)
      else
        AC_MSG_RESULT([60 seconds (default)])
-       AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, 60)
+       AC_DEFINE(FLOODLOCK_AWAY_REPLY, 60)
      fi
    fi
  ],[
@@ -565,12 +588,12 @@ AC_ARG_ENABLE(floodlock-away-reply,[  --enable-floodlock-away-reply set the away
      AC_MSG_RESULT([off (lower-memory default)])
    else
      AC_MSG_RESULT([60 seconds (default)])
-     AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, 60)
+     AC_DEFINE(FLOODLOCK_AWAY_REPLY, 60)
    fi
  ])
 
 AC_MSG_CHECKING([floodlock-away-set parameter])
-AC_ARG_ENABLE(floodlock-away-set,[  --enable-floodlock-away-set   set the away-setting floodlock timeout],
+AC_ARG_ENABLE(floodlock-away-set,[  --enable-floodlock-away-set    set the away-setting floodlock timeout],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(off)
@@ -580,7 +603,7 @@ AC_ARG_ENABLE(floodlock-away-set,[  --enable-floodlock-away-set   set the away-s
        AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_SET, $enableval)
      else
        AC_MSG_RESULT([45 seconds (default)])
-       AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_SET, 45)
+       AC_DEFINE(FLOODLOCK_AWAY_SET, 45)
      fi
    fi
  ],[
@@ -588,12 +611,35 @@ AC_ARG_ENABLE(floodlock-away-set,[  --enable-floodlock-away-set   set the away-s
      AC_MSG_RESULT([off (lower-memory default)])
    else
      AC_MSG_RESULT([45 seconds (default)])
-     AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_SET, 45)
+     AC_DEFINE(FLOODLOCK_AWAY_SET, 45)
+   fi
+ ])
+
+AC_MSG_CHECKING([floodlock-knock-msg parameter])
+AC_ARG_ENABLE(floodlock-knock-msg,[  --enable-floodlock-knock-msg   set the knock channel message floodlock timeout],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(off)
+   else
+     if test "$enableval" -gt 0; then
+       AC_MSG_RESULT([$enableval seconds])
+       AC_DEFINE_UNQUOTED(FLOODLOCK_KNOCK_MSG, $enableval)
+     else
+       AC_MSG_RESULT([300 seconds (default)])
+       AC_DEFINE(FLOODLOCK_KNOCK_MSG, 300)
+     fi
+   fi
+ ],[
+   if test "$austhex_test_lower_cpu" = "yes"; then
+     AC_MSG_RESULT([off (lower-cpu default)])
+   else
+     AC_MSG_RESULT([300 seconds (default)])
+     AC_DEFINE(FLOODLOCK_KNOCK_MSG, 300)
    fi
  ])
 
 AC_MSG_CHECKING([helpers-see-umodes parameter])
-AC_ARG_ENABLE(helpers-see-umodes,[  --enable-helpers-see-umodes   allow helpers/opers to see other users' modes],
+AC_ARG_ENABLE(helpers-see-umodes,[  --enable-helpers-see-umodes    allow helpers/opers to see other users' modes],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -607,7 +653,7 @@ AC_ARG_ENABLE(helpers-see-umodes,[  --enable-helpers-see-umodes   allow helpers/
  ])
 
 AC_MSG_CHECKING([ircii-kluge parameter])
-AC_ARG_ENABLE(ircii-kluge,[  --enable-ircii-kluge          kluge to allow old ircII clients to work],
+AC_ARG_ENABLE(ircii-kluge,[  --enable-ircii-kluge           kluge to allow old ircII clients to work],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -621,7 +667,7 @@ AC_ARG_ENABLE(ircii-kluge,[  --enable-ircii-kluge          kluge to allow old ir
  ])
 
 AC_MSG_CHECKING([match-counting parameter])
-AC_ARG_ENABLE(match-counting,[  --enable-match-counting       add match counts to end of listing numerics],
+AC_ARG_ENABLE(match-counting,[  --enable-match-counting        add match counts to end of listing numerics],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -638,8 +684,98 @@ AC_ARG_ENABLE(match-counting,[  --enable-match-counting       add match counts t
    fi
  ])
 
+AC_MSG_CHECKING([max-accepts-per-user parameter])
+AC_ARG_ENABLE(max-accepts-per-user,[  --enable-max-accepts-per-user  maximum number of ACCEPTs per user],
+ [
+   if test "$enableval" -gt 0 -a "$enableval" -lt 10000000; then
+     AC_MSG_RESULT([$enableval seconds])
+     AC_DEFINE_UNQUOTED(MAX_ACCEPTS_PER_USER, $enableval)
+     AC_DEFINE(MAX_ACCEPTS_PER_USER_STR, "$enableval")
+   else
+     AC_MSG_RESULT([100 (default, fixed)])
+     AC_DEFINE(MAX_ACCEPTS_PER_USER, 100)
+     AC_DEFINE(MAX_ACCEPTS_PER_USER_STR, "100")
+   fi
+ ],[
+   AC_MSG_RESULT([100 (default)])
+   AC_DEFINE(MAX_ACCEPTS_PER_USER, 100)
+   AC_DEFINE(MAX_ACCEPTS_PER_USER_STR, "100")
+ ])
+
+AC_MSG_CHECKING([max-bans-per-channel parameter])
+AC_ARG_ENABLE(max-bans-per-channel,[  --enable-max-bans-per-channel  maximum number of bans per channel],
+ [
+   if test "$enableval" -gt 0 -a "$enableval" -lt 10000000; then
+     AC_MSG_RESULT([$enableval seconds])
+     AC_DEFINE_UNQUOTED(MAX_BANS_PER_CHANNEL, $enableval)
+     AC_DEFINE(MAX_BANS_PER_CHANNEL_STR, "$enableval")
+   else
+     AC_MSG_RESULT([50 (default, fixed)])
+     AC_DEFINE(MAX_BANS_PER_CHANNEL, 50)
+     AC_DEFINE(MAX_BANS_PER_CHANNEL_STR, "50")
+   fi
+ ],[
+   AC_MSG_RESULT([50 (default)])
+   AC_DEFINE(MAX_BANS_PER_CHANNEL, 50)
+   AC_DEFINE(MAX_BANS_PER_CHANNEL_STR, "50")
+ ])
+
+AC_MSG_CHECKING([max-modes-per-command parameter])
+AC_ARG_ENABLE(max-modes-per-command,[  --enable-max-modes-per-command maximum number of mode characters per channel],
+ [
+   if test "$enableval" -gt 0 -a "$enableval" -lt 100; then
+     AC_MSG_RESULT([$enableval seconds])
+     AC_DEFINE_UNQUOTED(MAX_MODES_PER_COMMAND, $enableval)
+     AC_DEFINE(MAX_MODES_PER_COMMAND_STR, "$enableval")
+   else
+     AC_MSG_RESULT([6 (default, fixed)])
+     AC_DEFINE(MAX_MODES_PER_COMMAND, 6)
+     AC_DEFINE(MAX_MODES_PER_COMMAND_STR, "6")
+   fi
+ ],[
+   AC_MSG_RESULT([6 (default)])
+   AC_DEFINE(MAX_MODES_PER_COMMAND, 6)
+   AC_DEFINE(MAX_MODES_PER_COMMAND_STR, "6")
+ ])
+
+AC_MSG_CHECKING([max-silences-per-user parameter])
+AC_ARG_ENABLE(max-silences-per-user,[  --enable-max-silences-per-user maximum number of SILENCEs per user],
+ [
+   if test "$enableval" -gt 0 -a "$enableval" -lt 10000000; then
+     AC_MSG_RESULT([$enableval seconds])
+     AC_DEFINE_UNQUOTED(MAX_SILENCES_PER_USER, $enableval)
+     AC_DEFINE(MAX_SILENCES_PER_USER_STR, "$enableval")
+   else
+     AC_MSG_RESULT([20 (default, fixed)])
+     AC_DEFINE(MAX_SILENCES_PER_USER, 20)
+     AC_DEFINE(MAX_SILENCES_PER_USER_STR, "20")
+   fi
+ ],[
+   AC_MSG_RESULT([20 (default)])
+   AC_DEFINE(MAX_SILENCES_PER_USER, 20)
+   AC_DEFINE(MAX_SILENCES_PER_USER_STR, "20")
+ ])
+
+AC_MSG_CHECKING([max-watches-per-user parameter])
+AC_ARG_ENABLE(max-watches-per-user,[  --enable-max-watches-per-user  maximum number of WATCHes per user],
+ [
+   if test "$enableval" -gt 0 -a "$enableval" -lt 10000000; then
+     AC_MSG_RESULT([$enableval seconds])
+     AC_DEFINE_UNQUOTED(MAX_WATCHES_PER_USER, $enableval)
+     AC_DEFINE(MAX_WATCHES_PER_USER_STR, "$enableval")
+   else
+     AC_MSG_RESULT([128 (default, fixed)])
+     AC_DEFINE(MAX_WATCHES_PER_USER, 128)
+     AC_DEFINE(MAX_WATCHES_PER_USER_STR, "128")
+   fi
+ ],[
+   AC_MSG_RESULT([128 (default)])
+   AC_DEFINE(MAX_WATCHES_PER_USER, 128)
+   AC_DEFINE(MAX_WATCHES_PER_USER_STR, "128")
+ ])
+
 AC_MSG_CHECKING([oper-wallops parameter])
-AC_ARG_ENABLE(oper-wallops,[  --enable-oper-wallops         allow operators to use WALLOPS (can be abused)],
+AC_ARG_ENABLE(oper-wallops,[  --enable-oper-wallops          allow operators to use WALLOPS (can be abused)],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -653,7 +789,7 @@ AC_ARG_ENABLE(oper-wallops,[  --enable-oper-wallops         allow operators to u
  ])
 
 AC_MSG_CHECKING([paranoid-opers parameter])
-AC_ARG_ENABLE(paranoid-opers,[  --enable-paranoid-opers       operators need to know when they are /whois'd],
+AC_ARG_ENABLE(paranoid-opers,[  --enable-paranoid-opers        operators need to know when they are /whois'd],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -666,7 +802,7 @@ AC_ARG_ENABLE(paranoid-opers,[  --enable-paranoid-opers       operators need to 
  ])
 
 AC_MSG_CHECKING([passive-registration parameter])
-AC_ARG_ENABLE(passive-registration,[  --enable-passive-registration report no errors on connection registrations],
+AC_ARG_ENABLE(passive-registration,[  --enable-passive-registration  report no errors on connection registrations],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -679,7 +815,7 @@ AC_ARG_ENABLE(passive-registration,[  --enable-passive-registration report no er
  ])
 
 AC_MSG_CHECKING([strict-channel-names parameter])
-AC_ARG_ENABLE(strict-channel-names,[  --enable-strict-channel-names enforce strict channel names to avoid spoofs],
+AC_ARG_ENABLE(strict-channel-names,[  --enable-strict-channel-names  enforce strict channel names to avoid spoofs],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -693,7 +829,7 @@ AC_ARG_ENABLE(strict-channel-names,[  --enable-strict-channel-names enforce stri
  ])
 
 AC_MSG_CHECKING([strict-registration parameter])
-AC_ARG_ENABLE(strict-registration,[  --enable-strict-registration  enforce strict connection registration],
+AC_ARG_ENABLE(strict-registration,[  --enable-strict-registration   enforce strict connection registration],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -707,17 +843,17 @@ AC_ARG_ENABLE(strict-registration,[  --enable-strict-registration  enforce stric
  ])
 
 AC_MSG_CHECKING([time-to-be-idle parameter])
-AC_ARG_ENABLE(time-to-be-idle,[  --enable-time-to-be-idle      set the away-reply floodlock timeout],
+AC_ARG_ENABLE(time-to-be-idle,[  --enable-time-to-be-idle       set the away-reply floodlock timeout],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(off)
    else
-     if test "$enableval" -gt 0 -a -lt 1000000; then
+     if test "$enableval" -gt 0 -a "$enableval" -lt 1000000; then
        AC_MSG_RESULT([$enableval seconds])
        AC_DEFINE_UNQUOTED(TIME_TO_BE_IDLE, $enableval)
      else
        AC_MSG_RESULT([30 seconds (default)])
-       AC_DEFINE_UNQUOTED(TIME_TO_BE_IDLE, 30)
+       AC_DEFINE(TIME_TO_BE_IDLE, 30)
      fi
    fi
  ],[
@@ -725,12 +861,12 @@ AC_ARG_ENABLE(time-to-be-idle,[  --enable-time-to-be-idle      set the away-repl
      AC_MSG_RESULT([off (lower-cpu default)])
    else
      AC_MSG_RESULT([30 seconds (default)])
-     AC_DEFINE_UNQUOTED(TIME_TO_BE_IDLE, 30)
+     AC_DEFINE(TIME_TO_BE_IDLE, 30)
    fi
  ])
 
 AC_MSG_CHECKING([traceroute parameter])
-AC_ARG_ENABLE(traceroute,[  --enable-traceroute           allow the TRACEROUTE command (can be abused)],
+AC_ARG_ENABLE(traceroute,[  --enable-traceroute            allow the TRACEROUTE command (can be abused)],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -744,7 +880,7 @@ AC_ARG_ENABLE(traceroute,[  --enable-traceroute           allow the TRACEROUTE c
  ])
 
 AC_MSG_CHECKING([user-conn-ping parameter])
-AC_ARG_ENABLE(user-conn-ping,[  --enable-user-conn-ping       enable anti-spoof connection ping requirement],
+AC_ARG_ENABLE(user-conn-ping,[  --enable-user-conn-ping        enable anti-spoof connection ping requirement],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -758,7 +894,7 @@ AC_ARG_ENABLE(user-conn-ping,[  --enable-user-conn-ping       enable anti-spoof 
  ])
 
 AC_MSG_CHECKING([warn-bad-reg-cmds parameter])
-AC_ARG_ENABLE(warn-bad-reg-cmds,[  --enable-warn-bad-reg-cmds    complain about unknown registration commands],
+AC_ARG_ENABLE(warn-bad-reg-cmds,[  --enable-warn-bad-reg-cmds     complain about unknown registration commands],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -775,7 +911,7 @@ dnl Protocol toggles
 dnl
 AC_MSG_CHECKING([protocol-irc2user parameter])
 if test "$austhex_test_enable_user_protocols" = "yes"; then
-  AC_ARG_ENABLE(protocol-irc2user,[  --enable-protocol-irc2user    allow the irc2 user/client protocol],
+  AC_ARG_ENABLE(protocol-irc2user,[  --enable-protocol-irc2user     allow the irc2 user/client protocol],
    [
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)
@@ -797,7 +933,7 @@ fi
 AC_SUBST(austhex_test_have_protocol_irc2user)
 
 AC_MSG_CHECKING([protocol-p13server parameter])
-AC_ARG_ENABLE(protocol-p13server,[  --enable-protocol-p13server   allow the P13 server protocol],
+AC_ARG_ENABLE(protocol-p13server,[  --enable-protocol-p13server    allow the P13 server protocol],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
@@ -815,7 +951,7 @@ AC_ARG_ENABLE(protocol-p13server,[  --enable-protocol-p13server   allow the P13 
 AC_SUBST(austhex_test_have_protocol_p13server)
  
 AC_MSG_CHECKING([protocol-p14server parameter])
-AC_ARG_ENABLE(protocol-p14server,[  --enable-protocol-p14server   allow the P14 server protocol],
+AC_ARG_ENABLE(protocol-p14server,[  --enable-protocol-p14server    allow the P14 server protocol],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)

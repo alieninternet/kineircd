@@ -299,7 +299,9 @@ class Channel {
    
    void sendNotice(User *, String const &);	// Send a NOTICE to this chan
    void sendPrivmsg(User *, String const &);	// Send a PRIVMSG to this chan
-
+   
+   void sendKnock(User *, String const &);	// Send a KNOCK request
+   
    static String makeModes(Channel *);		// Make a + channel mode string
 };
 

@@ -195,10 +195,26 @@ class Language {
    static char const *L_RPL_NOWON_USER;
    static char const *L_RPL_NOWOFF;
    static char const *L_RPL_WATCHOFF;
+
+   // ACCEPT command replies
+   static char const *L_RPL_ENDOFACCEPT;
+   static char const *L_ERR_ACCEPTFULL;
+   static char const *L_ERR_ACCEPTEXIST;
+   static char const *L_ERR_ACCEPTNOT;
+   static char const *L_RPL_NOTACCEPTED;
+   static char const *L_RPL_ACCEPTNOTICE;
    
    // SILENCE list replies
    static char const *L_RPL_ENDOFSILELIST;
    static char const *L_ERR_SILELISTFULL;
+
+   // KNOCK replies
+   static char const *L_ERR_NOKNOCK_ONCHANNEL;
+   static char const *L_ERR_NOKNOCK_OPENCHANNEL;
+   static char const *L_ERR_NOKNOCK_INVITED;
+   static char const *L_ERR_NOKNOCK_REGONLY;
+   static char const *L_RPL_KNOCKING; 
+   static char const *L_DEFAULT_KNOCK_REASON;
    
    // LUSERS command replies
    static char const *L_RPL_LUSERCLIENT;
@@ -212,6 +228,7 @@ class Language {
 
    // Command not processed messages
    static char const *L_RPL_TRYAGAIN_AWAY;
+   static char const *L_RPL_TRYAGAIN_KNOCK;
    
    // Server notice output strings
    static char const *L_SERVNOTICE_LINK;
