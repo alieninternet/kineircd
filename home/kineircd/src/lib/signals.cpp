@@ -301,7 +301,7 @@ bool Signals::addHandler(const handlerPtr_type handler,
 
 #ifdef KINE_DEBUG_PSYCHO
    debug("Signals::addHandler() - Handlers list now has " +
-	 String::convert(handlers.size()) + "entries");
+	 String::convert(handlers.size()) + " entries");
 #endif
    
    return true;
