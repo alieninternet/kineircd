@@ -24,16 +24,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_LOGGER_H_
-# define _INCLUDE_LOGGER_H_
+#ifndef _INCLUDE_AUSTHEX_LOGGER_H_
+# define _INCLUDE_AUSTHEX_LOGGER_H_
 
-# include "autoconf.h"
+# include "austhex/austhexconf.h"
 
 # ifdef HAVE_SYSLOG_H
 #  include <syslog.h>
 # endif
 
-# include "str.h"
+# include "austhex/str.h"
 
 
 // The top Logger class the actual loggers are derived from

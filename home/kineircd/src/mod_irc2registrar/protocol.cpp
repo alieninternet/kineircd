@@ -21,16 +21,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
-#include "register.h"
-#include "irc2user.h"
-#include "p13server.h"
-#include "daemon.h"
-#include "debug.h"
-#include "numerics.h"
-#include "lang.h"
-#include "utils.h"
+#include "austhex/register.h"
+#include "austhex/irc2user.h"
+#include "austhex/p13server.h"
+#include "austhex/daemon.h"
+#include "austhex/debug.h"
+#include "austhex/numerics.h"
+#include "austhex/lang.h"
+#include "austhex/utils.h"
 
 
 // Functions table

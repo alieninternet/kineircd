@@ -21,10 +21,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_REGISTER_H_
-# define _INCLUDE_REGISTER_H_
+#ifndef _INCLUDE_AUSTHEX_REGISTER_H_
+# define _INCLUDE_AUSTHEX_REGISTER_H_
 
-# include "handler.h"
+# include "austhex/handler.h"
 
 // Register-handler sub-class
 class registerHandler : public Handler {

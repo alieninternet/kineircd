@@ -21,16 +21,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_CONNECTION_H_
-# define _INCLUDE_CONNECTION_H_
+#ifndef _INCLUDE_AUSTHEX_CONNECTION_H_
+# define _INCLUDE_AUSTHEX_CONNECTION_H_
 
 # include <queue>
 
 class Connection;
 
-# include "user.h"
-# include "handler.h"
-# include "socket.h"
+# include "austhex/user.h"
+# include "austhex/handler.h"
+# include "austhex/socket.h"
 
 // Connection status flags
 # define CONFLAG_CONNECTED	0x0001	// Connected

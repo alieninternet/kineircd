@@ -20,12 +20,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
 #include <ctime>
 
-#include "loggerfile.h"
-#include "debug.h"
+#include "austhex/loggerfile.h"
+#include "austhex/debug.h"
 
 
 /* LoggerFile - Generic file logger component constructor

@@ -21,17 +21,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_HANDLER_H_
-# define _INCLUDE_HANDLER_H_
+#ifndef _INCLUDE_AUSTHEX_HANDLER_H_
+# define _INCLUDE_AUSTHEX_HANDLER_H_
 
 class Handler;
 
-# include "numerics.h"
-# include "connection.h"
-# include "str.h"
-# include "server.h"
-# include "user.h"
-# include "channel.h"
+# include "austhex/numerics.h"
+# include "austhex/connection.h"
+# include "austhex/str.h"
+# include "austhex/server.h"
+# include "austhex/user.h"
+# include "austhex/channel.h"
 
 
 class Handler {

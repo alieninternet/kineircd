@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
 #include <unistd.h>
 #include <cstdio>
@@ -33,11 +33,11 @@
 # include <openssl/ssl.h>
 #endif
 
-#include "daemon.h"
-#include "debug.h"
-#include "version.h"
-#include "lang.h"
-#include "numerics.h"
+#include "austhex/daemon.h"
+#include "austhex/debug.h"
+#include "austhex/version.h"
+#include "austhex/lang.h"
+#include "austhex/numerics.h"
 
 
 // Variables

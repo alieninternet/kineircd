@@ -22,12 +22,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
 #include <cctype>
 #include <cstdlib>
 
-#include "utils.h"
+#include "austhex/utils.h"
 
 
 /* baseXStr - Convert a number to another base (output a string) up to base 85

@@ -24,15 +24,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
 // Make sure we are being compiled OK
 #ifndef HAVE_SYSLOG_H
 # error "Cannot compile syslog logging feature without syslog support!"
 #endif
 
-#include "loggersyslog.h"
-#include "debug.h"
+#include "austhex/loggersyslog.h"
+#include "austhex/debug.h"
 
 
 /* LoggerSyslog - Syslog logger component constructor

@@ -22,11 +22,11 @@
  */
 
 #ifdef HAVE_IRC2USER_PROTOCOL
-# ifndef _INCLUDE_IRC2USER_H_
-#  define _INCLUDE_IRC2USER_H_
+# ifndef _INCLUDE_AUSTHEX_IRC2USER_H_
+#  define _INCLUDE_AUSTHEX_IRC2USER_H_
 
-#  include "handler.h"
-#  include "lang.h"
+#  include "austhex/handler.h"
+#  include "austhex/lang.h"
 
 // IRC-2 User-handler sub-class
 class irc2userHandler : public Handler {

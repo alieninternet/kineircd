@@ -27,7 +27,7 @@
 #ifndef _SRC_LIB_CONFIG_CONFIGDEFAULT_H_
 # define _SRC_LIB_CONFIG_CONFIGDEFAULT_H_
 
-# include "autoconf.h"
+# include "austhex/austhexconf.h"
 
 // "ADMINISTRATOR" class
 # define DEFAULT_ADMIN_EMAIL \

@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_CHANNEL_H_
-# define _INCLUDE_CHANNEL_H_
+#ifndef _INCLUDE_AUSTHEX_CHANNEL_H_
+# define _INCLUDE_AUSTHEX_CHANNEL_H_
 
 # include <ctime>
 
@@ -44,9 +44,9 @@
 class Channel;
 class ChannelMember;
 
-# include "str.h"
-# include "user.h"
-# include "handler.h"
+# include "austhex/str.h"
+# include "austhex/user.h"
+# include "austhex/handler.h"
 
 
 // A channel member class

@@ -25,7 +25,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
 #include <cctype>
 #include <ctime>
@@ -35,11 +35,11 @@
 #include <cerrno>
 #include <cstring>
 
-#include "handler.h"
-#include "daemon.h"
-#include "numerics.h"
-#include "lang.h"
-#include "version.h"
+#include "austhex/handler.h"
+#include "austhex/daemon.h"
+#include "austhex/numerics.h"
+#include "austhex/lang.h"
+#include "austhex/version.h"
 
 
 /* doADMIN

@@ -10,13 +10,13 @@
  *   Steve Reid, Scott Mackenzie, and Simon Butcher.
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
 #include <cstring>
 #include <cstdlib>
 
-#include "utils.h"
-#include "str.h"
+#include "austhex/utils.h"
+#include "austhex/str.h"
 
 // If we have OpenSSL, we can just use their SHA1 function -- YAY!
 #ifdef HAVE_OPENSSL

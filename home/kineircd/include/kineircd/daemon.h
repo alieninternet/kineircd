@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_DAEMON_H_
-# define _INCLUDE_DAEMON_H_
+#ifndef _INCLUDE_AUSTHEX_DAEMON_H_
+# define _INCLUDE_AUSTHEX_DAEMON_H_
 
 # include <ctime>
 # include <sys/time.h>
@@ -47,15 +47,15 @@
 class Daemon;
 
 
-# include "config.h"
-# include "user.h"
-# include "connection.h"
-# include "socket.h"
-# include "server.h"
-# include "channel.h"
-# include "str.h"
-# include "operator.h"
-# include "whowas.h"
+# include "austhex/config.h"
+# include "austhex/user.h"
+# include "austhex/connection.h"
+# include "austhex/socket.h"
+# include "austhex/server.h"
+# include "austhex/channel.h"
+# include "austhex/str.h"
+# include "austhex/operator.h"
+# include "austhex/whowas.h"
 
 
 // A 'Listen' record

@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_SERVER_H_
-# define _INCLUDE_SERVER_H_
+#ifndef _INCLUDE_AUSTHEX_SERVER_H_
+# define _INCLUDE_AUSTHEX_SERVER_H_
 
 # ifdef STL_HAS_HASH
 #  include <hash_map>
@@ -34,8 +34,8 @@
 
 class Server;
 
-# include "handler.h"
-# include "str.h"
+# include "austhex/handler.h"
+# include "austhex/str.h"
 
 # define SERVERFLAG_STAR	0x0001		// Star topology?
 # define SERVERFLAG_TENDRIL	0x0002		// Link is a 'tendril'?

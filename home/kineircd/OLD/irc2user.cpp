@@ -21,17 +21,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
 #include <cctype>
 
-#include "irc2user.h"
-#include "daemon.h"
-#include "debug.h"
-#include "lang.h"
-#include "version.h"
-#include "utils.h"
-#include "operator.h"
+#include "austhex/irc2user.h"
+#include "austhex/daemon.h"
+#include "austhex/debug.h"
+#include "austhex/lang.h"
+#include "austhex/version.h"
+#include "austhex/utils.h"
+#include "austhex/operator.h"
 
 
 /* Functions table. In the interests of efficiency should this table be 

@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_LANG_H_
-# define _INCLUDE_LANG_H_
+#ifndef _INCLUDE_AUSTHEX_LANG_H_
+# define _INCLUDE_AUSTHEX_LANG_H_
 
 # ifdef STL_HAS_HASH
 #  include <hash_map>
@@ -32,8 +32,8 @@
 
 # include <vector>
 
-# include "langtags.h"
-# include "str.h"
+# include "austhex/langtags.h"
+# include "austhex/str.h"
 
 
 class LangData;

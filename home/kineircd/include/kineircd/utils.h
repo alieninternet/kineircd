@@ -21,13 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_UTILS_H_
-# define _INCLUDE_UTILS_H_
+#ifndef _INCLUDE_AUSTHEX_UTILS_H_
+# define _INCLUDE_AUSTHEX_UTILS_H_
 
 # include <cstdlib>
 # include <netinet/in.h>
 
-# include "str.h"
+# include "austhex/str.h"
 
 // Macros
 # define octStr(x)	baseXStr(x, 8)		// Convert decimal to octal

@@ -22,14 +22,14 @@
  */
 
 #ifdef DEBUG
-# ifndef _INCLUDE_DEBUG_H_
-#  define _INCLUDE_DEBUG_H_
+# ifndef _INCLUDE_AUSTHEX_DEBUG_H_
+#  define _INCLUDE_AUSTHEX_DEBUG_H_
 
 #  ifdef DEBUG_ASSERT
 #   include <cassert>
 #  endif
 
-#  include "str.h"
+#  include "austhex/str.h"
 
 // Output/Broadcast debug line
 extern void debug(String const &);

@@ -21,15 +21,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
 #include <cctype>
 
-#include "user.h"
-#include "daemon.h"
-#include "numerics.h"
-#include "lang.h"
-#include "utils.h"
+#include "austhex/user.h"
+#include "austhex/daemon.h"
+#include "austhex/numerics.h"
+#include "austhex/lang.h"
+#include "austhex/utils.h"
 
 
 // User modes -- IMPORTANT: Update the mode strings as you update the table!

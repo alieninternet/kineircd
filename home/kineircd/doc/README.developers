@@ -82,10 +82,11 @@ and code formatting information. Last updated 200203252022
   
 * Always head up header files with an #ifndef to avoid conflicting
   reiterations cropping up in a compilation (yes, this is important!). Say
-  the header file is foo.h, you should wrap the code in this manner:
+  the header file is include/austhex/foo.h, you should wrap the code in this 
+  manner:
   
-   #ifndef __FOO_H
-   # define __FOO_H
+   #ifndef _INCLUDE_AUSTHEX_FOO_H_
+   # define _INCLUDE_AUSTHEX_FOO_H_
      <stuff>
    #endif
 
@@ -98,7 +99,7 @@ and code formatting information. Last updated 200203252022
      #include <map>
      #include <openssl/openssl.h>
     but
-     #include "daemon.h"
+     #include "austhex/daemon.h"
 
 
 * Following the head of the .cpp files, included files should be
@@ -108,16 +109,17 @@ and code formatting information. Last updated 200203252022
     3. Header file relating to the content of this file
     4. Other local header files.
    eg.
-    #include "autoconf.h"
+    #include "austhex/austhexconf.h"
     
     #include <cstdlib>
     #include <cerrno>
     #include <list>
     
-    #include "foo.h"
-    #include "str.h"
-    #include "user.h"
-    #include "server.h"
+    #include "austhex/foo.h"
+    #include "austhex/str.h"
+    #include "austhex/user.h"
+    #include "austhex/server.h"
+    #include "something.h"
 
 
 * Explicitly specify braces/parenthesis for EVERYTHING.

@@ -21,14 +21,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
-#include "daemon.h"
-#include "user.h"
-#include "channel.h"
-#include "numerics.h"
-#include "utils.h"
-#include "lang.h"
+#include "austhex/daemon.h"
+#include "austhex/user.h"
+#include "austhex/channel.h"
+#include "austhex/numerics.h"
+#include "austhex/utils.h"
+#include "austhex/lang.h"
 
 
 // Channel modes -- IMPORTANT: Update the mode strings as you update the table!

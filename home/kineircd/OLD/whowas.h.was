@@ -21,15 +21,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_WHOWAS_H_
-# define _INCLUDE_WHOWAS_H_
+#ifndef _INCLUDE_AUSTHEX_WHOWAS_H_
+# define _INCLUDE_AUSTHEX_WHOWAS_H_
 
 # include <ctime>
 
 class Whowas;
 
-# include "user.h"
-# include "str.h"
+# include "austhex/user.h"
+# include "austhex/str.h"
 
 /* Whowas entry. Notice how these values are not pointers - the reason for
  * this is firstly the user will no longer be available - this is a 'snapshot'

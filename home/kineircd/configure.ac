@@ -28,7 +28,7 @@ dnl -------------------------------------------------------------------------
 AC_PREREQ(2.52)
 AC_INIT(src/Makefile.in)
 AC_CONFIG_AUX_DIR(autoconf)
-AC_CONFIG_HEADER(include/autoconf.h)
+AC_CONFIG_HEADER(include/austhex/austhexconf.h)
 
 dnl Determine our version information.
 dnl These should not be touched as they define the version of this software
@@ -1565,6 +1565,7 @@ AC_SUBST(INCDIRS)
 AC_OUTPUT([
 	Makefile
 	include/Makefile
+	include/austhex/Makefile
 	install/Makefile
 	make/defs
 	make/rules

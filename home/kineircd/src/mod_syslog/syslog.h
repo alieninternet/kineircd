@@ -20,17 +20,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_LOGGERSYSLOG_H_
-# define _INCLUDE_LOGGERSYSLOG_H_
+#ifndef _INCLUDE_AUSTHEX_LOGGERSYSLOG_H_
+# define _INCLUDE_AUSTHEX_LOGGERSYSLOG_H_
 
-# include "autoconf.h"
+# include "austhex/austhexconf.h"
 
 // Only continue if we actually have syslog support on this system
 # ifdef HAVE_SYSLOG_H
 
 #  include <syslog.h>
 
-#  include "logger.h"
+#  include "austhex/logger.h"
 
 
 // The syslog logging class

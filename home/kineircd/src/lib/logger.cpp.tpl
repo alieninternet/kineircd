@@ -24,9 +24,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
-#include "logger.h"
+#include "austhex/logger.h"
 
 
 // Our list of masks, and how to translate them around nicely

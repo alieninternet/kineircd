@@ -71,9 +71,9 @@ class LangTags {
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
-#include "lang.h"
+#include "austhex/lang.h"
 
 
 namespace Lang {

@@ -21,16 +21,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
 #include <cerrno>
 #include <cstring>
 
-#include "connection.h"
-#include "register.h"
-#include "debug.h"
-#include "daemon.h"
-#include "utils.h"
+#include "austhex/connection.h"
+#include "austhex/register.h"
+#include "austhex/debug.h"
+#include "austhex/daemon.h"
+#include "austhex/utils.h"
 
 
 /* Connection - Initialise new connection

@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#include "austhex/austhexconf.h"
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -31,8 +31,8 @@
 #include <fstream>
 #include <cerrno>
 
-#include "lang.h"
-#include "debug.h"
+#include "austhex/lang.h"
+#include "austhex/debug.h"
 
 namespace Lang {
    // The map with the languages in it..

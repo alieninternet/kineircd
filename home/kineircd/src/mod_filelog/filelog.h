@@ -20,12 +20,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_LOGGERFILE_H_
-# define _INCLUDE_LOGGERFILE_H_
+#ifndef _INCLUDE_AUSTHEX_LOGGERFILE_H_
+# define _INCLUDE_AUSTHEX_LOGGERFILE_H_
 
 # include <fstream>
 
-# include "logger.h"
+# include "austhex/logger.h"
 
 
 // The generic file logging class
