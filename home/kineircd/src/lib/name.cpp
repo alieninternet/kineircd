@@ -35,7 +35,7 @@
 #include "lib/constants.h"
 
 using namespace Kine;
-using AISutil::String;
+using AIS::Util::String;
 
 
 /* irctolower - Tiny procedure to assist in transforming IRC aliases
@@ -78,9 +78,9 @@ inline static const bool isSpecialChar(const char chr)
 
 /* IRCtoLower - Convert to lowercase while considering irc chars (eg {} and [])
  * Original 12/08/2001 pickle
- * 26/02/2002 pickle - Converted for use with std::string / AISutil::String
+ * 26/02/2002 pickle - Converted for use with std::string / AIS::Util::String
  */
-const AISutil::String Name::IRCtoLower(void) const
+const AIS::Util::String Name::IRCtoLower(void) const
 {
    String result(length(), 0);
    (void)std::transform(begin(), end(), result.begin(), irctolower);

@@ -69,7 +69,7 @@ namespace Kine {
       static const MaskMapper& getMaskMapper(const char* const n);
 
       // Config class
-      class Config : public AISutil::ConfigData {
+      class Config : public AIS::Util::ConfigData {
        protected:
          // The logging mask
          Logger::Mask::lazy_type defLogMask;

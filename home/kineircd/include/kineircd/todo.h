@@ -80,7 +80,7 @@ namespace Kine {
 	{ return *instance; };
       
       //! Schedule a task to be executed at the given time ('when')
-//      bool schedule(Task& task, const AISutil::Time when);
+//      bool schedule(Task& task, const AIS::Util::Time when);
       
       //! Schedule a task to be executed 'seconds' seconds from now
 //      bool schedule(Task& task, const unsigned int second);

@@ -32,11 +32,11 @@ namespace Kine {
       class Config : public Kine::Logger::Config {
        public:
 	 // The definition table, given to Kine's config parserr
-	 static const AISutil::ConfigParser::defTable_type definitionTable;
+	 static const AIS::Util::ConfigParser::defTable_type definitionTable;
 
        private:
 	 // Variables..
-	 AISutil::String defChannelName;
+	 AIS::Util::String defChannelName;
 	 
        public:
 	 // Constructor
@@ -49,7 +49,7 @@ namespace Kine {
 	   {};
 	 
 	 // Return the variables
-	 const AISutil::String& getChannelName(void) const
+	 const AIS::Util::String& getChannelName(void) const
 	   { return defChannelName; };
       };
    }; // namespace mod_channellog

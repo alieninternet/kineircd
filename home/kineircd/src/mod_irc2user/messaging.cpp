@@ -35,9 +35,9 @@
 #include "mod_irc2user/lang.h"
 
 using namespace Kine::mod_irc2user;
-using AISutil::String;
-using AISutil::StringMask;
-using AISutil::StringTokens;
+using AIS::Util::String;
+using AIS::Util::StringMask;
+using AIS::Util::StringTokens;
 
 
 /* doMessage

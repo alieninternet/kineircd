@@ -29,7 +29,7 @@
 
 namespace Kine {
    //! A name, conforming to IRC rules (a specially modified form of a string)
-   class Name : public AISutil::String {
+   class Name : public AIS::Util::String {
     protected:
       // Constructor
       Name(void)
@@ -37,7 +37,7 @@ namespace Kine {
       
       // Constructor (a magic one)
       template <class Ta> Name(const Ta& a)
-	: AISutil::String(a)
+	: AIS::Util::String(a)
         {};
       
     public:
@@ -46,7 +46,7 @@ namespace Kine {
 	{};
       
       //! Lower-case the nickname based on compiled in case-mapping rules
-      const AISutil::String IRCtoLower(void) const;
+      const AIS::Util::String IRCtoLower(void) const;
       
       //! Check if the name is valid, according to whatever rules neccessary
       virtual const Error::error_type checkValidity(void) const = 0;

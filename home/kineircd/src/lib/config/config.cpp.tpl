@@ -101,7 +101,7 @@ using namespace Kine;
 	 ;; Return the char count we found..
 	 charCount))
       
- +][+DEFINE output-class-definition-table+]const AISutil::ConfigParser::defTable_type Config::[+tableClass+] = {[+(clearDefList)+][+FOR definition+][+(addDef (string-upcase (get "name")))+][+ENDFOR+][+IF
+ +][+DEFINE output-class-definition-table+]const AIS::Util::ConfigParser::defTable_type Config::[+tableClass+] = {[+(clearDefList)+][+FOR definition+][+(addDef (string-upcase (get "name")))+][+ENDFOR+][+IF
    (string-ci=?
       (get "recurse")
       "yes")+][+FOR definition+]

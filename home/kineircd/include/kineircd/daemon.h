@@ -70,8 +70,8 @@ namespace Kine {
     private:
       runlevel_type runlevel;			//!< What stage is the daemon in
       
-      const AISutil::Time startTime;		//!< Time the daemon started
-      AISutil::Time currentTime;		//!< The time now
+      const AIS::Util::Time startTime;		//!< Time the daemon started
+      AIS::Util::Time currentTime;		//!< The time now
 
       unsigned long long sentBytes;		//!< Total bytes sent
       unsigned long long receivedBytes;		//!< Total bytes received
@@ -128,11 +128,11 @@ namespace Kine {
 	{ return runlevel; };
       
       //! Grab our 'uptime'
-      const AISutil::Time getUptime(void) const
+      const AIS::Util::Time getUptime(void) const
 	{ return currentTime - startTime; };
 
       //! Grab the time now
-      const AISutil::Time& getTime(void) const
+      const AIS::Util::Time& getTime(void) const
 	{ return currentTime; };
 
       

@@ -30,7 +30,7 @@
 
 #include "kineircd/irc2/protocol.h"
 
-using AISutil::StringTokens;
+using AIS::Util::StringTokens;
 using namespace Kine::LibIRC2;
 
 

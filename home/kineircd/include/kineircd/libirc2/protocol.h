@@ -53,7 +53,7 @@ namespace Kine {
 	 
        protected:
 	 // The type of a 'parameter list'
-	 typedef std::vector < AISutil::String > parameters_type;
+	 typedef std::vector < AIS::Util::String > parameters_type;
 
        private:
 	 // Message counters

@@ -48,8 +48,8 @@ namespace Kine {
 	{ stopAll(); };
       
       // Load a module, return false if we failed (reason in 'errorReturn')
-      ModuleDescriptor* const loadModule(const AISutil::String &moduleFile,
-					 AISutil::String &errString);
+      ModuleDescriptor* const loadModule(const AIS::Util::String &moduleFile,
+					 AIS::Util::String &errString);
       
       // Start all modules
       void startAll(void) const;

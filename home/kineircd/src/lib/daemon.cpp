@@ -46,7 +46,7 @@
 #include "lib/myserver.h"
 
 using namespace Kine;
-using AISutil::String;
+using AIS::Util::String;
 
 
 // Our instance...
@@ -165,7 +165,7 @@ void Daemon::newConnection(Listener& listener)
 #endif
    
    // Accept the connection
-   AISutil::Socket* const newSocket = listener.accept();
+   AIS::Util::Socket* const newSocket = listener.accept();
    
    // Check if that worked..
    if (newSocket == 0) {

@@ -101,7 +101,7 @@ void Protocol::handleInput(std::stringstream& data)
  * Original 28/09/2002 simonb
  * Note: This could be more efficient :(
  */
-std::string Protocol::withdrawOutput(AISutil::Socket::blockSize_type amount)
+std::string Protocol::withdrawOutput(AIS::Util::Socket::blockSize_type amount)
 {
    std::string output;
    

@@ -31,7 +31,7 @@ using namespace Kine::mod_channellog;
 
 
 // Our definition table
-const AISutil::ConfigParser::defTable_type Config::definitionTable = {
+const AIS::Util::ConfigParser::defTable_type Config::definitionTable = {
      {
 	"CHANNELNAME", 4,
 	  (void*)&Config::defChannelName,

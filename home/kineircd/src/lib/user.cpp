@@ -35,7 +35,7 @@
 #include "lib/debug.h"
 
 using namespace Kine;
-using AISutil::String;
+using AIS::Util::String;
 
 
 // Static stuff..

@@ -32,16 +32,16 @@
 
 namespace Kine {
    // Listener configuration parser helper class
-   class ListenerConfig : public AISutil::ConfigData {
+   class ListenerConfig : public AIS::Util::ConfigData {
     private:
       // The protocol used to locate any service's name in getservbyname()
       static const char* tcpProtocolName;
       
       // The list of definitions for the configuration handler
-      static const AISutil::ConfigParser::defTable_type classDefs;
+      static const AIS::Util::ConfigParser::defTable_type classDefs;
 
       // The address to bind to (optional)
-      AISutil::String varAddress;
+      AIS::Util::String varAddress;
       
       // Registration allowances
       bool varAllowNetworks;
@@ -53,13 +53,13 @@ namespace Kine {
       unsigned short varListenBacklog;
       
       // The port to bind to
-      AISutil::String varPort;
+      AIS::Util::String varPort;
 
       // Should this port be configured as secure if possible? (SSL etc)
       bool varSecure;
 
       // A helper to set the socket up
-      bool setupSocket(AISutil::Socket& socket, AISutil::String& errString,
+      bool setupSocket(AIS::Util::Socket& socket, AIS::Util::String& errString,
 		       int port = 0);
       
     public:

@@ -53,8 +53,8 @@
 #include "lib_irc2/stats.h"
 
 using namespace Kine::LibIRC2;
-using AISutil::String;
-using AISutil::StringTokens;
+using AIS::Util::String;
+using AIS::Util::StringTokens;
 
 
 /* sendTimeOnServer - Send RPL_TIMEONSERVERIS

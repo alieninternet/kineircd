@@ -38,7 +38,7 @@
 #endif
 
 using namespace Kine::mod_irc2user;
-using AISutil::String;
+using AIS::Util::String;
 
 
 /* initScheme - Initialise the scheme stuff

@@ -39,8 +39,8 @@
 #include "lib/language/subst.h"
 
 using namespace Kine;
-using AISutil::String;
-using AISutil::StringTokens;
+using AIS::Util::String;
+using AIS::Util::StringTokens;
 
 
 // Our instance...
@@ -287,7 +287,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 
 #ifdef KINE_SECURITY_CONSCIOUS
       // Make sure the data contains valid UTF-8 sequences..
-      if (!AISutil::Utils::validateUTF8(line)) {
+      if (!AIS::Util::Utils::validateUTF8(line)) {
 	 // Wuss out - this is not a nice file to have loaded
 	 errString =
 	   "File contains invalid UTF-8 sequence(s) and poses a potential "
@@ -417,7 +417,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
  * Original 11/04/2003 simonb
  */
 const Languages::tagID_type
-  Languages::getTagID(const AISutil::String& tagName) const
+  Languages::getTagID(const AIS::Util::String& tagName) const
 {
    // Try to find this tag in the tag dictionary
    tagDictionary_type::const_iterator it =

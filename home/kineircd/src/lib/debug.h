@@ -35,10 +35,10 @@
 #   include <cassert>
 #  endif
 
-#  include <aisutil/string/string.h>
+#  include <cstring>
 
 // Output/Broadcast debug line
-extern void debug(AISutil::String const &);
+extern void debug(const std::string&);
    
 # endif // DEBUG
 #endif // _SRC_LIBKINEIRCD_DEBUG_H_

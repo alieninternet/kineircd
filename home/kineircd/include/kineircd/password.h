@@ -32,7 +32,7 @@ namespace Kine {
    //! Password class
    class Password {
     public:
-      typedef AISutil::SHA1::digest_type digest_type;
+      typedef AIS::Util::SHA1::digest_type digest_type;
       
     private:
       // DO NOT CHANGE THIS, unless you want to be hurt very painfully :(
@@ -58,8 +58,8 @@ namespace Kine {
       // Transform the nickname and password pair into SHA1 output
       static digest_type makePassword(const ClientName& nickname,
 				      const std::string& password) {
-	 return AISutil::SHA1::generate(nickname.IRCtoLower() + delim + 
-					password);
+	 return AIS::Util::SHA1::generate(nickname.IRCtoLower() + delim + 
+					  password);
       };
    };
 };

@@ -35,7 +35,7 @@
 #include "lib/debug.h"
 
 
-using AISutil::String;
+using AIS::Util::String;
 using namespace Kine;
 
 
@@ -70,11 +70,11 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(Kine::Config::classHandleModule)
        (moduleDesc->getModule().getConfigData() != 0)) {
       // Parse the module's configuration data
       return 
-	AISutil::ConfigParser::parse(configData, position,
-				     ((void *)
-				      (moduleDesc->getModule().getInfo().
-				       configDefinitions)),
-				     *moduleDesc->getModule().getConfigData());
+	AIS::Util::ConfigParser::parse(configData, position,
+				       ((void *)
+					(moduleDesc->getModule().getInfo().
+					 configDefinitions)),
+				       *moduleDesc->getModule().getConfigData());
    } else {
       errString = "Module requires no additional configuration";
       return false;
@@ -170,7 +170,7 @@ bool Kine::Config::configure(void)
    configuring = true;
    
    // The config parser instance we will use
-   AISutil::ConfigParser parser(*this, &topDefs, configFile);
+   AIS::Util::ConfigParser parser(*this, &topDefs, configFile);
    
    // Configure this thing :)
    bool happy = parser.configure();

@@ -64,7 +64,7 @@ namespace Kine {
 	 void handleInput(std::stringstream& data);
 	 
 	 //! Remove up to the amount of octets given from the output queue
-	 std::string withdrawOutput(AISutil::Socket::blockSize_type amount);
+	 std::string withdrawOutput(AIS::Util::Socket::blockSize_type amount);
 	 
 	 //! Return true should there be anything in the output queue to send
 	 bool moreOutput(void) const

@@ -94,7 +94,7 @@ namespace Kine {
       const scope_type scope;			//!< Channel's 'scope'
       std::string topic;			//!< Channel topic
       std::string topicChanger;			//!< Who changed the topic
-      AISutil::Time topicChangeTime;		//!< Time the topic changed
+      AIS::Util::Time topicChangeTime;		//!< Time the topic changed
 
       // Channel members list
       members_type members;
@@ -103,7 +103,7 @@ namespace Kine {
       //! Constructor
       Channel(const ChannelName& _name,
 	      const scope_type _scope,
-	      const AISutil::Time& _creationTime)
+	      const AIS::Util::Time& _creationTime)
 	: Entity(_creationTime),
 	  name(_name),
           scope(_scope)
@@ -138,7 +138,7 @@ namespace Kine {
 
       
       //! Return the time the channel was created (same as the 'signon' time)
-      const AISutil::Time& getCreationTime(void) const
+      const AIS::Util::Time& getCreationTime(void) const
 	{ return getSignonTime(); };
       
       
@@ -151,7 +151,7 @@ namespace Kine {
 	{ return topicChanger; };
 
       //! Return the time the topic was changed
-      const AISutil::Time& getTopicChangeTime(void) const
+      const AIS::Util::Time& getTopicChangeTime(void) const
 	{ return topicChangeTime; };
       
       //! Does this channel have a topic?

@@ -40,9 +40,9 @@
 #include "mod_irc2user/commands.h"
 
 using namespace Kine::mod_irc2user;
-using AISutil::String;
-using AISutil::StringMask;
-using AISutil::StringTokens;
+using AIS::Util::String;
+using AIS::Util::StringMask;
+using AIS::Util::StringTokens;
 
 
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_ADMIN
@@ -137,7 +137,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleDIE)
 IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 {
    bool extended = false;
-   AISutil::StringMask mask;
+   StringMask mask;
    
    // Check if we weren't given any parameters
    if (parameters.empty()) {

@@ -43,7 +43,7 @@
 #endif
 
 using namespace Kine::mod_irc2registrar;
-using AISutil::String;
+using AIS::Util::String;
 
 
 // Our "official" protocol name
@@ -73,9 +73,9 @@ void Protocol::sendPing(void)
 {
    // Set the expectant pong result string appropriately
    pongMatch = 
-     AISutil::Utils::baseXStr((unsigned long)
-			      (((0xFFFFFFFE + 1.0) * rand()) / RAND_MAX),
-			      36);
+     AIS::Util::Utils::baseXStr((unsigned long)
+				(((0xFFFFFFFE + 1.0) * rand()) / RAND_MAX),
+				36);
 
    // Output the ping
    sendMessage("PING", pongMatch);

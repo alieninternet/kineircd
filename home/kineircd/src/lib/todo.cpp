@@ -26,6 +26,8 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
+#include <sstream>
+
 #include "kineircd/todo.h"
 #include "lib/debug.h"
 

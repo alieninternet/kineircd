@@ -41,7 +41,7 @@
 
 namespace Kine {
    //! Config class
-   class Config : public AISutil::ConfigData {
+   class Config : public AIS::Util::ConfigData {
     public:
       /* Operator passwords are stored as a SHA1 message digest, however I
        * don't know anyone who can type in a 160-bit sequence perfectly on
@@ -55,7 +55,7 @@ namespace Kine {
        * characters.
        */
       static const unsigned char operPasswordStrBase = 85;
-      static const AISutil::String::size_type operPasswordStrBaseLongPad = 5;
+      static const AIS::Util::String::size_type operPasswordStrBaseLongPad = 5;
       
     private:
       //! The config file to use..
@@ -70,7 +70,7 @@ namespace Kine {
 #ifdef [+condition+][+ENDIF+][+(pushPrefix (get "name"))+]
 
       // '[+(getPrefix)+]' table...
-      static const AISutil::ConfigParser::defTable_type defClass[+(getPrefix)+];[+IF (not (shadowTable?))+][+output-variables+][+ELSE+][+
+      static const AIS::Util::ConfigParser::defTable_type defClass[+(getPrefix)+];[+IF (not (shadowTable?))+][+output-variables+][+ELSE+][+
  IF (not (and 
             ;; more checks than this??
             (exist? ".hasVariable")))+]
@@ -83,7 +83,7 @@ namespace Kine {
 					 (exist? "defaultDefinition.variable"))+]
       [+defaultDefinition.varType+] def[+defaultdefinition.variable+];[+ENDIF+][+ENDFOR+][+ENDDEF+]
       // Our top-level definition table, defining compiled in top level classes
-      static const AISutil::ConfigParser::defTable_type topDefs;[+output-variables+]
+      static const AIS::Util::ConfigParser::defTable_type topDefs;[+output-variables+]
 	
       // Additional handlers specific to data in this class
       static LIBAISUTIL_CONFIG_CLASS_HANDLER(classHandleModule);

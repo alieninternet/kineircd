@@ -41,7 +41,7 @@
 #include "lib/debug.h"
 
 using namespace Kine;
-using AISutil::String;
+using AIS::Util::String;
 
 
 // Protocol names used when getting information via getservent()
@@ -49,7 +49,7 @@ const char* ListenerConfig::tcpProtocolName = "TCP";
 
 
 // "LISTEN" class
-const AISutil::ConfigParser::defTable_type ListenerConfig::classDefs = {
+const AIS::Util::ConfigParser::defTable_type ListenerConfig::classDefs = {
      {
 	"ADDRESS", 4,
 	  (void *)&ListenerConfig::varAddress,
@@ -133,8 +133,8 @@ ListenerConfig::ListenerConfig(void)
 /* classHandleListen
  * Original 18/08/2002 simonb
  */
-bool ListenerConfig::setupSocket(AISutil::Socket& socket, 
-				 AISutil::String& errString, int port)
+bool ListenerConfig::setupSocket(AIS::Util::Socket& socket, 
+				 AIS::Util::String& errString, int port)
 {
    // Set its address
    if (!varAddress.empty()) {
@@ -181,7 +181,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
    ListenerConfig config;
    
       // Throw the listener stuff over to the configuration parser..
-   if (!AISutil::ConfigParser::parse(configData, position, 
+   if (!AIS::Util::ConfigParser::parse(configData, position, 
 				     (void *)(classDefs), config)) {
       return false;
    }
@@ -318,13 +318,13 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
       debug("ListenerConfig::classHandler() - Creating a UNIX socket...");
 # endif
       // Create the socket and set it up
-      AISutil::SocketUNIX *socket = new AISutil::SocketUNIX();
+      AIS::Util::SocketUNIX *socket = new AIS::Util::SocketUNIX();
       if (!config.setupSocket(*socket, errString)) {
 	 return false;
       }
       
       // Add it to the list
-      (dataClass.*((ListenerList AISutil::ConfigData::*)dataVariable)).listeners.
+      (dataClass.*((ListenerList AIS::Util::ConfigData::*)dataVariable)).listeners.
 	push_front(new Listener(*socket, config.varListenBacklog, flags));
       return true;
    }
@@ -418,20 +418,20 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
        * will only need to create ONE instance of this listener, rather than
        * look up the port(s) and potentially create multiple instances.
        */
-      AISutil::Socket *socket = 0;
+      AIS::Util::Socket *socket = 0;
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPV4_TCP
       if (domainType == DOMAIN_IPV4) {
-	 socket = new AISutil::SocketIPv4TCP();
+	 socket = new AIS::Util::SocketIPv4TCP();
       } else
 #endif   
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPV6_TCP
       if (domainType == DOMAIN_IPV6) {
-         socket = new AISutil::SocketIPv6TCP();
+         socket = new AIS::Util::SocketIPv6TCP();
       } else
 #endif
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPX_SPX
       if (domainType == DOMAIN_IPX) {
-         socket = new AISutil::SocketIPXSPX();
+         socket = new AIS::Util::SocketIPXSPX();
       } else
 #endif
       { 

@@ -34,7 +34,7 @@
 #include "lib/debug.h"
 
 using namespace Kine;
-using AISutil::String;
+using AIS::Util::String;
 
 
 // Check if a key equals the given module descriptor's key

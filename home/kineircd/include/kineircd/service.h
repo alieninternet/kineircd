@@ -34,13 +34,13 @@ namespace Kine {
    class Service : public Client {
     private: 
       const ClientName nickname;		//!< Service's nickname
-      const AISutil::StringMask scopeMask;	//!< Service server scope mask
+      const AIS::Util::StringMask scopeMask;	//!< Service server scope mask
       
     protected:
       //! Constructor
       Service(const ClientName& _nickname,
 	      const std::string& _hostname,
-	      const AISutil::Time& _signonTime)
+	      const AIS::Util::Time& _signonTime)
 	: Client(_hostname, _signonTime),
           nickname(_nickname),
           scopeMask("*")
@@ -63,7 +63,7 @@ namespace Kine {
       
       
       //! Return the server scope mask
-      const AISutil::StringMask& getScopeMask(void) const
+      const AIS::Util::StringMask& getScopeMask(void) const
 	{ return scopeMask; };
       
       //! Return the service 'type' bitmask

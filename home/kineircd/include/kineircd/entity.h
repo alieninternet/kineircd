@@ -33,10 +33,10 @@ namespace Kine {
    //! Abstract base class for objects - stuff that is common to all objects
    class Entity {
     protected:
-      const AISutil::Time signonTime;		//!< Time this entity connected
+      const AIS::Util::Time signonTime;		//!< Time this entity connected
       
       //! Constructor
-      Entity(const AISutil::Time& _signonTime)
+      Entity(const AIS::Util::Time& _signonTime)
 	: signonTime(_signonTime)
 	{};
       
@@ -53,7 +53,7 @@ namespace Kine {
 	{ return false; };
 
       //! Return the time this entity initially connected to the network
-      const AISutil::Time& getSignonTime(void) const
+      const AIS::Util::Time& getSignonTime(void) const
 	{ return signonTime; };
    }; // class Entity
 }; // namespace Kine

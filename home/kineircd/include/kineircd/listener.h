@@ -42,7 +42,7 @@ namespace Kine {
       
     private:
       //! The socket
-      AISutil::Socket& socket;
+      AIS::Util::Socket& socket;
       
       //! The pending acceptance backlog for this socket (for when we listen())
       unsigned short listenBacklog;
@@ -58,7 +58,7 @@ namespace Kine {
       
     public:
       //! Constructor
-      Listener(AISutil::Socket& s, const unsigned short lb, 
+      Listener(AIS::Util::Socket& s, const unsigned short lb, 
 	       const flags_type f = 0)
 	: socket(s),
           listenBacklog(lb),
@@ -95,7 +95,7 @@ namespace Kine {
 	{ return socket.getFD(); };
       
       //! Accept a new connection from the socket
-      AISutil::Socket* const accept(void)
+      AIS::Util::Socket* const accept(void)
 	{
 	   ++acceptCount;
 	   return socket.accept();

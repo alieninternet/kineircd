@@ -38,7 +38,7 @@
 #include "lib/language/subst.h"
 
 using namespace Kine;
-using AISutil::String;
+using AIS::Util::String;
 
 
 /* ~LanguageData - Destructor

@@ -256,7 +256,7 @@ namespace Kine {
 	{ return highestTagID; };
       
       //! Find a tag by its name (It's recommended to use a tag map, below)
-      const tagID_type getTagID(const AISutil::String& name) const;
+      const tagID_type getTagID(const AIS::Util::String& name) const;
       
       //! Add/remove/process tag name/ID correlation maps
       bool registerMap(tagMap_type map);

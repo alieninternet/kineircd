@@ -52,8 +52,8 @@
 #include "lib_irc2/lang.h"
 
 using namespace Kine::LibIRC2;
-using AISutil::String;
-using AISutil::Time;
+using AIS::Util::String;
+using AIS::Util::Time;
 
 
 // List of statistics requests we can handle

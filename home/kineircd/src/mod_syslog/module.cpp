@@ -76,7 +76,7 @@ namespace {
 	{ return info; };
 
       // Return the configuration data class
-      AISutil::ConfigData* const getConfigData(void)
+      AIS::Util::ConfigData* const getConfigData(void)
 	{ return &config; };
       
       /* moduleStart - Fire up the module

@@ -35,7 +35,7 @@ namespace Kine {
       LocalUser(const ClientName& _nickname,
 		const std::string& _username,
 		const std::string& _hostname,
-		const AISutil::Time& _signonTime = daemon().getTime())
+		const AIS::Util::Time& _signonTime = daemon().getTime())
 	: User(_nickname, _username, _hostname, _signonTime)
         {};
       
@@ -45,7 +45,7 @@ namespace Kine {
 	{};
       
       //! Return the last time this user was known to be not idle
-      virtual const AISutil::Time& getLastAwake(void) const = 0;
+      virtual const AIS::Util::Time& getLastAwake(void) const = 0;
       
       //! This is a locally connected user, so we must be able to return 'this'
       const LocalUser* const getLocalSelf(void) const

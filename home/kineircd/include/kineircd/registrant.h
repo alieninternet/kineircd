@@ -33,33 +33,33 @@ namespace Kine {
    //! Registration data structure, passed to protocol modules after registration
    struct Registrant {
       // The password given during registration ('PASS' command)
-      AISutil::String password;
+      AIS::Util::String password;
       
       // Any additional data given on the PASS command after the password
-      AISutil::String passwordKludge;
+      AIS::Util::String passwordKludge;
       
       /* The nickname, given via NICK or SERVICE. This is the network name
        * if given by IIRCN for an IIRC connection.
        */
-      AISutil::String name;
+      AIS::Util::String name;
       
       // The username, given via NICK
-      AISutil::String username;
+      AIS::Util::String username;
       
       // The hostname, given by USER, SERVER and IIRCN
-      AISutil::String hostname;
+      AIS::Util::String hostname;
       
       // The 'real name' or description, via USER, SERVER, SERVICE, and IIRCN
-      AISutil::String description;
+      AIS::Util::String description;
       
       // The distribution field, given via SERVICE
-      AISutil::String distribution;
+      AIS::Util::String distribution;
       
       // The modes field, given by USER
-      AISutil::String modes;
+      AIS::Util::String modes;
       
       // The protocol field, given by SERVER (or 'PROTOCOL', if implemented)
-      AISutil::String protocol;
+      AIS::Util::String protocol;
       
       // A vector listing (in order) any data sent via CAPAB
       typedef std::vector <std::string> capabilities_type;

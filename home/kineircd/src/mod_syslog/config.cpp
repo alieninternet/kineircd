@@ -31,7 +31,7 @@ using namespace Kine::mod_syslog;
 
 
 // Our definition table
-const AISutil::ConfigParser::defTable_type Config::definitionTable = {
+const AIS::Util::ConfigParser::defTable_type Config::definitionTable = {
      {
 	"CONSOLEOUTPUT", 7,
 	  (void*)&Config::defConsoleOutput,

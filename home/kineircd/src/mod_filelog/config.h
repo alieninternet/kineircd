@@ -32,12 +32,12 @@ namespace Kine {
       class Config : public Kine::Logger::Config {
        public:
 	 // The definition table, given to Kine's config parserr
-	 static const AISutil::ConfigParser::defTable_type definitionTable;
+	 static const AIS::Util::ConfigParser::defTable_type definitionTable;
 
        private:
 	 // Variables..
-	 AISutil::String defFilename;
-	 AISutil::String defFormat;
+	 AIS::Util::String defFilename;
+	 AIS::Util::String defFormat;
 	 bool defUTC;
 	 
        public:
@@ -53,9 +53,9 @@ namespace Kine {
 	   {};
 	 
 	 // Return the variables
-	 const AISutil::String& getFilename(void) const
+	 const AIS::Util::String& getFilename(void) const
 	   { return defFilename; };
-	 const AISutil::String& getFormat(void) const
+	 const AIS::Util::String& getFormat(void) const
 	   { return defFormat; };
 	 const bool getUTC(void) const
 	   { return defUTC; };

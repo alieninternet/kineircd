@@ -41,7 +41,7 @@
 #include "mod_irc2user/isupport.h"
 
 using namespace Kine::mod_irc2user;
-using AISutil::String;
+using AIS::Util::String;
 
 
 // Our "official" protocol name

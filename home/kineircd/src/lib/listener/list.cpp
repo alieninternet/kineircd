@@ -32,7 +32,7 @@
 #include "lib/debug.h"
 
 using namespace Kine;
-using AISutil::String;
+using AIS::Util::String;
 
 
 /* ~ListenerList - Say bye bye to the existing listeners - go on, wave!

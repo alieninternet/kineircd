@@ -36,26 +36,26 @@ namespace Kine {
       typedef unsigned long long byteCount_type;
       
     private:
-      AISutil::Socket& socket;		//!< The connected socket
-      Protocol* protocol;		//!< The protocol we are running
+      AIS::Util::Socket& socket;		//!< The connected socket
+      Protocol* protocol;			//!< The protocol we are running
       
-      byteCount_type sentBytes;		//!< Number of bytes sent
-      byteCount_type receivedBytes;	//!< Number of bytes received
+      byteCount_type sentBytes;			//!< Number of bytes sent
+      byteCount_type receivedBytes;		//!< Number of bytes received
       
-      const AISutil::Time connectedTime;//!< Time connection was established
-      AISutil::Time lastSpoke;		//!< Time the connection last spoke
+      const AIS::Util::Time connectedTime;	//!< Time connection was established
+      AIS::Util::Time lastSpoke;		//!< Time the connection last spoke
 
-      bool connected;			//!< Are we connected?
+      bool connected;				//!< Are we connected?
       
     public:
       //! Class constructor
-      Connection(AISutil::Socket& s);
+      Connection(AIS::Util::Socket& s);
       
       //! Shutdown connection
       ~Connection(void);
 
       //! Return the socket
-      const AISutil::Socket& getSocket(void) const
+      const AIS::Util::Socket& getSocket(void) const
 	{ return socket; };
 
       
@@ -77,11 +77,11 @@ namespace Kine {
 	{ return receivedBytes; };
       
       //! Return the connection time
-      const AISutil::Time& getConnectedTime(void) const 
+      const AIS::Util::Time& getConnectedTime(void) const 
 	{ return connectedTime; };
       
       //! Return the last time this connection 'spoke'
-      const AISutil::Time& getLastSpoke(void) const 
+      const AIS::Util::Time& getLastSpoke(void) const 
 	{ return lastSpoke; };
 
       

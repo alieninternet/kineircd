@@ -81,7 +81,7 @@ namespace Kine {
 	 const long flags;
 
 	 // Configuration info (optional, set to 0 if you don't want it)
-	 const AISutil::ConfigParser::defTable_type* const configDefinitions;
+	 const AIS::Util::ConfigParser::defTable_type* const configDefinitions;
 	 
 	 // This little function checks if the stuff above is valid
 	 const bool isOkay(void) const {
@@ -113,7 +113,7 @@ namespace Kine {
       virtual const Info& getInfo(void) const = 0;
       
       // Return the configuration data class pointer
-      virtual AISutil::ConfigData* const getConfigData(void)
+      virtual AIS::Util::ConfigData* const getConfigData(void)
 	{ return 0; };
       
       // Start the module

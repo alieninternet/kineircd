@@ -36,7 +36,7 @@
 #include "mod_irc2user/commands.h"
 
 using namespace Kine::mod_irc2user;
-using AISutil::String;
+using AIS::Util::String;
 
 
 // The pointer to our single instance

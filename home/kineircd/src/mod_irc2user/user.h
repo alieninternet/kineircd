@@ -39,7 +39,7 @@ namespace Kine {
 	 Protocol& protocol;			// Connection we are bound to
 	 
 	 std::string description;		// Description/real name field
-	 AISutil::Time lastAwake;		// Time user was last awake
+	 AIS::Util::Time lastAwake;		// Time user was last awake
 
 	 // Events we want to know about
 	 void doEventAwayToggle(const Denizen& changer);
@@ -85,7 +85,7 @@ namespace Kine {
 	   { return description; };
 	 
 	 // Return the time the user was last 'awake'
-	 const AISutil::Time& getLastAwake(void) const
+	 const AIS::Util::Time& getLastAwake(void) const
 	   { return lastAwake; };
 	 
 	 // Prod the last awake field with the current time

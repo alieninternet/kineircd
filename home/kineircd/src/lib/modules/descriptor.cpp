@@ -32,7 +32,7 @@
 #include "lib/debug.h"
 
 using namespace Kine;
-using AISutil::String;
+using AIS::Util::String;
 
 
 /* ~ModuleDescriptor - Descriptor destructor, hehe

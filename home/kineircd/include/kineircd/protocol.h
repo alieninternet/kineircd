@@ -60,7 +60,7 @@ namespace Kine {
       
       // Remove up to the amount of octets given from the output queue
       virtual std::string 
-	withdrawOutput(AISutil::Socket::blockSize_type amount) = 0;
+	withdrawOutput(AIS::Util::Socket::blockSize_type amount) = 0;
       
       // Return true should there be anything in the output queue to send
       virtual bool moreOutput(void) const = 0;

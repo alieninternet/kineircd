@@ -32,7 +32,7 @@ namespace Kine {
    class Network : public Denizen {
     protected:
       //! Constructor
-      Network(const AISutil::Time& _signonTime)
+      Network(const AIS::Util::Time& _signonTime)
 	: Denizen(_signonTime)
 	{};
       
