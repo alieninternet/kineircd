@@ -150,9 +150,9 @@ void Protocol::doLUSERS(const User& user)
 {
    sendNumeric(user, Numerics::RPL_LUSERCLIENT,
 	       GETLANG(irc2_RPL_LUSERCLIENT,
-		       String::convert(registry().getUsers().size()),
-		       String::convert(0),
-		       String::convert(0)));
+		       String::convert(registry().getUserCount()),
+		       String::convert(registry().getServiceCount()),
+		       String::convert(registry().getServerCount())));
    sendNumeric(user, Numerics::RPL_LUSEROP,
 	       0,
 	       GETLANG(irc2_RPL_LUSEROP));
@@ -163,20 +163,20 @@ void Protocol::doLUSERS(const User& user)
 	       0,
 	       GETLANG(irc2_RPL_LUSERUNKNOWN));
    sendNumeric(user, Numerics::RPL_LUSERCHANNELS,
-	       0,
+	       registry().getChannelCount(),
 	       GETLANG(irc2_RPL_LUSERCHANNELS));
    sendNumeric(user, Numerics::RPL_LUSERME,
 	       GETLANG(irc2_RPL_LUSERME,
-		       String::convert(registry().getLocalUsers().size()),
-		       String::convert(0)));
+		       String::convert(registry().getLocalClientCount()),
+		       String::convert(registry().getLocalServerCount())));
    sendNumeric(user, Numerics::RPL_LOCALUSERS,
 	       GETLANG(irc2_RPL_LOCALUSERS,
-		       String::convert(registry().getLocalUsers().size()),
-		       String::convert(0)));
+		       String::convert(registry().getLocalUserCount()),
+		       String::convert(registry().getLocalUserCountPeak())));
    sendNumeric(user, Numerics::RPL_GLOBALUSERS,
 	       GETLANG(irc2_RPL_GLOBALUSERS,
-		       String::convert(registry().getUsers().size()),
-		       String::convert(0)));
+		       String::convert(registry().getUserCount()),
+		       String::convert(registry().getUserCountPeak())));
 }
 
 

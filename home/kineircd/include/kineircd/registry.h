@@ -33,33 +33,61 @@
 # include <kineircd/server.h>
 # include <kineircd/channel.h>
 # include <kineircd/service.h>
-# include <kineircd/localuser.h>
+# include <kineircd/user.h>
 # include <kineircd/errors.h>
+
 
 namespace Kine {
    //! The registry, the place where all entities live
    class Registry {
     public:
-      //! Network-wide connected users list type
-# ifdef KINE_STL_HAS_HASH
-      typedef std::hash_map < Name, User* const > users_type;
-# else
-      typedef std::map < Name, User* const > users_type;
-# endif
-
-      //! Locally connected users list type
-# ifdef KINE_STL_HAS_HASH
-      typedef std::hash_map < Name, LocalUser* const > localUsers_type;
-# else
-      typedef std::map < Name, LocalUser* const > localUsers_type;
-# endif
+      //! Connected users list type
+      typedef KINE_HASH_MAP_TYPE < Name, User* const > users_type;
+      
+      //! Connected services list type
+      typedef KINE_HASH_MAP_TYPE < Name, Service* const > services_type;
+      
+      //! Connected servers list type
+      typedef KINE_HASH_MAP_TYPE < std::string, Server* const > servers_type;
+      
+      //! Connected networks list type
+      typedef KINE_HASH_MAP_TYPE < std::string, Network* const > networks_type;
+      
+      //! Known channel list type
+      typedef KINE_HASH_MAP_TYPE < std::string, Channel* const > channels_type;
 
     private:
-      //! Network-wide connected users (includes users local, and network wide)
+      //! Connected users list
       users_type users;
+
+      //! Connected services list
+      services_type services;
       
-      //! List of locally connected users
-      localUsers_type localUsers;
+      //! Connected servers list
+      servers_type servers;
+      
+      //! Connected networks list
+      networks_type networks;
+      
+      //! Known channel list
+      channels_type channels;
+      
+
+      //! Various statistics counters/peak levels
+      unsigned int userCountPeak;
+      unsigned int localUserCount;
+      unsigned int localUserCountPeak;
+      unsigned int serviceCountPeak;
+      unsigned int localServiceCount;
+      unsigned int localServiceCountPeak;
+      unsigned int serverCountPeak;
+      unsigned int localServerCount;
+      unsigned int localServerCountPeak;
+      unsigned int networkCountPeak;
+      unsigned int localNetworkCount;
+      unsigned int localNetworkCountPeak;
+      unsigned int channelCountPeak;
+      
       
       //! Our single instance
       static Registry* instance;
@@ -79,35 +107,130 @@ namespace Kine {
       static Registry& getInstance(void)
 	{ return *instance; };
       
-      //! Add the given user
-      Error::error_type add(User& entity);
       
-      //! Add the given local user
-      Error::error_type add(LocalUser& entity);
+      //! Add the given user
+      Error::error_type addUser(User& entity);
       
       //! Remove the given user
-      Error::error_type remove(const User& entity);
+      Error::error_type removeUser(const User& entity);
 
-      //! Remove the given local user
-      Error::error_type remove(const LocalUser& entity);
-      
       //! Find the given local user, by its name
       User* const findUser(const Name& name) const;
       
-      //! Find the given local user, by its name
-      LocalUser* const findLocalUser(const Name& name) const;
       
       //! Find the given client, by its name
       Client* const findClient(const Name& name) const
 	{ return findUser(name); /* <=- temporary */ };
       
-      //! Return the local user list (read-only access)
+      
+      //! Return the user list (read only)
       const users_type& getUsers(void) const
 	{ return users; };
+
+      //! Return the service list (read only)
+      const services_type& getServices(void) const
+	{ return services; };
       
-      //! Return the local user list (read-only access)
-      const localUsers_type& getLocalUsers(void) const
-	{ return localUsers; };
+      //! Return the server list (read only)
+      const servers_type& getServers(void) const
+	{ return servers; };
+      
+      //! Return the network list (read only)
+      const networks_type& getNetworks(void) const
+        { return networks; };
+      
+      //! Return the channel list (read only)
+      const channels_type& getChannels(void) const
+	{ return channels; };
+      
+      
+      //! Return the number of clients on the network
+      const unsigned int getClientCount(void) const
+	{ return (getUserCount() + getServiceCount()); };
+      
+      //! Return the peak number of clients on the network
+      const unsigned int getClientCountPeak(void) const
+	{ return (getUserCountPeak() + getServiceCountPeak()); };
+      
+      //! Return the number of clients connected locally
+      const unsigned int getLocalClientCount(void) const
+	{ return (getLocalUserCount() + getLocalServiceCount()); };
+      
+      //! Return the peak number of clients connected locally
+      const unsigned int getLocalClientCountPeak(void) const
+	{ return (getLocalUserCountPeak() + getLocalServiceCountPeak()); };
+      
+      //! Return the number of users on the network
+      const unsigned int getUserCount(void) const
+	{ return users.size(); };
+      
+      //! Return the peak number of users connected to the network
+      const unsigned int getUserCountPeak(void) const
+	{ return userCountPeak; };
+      
+      //! Return the number of users on this server locally
+      const unsigned int getLocalUserCount(void) const
+	{ return localUserCount; };
+      
+      //! Return the peak number of users connected locally
+      const unsigned int getLocalUserCountPeak(void) const
+	{ return localUserCountPeak; };
+      
+      //! Return the number of services on the network
+      const unsigned int getServiceCount(void) const
+	{ return services.size(); };
+      
+      //! Return the peak number of services connected to the network
+      const unsigned int getServiceCountPeak(void) const
+	{ return serviceCountPeak; };
+      
+      //! Return the number of services connected locally
+      const unsigned int getLocalServiceCount(void) const
+	{ return localServiceCount; };
+      
+      //! Return the peak number of services connected locally
+      const unsigned int getLocalServiceCountPeak(void) const
+	{ return localServiceCountPeak; };
+      
+      //! Return the number of servers on the network
+      const unsigned int getServerCount(void) const
+	{ return servers.size(); };
+      
+      //! Return the peak number of servers
+      const unsigned int getServerCountPeak(void) const
+	{ return serverCountPeak; };
+
+      //! Return the number of servers connected locally
+      const unsigned int getLocalServerCount(void) const
+	{ return localServerCount; };
+      
+      //! Return the peak number of servers connected locally
+      const unsigned int getLocalServerCountPeak(void) const
+	{ return localServerCountPeak; };
+      
+      //! Return the number of networks on the network
+      const unsigned int getNetworkCount(void) const
+	{ return networks.size(); };
+
+      //! Return the peak number of networks
+      const unsigned int getNetworkCountPeak(void) const
+	{ return networkCountPeak; };
+      
+      //! Return the number of networks conencted locally
+      const unsigned int getLocalNetworkCount(void) const
+	{ return localNetworkCount; };
+      
+      //! Return the peak number of networks connected locally
+      const unsigned int getLocalNetworkCountPeak(void) const
+	{ return localNetworkCountPeak; };
+      
+      //! Return the number of channels we know about
+      const unsigned int getChannelCount(void) const
+	{ return channels.size(); };
+      
+      //! Return the peak number of channels
+      const unsigned int getChannelCountPeak(void) const
+	{ return channelCountPeak; };
    }; // class Registry
    
 

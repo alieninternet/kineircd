@@ -40,11 +40,27 @@ Registry* Registry::instance = 0;
  * Original 09/04/2001 simonb
  */
 Registry::Registry(void)
+ : userCountPeak(0),
+   localUserCount(0),
+   localUserCountPeak(0),
+   serviceCountPeak(0),
+   localServiceCount(0),
+   localServiceCountPeak(0),
+   serverCountPeak(0),
+   localServerCount(0),
+   localServerCountPeak(0),
+   networkCountPeak(0),
+   localNetworkCount(0),
+   localNetworkCountPeak(0),
+   channelCountPeak(0)
 {
 #ifdef KINE_DEBUG_ASSERT
    // Are we sane? Please say yes.. please say yes..
    assert(users.empty());
-   assert(localUsers.empty());
+   assert(services.empty());
+   assert(servers.empty());
+   assert(networks.empty());
+   assert(channels.empty());
 #endif
 }
 
@@ -81,10 +97,10 @@ void Registry::initInstance(void)
 }
 
 
-/* add - Add the given user
+/* addUser - Add the given user
  * Original 08/04/2003
  */
-Error::error_type Registry::add(User& entity)
+Error::error_type Registry::addUser(User& entity)
 {
 #ifdef KINE_DEBUG
    std::ostringstream debugOut;
@@ -99,6 +115,22 @@ Error::error_type Registry::add(User& entity)
       (void)users.
 	insert(users_type::value_type(entity.getNickname().IRCtoLower(),
 				      &entity));
+
+      // If the user count is higher than the peak, fix the peak
+      if (users.size() > userCountPeak) {
+	 userCountPeak = users.size();
+      }
+      
+      // If this is a local user, we should increase the local user count too
+      if (entity.isLocalUser()) {
+	 // Increase the local user count
+	 ++localUserCount;
+	 
+	 // If the local user count is higher than the peak, fix this peak too
+	 if (localUserCount > localUserCountPeak) {
+	    localUserCountPeak = localUserCount;
+	 }
+      }
       
       // Smile..
       return Error::NO_ERROR;
@@ -113,48 +145,10 @@ Error::error_type Registry::add(User& entity)
 }
 
 
-/* add - Add the given local user
+/* removeUser - Remove the given user
  * Original 08/04/2003
  */
-Error::error_type Registry::add(LocalUser& entity)
-{
-#ifdef KINE_DEBUG
-   std::ostringstream debugOut;
-   debugOut << "Registry::add() - Trying to add local user @ " << &entity <<
-     " (" << localUsers.size() << " local users, " << users.size() << 
-     " users known)";
-   debug(debugOut.str());
-#endif
-
-   // Make sure the client doesn't already exist..
-   if (findClient(entity.getNickname()) == 0) {
-      // Add the user to the local user list..
-      (void)localUsers.
-	insert(localUsers_type::value_type(entity.getNickname().IRCtoLower(),
-					   &entity));
-      
-      // .. And to the user list..
-      (void)users.
-	insert(users_type::value_type(entity.getNickname().IRCtoLower(),
-				      &entity));
-      
-      // All is well :)
-      return Error::NO_ERROR;
-   }
-   
-#ifdef KINE_DEBUG
-   debug("Registry::add() - Client already exists (name conflict)");
-#endif
-
-   // Complain
-   return Error::CLIENT_EXISTS;
-}
-
-
-/* remove - Remove the given user
- * Original 08/04/2003
- */
-Error::error_type Registry::remove(const User& entity)
+Error::error_type Registry::removeUser(const User& entity)
 {
 #ifdef KINE_DEBUG
    std::ostringstream debugOut;
@@ -170,45 +164,17 @@ Error::error_type Registry::remove(const User& entity)
       // .. and also from the users list
       (void)users.erase(it);
       
+      // If this user was a local user, decrease the local user count
+      if (entity.isLocalUser()) {
+	 --localUserCount;
+      }
+      
       // Done
       return Error::NO_ERROR;
    }
    
 #ifdef KINE_DEBUG
    debug("Registry::remove() - Given user was not found");
-#endif
-
-   // Complain about the user not existing
-   return Error::UNREGISTERED_ENTITY;
-}
-
-
-/* remove - Remove the given local user
- * Original 08/04/2003
- */
-Error::error_type Registry::remove(const LocalUser& entity)
-{
-#ifdef KINE_DEBUG
-   std::ostringstream debugOut;
-   debugOut << "Registry::add() - Trying to remove local user @ " << &entity;
-   debug(debugOut.str());
-#endif
-
-   // Find the local user
-   localUsers_type::iterator it =
-     localUsers.find(entity.getNickname().IRCtoLower());
-   
-   // Make sure we found something
-   if (it != localUsers.end()) {
-      // Remove the user from the local user list
-      (void)localUsers.erase(it);
-
-      // Remove it from the global user list too..
-      return remove((const User&)entity);
-   }
-   
-#ifdef KINE_DEBUG
-   debug("Registry::remove() - Given local user was not found");
 #endif
 
    // Complain about the user not existing
@@ -226,24 +192,6 @@ User* const Registry::findUser(const Name& name) const
    
    // Make sure we found something..
    if (it != users.end()) {
-      return it->second;
-   }
-   
-   // Not found
-   return 0;
-}
-
-
-/* findLocalUser - Find the a local user by its name
- * Original 08/04/2003
- */
-LocalUser* const Registry::findLocalUser(const Name& name) const
-{
-   // Look up the given use from the local user list
-   localUsers_type::const_iterator it = localUsers.find(name.IRCtoLower());
-   
-   // Make sure we found something..
-   if (it != localUsers.end()) {
       return it->second;
    }
    

@@ -29,6 +29,9 @@
 
 # ifdef LIBAISUTIL_STL_HAS_HASH
 #  define KINE_STL_HAS_HASH
+#  define KINE_HASH_MAP_TYPE std::hash_map
+# else
+#  define KINE_HASH_MAP_TYPE std::map
 # endif
 
 //! Define if your C++ STL has an SGI-compatible slist<> template

@@ -159,6 +159,10 @@ namespace Kine {
       //! If this user is local, this will return the local version of this
       virtual const LocalUser* const getLocalSelf(void) const
 	{ return 0; };
+      
+      // Check if this user is a local user
+      const bool isLocalUser(void) const
+	{ return (getLocalSelf() != 0); };
    }; // class User
 }; // namespace Kine
 
