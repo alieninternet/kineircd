@@ -25,32 +25,36 @@
 
 #include "kineircd/version.h"
 
+// This is temporary
+#define BUILD_STRING "fix-me-please"
+
 namespace Kine {
    namespace Version {
       // Build information
       const char *build = BUILD_STRING;
       
       // Program name
-      const char *programName = VERSION_NAME;
-      const char *programNameFull = VERSION_NAME_FULL;
+      const char *programName = PACKAGE;
+      const char *programNameFull = KINEIRCD_VERSION_NAME_FULL;
       
       // Program version numbers (raw)
-      const unsigned short versionMajor = VERSION_MAJOR;
-      const unsigned short versionMinor = VERSION_MINOR;
+      const unsigned short versionMajor = KINEIRCD_VERSION_MAJOR;
+      const unsigned short versionMinor = KINEIRCD_VERSION_MINOR;
 
       // Version information (program name and version number, in its entirity)
-      const char *version = VERSION_NAME VERSION_STRING;
+      const char *version = PACKAGE KINEIRCD_VERSION_STRING;
       
       // Full version identity (includes build number)
-      const char *versionFull = VERSION_NAME VERSION_STRING "#" BUILD_STRING;
+      const char *versionFull = 
+	PACKAGE KINEIRCD_VERSION_STRING "#" BUILD_STRING;
       
       // Library version information (raw)
-      const unsigned char libVersion = LIB_VERSION;
-      const unsigned char libRevision = LIB_REVISION;
-      const unsigned char libAge = LIB_AGE;
+      const unsigned char libVersion = KINEIRCD_LIB_VERSION;
+      const unsigned char libRevision = KINEIRCD_LIB_REVISION;
+      const unsigned char libAge = KINEIRCD_LIB_AGE;
       
       // E-mail address to where bug reports should wind up
-      const char *bugsEmail = VERSION_BUGREPORT;
+      const char *bugsEmail = PACKAGE_BUGREPORT;
       
       /* Information for INFO command (note: no colon prefixes for any 
        * protocol)

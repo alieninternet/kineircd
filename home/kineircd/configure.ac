@@ -25,7 +25,7 @@ dnl -------------------------------------------------------------------------
 dnl  Getting ready to configure...
 dnl -------------------------------------------------------------------------
 dnl Initialise the autoconf thingamebobs
-AC_INIT([Kine IRC Daemon], [ ])
+AC_INIT([KineIRCd], [ ], [kineircd@alien.net.au])
 AM_INIT_AUTOMAKE([1.7 foreign no-installinfo no-installman nostdinc subdir-objects])
 AC_COPYRIGHT([Portions Copyright (c) 2001,2002 KineIRCd Development Team])
 AC_PREREQ(2.53)
@@ -40,25 +40,32 @@ dnl them .. uhh.. should touch them :)
 VERSION_MAJOR=0
 VERSION_MINOR=0
 VERSION_EXTRA=.prealpha
-VERSION_NAME=kineircd
-VERSION_NAME_FULL="Kine IRC Daemon"
-VERSION_BUGREPORT=kineircd@alien.net.au
-VERSION_STRING=$VERSION_MAJOR.$VERSION_MINOR$VERSION_EXTRA
+
 LIB_VERSION=0
 LIB_REVISION=0
 LIB_AGE=0
 
 dnl Export our version information
-AC_SUBST(VERSION_MAJOR)
-AC_SUBST(VERSION_MINOR)
-AC_SUBST(VERSION_EXTRA)
-AC_SUBST(VERSION_NAME)
-AC_SUBST(VERSION_NAME_FULL)
-AC_SUBST(VERSION_BUGREPORT)
-AC_SUBST(VERSION_STRING)
+AC_DEFINE_UNQUOTED(KINEIRCD_VERSION_MAJOR, $VERSION_MAJOR,
+                   [Major version number])
+AC_DEFINE_UNQUOTED(KINEIRCD_VERSION_MINOR, $VERSION_MINOR,
+                   [Minor version number])
+AC_DEFINE_UNQUOTED(KINEIRCD_VERSION_EXTRA, "$VERSION_EXTRA",
+                   [Optional additional version info])
+AC_DEFINE(KINEIRCD_VERSION_NAME_FULL, "Kine IRC Daemon",
+          [Full program name])
+AC_DEFINE_UNQUOTED(KINEIRCD_VERSION_STRING,
+                   "$VERSION_MAJOR.$VERSION_MINOR$VERSION_EXTRA",
+                   [Compiled version string for convenience sake])
 AC_SUBST(LIB_VERSION)
+AC_DEFINE_UNQUOTED(KINEIRCD_LIB_VERSION, $LIB_VERSION,
+                   [Library version number])
 AC_SUBST(LIB_REVISION)
+AC_DEFINE_UNQUOTED(KINEIRCD_LIB_REVISION, $LIB_REVISION,
+                   [Library revision number])
 AC_SUBST(LIB_AGE)
+AC_DEFINE_UNQUOTED(KINEIRCD_LIB_AGE, $LIB_AGE,
+                   [Library age number])
 
 dnl Save LDFLAGS since we will be making a mess of it soon..
 LDFLAGS_SAVE="$LDFLAGS"
