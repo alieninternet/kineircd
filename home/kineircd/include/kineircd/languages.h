@@ -30,8 +30,6 @@
 # include <string>
 # include <vector>
 
-# include <kineircd/receiver.h>
-
 namespace Kine {
    class Languages {
     public:
