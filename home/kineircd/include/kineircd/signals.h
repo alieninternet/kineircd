@@ -53,7 +53,7 @@ namespace Kine {
       };
       
       // This defines your signal handler (must be static) and what to receive
-      struct handler_call_info_type {
+      struct handlerInfo_type {
 	 const SIGNAL_HANDLER_FUNC((*handler));
 	 const mask_type mask;
 	 
@@ -62,14 +62,15 @@ namespace Kine {
 	   { return ((handler != 0) && (mask != 0)); };
       };
 
+    private:
       // Our list of signal handlers
 # ifdef STL_HAS_SLIST
-      typedef std::slist <handler_call_info_type> handlerList_type;
+      typedef std::slist <const handlerInfo_type *> handlerList_type;
 # else
-      typedef std::list <handler_call_info_type> handlerList_type;
+      typedef std::list <const handlerInfo_type *> handlerList_type;
 # endif
-      
-    private:
+
+    public: // temporary
       // The list of handlers we run through to find functions to throw
       handlerList_type handlers;
 
@@ -79,6 +80,13 @@ namespace Kine {
       
       // Destructor
       ~Signals(void);
+
+      // Add a handler to the handlers list (false if structure is invalid)
+      bool addHandler(const handlerInfo_type &handler);
+
+      // Remove a handler from the handlers list
+      void removeHandler(const handlerInfo_type &handler)
+	{ handlers.remove(&handler); };
    };
 };
 

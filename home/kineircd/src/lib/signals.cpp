@@ -23,7 +23,10 @@
 
 #include "kineircd/kineircdconf.h"
 
+#include <cstdlib>
 #include <csignal>
+#include <algorithm>
+#include <functional>
 
 #include "kineircd/signals.h"
 #include "kineircd/debug.h"
@@ -33,7 +36,30 @@ using namespace Kine;
 
 
 // This is here so we can remember where we are!
-Signals *siggies;
+Signals *siggies = 0;
+
+
+/* checkMask - Check if a handler should be called based on the mask
+ * Original 09/07/2002 simonb
+ */
+struct checkMask 
+  : public std::unary_function<const Signals::handlerInfo_type *, void> {
+     const int signum;
+     const Signals::mask_type maskBit;
+     
+     // Constructor
+     checkMask(const int s, const Signals::mask_type m)
+       : signum(s), maskBit(m)
+       {};
+     
+     // Analyser
+     void operator()(const Signals::handlerInfo_type *handlerInfo)
+       {
+	  if (handlerInfo->mask & maskBit) {
+	     (*handlerInfo->handler)(signum, maskBit);
+	  }
+       };
+  };
 
 
 /* sigHandler - Handle signals
@@ -42,69 +68,102 @@ Signals *siggies;
  * 	 RETSIGTYPE sigHandler(int sig, int code, struct sigcontext *context) 
  *       right?
  */
-RETSIGTYPE signalHandler(int sig)
+static RETSIGTYPE signalHandler(int signum)
 {
+#ifdef DEBUG_ASSERT
+   // Make sure we are called properly - siggies must not be null
+   assert(siggies != 0);
+#endif
+   
 #ifdef DEBUG
-   debug("sigHandler() -> [" + sig +
+   debug("sigHandler() -> [" + String::convert(signum) +
 # ifdef SYS_SIGLIST_DECLARED
-	 "] " + sys_siglist[sig]
+	 "] " + String(sys_siglist[signum])
 # else
-	 ']'
+	 "]"
 # endif
 	 );
 #endif
-   
-   switch (sig) {
-      // Rehash
-    case SIGHUP:
-//      Daemon::rehash(0, 0);
-      abort();//temporary
-      break;
+
+   // If the handlers list is not empty, use it
+   if (!siggies->handlers.empty()) {
+      Signals::mask_type maskBit;
       
-      // Violent Death
-    case SIGILL:
-    case SIGTRAP:
+      // Work out what bit in the mask we are looking for
+      switch (signum) {
+	 // Rehash
+       case SIGHUP:
+	 maskBit = Signals::SIGNAL_REHASH;
+	 break;
+	 
+	 // Violent Death
+       case SIGILL:
+       case SIGTRAP:
 #ifdef SIGEMT
-    case SIGEMT:
+       case SIGEMT:
 #endif
 #ifdef SIGBUS
-    case SIGBUS:
+       case SIGBUS:
 #endif
 #ifdef SIGSEGV
-    case SIGSEGV:
+       case SIGSEGV:
 #endif
 #ifdef SIGSYS
-    case SIGSYS:
+       case SIGSYS:
 #endif
 #ifdef SIGURG
-    case SIGURG:
+       case SIGURG:
 #endif
-    case SIGFPE:
-      exit(Exit::ERR_UGLY_SIGNAL); // This could be a little nicer..
-      break;
-
-      // Peaceful death
-    case SIGINT:
-    case SIGQUIT:
-    case SIGTERM:
-    case SIGABRT:
+       case SIGFPE:
 #ifdef SIGXCPU
-    case SIGXCPU: // should this be in the die violently section?
+       case SIGXCPU:
 #endif
 #ifdef SIGXFSZ
-    case SIGXFSZ: // should this be in the die violently section?
+       case SIGXFSZ:
 #endif
-//      Daemon::shutdown(sigNames[sig]);
-      abort();// temporary
-      break;
+	 maskBit = Signals::SIGNAL_VIOLENT_DEATH;
+	 break;
+	 
+	 // Peaceful death
+       case SIGINT:
+       case SIGQUIT:
+       case SIGTERM:
+       case SIGABRT:
+	 maskBit = Signals::SIGNAL_PEACEFUL_DEATH;
+	 break;
+	 
+	 // The user-defined signals
+       case SIGUSR1:
+	 maskBit = Signals::SIGNAL_USER_1;
+	 break;
+       case SIGUSR2:
+	 maskBit = Signals::SIGNAL_USER_2;
+	 break;
+	 
+	 // Everything else we should have already handled by now!
+       default:
+#ifdef DEBUG
+	 // Complain!!
+	 debug("We did not know how to handle this signal!!!");
+#endif
+	 
+	 // Return (and not reset this signal)
+	 return;
+      }
       
-      // Everything else we ignore.
-//    default:
-      // ?!
+      // Run through our handler list and look for handlers to call
+      (void)std::for_each(siggies->handlers.begin(), siggies->handlers.end(),
+			  checkMask(signum, maskBit));
+   } else {
+      // This could be nicer..
+#ifdef DEBUG
+      debug("No signal handlers known yet - eek!");
+#endif
+      abort();
    }
-   
+	
    // Reset the signal for future handling. Some os's do not need this??
-   signal(sig, signalHandler);
+   signal(signum, signalHandler);
 }
 
 
@@ -117,7 +176,6 @@ struct {
      { SIGINT,		true },	// Interrupt from keyboard (^C)
      { SIGQUIT,		true },	// Quit from keyboard (^D)
      { SIGILL,		true },	// Illegal Instruction
-     { SIGABRT,		true },	// Abort signal from abort()
 #ifdef SIGIOT
      { SIGIOT,		true }, // IOT trap (SIGABRT)
 #endif
@@ -223,4 +281,30 @@ Signals::~Signals(void)
    for (register unsigned int i = NSIG; i--;) {
       (void)signal(i, SIG_DFL);
    }
+}
+
+
+/* addHandler - Add a handler to the handlers list
+ * Original 09/07/2002 simonb
+ */
+bool Signals::addHandler(const handlerInfo_type &handler)
+{
+   // Make sure the structure is okay
+   if (!handler.isOkay()) {
+      return false;
+   }
+   
+   // Look for this in the handler list
+   handlerList_type::iterator result = 
+     std::find(handlers.begin(), handlers.end(), &handler);
+   
+   // Check.. If it already exists, complain
+   if (result != 0) {
+      return false;
+   }
+   
+   // Okay, add it then
+   handlers.push_front(&handler);
+   
+   return true;
 }
