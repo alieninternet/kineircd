@@ -60,8 +60,15 @@ INCLUDES=\
 
 
 
+# Man pages to build
+man_MANS=\
+	install/ircd.1
+
+
+
 # Stuff that needs to go into the distribution but isn't implied
 EXTRA_DIST=\
+	$(man_MANS) \
 	DEV-TEAM \
 	autogen/attributes.def \
 	autogen/chanmembers.def \
@@ -608,6 +615,12 @@ ircd_LDADD=\
 	
 ircd_CFLAGS=\
 	$(LIBOPTS_CFLAGS)
+
+install/ircd.1: src/ircd/options.def
+	$(AUTOGEN) \
+		-T agman1.tpl \
+		-b $(basename $@) \
+		src/ircd/options.def
 
 src/ircd/options.c src/ircd/options.h: src/ircd/options.def
 	$(AUTOGEN) \
