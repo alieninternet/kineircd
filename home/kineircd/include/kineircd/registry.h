@@ -123,30 +123,81 @@ namespace Kine {
       /*-------------------------------------------------------*/
 
       
-      //! Find the given user, by its name
+      /*!
+       * \brief Find the given user, using its name
+       * 
+       * \param name The name of the user to find
+       * \return A pointer to the User requested
+       * \retval 0
+       *    The user could not be found
+       */
       User* const findUser(const ClientName& name) const;
 
-      //! Find the given service, by its name
+      /*!
+       * \brief Find the given service, using its name
+       * 
+       * \param name The name of the service to find
+       * \return A pointer to the Service requested
+       * \retval 0
+       *    The service could not be found
+       */
       Service* const findService(const ClientName& name) const;
 
-      //! Find the given client, by its name (check both user and service lists)
+      /*!
+       * \brief Find the given client, using its name
+       *
+       * This works in an identical fashion to findUser() and findService(),
+       * except that it searches both lists. Since users are more common than
+       * services (obviously), the user list is checked first.
+       * 
+       * \param name The name of the client to find
+       * \return A pointer to the Client requested
+       * \retval 0
+       *    The client could not be found
+       */
       Client* const findClient(const ClientName& name) const
 	{
 	   Client* const client = findUser(name);
 	   return ((client != 0) ? client : findService(name));
 	};
       
-      //! Find the given server, by its name
-      Server* const findServer(const std::wstring& name) const
-	{ return 0; /* temporary */ };
+      /*!
+       * \brief Find the given server, using its name
+       * 
+       * \param name The name of the server to find 
+       * \return The instance of the Server requested
+       * \retval 0
+       *    The server could not be found
+       */
+      Server* const findServer(const std::wstring& name) const;
       
-      //! Find the given network, by its name
-      Network* const findNetwork(const std::wstring& name) const
-	{ return 0; /* temporary */ };
+      /*!
+       * \brief Find the given network, using its name
+       * 
+       * Note that the network list is most likely to be empty is there is
+       * no network name connected. Networks cannot be interlinked unless this
+       * network has a name.
+       *
+       * \see MyNetwork::isNamed()
+       * \param name The name of the network to find
+       * \return The instance of the Network requested
+       * \retval 0
+       *    The network could not be found
+       */
+      Network* const findNetwork(const std::wstring& name) const;
       
-      //! Find the given channel, by its name
-      Channel* const findChannel(const ChannelName& name) const
-	{ return 0; /* temporary */ };
+      /*!
+       * \brief Find the given channel, using its name
+       * 
+       * The channel name needs to include its type-prefix character, as it
+       * is an integral part of the channel's name.
+       * 
+       * \param name The name of the channel to find
+       * \return The instance of the Channel requested
+       * \retval 0
+       *    The channel could not be found
+       */
+      Channel* const findChannel(const ChannelName& name) const;
       
       
       //! Return the number of clients on the network
