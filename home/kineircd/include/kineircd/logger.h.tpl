@@ -35,15 +35,19 @@ namespace Kine {
     public:
       // Bitmask list for a mask (type of log message)
       struct Mask { // <=- should be namespace!
-         enum type {
-	    Nothing                   = 0x00000000,[+ (define bitvalue 1) +][+ FOR logger_masks +]
+         // The masks
+         enum type {[+ (define bitvalue 1) +][+ FOR logger_masks "," +]
 	    [+
 	       (define newbitvalue (* bitvalue 2))
 	       (define bitvalue newbitvalue)
-               (sprintf "%-25s = 0x%08X," (get "name") (/ newbitvalue 2))
+               (sprintf "%-25s = 0x%08X" (get "name") (/ newbitvalue 2))
              +][+ ENDFOR logger_masks +]
-            Everything                = 0xFFFFFFFF
          };
+	 
+	 // Some handy defines, relating to the masks, but are not masks
+	 typedef unsigned int lazy_type;
+	 static const lazy_type Nothing       = 0x00000000;
+	 static const lazy_type Everything    = 0xFFFFFFFF;
       };
    
       static const unsigned char maskTableSize = [+ 
