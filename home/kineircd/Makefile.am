@@ -146,6 +146,7 @@ BUILT_SOURCES=\
 	include/kineircd/errors.h \
 	include/kineircd/logger.h \
 	include/kineircd/server.h \
+	install/.lang \
 	src/ircd/options.h
 
 
