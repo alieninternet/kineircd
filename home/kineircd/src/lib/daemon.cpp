@@ -195,7 +195,7 @@ bool Daemon::registerProtocol(ProtocolInfo& info)
    (void)protocols.insert(protocols_type::value_type(info.description.key,
 						     &info));
    
-   return false;
+   return true;
 }
 
 
