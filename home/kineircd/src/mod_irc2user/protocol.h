@@ -32,8 +32,10 @@ namespace Kine {
       class Protocol : public Kine::LibIRC2::Protocol {
        public:
 	 // Constructor
-	 Protocol(Kine::Connection& c)
-	   : Kine::LibIRC2::Protocol(c)
+	 Protocol(const Kine::Registrant& registrant,
+		  Kine::Connection& connection, std::string& inputQueue,
+		  std::string& outputQueue)
+	   : Kine::LibIRC2::Protocol(connection)
 	   {};
 	 
 	 // Destructor

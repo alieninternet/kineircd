@@ -285,6 +285,10 @@ void Registrar::parseLine(const String& line)
       
    // That protocol instance may not have been created, so let's just check..
    if (newProtocol != 0) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Registrar::parseLine() - Doing protocol hand-over...");
+#endif
+      
       // Do the protocol hand-over
       connection.setProtocol(*newProtocol);
       

@@ -27,9 +27,10 @@
 #endif
 
 #include <kineircd/module.h>
-#include <iostream>
+#include <kineircd/daemon.h>
 
 #include "mod_irc2user/module.h"
+#include "mod_irc2user/protocolinfo.h"
 
 
 namespace {
@@ -54,6 +55,9 @@ namespace {
 
 
    class mod_irc2user : public Kine::Module {
+    private:
+      Kine::mod_irc2user::ProtocolInfo protocolInfo;
+
     public:
       // Constructor
       mod_irc2user(void)
@@ -68,14 +72,15 @@ namespace {
 	{ return info; };
       
       /* moduleStart - Fire up the module
-       * Original 05/10/2002 simonb
+       * Original 04/11/2002 simonb
        */
       bool start(void) {
-#ifdef KINE_DEBUG
-	 std::cerr << "Hello, my name is mod_irc2user ;)" << std::endl;
-#endif
+	 // Attempt to register our protocol to the daemon
+	 if (!Kine::daemon().registerProtocol(protocolInfo)) {
+	    return false;
+	 }
 	 
-	 // Be happy :)
+	 // Smile :)
 	 return true;
       };
    }; // class mod_irc2user

@@ -1,8 +1,8 @@
 /* $Id$
- * The IRC-2 protocol suite base class
+ * The IRC-2 user protocol information
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -22,38 +22,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_IRC2_PROTOCOL_H_
-# define _SRC_LIB_IRC2_PROTOCOL_H_ 1
+#ifndef _SRC_MOD_IRC2USER_PROTOCOLINFO_H_
+# define _SRC_MOD_IRC2USER_PROTOCOLINFO_H_ 1
 
-# include <kineircd/protocol.h>
+# include <kineircd/protocolinfo.h>
+
+# include "mod_irc2user/protocol.h"
 
 namespace Kine {
-   namespace LibIRC2 {
-      class Protocol : public Kine::Protocol {
+   namespace mod_irc2user {
+      class ProtocolInfo : public Kine::ProtocolInfo {
        public:
 	 // Constructor
-	 Protocol(Kine::Connection& c)
-	   : Kine::Protocol(c)
+	 ProtocolInfo(void)
+	   : Kine::ProtocolInfo(Kine::ProtocolInfo::Type::USER, "IRC/2")
 	   {};
 	 
 	 // Destructor
-	 virtual ~Protocol(void)
+	 ~ProtocolInfo(void)
 	   {};
 	 
-	 // Handle incoming data
-	 virtual void handleInput(std::stringstream& data)
-	   {};
-	 
-	 // Remove up to the amount of octets given from the output queue
-	 std::string withdrawOutput(AISutil::Socket::blockSize_type amount)
-	   { return ""; };
-	 
-	 // Return true should there be anything in the output queue to send
-	 bool moreOutput(void) const
-	   { return false; };
+	 Kine::Protocol* const createProtocol(const Kine::Registrant& r,
+					      Kine::Connection& c,
+					      std::string& iq, std::string& oq)
+	   {
+	      return new Kine::mod_irc2user::Protocol(r, c, iq, oq);
+	   };
       };
-   }; // namespace LibIRC2
+   }; // namespace mod_irc2user
 }; // namespace Kine
    
-#endif // _SRC_LIB_IRC2_PROTOCOL_H_
+#endif // _SRC_MOD_IRC2USER_PROTOCOLINFO_H_
    
