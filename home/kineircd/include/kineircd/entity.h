@@ -28,6 +28,8 @@
 # include <aisutil/time.h>
 
 namespace Kine {
+   class User;
+   
    //! Abstract base class for objects - stuff that is common to all objects
    class Entity {
     protected:
@@ -46,24 +48,16 @@ namespace Kine {
       //! Return whatever is an acceptable name for this entity
       virtual const std::string& getName(void) const = 0;
       
-      //! Return the hostname
-      virtual const std::string& getHostname(void) const = 0;
-      
-      //! Return the client's description/real name/gecos field
-      virtual const std::string& getDescription(void) const = 0;
-
-      //! Return the number of hops from us to this entity
-      virtual const unsigned int getHopCount(void) const
-	{ return 0; };
-      
-      //! Is this entity hidden from normal users?
-      virtual const bool isHidden(void) const
+      //! Is this entity hidden from the given user? (default to 'no')
+      virtual const bool isHiddenFrom(const User& who) const
 	{ return false; };
-      
+
       //! Return the time this entity initially connected to the network
       const AISutil::Time& getSignonTime(void) const
 	{ return signonTime; };
    }; // class Entity
 }; // namespace Kine
+
+# include <kineircd/user.h>
 
 #endif // _INCLUDE_KINEIRCD_ENTITY_H_

@@ -29,15 +29,16 @@
 # endif
 # include <map>
 
-# include <kineircd/network.h>
-# include <kineircd/server.h>
-# include <kineircd/channel.h>
-# include <kineircd/service.h>
 # include <kineircd/user.h>
+# include <kineircd/service.h>
+# include <kineircd/server.h>
+# include <kineircd/network.h>
+# include <kineircd/channel.h>
 # include <kineircd/errors.h>
 
 
 namespace Kine {
+   
    //! The registry, the place where all entities live
    class Registry {
     public:

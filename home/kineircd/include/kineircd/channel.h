@@ -37,7 +37,7 @@ namespace Kine {
    class User;
    
    //! An abstract class for a channel
-   class Channel : public Receiver {
+   class Channel : public Entity, public Receiver {
     public:
       //! Channel member class
       class Member {
@@ -91,7 +91,6 @@ namespace Kine {
     private:
       const ChannelName name;			//!< The channel name
       const scope_type scope;			//!< Channel's 'scope'
-      const AISutil::Time creationTime;		//!< Channel creation time
       std::string topic;			//!< Channel topic
       std::string topicChanger;			//!< Who changed the topic
       AISutil::Time topicChangeTime;		//!< Time the topic changed
@@ -104,9 +103,9 @@ namespace Kine {
       Channel(const ChannelName& _name,
 	      const scope_type _scope,
 	      const AISutil::Time& _creationTime)
-	: name(_name),
-          scope(_scope),
-          creationTime(_creationTime)
+	: Entity(_creationTime),
+	  name(_name),
+          scope(_scope)
 	{}
       
     public:
@@ -137,9 +136,9 @@ namespace Kine {
 	{ return scope; };
 
       
-      //! Return the time the channel was created
+      //! Return the time the channel was created (same as the 'signon' time)
       const AISutil::Time& getCreationTime(void) const
-	{ return creationTime; };
+	{ return getSignonTime(); };
       
       
       //! Return the topic on the channel (empty string for no topic)
@@ -195,7 +194,7 @@ namespace Kine {
 	{ return false; };
       
       //! Is this channel hidden from public view (i.e. /whois, /list etc)
-      virtual const bool isHidden(void) const
+      virtual const bool isHiddenFrom(const User& who) const
 	{ return (isSecret() || isPrivate()); };
       
 

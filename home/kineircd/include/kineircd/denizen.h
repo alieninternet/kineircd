@@ -25,10 +25,11 @@
 # define _INCLUDE_KINEIRCD_DENIZEN_H_ 1
 
 # include <kineircd/entity.h>
-# include <kineircd/server.h>
 
 namespace Kine {
-   //! Base class for denizens, things that hang off servers, other than servers
+   class Server;
+   
+   //! Base class for denizens, things that hang off servers
    class Denizen : public Entity {
     protected:
       //! Constructor
@@ -41,9 +42,21 @@ namespace Kine {
       virtual ~Denizen(void)
 	{};
 
+      //! Return the hostname
+      virtual const std::string& getHostname(void) const = 0;
+      
+      //! Return the denizen's description/real name/gecos field
+      virtual const std::string& getDescription(void) const = 0;
+
+      //! Return the number of hops from us to this denizen
+      virtual const unsigned int getHopCount(void) const
+	{ return 0; };
+      
       //! Return a pointer to the server this denizen is connected to/through
 //      virtual const Server& getServer(void) const = 0;
    }; // class Denizen
 }; // namespace Kine
+
+# include <kineircd/server.h>
 
 #endif // _INCLUDE_KINEIRCD_DENIZEN_H_

@@ -31,7 +31,6 @@
 # include <iomanip>
 # include <aisutil/string/string.h>
 # include <kineircd/protocol.h>
-# include <kineircd/client.h>
 # include <kineircd/user.h>
 # include <kineircd/config.h>
 # include <kineircd/irc2/numerics.h>

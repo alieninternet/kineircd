@@ -29,6 +29,7 @@
 
 # include <kineircd/entity.h>
 # include <kineircd/sender.h>
+# include <kineircd/user.h>
 
 namespace Kine {
    //! A server
@@ -49,30 +50,42 @@ namespace Kine {
 	 };
       };
       
+    private:
+      const std::string hostname;		// The server's hostname
+      
     protected:
       //! Constructor
-      Server(const AISutil::Time& _signonTime)
-	: Entity(_signonTime)
+      Server(const std::string& _hostname,
+	     const AISutil::Time& _signonTime)
+	: Entity(_signonTime),
+          hostname(_hostname)
 	{};
 
     public:
       //! Destructor
       virtual ~Server(void)
 	{};
-      
+
+
+      //! Return the hostname of the server
+      virtual const std::string& getHostname(void) const
+        { return hostname; };
+	
       //! Return the 'name' (a server's hostname is normally its name)
       virtual const std::string& getName(void) const
 	{ return getHostname(); };
-	
+
+
       //! Return the server modes
       virtual const modes_type getModes(void) const = 0;
       
       //! Check if the given mode is set
       const bool isModeSet(const Mode::mode_type mode) const
 	{ return (getModes() & mode); };
-      
-      //! Is this server hidden?
-      const bool isHidden(void) const
+
+
+      //! Is this server hidden from the given user? (this is broken)
+      const bool isHiddenFrom(const User& who) const
 	{ return isModeSet(Mode::HIDDEN); };
    }; // class Server
 }; // namespace Kine

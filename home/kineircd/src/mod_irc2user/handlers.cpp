@@ -1413,7 +1413,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHO)
       }
       
       // Okay, if we got here the user matches.. Make sure the user can be seen
-      if (it->second->isHidden() && !user.isOperator()) {
+      if (it->second->isHiddenFrom(user)) {
 	 continue;
       }
       

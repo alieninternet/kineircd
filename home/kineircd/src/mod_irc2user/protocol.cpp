@@ -345,8 +345,8 @@ void Protocol::sendNames(const Channel& channel)
       if ((/*configuration value &&*/ user.isOperator()) ||
 	  (/*configuration value &&*/ user.isStaff()) ||
 	  channel.hasClient(user) ||
-	  (!channel.isHidden() &&
-	   !it->second->getClient().isHidden())) {
+	  (!channel.isHiddenFrom(user) &&
+	   !it->second->getClient().isHiddenFrom(user))) {
 	 // Is it necessary to purge the buffer and start a fresh?
 	 if ((reply.length() + 
 	      it->second->getClient().getNickname().length() + 2) >

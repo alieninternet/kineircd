@@ -24,10 +24,11 @@
 #ifndef _INCLUDE_KINEIRCD_RECEIVER_H_
 # define _INCLUDE_KINEIRCD_RECEIVER_H_ 1
 
-# include <kineircd/entity.h>
 # include <kineircd/errors.h>
 
 namespace Kine {
+   class Entity;
+   
    //! Abstract base class for objects which can receive messages
    class Receiver {
     protected:
@@ -52,5 +53,7 @@ namespace Kine {
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
    }; // class Receiver
 }; // namespace Kine
+
+# include <kineircd/entity.h>
 
 #endif // _INCLUDE_KINEIRCD_RECEIVER_H_
