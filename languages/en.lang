@@ -220,10 +220,10 @@ irc2_ERR_KEYSET = Channel key already set (to change it, unset it first)
 irc2_ERR_CHANNELISFULL = Cannot join channel (+l)
 
 # Numeric 472 - ERR_UNKNOWNMODE (0 = channel)
-irc2_ERR_UNKNOWNMODE = is unknown mode char to me for %p0
+irc2_ERR_UNKNOWNMODE = is unknown mode char to me (%p0)
 
 # Numeric 473 - ERR_INVITEONLYCHAN
-irc2_ERR_INVITEONLYCHAN = Cammpt kpom channel (+i)
+irc2_ERR_INVITEONLYCHAN = Cannot join channel (+i)
 
 # Numeric 474 - ERR_BANNEDFROMCHAN
 irc2_ERR_BANNEDFROMCHAN = Cannot join channel (+b)
