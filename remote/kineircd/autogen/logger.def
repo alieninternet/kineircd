@@ -1,0 +1,151 @@
+/* $Id$
+ *
+ * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002 KineIRCd Development Team
+ * (See DEV-TEAM file for details)
+ *
+ * This file is a part of KineIRCd.
+ * 
+ * KineIRCd is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * KineIRCd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with KineIRCd; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+autogen definitions logger;
+
+
+logger_masks = {
+   char		= "D";
+   name		= "Debug";
+   syslogpri	= "LOG_DEBUG";
+};
+
+logger_masks = {
+   char		= "e";
+   name		= "Error_Local";
+   syslogpri	= "LOG_ERR";
+};
+
+logger_masks = {
+   char		= "E";
+   name		= "Error_Remote";
+   syslogpri	= "LOG_NOTICE";
+};
+
+logger_masks = {
+   char		= "F";
+   name		= "Fatal_Error";
+   syslogpri	= "LOG_ERR";
+};
+
+logger_masks = {
+   char		= "G";
+   name		= "Globals";
+   syslogpri	= "LOG_NOTICE";
+};
+
+logger_masks = {
+   char		= "H";
+   name		= "Helpers";
+   syslogpri	= "LOG_NOTICE";
+};
+
+logger_masks = {
+   char		= "j";
+   name		= "NetJoin_Minor";
+   syslogpri	= "LOG_INFO";
+};
+
+logger_masks = {
+   char		= "J";
+   name		= "NetJoin_Major";
+   syslogpri	= "LOG_INFO";
+};
+
+logger_masks = {
+   char		= "k";
+   name		= "Kill_Local";
+   syslogpri	= "LOG_INFO";
+};
+
+logger_masks = {
+   char		= "K";
+   name		= "Kill_Global";
+   syslogpri	= "LOG_INFO";
+};
+
+logger_masks = {
+   char		= "L";
+   name		= "Locals";
+   syslogpri	= "LOG_NOTICE";
+};
+
+logger_masks = {
+   char		= "n";
+   name		= "NetSplit_Minor";
+   syslogpri	= "LOG_INFO";
+};
+
+logger_masks = {
+   char		= "N";
+   name		= "Netsplit_Major";
+   syslogpri	= "LOG_INFO";
+};
+
+logger_masks = {
+   char		= "o";
+   name		= "Oper_Global";
+   syslogpri	= "LOG_NOTICE";
+};
+
+logger_masks = {
+   char		= "O";
+   name		= "Oper_Local";
+   syslogpri	= "LOG_NOTICE";
+};
+
+logger_masks = {
+   char		= "s";
+   name		= "Client_Signon";
+   syslogpri	= "LOG_INFO";
+};
+
+logger_masks = {
+   char		= "S";
+   name		= "Client_Signoff";
+   syslogpri	= "LOG_INFO";
+};
+
+logger_masks = {
+   char		= "w";
+   name		= "Oper_Wallops";
+   syslogpri	= "LOG_NOTICE";
+};
+
+logger_masks = {
+   char		= "W";
+   name		= "Warning";
+   syslogpri	= "LOG_INFO";
+};
+
+logger_masks = {
+   char		= "z";
+   name		= "KineIRCd_Internal";
+   syslogpri	= "LOG_NOTICE";
+};
+
+logger_masks = {
+   char		= "Z";
+   name		= "Housekeeping";
+   syslogpri	= "LOG_NOTICE";
+};
+
