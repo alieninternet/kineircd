@@ -45,25 +45,27 @@ void ircd::printVersion(const unsigned int level)
    // More detail needed?
    if (level > 1) {
       std::cout << "\n"
-	"  Core build time:  " << Version::buildTimeFull << " (Build #" <<
+	"Core details:\n"
+	"         Build time:  " << Version::buildTimeFull << " (Build #" <<
 	Version::buildCount << ")\n"
-	"     Build traits:  " << Version::versionChars << "\n"
-	" Core source hash:  " << Version::sourceCodeHash << "\n"
+	"       Build traits:  " << Version::versionChars << "\n"
+	"   Core source hash:  " << Version::sourceCodeHash << "\n"
 	"\n"
 	"Linked to the following libraries:\n"
-	"   KineIRCd Library API version " <<
+	"   KineIRCd Library:  " <<
+	Kine::Version::version << " (API " <<
 	(unsigned int)Version::libVersion << '.' << 
 	(unsigned int)Version::libRevision << '.' <<
-	(unsigned int)Version::libAge << "\n"
-	"   LibAISutil Library version " << 
-	AISutil::Version::version << " (API version " <<
-	(unsigned int)AISutil::Version::libVersion << '.' << 
+	(unsigned int)Version::libAge << ")\n"
+	" LibAISutil Library:  " << 
+	AISutil::Version::version << " (API " <<
+	(unsigned int)AISutil::Version::libVersion << '.' <<
 	(unsigned int)AISutil::Version::libRevision << '.' <<
 	(unsigned int)AISutil::Version::libAge << ")\n"
-	"   AutoGen AutoOpts (libopts) version " <<
+	"           AutoOpts:  " <<
 	OPTIONS_VERSION_STRING << "\n"
 #ifdef KINE_HAVE_OPENSSL
-	"   " << OPENSSL_VERSION_TEXT << "\n"
+	"            OpenSSL:  " << OPENSSL_VERSION_TEXT << "\n"
 #endif
 	/* terminate the line cout line */ ;
       
