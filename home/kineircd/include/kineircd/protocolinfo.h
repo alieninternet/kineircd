@@ -26,10 +26,9 @@
 # define _INCLUDE_KINEIRCD_PROTOCOLINFO_H_ 1
 
 # include <cstring>
-# include <kineircd/protocolname.h>
 # include <kineircd/protocol.h>
-# include <kineircd/listener.h>
 # include <kineircd/registrant.h>
+
 
 namespace Kine {
    /* ProtocolInfo class - This class 'defines' a protocol, to help the 
@@ -57,10 +56,53 @@ namespace Kine {
     */
    class ProtocolInfo {
     public:
+      /* The 'description' protocol. This takes on several roles.. If the
+       * protocol specified through sane means, this can be the key to
+       * resolving any ambiguity, and probably save a lot of time. This
+       * string must be in capital letters.
+       */
+      struct Description {
+	 const char* const name;
+	 
+	 struct Type { // <=- should be namespace?
+	    enum type {
+	       UNKNOWN = 0,		//!< Unset, or unknown
+		 REGISTRAR_EXTENSION,	//!< Protocol extends the registrar
+		 STANDALONE_EXTENSION,	//!< Protocol has its own registrar
+		 USER,			//!< A server<->user protocol
+		 NETWORK,		//!< A network<->network protocol
+		 SERVER,		//!< A server<->server protocol
+		 SERVICE		//!< A server<->service protocol
+	    };
+	 };
+	 
+	 // The type of protocol this is (see the enumeration above)
+	 const Type::type type;
+
+	 // Constructor
+	 Description(const char* const n, Type::type t)
+	   : name(n),
+	     type(t)
+	   {};
+      
+	 // Equal-to operator
+	 bool operator==(const Description& a) const
+	   { return ((a.type == type) && (strcmp(a.name, name) == 0)); };
+	 
+	 // Less-than operator
+	 bool operator<(const Description& a) const
+	   { 
+	      return ((a.type == type) ?
+		      (strcmp(a.name, name) < 0) : (a.type < type));
+	   };
+      };
+      
+    protected:
       // Constructor
       ProtocolInfo(void)
 	{};
 	 
+    public:
       // Destructor
       virtual ~ProtocolInfo(void)
 	{};
@@ -75,7 +117,6 @@ namespace Kine {
        */
       virtual Protocol* const createProtocol(const Registrant& registrant,
 					     Connection& connection,
-					     Listener& listener,
 					     std::string& inputQueue,
 					     std::string& outputQueue) = 0;
    };

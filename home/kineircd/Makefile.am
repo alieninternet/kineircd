@@ -42,7 +42,6 @@ include_HEADERS=\
 	include/kineircd/password.h \
 	include/kineircd/protocol.h \
 	include/kineircd/protocolinfo.h \
-	include/kineircd/protocolname.h \
 	include/kineircd/receiver.h \
 	include/kineircd/sender.h \
 	include/kineircd/server.h \

@@ -31,7 +31,6 @@
 #include <iomanip>
 
 #include "kineircd/protocolinfo.h"
-#include "kineircd/protocolname.h"
 #include "kineircd/daemon.h"
 #include "lib/registrar.h"
 #include "lib/regnumerics.h"
@@ -199,12 +198,12 @@ void Registrar::parseLine(const String& line)
        */
       if (registrantData.protocol.empty()) {
 	 protocolInfo =
-	   daemon().findProtocol(ProtocolName::Type::USER,
+	   daemon().findProtocol(ProtocolInfo::Description::Type::USER,
 				 config().
 				 getOptionsRegistrarUserProtocolDefault());
       } else {
 	 protocolInfo = 
-	   daemon().findProtocol(ProtocolName::Type::USER,
+	   daemon().findProtocol(ProtocolInfo::Description::Type::USER,
 				 registrantData.protocol.toUpper());
       }
 
@@ -233,7 +232,7 @@ void Registrar::parseLine(const String& line)
        * the appropriate protocol is easy.
        */
       if ((protocolInfo = 
-	   daemon().findProtocol(ProtocolName::Type::NETWORK,
+	   daemon().findProtocol(ProtocolInfo::Description::Type::NETWORK,
 				 registrantData.protocol.toUpper())) == 0) {
 	 // Complain
 	 sendError("Requested IIRC protocol unavailable");
@@ -282,8 +281,7 @@ void Registrar::parseLine(const String& line)
    
    // Second, we create the new protocol
    Protocol* const newProtocol =
-     protocolInfo->createProtocol(registrantData, connection, listener,
-				  buffer, output);
+     protocolInfo->createProtocol(registrantData, connection, buffer, output);
       
    // That protocol instance may not have been created, so let's just check..
    if (newProtocol != 0) {

@@ -45,16 +45,11 @@ extern "C" {
 # include <unistd.h>
 };
 
-// Forwarded declarations (completed after class)
-namespace Kine {
-   class Connection;
-   class ProtocolInfo;
-};
-
 # include <kineircd/exit.h>
 # include <kineircd/listener.h>
-# include <kineircd/protocolname.h>
 # include <kineircd/logger.h>
+# include <kineircd/connection.h>
+# include <kineircd/protocolinfo.h>
 
 namespace Kine {
    // The Daemon class
@@ -66,7 +61,8 @@ namespace Kine {
          RUNLEVEL_SHUTDOWN		// The daemon is shutting down
       };
       
-      typedef std::map <ProtocolName, ProtocolInfo* const> protocols_type;
+      typedef std::map < ProtocolInfo::Description, ProtocolInfo* const >
+	protocols_type;
       
     private:
       runlevel_type runlevel;			// What stage is the daemon in
@@ -143,10 +139,12 @@ namespace Kine {
 	{ receivedBytes += bytes; };
 
       // Protocol set manipulators, for the registrar and modules to tap into
-      bool registerProtocol(const ProtocolName& name, ProtocolInfo& info);
-      bool deregisterProtocol(const ProtocolName& name);
-      ProtocolInfo* const findProtocol(const ProtocolName::Type::type type,
-				       const std::string& name) const;
+      bool registerProtocol(const ProtocolInfo::Description& description,
+			    ProtocolInfo& info);
+      bool deregisterProtocol(const ProtocolInfo::Description& description);
+      ProtocolInfo* const 
+	findProtocol(const ProtocolInfo::Description::Type::type type,
+		     const std::string& name) const;
 
       // Logger set manipulators
       bool registerLogger(Logger& logger);
@@ -163,9 +161,5 @@ namespace Kine {
    inline static Daemon& daemon(void)
      { return Daemon::getInstance(); };
 };
-
-// Complete forwarded declarations
-# include <kineircd/connection.h>
-# include <kineircd/protocolinfo.h>
 
 #endif // _INCLUDE_KINEIRCD_DAEMON_H_ 
