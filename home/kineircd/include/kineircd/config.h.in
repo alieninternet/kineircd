@@ -1,5 +1,5 @@
 /* include/config.h.in.  Generated automatically from autoconf/configure.in by autoheader.  */
-/* src/include/config.h
+/* config.h
  * Compile-time configuration settings
  * 
  * This file needs major organisational work :) 

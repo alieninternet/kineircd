@@ -1,4 +1,4 @@
-/* src/include/config.h
+/* config.h
  * Compile-time configuration settings
  * 
  * This file needs major organisational work :) 
