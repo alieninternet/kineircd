@@ -25,22 +25,17 @@
 #ifndef _INCLUDE_KINEIRCD_CLIENT_H_
 # define _INCLUDE_KINEIRCD_CLIENT_H_ 1
 
-# include <string>
-
-# include <kineircd/entity.h>
+# include <kineircd/denizen.h>
 # include <kineircd/sender.h>
 # include <kineircd/receiver.h>
 # include <kineircd/channel.h>
 
 namespace Kine {
-   class Client : public Entity, public Sender, public Receiver {
+   class Client : public Denizen, public Sender, public Receiver {
     private:
-      std::string nickname;			//!< Nickname
-      
       // The channel list for this client
       typedef std::map < std::string, Channel* const > channels_type;
       channels_type channels;
-      
       
     protected:
       //! Constructor
@@ -53,8 +48,10 @@ namespace Kine {
 	{};
       
       //! Return the client's nickname
-      const std::string& getNickname(void) const
-	{ return nickname; };
+      virtual const std::string& getNickname(void) const = 0;
+
+      //! Return the client's user name
+      virtual const std::string& getUsername(void) const = 0;
    }; // class Client
 }; // namespace Kine
 

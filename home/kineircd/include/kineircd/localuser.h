@@ -31,10 +31,6 @@
 
 namespace Kine {
    class LocalUser : public User {
-    private:
-      time_t lastNickChange;			//!< Last nickname change time
-      time_t lastAwake;				//!< Time this user was 'awake'
-      
     public:
       //! Constructor
       LocalUser(void)
@@ -45,12 +41,10 @@ namespace Kine {
 	{};
       
       //! Return the last time this nickname was changed by the user
-      const time_t& getLastNickChange(void) const
-	{ return lastNickChange; };
+      virtual const time_t& getLastNickChange(void) const = 0;
       
       //! Return the last time this user was known to be not idle
-      const time_t& getLastAwake(void) const
-	{ return lastAwake; };
+      virtual const time_t& getLastAwake(void) const = 0;
    }; // class LocalUser
 }; // namespace Kine
 

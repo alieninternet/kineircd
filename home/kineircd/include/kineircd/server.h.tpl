@@ -50,9 +50,6 @@ namespace Kine {
 	 };
       };
       
-    private:
-      modes_type modes;				//!< Server modes bit mask
-      
     public:
       //! Constructor
       Server(void)
@@ -63,12 +60,11 @@ namespace Kine {
 	{};
       
       //! Return the server modes
-      const modes_type getModes(void) const
-	{ return modes; };
+      virtual const modes_type getModes(void) const = 0;
       
       //! Check if the given mode is set
       const bool isModeSet(const Mode::mode_type mode) const
-	{ return (modes & mode); };
+	{ return (getModes() & mode); };
    }; // class Server
 }; // namespace Kine
 

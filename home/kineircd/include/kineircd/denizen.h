@@ -1,5 +1,5 @@
 /* $Id$
- * Abstract base class for objects - stuff that is common to all objects
+ * Base class for denizens, things that hang off servers, other than servers
  * 
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team
@@ -22,33 +22,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_ENTITY_H_
-# define _INCLUDE_KINEIRCD_ENTITY_H_ 1
+#ifndef _INCLUDE_KINEIRCD_DENIZEN_H_
+# define _INCLUDE_KINEIRCD_DENIZEN_H_ 1
 
-# include <string>
-# include <sys/time.h>
+# include <kineircd/entity.h>
+# include <kineircd/server.h>
 
 namespace Kine {
-   class Entity {
+   class Denizen : public Entity {
     protected:
       //! Constructor
-      Entity(void)
+      Denizen(void)
 	{};
       
     public:
       //! Destructor
-      virtual ~Entity(void)
+      virtual ~Denizen(void)
 	{};
-      
-      //! Return the hostname
-      virtual const std::string& getHostname(void) const = 0;
-      
-      //! Return the client's description/real name/gecos field
-      virtual const std::string& getDescription(void) const = 0;
 
-      //! Return the time this entity initially connected to the network
-      virtual const timeval& getSignonTime(void) const = 0;
+      //! Return a pointer to the server this denizen is connected to/through
+      const Server& getServer(void) const = 0;
    }; // class Entity
 }; // namespace Kine
 
-#endif // _INCLUDE_KINEIRCD_ENTITY_H_
+#endif // _INCLUDE_KINEIRCD_DENIZEN_H_

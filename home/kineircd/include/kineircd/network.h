@@ -25,11 +25,11 @@
 #ifndef _INCLUDE_KINEIRCD_NETWORK_H_
 # define _INCLUDE_KINEIRCD_NETWORK_H_ 1
 
-# include <kineircd/entity.h>
+# include <kineircd/denizen.h>
 # include <kineircd/sender.h>
 
 namespace Kine {
-   class Network : public Entity, public Sender {
+   class Network : public Denizen, public Sender {
     public:
       //! Constructor
       Network(void)

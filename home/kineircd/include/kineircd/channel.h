@@ -30,13 +30,9 @@
 
 namespace Kine {
    class Channel : public Receiver {
-    private:
-      const std::string name;			//!< Non-prefixed channel name
-      
     protected:
       //! Constructor
-      Channel(const std::string& n)
-	: name(n)
+      Channel(void)
 	{};
       
     public:
@@ -44,12 +40,12 @@ namespace Kine {
       virtual ~Channel(void)
 	{};
       
-      // Return the name of the channel. This does not include the prefix char
-      const std::string& getChannelName(void) const
-	{ return name; };
+      //! Return the name of the channel. This does not include the prefix char
+      virtual const std::string& getChannelName(void) const = 0;
       
-      // Return the name of the channel, only with the prefix
-      const std::string getChannelNameWithPrefix(void) const;
+      //! Return the name of the channel, only with the prefix
+      const std::string getChannelNameWithPrefix(void) const
+	{ return ""; };
    }; // class Channel
 }; // namespace Kine
 

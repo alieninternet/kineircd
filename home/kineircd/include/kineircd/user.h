@@ -25,36 +25,29 @@
 #ifndef _INCLUDE_KINEIRCD_USER_H_
 # define _INCLUDE_KINEIRCD_USER_H_ 1
 
-# include <string>
-
 # include <kineircd/client.h>
 
 namespace Kine {
    class User : public Client {
-    private:
-      std::string virtualHostname;		//!< Virtual Hostname
-      std::string awayMessage;			//!< Away message (empty = off)
-
     public:
       //! Constructor
       User(void)
 	{};
-      
+
       //! Destructor
       virtual ~User(void)
 	{};
       
       //! Return the virtual hostname of this user
-      const std::string& getVirtualHostname(void) const
+      virtual const std::string& getVirtualHostname(void) const = 0;
 	{ return virtualHostname; };
       
       //! Return the away message for this user. If blank, there is none set
-      const std::string& getAwayMessage(void) const
-	{ return awayMessage; };
+      virtual const std::string& getAwayMessage(void) const = 0;
       
       //! Check if this user is away
-      const bool isAway(void) const
-	{ return (!awayMessage.empty()); };
+      const bool isAway(void) const;
+	{ return (!getAwayMessage().empty()); };
    }; // class User
 }; // namespace Kine
 
