@@ -315,6 +315,7 @@ AC_CHECK_HEADERS( \
 	sys/timeb.h \
 	syslog.h \
 	unistd.h \
+	pthread.h
 		)
 AC_CACHE_SAVE
 
