@@ -114,6 +114,12 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_ERR_CANNOTSENDTONICK";
+   component	= "mod_irc2user";
+   data_en	= "You cannot send to this nickname";
+};
+
+tags = {
    name		= "irc2_ERR_CHANNELISFULL";
    component	= "mod_irc2user";
    data_en	= "Cannot join channel (+l)";
@@ -189,6 +195,18 @@ tags = {
    component	= "mod_irc2user";
    data_en	= "Channel doesn't support modes or mode changes";
    data_tr	= "Kanal MODElari ve MODE deľ^_iž^_imlerini kabul etmiyor";
+};
+
+tags = {
+   name		= "irc2_ERR_NOLANGUAGE";
+   component	= "mod_irc2user";
+   data_en	= "is an unknown language to me";
+};
+
+tags = {
+   name		= "irc2_ERR_NOMORELANGS";
+   component	= "mod_irc2user";
+   data_en	= "No more languages can be set";
 };
 
 tags = {
@@ -284,6 +302,12 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_ERR_SERVERMODELOCK";
+   component	= "mod_irc2user";
+   data_en	= "Cannot change server modes (+L)";
+};
+
+tags = {
    name		= "irc2_ERR_SUMMONDISABLED";
    component	= "mod_irc2user";
    data_en	= "SUMMON has been disabled";
@@ -325,6 +349,12 @@ tags = {
    component	= "mod_irc2user";
    data_en	= "is unknown mode char to me (%p0)";
    data_tr	= "%p0 için bilinmeyen MODE CHAR";
+};
+
+tags = {
+   name		= "irc2_ERR_UNKNOWNSERVERMODE";
+   component	= "mod_irc2user";
+   data_en	= "One or more given server modes are unknown";
 };
 
 tags = {
@@ -477,6 +507,12 @@ tags = {
    component	= "mod_irc2user";
    data_en	= "Administrative Info";
    data_tr	= "Administratif bilgi";
+};
+
+tags = {
+   name		= "irc2_RPL_CHANREDIR";
+   component	= "mod_irc2user";
+   data_en	= "Note: You are being redirected";
 };
 
 tags = {
@@ -751,6 +787,12 @@ tags = {
    component	= "mod_irc2user";
    data_en	= "is an IRC operator";
    data_tr	= "bir IRC Operator";
+};
+
+tags = {
+   name		= "irc2_RPL_WHOISSECURE";
+   component	= "mod_irc2user";
+   data_en	= "is connected via a secure connection";
 };
 
 tags = {
