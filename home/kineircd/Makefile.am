@@ -374,6 +374,7 @@ mod_iirc1_la_LIBADD=\
 # 'mod_irc2user' module
 ###############################################################################
 mod_irc2user_la_SOURCES=\
+	src/mod_irc2user/access.cpp \
 	src/mod_irc2user/access.h \
 	src/mod_irc2user/commandlist.cpp \
 	src/mod_irc2user/commands.cpp \

@@ -22,28 +22,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_MOD_IRC2USER_ACCESS_H_
-# define _SRC_MOD_IRC2USER_ACCESS_H_ 1
+# include "mod_irc2user/access.h"
 
-# include "mod_irc2user/user.h"
+using namespace Kine::mod_irc2user;
 
-# define IRC2USER_ACCESS_FUNCTION(x) \
-     bool x(const Kine::mod_irc2user::User& user)
 
-namespace Kine {
-   namespace mod_irc2user {
-      namespace Access {
-	 // The typedef for an access function.. (returns true for 'allowed')
-	 typedef IRC2USER_ACCESS_FUNCTION(function_type);
-	 
-	 // Check if the user is an IRC operator (global or local)
-	 extern IRC2USER_ACCESS_FUNCTION(checkOPER);
-	 
-	 // Check if the user is a global IRC operator
-	 extern IRC2USER_ACCESS_FUNCTION(checkGLOBALOPER);
-      }; // namespace Access
-   }; // namespace mod_irc2user
-}; // namespace Kine
-   
-#endif // _SRC_MOD_IRC2USER_ACCESS_H_
-   
+/* checkOPER - Check if the user is an IRC operator (global or local)
+ * Original 19/04/2002 simonb
+ */
+IRC2USER_ACCESS_FUNCTION(Access::checkOPER)
+{
+   return false; // noop for now..
+}
+
+
+/* checkGLOBALOPER - Check if the user is a global IRC operator
+ * Original 19/04/2002 simonb
+ */
+IRC2USER_ACCESS_FUNCTION(Access::checkGLOBALOPER)
+{
+   return false; // noop for now..
+}
