@@ -24,8 +24,6 @@
 #include "kineircd/kineircdconf.h"
 
 #include "kineircd/register.h"
-#include "kineircd/irc2user.h"
-#include "kineircd/p13server.h"
 #include "kineircd/daemon.h"
 #include "kineircd/debug.h"
 #include "kineircd/numerics.h"
