@@ -83,11 +83,11 @@ commands = {
 //   minimumParams	= 2;
 //};
 
-//commands = {
-//   command		= "ISON";
-//   defaultPenalty	= 2;
-//   minimumParams	= 1;
-//};
+commands = {
+   command		= "ISON";
+   defaultPenalty	= 2;
+   minimumParams	= 1;
+};
 
 //commands = {
 //   command		= "JOIN";

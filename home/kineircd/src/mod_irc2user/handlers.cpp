@@ -32,6 +32,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <aisutil/string.h>
+#include <kineircd/registry.h>
 
 #include "mod_irc2user/protocol.h"
 #include "mod_irc2user/lang.h"
@@ -224,6 +225,42 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleINFO)
 #endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_ISON
+/* handleISON
+ * Original 14/08/2001 simonb
+ * 27/04/2003 simonb - Imported from old code
+ * Note: Should this check to see the maximum output length and not be so
+ *       trusting?
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleISON)
+{
+   // Our reply. We prefix it with a colon so we can output many nicknames
+   std::string reply;
+   
+   const Client* client = 0;
+   
+   // Run through the parameters (the nicknames we are to check
+   for (parameters_type::const_iterator it = parameters.begin(); 
+	it != parameters.end(); ++it) {
+      // Check if we have that nick in our user or service lists
+      if ((client = registry().findClient(*it)) != 0) {
+	 // If the reply is not empty, prefix this nickname with a space
+	 if (!reply.empty()) {
+	    reply += ' ';
+	 }
+	 
+	 // Append the nickname
+	 reply += client->getNickname();
+      }
+   }
+   
+   // Send the reply
+   sendNumeric(LibIRC2::Numerics::RPL_ISON,
+	       reply);
+}
+#endif
+  
+  
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_LANGUAGE
 /* handleLANGUAGE
  * Original 26/10/2001 simonb
