@@ -110,6 +110,23 @@ namespace Kine {
 	{};
       
     public:
+      /*!
+       * \brief Copy Constructor
+       * 
+       * Special copy constructor to avoid copied entities appearing to be
+       * registered. Only unique entities can be registered, therefore copies
+       * of a unique and registered entity would not be registered (and cannot
+       * be registered).
+       * 
+       * Copying of entities is strongly discouraged anyhow.
+       * 
+       * \param _entity The entity to copy
+       */
+      Entity(const Entity& _entity)
+	: signonTime(_entity.signonTime),
+          registered(false)
+	{};
+
       //! Destructor
       virtual ~Entity(void)
 	{};
