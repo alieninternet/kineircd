@@ -410,6 +410,17 @@ chanmodes = {
    name		= "REGONLY";
    origin	= "Bahamut, tr-ircd";
    comment	= "Channel only allows registered nicknames to join/talk";
+   conflict	= "yes";
+};
+
+chanmodes = {
+   irc2char	= "R";
+   name		= "REOP_LIST";
+   origin	= "IRCNet";
+   parameter	= "n!u@h mask";
+   comment	= "Re-oper list - a list of identities to automatically set "
+                  "+o upon rejoining the channel (i.e. after a split)";
+   conflict	= "yes";
 };
 
 chanmodes = {
