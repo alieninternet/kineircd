@@ -143,7 +143,7 @@ libkineircd/config/config.cpp: libkineircd/config/config.cpp.tpl $(AUTOGEN_DEF_D
 		-b $(basename $@) \
 		-T $< \
 		-S $(AUTOGEN_DEF_DIR)/config.scm \
-		$(AUTOGEN_DEF_DIR)/logger.def
+		$(AUTOGEN_DEF_DIR)/config.def
 		
 
 
