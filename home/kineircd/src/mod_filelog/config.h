@@ -38,14 +38,14 @@ namespace Kine {
        private:
 	 // Variables..
 	 AISutil::String defFilename;
-	 AISutil::String defPrefixFormat;
+	 AISutil::String defFormat;
 	 bool defUTC;
 	 
        public:
 	 // Constructor
 	 Config(void)
-	   : defFilename("./ircd.log"),
-	     defPrefixFormat("%Y%m%d%H%M%S%!%$%n"),
+	   : defFilename("./kineircd.log"),
+	     defFormat("%Y%m%d%H%M%S%!%$%n"),
 	     defUTC(false)
 	   {};
 	 
@@ -56,8 +56,8 @@ namespace Kine {
 	 // Return the variables
 	 const AISutil::String& getFilename(void) const
 	   { return defFilename; };
-	 const AISutil::String& getPrefixFormat(void) const
-	   { return defPrefixFormat; };
+	 const AISutil::String& getFormat(void) const
+	   { return defFormat; };
 	 const bool getUTC(void) const
 	   { return defUTC; };
       };

@@ -41,16 +41,16 @@ const AISutil::ConfigParser::defTable_type Config::definitionTable = {
 	  0
      },
      {
-	"LOGMASK", 3,
-	  (void*)&Config::defLogMask,
-	  &varHandleLogMask,
+	"FORMAT", 4,
+	  (void*)&Config::defFormat,
+	  &varHandleString,
 	  0,
 	  0
      },
      {
-	"PREFIXFORMAT", 3,
-	  (void*)&Config::defPrefixFormat,
-	  &varHandleString,
+	"LOGMASK", 3,
+	  (void*)&Config::defLogMask,
+	  &varHandleLogMask,
 	  0,
 	  0
      },

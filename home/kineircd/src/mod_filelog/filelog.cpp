@@ -77,16 +77,16 @@ void FileLog::logLine(const std::string& str,
 
       // Process the format and output the line
       for (std::string::size_type i = 0; 
-	   i != config.getPrefixFormat().length(); i++) {
+	   i != config.getFormat().length(); i++) {
 	 // Is this the start of a conversion specifier?
-	 if (config.getPrefixFormat()[i] == '%') {
+	 if (config.getFormat()[i] == '%') {
 	    // Make sure the next char is not at the end of the line..
-	    if (++i >= config.getPrefixFormat().length()) {
+	    if (++i >= config.getFormat().length()) {
 	       break;
 	    }
 	    
 	    // What is needed here?
-	    switch (config.getPrefixFormat()[i]) {
+	    switch (config.getFormat()[i]) {
 	     case '!':	// The character corresponding with the log mask
 		 {
 		    const Logger::MaskMapper& mapper = getMaskMapper(mask);
@@ -240,7 +240,7 @@ void FileLog::logLine(const std::string& str,
 	 }
 	 
 	 // Oh well, copy the char flat.
-	 logFile << config.getPrefixFormat()[i];
+	 logFile << config.getFormat()[i];
       }
       
       // Flush the output..
