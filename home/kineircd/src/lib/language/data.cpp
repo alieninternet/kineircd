@@ -35,6 +35,7 @@
 #include "kineircd/config.h"
 #include "kineircd/myserver.h"
 #include "libkineircd/debug.h"
+#include "libkineircd/language/subst.h"
 
 using namespace Kine;
 using AISutil::String;
@@ -135,7 +136,7 @@ const std::string
    // Run through the tag data string and substitute anything we can
    for (std::string::size_type i = 0; i < data.length(); ++i) {
       // Is this a substitution?
-      if (data[i] == parameterMarkerChar) {
+      if (data[i] == Internal::LangTags::parameterMarkerChar) {
 	 // Make sure there is more on the line..
 	 if ((i + 1) >= data.length()) {
 	    // Just skip it - eek!
@@ -225,7 +226,7 @@ const std::string
 	    output += replacementCharacterGlyph;
 	    continue;
 	 }
-      } else if (data[i] == newLineMarkerChar) {
+      } else if (data[i] == Internal::LangTags::newLineMarkerChar) {
 	 // We are not supposed to see this..
 	 output += replacementCharacterGlyph;
 	 continue;
@@ -314,7 +315,8 @@ bool Languages::LanguageData::get(const Languages::tagID_type tagID,
    
    for (;;) {
       // Find the next segment char..
-      endPosition = tag->find(newLineMarkerChar, startPosition);
+      endPosition = tag->find(Internal::LangTags::newLineMarkerChar,
+			      startPosition);
       
 #ifdef KINE_DEBUG
       std::ostringstream out;

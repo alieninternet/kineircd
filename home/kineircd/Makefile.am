@@ -66,6 +66,7 @@ INCLUDES=\
 # Stuff that needs to go into the distribution but isn't implied
 EXTRA_DIST=\
 	DEV-TEAM \
+	autogen/attributes.def \
 	autogen/chanmembers.def \
 	autogen/chanmodes.def \
 	autogen/chantypes.def \
@@ -206,6 +207,8 @@ libkineircd_la_SOURCES=\
 	src/libkineircd/config/config.cpp \
 	src/libkineircd/config/handlers.cpp \
 	$(KINEIRCD_SOURCE_LIB_CONFIG_OLDCONFIG_CPP) \
+	src/libkineircd/language/subst.cpp \
+	src/libkineircd/language/subst.h \
 	src/libkineircd/language/config.cpp \
 	src/libkineircd/language/config.h \
 	src/libkineircd/language/data.cpp \
@@ -264,6 +267,12 @@ src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOG
 		-T src/libkineircd/config/config.cpp.tpl \
 		-S $(AUTOGEN_DIR)/config.scm \
 		$(AUTOGEN_DIR)/config.def
+
+src/libkineircd/language/subst.cpp: src/libkineircd/language/subst.cpp.tpl $(AUTOGEN_DIR)/attributes.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T src/libkineircd/language/subst.cpp.tpl \
+		$(AUTOGEN_DIR)/attributes.def
 
 src/libkineircd/chantypes.cpp: src/libkineircd/chantypes.cpp.tpl $(AUTOGEN_DIR)/chantypes.def
 	$(AUTOGEN) \

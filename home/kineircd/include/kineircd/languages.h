@@ -195,10 +195,6 @@ namespace Kine {
       static const char* const replacementObjectGlyph;
       static const char* const replacementCharacterGlyph;
 
-      // Marker chars, used internally
-      static const char parameterMarkerChar;
-      static const char newLineMarkerChar;
-      
     private:
       // A set full of language tag name to tag ID mapping arrays
       typedef std::set < tagMap_type* > tagMaps_type;

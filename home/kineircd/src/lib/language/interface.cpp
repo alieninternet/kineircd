@@ -36,6 +36,7 @@
 
 #include "kineircd/languages.h"
 #include "libkineircd/debug.h"
+#include "libkineircd/language/subst.h"
 
 using namespace Kine;
 using AISutil::String;
@@ -62,13 +63,6 @@ const char* const Languages::replacementObjectGlyph =
 // Replacement character glyph (shown to the client)
 const char* const Languages::replacementCharacterGlyph =
   "\357\277\275"; // <=- Unicode U+0FFFD; UTF-8 0xEF 0xBF 0xBD
-
-
-// Marker chars
-const char Languages::parameterMarkerChar =
-  '\000'; // NUL
-const char Languages::newLineMarkerChar =
-  '\001'; // SOH
 
 
 
@@ -202,7 +196,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	    if (data[i + 1] == '%') {
 	       ++i;
 	    } else {
-	       line += parameterMarkerChar;
+	       line += Internal::LangTags::parameterMarkerChar;
 	       continue;
 	    }
 	 }
@@ -234,57 +228,22 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 		  data[i] = 0;
 	       }
 	    } else {
-	       /* Something else, a single character tells us what to do then!
-		* If this gets larger, reconsider using 512 byte table..
-		*/
-	       switch (data[i]) {
-		case '\\': // A slash..
-		  break; // just skip to the bit where we copy the char flat
-		  
-		case 'b': // Bold
-		  line += '\002';
-		  continue;
-		  
-		case 'c': // Colour start sequence char
-		  line += '\003';
-		  continue;
-
-		case 'f': // Flashing (eww, ick)
-		  line += '\006';
-		  continue;
-		  
-		case 'g': // Beep
-		  line += '\007';
-		  continue;
-
-		case 'n': // New line (actually, it's a secret char, SOH)
-		  line += newLineMarkerChar;
-		  continue;
-		  
-		case 'o': // Turn off all attributes (back to 'default')
-		  line += '\017';
-		  continue;
-		  
-		case 'r': // Reverse
-		  line += '\026';
-		  continue;
-		  
-		case 's': // Space (often used at the end of a line as a hack)
-		  line += '\040';
-		  continue;
-		  
-		case 't': // Horizontal tab
-		  line += '\011'; // should we just use 8 spaces here??
-		  continue;
-		  
-		case 'u': // Underline
-		  line += '\037';
-		  continue;
-		  
-		default:
-		  // nfi, skip it..
-		  continue;
+	       // Iterate over the substitution list to find this char..
+	       for (unsigned int j = 0;
+		    Internal::LangTags::substitutionMap[j].from != 0;
+		    ++j) {
+		  // Does this match?
+		  if (Internal::LangTags::substitutionMap[j].from == data[i]) {
+		     // Append this..
+		     line += Internal::LangTags::substitutionMap[j].to;
+		     
+		     // No need to continue the loop..
+		     break;
+		  }
 	       }
+	       
+	       // No need to do any further processing on this char..
+	       continue;
 	    }
 	 }
 	    
