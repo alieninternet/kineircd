@@ -1976,18 +1976,21 @@ irc2numerics = {
    format	= "<server> <timestamp> <offset> :<time string>";
    comment	= "This extention adds the timestamp and timestamp-offet "
                   "information for clients.";
+   conflict	= "yes";
    repeated	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_TIME";
    numeric	= "391";
+   origin	= "bdq-ircd";
    format	= "<server> <timezone name> <microseconds> :<time string>";
    comment	= "Timezone name is acronym style (eg. 'EST', 'PST' etc). The "
                   "microseconds field is the number of microseconds since "
 		  "the UNIX epoch, however it is relative to the local "
 		  "timezone of the server. The timezone field is ambiguous, "
 		  "since it only appears to include American zones.";
+   conflict	= "yes";
    repeated	= "yes";
 };
 
@@ -1997,6 +2000,7 @@ irc2numerics = {
    format	= "<server> <year> <month> <day> <hour> <minute> <second>";
    comment	= "Yet another variation, including the time broken down "
                   "into its components. Time is supposedly relative to UTC.";
+   conflict	= "yes";
    repeated	= "yes";
 };
 
