@@ -1609,6 +1609,17 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "RPL_INVITED";
+   numeric	= "345";
+   origin	= "GameSurge";
+   contact	= "gsdev@gamesurge.net";
+   format	= "<channel> :<user being invited> has been invited by "
+                  "<user issuing /invite>";
+   comment	= "Sent to users on a channel when an INVITE command has been "
+   		  "issued";
+};
+
+irc2numerics = {
    name		= "RPL_INVITELIST";
    numeric	= "346";
    origin	= "RFC2812";
