@@ -128,24 +128,35 @@ void Protocol::parseMessage(const std::string& origin,
    
    // Did we find it? (most of the time we will find it
    if (commandInfo != 0) {
-      // Do we have enough parameters?
-      if (parameters.size() >= commandInfo->minimumParams) {
-	 // Okay, I guess we can run it
-	 (this->*(commandInfo->handler))(parameters);
+      // Does this user have access to this command?
+      if (commandInfo->hasAccess(user)) {
+	 // Do we have enough parameters?
+	 if (parameters.size() >= commandInfo->minimumParams) {
+	    // Okay, I guess we can run it
+	    (this->*(commandInfo->handler))(parameters);
+	    
+	    // We're done!
+	    return;
+	 }
 	 
-	 // We're done!
+	 // Complain about not having enough parameters, and return
+	 sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS,
+		     command,
+		     GETLANG(irc2_ERR_NEEDMOREPARAMS));
 	 return;
       }
       
-      // Complain about not having enough parameters, and return
-      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS,
-		  GETLANG(irc2_ERR_NEEDMOREPARAMS));
+      // Complain about not having access to this command
+      sendNumeric(LibIRC2::Numerics::ERR_NOPRIVILEGES,
+		  command,
+		  GETLANG(irc2_ERR_NOPRIVILEGES));
       return;
    }
 
    // If we got here, the command was not found - tell the user the bad news
    sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNCOMMAND,
-	       command, GETLANG(irc2_ERR_UNKNOWNCOMMAND));
+	       command,
+	       GETLANG(irc2_ERR_UNKNOWNCOMMAND));
 }
 
 

@@ -69,9 +69,13 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	it != Commands::getInstance().getCommandList().end();
 	it++)
      {
-	// Check if this is the command our user was looking for
+	/* Check if this is the command our user was looking for, whether the
+	 * command has help, and whether the user even has access to this
+	 * command in the first place!
+	 */
 	if (mask.matches((*it).first) &&
-	    ((*it).second.helpUsage != 0)) {
+	    ((*it).second.helpUsage != 0) &&
+	    (*it).second.hasAccess(user)) {
 	   // Send the user the usage help for this function, if we can
 	   if (*((*it).second.helpUsage) != 0) {
 	      sendNumeric(LibIRC2::Numerics::RPL_HELP,

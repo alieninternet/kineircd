@@ -34,6 +34,7 @@
 #  include <map>
 # endif
 
+# include "mod_irc2user/access.h"
 # include "mod_irc2user/protocol.h"
 
 namespace Kine {
@@ -45,6 +46,7 @@ namespace Kine {
 	    const char* const commandName;		// Name of the command
 	    Protocol::handler_type Protocol::* const
 	      handler;					// Handler function
+	    Access::function_type* const accessChecker;	// Access checker
 	    const unsigned char defaultPenalty;		// Initial penalty rate
 	    const unsigned char minimumParams;		// Minimum param count
 	    const Kine::Languages::tagID_type* const 
@@ -58,6 +60,7 @@ namespace Kine {
 	 struct CommandInfo {
 	    Protocol::handler_type Protocol::* const
 	      handler;					// Handler function
+	    Access::function_type* accessChecker;	// Access checker
 	    unsigned char penalty;			// Set penalty rate
 	    const unsigned char minimumParams;		// Minimum param count
 	    const Kine::Languages::tagID_type* const
@@ -69,12 +72,22 @@ namespace Kine {
 	    // Copy constructor to aid in initialisation
 	    CommandInfo(const preInitCommand_type& info)
 	      : handler(info.handler),
+	        accessChecker(info.accessChecker),
 	        penalty(info.defaultPenalty),
 	        minimumParams(info.minimumParams),
 	        helpUsage(info.helpUsage),
 	        helpInfo(info.helpInfo),
 	        callCount(0)
 	      {};
+	    
+	    // Convenient access checking thing :)
+	    const bool hasAccess(const User& user) const
+	      {
+		 if (accessChecker == 0) {
+		    return true;
+		 }
+		 return (accessChecker)(user);
+	      };
 	 };
 	 
 	 // Commands list type

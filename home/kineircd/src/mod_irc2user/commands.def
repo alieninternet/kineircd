@@ -45,18 +45,21 @@ commands = {
    command		= "CONNECT";
    defaultPenalty	= 0;
    minimumParams	= 1;
+   access		= "oper";
 };
 
 commands = {
    command		= "DIE";
    defaultPenalty	= 0;
    minimumParams	= 0;
+   access		= "oper";
 };
 
 commands = {
    command		= "GLOBOPS";
    defaultPenalty	= 0;
    minimumParams	= 1;
+   access		= "globaloper";
 };
 
 commands = {
@@ -99,6 +102,7 @@ commands = {
    command		= "KILL";
    defaultPenalty	= 0;
    minimumParams	= 1;
+   access		= "oper";
 };
 
 commands = {
@@ -129,6 +133,7 @@ commands = {
    command		= "LOCOPS";
    defaultPenalty	= 0;
    minimumParams	= 1;
+   access		= "oper";
 };
 
 commands = {
@@ -141,6 +146,7 @@ commands = {
    command		= "MAP";
    defaultPenalty	= 2;
    minimumParams	= 0;
+   access		= "oper";
 };
 
 commands = {
@@ -213,12 +219,14 @@ commands = {
    command		= "REHASH";
    defaultPenalty	= 0;
    minimumParams	= 0;
+   access		= "oper";
 };
 
 commands = {
    command		= "RESTART";
    defaultPenalty	= 0;
    minimumParams	= 0;
+   access		= "oper";
 };
 
 commands = {
@@ -237,6 +245,7 @@ commands = {
    command		= "SQUIT";
    defaultPenalty	= 1;
    minimumParams	= 1;
+   access		= "oper";
 };
 
 commands = {
@@ -267,12 +276,14 @@ commands = {
    command		= "TRACE";
    defaultPenalty	= 0;
    minimumParams	= 0;
+   access		= "oper";
 };
 
 commands = {
    command		= "TRACEROUTE";
    defaultPenalty	= 0;
    minimumParams	= 1;
+   access		= "oper";
 };
 
 commands = {
@@ -315,6 +326,7 @@ commands = {
    command		= "WALLOPS";
    defaultPenalty	= 0;
    minimumParams	= 1;
+   access		= "oper";
 };
 
 commands = {
