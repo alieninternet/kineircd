@@ -26,8 +26,6 @@
 
 # include "kineircd/kineircdconf.h"
 
-# include <queue>
-
 # include <aisutil/socket/socket.h>
 
 namespace Kine {
@@ -42,9 +40,6 @@ namespace Kine {
       Daemon& daemon;			// Call-back to the daemon
       AISutil::Socket& socket;		// The connected socket
       Protocol* protocol;		// The protocol we are running
-      
-      std::queue <AISutil::String>
-	outputQueue;			// Output data queue
       
       unsigned long long sentBytes;	// Number of bytes sent
       unsigned long long receivedBytes;	// Number of bytes received

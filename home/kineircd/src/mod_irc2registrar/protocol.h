@@ -24,6 +24,8 @@
 #ifndef _SRC_LIB_REGISTRAR_H_
 # define _SRC_LIB_REGISTRAR_H_ 1
 
+# include <queue>
+# include <string>
 # include <aisutil/string/string.h>
 # include <aisutil/string/tokens.h>
 
@@ -40,6 +42,8 @@ namespace Kine {
       Listener& listener;			// The listener who invoked us
       
       AISutil::String buffer;			// Our buffer..
+      
+      std::queue <std::string> outputQueue;	// Output data queue
       
       struct RegistrationType { // <=- Should be namespace?
 	 enum type {
