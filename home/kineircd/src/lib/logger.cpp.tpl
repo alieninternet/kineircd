@@ -1,8 +1,7 @@
-/* vars.cpp
- * Configuration variable handlers
+/* base.cpp
+ * Logging functions base class
  * 
- * Copyright (c) 2002 AustHex Development Team
- * (See DEV-TEAM file for details)
+ * Copyright (c) 2000,2002 Alien Internet Services
  *
  * This file is a part of AustHex.
  * 
@@ -23,24 +22,6 @@
 
 #include "autoconf.h"
 
-#include "config.h"
-#include "log.h"
+#include "logger.h"
 
 
-// Our constructor
-Config::Config(const String &f)
-  : parser(&Config::topDefs, f),
-    defAdminEmail(DEFAULT_CONFIG_ADMIN_EMAIL),
-    defAdminLocation(DEFAULT_CONFIG_ADMIN_LOCATION),
-    defAdminName(DEFAULT_CONFIG_ADMIN_NAME),
-    defLoggingLog(0)
-{
-   defLoggingLog = new LoggerFile("/dev/stderr");  // temporary
-};
-
-
-// This is temporary.
-CONFIG_DEF_HANDLER(Config::defVarNONE)
-{
-   return true;
-}

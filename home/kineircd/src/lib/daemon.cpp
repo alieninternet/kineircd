@@ -177,11 +177,6 @@ Daemon::~Daemon(void)
    // Clean up the whowas list
    whowas.clear();
 
-#ifdef SYSLOG_IDENT
-   // Kill the syslog link
-   closelog();
-#endif
-   
    // Other stuff to delete
    delete server;
 }
@@ -231,27 +226,13 @@ bool Daemon::init(Config &conf)
    /* Seed the random number thingy.. this is kinda dodgey :( */
    srand((unsigned int)getTime());
    
-#ifdef SYSLOG_IDENT
-   /* Open up logging session with syslog - The reason why I chose syslog
-    * is that syslog is an easy to read format, easy to log to, and there are
-    * heaps of utilities out there to help format, strip, grep syslogs etc.
-    * Plus it also allows system administrators to centralise their logging,
-    * or do whatever the hell they want. With syslog.conf you can always
-    * control ircd messages to go to a separate file, so it's the same thing
-    * in the end really.
-    */
-# ifdef DEBUG_EXTENDED
-   cerr << "Calling syslog's openlog()" << endl;
-# endif
-   openlog(SYSLOG_IDENT, LOG_PID, LOG_DAEMON);
-   // log out first line
-# ifdef DEBUG
-   logger(String::printf("Starting %s (debugging)", Version::version),
-	  LOGPRI_INFO);
-# else
-   logger(String::printf("Starting %s", Version::version),
-	  LOGPRI_INFO);
-# endif
+   // Throw our starting up line at the logger
+#ifdef DEBUG
+   logger(String("Starting ") + Version::version + " (debugging)",
+	  Logger::PRI_INFO);
+#else
+   logger(String("Starting ") + Version::version,
+	  Logger::PRI_INFO);
 #endif
    
 #ifdef HAVE_OPENSSL
@@ -287,8 +268,9 @@ bool Daemon::init(Config &conf)
     * else we aren't going to be very useful at all
     */
    if (listens.empty()) {
-      logger("IRCd not started: No listening sockets - Nobody can connect!", 
-	     LOGPRI_ERROR);
+      logger("AustHex IRC Daemon not started: No listening sockets - "
+	     "Nobody can connect!",
+	     Logger::PRI_ERROR);
       return false;
    }
 
@@ -298,31 +280,6 @@ bool Daemon::init(Config &conf)
    // We are ready to go, go into normal running stage
    stage = STAGE_NORMAL;
    return true;
-}
-
-
-/* logger - [Various forms] Log a line to whatever logging facility we use
- * Original 11/08/01 simonb
- * Note: Should this routine be in another file perhaps?
- */
-void Daemon::logger(String const &line, int priority)
-{
-   /* Notice how we do not log if we are in debug mode. This is because I
-    * wasn't too happy about my syslog getting filled with junk while I was
-    * starting, stopping, starting, stopping etc etc..
-    */
-#ifndef DEBUG
-# ifdef SYSLOG_IDENT
-   if (priority >= 0) {
-      syslog(priority, "%s", (char const *)line);
-   }
-# endif
-#else
-   // Pipe to stderr if we are debugging
-   clog << "logger() <- [" << priority << "] " << line << endl;
-#endif
-   
-   // Broadcast it to +s people
 }
 
 
@@ -1916,7 +1873,7 @@ void Daemon::shutdown(String const &reason)
 		     String("Shutting down"));
    
    // Log our nice message
-   logger(message, LOGPRI_INFO);
+   logger(message, Logger::PRI_INFO);
 
    // Kill any ports we are listening on - we are no longer accepting ppl
    wipeListens();

@@ -43,6 +43,10 @@ namespace Config {
 	     0,				0
 	},
 	{
+	   "LOGGING",			&defClassLogging,
+	     0,				0
+	},
+	{
 	   "NETWORK",			&defClassNetwork,
 	     0,				0
 	},
@@ -141,6 +145,15 @@ namespace Config {
 	}
    };
 
+   
+   // "LOGGING" class
+   const ConfigParser::defTable_type Config::defClassLogging = {
+	{
+	   0,				0,
+	     0,				0
+	}
+   };
+   
 
    // "NETWORK" class
    const ConfigParser::defTable_type Config::defClassNetwork = {
