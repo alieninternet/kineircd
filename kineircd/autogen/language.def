@@ -720,6 +720,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_SERVLISTEND";
+   components	= "mod_irc2user";
    data_en	= "End of service listing";
    data_tr	= "Servis listesinin sonu";
 };
