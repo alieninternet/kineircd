@@ -913,6 +913,12 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_ERR_DISABLED";
+   component	= "mod_irc2user";
+   data_en	= "Command has been disabled";
+};
+
+tags = {
    name		= "irc2_ERR_ERRONEUSNICKNAME";
    component	= "mod_irc2user";
    data_en	= "Erroneous nickname";
