@@ -662,22 +662,22 @@ dnl
 AC_MSG_CHECKING([which modules to compile])
 
 if test "$kineircd_test_netsnmp_broken" = "no"; then
-  AC_ARG_ENABLE(module-mod-snmp,
-                AC_HELP_STRING([--disable-module-mod-snmp],
-		               [Disable the SNMP module]),
+  AC_ARG_ENABLE(module-emod-snmp,
+                AC_HELP_STRING([--disable-module-emod-snmp],
+		               [Disable the SNMP extension module]),
    [
      if test "$enableval" \!= "yes"; then
-       echo -n "mod_snmp "
-       kineircd_test_compile_extensions_mod_snmp=yes
+       echo -n "emod_snmp "
+       kineircd_test_compile_emod_snmp=yes
      fi
    ],[
-     echo -n "mod_snmp "
-     kineircd_test_compile_extensions_mod_snmp=yes
+     echo -n "emod_snmp "
+     kineircd_test_compile_emod_snmp=yes
    ])
 else
-  kineircd_test_compile_extensions_mod_snmp=no
+  kineircd_test_compile_emod_snmp=no
 fi
-AC_SUBST(kineircd_test_compile_extensions_mod_snmp)
+AC_SUBST(kineircd_test_compile_emod_snmp)
 
 dnl finish off the line
 echo
@@ -743,22 +743,13 @@ AC_OUTPUT([
 	make/defs
 	make/rules
 	src/Makefile
-	src/extensions/Makefile
-	src/extensions/mod_snmp/Makefile
 	src/lib/Makefile
 	src/lib/config/Makefile
 	src/lib/logger/Makefile
 	src/lib/modules/Makefile
 	src/lib/socket/Makefile
-	src/protocols/Makefile
-	src/protocols/common/Makefile
-	src/protocols/common/irc2/Makefile
-	src/protocols/server/Makefile
-	src/protocols/server/an-p13/Makefile
-	src/protocols/server/an1/Makefile
-	src/protocols/user/Makefile
-	src/protocols/user/irc2/Makefile
-	src/protocols/user/irc3/Makefile
+	src/modules/Makefile
+	src/modules/emod_snmp/Makefile
 	])
 
 
