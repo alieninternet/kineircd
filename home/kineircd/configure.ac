@@ -1682,6 +1682,7 @@ AC_OUTPUT([
 	install/Makefile
 	src/Makefile
 	src/config/Makefile
+	src/logger/Makefile
 	src/protocols/Makefile
 	src/protocols/server/Makefile
 	src/protocols/server/an-p13/Makefile

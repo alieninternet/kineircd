@@ -586,19 +586,6 @@
 # endif
 
   
-/* Work out what to do about the logging priorities */
-# ifdef SYSLOG_IDENT
-#  include <syslog.h>
-#  define LOGPRI_INFO		LOG_INFO
-#  define LOGPRI_NOTICE		LOG_NOTICE
-#  define LOGPRI_WARNING	LOG_WARNING
-#  define LOGPRI_ERROR		LOG_ERR
-#  define LOGPRI_CRITICAL	LOG_CRIT
-# else
-#  error "No other logging facility -- Woops :("
-# endif
-
-  
 /* Work out some true level values for our maximum file descriptor checks */
 # ifndef MAX_FD_PER_PROCESS
 #  define MAX_FD_PER_PROCESS		256 /* assume 8-bit system, eek! */

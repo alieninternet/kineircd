@@ -272,9 +272,6 @@ class Daemon {
 	return server;
      };
    
-   static void logger(String const &, 
-		      int = LOGPRI_NOTICE);	// Log a string of text
-
    static void rehash(Handler *, User *);	// Rehash the server
    static void restart(Handler *, User *);	// Restart the server
 
@@ -372,7 +369,10 @@ class Daemon {
      {
 	return onRelationMaskList(&redirectChannels, channel.IRCtoLower());
      };
-   
+
+   // Little macro to get to the logger, in a neat way
+   static void logger(const String &s, Logger::priority_type p)
+     { config->getLoggingLog().log(s, p); };
 
    static void shutdown(String const & = "");	// Start the shutdown sequence
    static void run(void);			// The main loop
@@ -380,9 +380,6 @@ class Daemon {
    friend class Handler;
    friend class Connection;
    friend class statsFunctions;
-# ifdef HAVE_OPENSSL
-   friend class SSLSocketIO;
-# endif
 };
 
 #endif
