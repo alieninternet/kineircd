@@ -81,7 +81,7 @@ const Error::error_type User::setAway(const Entity& changer,
 				      const std::string& reason)
 {
    // Copy the message across (check it??)
-   awayMessage = reason;
+   awayMessage = static_cast<const String&>(reason).trim();
 
    // broadcast it.
 
