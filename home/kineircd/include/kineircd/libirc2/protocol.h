@@ -107,14 +107,14 @@ namespace Kine {
 	 
 	 // Send an appropriately formatted message, without TO/FROM fields
 	 template <class Tc>
-	   void sendMessage(const Tc& command)
+	   void sendRawMessage(const Tc& command)
 	   {
 	      std::ostringstream output;
 	      output << command << lineTerminator;
 	      sendRawLine(output.str());
 	   };
 	 template <class Tc, class Tp>
-	   void sendMessage(const Tc& command, const Tp& parameters)
+	   void sendRawMessage(const Tc& command, const Tp& parameters)
 	   {
 	      std::ostringstream output;
 	      output << command << ' ' << parameters << lineTerminator;

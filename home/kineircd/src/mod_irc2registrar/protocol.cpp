@@ -78,7 +78,7 @@ void Protocol::sendPing(void)
 			      36);
 
    // Output the ping
-   sendMessage("PING", ":" + pongMatch + "\r\n");
+   sendRawMessage("PING", ":" + pongMatch + "\r\n");
 }
 
 
