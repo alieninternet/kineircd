@@ -1944,6 +1944,14 @@ tag = {
    data_en	= "<nickname> ( ',' <nickname> )  [ <count> ]";
 };
 
+tag = {
+   name		= "irc2user_SCRIPT_EXAMPLE_TAG";
+   components	= "mod_irc2user";
+   data_en	= "This is example language data, available within 'scheme' "
+                  "extension scripts, to aid in a tutorial of the language "
+		  "system usage within their own 'scheme' scripts.";
+};
+
 
 
 /*****************************************************************************
