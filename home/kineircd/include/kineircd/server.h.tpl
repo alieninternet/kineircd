@@ -74,11 +74,11 @@ namespace Kine {
 
 
       //! Return the hostname of the server
-      virtual const std::string& getHostname(void) const
+      const std::string& getHostname(void) const
         { return hostname; };
 	
       //! Return the 'name' (a server's hostname is normally its name)
-      virtual const std::string& getName(void) const
+      const std::string& getName(void) const
 	{ return getHostname(); };
 
 
