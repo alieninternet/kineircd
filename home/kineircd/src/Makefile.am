@@ -81,7 +81,8 @@ libkineircd_irc2_la_LIBADD=\
 # 'mod_filelog' module
 ###############################################################################
 mod_filelog_la_SOURCES=\
-	mod_filelog/file.h \
+	mod_filelog/filelog.cpp \
+	mod_filelog/filelog.h \
 	mod_filelog/module.cpp \
 	mod_filelog/module.h
 mod_filelog_la_LDFLAGS=\

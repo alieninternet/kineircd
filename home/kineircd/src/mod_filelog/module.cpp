@@ -28,7 +28,7 @@
 #include <kineircd/module.h>
 
 #include "mod_filelog/module.h"
-
+#include "mod_filelog/filelog.h"
 
 namespace {
    // Information about this module

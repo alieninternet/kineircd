@@ -20,33 +20,37 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_LOGGER_FILE_H_
-# define _SRC_LIB_LOGGER_FILE_H_ 1
+#ifndef _SRC_MOD_FILELOG_LOGGER_H_
+# define _SRC_MOD_FILELOG_LOGGER_H_ 1
 
 # include <fstream>
 
-# include "kineircd/logger.h"
+# include <kineircd/logger.h>
 
 namespace Kine {
+   namespace mod_filelog {
+      // The generic file logging class
+      class FileLog : public Kine::Logger {
+       private:
+	 std::ofstream logFile;
+	 
+	 // Log a string of text
+	 void logLine(const AISutil::String& str,
+		      const Kine::Logger::Mask::type mask);
+	 
+       public:
+	 // Constructor
+ 	 FileLog(Kine::Logger::Mask::type, const char *);
+	 
+	 // Destructor
+	 ~FileLog(void);				
+	 
+	 // Is the log ok?
+	 bool ok(void) const
+	   { return logFile.good(); };
+      };
+   }; // namespace mod_filelog
+}; // namespace Kine
    
-   // The generic file logging class
-   class LoggerFile : public Logger {
-    private:
-      std::ofstream logFile;
-      
-      // Log a string of text
-      void logLine(const AISutil::String& str, const Mask::type mask);
-      
-    public:
-      LoggerFile(Mask::type, const char *);		// Constructor
-      ~LoggerFile(void);				// Destructor
-      
-      // Is the log ok?
-      bool ok(void) const
-	{ return logFile.good(); };
-   };
-
-};
-   
-#endif // _SRC_LIB_LOGGER_FILE_H_
+#endif // _SRC_MOD_FILELOG_LOGGER_H_
    

@@ -26,38 +26,29 @@
 
 #include <ctime>
 
-#include "logger/file.h"
-#include "debug.h"
+#include "mod_filelog/filelog.h"
 
-using namespace Kine;
+using namespace Kine::mod_filelog;
 using AISutil::String;
 
 
-/* LoggerFile - Generic file logger component constructor
+/* FileLog - Generic file logger component constructor
  * Original 18/02/2000 simonb
  * 04/04/2002 simonb - Added debugging info
  */
-LoggerFile::LoggerFile(Logger::Mask::type mask, const char *fileName)
-  : Logger(mask)
+FileLog::FileLog(Kine::Logger::Mask::type mask, const char *fileName)
+  : Kine::Logger(mask)
 {
-#ifdef KINE_DEBUG_EXTENDED
-   debug(String("LoggerFile::LoggerFile(): logFile.open(") + fileName + ')');
-#endif
-   
    logFile.open(fileName);
 }
 
 
-/* ~LoggerFile - Generic file logger component destructor
+/* ~FileLog - Generic file logger component destructor
  * Original 18/02/2000 simonb
  * 04/04/2002 simonb - Added debugging info
  */
-LoggerFile::~LoggerFile(void)
+FileLog::~FileLog(void)
 {
-#ifdef KINE_DEBUG_EXTENDED
-   debug("LoggerFile::~LoggerFile(): logFile.close()");
-#endif
-   
    logFile.close();
 }
 
@@ -67,14 +58,10 @@ LoggerFile::~LoggerFile(void)
  * 04/04/2002 simonb - Added debugging info
  * Note: This logging output sucks.
  */
-void LoggerFile::logLine(const AISutil::String& str,
-			 const Logger::Mask::type mask)
+void FileLog::logLine(const AISutil::String& str,
+		      const Kine::Logger::Mask::type mask)
 {
    if (ok()) {
-#ifdef KINE_DEBUG_PSYCHO
-      debug("LoggerFile::log(" + str + ')');
-#endif
-
       logFile << '[' << time(NULL) << ':' << mask << "] " << str << std::endl;
    }
 }
