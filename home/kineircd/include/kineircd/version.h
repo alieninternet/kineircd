@@ -27,19 +27,53 @@
 namespace Kine {
    //! Version and Compile information
    namespace Version {
-      extern const char* const buildTime;	//!< Build time (ISO-8601)
-      extern const char* const programName;	//!< Program name
-      extern const char* const programNameFull;	//!< Full program name
-      extern const unsigned short versionMajor;	//!< Version major number
-      extern const unsigned short versionMinor;	//!< Version minor number
-      extern const char* const version;		//!< Version identity
-      extern const char* const versionFull;	//!< Full version string
-      extern const unsigned char libVersion;	//!< Library API version
-      extern const unsigned char libRevision;	//!< Library API revision
-      extern const unsigned char libAge;	//!< Library API age
-      extern const char* const bugsEmail;	//!< Bug report e-mail
-      extern const char* const versionInfo[];	//!< Information (/INFO)
-      extern const char* const versionChars;	//!< Version chars 
+      //! The time the core was built in compressed ISO-8601, from UTC
+      extern const char* const buildTime;
+      
+      //! The time the core was built, as per your locale (in your timezone)
+      extern const char* const buildTimeFull;
+
+      //! The number of times we were built (or rebuilt)
+      extern const unsigned long buildCount;
+      
+      //! Source code 'hash' - a string unique to the library's source code
+      extern const char* const sourceCodeHash;
+      
+      //! The name of the program (in short-form)
+      extern const char* const programName;
+      
+      //! The full name of the program
+      extern const char* const programNameFull;
+      
+      //! The major version number
+      extern const unsigned short versionMajor;
+      
+      //! The minor version number
+      extern const unsigned short versionMinor;
+      
+      //! The version of the program (the short name plus major/minor numbers)
+      extern const char* const version;
+      
+      //! The full version string (same as 'version', but includes build time)
+      extern const char* const versionFull;
+
+      //! The core's API version number
+      extern const unsigned char libVersion;
+      
+      //! The core's API revision number
+      extern const unsigned char libRevision;
+
+      //! The core's API age number
+      extern const unsigned char libAge;
+      
+      //! Contact address to send bugs, feature requests, and so forth
+      extern const char* const bugsEmail;
+      
+      //! Built in version information used by the 'INFO' user command
+      extern const char* const versionInfo[];
+      
+      //! Version 'chars', used to show which compile-time flags were set
+      extern const char* const versionChars;
    };
 };
    

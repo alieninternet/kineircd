@@ -41,11 +41,17 @@ ENDDEF+]
 #include <aisutil/aisutilconf.h>
 
 #include "kineircd/version.h"
+#include "libkineircd/version.h"
 
 namespace Kine {
    namespace Version {
-      // Build time in ISO-8601 format (yyyymmddThhmmssZ)
+      // Build time information
       const char* const buildTime = BUILD_TIME;
+      const char* const buildTimeFull = BUILD_TIME_FULL;
+      const unsigned long buildCount = BUILD_COUNT;
+      
+      // Source code hash
+      const char* const sourceCodeHash = SOURCE_CODE_HASH;
       
       // Program name
       const char* const programName = PACKAGE;

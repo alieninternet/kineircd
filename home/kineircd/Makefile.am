@@ -229,7 +229,8 @@ libkineircd_la_SOURCES=\
 	src/libkineircd/name.cpp \
 	src/libkineircd/registry.cpp \
 	src/libkineircd/signals.cpp \
-	src/libkineircd/version.cpp
+	src/libkineircd/version.cpp \
+	src/libkineircd/version.h
 	
 # Flags..
 libkineircd_la_LDFLAGS=\
@@ -242,10 +243,6 @@ libkineircd_la_LIBADD=\
 	$(LIBLTDL) \
 	-laisutil \
 	@ssl_lib@
-
-# Preprocessor flags (how can I target version.cpp alone??)
-libkineircd_la_CPPFLAGS=\
-	-DBUILD_TIME="\"`date -u +%Y%m%dT%H%MZ`\""
 
 # Customised .tpl rules
 include/kineircd/config.h: include/kineircd/config.h.tpl $(AUTOGEN_DIR)/config.def $(AUTOGEN_DIR)/config.scm
@@ -267,7 +264,30 @@ src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOG
 		-T src/libkineircd/config/config.cpp.tpl \
 		-S $(AUTOGEN_DIR)/config.scm \
 		$(AUTOGEN_DIR)/config.def
-		
+
+.PHONY: src/libkineircd/version.h
+src/libkineircd/version.h:
+	$(ECHO) \
+		"#define BUILD_TIME \"`date -u +%Y%m%dT%H%MZ`\"" \
+		> src/libkineircd/version.h
+	$(ECHO) \
+		"#define BUILD_TIME_FULL \"`date`\"" \
+		>> src/libkineircd/version.h
+	if \
+		test -e $(top_builddir)/.builds; then \
+			expr \
+				`cat $(top_builddir)/.builds` \
+				+ 1 \
+				> $(top_builddir)/.builds; \
+		else \
+			echo "1" > $(top_builddir)/.builds; \
+		fi
+	$(ECHO) \
+		"#define BUILD_COUNT `cat $(top_builddir)/.builds`" \
+		>> src/libkineircd/version.h
+	$(ECHO) \
+		"#define SOURCE_CODE_HASH \"na\"" \
+		>> src/libkineircd/version.h
 
 
 ###############################################################################

@@ -69,10 +69,10 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 		       config().getOptionsServerName(),
 		       Kine::Version::versionFull));
    
-   // Tell the user when the server was created. Why?? (003)
+   // Tell the user when the server was created, not that they'd care (003)
    sendNumeric(LibIRC2::Numerics::RPL_CREATED,
 	       GETLANG(irc2_RPL_CREATED,
-		       Kine::Version::buildTime));
+		       Kine::Version::buildTimeFull));
    
    // Tell the user a little bit about what we know.. (004)
    sendNumeric(LibIRC2::Numerics::RPL_MYINFO,

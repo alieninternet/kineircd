@@ -1,3 +1,4 @@
 logger.cpp
 loggerconfig.cpp
 version.cpp
+version.h
