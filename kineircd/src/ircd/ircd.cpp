@@ -48,6 +48,8 @@
 #include <kineircd/registry.h>
 #include <kineircd/config.h>
 #include <kineircd/daemon.h>
+#include <kineircd/mynetwork.h>
+#include <kineircd/myserver.h>
 
 #include "ircd/bits.h"
 #include "ircd/exit.h"
@@ -116,6 +118,10 @@ int main(int argc, char **argv)
       exit(ircd::Exit::ERR_DAEMON_INIT);
    }
 
+   // Initialise two important entities - our network and server entities
+   MyNetwork::initInstance();
+   MyServer::initInstance();
+   
    // Where to put out PID when we get it (if we get it)
    pid_t pid = 0;
 
