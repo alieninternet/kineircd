@@ -72,7 +72,8 @@ void Protocol::doMessage(const parameters_type& parameters,
 	       if (!/* ?? */false) {
 		  // Find something of this name
 		  Receiver* const receiver =
-		    LibIRC2::Utility::findMessageTarget(target);
+		    LibIRC2::Utility::findMessageTarget(target, true 
+							/* config ^^^ ? */);
 		  
 		  // Did we find something?
 		  if (receiver != 0) {
@@ -81,12 +82,53 @@ void Protocol::doMessage(const parameters_type& parameters,
 		     // Okay, send the message finally
 		     
 		     if (!isNotice) {
-			Error::error_type error;
+			// Send the message, remembering the error
+			const Error::error_type error =
+			  receiver->sendMessage(user, parameters[1]);
+
+			// If there was no error (most likely), jump!
+			if (error == Error::NO_ERROR) {
+			   continue;
+			}
+
+			// Was this target a channel?
+			const bool channelTarget =
+			  (dynamic_cast<Channel* const>(receiver) != 0);
 			
-			if ((error = 
-			     receiver->sendMessage(user, parameters[1])) !=
-			    Error::NO_ERROR) {
-			   // something..
+			/* Check the error nicely.. The cast here is used to
+			 * keep the compiler quiet, otherwise it'll moan about
+			 * not including *EVERY* error (which we obviously
+			 * cannot and do not want to do!)
+			 */
+			switch ((int)error) {
+			 // Sending messages is unsupported! (ouch)
+			 case Error::UNSUPPORTED_BY_ENTITY:
+			   if (channelTarget) {
+			      sendNumeric
+				(LibIRC2::Numerics::ERR_CANNOTSENDTOCHAN,
+				 target,
+				 GETLANG(irc2_ERR_CANNOTSENDTOCHAN_UNRECEPTIVE));
+			   } else {
+			      sendNumeric
+				(LibIRC2::Numerics::ERR_CANNOTSENDTONICK,
+				 target,
+				 GETLANG(irc2_ERR_CANNOTSENDTONICK_UNRECEPTIVE));
+			   }
+			   continue;
+			   
+			 // This was an unexpected error.. not friendly! :(
+			 default:
+			   if (channelTarget) {
+			      sendNumeric
+				(LibIRC2::Numerics::ERR_CANNOTSENDTOCHAN,
+				 target,
+				 GETLANG(irc2_ERR_CANNOTSENDTOCHAN_UNEXPECTED));
+			   } else {
+			      sendNumeric
+				(LibIRC2::Numerics::ERR_CANNOTSENDTONICK,
+				 target,
+				 GETLANG(irc2_ERR_CANNOTSENDTONICK_UNEXPECTED));
+			   }
 			}
 		     } else {
 			// Send a notice, and we do not care if it worked
