@@ -41,7 +41,7 @@ namespace Kine {
       
       // Destructor
       ~ModuleList(void)
-	{};
+	{ stopAll(); };
       
       // Load a module, return false if we failed (reason in 'errorReturn')
       bool loadModule(const String &moduleFile, String &errorReturn);
