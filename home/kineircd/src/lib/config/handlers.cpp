@@ -677,7 +677,7 @@ Kine::Config::Config(const String &f)
 #endif
 {
    defLoggingLog = new Log();  // temporary
-   
+
 #ifdef KINE_WITH_SSL
    // Fire up the SSL component
    SSL_load_error_strings();

@@ -90,12 +90,11 @@ Exit::status_type Kine::Daemon::run(void)
       return Exit::ERR_DAEMON_INIT;
    }
    
-#ifdef KINE_DEBUG
-   debug("Daemon::run() - Entering main loop");
+#ifdef KINE_DEBUG_EXTENDED
+   debug("Daemon::run() - Initialising main loop");
 #endif
 
    // Stuff we need for select()
-   struct timeval timeout;
    fd_set inFDtemp, outFDtemp;
    
    // Set up stuff for select()
@@ -103,22 +102,22 @@ Exit::status_type Kine::Daemon::run(void)
    FD_ZERO(&outFDSET);
    maxDescriptors = 0;
 
+#ifdef KINE_DEBUG
+   debug("Daemon::run() - Entering main loop");
+#endif
+
    // The main loop!
    for (;;) {
       // Set the time
       setTime();
-      
-      // Set the timeout for select()..
-      timeout.tv_sec = 1;
-      timeout.tv_usec = 0;
       
       // Copy the FD sets over to save time
       inFDtemp = inFDSET;
       outFDtemp = outFDSET;
 
       // Poll select()
-      switch (select(maxDescriptors, &inFDtemp, &outFDtemp, 
-		     SELECT_TYPE_ARG234 NULL, &timeout)) {
+      switch (select(maxDescriptors, &inFDtemp, &outFDtemp,
+		     SELECT_TYPE_ARG234 NULL, SELECT_TYPE_ARG5 NULL)) {
        case -1: // Select aborted (caused by a signal, usually)
 #ifdef KINE_DEBUG_EXTENDED
 	 perror("Daemon::run() - select()");
