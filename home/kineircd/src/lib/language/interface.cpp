@@ -89,6 +89,12 @@ void Languages::initInstance(void)
  */
 void Languages::processTagMap(tagMap_type map) const
 {
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream out;
+   out << "Languages::processTagMap() - Processing map @ " << (void *)map;
+   debug(out.str());
+#endif
+
    int i = -1;
    
    // Iterate through the given map, until we find a null tag name
