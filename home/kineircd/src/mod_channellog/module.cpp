@@ -1,8 +1,8 @@
 /* $Id$
  * KineIRCd module interface for the channel based logging module
  * 
- * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2002 KineIRCd Development Team
+ * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -98,6 +98,13 @@ namespace {
 
 	 // Register the logger
 	 return Kine::daemon().registerLogger(*logger);
+      };
+      
+      /* stop - Stop the module
+       * Original 24/03/2003 simonb
+       */
+      void stop(void) {
+	 Kine::daemon().deregisterLogger(*logger);
       };
    }; // class mod_channellog
 }; // namespace {anonymous}
