@@ -30,14 +30,14 @@
 namespace Kine {
    class User : public Client {
     private:
-      Nickname nickname;			//!< User's nickname
+      Name nickname;				//!< User's nickname
       std::string username;			//!< User's username
       std::string hostname;			//!< User's hostname
       std::string awayMessage;			//!< Away message (empty = off)
       
     protected:
       //! Constructor
-      User(const Nickname& _nickname,
+      User(const Name& _nickname,
 	   const std::string& _username,
 	   const std::string& _hostname,
 	   const timeval& _signonTime)
@@ -53,7 +53,7 @@ namespace Kine {
 	{};
       
       //! Return the users' nickname
-      const Nickname& getNickname(void) const
+      const Name& getNickname(void) const
 	{ return nickname; };
 
       //! Return the users' username / identd reply

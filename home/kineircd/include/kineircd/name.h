@@ -1,5 +1,5 @@
 /* $Id$
- * A nickname, a specially modified form of a string
+ * A name, conforming to IRC rules (a specially modified form of a string)
  * 
  * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002,2003 KineIRCd Development Team
@@ -22,26 +22,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_NICKNAME_H_
-# define _INCLUDE_KINEIRCD_NICKNAME_H_ 1
+#ifndef _INCLUDE_KINEIRCD_NAME_H_
+# define _INCLUDE_KINEIRCD_NAME_H_ 1
 
 # include <aisutil/string/string.h>
 
 namespace Kine {
-   class Nickname : public AISutil::String {
+   class Name : public AISutil::String {
     public:
       // Constructor
-      template <class Ta> Nickname(const Ta& a)
+      template <class Ta> Name(const Ta& a)
 	: AISutil::String(a)
         {};
       
       // Destructor
-      ~Nickname(void)
+      ~Name(void)
 	{};
       
       //! Lower-case the nickname based on RFC-1459 rules
       const AISutil::String IRCtoLower(void) const;
-   }; // class Nickname
+   }; // class Name
 }; // namespace Kine
 
-#endif // _INCLUDE_KINEIRCD_NICKNAME_H_
+#endif // _INCLUDE_KINEIRCD_NAME_H_

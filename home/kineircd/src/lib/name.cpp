@@ -1,5 +1,5 @@
 /* $Id$
- * A nickname, a specially modified form of a string
+ * A name, conforming to IRC rules (a specially modified form of a string)
  * 
  * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002,2003 KineIRCd Development Team
@@ -27,7 +27,7 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
-#include "kineircd/nickname.h"
+#include "kineircd/name.h"
 
 using namespace Kine;
 using AISutil::String;
@@ -37,7 +37,7 @@ using AISutil::String;
  * Original 12/08/2001 pickle
  * 26/02/2002 pickle - Converted for use with std::string / AISutil::String
  */
-const AISutil::String Nickname::IRCtoLower(void) const
+const AISutil::String Name::IRCtoLower(void) const
 {
    char *temp = new char[length() + 1];
    

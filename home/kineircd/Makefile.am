@@ -184,7 +184,7 @@ libkineircd_la_SOURCES=\
 	include/kineircd/moduledescriptor.h \
 	include/kineircd/modulelist.h \
 	include/kineircd/network.h \
-	include/kineircd/nickname.h \
+	include/kineircd/name.h \
 	include/kineircd/password.h \
 	include/kineircd/protocol.h \
 	include/kineircd/protocolinfo.h \
@@ -214,7 +214,7 @@ libkineircd_la_SOURCES=\
 	$(KINEIRCD_SOURCE_LIB_DEBUG_CPP) \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_H) \
 	src/libkineircd/logger.cpp \
-	src/libkineircd/nickname.cpp \
+	src/libkineircd/name.cpp \
 	src/libkineircd/signals.cpp \
 	src/libkineircd/version.cpp
 	
