@@ -91,6 +91,9 @@ namespace Kine {
       handlerList_type handlers;
 
     private:
+      // Our single instance
+      static Signals* instance;
+      
       // Constructor
       Signals(void);
       
@@ -101,8 +104,10 @@ namespace Kine {
       // Get the single instance of this class (this class 'always' exists)
       static Signals& getInstance(void)
 	{
-	   static Signals instance;
-	   return instance;
+	   if (instance == 0) {
+	      instance = new Signals();
+	   }
+	   return *instance;
 	};
       
       // Add a handler to the handlers list (false if structure is invalid)

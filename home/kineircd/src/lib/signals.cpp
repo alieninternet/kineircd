@@ -40,6 +40,10 @@ using namespace Kine;
 using AISutil::String;
 
 
+// Our instance...
+Signals* Signals::instance = 0;
+
+
 /* checkMask - Check if a handler should be called based on the mask
  * Original 09/07/2002 simonb
  */

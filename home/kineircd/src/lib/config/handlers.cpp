@@ -35,8 +35,9 @@
 #include "listener/config.h"
 #include "debug.h"
 
-using namespace Kine;
+
 using AISutil::String;
+using namespace Kine;
 
 
 namespace Config {
@@ -726,6 +727,10 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleNetworkName)
 
    return true;
 }
+
+
+// Our instance...
+Kine::Config* Kine::Config::instance = 0;
 
 
 /* Config - Configuration class constructor (mainly to load defaults if any)
