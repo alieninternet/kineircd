@@ -1,5 +1,4 @@
 /* $Id$
- * Bits and pieces
  * 
  * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002,2003 KineIRCd Development Team
@@ -29,8 +28,8 @@ namespace Kine {
    namespace ircd {
       // Print version information (level = how much information to show)
       extern void printVersion(const unsigned int level);
-   };
-};
- 
+   }; // namespace ircd
+}; // namespace Kine
+
 #endif // _SRC_IRCD_BITS_H_
 
