@@ -31,6 +31,7 @@
 #include <cstring>
 
 #include "kineircd/modulelist.h"
+#include "kineircd/daemon.h"
 #include "lib/debug.h"
 
 using namespace Kine;
@@ -136,7 +137,15 @@ void ModuleList::startAll(void) const
       debug("ModuleList::startAll() - Starting: " +
 	    (*it)->getModule().getVersionString());
 #endif
-      (*it)->start();
+      if ((*it)->start()) {
+	 daemon().log("Started module " +
+		      (*it)->getModule().getVersionString(),
+		      Logger::Mask::Housekeeping);
+      } else {
+	 daemon().log("Unable to start module " +
+		      (*it)->getModule().getVersionString(),
+		      Logger::Mask::Warning);
+      }
    }
 }
 
