@@ -94,6 +94,16 @@ errors = {
 };
 
 errors = {
+   name		= "TEXT_TOO_LONG";
+   reason	= "The given text is too long";
+};
+
+errors = {
+   name		= "TEXT_TOO_SHORT";
+   reason	= "The given text is too short";
+};
+
+errors = {
    name		= "UNREGISTERED_ENTITY";
    reason	= "Operation could not be completed on an unregistered entity";
 };

@@ -2321,6 +2321,18 @@ tag = {
 };
 
 tag = {
+   name		= "Kine_Error_TEXT_TOO_LONG";
+   components	= "libkineircd";
+   data_en	= "The given message is too long";
+};
+
+tag = {
+   name		= "Kine_Error_TEXT_TOO_SHORT";
+   components	= "libkineircd";
+   data_en	= "The given message is unacceptably short";
+};
+
+tag = {
    name		= "Kine_Error_UNREGISTERED_ENTITY";
    components	= "libkineircd";
    data_en	= "Operation could not be completed as the given entity is "
