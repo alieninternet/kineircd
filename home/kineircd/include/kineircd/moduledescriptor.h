@@ -50,7 +50,7 @@ namespace Kine {
       ~ModuleDescriptor(void);
       
       // Return the module
-      const Module& getModule(void) const
+      Module& getModule(void)
 	{ return module; };
 
       // Load a module, hopefully. Returns 0 (null) if we failed
