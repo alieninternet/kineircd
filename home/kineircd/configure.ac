@@ -38,23 +38,58 @@ dnl -------------------
 dnl Checks for programs
 dnl -------------------
 AC_PROG_CC
+AC_PROG_GCC_TRADITIONAL
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
+AC_PROG_LN_S
 AC_CHECK_PROG(RM, rm, rm -f, del)
+AC_CACHE_SAVE
 
 
-dnl --------------------
-dnl Checks for libraries
-dnl --------------------
-dnl (none)
+dnl ----------------------------------------------
+dnl Checks for compiler and system characteristics
+dnl ----------------------------------------------
+AC_AIX
+AC_MINIX
+AC_ISC_POSIX
+AC_SYS_LONG_FILE_NAMES
+AC_SYS_RESTARTABLE_SYSCALLS
+AC_EXEEXT
+AC_OBJEXT
+AC_C_BIGENDIAN
+AC_C_CONST
+AC_C_INLINE
+AC_C_CHAR_UNSIGNED
+AC_CHECK_SIZEOF(int)
+AC_CHECK_SIZEOF(char)
+AC_CHECK_SIZEOF(short)
+AC_CHECK_SIZEOF(long)
+AC_CHECK_SIZEOF(long long)
+AC_CACHE_SAVE
+
+
+dnl ------------------------------
+dnl Checks for structure and types
+dnl ------------------------------
+AC_DECL_SYS_SIGLIST
+AC_STRUCT_TM
+AC_STRUCT_TIMEZONE
+AC_TYPE_SIZE_T
+AC_TYPE_PID_T
+AC_TYPE_MODE_T
+AC_TYPE_UID_T
+AC_TYPE_SIGNAL
+AC_CACHE_SAVE
 
 
 dnl -----------------------
 dnl Checks for header files
 dnl -----------------------
-AC_HEADER_STDC
 AC_TIME_WITH_SYS_TIME
+AC_HEADER_STDC
+AC_HEADER_STAT
+AC_HEADER_TIME
 AC_HEADER_SYS_WAIT
 AC_HEADER_DIRENT
 AC_CHECK_HEADERS( \
@@ -71,46 +106,35 @@ AC_CHECK_HEADERS( \
 	syslog.h \
 	unistd.h \
 		)
+AC_CACHE_SAVE
 
 
-dnl -------------------------------------------------------------
-dnl Checks for typedefs, structures, and compiler characteristics
-dnl -------------------------------------------------------------
-AC_C_BIGENDIAN
-AC_C_CONST
-AC_C_INLINE
-AC_C_CHAR_UNSIGNED
-AC_C_LONG_DOUBLE
-AC_HEADER_STAT
-AC_HEADER_TIME
-AC_STRUCT_TM
-AC_STRUCT_TIMEZONE
-AC_DECL_SYS_SIGLIST
-AC_TYPE_SIZE_T
-AC_TYPE_PID_T
-AC_TYPE_MODE_T
-
-
-dnl ----------------------------
-dnl Checks for library functions
-dnl ----------------------------
-AC_TYPE_SIGNAL
+dnl --------------------------------------
+dnl Checks for libraries/library functions
+dnl --------------------------------------
+AC_CHECK_LIB(pthread, pthread_self,,[
+  AC_MSG_RESULT(no)
+  dnl should check for other threads libraries here. For now, just complain
+  AC_MSG_WARN([A threads library will be needed in the future..])
+ ])
+AC_CHECK_LIB(resolv, res_init)
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
-AC_TYPE_SIGNAL
 AC_FUNC_VPRINTF
-AC_CHECK_FUNCS( \
+AC_FUNC_GETLOADAVG
+AC_FUNC_SELECT_ARGTYPES
+AC_FUNC_STRFTIME
+AC_CHECK_FUNCS(
+	alarm \
+	gettimeofday \
 	inet_ntoa \
 	memset \
 	select \
 	socket \
 	strchr \
+	strerror \
 		)
 
-
-dnl ----------------
-dnl Look for OpenSSL
-dnl ----------------
 AC_MSG_CHECKING([for OpenSSL library/include path])
 AC_ARG_WITH(ssl,[
   --with-ssl=DIRECTORY    location of SSL library/include files
@@ -152,26 +176,26 @@ if test -n "$ssl_dir"; then
 	AC_DEFINE(MUST_INIT_PRNG)
       fi
     ],[
+      AC_MSG_RESULT(unknown)
       AC_MSG_WARN([Your OpenSSL installation seems incomplete!])
      ])
   else
-    AC_MSG_WARN(half found)
-    echo "It appears your OpenSSL does not contain a library directory!"
-    echo "Use --with-ssl=DIRECTORY to corret this if you beleive this is wrong."
+    AC_MSG_RESULT(unknown)
+    AC_MSG_WARN([Only found half of an OpenSSL installation!])
+    echo " -=> It appears your OpenSSL installation does not contain a library directory!"
+    echo " -=> Use --with-ssl=DIRECTORY to corret this if you beleive this is wrong."
+    echo " -=> Without this library you will not be able to use secured SSL connections."
   fi
 else
-  AC_MSG_WARN(not found)
-  echo "Use --with-ssl=DIRECTORY to correct this if you beleive this is wrong."
+  AC_MSG_RESULT(unknown)
+  AC_MSG_WARN([Could not find your OpenSSL installation])
+  echo " -=> Use --with-ssl=DIRECTORY to correct this if you beleive this is wrong."
+  echo " -=> Without this library you will not be able to use secured SSL connections."
 fi
 AC_SUBST(ssl_lib)
 AC_SUBST(ssl_ldflags)
 
-
-dnl ---------------------
-dnl Check system services
-dnl ---------------------
-AC_EXEEXT
-AC_OBJEXT
+AC_CACHE_SAVE
 
 
 dnl ---------------------------
@@ -179,12 +203,9 @@ dnl Run local test programs (C)
 dnl ---------------------------
 AC_LANG_C
 
-AC_MSG_CHECKING(for struct sigcontext in signal handlers)
-AC_TRY_COMPILE([#include <sys/signal.h>],[struct sigcontext c;], 
-[AC_DEFINE(HAVE_STRUCT_SIGCONTEXT) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
-
-AC_MSG_CHECKING(whether signal SIGCHLD is brain-damaged)
-AC_TRY_RUN([
+AC_CACHE_CHECK([whether signal SIGCHLD is brain-damaged],
+ austhex_cv_sys_sigchld_braindamaged,[
+  AC_TRY_RUN([
 	#include <signal.h>
 
 	#ifndef SIGCHLD
@@ -198,8 +219,9 @@ AC_TRY_RUN([
 	{
 	   int status;
 	   
-	   if (level++ > 2)
-	     exit(1);
+	   if (level++ > 2) {
+	      exit(1);
+	   }
 	   
 	   signal(SIGCHLD, handler);
 	   wait(&status);
@@ -214,14 +236,23 @@ AC_TRY_RUN([
 	      sleep(2);
 	      exit(1); 
 	   }
+	   
 	   exit(0);
 	}
- ],
- [AC_MSG_RESULT([no (good)])],
- [AC_DEFINE(SIGCHLD_BRAIN_DAMAGE) AC_MSG_RESULT(yes)])
+   ],[
+     austhex_cv_sys_sigchld_braindamaged=no
+   ],[
+     austhex_cv_sys_sigchld_braindamaged=yes
+   ])
+ ])
+if test "$austhex_cv_sys_sigchld_braindamaged" = "yes"; then
+  AC_DEFINE(SIGCHLD_BRAIN_DAMAGE) 
+fi
 
-AC_MSG_CHECKING([maximum number of files I can open at once])
-AC_TRY_RUN([
+AC_CACHE_CHECK([maximum number of files I can open at once],
+ austhex_cv_sys_maxfds,[
+  dnl Try a brute-force method
+  AC_TRY_RUN([
 	#include <sys/types.h>
 	#include <sys/stat.h>
 	#include <fcntl.h>
@@ -252,16 +283,19 @@ AC_TRY_RUN([
 	   
 	   exit(0);
 	}
- ],
- [MAX_OPEN_FD=`cat conftestval` 
-  AC_MSG_RESULT($MAX_OPEN_FD)],
- [MAX_OPEN_FD=256
-  echo
-  AC_MSG_WARN(assuming 256)])
-AC_DEFINE_UNQUOTED(MAX_FD_PER_PROCESS, $MAX_OPEN_FD)
+   ],[
+     austhex_cv_sys_maxfds=`cat conftestval`
+   ],[
+     austhex_cv_sys_maxfds=256
+     AC_MSG_WARN([Making the assumption of 256 bits could be wrong.])
+     echo " -=> It is recommended that you edit config.h manually to correct this"
+   ])
+ ])
+AC_DEFINE_UNQUOTED(MAX_FD_PER_PROCESS, $austhex_cv_sys_maxfds)
 
-AC_MSG_CHECKING([default select() file descriptor bit-set size])
-AC_TRY_RUN([
+AC_CACHE_CHECK([default select() file fd_set bit-size],
+ austhex_cv_sys_fdset_numfds,[
+  AC_TRY_RUN([
 	#include <sys/time.h>
 	#include <sys/types.h>
 	#include <unistd.h>
@@ -283,13 +317,17 @@ AC_TRY_RUN([
 	   
 	   exit(0);
 	}
- ],
- [SELECT_FDSET_SIZE=`cat conftestval` 
-  AC_MSG_RESULT($SELECT_FDSET_SIZE)],
- [SELECT_FDSET_SIZE=256
-  echo
-  AC_MSG_WARN(assuming 256)])
-AC_DEFINE_UNQUOTED(SELECT_FDSET_NUMFDS, $SELECT_FDSET_SIZE)
+   ],[
+     austhex_cv_sys_fdset_numfds=`cat conftestval`
+   ],[
+     austhex_cv_sys_fdset_numfds=256
+     AC_MSG_WARN([Making the assumption of 256 bits could be wrong.])
+     echo " -=> It is recommended that you edit config.h manually to correct this"
+   ])
+ ])
+AC_DEFINE_UNQUOTED(SELECT_FDSET_NUMFDS, $austhex_cv_sys_fdset_numfds)
+
+AC_CACHE_SAVE
 
 
 dnl -----------------------------
@@ -297,8 +335,9 @@ dnl Run local test programs (C++)
 dnl -----------------------------
 AC_LANG_CPLUSPLUS
 
-AC_MSG_CHECKING([for a working C++ Standard Template Library])
-AC_TRY_RUN([
+AC_CACHE_CHECK([for a working C++ Standard Template Library],
+ austhex_cv_lib_stl_ok,[
+  AC_TRY_RUN([
 	#include <stl.h>
 	
 	int main(void)
@@ -309,13 +348,21 @@ AC_TRY_RUN([
 	   map<int, int> m;
 	   m.clear();
 	}
- ],
- [AC_DEFINE(HAVE_CXX_STL) AC_MSG_RESULT(yes)], 
- [echo
-  AC_MSG_ERROR([Sorry, you need a working Standard Template Library])])
+   ],[
+     austhex_cv_lib_stl_ok=yes
+   ],[
+     austhex_cv_lib_stl_ok=no
+   ])
+ ])
+if test "$austhex_cv_lib_stl_ok" = "yes"; then
+  AC_DEFINE(HAVE_CXX_STL) 
+else
+  AC_MSG_ERROR([Sorry, you need a working Standard Template Library])
+fi
 
-AC_MSG_CHECKING(for an SGI compliant hash capability in your STL)
-AC_TRY_RUN([
+AC_CACHE_CHECK([for an SGI compliant hash capability in your STL],
+ austhex_cv_lib_stl_sgi_hash,[
+  AC_TRY_RUN([
 	#include <hash_map.h>
 
 	int main(void)
@@ -323,12 +370,19 @@ AC_TRY_RUN([
 	   hash_map<int, int> hm;
 	   hm.clear();
 	}
- ],
- [AC_DEFINE(STL_HAS_HASH) AC_MSG_RESULT(yes)],
- [AC_MSG_RESULT(no)])
+   ],[
+     austhex_cv_lib_stl_sgi_hash=yes
+   ],[
+     austhex_cv_lib_stl_sgi_hash=no
+   ])
+ ])
+if test "$austhex_cv_lib_stl_sgi_hash" = "yes"; then
+  AC_DEFINE(STL_HAS_HASH)
+fi
 
-AC_MSG_CHECKING(for an SGI compliant single list template in your STL)
-AC_TRY_RUN([
+AC_CACHE_CHECK([for an SGI compliant single list template in your STL],
+ austhex_cv_lib_stl_sgi_slist,[
+  AC_TRY_RUN([
 	#include <slist.h>
 
 	int main(void)
@@ -338,24 +392,35 @@ AC_TRY_RUN([
 	   
 	   exit(0);
 	}
- ],
- [AC_DEFINE(STL_HAS_SLIST) AC_MSG_RESULT(yes)],
- [AC_MSG_RESULT(no)])
+   ],[
+     austhex_cv_lib_stl_sgi_slist=yes
+   ],[
+     austhex_cv_lib_stl_sgi_slist=no
+   ])
+ ])
+if test "$austhex_cv_lib_stl_sgi_slist" = "yes"; then
+  AC_DEFINE(STL_HAS_SLIST)
+fi
+
+AC_CACHE_SAVE
 
 
-dnl -------------------------------
-dnl Last chance to fix things up :)
-dnl -------------------------------
+dnl ------------------------------------
+dnl Work out where to install this stuff
+dnl ------------------------------------
+dnl stuff goes here, would like to do it 'apache style' tho :)
+
+
+dnl -----------------------------------------------------
+dnl Fix up variables and make the files we needed to edit
+dnl -----------------------------------------------------
 LDFLAGS="$LDFLAGS_SAVE"
 AC_SUBST(INCDIRS)
-
-
-dnl --------------------------------
-dnl Make the files we needed to edit
-dnl --------------------------------
-AC_OUTPUT(Makefile \
-	install/Makefile \
-	src/Makefile)
+AC_OUTPUT([
+	Makefile
+	install/Makefile
+	src/Makefile
+	])
 
 
 dnl ------------------------------------------
