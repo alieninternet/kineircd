@@ -100,7 +100,7 @@ bool Languages::registerMap(tagMap_type map)
       debug("Languages::registerMap() - Map already exists");
 #endif
 
-      // Don't actually add it, but act as if we did
+      // Don't actually add it, but act as if we did :)
       return true;
    }
 
@@ -142,6 +142,12 @@ const std::string Languages::get(const std::string& languageCode,
 				 const tagID_type tagID,
 				 const parameterList_type* const parameters)
 {
+#ifdef KINE_DEBUG_PSYCHO
+   debug("Languages::get() - Requested TID #" + String::convert(tagID) + 
+	 " from language " + languageCode + " (" + 
+	 String::convert(languageDataList.size()) + " langs available)");
+#endif
+
    // Check if the tag ID is 0, or larger than the highest known TID..
    if ((tagID == 0) || (tagID > highestTagID)) {
       /* Return 'unknown' - we have no idea what to put here.. This is most
@@ -150,36 +156,69 @@ const std::string Languages::get(const std::string& languageCode,
        */
       return replacementObjectGlyph;
    }
+
+   const std::string* tagData = 0;
    
-   // Find the tag..
-//   const std::string& tagData = something;
-   const std::string tagData("This is tag data \0N \0p0 \0p1 \0q9", 31);
+   // Find the given language..
+   const languageDataList_type::iterator it =
+     languageDataList.find(languageCode);
+   
+   // Did we find the language?
+   if (it != languageDataList.end()) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Languages::get() - Attempting to get data from " +
+	    (*it).first);
+#endif
+
+      // Okay, try to grab it from the language data..
+      tagData = (*it).second->findTag(tagID);
+   }
+   
+   // Did we get tag data? Can we try the default language?
+   if ((tagData == 0) && (defaultLanguage != 0)) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Languages::get() - Attempting to get data from default language");
+#endif
+
+      // Urgh, try to find it in the default language then
+      tagData = defaultLanguage->findTag(tagID);
+   }
+   
+   // Okay, last try.. Did we get tag data?
+   if (tagData == 0) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Languages::get() - No language data available");
+#endif
+
+      // Give up! Return a replacement object character..
+      return replacementObjectGlyph;
+   }
    
    /* If the null character (used to mark necessary substitutions) is missing
     * from the tag data, then we do not need to do any processing. Is this
     * wise to run over the string potentially twice here? In doing this, I'm
     * presuming the majority of tags would not require substitutions..
     */
-   if (tagData.find('\0') == (std::string::size_type)-1) {
+   if (tagData->find('\0') == (std::string::size_type)-1) {
       // Simply return the string, no further work is necessary..
-      return tagData;
+      return *tagData;
    }
    
    // Our output string; this is what we will return after processing
    std::string output;
    
    // Run through the tag data string and substitute anything we can
-   for (std::string::size_type i = 0; i < tagData.length(); i++) {
+   for (std::string::size_type i = 0; i < tagData->length(); i++) {
       // Is this a substitution?
-      if (tagData[i] == '\0') {
+      if ((*tagData)[i] == '\0') {
 	 // Make sure there is more on the line..
-	 if ((i + 1) >= tagData.length()) {
+	 if ((i + 1) >= tagData->length()) {
 	    // Just skip it - eek!
 	    break;
 	 }
 	 
 	 // What do we do with this substitution?
-	 switch (tagData[++i]) {
+	 switch ((*tagData)[++i]) {
 	  case 'a': // The name of the server's administrator
 	    output += config().getAdministratorName();
 	    continue;
@@ -217,12 +256,12 @@ const std::string Languages::get(const std::string& languageCode,
 	     * there?
 	     */
 	    if ((parameters != 0) &&
-		(i <= tagData.length()) &&
-		(isdigit(tagData[i]))) {
+		(i <= tagData->length()) &&
+		(isdigit((*tagData)[i]))) {
 	       unsigned char paramNumber;
 	       
 	       // Work out the base parameter number..
-	       switch (tagData[i - 1]) {
+	       switch ((*tagData)[i - 1]) {
 		case 'p':
 		  paramNumber = 0;
 		  break;
@@ -237,7 +276,7 @@ const std::string Languages::get(const std::string& languageCode,
 	       }
 	       
 	       // Add on the supplementary parameter number
-	       paramNumber += (unsigned char)(tagData[i] - 0x30);
+	       paramNumber += (unsigned char)((*tagData)[i] - 0x30);
 	       
 	       // Do we have this parameter in our list??
 	       if ((parameterList_type::size_type)(paramNumber + 1) <=
@@ -264,7 +303,7 @@ const std::string Languages::get(const std::string& languageCode,
       }
       
       // Copy this char flat
-      output += tagData[i];
+      output += (*tagData)[i];
    }
    
    // Return the processed output

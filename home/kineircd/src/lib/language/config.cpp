@@ -35,6 +35,7 @@
 
 #include "libkineircd/language/config.h"
 #include "kineircd/languages.h"
+#include "kineircd/languagedata.h"
 #include "kineircd/config.h"
 #include "libkineircd/debug.h"
 
@@ -76,6 +77,16 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(LanguageConfig::varHandler)
    String tag;
    String data;
    unsigned long lineNum = 0;
+
+   // Create what may be either our permanent or temporary home for this data
+   LanguageData* languageData = new LanguageData();
+   
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream out;
+   out << "LanguageConfig::varHandler() - Current language data @ " <<
+     (void *)languageData;
+   debug(out.str());
+#endif
 
    // Loop through the file..
    for (;;) {
@@ -230,16 +241,27 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(LanguageConfig::varHandler)
       
       // Check the first letter of the tag...
       if (tag[0] == '.') {
-	 // Strip away the first char
-	 tag = tag.substr(1);
+	 // Strip away the first char and convert it to upper-case
+	 tag = tag.toUpper().substr(1);
 	 
 #ifdef KINE_DEBUG_PSYCHO
 	 debug("LanguageConfig::varHandler() - Line " + 
 	       String::convert(lineNum) + " tag: '" + tag + "' - Control tag");
 #endif
 	 
-	 // Do something with the control tag? Huh? Huh?? :(
-
+	 // Do something with the control tag (this is ugly)
+	 if (tag == "LANGCODE") {
+	    languageData->languageCode =
+	      data.toLower().substr(0, data.find(' '));
+	 } else if (tag == "LANGNAME") {
+	    languageData->languageName = data;
+	 } else if (tag == "LANGNOTE") {
+	    languageData->languageNote = data;
+	 } else if (tag == "MAINTAINER") {
+	    languageData->maintainer = data;
+	 } else if (tag == "REVISION") {
+	    languageData->fileRevision = atol(data.c_str());
+	 }
       } else {
 	 Languages::tagID_type tagID;
 	 
@@ -272,9 +294,27 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(LanguageConfig::varHandler)
 #endif
 	 }
 
-	 // Remember the tag's data and TUID..
-	 // *cough* :)
+	 // If the language data vector is not big enough yet, resize it
+	 if (languageData->tagData.size() < tagID) {
+	    languageData->tagData.resize(tagID);
+	 }
+	 
+	 // Copy the tag's data into this language's tag data vector
+	 languageData->tagData[tagID - 1] = new std::string(line);
+
+	 // Increase the tag counter..
+	 languageData->tagCount++;
       }
+   }
+
+   // Add this language to the list..
+   languages().languageDataList.
+     insert(Languages::languageDataList_type::value_type
+	    (languageData->languageCode, languageData));
+   
+   // If there is no default language, make this language the default..
+   if (languages().defaultLanguage == 0) {
+      languages().defaultLanguage = languageData;
    }
    
    // Presume everything went okay!

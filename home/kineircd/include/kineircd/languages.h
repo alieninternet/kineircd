@@ -93,16 +93,20 @@ namespace Kine {
        * to find the appropriate data within the language data vectors.
        */
 # ifdef KINE_STL_HAS_HASH
-      typedef std::hash_map <std::string, Languages::tagID_type>
+      typedef std::hash_map < std::string, Languages::tagID_type >
 	tagDictionary_type;
 # else
-      typedef std::map <std::string, Languages::tagID_type>
+      typedef std::map < std::string, Languages::tagID_type >
 	tagDictionary_type;
 # endif
       tagDictionary_type tagDictionary;
 
       // The highest known TID
       tagID_type highestTagID;
+
+      // Languages!! Well, language data..
+      typedef std::map < std::string, LanguageData* > languageDataList_type;
+      languageDataList_type languageDataList;
       
       // Our default language, to use if all else fails..
       const LanguageData* defaultLanguage;

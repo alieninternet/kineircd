@@ -34,14 +34,14 @@ namespace Kine {
    class LanguageData {
     public:
       // Tag data type
-      typedef std::vector <std::string> tagData_type;
+      typedef std::vector < std::string* > tagData_type;
       
     private:
       std::string languageCode;			// RFC-3066 compliant code
       std::string languageName;			// Name of the language (UTF-8)
       std::string languageNote;			// Optional notice
       std::string maintainer;			// Maintainer of the file
-      unsigned long fileRevision;		// File revision
+      long fileRevision;			// File revision
       unsigned long tagCount;			// *real* number of tags
 
       tagData_type tagData;			// The tag data itself!
@@ -54,8 +54,7 @@ namespace Kine {
 	{};
       
       // Destructor
-      ~LanguageData(void)
-	{};
+      ~LanguageData(void);
 
       // Look for a given TID's data, and return it if possible
       const std::string* const 
@@ -74,6 +73,9 @@ namespace Kine {
 	{ return fileRevision; };
       const unsigned long getTagCount(void) const
 	{ return tagCount; };
+      
+      // Friends
+      friend struct LanguageConfig;
    };
 };
 

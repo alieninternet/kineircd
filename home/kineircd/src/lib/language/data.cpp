@@ -27,9 +27,32 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
+#ifdef KINE_DEBUG
+# include <sstream>
+#endif
+
 #include "kineircd/languagedata.h"
+#include "libkineircd/debug.h"
 
 using namespace Kine;
+
+
+/* ~LanguageData - Destructor
+ * Original 20/03/2003 simonb
+ */
+LanguageData::~LanguageData(void)
+{
+   // Erase the language data vector
+   while (!tagData.empty()) {
+      // If this is a valid entry, delete it
+      if (tagData.back() != 0) {
+	 delete tagData.back();
+      }
+      
+      // Erase this entry
+      tagData.pop_back();
+   }
+}
 
 
 /* findTag - Look for a given TID's data, and return it if possible
@@ -38,14 +61,21 @@ using namespace Kine;
 const std::string* const 
   LanguageData::findTag(const Languages::tagID_type tagID) const
 {
-   // Grab whatever is found at the given TID
-   const std::string& data = tagData[tagID];
-   
-   // If the string is valid, return it
-   if (!data.empty()) {
-      return &data;
+   // Make sure the tag is valid..
+   if ((tagID == 0) || (tagID > tagData.size())) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("LanguageData::findTag - Invalid TID given");
+#endif
+      return 0;
    }
    
-   // Nothing found, return null and hope for the best
-   return 0;
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream out;
+   out << "LanguageData::findTag - Returning data @ " << 
+     (void *)tagData[tagID - 1];
+   debug(out.str());
+#endif
+   
+   // Return whatever is found at the given TID
+   return tagData[tagID - 1];
 }
