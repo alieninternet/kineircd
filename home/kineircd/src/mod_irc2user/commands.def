@@ -89,11 +89,11 @@ commands = {
    minimumParams	= 1;
 };
 
-//commands = {
-//   command		= "JOIN";
-//   defaultPenalty	= 3;
-//   minimumParams	= 1;
-//};
+commands = {
+   command		= "JOIN";
+   defaultPenalty	= 3;
+   minimumParams	= 1;
+};
 
 //commands = {
 //   command		= "KICK";
@@ -190,11 +190,11 @@ commands = {
    minimumParams	= 2;
 };
 
-//commands = {
-//   command		= "PART";
-//   defaultPenalty	= 3;
-//   minimumParams	= 1;
-//};
+commands = {
+   command		= "PART";
+   defaultPenalty	= 3;
+   minimumParams	= 1;
+};
 
 commands = {
    command		= "PING";

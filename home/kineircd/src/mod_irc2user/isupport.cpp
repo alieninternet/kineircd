@@ -54,8 +54,7 @@ const char* const ISupport::preInitInfo[] = {
    "IIRC",				// KineIRCd supports IIRC connections
    "CHARSET=UTF-8",			// We output using UTF-8 encoding
    "CASEMAPPING=rfc1459",
-   "PREFIX=(.ohv).@%+",
-   "CHANTYPES=&#!+.~",
+   "PREFIX=(!uohv)!.@%+",
    "CHIDLEN=5",
 #if (defined(HAVE_MOD_IRC2USER_HAVE_CMD_PRIVMSG) || \
      defined(HAVE_MOD_IRC2USER_HAVE_CMD_NOTICE))
@@ -129,6 +128,10 @@ void ISupport::initInfo(void)
 		  String::convert(config().getLimitsMaxKickReasonLength()));
 #endif
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_JOIN
+   if (/* !something.empty() */ false) {
+      info.push_back("CHANTYPES=" /*+
+		     something */"&#!+.~");
+   }
    info.push_back("CHANNELLEN=" +
 		  String::convert(config().getLimitsChannelsMaxNameLength()));
    info.push_back("MAXCHANNELS=" +

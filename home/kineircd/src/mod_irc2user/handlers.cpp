@@ -288,6 +288,19 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleISON)
 #endif
   
   
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_JOIN
+/* handleJOIN
+ * Original ? simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleJOIN)
+{
+   // fix me soon
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHCHANNEL,
+	       GETLANG(irc2_ERR_NOSUCHCHANNEL_UNSUPPORTED_TYPE));
+}
+#endif
+
+
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_LANGUAGE
 /* handleLANGUAGE
  * Original 26/10/2001 simonb
@@ -553,6 +566,19 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleOPER)
    // fix me when there's actually IRC operator code :)
    sendNumeric(LibIRC2::Numerics::ERR_NOOPERHOST,
 	       GETLANG(irc2_ERR_NOOPERHOST));
+}
+#endif
+
+
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_PART
+/* handlePART
+ * Original ? simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handlePART)
+{
+   // fix me soon
+   sendNumeric(LibIRC2::Numerics::ERR_NOTONCHANNEL,
+	       GETLANG(irc2_ERR_NOTONCHANNEL));
 }
 #endif
 
