@@ -26,4 +26,4 @@
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 
 # Call our mailing routine
-^austhex.servd8.0 /cvsbin/austhex/loginfo.sh $USER $CVSROOT %{sVv}
+#^austhex.servd8.0 /cvsbin/austhex/loginfo.sh $USER $CVSROOT %{sVv}
