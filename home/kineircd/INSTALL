@@ -73,6 +73,26 @@
     The configuration of the server's compilation time settings can be
     important performance wise
 
+    If you're lazy (but not lazy enough to read the above) you can use these:
+    
+     --enable-lower-cpu
+     --disable-lower-cpu (default)
+     
+       With this enabled, it will effect the defaults of some of the 
+       feature settings in order to reduce cpu usage. The change will not
+       be very dramatic, though.
+       
+       
+     --enable-lower-memory
+     --disable-lower-memory (default)
+     
+       With this enabled, like the option above, it will effect the default
+       settings of some of the feature settings below, but this time to
+       reduce any additional memory usage. The change will not be a
+       dramatic one.
+       
+
+
     The following features can be toggled:
 
      --enable-allow-clients (default)
@@ -233,7 +253,17 @@
        has been established (user/server/service etc) it cannot be changed.
        This can stop many denial of service attacks which exploit the fact
        that the server is a little braindead during registration time.
-	 
+
+       
+     --enable-time-to-be-idle (default = 30)
+     --disable-time-to-be-idle
+     
+       When enabled, idle information will only be considered/shown when
+       the idle time of a user is greater than the given time (in seconds).
+       This is a small addition to code, and lowers some bandwidth output.
+       When this is disabled, idle times will always be shown (even it a
+       person is idle 0 seconds).
+
      
      --enable-traceroute (default)
      --disable-traceroute

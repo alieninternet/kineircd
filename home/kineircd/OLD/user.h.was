@@ -215,6 +215,16 @@ class User {
 	return vwhostname;
      };
    
+   modes_t getModes(void) const			// Return the modes
+     {
+	return modes;
+     };
+   
+   bool isModeSet(modes_t mode) const		// Is a mode set?
+     {
+	return (modes & mode);
+     };
+   
    Channel *getChannel(String &);		// Return a channel
 
    Server *getServer(void) const		// Get the server we are on

@@ -194,10 +194,12 @@ char const *Language::L_ERR_WHOTRUNC =
   ":Who list too long - Truncated.";
 char const *Language::L_RPL_ENDOFWHO =
   "%s :End of WHO list";
+#ifdef DO_MATCH_COUNTING
 char const *Language::L_RPL_ENDOFWHO_NOMATCH =
   "%s :End of WHO list (no match)";
 char const *Language::L_RPL_ENDOFWHO_MATCHES =
   "%s :End of WHO list (%d matches)";
+#endif
 
 // WHOIS messages
 char const *Language::L_RPL_WHOISVIRT =
@@ -214,22 +216,28 @@ char const *Language::L_RPL_ENDOFWHOIS =
 // WHOWAS messages
 char const *Language::L_RPL_ENDOFWHOWAS =
   "%s :End of WHOWAS";
+#ifdef DO_MATCH_COUNTING
 char const *Language::L_RPL_ENDOFWHOWAS_NOMATCH =
   "%s :End of WHOWAS (no match, or matches have expired)";
 char const *Language::L_RPL_ENDOFWHOWAS_MATCHES =
   "%s :End of WHOWAS (%d matches)";
+#endif
 
 // HELP command replies
 char const *Language::L_RPL_ENDOFHELP =
   "%s :End of HELP";
+#ifdef DO_MATCH_COUNTING
 char const *Language::L_RPL_ENDOFHELP_NOMATCH =
   "%s :End of HELP (no match)";
 char const *Language::L_RPL_ENDOFHELP_MATCHES =
   "%s :End of HELP (%d matches)";
+#endif
 char const *Language::L_RPL_ENDOFHELP_SIMPLE =
   "%s :End of HELP; Try 'HELP -%s' for more information";
+#ifdef DO_MATCH_COUNTING
 char const *Language::L_RPL_ENDOFHELP_SIMPLE_MATCHES =
   "%s :End of HELP (%d matches); Try 'HELP -%s' for more information";
+#endif
 
 // AWAY command messages
 char const *Language::L_RPL_NOWAWAY =
@@ -363,10 +371,12 @@ char const *Language::L_RPL_LISTEND =
   ":End of LIST";
 char const *Language::L_RPL_ENDOFNAMES =
   "%s :End of NAMES list";
+#ifdef DO_MATCH_COUNTING
 char const *Language::L_RPL_ENDOFNAMES_NOMATCH =
   "%s :End of NAMES list (no match)";
 char const *Language::L_RPL_ENDOFNAMES_MATCHES =
   "%s :End of NAMES list (%d matches)";
+#endif
 char const *Language::L_RPL_ENDOFSTATS =
   " :End of STATS report";
 

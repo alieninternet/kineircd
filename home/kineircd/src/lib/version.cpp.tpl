@@ -48,9 +48,6 @@ char const *getVersionChars =
 #ifdef ALLOW_GLOBALOP_LOCAL_KILL
 				"L"
 #endif
-#ifdef SHORT_MOTD
-				"m"
-#endif
 #ifdef FORCE_MOTD
 				"M"
 #endif

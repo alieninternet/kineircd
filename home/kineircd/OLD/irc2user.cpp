@@ -533,18 +533,20 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
    // Send some stuff that clients seem to rely on being sent... (urgh)
    doLUSERS(this, user, 0);
    
-#ifdef SHORT_MOTD
-   // Send a fake three-line motd
-   sendNumeric(RPL_MOTDSTART,
-	       String::printf((char *)Language::L_RPL_MOTDSTART, 
-			      (char const *)getConnection()->getDaemon()->myServer()->hostname));
-   sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT1);
-   sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT2);
-   sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT3);
-   sendNumeric(RPL_ENDOFMOTD, Language::L_RPL_ENDOFMOTD);
-#else
-   doMOTD(this, user);
-#endif
+   // Should we send a minature motd or the full thing?
+   if (getConnection()->getDaemon()->myServer()->
+       isModeSet(Server::MODE_SHORTMOTD)) {
+      // Send a fake three-line motd
+      sendNumeric(RPL_MOTDSTART,
+		  String::printf((char *)Language::L_RPL_MOTDSTART, 
+				 (char const *)getConnection()->getDaemon()->myServer()->hostname));
+      sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT1);
+      sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT2);
+      sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT3);
+      sendNumeric(RPL_ENDOFMOTD, Language::L_RPL_ENDOFMOTD);
+   } else {
+      doMOTD(this, user);
+   }
    
    // Send the 6-line spam notice thingy
    sendNumeric(RPL_SPAM, Language::L_RPL_SPAM_LINE1);
@@ -1247,20 +1249,21 @@ void irc2userHandler::sendWatchOn(Server *target) const
 			    IRC2USER_EOL_CHARS,
 			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
 			    RPL_LOGON,
-			    (char const *)user->nickname,
+			    (char const *)user->getNickname(),
 			    (char const *)target->getHostname()));
 }
 
-void irc2userHandler::sendWatchOn(Channel *target) const
+void irc2userHandler::sendWatchOn(Channel *target, String const &creator) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s * * %lu "
+     sendRaw(String::printf(":%s %d %s %s %s * %lu "
 			    LNG_RPL_LOGON_CHANNEL
 			    IRC2USER_EOL_CHARS,
 			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
 			    RPL_LOGON,
-			    (char const *)user->nickname,
-			    (char const *)target->name,
+			    (char const *)user->getNickname(),
+			    (char const *)target->getName(),
+			    (char const *)creator,
 			    target->creationTime));
 }
 
@@ -1999,7 +2002,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	 
 	 // Create this channel with this user as the channel creator
 	 c = new Channel(chan, TO_DAEMON->getTime(), TO_DAEMON);
-	 TO_DAEMON->addChannel(c);
+	 TO_DAEMON->addChannel(c, handler->user->getNickname());
       
 	 // Join the user to their new channel
 	 TO_DAEMON->joinChannel(c, handler->user);

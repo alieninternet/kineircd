@@ -146,8 +146,10 @@ class Language {
    // WHO messages
    static char const *L_ERR_WHOTRUNC;
    static char const *L_RPL_ENDOFWHO;
+# ifdef DO_MATCH_COUNTING
    static char const *L_RPL_ENDOFWHO_NOMATCH;
    static char const *L_RPL_ENDOFWHO_MATCHES;
+# endif
    
    // WHOIS messages
    static char const *L_RPL_WHOISVIRT;
@@ -158,15 +160,21 @@ class Language {
    
    // WHOWAS messages
    static char const *L_RPL_ENDOFWHOWAS;
+# ifdef DO_MATCH_COUNTING
    static char const *L_RPL_ENDOFWHOWAS_NOMATCH;
    static char const *L_RPL_ENDOFWHOWAS_MATCHES;
+# endif
    
    // HELP command replies
    static char const *L_RPL_ENDOFHELP;
+# ifdef DO_MATCH_COUNTING
    static char const *L_RPL_ENDOFHELP_NOMATCH;
    static char const *L_RPL_ENDOFHELP_MATCHES;
+# endif
    static char const *L_RPL_ENDOFHELP_SIMPLE;
+# ifdef DO_MATCH_COUNTING
    static char const *L_RPL_ENDOFHELP_SIMPLE_MATCHES;
+# endif
    
    // AWAY command messages
    static char const *L_RPL_NOWAWAY;
@@ -234,8 +242,10 @@ class Language {
    static char const *L_RPL_ENDOFINFO;
    static char const *L_RPL_LISTEND;
    static char const *L_RPL_ENDOFNAMES;
+# ifdef DO_MATCH_COUNTING
    static char const *L_RPL_ENDOFNAMES_NOMATCH;
    static char const *L_RPL_ENDOFNAMES_MATCHES;
+# endif
    static char const *L_RPL_ENDOFSTATS;
    static char const *L_RPL_VERSION;
    static char const *L_RPL_ADMINME;

@@ -90,7 +90,7 @@ class Handler {
    virtual void sendWatchOff(User *) const {};
    virtual void sendWatchOn(Server *) const {};
    virtual void sendWatchOn(User *, String const & = "") const {};
-   virtual void sendWatchOn(Channel *) const {};
+   virtual void sendWatchOn(Channel *, String const &) const {};
    
    // Calls for remotes (similar to sends, really)
    virtual void callADMIN(Server *, User *) const {};
@@ -250,7 +250,7 @@ class irc2userHandler : public Handler {
    void sendWatchOff(User *) const;
    void sendWatchOn(Server *) const;
    void sendWatchOn(User *, String const & = "") const;
-   void sendWatchOn(Channel *) const;
+   void sendWatchOn(Channel *, String const &) const;
    
    // Protocol input
    void parseLine(String const &);

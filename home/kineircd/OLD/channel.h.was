@@ -265,7 +265,7 @@ class Channel {
      {
 	return (modes & mode);
      };
-   
+
    // Access checking
    bool isHidden(void) const
      {

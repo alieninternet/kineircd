@@ -284,6 +284,12 @@
 # undef FLOODLOCK_AWAY_REPLY		/* .. for receiving away replies */
 # undef FLOODLOCK_AWAY_SET		/* .. for setting away messages */
   
+  
+/* When this is defined, idle information will not be presented unless the
+ * idle time is greater than or equal to the given time (in seconds)
+ */
+# undef TIME_TO_BE_IDLE			
+  
  
 /* Define this if you want the server to send a ping with a random value to
  * the client upon connection and wait until a responce is returned before

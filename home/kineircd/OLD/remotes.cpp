@@ -544,15 +544,22 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 			      u->nickname + " :" + u->awayMessage);
       }
       
-      // hmm... i do not like this very much
-      if (u->server == TO_DAEMON->server) {
-	 handler->sendNumeric(TO_DAEMON->server, RPL_WHOISIDLE, from,
-			      u->nickname +
-			      String::printf((char *)Language::L_RPL_WHOISIDLE,
-					     ((unsigned long)
-					      difftime(TO_DAEMON->getTime(),
-						       u->local->handler->connection->getLastSpoke())),
-					     u->signonTime));
+      // Check if this user is local, and whether this user can see idle info
+      if ((u->server == TO_DAEMON->server) &&
+#ifdef TIME_TO_BE_IDLE
+	  (difftime(TO_DAEMON->getTime(), 
+		    u->local->handler->getConnection()->getLastSpoke()) >=
+	   TIME_TO_BE_IDLE) &&
+#endif
+	  (!u->isModeSet(User::MODE_INVISIBLE) || User::isHelper(from))) {
+	 handler->
+	       sendNumeric(TO_DAEMON->server, RPL_WHOISIDLE, from,
+			   u->nickname +
+			   String::printf((char *)Language::L_RPL_WHOISIDLE,
+					  ((unsigned long)
+					   difftime(TO_DAEMON->getTime(),
+						    u->local->handler->getConnection()->getLastSpoke())),
+					  u->signonTime));
       }
       
       // Check if this user is an irc operator

@@ -294,7 +294,7 @@ class Daemon {
    void snapshotUser(User *, Whowas::type_t,
 		     String const &);		// Snapshot a user for WHOWAS
    
-   void addChannel(Channel *);			// Add a channel to a list
+   void addChannel(Channel *, String const &);	// Add a channel to a list
    Channel *getChannel(String const &);		// Find a channel
    void joinChannel(Channel *, User *);		// User joining a channel
    void leaveChannel(Channel *, User *);	// Raw user leave routine

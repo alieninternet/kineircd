@@ -1014,7 +1014,7 @@ void Daemon::snapshotUser(User *u, Whowas::type_t type, String const &details)
 /* addChannel - Add a channel to the appropriate channel list
  * Original 15/08/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::addChannel(Channel *chan)
+void Daemon::addChannel(Channel *chan, String const &creator)
 {
 #ifdef DEBUG_EXTENDED
    debug(String::printf("addChannel() <- %s",
@@ -1046,7 +1046,7 @@ void Daemon::addChannel(Channel *chan)
 #endif
       
       if ((*it).second->watching(loweredName)) {
-	 (*it).second->handler->sendWatchOn(chan);
+	 (*it).second->handler->sendWatchOn(chan, creator);
       }
    }
 }

@@ -420,6 +420,40 @@ AC_CACHE_SAVE
 dnl  -------------------------------------------------------------------------
 echo " -=> Determining compilation configuration parameters"
 dnl  -------------------------------------------------------------------------
+dnl
+dnl Stuff that effects the following arguments
+dnl
+AC_MSG_CHECKING([lower-cpu parameter])
+AC_ARG_ENABLE(lower-cpu,[  --enable-lower-cpu            bias defaults to lower cpu usage],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     austhex_test_lower_cpu="yes"
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+ ])
+
+
+AC_MSG_CHECKING([lower-memory parameter])
+AC_ARG_ENABLE(lower-memory,[  --enable-lower-memory         bias defaults to lower memory usage],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     austhex_test_lower_memory="yes"
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+ ])
+
+
+dnl
+dnl Misc feature settings
+dnl
 AC_MSG_CHECKING([allow-clients parameter])
 AC_ARG_ENABLE(allow-clients,[  --enable-allow-clients        allow connections from users (clients)],
  [
@@ -480,8 +514,12 @@ AC_ARG_ENABLE(convert-motd-tabs,[  --enable-convert-motd-tabs    fix motd tabs i
      AC_DEFINE(CONVERT_MOTD_TABS)
    fi
  ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(CONVERT_MOTD_TABS)
+   if test "$austhex_test_lower_cpu" = "yes"; then
+     AC_MSG_RESULT([no (lower-cpu default)])
+   else
+     AC_MSG_RESULT([yes (default)])
+     AC_DEFINE(CONVERT_MOTD_TABS)
+   fi
  ])
 
 AC_MSG_CHECKING([drop-lame-servers parameter])
@@ -512,8 +550,14 @@ AC_ARG_ENABLE(floodlock-away-reply,[  --enable-floodlock-away-reply set the away
      fi
    fi
  ],[
-   AC_MSG_RESULT([30 seconds (default)])
-   AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, 30)
+   if test "$austhex_test_lower_cpu" = "yes"; then
+     AC_MSG_RESULT([off (lower-cpu default)])
+   elif test "$austhex_test_lower_memory" = "yes"; then
+     AC_MSG_RESULT([off (lower-memory default)])
+   else
+     AC_MSG_RESULT([30 seconds (default)])
+     AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, 30)
+   fi
  ])
 
 AC_MSG_CHECKING([floodlock-away-set parameter])
@@ -531,8 +575,12 @@ AC_ARG_ENABLE(floodlock-away-set,[  --enable-floodlock-away-set   set the away-s
      fi
    fi
  ],[
-   AC_MSG_RESULT([45 seconds (default)])
-   AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_SET, 45)
+   if test "$austhex_test_lower_memory" = "yes"; then
+     AC_MSG_RESULT([off (lower-memory default)])
+   else
+     AC_MSG_RESULT([45 seconds (default)])
+     AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_SET, 45)
+   fi
  ])
 
 AC_MSG_CHECKING([helpers-see-umodes parameter])
@@ -573,8 +621,12 @@ AC_ARG_ENABLE(match-counting,[  --enable-match-counting       add match counts t
      AC_DEFINE(DO_MATCH_COUNTING)
    fi
  ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(DO_MATCH_COUNTING)
+   if test "$austhex_test_lower_cpu" = "yes"; then
+     AC_MSG_RESULT([no (lower-cpu default)])
+   else
+     AC_MSG_RESULT([yes (default)])
+     AC_DEFINE(DO_MATCH_COUNTING)
+   fi
  ])
 
 AC_MSG_CHECKING([oper-wallops parameter])
@@ -643,6 +695,29 @@ AC_ARG_ENABLE(strict-registration,[  --enable-strict-registration  enforce stric
  ],[
    AC_MSG_RESULT([yes (default)])
    AC_DEFINE(STRICT_REGISTRATIONS)
+ ])
+
+AC_MSG_CHECKING([time-to-be-idle parameter])
+AC_ARG_ENABLE(time-to-be-idle,[  --enable-time-to-be-idle      set the away-reply floodlock timeout],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(off)
+   else
+     if test "$enableval" -gt 0 -a -lt 1000000; then
+       AC_MSG_RESULT([$enableval seconds])
+       AC_DEFINE_UNQUOTED(TIME_TO_BE_IDLE, $enableval)
+     else
+       AC_MSG_RESULT([30 seconds (default)])
+       AC_DEFINE_UNQUOTED(TIME_TO_BE_IDLE, 30)
+     fi
+   fi
+ ],[
+   if test "$austhex_test_lower_cpu" = "yes"; then
+     AC_MSG_RESULT([off (lower-cpu default)])
+   else
+     AC_MSG_RESULT([30 seconds (default)])
+     AC_DEFINE_UNQUOTED(TIME_TO_BE_IDLE, 30)
+   fi
  ])
 
 AC_MSG_CHECKING([traceroute parameter])
