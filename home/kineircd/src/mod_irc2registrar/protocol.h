@@ -62,8 +62,8 @@ namespace Kine {
       AISutil::String password;			// Logon password
       AISutil::String passwordKludge;		// Extra info sent via PASS
       AISutil::String nickname;			// Nickname (client/service)
-      AISutil::String username;			// Username (client/server)
-      AISutil::String hostname;			// Hostname
+      AISutil::String username;			// Username (client)
+      AISutil::String hostname;			// Hostname (client/server)
       AISutil::String realname;			// Realname/Description
       AISutil::String distribution;		// Distribution range (service)
       AISutil::String modes;			// Modes for next handler
@@ -112,6 +112,8 @@ namespace Kine {
 	: Protocol(c),
           listener(l),
           registrationType(RegistrationType::NONE),
+          startStamp(-1),
+          linkStamp(-1),
           pongsLeft(/*0*/ 1)
 	{};
       

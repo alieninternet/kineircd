@@ -143,7 +143,7 @@ void Registrar::sendPing(void)
 void Registrar::parseLine(const String& line)
 {
    bool found = false;
-cout << "Rx:" << line << endl;   
+
    // Tokenise the line, and grab the command
    StringTokens st(line);
    String command = st.nextToken().toUpper();
@@ -151,9 +151,6 @@ cout << "Rx:" << line << endl;
    // Run through the list and find a function..
    for (int i = 0; commandTable[i].command != 0; i++) {
       if (command == commandTable[i].command) {
-#ifdef KINE_DEBUG_PSYCHO
-	 debug("Registrar::parseLine() <- Command: " + command);
-#endif
 	 found = true;
 	 (this->*(commandTable[i].handler))(st);
 	 break;
@@ -194,7 +191,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseCAPAB)
 KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
 {
    // Does the port this person connected to accept this type of connection?
-   if (!(listener.getFlags() & Listener::Flags::ALLOW_NETWORKS)) {
+   if (!listener.isFlagSet(Listener::Flags::ALLOW_NETWORKS)) {
       // Throw away this connection.. We should report an error here?
       connection.goodbye();
       return;
@@ -294,9 +291,9 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePASS)
    
    // Is there anything else on the line we should know about?
    if (line.hasMoreTokens()) {
-      passwordKludge = line.nextColonToken();
+      passwordKludge = line.rest();
 #ifdef KINE_DEBUG_PSYCHO
-      debug(" -=> Pass' Kludge: " + passwordKludge);
+      debug(" -=>  PASS Kludge: " + passwordKludge);
 #endif
    }
 }
@@ -351,11 +348,13 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseQUIT)
 
 /* parseSERVER
  * Original 12/08/2001 simonb
+ * Note: Due to the nature of the diversity assosicated with this command, we
+ *       must parse this in a careful nature
  */
 KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
 {
    // Does the port this person connected to accept this type of connection?
-   if (!(listener.getFlags() & Listener::Flags::ALLOW_SERVERS)) {
+   if (!listener.isFlagSet(Listener::Flags::ALLOW_SERVERS)) {
       // Throw away this connection.. We should report an error here?
       connection.goodbye();
       return;
@@ -368,41 +367,49 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
       return;
    }
    
-   // Check there are enough tokens
-   if (line.countTokens() < 7) {
+   /* Check there are enough tokens, based on the lowest possible a la 
+    * RFC1459. However, we consider the info/description field optional.
+    */
+   if (line.countTokens() < 4) {
       sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "SERVER");
       return;
    }
 
-   // Grab the variables
-   username = line.nextToken();
+   // Grab the first required value, the server name..
+   hostname = line.nextToken();
+#ifdef KINE_DEBUG_PSYCHO
+   debug(" -=>       Server: " + hostname);
+#endif
+   
+   // Grab the second required value - hop count
    int hops = line.nextToken().toInt();
-   startStamp = line.nextToken().toLong();
-   linkStamp = line.nextToken().toLong();
-   protocol = line.nextToken();
+#ifdef KINE_DEBUG_PSYCHO
+   debug(" -=>         Hops: " + String::convert(hops));
+#endif
+   
+   // Check the hop count, it must be 1, any other value is incorrect
+   if (hops != 1) {
+      connection.goodbye();
+      return;
+   }
+
+   // Check what the third variable is here...
+   
+//   startStamp = line.nextToken().toLong();
+//   linkStamp = line.nextToken().toLong();
+//   protocol = line.nextToken();
 //   realname = 
 //     line.nextColonToken().substr(0, 
 //				  connection.getDaemon().getConfig().
 //				  getOptionsLimitsServersMaxDescriptionLength());
    
-#ifdef KINE_DEBUG_PSYCHO
-   // Send what we got to the debugging output
-   debug(" -=>       Server: " + username);
-   debug(" -=>         Hops: " + String::convert(hops));
-   debug(" -=>   startStamp: " + String::convert(startStamp));
-   debug(" -=>    linkStamp: " + String::convert(linkStamp));
-   debug(" -=>     Protocol: " + protocol);
-   debug(" -=>         Name: " + realname);
-#endif
-   
-   // Check the integers variables are ok
-   if ((hops != 1) || (startStamp <= 0) || (linkStamp <= 0)) {
-#ifdef KINE_DEBUG_EXTENDED
-      debug("Variables are invalid!");
-#endif
-      connection.goodbye();
-      return;
-   }
+//#ifdef KINE_DEBUG_PSYCHO
+//   // Send what we got to the debugging output
+//   debug(" -=>   startStamp: " + String::convert(startStamp));
+//   debug(" -=>    linkStamp: " + String::convert(linkStamp));
+//   debug(" -=>     Protocol: " + protocol);
+//   debug(" -=>         Name: " + realname);
+//#endif
    
    // Set the registration mode
    registrationType = RegistrationType::SERVER;
@@ -415,7 +422,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
 KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
 {
    // Does the port this person connected to accept this type of connection?
-   if (!(listener.getFlags() & Listener::Flags::ALLOW_SERVICES)) {
+   if (!listener.isFlagSet(Listener::Flags::ALLOW_SERVICES)) {
       // Throw away this connection.. We should report an error here?
       connection.goodbye();
       return;
@@ -484,7 +491,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
 KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
 {
    // Does the port this person connected to accept this type of connection?
-   if (!(listener.getFlags() & Listener::Flags::ALLOW_USERS)) {
+   if (!listener.isFlagSet(Listener::Flags::ALLOW_USERS)) {
       // Throw away this connection.. We should report an error here?
       connection.goodbye();
       return;
