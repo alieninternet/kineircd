@@ -339,6 +339,15 @@ chanmodes = {
    irc2char	= "u";
    name		= "AUDITORIUM";
    origin	= "Unreal";
+   conflict	= "yes";
+};
+
+chanmodes = {
+   irc2char	= "u";
+   name		= "FOUNDER";
+   origin	= "tr-ircd";
+   comment	= "Gives the specified nickname 'founder' status.";
+   conflict	= "yes";
 };
 
 chanmodes = {

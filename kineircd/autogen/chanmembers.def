@@ -68,10 +68,25 @@ chanmembers = {
 
 chanmembers = {
    name		= "SERVICE";
-   prefixchar	= ".";
-   irc2mode	= ".";
+   prefixchar	= "!";
+   irc2mode	= "!";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "This is given only by servers or services. It should always be the highest ranking membership type in the channel, and denotes that the user with the membership status is a service. The intended use for this was to mark out which channel member is an official channel service, however other applications are also available.";
+   comment	= "This is given only by servers or services. It should "
+                  "always be the highest ranking membership type in the "
+		  "channel, and denotes that the user with the membership "
+		  "status is a service. The intended use for this was to "
+		  "mark out which channel member is an official channel "
+		  "service, however other applications are also available.";
+};
+
+chanmembers = {
+   name		= "FOUNDER";
+   prefixchar	= ".";
+   irc2mode	= "u";
+   origin	= "tr-ircd";
+   comment	= "This is given to users when they are given 'founder' "
+                  "status on a channel, and should have a rank higher than "
+		  "a normal operator.";
 };
 
