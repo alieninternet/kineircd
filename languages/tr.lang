@@ -1,0 +1,286 @@
+# $Id$
+# Basic KineIRCd language file for Turkish (ISO-639-1 code 'tr')
+#
+.LANGCODE = tr
+.LANGNAME = Türkçe
+.REVISION = 2003030700
+.MAINTAINER = idil@sf.net
+
+
+
+# Numeric 001 - RPL_WELCOME (0 = nick, 1 = user, 2 = host)
+irc2_RPL_WELCOME =  %N Internet Relay Networkune Hoşgeldiniz %p0!%p1@%p2
+
+# Numeric 002 - RPL_YOURHOST (0 = server name, 1 = version)
+irc2_RPL_YOURHOST = Host addressiniz %p0, %p1 versiyonu kullaniyorsunuz
+
+# Numeric 003 - RPL_CREATED (0 = date)
+irc2_RPL_CREATED = Bu server %p0 tarihinde yaratılmıştır
+
+# Numeric 005 - RPL_ISUPPORT
+irc2_RPL_ISUPPORT = bu server tarafından destekleniyor
+
+# Numeric 219 - RPL_ENDOFSTATS
+irc2_RPL_ENDOFSTATS = STATS raporunun sonu
+
+# Numeric 235 - RPL_SERVLISTEND
+irc2_RPL_SERVLISTEND = Servis listesinin sonu
+
+# Numeric 251 - RPL_LUSERCLIENT (0 = # users, 1 = # services, 2 = # servers)
+irc2_RPL_LUSERCLIENT = Şu an serverin üstünde %p0 kullanici var ve %p2 server üzerinde %p1 servis var
+
+# Numeric 252 - RPL_LUSEROP
+irc2_RPL_LUSEROP = online operator
+
+# Numeric 253 - RPL_LUSERUNKNOWN
+irc2_RPL_LUSERUNKNOWN = bilinmeyen bağlantı
+
+# Numeric 254 - RPL_LUSERCHANNELS
+irc2_RPL_LUSERCHANNELS = Kullanici kanalı
+
+# Numeric 255 - RPL_LUSERME (0 = clients, 1 = servers)
+irc2_RPL_LUSERME = %p0 kullanıcım ve %p1 serverım var.
+
+# Numeric 256 - RPL_ADMINME
+irc2_RPL_ADMINME = Administratif bilgi
+
+# Numeric 262 - RPL_TRACEEND
+irc2_RPL_TRACEEND = TRACE komutunun sonu
+
+# Numeric 305 - RPL_UNAWAY
+irc2_RPL_UNAWAY = Awayiniz kaldırılmıştır
+
+# Numeric 306 - RPL_NOWAWAY
+irc2_RPL_NOWAWAY = AWAY komutu kabul edildi. Şu an awaysiniz
+
+# Numeric 313 - RPL_WHOISOPERATOR
+irc2_RPL_WHOISOPERATOR = bir IRC Operator
+
+# Numeric 315 - RPL_ENDOFWHO
+irc2_RPL_ENDOFWHO = WHO listesinin sonu
+
+# Numeric 317 - RPL_WHOISIDLE
+irc2_RPL_WHOISIDLE = saniye idle, bağlanma zamanı
+
+# Numeric 318 - RPL_ENDOFWHOIS
+irc2_RPL_ENDOFWHOIS = WHOIS listesinin sonu
+
+# Numeric 323 - RPL_LISTEND
+irc2_RPL_LISTEND = LIST komutunun sonu
+
+# Numeric 331 - RPL_NOTOPIC
+irc2_RPL_NOTOPIC = Hiç bir topic yoktur
+
+# Numeric 347 - RPL_ENDOFINVITELIST
+irc2_RPL_ENDOFINVITELIST = Kanal invite listesinin sonu
+
+# Numeric 349 - RPL_ENDOFEXCEPTLIST
+irc2_RPL_ENDOFEXCEPTLIST = Kanal eksepsiyonlar listesinin sonu
+
+# Numerc 365 - RPL_ENDOFLINKS
+irc2_RPL_ENDOFLINKS = LINKler listesinin sonu
+
+# Numeric 366 - RPL_ENDOFNAMES
+irc2_RPL_ENDOFNAMES = NAMES (isimler) listesinin sonu
+
+# Numeric 368 - RPL_ENDOFBANLIST
+irc2_RPL_ENDOFBANLIST = Kanal banlarının listesinin sonu
+
+# Numeric 369 - RPL_ENDOFWHOWAS
+irc2_RPL_ENDOFWHOWAS = WHOWAS komutunun sonu
+
+# Numeric 374 - RPL_ENDOFINFO
+irc2_RPL_ENDOFINFO = INFO listesinin sonu
+
+# Numeric 375 - RPL_MOTDSTART (0 = server name)
+irc2_RPL_MOTDSTART = %p0 Günün mesajı
+
+# Numeric 376 - RPL_ENDOFMOTD
+irc2_RPL_ENDOFMOTD = MOTDnin sonu
+
+# Numeric 381 - RPL_YOUREOPER
+irc2_RPL_YOUREOPER = IRC Operator statüsüne geçtiniz
+
+# Numeric 382 - RPL_REHASHING
+irc2_RPL_REHASHING = Rehash komutu uygulanıyor
+
+# Numeric 383 - RPL_YOURESERVICE (0 = name)
+irc2_RPL_YOURESERVICE = Şu an %p0 servissiniz
+
+# Numeric 401 - ERR_NOSUCHNICK
+irc2_ERR_NOSUCHNICK = Böyle bir nick bulunamadi
+
+# Numeric 402 - ERR_NOSUCHSERVER
+irc2_ERR_NOSUCHSERVER = Böyle bir server bulunamadı
+
+# Numeric 403 - ERR_NOSUCHCHANNEL
+irc2_ERR_NOSUCHCHANNEL = Böyle bir kanal bulunamadı
+
+# Numeric 404 - ERR_CANNOTSENDTOCHAN
+irc2_ERR_CANNOTSENDTOCHAN = Kanala gonderilemedi
+
+# Numeric 405 - ERR_TOOMANYCHANNELS (0 = max # chans)
+irc2_ERR_TOOMANYCHANNELS = Fazla kanala girdiniz (limit %p0 dir)
+
+# Numeric 406 - ERR_WASNOSUCHNICK
+irc2_ERR_WASNOSUCHNICK = Böyle bir nick bulunamadı
+
+# Numeric 408 - ERR_NOSUCHSERVICE
+irc2_ERR_NOSUCHSERVICE = Böyle bir servis yok
+
+# Numeric 409 - ERR_NOORIGIN
+irc2_ERR_NOORIGIN = Kaynak belirtilmedi
+
+# Numeric 411 - ERR_NORECIPIENT (0 = command)
+irc2_ERR_NORECIPIENT = Alicı belirtilmedi (%p0)
+
+# Numeric 412 - ERR_NOTEXTTOSEND
+irc2_ERR_NOTEXTTOSEND = Gönderilecek text yok
+
+# Numeric 413 - ERR_NOTOPLEVEL
+irc2_ERR_NOTOPLEVEL = Toplevel domain belirtilmedi
+
+# Numeric 414 - ERR_WILDTOPLEVEL
+irc2_ERR_WILDTOPLEVEL = Yanlış gTLD belirtildi
+
+# Numeric 415 - ERR_BADMASK
+irc2_ERR_BADMASK = Yanlış server/host mask
+
+# Numeric 421 - ERR_UNKNOWNCOMMAND
+irc2_ERR_UNKNOWNCOMMAND = Bilinmeyen komut
+
+# Numeric 422 - ERR_NOMOTD
+irc2_ERR_NOMOTD = MOTD bulunamadı
+
+# Numeric 423 - ERR_NOADMININFO
+irc2_ERR_NOADMININFO = İdari bilgi bulunamadı
+
+# Numeric 431 - ERR_NONICKNAMEGIVEN
+irc2_ERR_NONICKNAMEGIVE = Nickname belirtilmedi
+
+# Numeric 432 - ERR_ERRONEUSNICKNAME
+irc2_ERR_ERRONEUSNICKNAME = Yanlış nickname
+
+# Numeric 433 - ERR_NICKNAMEINUSE
+irc2_ERR_NICKNAMEINUSE = Bu nickname kullanılmaktadır
+
+# Numeric 436 - ERR_NICKCOLLISION (0 = user, 1 = host)
+irc2_ERR_NICKCOLLISION = %p0@%p1 den nick çarpışması
+
+# Numeric 437 - ERR_UNAVAILRESOURCE
+irc2_ERR_UNAVAILRESOURCE = Kaynak geçici olarak servis dışı
+
+# Numeric 441 - ERR_USERNOTINCHANNEL
+irc2_ERR_USERNOTINCHANNEL = Aradığınız kişi bu kanalda değildir
+
+# Numeric 442 - ERR_NOTONCHANNEL
+irc2_ERR_NOTONCHANNEL = O kanalda değilsiniz
+
+# Numeric 443 - ERR_USERONCHANNEL
+irc2_ERR_USERONCHANNEL = zaten kanaldalar
+
+# Numeric 445 - ERR_SUMMONDISABLED
+irc2_ERR_SUMMONDISABLED = SUMMON komutu kapatıldı
+
+# Numeric 446 - ERR_USERSDISABLED
+irc2_ERR_USERSDISABLED = USERS komutu kapatıldı
+
+# Numeric 461 - ERR_NEEDMOREPARAMS
+irc2_ERR_NEEDMOREPARAMS = Yeterince bilgi verilmedi
+
+# Numeric 462 - ERR_ALREADYREGISTERED
+irc2_ERR_ALREADYREGISTERED = Bu komutu uygulamaya yetkiniz yok (Önceden kaydedildi)
+
+# Numeric 463 - ERR_NOPERMFORHOST
+irc2_ERR_NOPERMFORHOST = HOSTunuz ayrıcalıklılar arasinda değil
+
+# Numeric 464 - ERR_PASSWDMISMATCH
+irc2_ERR_PASSWDMISMATCH = Yanlış şifre
+
+# Numeric 465 - ERR_YOUREBANNEDCREEP
+irc2_ERR_YOUREBANNEDCREEP = Bu serverdan banlandınız
+
+# Numeric 467 - ERR_KEYSET
+irc2_ERR_KEYSET = Kanal KEYsi zaten yerleştirilmiştir (değistirmek için lütfen önce KEYyi kaldırın)
+
+# Numeric 471 - ERR_CHANNELISFULL
+irc2_ERR_CHANNELISFULL = Kanala girilmiyor (+l)
+
+# Numeric 472 - ERR_UNKNOWNMODE (0 = channel)
+irc2_ERR_UNKNOWNMODE =  %p0 için bilinmeyen MODE CHAR
+
+# Numeric 473 - ERR_INVITEONLYCHAN
+irc2_ERR_INVITEONLYCHAN = Kanala girilmiyor (+i)
+
+# Numeric 474 - ERR_BANNEDFROMCHAN
+irc2_ERR_BANNEDFROMCHAN = Kanala girilmiyor (+b)
+
+# Numeric 475 - ERR_BADCHANNELKEY
+irc2_ERR_BADCHANNELKEY = Kanala girilmiyor (+k)
+
+# Numeric 476 - ERR_BADCHANMASK
+irc2_ERR_BADCHANMASK = Yanlış CHANNEL MASK
+
+# Numeric 477 - ERR_NOCHANMODES
+irc2_ERR_NOCHANMODES = Kanal MODElari ve MODE değişimlerini kabul etmiyor
+
+# Numeric 478 - ERR_BANLISTFULL (0 = max # limit)
+irc2_ERR_BANLISTFULL = Kanal listesi doldu (%p0)
+
+# Numeric 481 - ERR_NOPRIVILEGES
+irc2_ERR_NOPRIVILEGES = Yetki verilmedi – IRC Operator değilsiniz
+
+# Numeric 482 - ERR_CHANOPRIVSNEEDED
+irc2_ERR_CHANOPRIVSNEEDED = Kanal operatoru değilsiniz
+
+# Numeric 484 - ERR_RESTRICTED
+irc2_ERR_RESTRICTED = Baglantınız kısıtlanmıştır
+
+# Numeric 485 - ERR_UNIQOPPRIVSNEEDED
+irc2_ERR_UNIQOPPRIVSNEEDED = Kanal öperatörü değilsiniz
+
+# Numeric 491 - NOOPERHOST
+irc2_ERR_NOOPERHOST = HOSTunuz OPER komutunu kullanmak için konfigüre edilmedi
+
+# Numeric 501 - ERR_UMODEUNKNOWNFLAG (0 = the mode itself)
+irc2_ERR_UMODEUNKNOWNFLAG = Bilinmeyen MODE FLAG (%p0)
+
+# Numeric 502 - ERR_USERSDONTMATCH
+irc2_ERR_USERSDONTMATCH = Başka kullanıcı için MODE değiştiremezsiniz
+
+
+# Quit message - Normal quit message (0 = the user's quit message)
+irc2_QUIT_NORMAL = Kullanici ƫikişi: %p0
+
+# Quit message - Normal quit, however the user did not provide a reason
+irc2_QUIT_NO_REASON = Kullanici IRC çikisi
+
+# Quit message - Unknown and likely buggy error.. should be looked into
+#irc2_QUIT_BUGGY = Bug? Error: %p0
+
+# Quit message - The connection was unexpectedly closed by the remote end
+irc2_QUIT_EPIPE = Data hatti sorunu
+
+# Quit message - The client was found to be unreachable
+#irc2_QUIT_EHOSTUNREACH = No route to host
+
+# Quit message - The client's network was found to be unreachable
+irc2_QUIT_ENETUNREACH = Networke baglanilamadi
+
+# Quit message - The client's connection timed out, via TCP
+irc2_QUIT_ETIMEDOUT = Zaman aşimina ugradi
+
+# Quit message - The client's connection timed out, via IRC2's PING function
+irc2_QUIT_PINGED_OUT = PING zaman asimina ugradi
+
+# Quit message - The client's connection was closed by outside means (eg crash)
+irc2_QUIT_ECONNRESET = Baglantiniz eşdüzey tarafindan sonlandirilmistir
+
+# Quit message - Could not write data to the client's socket
+#irc2_QUIT_WRITE_FAIL = Write error
+
+# Quit message - Could not read data from the client's socket
+#irc2_QUIT_READ_FAIL = Read error
+
+# Quit message - Client was dropped because we had too much data for it
+irc2_QUIT_FLOODING = Bilgi aşırılığı
