@@ -591,8 +591,8 @@ tag = {
 
 tag = {
    name		= "irc2_QUIT_BUGGY";
-   fields	= "0 = error message";
-   data_en	= "Bug? Error: %p0";
+   fields	= "0 = error message, 1 = error number/code";
+   data_en	= "Bug? Error №%p1: %p0";
 };
 
 tag = {
