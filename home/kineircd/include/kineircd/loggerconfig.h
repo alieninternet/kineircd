@@ -41,9 +41,6 @@ namespace Kine {
     protected:
       // The logging mask
       Logger::Mask::lazy_type defLogMask;
-
-      // Variable handler to process text for the log mask
-      static LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varHandleLogMask);
       
     public:
       // Constructor
@@ -58,6 +55,9 @@ namespace Kine {
       // Grab the mask
       const Logger::Mask::lazy_type getLogMask(void) const
 	{ return defLogMask; };
+
+      // Variable handler to process text for the log mask
+      static LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varHandleLogMask);
    };
 }; // namespace Kine
    
