@@ -293,6 +293,11 @@ bool Signals::addHandler(const handlerPtr_type handler,
 
    // Okay, add it then
    handlers.push_front(handlerInfo(handler, mask, foo));
+
+#ifdef DEBUG_PSYCHO
+   debug("Signals::addHandler() - handlers list now has " + 
+	 String::convert(handlers.size()) + "entries");
+#endif
    
    return true;
 }
