@@ -24,10 +24,13 @@ dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 dnl -------------------------------------------------------------------------
 dnl  Getting ready to configure...
 dnl -------------------------------------------------------------------------
+dnl Initialise the autoconf thingamebobs
+AC_INIT([Kine IRC Daemon],[ ])
+AC_COPYRIGHT([Portions Copyright (c) 2001,2002 KineIRCd Development Team])
 AC_PREREQ(2.53)
-AC_INIT(src/Makefile.in)
 AC_CONFIG_AUX_DIR(autoconf)
 AC_CONFIG_HEADER(include/kineircd/kineircdconf.h)
+AC_REVISION([$Revision$])
 
 dnl Determine our version information.
 dnl These should not be touched as they define the version of this software
@@ -36,11 +39,10 @@ dnl them .. uhh.. should touch them :)
 VERSION_MAJOR=0
 VERSION_MINOR=0
 VERSION_EXTRA=.prealpha
-PACKAGE_NAME=kineircd
-PACKAGE_TARNAME=
-PACKAGE_VERSION=$VERSION_MAJOR.$VERSION_MINOR$VERSION_EXTRA
-PACKAGE_STRING=
-PACKAGE_BUGREPORT=kineircd@alien.net.au
+VERSION_NAME=kineircd
+VERSION_NAME_FULL="Kine IRC Daemon"
+VERSION_BUGREPORT=kineircd@alien.net.au
+VERSION_STRING=$VERSION_MAJOR.$VERSION_MINOR$VERSION_EXTRA
 LIB_VERSION=0
 LIB_REVISION=0
 LIB_AGE=0
@@ -49,11 +51,10 @@ dnl Export our version information
 AC_SUBST(VERSION_MAJOR)
 AC_SUBST(VERSION_MINOR)
 AC_SUBST(VERSION_EXTRA)
-AC_SUBST(PACKAGE_NAME)
-AC_SUBST(PACKAGE_TARNAME)
-AC_SUBST(PACKAGE_VERSION)
-AC_SUBST(PACKAGE_STRING)
-AC_SUBST(PACKAGE_BUGREPORT)
+AC_SUBST(VERSION_NAME)
+AC_SUBST(VERSION_NAME_FULL)
+AC_SUBST(VERSION_BUGREPORT)
+AC_SUBST(VERSION_STRING)
 AC_SUBST(LIB_VERSION)
 AC_SUBST(LIB_REVISION)
 AC_SUBST(LIB_AGE)

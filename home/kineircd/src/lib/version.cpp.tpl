@@ -31,17 +31,18 @@ namespace Kine {
       const char *build = BUILD_STRING;
       
       // Program name
-      const char *programName = PACKAGE_NAME;
+      const char *programName = VERSION_NAME;
+      const char *programNameFull = VERSION_NAME_FULL;
       
       // Program version numbers (raw)
       const unsigned short versionMajor = VERSION_MAJOR;
       const unsigned short versionMinor = VERSION_MINOR;
 
       // Version information (program name and version number, in its entirity)
-      const char *version = PACKAGE_NAME PACKAGE_VERSION;
+      const char *version = VERSION_NAME VERSION_STRING;
       
       // Full version identity (includes build number)
-      const char *versionFull = PACKAGE_NAME PACKAGE_VERSION "#" BUILD_STRING;
+      const char *versionFull = VERSION_NAME VERSION_STRING "#" BUILD_STRING;
       
       // Library version information (raw)
       const unsigned char libVersion = LIB_VERSION;
@@ -49,7 +50,7 @@ namespace Kine {
       const unsigned char libAge = LIB_AGE;
       
       // E-mail address to where bug reports should wind up
-      const char *bugsEmail = PACKAGE_BUGREPORT;
+      const char *bugsEmail = VERSION_BUGREPORT;
       
       /* Information for INFO command (note: no colon prefixes for any 
        * protocol)

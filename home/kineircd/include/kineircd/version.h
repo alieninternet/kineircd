@@ -28,6 +28,7 @@ namespace Kine {
    namespace Version {
       extern const char *build;				// Build information
       extern const char *programName;			// Program name
+      extern const char *programNameFull;		// Full program name
       extern const unsigned short versionMajor;		// Version major number
       extern const unsigned short versionMinor;		// Version minor number
       extern const char *version;			// Version identity
