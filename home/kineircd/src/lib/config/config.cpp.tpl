@@ -113,7 +113,7 @@ Config::Config(void)
    ; Increase the iteration counter
    (set! currentIteration
       (+ currentIteration 1))
- +]def[+(getPrefix)+][+name+]([+defaultValue+])[+ENDIF+][+ENDIF+][+IF .definition+][+
+ +]def[+IF variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+]([+defaultValue+])[+ENDIF+][+ENDIF+][+IF .definition+][+
    ; Push this prefix to the start of our prefix stack
    (set! tablePrefixStack
       (append
