@@ -30,15 +30,16 @@ namespace Kine {
    class ModuleDescriptor;
 };
 
-# include <map>
+# include <vector>
 # include <aisutil/string/string.h>
 
 namespace Kine {
    class ModuleList {
+    public:
+      typedef std::vector < ModuleDescriptor* >	modulesList_type;
+      
     private:
-      typedef std::multimap <const char* const, ModuleDescriptor* const>
-	modulesMap_type;
-      modulesMap_type modules;
+      modulesList_type modules;
       
     public:
       // Constructor

@@ -27,11 +27,33 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
+#include <algorithm>
+#include <cstring>
+
 #include "kineircd/modulelist.h"
 #include "lib/debug.h"
 
 using namespace Kine;
 using AISutil::String;
+
+
+// Check if a key equals the given module descriptor's key
+struct checkKey {
+   const char* const key;
+   
+   // Constructor
+   checkKey(const char* const k)
+     : key(k)
+     {};
+   
+   // Check the key
+   bool operator()(ModuleList::modulesList_type::value_type& desc) {
+      if (strcmp(desc->getModule().getKeyName(), key) == 0) {
+	 return true;
+      }
+      return false;
+   };
+};
 
 
 /* loadModule - Load a module, check it and add it to our list if it is okay
@@ -58,18 +80,21 @@ ModuleDescriptor* const ModuleList::loadModule(const String& filename,
 #endif
 
    // Does this module only want to be loaded once?
-   if ((descriptor->getModule().getInfo().flags &
-	Module::Flags::UNIQUE_INSTANCE) &&
-       (modules.count(descriptor->getModule().getKeyName()) > 1)) {
-      errString = descriptor->getModule().getVersionString() + 
-	" can only be loaded once";
-      delete descriptor;
-      return 0;
+   if (descriptor->getModule().getInfo().flags &
+       Module::Flags::UNIQUE_INSTANCE) {
+      // Look for an instance of this module..
+      if (std::find_if(modules.begin(), modules.end(),
+		       checkKey(descriptor->getModule().getKeyName())) !=
+	  modules.end()) {
+	 errString = descriptor->getModule().getVersionString() + 
+	   " can only be loaded once";
+	 delete descriptor;
+	 return 0;
+      }
    }
 
    // Okay then, if we got this far we can add this module to the list
-   (void)modules.insert(modulesMap_type::value_type
-			(descriptor->getModule().getKeyName(), descriptor));
+   modules.push_back(descriptor);
    
 #ifdef KINE_DEBUG_PSYCHO
    debug("ModuleList::loadModule() - Added " +
@@ -105,13 +130,13 @@ void ModuleList::startAll(void) const
 #endif
    
    // Run through the list of modules and call their start functions
-   for (modulesMap_type::const_iterator it = modules.begin(); 
+   for (modulesList_type::const_iterator it = modules.begin(); 
 	it != modules.end(); it++) {
 #ifdef KINE_DEBUG_PSYCHO
       debug("ModuleList::startAll() - Starting: " +
-	    (*it).second->getModule().getVersionString());
+	    (*it)->getModule().getVersionString());
 #endif
-      (*it).second->start();
+      (*it)->start();
    }
 }
 
@@ -127,13 +152,13 @@ void ModuleList::stopAll(void)
 #endif
    
    // Run through the list of modules to stop and delete them all
-   for (modulesMap_type::const_iterator it = modules.begin(); 
+   for (modulesList_type::const_iterator it = modules.begin(); 
 	it != modules.end(); it++) {
 #ifdef KINE_DEBUG_PSYCHO
       debug("ModuleList::stopAll() - Stopping: " +
-	    (*it).second->getModule().getVersionString());
+	    (*it)->getModule().getVersionString());
 #endif
-      delete (*it).second;
+      delete (*it);
    }
    
    // Wipe out the now defunct modules list
