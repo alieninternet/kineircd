@@ -61,7 +61,65 @@ void Languages::initInstance(void)
 #ifdef KINE_DEBUG_PSYCHO
    std::ostringstream debugOut;
    debugOut << "Languages::initInstance() - Created new instance @ " <<
-     instance;
+     (void *)instance;
    debug(debugOut.str());
 #endif
+}
+
+
+/* registerMap - Register a tag name to tag ID correlation array
+ * Original 19/03/2003 simonb
+ */
+bool Languages::registerMap(tagMap_type map)
+{
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream debugOut;
+   debugOut << "Languages::registerMap() - Attempting to register map @ " <<
+     (void *)map;
+   debug(debugOut.str());
+#endif
+
+#ifdef KINE_DEBUG_ASSERT
+   // Make sure the map is not invalid..
+   assert((void*)map != 0);
+#endif
+   
+   // Firstly, we need to see if this is already registered..
+   if (tagMaps.find((tagMap_type*)&map) != tagMaps.end()) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Languages::registerMap() - Map already exists");
+#endif
+
+      // Don't actually add it, but act as if we did
+      return true;
+   }
+
+   // Okay, good enough, add it!
+   (void)tagMaps.insert((tagMap_type*)&map);
+   
+#ifdef KINE_DEBUG_PSYCHO
+   debug("Languages::registerMap() - Map array added to the set (" +
+	 String::convert(tagMaps.size()) + " maps in the set)");
+#endif
+   
+   return true;
+}
+
+
+/* deregisterMap - Remove a tag map array from our table (ie. module unloading)
+ * Original 19/03/2003 simonb
+ */
+void Languages::deregisterMap(const tagMap_type map)
+{
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream debugOut;
+   debugOut << "Languages::registerMap() - Attempting to deregister map @ " <<
+     (void *)map;
+   debug(debugOut.str());
+#endif
+   
+   /* Just try to erase it.. (We really don't care if it is not actually 
+    * registered)
+    */
+   (void)tagMaps.erase((tagMap_type*)&map);
 }

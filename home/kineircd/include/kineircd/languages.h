@@ -25,11 +25,44 @@
 #ifndef _INCLUDE_KINEIRCD_LANGUAGES_H_
 # define _INCLUDE_KINEIRCD_LANGUAGES_H_ 1
 
-# include <kineircd/sender.h>
+# include <set>
+
+# include <kineircd/languagedata.h>
+# include <kineircd/receiver.h>
 
 namespace Kine {
    class Languages {
+    public:
+      /* This is the 'tag map' structure. In order for your module to know
+       * the correlation of tag name to tag ID upon run-time, you need to
+       * define this structure within your module and register it with the
+       * registerMap() function (defined below). Once registered, and after
+       * languages have been loaded (or reloaded), we will attempt to form
+       * the link between a tag name and its run-time ID (a number) using
+       * this map. Using the number set within this structure, you can then
+       * look up your tags. If the tag name cannot be found (i.e. it does
+       * not exist within any loaded language files) the tag ID will be set
+       * to 0, and an empty string will be returned whenever you try to
+       * reference that tag's data.
+       * 
+       * You do not need to fill in the tag ID field, only the tag name. Both
+       * upper and lower case is acceptable within the tag name, since the
+       * lookup performed uses case-insensitive checks.
+       * 
+       * Terminate the map array with a null tagName (0).
+       */
+      struct TagMapEntry {
+	 const char* const tagName;
+	 LanguageData::tagID_type tagID;
+      };
+      typedef TagMapEntry tagMap_type[];
+
     private:
+      
+      // A set full of language tag name to tag ID mapping arrays
+      typedef std::set < tagMap_type* > tagMaps_type;
+      tagMaps_type tagMaps;
+      
       // Our single instance (we exist once, and only once)
       static Languages* instance;
       
@@ -48,6 +81,10 @@ namespace Kine {
       // Return the single instance of this class (hopefully it exists ;)
       static Languages& getInstance(void)
 	{ return *instance; };
+      
+      // Add/remove tag name/ID correlation maps
+      bool registerMap(tagMap_type map);
+      void deregisterMap(const tagMap_type map);
    }; // class Languages
    
    
