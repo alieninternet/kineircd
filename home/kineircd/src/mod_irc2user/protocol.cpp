@@ -53,11 +53,13 @@ const char* const Protocol::protocolName =
  * Original 12/08/2001 simonb
  */
 Protocol::Protocol(const Kine::Registrant& registrant,
-		   Kine::Connection& connection, std::string& inputQueue,
-		   std::string& outputQueue)
-  : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue),
-    user(*this, registrant, connection.getSocket().getRemoteAddress()),
-    maxMessageSize(512) // <=- should really be configurable
+		   Kine::Connection& connection,
+		   const std::string& inputQueue,
+		   const std::string& outputQueue)
+ : Kine::Protocol(connection),
+   Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue),
+   user(*this, registrant, connection.getSocket().getRemoteAddress()),
+   maxMessageSize(512) // <=- should really be configurable
 {
    // Attempt to register the user to the registry..
    if (registry().addUser(user) != Error::NO_ERROR) {

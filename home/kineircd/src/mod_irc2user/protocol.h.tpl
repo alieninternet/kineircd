@@ -64,9 +64,10 @@ namespace Kine {
 	 
        public:
 	 // Constructor (init the connection)
-	 Protocol(const Kine::Registrant& registrant,
-		  Kine::Connection& connection, std::string& inputQueue,
-		  std::string& outputQueue);
+	 explicit Protocol(const Kine::Registrant& registrant,
+			   Kine::Connection& connection,
+			   const std::string& inputQueue,
+			   const std::string& outputQueue);
 	 
 	 // Destructor
 	 ~Protocol(void);
@@ -89,8 +90,7 @@ namespace Kine {
 	      std::ostringstream output;
 	      output << ':' << myServer().getName() <<
 		' ' << std::setfill('0') << std::setw(3) << numeric <<
-		' ' << user.getNickname() << ' ' << parameters <<
-		lineTerminator;
+		' ' << user.getNickname() << ' ' << parameters;
 	      sendRawLine(output.str());
 	   };
 	   

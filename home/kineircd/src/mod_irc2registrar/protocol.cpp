@@ -214,14 +214,15 @@ void Protocol::parseMessage(const std::string& origin,
     
    // First, we need to assemble a string representing the old output queue
    std::string output;
-   while (!outputQueue.empty()) {
+   if (!outputQueue.empty()) {
       output += outputQueue.front();
       outputQueue.pop();
    }
    
    // Second, we create the new protocol
    Kine::Protocol* const newProtocol = 
-     protocolInfo->createProtocol(registrantData, connection, inputQueue,
+     protocolInfo->createProtocol(registrantData, connection,
+				  getInputQueue(),
 				  output);
       
 #ifdef KINE_DEBUG

@@ -1,7 +1,7 @@
 /* $Id$
  * 
- * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002,2003 KineIRCd Development Team
+ * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -24,54 +24,39 @@
 #ifndef _INCLUDE_KINEIRCD_CLBP_PROTOCOL_H_
 # define _INCLUDE_KINEIRCD_CLBP_PROTOCOL_H_ 1
 
-# include <queue>
-# include <string>
-# include <sstream>
-# include <kineircd/protocol.h>
+# include <kineircd/clbp/input.h>
+# include <kineircd/clbp/output.h>
 
 
 namespace Kine {
    namespace LibCLBP {
-      //! The command line based protocol (CLBP) base class
-      class Protocol : public Kine::Protocol {
+      //! The command line based protocol (CLBP) class (both input and output)
+      class Protocol : public Kine::LibCLBP::Input, public Kine::LibCLBP::Output {
        protected:
-	 // Our input queue..
-	 std::string inputQueue;
-
-	 // The output data queue
-	 std::queue < std::string > outputQueue;
-
-	 
 	 //! Constructor
-	 Protocol(Kine::Connection& c)
-	   : Kine::Protocol(c)
+	 explicit Protocol(Kine::Connection& _connection,
+			   const char* const _eolChars = Output::EOL_CR_LF)
+	   : Kine::Protocol(_connection),
+	     Input(_connection),
+	     Output(_connection, _eolChars)
 	   {};
 
 	 //! Constructor (for migrating I/O queues)
-	 Protocol(Kine::Connection& c, std::string& iq, std::string& oq);
+	 explicit Protocol(Kine::Connection& _connection,
+			   const std::string& _inputQueue,
+			   const std::string& _outputQueue,
+			   const char* const _eolChars = Output::EOL_CR_LF)
+	   : Kine::Protocol(_connection),
+	     Input(_connection, _inputQueue),
+	     Output(_connection, _outputQueue, _eolChars)
+	   {};
 	 
        public:
 	 //! Destructor
 	 virtual ~Protocol(void)
 	   {};
-
-       private:
-	 //! Parse a line (you must replace this)
-	 virtual void parseLine(const std::string& line) = 0;
-	 
-       public:
-	 //! Handle incoming data
-	 void handleInput(std::stringstream& data);
-	 
-	 //! Remove up to the amount of octets given from the output queue
-	 std::string withdrawOutput(AIS::Util::Socket::blockSize_type amount);
-	 
-	 //! Return true should there be anything in the output queue to send
-	 bool moreOutput(void) const
-	   { return (!outputQueue.empty()); };
-      };
+      }; // class Protocol
    }; // namespace LibCLBP
 }; // namespace Kine
    
 #endif // _INCLUDE_KINEIRCD_CLBP_PROTOCOL_H_
-   

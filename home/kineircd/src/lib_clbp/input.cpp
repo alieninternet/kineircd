@@ -25,29 +25,16 @@
 # include "autoconf.h"
 #endif
 
-#include "kineircd/clbp/protocol.h"
+#include "kineircd/clbp/input.h"
 
 using namespace Kine::LibCLBP;
-
-
-/* Protocol - Constructor for migration between protocols (copies I/O queues)
- * Original 12/08/2001 simonb
- * Note: This could be more efficient :(
- */
-Protocol::Protocol(Kine::Connection& c, std::string& iq, std::string& oq)
-  : Kine::Protocol(c),
-    inputQueue(iq)
-{
-   // Push the old output queue onto the new one..
-   outputQueue.push(oq);
-}
 
 
 /* handleInput - Handle incoming data
  * Original 11/08/2001 simonb
  * Note: This could be more efficient :(
  */
-void Protocol::handleInput(std::stringstream& data)
+void Input::handleInput(std::stringstream& data)
 {
    for (;;) {
       // Make sure the stream has something left..
@@ -94,33 +81,4 @@ void Protocol::handleInput(std::stringstream& data)
 	 inputQueue += (char)data.get();
       }
    }
-}
-
-
-/* withdrawOutput - Remove up to the amount given of octets from the queue
- * Original 28/09/2002 simonb
- * Note: This could be more efficient :(
- */
-std::string Protocol::withdrawOutput(AIS::Util::Socket::blockSize_type amount)
-{
-   std::string output;
-   
-   /* Append as much data as we can to the output without breaking the amount
-    * limit we were given
-    */
-   while (!outputQueue.empty() && (outputQueue.front().size() <= amount)) {
-      output += outputQueue.front();
-      amount -= outputQueue.front().size();
-      outputQueue.pop();
-   }
-   
-   // Is there anything left we might also be able to send?
-   if (!outputQueue.empty() && (amount > 0)) {
-      --amount;
-      output += outputQueue.front().substr(0, amount);
-      outputQueue.front().erase(0, amount);
-   }
-   
-   // Return the output
-   return output;
 }

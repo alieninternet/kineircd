@@ -113,8 +113,9 @@ namespace Kine {
 	 
        public:
 	 // Constructor
-	 Protocol(Connection& c, const Listener& l)
-	   : LibIRC2::Protocol(c),
+	 explicit Protocol(Connection& c, const Listener& l)
+	   : Kine::Protocol(c),
+	     Kine::LibIRC2::Protocol(c),
 	     listener(l),
 	     registrationType(RegistrationType::NONE),
 	     pongsLeft(config().getOptionsRegistrarUserPingProbeCount())

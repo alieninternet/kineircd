@@ -313,8 +313,11 @@ src/lib/version.h:
 # 'libkineircd_clbp' library
 ###############################################################################
 libkineircd_clbp_la_SOURCES=\
+	include/kineircd/clbp/input.h \
+	include/kineircd/clbp/output.h \
 	include/kineircd/clbp/protocol.h \
-	src/lib_clbp/protocol.cpp
+	src/lib_clbp/input.cpp \
+	src/lib_clbp/output.cpp
 
 libkineircd_clbp_la_LDFLAGS=\
 	-version-info @LIBKINEIRCD_CLBP_VERSION@:@LIBKINEIRCD_CLBP_REVISION@:@LIBKINEIRCD_CLBP_AGE@

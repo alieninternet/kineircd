@@ -26,6 +26,7 @@
 
 # include <string>
 # include <sstream>
+# include <cstdlib>
 # include <aisutil/socket/socket.h>
 
 # include <kineircd/connection.h>
@@ -44,13 +45,14 @@ namespace Kine {
     protected:
       // The specific connection running this instance of the protocol
       Connection& connection;
-      
-    public:
+
+
       // Constructor
       explicit Protocol(Connection& c)
 	: connection(c)
         {};
       
+    public:
       // Destructor
       virtual ~Protocol(void)
 	{};

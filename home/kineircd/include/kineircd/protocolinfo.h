@@ -122,8 +122,8 @@ namespace Kine {
        */
       virtual Protocol* const createProtocol(const Registrant& registrant,
 					     Connection& connection,
-					     std::string& inputQueue,
-					     std::string& outputQueue)
+					     const std::string& inputQueue,
+					     const std::string& outputQueue)
 	{ return 0; };
    };
 }; // namespace Kine
