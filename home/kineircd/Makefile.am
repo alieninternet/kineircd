@@ -212,7 +212,6 @@ libkineircd_la_SOURCES=\
 	src/libkineircd/loggerconfig.cpp \
 	src/libkineircd/registrar.cpp \
 	src/libkineircd/registrar.h \
-	src/libkineircd/sha1.cpp \
 	src/libkineircd/signals.cpp \
 	src/libkineircd/utils.cpp \
 	src/libkineircd/version.cpp

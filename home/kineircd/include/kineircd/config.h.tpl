@@ -59,7 +59,7 @@ namespace Kine {
        * long. This length per unsigned long is why we set the pas to 5
        * characters.
        */
-      static const Utils::base_type operPasswordStrBase = 85;
+      static const unsigned char operPasswordStrBase = 85;
       static const AISutil::String::size_type operPasswordStrBaseLongPad = 5;
       
     private:

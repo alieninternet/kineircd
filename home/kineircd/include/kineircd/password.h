@@ -26,13 +26,12 @@
 # define _INCLUDE_KINEIRCD_PASSWORD_H_ 1
 
 # include <aisutil/string/string.h>
-
-# include <kineircd/utils.h>
+# include <aisutil/sha1.h>
 
 namespace Kine {
    class Password {
     public:
-      typedef Utils::SHA1::digest_type digest_type;
+      typedef AISutil::SHA1::digest_type digest_type;
       
     private:
       // DO NOT CHANGE THIS, unless you want to be hurt very painfully :(
@@ -58,8 +57,8 @@ namespace Kine {
       // Transform the nickname and password pair into SHA1 output
       static digest_type makePassword(const AISutil::String& nickname,
 				      const AISutil::String& password) {
-	 return Utils::SHA1::generate(nickname.IRCtoLower() + delim + 
-				      password);
+	 return AISutil::SHA1::generate(nickname.IRCtoLower() + delim + 
+					password);
       };
    };
 };

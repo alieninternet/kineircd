@@ -34,10 +34,6 @@
 
 namespace Kine {
    class Utils {
-    public:
-      // Type of a "base"
-      typedef unsigned char base_type;
-      
     private:
       // Constructor (cannot be run)
       Utils(void) {};
@@ -45,38 +41,6 @@ namespace Kine {
     public:
       // Fix a mask into an id mask
       static AISutil::StringMask fixToIdentityMask(const AISutil::String &);
-      
-      // sha1.cpp
-      class SHA1 {
-       public:
-	 // A digest. SHA1 returns 160 bits, this makes it easier to manage.
-	 union digest_type {
-	    unsigned char u_char[20];
-	    signed char s_char[20];
-	    unsigned long u_long[5];
-	    
-	    // Boolean equals operator
-	    bool operator==(const digest_type &d) const {
-	       return ((u_long[0] == d.u_long[0]) &&
-		       (u_long[1] == d.u_long[1]) &&
-		       (u_long[2] == d.u_long[2]) &&
-		       (u_long[3] == d.u_long[3]) &&
-		       (u_long[4] == d.u_long[4]) &&
-		       (u_long[5] == d.u_long[5]));
-	    };
-	 };
-	 
-	 // An empty digest
-	 static const digest_type nullDigest;
-	 
-	 // SHA1 digest from a string
-	 static digest_type generate(const std::string &);
-	 
-	 // Convert an SHA1 digest output to particular base
-	 static std::string digestToStr(const digest_type &, 
-					const base_type,
-					const std::string::size_type);
-      };
    };
 };
    
