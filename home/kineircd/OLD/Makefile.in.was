@@ -5,8 +5,8 @@
 
 srcdir=@srcdir@
 VPATH=@srcdir@
-prefix=@prefix@
-libdir=@libdir@
+
+include $(srcdir)/../../make/defs
 
 INCDIRS=@INCDIRS@ -I$(srcdir)/../../include -I$(srcdir)
 DEFS=@DEFS@
@@ -78,8 +78,8 @@ SOURCES+=snmp.cpp
 endif
 
 OBJECTS=$(SOURCES:.cpp=.@OBJEXT@)
-LIBS=$(SSL_LIB) $(SNMP_LIB)
-LDFLAGS=$(LDFLAGS) $(SSL_LDFLAGS) $(SNMP_LDFLAGS)
+LIBS+=$(SSL_LIB) $(SNMP_LIB)
+LDFLAGS+=$(SSL_LDFLAGS) $(SNMP_LDFLAGS)
 
 LANGTAGS_IN_DEF=langtags.def
 LANGTAGS_IN_TPL=langtags.tpl
@@ -88,7 +88,7 @@ LANGTAGS_OUT_H=langtags.h
 
 ########################################################################
 
-include $(srcdir)/../../Rules.make
+include $(srcdir)/../../make/rules
 
 .PHONY: _top_ subdirs $(SUB_DIRS) install distclean
 

@@ -1555,10 +1555,11 @@ dnl -------------------------------------------------------------------------
 LDFLAGS="$LDFLAGS_SAVE"
 AC_SUBST(INCDIRS)
 AC_OUTPUT([
-	Rules.make
 	Makefile
 	include/Makefile
 	install/Makefile
+	make/defs
+	make/rules
 	src/Makefile
 	src/lib/Makefile
 	src/lib/config/Makefile
