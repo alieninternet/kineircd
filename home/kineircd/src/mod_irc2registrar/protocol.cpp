@@ -204,6 +204,43 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
       return;
    }
 
+   // Check there are enough tokens. We consider the description field optional
+   if (line.countTokens() < 6) {
+      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "IIRCN");
+      return;
+   }
+   
+   // Rip out the data from the command
+   registrantData.nickname = line.nextToken();
+   (void)line.nextToken();
+   registrantData.hostname = line.nextToken();
+   registrantData.protocol = line.nextToken().toUpper();
+   registrantData.linkStamp = line.nextToken().toLong();
+   
+#ifdef KINE_DEBUG_PSYCHO
+   // Output debugging info
+   debug(" -=>      Network: " + registrantData.nickname);
+   debug(" -=> Gateway Host: " + registrantData.hostname);
+   debug(" -=>   IIRC Proto: " + registrantData.protocol);
+   debug(" -->   Time stamp: " + String::convert(registrantData.linkStamp));
+#endif
+   
+   // Check the linkstamp, it must be greater than 0..
+   if (registrantData.linkStamp <= 0) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Registrar::parseIIRCN() - linkStamp <= 0");
+#endif
+      connection.goodbye();
+      return;
+   }
+   
+   if (line.hasMoreTokens()) {
+      registrantData.realname = line.nextColonToken();
+#ifdef KINE_DEBUG_PSYCHO
+      debug(" -=>  Description: " + registrantData.realname);
+#endif
+   }
+   
    // Set the registration mode
    registrationType = RegistrationType::IIRCN;
 }

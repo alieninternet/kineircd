@@ -25,7 +25,7 @@ These are dirty notes for implementing IIRC, the inter-irc network stuff.
  * SILENCE and ACCEPT commands on the server *must* be able to block from
    remote networks..
    
- * No length limits on IIRCS links, unless servers need to limit privmsgs.
+ * No length limits on IIRC links, unless servers need to limit privmsgs.
 
     
 Example conversation: 'foo' is on networkA, 'bah' is on networkB
@@ -68,24 +68,35 @@ from bah's perspective (already in the channel):
 
 
 Connection commands:
-  IIRCS (connect an iirc server to server link):
-  IIRCS <network> <protocol>  * * :<description>
+  IIRCN (connect an iirc server to server link):
+  IIRCN <network> <via network> <hostname> <protocol> <ts> :<description>
     'network' is the name of the network connecting
+    'via network' is the network this network is connected via. If this is *
+       then the hop count is presumed to be 1 (direct), such as would be used
+       during registration. During a burst, the network listed here must have
+       already been spoken for.
+    'hostname' is the server hostname associated with this link, and may be
+       masked to only show the network's domain name, or nothing at all
     'protocol' is the name of the protocol being used. Currently the IRC2
-       based protocol is called IIRC2
-    'description' is the description of the network, a url, or whatever.
-    * fields are for future use
+       based protocol is called IIRC1
+    'ts' is a long integer time stamp for the connection. It can be any
+       number representing the time in seconds according to that specific
+       server so the receiver of the message can determine a time offset for
+       that server. The timestamp must be greater than 0.
+    'description' is an optional description of the network, a url, or 
+       whatever is necessary.
 
 Example server connection:
    (connects)
   < PASS VerySecretWord
-  < IIRCS networkA IIRC2 ? * * :Network A !!
+  < IIRCN networkA * server.netA.org IIRC1 1 :Network A !!
    (registration okay, dump our password string and who we know - networkB
     is also connected to networkC and networkD)
   > PASS ReplyingSecretWord
-  > IIRCS networkB IIRC2 ? * * :Network B description!
-  > IIRCS networkC IIRC2 ? * * :Network C's description
-  > IIRCS networkD IIRC2 ? * * :Network D's description
+  > IIRCN networkB * blah.networkB.org IIRC1 1321 :Network B description!
+  > IIRCN networkC networkB another.server.com IIRC1 8761486 :Network C's description
+  > IIRCN networkD networkB *.networkC.org IIRC1 104872391 :Network D's description
+  > IIRCN networkE networkC * IIRC1 48719 :Network D's description
   > EOB
    (we have nothing to send, our burst is over)
   < EOB
