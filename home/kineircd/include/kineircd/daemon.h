@@ -59,7 +59,7 @@ namespace Kine {
 	{ return config; };
       
       // Grab the signal handler
-      Signals &getSignalHandlers(void)
+      Signals &getSignals(void)
 	{ return signals; };
       
       // Main loop
