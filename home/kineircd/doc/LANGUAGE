@@ -24,8 +24,8 @@ channel service and a nickname service at least. These services need help
 functions, and are usually only provided in English, or in a few other
 languages via a specific interface. With the LANGUAGE command, this
 information would be available to the services seamlessly (as LANGUAGE
-information is broadcast over the network) via a common interface. On
-AustNet, this functionality will be provided by keeping the language data
+information is broadcast over the network) via a common interface. With
+KineIRCd, this functionality will be provided by keeping the language data
 local on servers (which also reduces the traffic used when transferring the
 same data over the network from the services to the user constantly). Your
 implementation may work differently, however.
@@ -40,6 +40,45 @@ Note that there is NO character set information. All languages defined MUST
 be written in UTF-8. This decision was made to standardise the transmission
 of languages and to remove character set translation issues. It also avoids
 languages which use multiple character sets.
+
+
+005 Addition: LANGUAGE=<max langs>,<entry>,<entry>...
+-------------------
+ 
+  This shows that the LANGUAGE command is available for changing the
+ language of the replies, and details the languages available. One language
+ entry should be prefixed by a '*' character to show it is the 'default' to
+ show the client it is the language that server defaults to, else otherwise
+ the first language on the list should be presumed the default. Language names
+ are those identical to those defined by BCP-0047, that is using both the 
+ ISO-639-(1/2) standards and associated additions by the IANA.
+ 
+  The 'max langs' field shows how many langauges may be selected at once. The
+ LANGUAGE command supports more than one language being specified, both to
+ find the best language available but for WHOIS information to show which
+ languages a person can speak. This has been done due to the large number of
+ bi-lingual IRC denizens.
+ 
+  The language 'i-default' should always be assumed (but never listed) and 
+ the server is to read 'i-default' as the specified default language. This 
+ can aid in more simplistic clients, or those who do not read ISUPPORT. This
+ is an IANA assigned tag (see http://www.iana.org/assignments/language-tags).
+ 
+  The special language 'none' is ALWAYS supported, but will never be listed,
+ and never shown in the WHOIS information output, but is a magic keyword to
+ tell the server no superfluous numeric text should be outputted. Really smart
+ clients can use this to lower bandwidth consumption if they generate their
+ own text for numeric responces or handle their own language code. This can 
+ be overwritten due to preferences (eg. setting en,none,fr when the server 
+ supports en will select en, not none. setting none,en,fr will work around 
+ this by turning on textual messages but still announcing the client speaks
+ English and French).
+ 
+ eg. LANGUAGE=6,de,*en,fr,i-klingon
+   Show that German, English, French and for the star-trek fans 'klingon' are
+  available. English is the default, and therefore i-default is the same as 
+  'en'. Six languages may be selected at once for the WHOIS output.
+
 
 
 Numerics
