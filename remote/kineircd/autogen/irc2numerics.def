@@ -1882,6 +1882,18 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name	        = "RPL_MOTD";
+   numeric	= "378";
+   origin	= "AustHex";
+   comment	= "Used by AustHex to 'force' the display of the MOTD, "
+   		  "however is considered obsolete due to client/script "
+		  "awareness & ability to ";
+   seealso	= "372";		  
+   obsolete	= "yes";
+   conflict	= "yes";
+};
+
+irc2numerics = {
    name		= "RPL_KICKLINKED";
    numeric	= "379";
    origin	= "aircd";
@@ -3382,7 +3394,7 @@ irc2numerics = {
 };
 
 irc2numerics = {
-   name		= "RPL_ENDOFOMOTD";
+   name		= "RPL_ENDOFO<MOTD";
    numeric	= "626";
    origin	= "Ultimate";
 };
