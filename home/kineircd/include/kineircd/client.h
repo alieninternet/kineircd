@@ -39,7 +39,6 @@ namespace Kine {
    //! An abstract class defining a client, since there are a few types
    class Client : public Denizen, public Sender, public Receiver {
     private:
-      Name nickname;				//!< Client's nickname
       std::string hostname;			//!< Client's hostname
       
       // The channel list for this client
@@ -48,11 +47,9 @@ namespace Kine {
       
     protected:
       //! Constructor
-      Client(const std::string& _nickname,
-	     const std::string& _hostname,
+      Client(const std::string& _hostname,
 	     const AISutil::Time& _signonTime)
 	: Denizen(_signonTime),
-          nickname(_nickname),
           hostname(_hostname)
 	{};
 
@@ -90,12 +87,11 @@ namespace Kine {
 	{};
       
       //! Return the client's nickname
-      const Name& getNickname(void) const
-	{ return nickname; };
+      virtual const Name& getNickname(void) const = 0;
 
       //! Return the client's nickname (which is also its unique 'name')
       const std::string& getName(void) const
-	{ return nickname; };
+	{ return getNickname(); };
       
       //! Return the client's user name
       virtual const std::string& getUsername(void) const = 0;

@@ -32,6 +32,7 @@ namespace Kine {
    //! A service (refinement of a client)
    class Service : public Client {
     private: 
+      const Name nickname;			//!< Service's nickname
       const AISutil::StringMask scopeMask;	//!< Service server scope mask
       
     protected:
@@ -39,7 +40,8 @@ namespace Kine {
       Service(const std::string& _nickname,
 	      const std::string& _hostname,
 	      const AISutil::Time& _signonTime)
-	: Client(_nickname, _hostname, _signonTime),
+	: Client(_hostname, _signonTime),
+          nickname(_nickname),
           scopeMask("*")
 	{};
       
@@ -47,6 +49,11 @@ namespace Kine {
       //! Destructor
       virtual ~Service(void)
 	{};
+
+      
+      //! Return the user's nickname
+      const Name& getNickname(void) const
+	{ return nickname; };
 
       
       //! Return the user name (default to the service nickname)

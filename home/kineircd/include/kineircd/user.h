@@ -40,6 +40,9 @@ namespace Kine {
       static const std::string::size_type maxStaffStatusLength;
       
     private:
+      //!< User's nickname
+      Name nickname;
+      
       //! The User's username
       std::string username;
       
@@ -58,7 +61,8 @@ namespace Kine {
 	   const std::string& _username,
 	   const std::string& _hostname,
 	   const AISutil::Time& _signonTime)
-	: Client(_nickname, _hostname, _signonTime),
+	: Client(_hostname, _signonTime),
+          nickname(_nickname),
           username(_username)
 	{};
 
@@ -96,7 +100,12 @@ namespace Kine {
 	{};
       
       
-      //! Return the users' username / identd reply
+      //! Return the user's nickname
+      const Name& getNickname(void) const
+	{ return nickname; };
+
+      
+      //! Return the user's username / identd reply
       const std::string& getUsername(void) const
 	{ return username; };
 

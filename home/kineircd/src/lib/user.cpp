@@ -30,6 +30,7 @@
 #include <aisutil/string.h>
 
 #include "kineircd/user.h"
+#include "kineircd/registry.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
@@ -46,7 +47,30 @@ const std::string::size_type User::maxStaffStatusLength = 32;
 const Error::error_type User::changeNickname(const Entity& changer,
 					     const Name& newNickname)
 {
-   return Error::UNKNOWN_ERROR;
+   // Check the nickname is valid (this should be elsewhere)
+//   return Error::NICKNAME_TOO_LONG;
+//   return Error::NICKNAME_HAS_BAD_CHARS;
+   
+   // Make sure the nickname is not already in use
+   const Client* const foundClient = registry().findClient(newNickname);
+   if ((foundClient != 0) && (foundClient != this)) {
+      return Error::NICKNAME_IS_IN_USE;
+   }
+   
+   // Tell ourself about the change
+   doEventNicknameChange(changer, *this, newNickname);
+
+   // Tell the registry
+   const Error::error_type registryError =
+     registry().changeUserNickname(*this, newNickname);
+     
+   // broadcast it.
+    
+   // Change the nickname.. (last thing to do)
+   nickname = newNickname;
+   
+   // Return whatever the registry said happened
+   return registryError;
 }
 
 

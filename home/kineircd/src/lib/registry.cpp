@@ -98,6 +98,47 @@ void Registry::initInstance(void)
 
 
 /* addUser - Add the given user
+ * Original 16/05/2003
+ */
+const Error::error_type 
+  Registry::changeUserNickname(User& user, const Name& newNickname)
+{
+#ifdef KINE_DEBUG
+   std::ostringstream debugOut;
+   debugOut << "Registry::changeUserNickname() - Trying to modify user @ " <<
+     &user << " nickname '" << user.getName() << "' -> '" << newNickname <<
+     '\'';
+   debug(debugOut.str());
+#endif
+   
+   // Are the new nickname and the old nickname are pretty much the same thing?
+   if (newNickname.IRCtoLower() == user.getNickname().IRCtoLower()) {
+      // Bah, we don't care. Go away.
+      return Error::NO_ERROR;
+   }
+   
+   // Find this user
+   users_type::iterator it = users.find(user.getNickname().IRCtoLower());
+   
+   // Did we find the user?
+   if (it != users.end()) {
+      // Destroy the user! MWA HA HAHA HHAE HAEH HAEhAEHah ehaehaehaeheaHAe!!
+      (void)users.erase(it);
+      
+      // Add the user back with its new key
+      (void)users.insert(users_type::value_type(newNickname.IRCtoLower(),
+						&user));
+      
+      // Done
+      return Error::NO_ERROR;
+   }
+
+   // Complain about the user not existing - silly coders.. :(
+   return Error::UNREGISTERED_ENTITY;
+}
+
+
+/* addUser - Add the given user
  * Original 08/04/2003
  */
 Error::error_type Registry::addUser(User& entity)
@@ -157,12 +198,12 @@ Error::error_type Registry::removeUser(const User& entity)
    debug(debugOut.str());
 #endif
 
-   // Find the local user
+   // Find the user
    users_type::iterator it = users.find(entity.getNickname().IRCtoLower());
    
    // Make sure we found something
    if (it != users.end()) {
-      // .. and also from the users list
+      // Remove the user from the user list
       (void)users.erase(it);
       
       // If this user was a local user, decrease the local user count

@@ -94,6 +94,14 @@ namespace Kine {
       
       //! Constructor
       Registry(void);
+
+      
+      //! Change a user's nickname
+      const Error::error_type changeUserNickname(User& user,
+						 const Name& newNickname);
+
+      // Our friends
+      friend class User;
       
     public:
       //! Destructor
