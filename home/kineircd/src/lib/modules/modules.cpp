@@ -39,11 +39,12 @@ String Module::getVersionString(void) const
    
    // Add the start of the string, these are required fields
    output << basicInfo.nameShort << '-' << 
-     (int)basicInfo.versionMajor << '.' << (int)basicInfo.versionMinor;
+     (unsigned int)basicInfo.versionMajor << '.' << 
+     (unsigned int)basicInfo.versionMinor;
    
    // Do we need to add the patch level?
    if (basicInfo.versionPatchLevel > 0) {
-      output << '.' << (int)basicInfo.versionPatchLevel;
+      output << '.' << basicInfo.versionPatchLevel;
    }
    
    // Do we need to add the extra version info?
