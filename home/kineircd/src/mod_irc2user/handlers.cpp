@@ -142,7 +142,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 
 /* handleLANGUAGE
  * Original 26/10/2001 simonb
- * 03/04/2003 simonb - Imported from old code
+ * 03/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 {
@@ -214,7 +214,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 
 /* handleLUSERS
  * Original 27/08/2001 simonb
- * 03/04/2003 simonb - Imported from old code
+ * 03/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 {
@@ -230,7 +230,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 
 /* handleMOTD
  * Original 13/08/2001 simonb
- * 03/04/2003 simonb - Imported from old code
+ * 03/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 {
@@ -259,7 +259,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
       return;
    }
    
-   // Umm, return a complaint as per standards, even if it is technically wrong
+   // Umm, return a complaint as per standards, even if it is kinda wrong
    sendNumeric(LibIRC2::Numerics::ERR_NOORIGIN,
 	       GETLANG(irc2_ERR_NOORIGIN));
 }
@@ -267,7 +267,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
 
 /* handleQUIT
  * Original 14/08/2001 simonb
- * 08/04/2003 simonb - Imported from old code
+ * 08/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 {
@@ -282,7 +282,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 
 /* handleTIME
  * Original 27/08/2001 simonb
- * 14/04/2003 simonb - Imported from old code
+ * 14/04/2003 simonb - Imported from old code (incompleted; needs config stuff)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
 {
@@ -339,7 +339,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
 
 /* handleVERSION
  * Original 24/08/2001 simonb
- * 03/04/2003 simonb - Imported from old code
+ * 03/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
 {
