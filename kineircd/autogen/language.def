@@ -36,6 +36,12 @@ languages = {
    langMaintainer	= "pickle@alien.net.au";
 };
 
+#languages = {
+#   langCode		= "fr";
+#   langName		= "Français";
+#   langMaintainer	= "idil@users.sf.net";
+#};
+
 languages = {
    langCode		= "tr";
    langName		= "Türkçe";
