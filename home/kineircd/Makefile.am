@@ -183,6 +183,7 @@ libkineircd_la_INCLUDES=\
 # Source/header files
 libkineircd_la_SOURCES=\
 	include/kineircd/channel.h \
+	include/kineircd/channelname.h \
 	include/kineircd/client.h \
 	include/kineircd/clientname.h \
 	include/kineircd/config.h \

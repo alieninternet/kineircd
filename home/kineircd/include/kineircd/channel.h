@@ -30,6 +30,7 @@
 # include <kineircd/entity.h>
 # include <kineircd/receiver.h>
 # include <kineircd/errors.h>
+# include <kineircd/channelname.h>
 
 namespace Kine {
    class Client;
@@ -88,7 +89,7 @@ namespace Kine {
       };
 
     private:
-      const std::string name;			//!< The channel name
+      const ChannelName name;			//!< The channel name
       const scope_type scope;			//!< Channel's 'scope'
       const AISutil::Time creationTime;		//!< Channel creation time
       std::string topic;			//!< Channel topic
@@ -100,7 +101,7 @@ namespace Kine {
       
     protected:
       //! Constructor
-      Channel(const std::string& _name,
+      Channel(const ChannelName& _name,
 	      const scope_type _scope,
 	      const AISutil::Time& _creationTime)
 	: name(_name),
@@ -114,10 +115,14 @@ namespace Kine {
 	{};
       
       
-      //! Return the 'name'
-      const std::string& getName(void) const
+      //! Return the channel's name
+      const ChannelName& getChannelName(void) const
 	{ return name; };
-      
+
+      //! Return the 'name' (generic form)
+      const std::string& getName(void) const
+	{ return getChannelName(); };
+
       //! Return the name of the channel, without the prefix character
       const std::string getNameWithoutPrefix(void) const
 	{ return name.substr(1); };

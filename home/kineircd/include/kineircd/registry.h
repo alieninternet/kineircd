@@ -54,7 +54,7 @@ namespace Kine {
       typedef KINE_HASH_MAP_TYPE < std::string, Network* const > networks_type;
       
       //! Known channel list type
-      typedef KINE_HASH_MAP_TYPE < std::string, Channel* const > channels_type;
+      typedef KINE_HASH_MAP_TYPE < ChannelName, Channel* const > channels_type;
 
     private:
       //! Connected users list
@@ -179,7 +179,7 @@ namespace Kine {
 	{ return Error::UNKNOWN_ERROR; /* temporary */ };
 
       //! Find the given channel, by its name
-      Channel* const findChannel(const std::string& name) const
+      Channel* const findChannel(const ChannelName& name) const
 	{ return 0; /* temporary */ };
       
       
