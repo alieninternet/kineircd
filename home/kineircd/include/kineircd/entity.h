@@ -42,6 +42,9 @@ namespace Kine {
       //! Destructor
       virtual ~Entity(void)
 	{};
+
+      //! Return whatever is an acceptable name for this entity
+      virtual const std::string& getName(void) const = 0;
       
       //! Return the hostname
       virtual const std::string& getHostname(void) const = 0;

@@ -62,10 +62,13 @@ namespace Kine {
       
       //! Return the name of the channel. This does not include the prefix char
       virtual const std::string& getChannelName(void) const = 0;
-      
+
       //! Return the name of the channel, only with the prefix
-      const std::string getChannelNameWithPrefix(void) const
-	{ return ""; };
+      virtual const std::string getChannelNameWithPrefix(void) const = 0;
+
+      //! Return the 'name'
+      const std::string& getName(void) const
+	{ return getChannelNameWithPrefix(); };
       
       //! Return the topic on the channel
       virtual const std::string& getTopic(void) const = 0;

@@ -38,6 +38,13 @@ namespace Kine {
       //! Destructor
       virtual ~Network(void)
 	{};
+
+      //! Get the name of this network
+      const std::string& getNetworkName(void) const = 0;
+      
+      //! Return the 'name'
+      const std::string& getName(void) const
+	{ return getNetworkName(); };
    }; // class Network
 }; // namespace Kine
 

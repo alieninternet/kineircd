@@ -59,6 +59,10 @@ namespace Kine {
       virtual ~Server(void)
 	{};
       
+      //! Return the 'name' (a server's hostname is normally its name)
+      virtual const std::string& getName(void) const
+	{ return getHostname(); };
+	
       //! Return the server modes
       virtual const modes_type getModes(void) const = 0;
       

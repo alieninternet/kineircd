@@ -62,6 +62,10 @@ namespace Kine {
       //! Return the client's nickname
       virtual const Nickname& getNickname(void) const = 0;
 
+      //! Return the 'name'
+      const std::string& getName(void) const
+	{ return getNickname(); };
+      
       //! Return the client's user name
       virtual const std::string& getUsername(void) const = 0;
 
