@@ -19,9 +19,6 @@ DEFS=@DEFS@
 SSL_LIB=@ssl_lib@
 SSL_LDFLAGS=@ssl_ldflags@
 
-SNMP_LIB=@snmp_lib@
-SNMP_LDFLAGS=@snmp_ldflags@
-
 # Targets we will build (should have rules for each else this will break)
 #TARGET=libkineircd.@OBJEXT@
 TARGET=libkineircd.$(LIBTOOL_LIB_EXT)
@@ -85,15 +82,10 @@ endif
 ##SOURCES+=p13server.cpp remotes.cpp
 ##endif
 
-# Work out anything else that is needed to be shoved in here too
-ifeq (@kineircd_test_have_snmp_agent@,yes)
-SOURCES+=snmp.cpp
-endif
-
 #OBJECTS=$(SOURCES:.cpp=.@OBJEXT@)
 OBJECTS=$(SOURCES:.cpp=.$(LIBTOOL_OBJ_EXT))
-LIBS+=$(SSL_LIB) $(SNMP_LIB)
-LDFLAGS+=$(SSL_LDFLAGS) $(SNMP_LDFLAGS)
+LIBS+=$(SSL_LIB)
+LDFLAGS+=$(SSL_LDFLAGS)
 
 LANGTAGS_IN_DEF=langtags.def
 LANGTAGS_IN_TPL=langtags.tpl
