@@ -6,15 +6,8 @@
 
 #include "config.h"
 
-namespace Config {
-   // Top definitions
-   Config::def_type const Config::topDefs[] = {
-	{ 
-	   "CONFIG",	
-	     NULL,		
-	     NULL,
-	     def_type::DEF_IGNORE 
-	},
-	{ NULL }
-   };
+// Top definitions
+const Config::defTable_type Config::topDefs = {
+     { "CONFIG",	     NULL,	     NULL },
+     { NULL }
 };

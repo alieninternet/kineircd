@@ -28,7 +28,7 @@
 class Daemon;
 
 
-// Phew, finally onto our local header files!
+# include "config.h"
 # include "user.h"
 # include "connection.h"
 # include "socket.h"
@@ -64,8 +64,6 @@ class RelationMask {
      : mask(m), data(d)
      {};
 };
-
-class ConfigData;
 
 // The Daemon class
 class Daemon {
@@ -103,7 +101,7 @@ class Daemon {
    };
    
  private:
-   static String configFile;			// Main configuration file
+   static Config *config;			// Configuration
    
    static String adminName;			// Administrator name
    static String adminEmail;			// Administrator e-mail
@@ -153,14 +151,8 @@ class Daemon {
    
    static Server *server;			// Our server record
 
-
+   
    Daemon(void) {};				// Constructor - cannot be run!
-
-   static void configComplain(bool, 
-			      String const &);	// Configuration complaints
-   static void configWarning(bool, 
-			     String const &);	// Configuration warnings
-   static bool configCopy(bool, ConfigData *);	// Copy configuration data over
 
    static void garbo(bool = false);		// Garbage collector
 
@@ -360,18 +352,7 @@ class Daemon {
 	return onRelationMaskList(&redirectChannels, channel.IRCtoLower());
      };
    
-   // Configuration top-level class parsing routines
-   static bool configure(bool = false);
-   static void configADMIN(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
-   static void configARBITER(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
-   static void configCONF(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
-   static void configFAIL(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
-   static void configLISTEN(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
-   static void configOPERS(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
-   static void configREDIRECT(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
-   static void configSSL(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
-   static void configSTATUS(ConfigData *conf, String *line, String::size_type *pos, bool firstRun);
-   
+
    static void shutdown(String const & = "");	// Start the shutdown sequence
    static void run(void);			// The main loop
 
@@ -382,54 +363,6 @@ class Daemon {
    friend class SSLSocketIO;
 # endif
 };
-
-
-// Configuration data class, used during configuration file parsing only
-class ConfigData {
- public:
-# ifdef STL_HAS_SLIST
-   typedef list <String> motd_buffer_t;
-# endif
-   
-   // ADMIN class
-   String adminName;
-   String adminEmail;
-   String adminLocation;
-
-   // ARBITER class
-   
-   // CONF class
-   bool confAutobone;
-   String confDescription;
-   bool confHidden;
-   String confLanguageDir;
-   String confMOTD;
-   String confNetwork;
-   bool confNoop;
-   String confServername;
-   
-   // FAIL class
-   Daemon::relationmask_list_t failNicknames;
-   Daemon::relationmask_list_t failChannels;
-   
-   // LISTEN class
-   
-   // OPERS class
-   Daemon::operator_map_t opersOperators;
-   
-   // REDIRECT class
-   Daemon::relationmask_list_t redirectChannels;
-
-   // STATUS class
-   
-   // extra stuff
-# ifdef STL_HAS_SLIST
-   motd_buffer_t motd;
-# endif
-   
-   ConfigData(void);				// Constructor
-};
-
 
 #endif
 

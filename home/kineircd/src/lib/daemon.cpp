@@ -23,7 +23,7 @@
 
 // Variables
 namespace Daemon {
-   String configFile = DEFAULT_CONFIG_FILE;
+   Config *config = 0;
    
    String adminName = DEFAULT_CONFIG_ADMIN_NAME;
    String adminEmail = DEFAULT_CONFIG_ADMIN_EMAIL;
@@ -175,7 +175,7 @@ Daemon::~Daemon(void)
 /* init - Init the server
  * Original 11/08/01 simonb
  */
-bool Daemon::init(String const &conf)
+bool Daemon::init(String const &configFile)
 {
 #ifdef DEBUG
    cerr << "Initialising new server" << endl;
@@ -206,7 +206,6 @@ bool Daemon::init(String const &conf)
 #ifdef DEBUG_EXTENDED
    cerr << "Setting up variables" << endl;
 #endif
-   configFile = conf;
    gettimeofday(&currentTime, NULL);
    startTime = getTime();
    server = new Server();
@@ -269,7 +268,8 @@ bool Daemon::init(String const &conf)
    checkClock();
    
    // Load config!
-   if (!configure(true)) {
+   config = new Config(configFile);
+   if (!config->configure()) {
       logger("IRCd not started: Configuration file error", 
 	     LOGPRI_ERROR);
       return false;
@@ -462,7 +462,7 @@ void Daemon::rehash(Handler *handler, User *user)
       if (handler) {
 	 handler->
 	   sendNumeric(server, Numerics::RPL_REHASHING, user,
-		       configFile + String(" :") +
+		       config->getConfigFile() + String(" :") +
 		       user->getLocalInfo()->lang(LangTags::L_RPL_REHASHING));
       }
       
@@ -481,8 +481,8 @@ void Daemon::rehash(Handler *handler, User *user)
    // Clean things up
    garbo(true);
    
-   // Reload the configuration file(s)
-   configure();
+//   // Reload the configuration file(s)
+//   configure();
 }
 
 

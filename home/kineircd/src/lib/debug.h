@@ -6,6 +6,8 @@
 # ifndef __DEBUG_H_
 #  define __DEBUG_H_
 
+#  include <cassert>
+
 #  include "str.h"
 
 // Output/Broadcast debug line
