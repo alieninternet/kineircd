@@ -3311,6 +3311,7 @@ irc2numerics = {
    numeric	= "687";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
+   information	= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/kineircd/kineircd/doc/LANGUAGE?rev=HEAD";
    format	= "<codes> * :<info>";
    comment	= "Reply to the LANGUAGE command, informing the client of the language(s) it has set";
 };
@@ -3320,6 +3321,7 @@ irc2numerics = {
    numeric	= "688";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
+   information	= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/kineircd/kineircd/doc/LANGUAGE?rev=HEAD";
    format	= "<code> <revision> <maintainer> <flags> * :<info>";
    comment	= "A language reply to LANGUAGE when requesting a list of known languages";
 };
@@ -3329,6 +3331,7 @@ irc2numerics = {
    numeric	= "690";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
+   information	= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/kineircd/kineircd/doc/LANGUAGE?rev=HEAD";
    format	= "<nick> <language codes>";
    comment	= "Reply to WHOIS command - A list of languages someone can speak. The codes are comma delimitered.";
 };
@@ -3459,6 +3462,7 @@ irc2numerics = {
    numeric	= "981";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
+   information	= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/kineircd/kineircd/doc/LANGUAGE?rev=HEAD";
    format	= "<max_langs> :<info>";
    comment	= "Returned by the LANGUAGE command to tell the client they "
                   "cannot set as many languages as they have requested. "
@@ -3472,6 +3476,7 @@ irc2numerics = {
    numeric	= "982";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
+   information	= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/kineircd/kineircd/doc/LANGUAGE?rev=HEAD";
    format	= "<language_code> :<info>";
    comment	= "Returned by the LANGUAGE command to tell the client it "
                   "has specified an unknown language code.";
