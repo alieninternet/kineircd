@@ -512,53 +512,47 @@ dnl
 dnl Which modules shall we compile?
 dnl
 AC_MSG_CHECKING([which modules to compile])
+echo
 
 dnl This macro will help us reduce repeated code..
 dnl use: AC_KINE_MODULE_CHECK(mod_name, [the name of the module])
 AC_DEFUN([AC_KINE_MODULE_CHECK],[
-  echo 
   echo $ECHO_N "        $1 $ECHO_C"
   AC_ARG_ENABLE($1,
                 AC_HELP_STRING([--disable-$1],
                                [Disable $2]),
    [
     if test "$enableval" \!= "no"; then
-      echo $ECHO_N "(yes)$ECHO_C"
+      AC_MSG_RESULT([ (yes)$ECHO_C])
       AS_TR_SH(kineircd_test_compile_$1)=yes
     else
-      echo $ECHO_N "(no)$ECHO_C"
+      AC_MSG_RESULT([(no)])
     fi
    ],[
-    echo $ECHO_N " (yes)"
+    AC_MSG_RESULT([(yes)])
     AS_TR_SH(kineircd_test_compile_$1)=yes
    ])
   AM_CONDITIONAL(AS_TR_CPP(KINEIRCD_COMPILE_$1),
 	         [test x$AS_TR_SH(kineircd_test_compile_$1) = xyes])
  ])
 
+dnl mod_channellog
 AC_KINE_MODULE_CHECK(mod-channellog, [the channel based logging module])
+
+dnl mod_filelog
 AC_KINE_MODULE_CHECK(mod-filelog, [the simple file based logging module])
+
+dnl mod_irc2registrar
 AC_KINE_MODULE_CHECK(mod-irc2registrar, [the IRC/2 based registrar module])
+
+dnl mod_irc2user
 AC_KINE_MODULE_CHECK(mod-irc2user, [the IRC/2 user protocol module])
-if test "$ac_cv_header_syslog_h" = "yes"; then
-  AC_KINE_MODULE_CHECK(mod-syslog, [the syslog logging module])
-else
-  AM_CONDITIONAL(KINEIRCD_COMPILE_MOD_SYSLOG, [false])
-fi
-
-dnl finish off the line
-echo
-
-
-dnl
-dnl Check options on the modules...
-dnl
 if test "$kineircd_test_compile_mod_irc2user" = "yes"; then
-  AC_MSG_CHECKING([if scheme in mod_irc2user is wanted])
+  echo $ECHO_N "          + Scheme support$ECHO_C"
   
   dnl If guile is not installed, the answer is obviously no
   if test "$kineircd_cv_libguile_ok" = no; then
-    AC_MSG_RESULT([no (libguile missing or bad)])
+    AC_MSG_RESULT([ (no, libguile missing or bad)])
     kineircd_test_mod_irc2user_with_scheme="no"
   else
     dnl Check if they wanted it or not
@@ -567,14 +561,14 @@ if test "$kineircd_test_compile_mod_irc2user" = "yes"; then
                                  [Enable scheme extentions for mod_irc2user]),
      [
       if test "$enableval" \!= "no"; then
-        AC_MSG_RESULT(yes)
+        AC_MSG_RESULT([ (yes)])
         kineircd_test_mod_irc2user_with_scheme="yes"
       else
-        AC_MSG_RESULT(no)
+        AC_MSG_RESULT([ (no)])
         kineircd_test_mod_irc2user_with_scheme="no"
       fi
      ],[
-      AC_MSG_RESULT([no (default)])
+      AC_MSG_RESULT([ (no)])
       kineircd_test_mod_irc2user_with_scheme="no"
      ])
   fi
@@ -588,6 +582,12 @@ fi
 AM_CONDITIONAL(KINEIRCD_MOD_IRC2USER_WITH_SCHEME,
                [test "x$kineircd_test_mod_irc2user_with_scheme" = "xyes"])
 
+dnl mod_syslog
+if test "$ac_cv_header_syslog_h" = "yes"; then
+  AC_KINE_MODULE_CHECK(mod-syslog, [the syslog logging module])
+else
+  AM_CONDITIONAL(KINEIRCD_COMPILE_MOD_SYSLOG, [false])
+fi
 
 
 dnl -------------------------------------------------------------------------
