@@ -1,7 +1,10 @@
-/* vars.cpp
- * Configuration variable handlers
+/* handlerhelp.h
+ * Data handler helper structures/functors
  * 
- * Copyright (c) 2002 AustHex Development Team
+ * It is not recommended to edit this file. Instead, edit your configuration
+ * file properly.
+ * 
+ * Copyright (c) 2002 AustHex Development Team 
  * (See DEV-TEAM file for details)
  *
  * This file is a part of AustHex.
@@ -21,27 +24,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#ifndef _SRC_LIB_CONFIG_HANDLERHELP_H_
+# define _SRC_LIB_CONFIG_HANDLERHELP_H_
 
-#include "config.h"
-#include "configdefault.h"
-#include "log.h"
-
-
-// Our constructor
-Config::Config(const String &f)
-  : parser(&Config::topDefs, f),
-    defAdminEmail(DEFAULT_ADMIN_EMAIL),
-    defAdminLocation(DEFAULT_ADMIN_LOCATION),
-    defAdminName(DEFAULT_ADMIN_NAME),
-    defLoggingLog(0)
-{
-   defLoggingLog = new Log();  // temporary
+// Make a string from a list of values
+struct valuesToString {
+   String &str;
+   
+   valuesToString(String &s)
+     : str(s)
+     {
+	str = "";
+     }
+   
+   // This appends a value to the string, with spaces between values
+   void operator()(const String &val) {
+      if (!str.empty()) {
+	 str += ' ';
+      }
+      str += val;
+   }
 };
 
 
-// This is temporary.
-CONFIG_DEF_HANDLER(Config::defVarNONE)
-{
-   return true;
-}
+#endif
+
