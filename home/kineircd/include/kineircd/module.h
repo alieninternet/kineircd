@@ -36,9 +36,9 @@ namespace Kine {
       struct modInfo_type {
 	 // Type of the module, so we know how to install it correctly
 	 enum type_type {
-	    MODULE_TYPE_PROTOCOL,		// Protocol module (pmod)
-	    MODULE_TYPE_SERVICE,		// Service module (smod)
-	    MODULE_TYPE_EXTENTION		// Core extention module (emod)
+	    PROTOCOL,			// Protocol module (pmod)
+	    SERVICE,			// Service module (smod)
+	    EXTENTION			// Core extention module (emod)
 	 } const type;
 	 
 	 /* Name and version information of the module.
