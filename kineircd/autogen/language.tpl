@@ -7,13 +7,21 @@
       (error "COMPONENT was not defined"))
       
  +][+
+   ;;; We want the SRFI-13 module (string library)
+   (use-modules
+      (srfi srfi-13))
  
    ;;; Do we use the tag in the current scope?
    (define (useThisTag?)
       ;; Check if 'components' is the one for us
-      (string-ci=?
-         (get "components")
-         (getenv "COMPONENT")))
+      (if
+         (eq?
+	    (string-contains-ci
+               (get "components")
+               (getenv "COMPONENT"))
+	    #f)
+	 #f
+	 #t))
 
 
    ;;; Define our dodgy counting thingy
