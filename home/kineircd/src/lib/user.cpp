@@ -47,7 +47,7 @@ const std::string::size_type User::maxStaffStatusLength = 32;
  * Original 16/05/2003 simonb
  */
 const Error::error_type User::changeNickname(const Denizen& changer,
-					     const ClientName& newNickname)
+					     const Client::Name& newNickname)
 {
    // Check the nickname is valid
 #ifdef KINE_DEBUG

@@ -361,7 +361,7 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
    }
    
    // Grab the nickname..
-   ClientName nick(localiseStr(parameters[0]));
+   Client::Name nick(localiseStr(parameters[0]));
    
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
    if (nick.checkValidity() != Error::NO_ERROR) {

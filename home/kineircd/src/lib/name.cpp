@@ -29,8 +29,9 @@
 #include <algorithm>
 #include <cctype>
 
-#include "kineircd/channelname.h"
-#include "kineircd/clientname.h"
+#include "kineircd/entity.h"
+#include "kineircd/client.h"
+#include "kineircd/channel.h"
 #include "kineircd/config.h"
 #include "lib/constants.h"
 
@@ -91,7 +92,7 @@ const std::wstring Name::IRCtoLower(void) const
 /* checkValidity - Check to see if the name is valid as per nickname rules
  * Original 12/08/2001 pickle
  */
-const Error::error_type ClientName::checkValidity(void) const
+const Error::error_type Client::Name::checkValidity(void) const
 {
    // Check the nickname's length first
    if (length() > config().getLimitsUsersMaxNickNameLength()) {
@@ -128,7 +129,7 @@ const Error::error_type ClientName::checkValidity(void) const
 /* checkValidity - Check to see if the name is valid as per channel name rules
  * Original 18/08/2001 pickle
  */
-const Error::error_type ChannelName::checkValidity(void) const
+const Error::error_type Channel::Name::checkValidity(void) const
 {
    // Check the channel name's length
    if (length() > config().getLimitsChannelsMaxNameLength()) {

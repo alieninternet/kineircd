@@ -38,7 +38,7 @@ namespace Kine {
       
     private:
       //!< User's nickname
-      ClientName nickname;
+      Client::Name nickname;
       
       //! The User's username
       std::wstring username;
@@ -57,7 +57,7 @@ namespace Kine {
 
     protected:
       //! Constructor
-      explicit User(const ClientName& _nickname,
+      explicit User(const Client::Name& _nickname,
 		    const std::wstring& _username,
 		    const std::wstring& _hostname,
 		    const AIS::Util::Time& _signonTime)
@@ -77,7 +77,7 @@ namespace Kine {
       //! An event called whenever a user's nickname has been changed (maybe us)
       virtual void doEventNicknameChange(const Denizen& changer,
 					 const User& user,
-					 const ClientName& newNickname)
+					 const Client::Name& newNickname)
 	{};
       
       //! An event called when a message was successfully sent to us
@@ -101,7 +101,7 @@ namespace Kine {
       
       
       // Return the user's nickname
-      const ClientName& getNickname(void) const
+      const Client::Name& getNickname(void) const
 	{ return nickname; };
 
       
@@ -121,7 +121,7 @@ namespace Kine {
       
       //! Change this user's nickname
       const Error::error_type changeNickname(const Denizen& changer,
-					     const ClientName& newNickname);
+					     const Client::Name& newNickname);
       
 
       //! Return the modes/flags bitmask

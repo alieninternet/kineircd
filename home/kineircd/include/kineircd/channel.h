@@ -29,7 +29,7 @@
 
 # include <kineircd/receiver.h>
 # include <kineircd/denizen.h>
-# include <kineircd/channelname.h>
+# include <kineircd/name.h>
 # include <kineircd/errors.h>
 
 namespace Kine {
@@ -46,6 +46,27 @@ namespace Kine {
     */
    class Channel : public Receiver {
     public:
+      //! A channel's name, conforming to RFC rules
+      class Name : public Kine::Name {
+       public:
+	 //! Constructor
+	 Name(void)
+	   {};
+	 
+	 //! Constructor (a magic one)
+	 template <class T>
+	   Name(const T& string)
+	     : Kine::Name(string)
+	     {};
+	 
+	 //! Destructor
+	 ~Name(void)
+	   {};
+	 
+	 // Check if the name is valid, according to channel name rules
+	 const Error::error_type checkValidity(void) const;
+      }; // class Name
+      
       //! Channel member class
       class Member {
        public:
@@ -97,7 +118,7 @@ namespace Kine {
       };
 
     private:
-      const ChannelName name;			//!< The channel name
+      const Name name;				//!< The channel name
       const scope_type scope;			//!< Channel's 'scope'
       std::wstring topic;			//!< Channel topic
       std::wstring topicChanger;		//!< Who changed the topic
@@ -108,7 +129,7 @@ namespace Kine {
       
     protected:
       //! Constructor
-      explicit Channel(const ChannelName& _name,
+      explicit Channel(const Name& _name,
 		       const scope_type _scope,
 		       const AIS::Util::Time& _creationTime)
 	: Entity(_creationTime),
@@ -127,7 +148,7 @@ namespace Kine {
        * 
        * \return The channel's name
        */
-      const ChannelName& getChannelName(void) const
+      const Name& getChannelName(void) const
 	{ return name; };
 
       // Return the 'name' (generic form)

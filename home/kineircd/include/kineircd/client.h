@@ -31,7 +31,7 @@
 # include <kineircd/denizen.h>
 # include <kineircd/sender.h>
 # include <kineircd/receiver.h>
-# include <kineircd/clientname.h>
+# include <kineircd/name.h>
 
 namespace Kine {
    class Channel;
@@ -54,6 +54,28 @@ namespace Kine {
     * (compare this to a Server or a Channel).
     */
    class Client : public Denizen, public Sender, public Receiver {
+    public:
+      //! A client's nickname, conforming to IRC rules
+      class Name : public Kine::Name {
+       public:
+	 //! Constructor
+	 Name(void)
+	   {};
+	 
+	 //! Constructor (a magic one)
+	 template <class T>
+	   Name(const T& string)
+	     : Kine::Name(string)
+	     {};
+	 
+	 //! Destructor
+	 ~Name(void)
+	   {};
+	 
+	 // Check if the name is valid, according to client nickname rules
+	 const Error::error_type checkValidity(void) const;
+      }; // class Name
+
     private:
       std::wstring hostname;			//!< Client's hostname
 
@@ -113,7 +135,7 @@ namespace Kine {
 	{};
       
       //! Return the client's nickname
-      virtual const ClientName& getNickname(void) const = 0;
+      virtual const Name& getNickname(void) const = 0;
 
       // Return the client's nickname (which is also its unique 'name')
       const std::wstring& getName(void) const

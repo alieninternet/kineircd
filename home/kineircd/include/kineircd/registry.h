@@ -46,10 +46,10 @@ namespace Kine {
 
     private:
       //! Connected users list type
-      typedef KINE_HASH_MAP_TYPE < ClientName, User* const > users_type;
+      typedef KINE_HASH_MAP_TYPE < Client::Name, User* const > users_type;
       
       //! Connected services list type
-      typedef KINE_HASH_MAP_TYPE < ClientName, Service* const > services_type;
+      typedef KINE_HASH_MAP_TYPE < Client::Name, Service* const > services_type;
       
       //! Connected servers list type
       typedef KINE_HASH_MAP_TYPE < std::wstring, Server* const > servers_type;
@@ -58,7 +58,7 @@ namespace Kine {
       typedef KINE_HASH_MAP_TYPE < std::wstring, Network* const > networks_type;
       
       //! Known channel list type
-      typedef KINE_HASH_MAP_TYPE < ChannelName, Channel* const > channels_type;
+      typedef KINE_HASH_MAP_TYPE < Channel::Name, Channel* const > channels_type;
 
     private:
       //! Connected users list
@@ -119,7 +119,7 @@ namespace Kine {
       // Remove these soon - do not use these in your own code
       const Error::error_type removeUser(const User& entity);
       const Error::error_type addUser(User& entity);
-      const Error::error_type changeUserNickname(User& user, const ClientName& newNickname);
+      const Error::error_type changeUserNickname(User& user, const Client::Name& newNickname);
       /*-------------------------------------------------------*/
 
       
@@ -131,7 +131,7 @@ namespace Kine {
        * \retval 0
        *    The user could not be found
        */
-      User* const findUser(const ClientName& name) const;
+      User* const findUser(const Client::Name& name) const;
 
       /*!
        * \brief Find the given service, using its name
@@ -141,7 +141,7 @@ namespace Kine {
        * \retval 0
        *    The service could not be found
        */
-      Service* const findService(const ClientName& name) const;
+      Service* const findService(const Client::Name& name) const;
 
       /*!
        * \brief Find the given client, using its name
@@ -155,7 +155,7 @@ namespace Kine {
        * \retval 0
        *    The client could not be found
        */
-      Client* const findClient(const ClientName& name) const
+      Client* const findClient(const Client::Name& name) const
 	{
 	   Client* const client = findUser(name);
 	   return ((client != 0) ? client : findService(name));
@@ -197,7 +197,7 @@ namespace Kine {
        * \retval 0
        *    The channel could not be found
        */
-      Channel* const findChannel(const ChannelName& name) const;
+      Channel* const findChannel(const Channel::Name& name) const;
       
       
       //! Return the number of clients on the network

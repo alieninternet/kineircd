@@ -48,7 +48,7 @@ namespace Kine {
     */
    class Service : public Client {
     private: 
-      const ClientName nickname;		//!< Service's nickname
+      const Client::Name nickname;		//!< Service's nickname
       const AIS::Util::StringMask scopeMask;	//!< Service server scope mask
       
     protected:
@@ -59,7 +59,7 @@ namespace Kine {
        * \param _hostname The host the service is connected from
        * \param _signonTime The time the service connected to the network
        */
-      explicit Service(const ClientName& _nickname,
+      explicit Service(const Client::Name& _nickname,
 		       const std::wstring& _hostname,
 		       const AIS::Util::Time& _signonTime)
 	: Client(_hostname, _signonTime),
@@ -74,7 +74,7 @@ namespace Kine {
 
       
       // Return the user's nickname
-      const ClientName& getNickname(void) const
+      const Client::Name& getNickname(void) const
 	{ return nickname; };
 
       

@@ -178,9 +178,7 @@ libkineircd_la_SOURCES=\
 	include/kineircd/protocol/output.h \
 	include/kineircd/protocol/protocol.h \
 	include/kineircd/channel.h \
-	include/kineircd/channelname.h \
 	include/kineircd/client.h \
-	include/kineircd/clientname.h \
 	include/kineircd/config.h \
 	include/kineircd/connection.h \
 	include/kineircd/daemon.h \

@@ -172,7 +172,7 @@ void User::doEventLanguageChange(const Denizen& changer)
  */
 void User::doEventNicknameChange(const Denizen& changer,
 				 const Kine::User& user,
-				 const ClientName& newNickname)
+				 const Client::Name& newNickname)
 {
    static const char* const commandName = "NICK";
    

@@ -26,7 +26,7 @@
 
 # include <string>
 # include <aisutil/sha1.h>
-# include <kineircd/clientname.h>
+# include <kineircd/client.h>
 
 namespace Kine {
    //! Password class
@@ -37,7 +37,7 @@ namespace Kine {
 
     public:
       // Constructor   
-      explicit Password(const ClientName& _nickname,
+      explicit Password(const Client::Name& _nickname,
 			const std::wstring& _password)
 	: AIS::Util::SHA1_Digest(_nickname.IRCtoLower() +
 				 dataDelimiter +

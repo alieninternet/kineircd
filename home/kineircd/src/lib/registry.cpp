@@ -107,7 +107,7 @@ void Registry::initInstance(void)
  * Original 16/05/2003
  */
 const Error::error_type 
-  Registry::changeUserNickname(User& user, const ClientName& newNickname)
+  Registry::changeUserNickname(User& user, const Client::Name& newNickname)
 {
    // Are the new nickname and the old nickname are pretty much the same thing?
    if (newNickname.IRCtoLower() == user.getNickname().IRCtoLower()) {
@@ -225,7 +225,7 @@ const Error::error_type Registry::removeUser(const User& entity)
 /* findUser - Find the a user by its name
  * Original 08/04/2003
  */
-User* const Registry::findUser(const ClientName& name) const
+User* const Registry::findUser(const Client::Name& name) const
 {
    // Look up the given user from the user list
    users_type::const_iterator it = users.find(name.IRCtoLower());
@@ -333,7 +333,7 @@ const Error::error_type Registry::removeService(const Service& entity)
 /* findService - Find the a service by its name
  * Original 08/04/2003
  */
-Service* const Registry::findService(const ClientName& name) const
+Service* const Registry::findService(const Client::Name& name) const
 {
    // Look up the given service from the service list
    services_type::const_iterator it = services.find(name.IRCtoLower());

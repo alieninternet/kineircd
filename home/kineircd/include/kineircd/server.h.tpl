@@ -148,7 +148,7 @@ namespace Kine {
        * \retval Error::NAME_HAS_BAD_CHARS
        *    The \p user has a name which contains characters which are
        *    considered invalid. It's best to check the name closer using
-       *    the ClientName routines
+       *    the Client::Name routines
        * \retval Error::NAME_IS_IN_USE
        *    The \p user given is using a name which is already in use on the
        *    network, and has not been registered
@@ -185,7 +185,7 @@ namespace Kine {
        * \retval Error::NAME_HAS_BAD_CHARS
        *    The \p service has a name which contains characters which are
        *    considered invalid. It's best to check the name closer using
-       *    the ClientName routines
+       *    the Client::Name routines
        * \retval Error::NAME_IS_IN_USE
        *    The \p service given is using a name which is already in use on
        *    the network within the given scope. If the \p service you're
