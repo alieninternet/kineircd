@@ -77,7 +77,6 @@ using namespace Kine;
 		              (lambda ()
 			         ;; Increase the char count, and examine the
 				 ;; next character..
- 			         (display (sprintf "%s - %s\n" defName name))
 				 (set! charCount (+ charCount 1))
 				 (examineNames)))
 				 
