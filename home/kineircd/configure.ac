@@ -623,8 +623,7 @@ dnl -------------------------------------------------------------------------
 LDFLAGS="$LDFLAGS_SAVE"
 AC_SUBST(INCDIRS)
 AC_OUTPUT([
-	include/kineircd/kineircdconf.h
 	Makefile
-	install/Makefile
 	src/Makefile
+	include/kineircd/kineircdconf.h
 	])

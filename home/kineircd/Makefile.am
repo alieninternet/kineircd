@@ -9,8 +9,7 @@ include $(top_builddir)/config/automake.inc
 
 # Subdirectories we need to compile...
 SUBDIRS=.\
-	src \
-	install
+	src
 
 
 
@@ -86,7 +85,14 @@ dist-hook:
 
 
 
-# Customised .tpl rule, since the template and the defs do not match
+# Customised .tpl rules
+include/kineircd/config.h: include/kineircd/config.h.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $< \
+		-S $(AUTOGEN_DEF_DIR)/config.scm \
+		$(AUTOGEN_DEF_DIR)/config.def
+
 install/example.conf: install/example.conf.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
 	$(AUTOGEN) \
 		-b $(basename $@) \
