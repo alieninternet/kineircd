@@ -88,16 +88,25 @@ void FileLog::logLine(const std::string& str,
 	    // What is needed here?
 	    switch (config.getPrefixFormat()[i]) {
 	     case '!':	// The character corresponding with the log mask
-	       logFile << "?"; // fix.
-	       continue;
+		 {
+		    const Logger::MaskMapper& mapper = getMaskMapper(mask);
+		    logFile << mapper.character;
+		    continue;
+		 }
 	       
 	     case '#':	// The name of what is being logged
-	       logFile << "???"; // fix.
-	       continue;
+		 {
+		    const Logger::MaskMapper& mapper = getMaskMapper(mask);
+		    logFile << mapper.name;
+		    continue;
+		 }
 	       
 	     case '@':	// The name of what is being logged, upper-cased
-	       logFile << "???"; // fix.
-	       continue;
+		 {
+		    const Logger::MaskMapper& mapper = getMaskMapper(mask);
+		    logFile << mapper.nameUpper;
+		    continue;
+		 }
 	       
 	     case '$':	// The log string
 	       logFile << str;
