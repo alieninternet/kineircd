@@ -1,3 +1,0 @@
-This directory is used to keep autoconf/automake related files, including
-templates, macros, scripts, and highly portable versions of utilities the
-system may not have available (to be used instead).
