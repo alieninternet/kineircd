@@ -100,6 +100,7 @@ servermodes = {
    when		= "ircu2.10.11.04";
    comment	= "Indicates the server is a hub. In ircu, this also hides "
    		  "the server from users.";
+   server_only	= "yes";
    broadcast	= "yes";
 };
 
