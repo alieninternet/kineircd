@@ -191,7 +191,7 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	 
 #ifdef KINE_DEBUG_PSYCHO
 	 debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
-	       ": Tag '" + tag + "' - Control tag");
+	       " tag: '" + tag + "' - Control tag");
 #endif
 	 
 	 // Do something with the control tag? Huh? Huh?? :(
@@ -209,7 +209,7 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	    
 #ifdef KINE_DEBUG_PSYCHO
 	 debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
-	       ": Tag '" + tag + "' - TID #" + String::convert(tagID) +
+	       " tag: '" + tag + "' - TID #" + String::convert(tagID) +
 	       " (new)");
 #endif
 
@@ -222,7 +222,7 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	    
 #ifdef KINE_DEBUG_PSYCHO
 	 debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
-	       ": Tag '" + tag + "' - TID #" + String::convert(tagID) +
+	       " tag: '" + tag + "' - TID #" + String::convert(tagID) +
 	       " (found)");
 #endif
 	 }
