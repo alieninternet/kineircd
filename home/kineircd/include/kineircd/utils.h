@@ -6,6 +6,7 @@
 # define __UTILS_H_
 
 # include "str.h"
+# include "daemon.h"
 # include "channel.h"
 # include "user.h"
 

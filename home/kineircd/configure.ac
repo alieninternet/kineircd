@@ -11,7 +11,9 @@ AC_INIT(src/Makefile.in)
 AC_CONFIG_AUX_DIR(autoconf)
 AC_CONFIG_HEADER(include/config.h)
 
+PROGNAME=austhex.servd
 VERSION=8.0
+AC_SUBST(PROGNAME)
 AC_SUBST(VERSION)
 
 dnl Save the LDFLAGS since we will be making a mess of it soon..

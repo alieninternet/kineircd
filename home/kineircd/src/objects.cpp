@@ -4,6 +4,7 @@
 
 #include "config.h"
 
+#include "daemon.h"
 #include "user.h"
 #include "channel.h"
 #include "numerics.h"
@@ -88,7 +89,7 @@ void Channel::processModes(Handler *handler, User *user,
     * a /mode #channel -o+o nick1 nick2 would result in nick1 being deopped
     * but nick2 not being opped because of nick1 now being deopped. This is
     * incorrect as the calling user's modes need to remain static over the
-    * entire mode change line
+    * entire mode string
     */
    ChannelMember cm;
    

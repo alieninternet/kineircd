@@ -25,6 +25,9 @@ and code formatting information.
   that I am running autoconf 2.52, and you should also grab a copy from
   the gnu website if you're to edit this.
 
+* C++ files are '.cpp', this is because the '.cpp' extension is more widely
+  recognisable than the runner up '.cc' extension.
+
 * In general, comment heavily! While this may seem stupid or a waste
   of time, one of the worse things that can happen is you look at your
   code at a later date (which may seem 100% straight forward now) and
@@ -61,6 +64,24 @@ and code formatting information.
       * Foo routines for the bar-baz engine
       */
   
+* Always head up header files with an #ifndef to avoid conflicting
+  reiterations cropping up in a compilation (yes, this is important!). Say
+  the header file is foo.h, you should wrap the code with this:
+   #ifndef __FOO_H
+   # define __FOO_H
+     <stuff>
+   #endif
+
+* Include header files we use with quotation marks, and system/library
+  header files (external stuff we do not deal with) with right-angle brackets.
+  Try to include the standard version of the header rather than the old
+  non-standard header (eg. 'map' over 'map.h'):
+   eg.
+     #include <map>
+     #include <openssl/openssl.h>
+    but
+     #include "daemon.h"
+  
 * Following the head of the .cpp files, included files should be
   included in this order:
     1. config.h
@@ -77,8 +98,6 @@ and code formatting information.
     #include "user.h"
     #include "server.h"
   
-* Use a code formatter (woops, more details later)
-
 * Explicitly specify braces.
    eg. Use:
     for (unsigned char i = 10; i--;) {
@@ -87,7 +106,45 @@ and code formatting information.
    rather than:
     for (unsigned char i = 10; i--;)
       foo(i, 10, 16);
-      
+   Also, use:
+    if (((x == y) && (x > 12)) || !z) {
+       // Stuff here
+    }
+   .. or if it's a long or overly complex logical statement, split it up:
+    if ((((x == y) && (x > 12)) ||
+         (!z && (z < 1234) && (((foo / fooMax) * 100) < 50))) &&
+	((bar[0] != '\a') || ((baz ^ qux) & quux))) {
+       // Rediculously hard to get to statement here :)
+    }
+  I have been accused of "over-using" my braces, but I beleive it makes it
+  especially easier to read, and easier to confirm an operation. Consider
+  the following:
+    if (x == y || x > 12 && !z || baz ^ qux & quux) {
+       // Stuff.
+    }
+  The logic is less apparent and bloody hard to follow. Also consider this:
+    if (x == y)
+      if (x++) {
+         // Stuff
+      } else {
+         // Other stuff..
+      }
+  Lucky for us, we know by the formatting that the else is attached to the
+  if (x++) statement. Does the compiler? How dissimilar is the above to this:
+    if (x == y)
+      if (x++) {
+         // Stuff
+      }
+    else {
+       // Other stuff..
+    }
+  It's not - the compiler does not look at our formatting! Also it makes it
+  easier in the future to quickly insert something, say an if-statement with
+  one line of code in there, could be without set braces, but what if you
+  wanted to quickly insert something there - you'd have to edit in the braces
+  (something that annoys me if I have to bother with it and I'm in a rush,
+   or doing a copy 'n' paste job for a debug() function..)
+
 * Try to keep code within 80-columns. Naturally this cannot always be
   done, but there are methods you can keep in mind, most importantly
   that (const char *)'s can be continued on another line. 
@@ -103,7 +160,12 @@ and code formatting information.
   unsigned short would be most appropriate. Many systems handle unsigned
   integers faster than signed integers, especially the common systems
   the daemon will be compiled for.
-	
+
+* Define functions *when you need them*. C++ allows for variables to be
+  defined anywhere within the body, so USE IT! Note: this may require you to
+  add hooks (set braces) within a switch's case statement to avoid compiler
+  confusion. This is mainly a readability issue more than anything.
+
 * Start functions off with a multiline comment as a header. This is
   important! It is also just as important to use your cvs name. This
   is for readability, and also so you can get the credit :) Please
@@ -209,13 +271,32 @@ and code formatting information.
   until you have read the code through and know how things are done.
   Even read the makefiles, headers, documentation! This is important!!
 
+* Prematurely break loops if you can.
+   eg.
+    void foo(char const *bah) {
+       for (int i = 1000; i--;) {
+          switch (bah[i]) {
+   	   case 'a':
+	   case 'b':
+	   case 'c':
+	      baz(foo, i);
+	      continue; // No need to run to the end only to jmp back
+	   case 'd':
+	      return; // We are done here, no more checks needed
+          }
+       }
+    }
+
+* It's ok to leave out a 'default:' case in a switch if it is not necessary
+  (as with the above example)
+
 * Because of the way C++ handles 'const' differently to how C uses
   'const', my use (which seems more logical to me) is like this:
     char const *foo;
   rather than:
     const char *foo;
     
-* By convention, please follow these naming conventions:
+* Please follow these naming conventions:
    * Class names should begin with a capital letter
      eg. class Foo;
    * Variable/Function names should begin with a lower case letter
@@ -240,9 +321,96 @@ and code formatting information.
      yourself) can understand without having to flick up and down the
      source code trying to work out WTF you're doing with these weird
      variables.
+   
+* Finally -- Use a code formatter (will give a file for use soon)
+   * Three spaces are used for indentation (with the exception of a few
+     instances, see examples below)
+   * Indent the second characters of pre-processor commands (#-prefixed 
+     lines) by a space per depth step
+   * Use a space before and after operators (+ - / * ^ etc etc)
+   * Use a space after if/for/while/switch etc etc
+   * Don't shift the set-braces (or hooks) onto new lines for
+     if/for/while/switch functions - this is annoying and makes things ugly
+   Examples follow (base indentation removed to avoid confusion)
+   
+Functions:   
+<return type> [<class name>::]<function name>(<param type> <param name>, ...)
+{
+   <code>;
+}
+
+Constructor:
+<class name>::<class name>(<param type> <param name>, ...)
+: <variable>(<init value>),
+  <variable>(<init value>),
+  ...
+{
+   <code>;
+}
+
+Structures:
+struct [<name>] {
+   <var type> <var name>;
+   ...
+} [<name>];
      
-     
-     
+Enumerators:
+enum [<name>] {
+   <enum name> [= <value>],
+   ...
+} [<name>];
+
+If-statements:
+if (<expression>) {
+   <code>;
+} else if (<expression>) {
+   <code>;
+} else {
+   <code>
+}
+
+While loop:
+while (<expression>) {
+   <code>;
+}
+
+Do-while loop:
+do {
+   <code>;
+} while (<expression>);
+
+For loop:
+for (<init>; <condition>; <updater)) {
+   <code>;
+}
+
+Switch:
+switch (<expression>) {
+ case <const variable>:
+   <code>;
+   break;
+ case <const variable>:
+   <code>;
+   return;
+ default:
+   <code>;
+}
+
+Pre-processor commands (lines that start with #'s):
+#ifndef <define name>
+# define <define name> [<value>]
+#endif
+or
+#ifdef <define name1>
+# ifndef <define name2>
+#  error "<reason>"
+# else
+#  undef <define name2>
+#  define <define name2> [<value>]
+# endif
+#endif
+etc etc.
+
 ____________________________________________________________________________
 Information sources which will help you out:
  * CVS information: 

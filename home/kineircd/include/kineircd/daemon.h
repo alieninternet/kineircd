@@ -54,13 +54,13 @@ typedef unsigned char TYPE_RPL_TIMEONSERVERIS_FLAGS;
 
 // Phew, finally onto our local header files!
 # include "user.h"
-# include "whowas.h"
 # include "connection.h"
 # include "socket.h"
 # include "server.h"
 # include "channel.h"
 # include "str.h"
 # include "operator.h"
+# include "whowas.h"
 
 
 // If we are in debugging mode, we need this routine!

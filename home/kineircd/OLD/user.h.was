@@ -8,12 +8,6 @@
 # include <time.h>
 # include <map.h>
 
-# ifdef STL_HAS_HASH
-#  include <hash_set>
-# else
-#  include <set.h>
-# endif
-
 # ifdef STL_HAS_SLIST
 #  include <slist>
 # else
@@ -21,8 +15,8 @@
 # endif
 
 class User;
-class LocalUser;
 
+# include "localuser.h"
 # include "daemon.h"
 # include "str.h"
 # include "modes.h"
@@ -158,65 +152,6 @@ class User {
    void markAway(String *);			// Set/Unset away message
    
    bool isSilencing(User *);			// Silencing a user?
-};
-
-
-// Locally connected user class
-class LocalUser {
- public:
-# ifdef STL_HAS_HASH
-   typedef hash_set <String> watch_set_t;
-# else
-   typedef set <String> watch_set_t;
-# endif
-
- public:
-   User *user;					// Link into main user class
-   Handler *handler;				// Link into user handler
-
-   snotice_bitmask_t serverNotices;		// Server notices to receive
-   
-   watch_set_t watches;				// Watching these nicknames
- 
- public:
-   // Constructor
-   LocalUser(User *u, Handler *h)
-     : user(u),
-       handler(h),
-       serverNotices(0)
-     {
-	watches.clear();
-     };
-   
-   // Destructor
-   ~LocalUser(void)
-     {
-	watches.clear();
-     };
-
-   // Add to the watch list
-   void addWatch(const String &target)
-     {
-	watches.insert(target);
-     };
-   
-   // Remote from the watch list
-   void delWatch(const String &target)
-     {
-	watches.erase(target);
-     };
-   
-   // Wipe the watches list
-   void wipeWatches(void)
-     {
-	watches.clear();
-     };
-   
-   // Check for a watched nick
-   bool watching(String const &target)
-     {
-	return ((watches.find(target) != watches.end()) ? true : false);
-     };
 };
 
 #endif

@@ -59,7 +59,7 @@ ConfigData::ConfigData(void)
   confAutobone(true),
   confDescription(""),
   confHidden(false),
-  confMOTD(""),
+  confMOTD(DEFAULT_CONFIG_MOTD_FILE),
   confNetwork(""),
   confNoop(false),
   confServername("")

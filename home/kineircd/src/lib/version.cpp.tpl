@@ -9,7 +9,7 @@
 // Strings
 const char *getBuild = BUILD_STRING;
 
-const char *getVersion = "austhex.servd" VERSION_STRING;
+const char *getVersion = PROGNAME_STRING VERSION_STRING;
 
 const char *getVersionChars = 
 #ifdef ALLOW_LOCALOP_CONNECT

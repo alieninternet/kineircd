@@ -360,6 +360,7 @@
 # define DEFAULT_CONFIG_ADMIN_NAME		""
 # define DEFAULT_CONFIG_ADMIN_EMAIL		""
 # define DEFAULT_CONFIG_ADMIN_LOCATION		""
+# define DEFAULT_CONFIG_MOTD_FILE		"@MOTD_FILE@"
 
 
 /* This define changes how operator password SHA1 hashes are generated.
