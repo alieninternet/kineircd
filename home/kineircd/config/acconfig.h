@@ -446,11 +446,6 @@
 *                                                                             *
 ******************************************************************************/
 
-/* Force autoconf before compilation (else stuff might be left out/wrong) */
-# ifndef HAVE_CONFIG_H
-#  error "You must run the configure script before compiling this software!!"
-# endif
-
   
 /* Work out the client end of line characters and the max ircII line length;
  * change the BLOODY_IRCII_KLUGE define rather than edit these.. The name
