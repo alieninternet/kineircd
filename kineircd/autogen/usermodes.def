@@ -139,7 +139,8 @@ usermodes = {
    parameter	= "Prefix character";
    comment	= "User does not receive channel messages unless they are "
                   "prefixed with the given prefix character. If no parameter "
-		  "is given, the prefix character is presumed to be '!'.";
+		  "is given, all channel messages are ignored, with no "
+		  "prefix checking.";
    conflict	= "yes";
 };
 
