@@ -512,6 +512,33 @@ fi
 
 
 dnl
+dnl Developer stuff
+dnl
+AC_MSG_CHECKING([debugging parameter])
+AC_ARG_ENABLE(debugging,
+              AC_HELP_STRING([--enable-debugging],
+                             [Enable debugging (for developers)]),
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+     kineircd_test_have_debugging=no
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(KINE_DEBUG,1,[debugging?])
+     AC_DEFINE(KINE_DEBUG_ASSERT,1,[do assert() calls for sanity?])
+     kineircd_test_debugging=yes
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+   kineircd_test_debugging=no
+ ])
+AM_CONDITIONAL(KINEIRCD_COMPILE_LIB_DEBUG,
+	       [test x$kineircd_test_debugging = xyes])
+
+AM_MAINTAINER_MODE
+
+
+dnl
 dnl Which modules shall we compile?
 dnl
 AC_MSG_CHECKING([which modules to compile])
@@ -560,29 +587,6 @@ fi
 dnl finish off the line
 echo
 
-dnl
-dnl Developer stuff
-dnl
-AC_MSG_CHECKING([debugging parameter])
-AC_ARG_ENABLE(debugging,
-              AC_HELP_STRING([--enable-debugging],
-                             [Enable debugging (for developers)]),
- [
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-     kineircd_test_have_debugging=no
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(KINE_DEBUG,1,[debugging?])
-     AC_DEFINE(KINE_DEBUG_ASSERT,1,[do assert() calls for sanity?])
-     kineircd_test_debugging=yes
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
-   kineircd_test_debugging=no
- ])
-AM_CONDITIONAL(KINEIRCD_COMPILE_LIB_DEBUG,
-	       [test x$kineircd_test_debugging = xyes])
 
 dnl -------------------------------------------------------------------------
 dnl  Creating files
