@@ -25,4 +25,5 @@
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
 CVSROOT CVSROOT
-austhex.servd8.0 -a servd8.0 austhex.servd8.0
+austhex.servd8.0 austhex.servd8.0
+austhex.servd8.0 -a servd8.0 8.0
