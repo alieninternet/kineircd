@@ -47,9 +47,11 @@ using AISutil::StringTokens;
 Languages* Languages::instance = 0;
 
 
-// Two replacement characters..
+// Replacement object glyph (will appear as nothing to clients)
 const char* const Languages::replacementObjectGlyph = 
   "\357\277\274"; // <=- Unicode U+0FFFC; UTF-8 0xEF 0xBF 0xBC
+
+// Replacement character glyph (shown to the client)
 const char* const Languages::replacementCharacterGlyph =
   "\357\277\275"; // <=- Unicode U+0FFFD; UTF-8 0xEF 0xBF 0xBD
 
