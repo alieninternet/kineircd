@@ -1104,8 +1104,8 @@ irc2numerics = {
    name		= "RPL_NONE";
    numeric	= "300";
    origin	= "RFC1459";
-   comment	= "Dummy reply number for testing - Not used outside of testing";
-   obsolete	= "yes";
+   comment	= "Dummy reply, supposedly only used for debugging/testing "
+                  "new features, however has appeared in production daemons.";
 };
 
 irc2numerics = {
