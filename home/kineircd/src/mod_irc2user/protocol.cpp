@@ -29,8 +29,10 @@
 #include <iostream>
 #include <kineircd/config.h>
 #include <kineircd/languages.h>
+#include <kineircd/version.h>
 
 #include "mod_irc2user/protocol.h"
+#include "mod_irc2user/language.h"
 
 using namespace Kine::mod_irc2user;
 
@@ -48,15 +50,19 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    
    output <<
      ':' << config().getOptionsServerName() << " 001 " << registrant.name <<
-     " :?\r\n:" <<
+     " :" << GETLANG(irc2_RPL_WELCOME, 
+		     "nick", "user", "host.name") << "\r\n:" <<
      config().getOptionsServerName() << " 002 " << registrant.name <<
-     " :?\r\n:" <<
+     " :" << GETLANG(irc2_RPL_YOURHOST,
+		     config().getOptionsServerName(),
+		     Kine::Version::version) << "\r\n:" <<
      config().getOptionsServerName() << " 003 " << registrant.name <<
-     " :?\r\n:" <<
+     " :" << GETLANG(irc2_RPL_CREATED,
+		     Kine::Version::build) << "\r\n:" <<
      config().getOptionsServerName() << " 004 " << registrant.name <<
      " :?\r\n:" <<
      config().getOptionsServerName() << " 251 " << registrant.name <<
-     " :?\r\n:" <<
+     " :♥ = ☮ & ☯\r\n:" <<
      config().getOptionsServerName() << " 252 0 " << registrant.name <<
      " :?\r\n:" <<
      config().getOptionsServerName() << " 253 0 " << registrant.name <<
