@@ -26,9 +26,9 @@
 
 # include "kineircd/kineircdconf.h"
 
-# ifdef DEBUG
+# ifdef KINE_DEBUG
 
-#  ifdef DEBUG_ASSERT
+#  ifdef KINE_DEBUG_ASSERT
 #   include <cassert>
 #  endif
 

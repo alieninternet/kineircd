@@ -48,7 +48,7 @@ LoggerSyslog::LoggerSyslog(mask_type mask, const char *processName,
 {
    int option = LOG_NDELAY;
 
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    debug("LoggerSyslog::LoggerSyslog(): openlog()");
 #endif
    
@@ -62,7 +62,7 @@ LoggerSyslog::LoggerSyslog(mask_type mask, const char *processName,
  */
 LoggerSyslog::~LoggerSyslog(void)
 {
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    debug("LoggerSyslog::~LoggerSyslog(): closelog()");
 #endif
 
@@ -77,7 +77,7 @@ LoggerSyslog::~LoggerSyslog(void)
  */
 void LoggerSyslog::logLine(const String &line, const mask_type mask)
 {
-#ifdef DEBUG_PSYCHO
+#ifdef KINE_DEBUG_PSYCHO
    debug("LoggerSyslog::log(" + line + ')');
 #endif
 

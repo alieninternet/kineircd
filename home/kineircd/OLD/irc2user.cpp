@@ -451,7 +451,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 #endif
   user(u)
 {
-#ifdef DEBUG
+#ifdef KINE_DEBUG
    debug("New Handler: irc2userHandler");
 #endif
 
@@ -2274,7 +2274,7 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       
       // Check
       if (!kicker) {
-#ifdef DEBUG
+#ifdef KINE_DEBUG
 	 debug("irc2userHandler KICK sanity check on channel member failed. "
 	       "No channel member found when the channel was taken from a "
 	       "member -- VERY WRONG!");

@@ -37,7 +37,7 @@ using namespace Kine;
 LoggerFile::LoggerFile(mask_type mask, const char *fileName)
   : Logger(Logger::TYPE_FILE, mask)
 {
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    debug(String("LoggerFile::LoggerFile(): logFile.open(") + fileName + ')');
 #endif
    
@@ -51,7 +51,7 @@ LoggerFile::LoggerFile(mask_type mask, const char *fileName)
  */
 LoggerFile::~LoggerFile(void)
 {
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    debug("LoggerFile::~LoggerFile(): logFile.close()");
 #endif
    
@@ -67,7 +67,7 @@ LoggerFile::~LoggerFile(void)
 void LoggerFile::logLine(const String &line, const mask_type mask)
 {
    if (ok()) {
-#ifdef DEBUG_PSYCHO
+#ifdef KINE_DEBUG_PSYCHO
       debug("LoggerFile::log(" + line + ')');
 #endif
 

@@ -51,7 +51,7 @@ Connection::Connection(Socket *sock, bool sec)
   lastSpoke(Daemon::getTime()),
   name(0)
 {
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    debug(String::printf("[%d] Loading new connection",
 			socket->getFD()));
 #endif
@@ -76,7 +76,7 @@ Connection::Connection(Socket *sock, bool sec)
  */
 Connection::~Connection(void)
 {
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    debug(String::printf("[%d] Deleting connection",
 			socket->getFD()));
 #endif
@@ -132,7 +132,7 @@ void Connection::handleInput(void)
     * Uncheck the connected flag and remove us from any file descriptor sets
     * we may be on..
     */
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    debug(String::printf("[%d] handleInput(): Dead connection",
 			socket->getFD()));
 #endif
@@ -176,7 +176,7 @@ void Connection::sendQueue(void)
 {
    // Make sure we are connected (checking the socket not the status flag)
    if (!socket->isConnected()) {
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
       debug(String::printf("[%d] sendQueue() Called on a disconnected "
 			   "connection!",
 			socket->getFD()));
@@ -185,7 +185,7 @@ void Connection::sendQueue(void)
       return;
    }
    
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    // Sanity check, should never happen normally
    if (outQueue.empty()) {
       debug(String::printf("[%d] sendQueue() Called while nothing to send - "
@@ -236,7 +236,7 @@ void Connection::goodbye(String const &reason)
 {
    // Check that we are marked connected
    if (status & CONFLAG_CONNECTED) {
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
       debug(String::printf("[%d] goodbye()", socket->getFD()));
 #endif
 
@@ -250,7 +250,7 @@ void Connection::goodbye(String const &reason)
       // Mask this as a dead connection with the name (for stats l)
       name = 0;
    }
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    else {
       debug(String::printf("[%d] goodbye(): Called while already marked "
 			   "disconnected -- wrong!",
@@ -267,7 +267,7 @@ void Connection::kill(void)
 {
    // Check that we are marked connected
    if (status & CONFLAG_CONNECTED) {
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
       debug(String::printf("[%d] kill()",
 			   socket->getFD()));
 #endif
@@ -279,7 +279,7 @@ void Connection::kill(void)
       // Mask this as a dead connection with the name (for stats l)
       name = 0;
    }
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    else {
       debug(String::printf("[%d] kill(): Called while already marked "
 			   "disconnected -- wrong!",

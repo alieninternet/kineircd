@@ -70,12 +70,12 @@ struct checkMask
  */
 static RETSIGTYPE signalHandler(int signum)
 {
-#ifdef DEBUG_ASSERT
+#ifdef KINE_DEBUG_ASSERT
    // Make sure we are called properly - siggies must not be null
    assert(siggies != 0);
 #endif
    
-#ifdef DEBUG
+#ifdef KINE_DEBUG
    debug("sigHandler() -> [" + String::convert(signum) +
 # ifdef SYS_SIGLIST_DECLARED
 	 "] " + String(sys_siglist[signum])
@@ -141,7 +141,7 @@ static RETSIGTYPE signalHandler(int signum)
 	 
 	 // Everything else we should have already handled by now!
        default:
-#ifdef DEBUG
+#ifdef KINE_DEBUG
 	 // Complain!!
 	 debug("We did not know how to handle this signal!!!");
 #endif
@@ -155,7 +155,7 @@ static RETSIGTYPE signalHandler(int signum)
 			  checkMask(signum, maskBit));
    } else {
       // This could be nicer..
-#ifdef DEBUG
+#ifdef KINE_DEBUG
       debug("No signal handlers known yet - eek!");
 #endif
       abort();
@@ -241,11 +241,11 @@ struct {
  */
 Signals::Signals(void)
 {
-#ifdef DEBUG_PSYCHO
+#ifdef KINE_DEBUG_PSYCHO
    debug("Signals::Signals() - Setting up signal handlers...");
 #endif
 
-#ifdef DEBUG_ASSERT
+#ifdef KINE_DEBUG_ASSERT
    // Make sure the list is really empty
    assert(handlers.empty());
 #endif
@@ -269,7 +269,7 @@ Signals::Signals(void)
  */
 Signals::~Signals(void)
 {
-#ifdef DEBUG_PSYCHO
+#ifdef KINE_DEBUG_PSYCHO
    debug("Signals::~Signals() - Defaulting signal handlers...");
 #endif
    

@@ -74,7 +74,7 @@ CONFIG_VARIABLE_HANDLER(Config::varHandleOldConfig)
       return false;
    }
 
-#ifdef DEBUG
+#ifdef KINE_DEBUG
    debug("Reading OLD-STYLE configuration data from '" + values.front() + 
 	 "'...");
 #endif
@@ -93,7 +93,7 @@ CONFIG_VARIABLE_HANDLER(Config::varHandleOldConfig)
     */
    typedef pair <unsigned long, String> linePair_type;
    stack <linePair_type> configData;
-#ifdef DEBUG_ASSERT
+#ifdef KINE_DEBUG_ASSERT
    assert(configData.empty());
 #endif
    
@@ -328,7 +328,7 @@ CONFIG_VARIABLE_HANDLER(Config::varHandleOldConfig)
 	 
        default:
 	 // complain or something about an unsupported line thing..
-#ifdef DEBUG
+#ifdef KINE_DEBUG
 	 debug("eek. oldconfig.cpp incomplete! Should not have been compiled");
 #endif
       }

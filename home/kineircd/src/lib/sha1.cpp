@@ -310,7 +310,7 @@ Utils::SHA1::digest_type Utils::SHA1::generate(const String &line)
    if (!line.empty()) {
       digest_type digest;
       
-#ifdef DEBUG
+#ifdef KINE_DEBUG_ASSERT
       assert(sizeof(digest) == SHA_DIGEST_LENGTH);
 #endif
 

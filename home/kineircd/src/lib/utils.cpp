@@ -44,7 +44,7 @@ String Utils::baseXStr(unsigned long n, const base_type base)
      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" // 62 
      "!?$#%&*+-/:<=>@:[]^{|}~";				// + 33 = 85 chars
 
-#ifdef DEBUG_ASSERT
+#ifdef KINE_DEBUG_ASSERT
    // Make sure the base is within the limits..
    assert((base > 1) && (base <= MAXBASE));
 #endif

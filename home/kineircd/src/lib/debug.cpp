@@ -29,7 +29,7 @@
 //#include "kineircd/daemon.h"
 
 // Little check to make sure we are being compiled sanely
-#ifndef DEBUG
+#ifndef KINE_DEBUG
 # warning "Compiling without DEBUG defined?!"
 #endif
 

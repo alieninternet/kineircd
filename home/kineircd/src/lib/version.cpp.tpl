@@ -87,7 +87,7 @@ namespace Kine {
        */
       const char *versionChars =
 	// Configuration characters     
-#ifdef DEBUG
+#ifdef KINE_DEBUG
 				"D"
 #endif
 #ifdef KINE_STL_HAS_HASH

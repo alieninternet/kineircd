@@ -88,7 +88,7 @@ namespace Lang {
 bool Kine::Lang::loadLanguages(String const &directory,
 			       String const &defaultCode)
 {
-#ifdef DEBUG
+#ifdef KINE_DEBUG
    debug("Loading language files...");
 #endif
    
@@ -97,7 +97,7 @@ bool Kine::Lang::loadLanguages(String const &directory,
 
    // Make sure we opened that directory
    if (!dir) {
-#ifdef DEBUG
+#ifdef KINE_DEBUG
       debug("Error opening language file directory " + directory + ": " +
 	    strerror(errno));
 #endif
@@ -124,13 +124,13 @@ bool Kine::Lang::loadLanguages(String const &directory,
 
 	 // Check that we opened the file properly
 	 if (!file) {
-#ifdef DEBUG
+#ifdef KINE_DEBUG
 	    debug("Could not open language file: " + fileName);
 #endif
 	    continue;
 	 }
 	 
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
 	 debug("Loading language file " + fileName);
 #endif
 	 
@@ -187,14 +187,14 @@ bool Kine::Lang::loadLanguages(String const &directory,
 
 	    // Check the data for this line
 	    if (!tag.length() || !data.length()) {
-#ifdef DEBUG
+#ifdef KINE_DEBUG
 	       debug("Bad language line " + String::convert(lineNum) + 
 		     ": " + line);
 #endif
 	       continue;
 	    }
 	    
-#ifdef DEBUG_PSYCHO
+#ifdef KINE_DEBUG_PSYCHO
 	    debug(" +-> " + String(tag) + ": " + data);
 #endif
 

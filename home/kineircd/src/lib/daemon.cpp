@@ -61,7 +61,7 @@ Daemon::Daemon(Config &conf, Signals &sigs)
  */
 Daemon::~Daemon(void)
 {
-#ifdef DEBUG
+#ifdef KINE_DEBUG
    debug("Shutting down server");
 #endif
 
@@ -81,7 +81,7 @@ int Kine::Daemon::run(void)
       return Exit::ERR_DAEMON_INIT;
    }
    
-#ifdef DEBUG
+#ifdef KINE_DEBUG
    debug("Entering main loop");
 #endif
 
@@ -94,7 +94,7 @@ int Kine::Daemon::run(void)
 	 // check queues here..
 	 
 	 // If we get here the queues must be all dry
-#ifdef DEBUG
+#ifdef KINE_DEBUG
 	 debug("Output queues exhausted - Breaking main loop");
 #endif
 	 break;

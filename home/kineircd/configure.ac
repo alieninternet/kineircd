@@ -665,21 +665,21 @@ AC_ARG_ENABLE(debugging,[
    else
      if test "$enableval" = "psycho"; then
        AC_MSG_RESULT([yes (psycho)])
-       AC_DEFINE(DEBUG_PSYCHO,1,[psychotic-debugging?])
-       AC_DEFINE(DEBUG_EXTENDED,1,[extended debugging?])
-       AC_DEFINE(DEBUG,1,[debugging?])
-       AC_DEFINE(DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
+       AC_DEFINE(KINE_DEBUG_PSYCHO,1,[psychotic-debugging?])
+       AC_DEFINE(KINE_DEBUG_EXTENDED,1,[extended debugging?])
+       AC_DEFINE(KINE_DEBUG,1,[debugging?])
+       AC_DEFINE(KINE_DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
        kineircd_test_debugging=yes
      elif test "$enableval" = "extended"; then
        AC_MSG_RESULT([yes (extended)])
-       AC_DEFINE(DEBUG_EXTENDED,1,[extended debugging?])
-       AC_DEFINE(DEBUG,1,[debugging?])
-       AC_DEFINE(DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
+       AC_DEFINE(KINE_DEBUG_EXTENDED,1,[extended debugging?])
+       AC_DEFINE(KINE_DEBUG,1,[debugging?])
+       AC_DEFINE(KINE_DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
        kineircd_test_debugging=yes
      else
        AC_MSG_RESULT(yes)
-       AC_DEFINE(DEBUG,1,[debugging?])
-       AC_DEFINE(DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
+       AC_DEFINE(KINE_DEBUG,1,[debugging?])
+       AC_DEFINE(KINE_DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
        kineircd_test_debugging=yes
      fi
    fi

@@ -85,7 +85,7 @@ registerHandler::registerHandler(Connection *c)
 #endif
   regmode(IN_PROGRESS)
 {
-#ifdef DEBUG
+#ifdef KINE_DEBUG
    debug("New Handler: registerHandler");
 #endif
 
@@ -141,7 +141,7 @@ void registerHandler::parseLine(String const &line)
    // Increase and check the line counter
    if (++numLines > MAX_REGISTRATION_LINES) {
       // Boot them off
-# ifdef DEBUG_EXTENDED
+# ifdef KINE_DEBUG_EXTENDED
       debug("Registration overstepped MAX_REGISTRATION_LINES limit");
 # endif
       getConnection()->goodbye();
@@ -182,7 +182,7 @@ void registerHandler::parseLine(String const &line)
 	       // something here.
 	       sendNumeric(Numerics::ERR_PASSWDMISMATCH, 0,
 			   Lang::lang(LangTags::L_ERR_PASSWDMISMATCH));
-# ifdef DEBUG_EXTENDED
+# ifdef KINE_DEBUG_EXTENDED
 	       debug("Invalid password, terminating!");
 # endif
 	       
@@ -195,7 +195,7 @@ void registerHandler::parseLine(String const &line)
 	    if (getConnection()->socket->getFD() > MAX_FD_NO_MORE_USERS) {
 	       sendNumeric(Numerics::ERR_SERVERTOOFULL, 0, String(":") +
 			   Lang::lang(LangTags::L_ERR_SERVERTOOFULL));
-# ifdef DEBUG
+# ifdef KINE_DEBUG
 	       debug("Server is too full, no more clients!");
 # endif
 	       getConnection()->goodbye();
@@ -222,7 +222,7 @@ void registerHandler::parseLine(String const &line)
 	 if (password.length()) {
 	    // Check the password here.
 	    if (false) {
-# ifdef DEBUG
+# ifdef KINE_DEBUG
 	       debug("Invalid password, terminating!");
 # endif
 	       getConnection()->goodbye();
@@ -236,7 +236,7 @@ void registerHandler::parseLine(String const &line)
 	       break;
 # endif
 	     default: // Unknown protocol, terminate connection
-# ifdef DEBUG
+# ifdef KINE_DEBUG
 	       debug("Unsupported protocol (" + String::convert(protocol) + 
 		     "), terminating!");
 # endif
@@ -250,7 +250,7 @@ void registerHandler::parseLine(String const &line)
 	    
 	    // Check if we got it
 	    if (!server) {
-# ifdef DEBUG_EXTENDED
+# ifdef KINE_DEBUG_EXTENDED
 	       debug("Server not in list; Will add it..");
 # endif
 	       // Create a new server
@@ -261,12 +261,12 @@ void registerHandler::parseLine(String const &line)
 	    } else {
 	       // Check if this server is already connected here
 	       if (server->isLocal()) {
-# ifdef DEBUG
+# ifdef KINE_DEBUG
 		  debug("Server " + username + " is already connected!");
 # endif
 		  getConnection()->goodbye();
 	       }
-# ifdef DEBUG
+# ifdef KINE_DEBUG
 	       else {
 		  debug("Server already in list, fixing local handler...");
 	       }
@@ -282,7 +282,7 @@ void registerHandler::parseLine(String const &line)
 						 startStamp, linkStamp);
 	       break;
 # endif
-# ifdef DEBUG
+# ifdef KINE_DEBUG
 	     default: // Unknown protocol, sanity check :)
 	       debug("Unknown protocol found, however we should have ditched "
 		     "this connection already - VERY BAD?!?!!!");
@@ -295,7 +295,7 @@ void registerHandler::parseLine(String const &line)
 	    
 	    // Fix server handler pointer
 	    if (!server->resetHandler(newHandler)) {
-# ifdef DEBUG
+# ifdef KINE_DEBUG
 	       debug("Server is already connected locally - woops!!");
 # endif
 	       getConnection()->goodbye();
@@ -303,7 +303,7 @@ void registerHandler::parseLine(String const &line)
 	    }
 	 } else {
 	    // Dodgey connection, no password...
-# ifdef DEBUG_EXTENDED
+# ifdef KINE_DEBUG_EXTENDED
 	    debug("No password, terminating!");
 # endif
 	    getConnection()->goodbye();
@@ -317,7 +317,7 @@ void registerHandler::parseLine(String const &line)
 	 if (password.length()) {
 	    // Check the password here.
 	    if (false) {
-# ifdef DEBUG
+# ifdef KINE_DEBUG
 	       debug("Invalid password, terminating!");
 # endif
 	       getConnection()->goodbye();
@@ -327,7 +327,7 @@ void registerHandler::parseLine(String const &line)
 	    // stuff here!
 	 } else {
 	    // Dodgey connection, no password...
-# ifdef DEBUG_EXTENDED
+# ifdef KINE_DEBUG_EXTENDED
 	    debug("No password, terminating!");
 # endif
 	    getConnection()->goodbye();
@@ -377,7 +377,7 @@ void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
     */
    for (String ability = tokens->nextToken(); ability.length();
 	ability = tokens->nextToken()) {
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
       debug(" -=>  Capability: " + ability);
 #endif
    }
@@ -436,7 +436,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    
    // If we got here, the nick was ok - allow it
    handler->nickname = nick;
-# ifdef DEBUG_EXTENDED
+# ifdef KINE_DEBUG_EXTENDED
    debug(" -=>         Nick: " + nick);
 # endif
    
@@ -482,7 +482,7 @@ void registerHandler::parsePASS(registerHandler *handler, StringTokens *tokens)
    // Grab the password from the line (we do not care if it is blank)
    handler->password = tokens->nextColonToken();
    
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    debug(" -=>     Password: " + handler->password);
 #endif
 }
@@ -547,7 +547,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
    handler->protocol = String(tokens->nextToken().substr(1)).toInt();
    handler->realname = tokens->nextColonToken().substr(0, MAXLEN_SERVERDESC);
    
-# ifdef DEBUG_EXTENDED
+# ifdef KINE_DEBUG_EXTENDED
    // Send what we got to the debugging output
    debug(" -=>       Server: " + handler->username);
    debug(" -=>         Hops: " + String::convert(hops));
@@ -562,7 +562,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
    if ((hops != 1) ||
        (handler->startStamp == 0) ||
        (handler->linkStamp == 0)) {
-# ifdef DEBUG_EXTENDED
+# ifdef KINE_DEBUG_EXTENDED
       debug("Variables are invalid!");
 # endif
       handler->getConnection()->goodbye();
@@ -628,7 +628,7 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
    String res2 = tokens->nextToken(); // ignored (RFC-2812: reserved)
    handler->realname = tokens->nextColonToken().substr(0, MAXLEN_REALNAME);
    
-# ifdef DEBUG_EXTENDED
+# ifdef KINE_DEBUG_EXTENDED
    // Send what we got to the debugging output
    debug(" -=>      Service: " + handler->username);
    debug(" -=> (reserved 1): " + res1);
@@ -676,7 +676,7 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
      tokens->nextColonToken().substr(0, 
 				     Daemon::getConfig().getOptionsLimitsUsersMaxRealNameLength());
 
-# ifdef DEBUG_EXTENDED
+# ifdef KINE_DEBUG_EXTENDED
    // Output what we got for debugging purposes
    debug(" -=>         User: " + handler->username);
    debug(" -=>        Modes: " + handler->modes);

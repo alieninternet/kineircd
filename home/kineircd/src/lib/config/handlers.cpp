@@ -710,7 +710,7 @@ Kine::Config::~Config(void)
  */
 CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleNetworkName)
 {
-#ifdef DEBUG_ASSERT
+#ifdef KINE_DEBUG_ASSERT
    assert(dataVariable != 0);
 #endif
 
@@ -746,7 +746,7 @@ CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleNetworkName)
    // Set it happily
    dataClass.*((String ConfigData::*)dataVariable) = values.front();
       
-#ifdef DEBUG_PSYCHO
+#ifdef KINE_DEBUG_PSYCHO
    debug("Config::varHandleNetworkName() -> '" + 
 	 dataClass.*((String ConfigData::*)dataVariable) + '\'');
 #endif
