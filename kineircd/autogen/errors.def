@@ -91,6 +91,11 @@ errors = {
 };
 
 errors = {
+   name		= "SERVERS_DONT_MATCH";
+   reason	= "The given server does not match the expected server";
+};
+
+errors = {
    name		= "TEXT_TOO_LONG";
    reason	= "The given text is too long";
 };

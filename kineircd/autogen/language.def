@@ -666,6 +666,11 @@ tag = {
 };
 
 tag = {
+   name		= "irc2_KILLDONE";
+   data_en	= "Killed";
+};
+
+tag = {
    name		= "irc2_QUIT_BUGGY";
    fields	= "0 = error message, 1 = error number/code";
    data_en	= "Bug? Error №%p1: %p0";
@@ -2355,6 +2360,12 @@ tag = {
    components	= "libkineircd";
    data_en	= "The server name given has no dot in it to be considered "
                   "a valid host name";
+};
+
+tag = {
+   name		= "Kine_Error_SERVERS_DONT_MATCH";
+   components	= "libkineircd";
+   data_en	= "The given server does not match the expected server";
 };
 
 tag = {
