@@ -60,7 +60,8 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    user.
      setLanguageList(Languages::languageDataList_type(1,
 						      langs().
-						      getDefaultLanguage()));
+						      getDefaultLanguage()),
+		     true);
    
    // Welcome the user to the server (001)
    sendNumeric(LibIRC2::Numerics::RPL_WELCOME,

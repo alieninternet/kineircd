@@ -56,3 +56,12 @@ void User::doEventAwayToggle(void)
    protocol.sendNumeric(LibIRC2::Numerics::RPL_UNAWAY,
 			GETLANG(irc2_RPL_UNAWAY));
 }
+
+
+/* doEventLanguageChange - Called when the language list has been modified
+ * Original 16/04/2003 simonb
+ */
+void User::doEventLanguageChange(void)
+{
+   protocol.sendLanguageList();
+}

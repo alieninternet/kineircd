@@ -308,9 +308,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
    
    // Set the new language list
    user.setLanguageList(languageList);
-   
-   // Tell the user about their new language settings
-   sendLanguageList();
 }
 
 

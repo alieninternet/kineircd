@@ -65,10 +65,16 @@ void User::setHere(void)
 /* setLanguageList - Change the language list over to the one provided
  * Original 16/04/2003 simonb
  */
-void User::setLanguageList(const Languages::languageDataList_type& languages)
+void User::setLanguageList(const Languages::languageDataList_type& languages,
+			   const bool secret)
 {
    // Okay, cheap.. We should verify the list here, really..
    languageList = languages;
    
    // broadcast it.
+
+   // Tell ourself, if it's not a secret
+   if (!secret) {
+      doEventLanguageChange();
+   }
 }

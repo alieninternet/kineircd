@@ -53,6 +53,9 @@ namespace Kine {
 
       //! An event called if we are marked away or returning from away
       virtual void doEventAwayToggle(void) {};
+
+      //! An event called whenever the language list is modified
+      virtual void doEventLanguageChange(void) {};
       
     public:
       //! Destructor
@@ -94,7 +97,8 @@ namespace Kine {
 	{ return languageList; };
       
       //! Set the language list to the given list (replaces the list)
-      void setLanguageList(const Languages::languageDataList_type& languages);
+      void setLanguageList(const Languages::languageDataList_type& languages,
+			   const bool secret = false);
    }; // class User
 }; // namespace Kine
 

@@ -42,7 +42,8 @@ namespace Kine {
 	 AISutil::Time lastAwake;		// Time user was last awake
 
 	 // Events we want to know about
-	 virtual void doEventAwayToggle(void);
+	 void doEventAwayToggle(void);
+	 void doEventLanguageChange(void);
 	 
        public:
 	 // Constructor
