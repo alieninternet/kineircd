@@ -184,9 +184,22 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_ERRONEUSNICKNAME";
-   components	= "mod_irc2registrar";
+   components	= "mod_irc2registrar mod_irc2user";
    data_en	= "Erroneous nickname";
    data_tr	= "Yanlıž^_ nickname";
+};
+
+tag = {
+   name		= "irc2_ERR_ERRONEUSNICKNAME_PROHIBITED";
+   fields	= "0 = the reason why the nickname is prohibited from use";
+   components	= "mod_irc2registrar mod_irc2user";
+   data_en	= "You cannot use that nickname here (%p0)";
+};
+
+tag = {
+   name		= "irc2_ERR_EVENTNICKCHANGE";
+   components	= "mod_irc2user";
+   data_en	= "Cannot change nickname while channel is in an event (+E)";
 };
 
 tag = {
@@ -276,7 +289,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NONICKNAMEGIVEN";
-   components	= "mod_irc2registrar";
+   components	= "mod_irc2registrar mod_irc2user";
    data_en	= "No nickname given";
    data_tr	= "Nickname belirtilmedi";
 };
