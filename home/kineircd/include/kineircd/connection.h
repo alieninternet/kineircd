@@ -29,8 +29,6 @@
 
 # include <aisutil/socket/socket.h>
 
-# include <kineircd/daemon.h>
-
 namespace Kine {
    class Protocol;
    
@@ -46,10 +44,6 @@ namespace Kine {
       time_t lastSpoke;			// Time the connection last spoke
 
       bool connected;			// Are we connected?
-      
-      // Fix the lastSpoke variable to 'now'
-      void touch(void)
-	{ lastSpoke = daemon().getTime().tv_sec; };
       
     public:
       // Class constructor

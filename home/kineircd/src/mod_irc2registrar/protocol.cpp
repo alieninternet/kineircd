@@ -32,6 +32,7 @@
 
 #include "kineircd/protocolinfo.h"
 #include "kineircd/protocolname.h"
+#include "kineircd/daemon.h"
 #include "lib/registrar.h"
 #include "lib/regnumerics.h"
 #include "lib/debug.h"

@@ -28,6 +28,7 @@
 #include "kineircd/kineircdconf.h"
 
 #include "kineircd/connection.h"
+#include "kineircd/daemon.h"
 #include "lib/debug.h"
 
 using namespace Kine;
@@ -88,13 +89,16 @@ bool Connection::handleInput(void)
 #endif
       return false;
    }
-   
-   // Make sure we have a whole line - we only want to deal with full lines
+
+   // Make sure we read something - no point passing nothing to the protocol!
    if (!line.str().empty()) {
       // Increment our input counters
       receivedBytes += line.str().length();
       daemon().addReceivedBytes(line.str().length());
 
+      // Update the 'last spoke' variable
+      lastSpoke = daemon().getTime().tv_sec;
+      
       // Throw the data at the protocol routines
       protocol->handleInput(line);
    }
