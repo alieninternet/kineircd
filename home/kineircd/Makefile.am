@@ -141,7 +141,6 @@ BUILT_SOURCES=\
 	include/kineircd/errors.h \
 	include/kineircd/logger.h \
 	include/kineircd/server.h \
-	src/ircd/options.h \
 	src/libkineircd_irc2/numerics.h
 
 
@@ -469,18 +468,10 @@ ircd_SOURCES=\
 	src/ircd/bits.cpp \
 	src/ircd/bits.h \
 	src/ircd/exit.h \
-	src/ircd/ircd.cpp \
-	src/ircd/options.cpp \
-	src/ircd/options.h
+	src/ircd/ircd.cpp
 
 ircd_LDADD=\
 	libkineircd.la
-
-src/ircd/options.cpp src/ircd/options.h: src/ircd/options.tpl src/ircd/options.def
-	$(AUTOGEN) \
-		-b $(basename $@) \
-		-T src/ircd/options.tpl \
-		src/ircd/options.def
 
 
 
