@@ -47,8 +47,6 @@
 # include <kineircd/protocolinfo.h>
 
 namespace Kine {
-   class User;
-   
    //! The Daemon class
    class Daemon {
     public:
@@ -175,7 +173,5 @@ namespace Kine {
    inline static Daemon& daemon(void)
      { return Daemon::getInstance(); };
 };
-
-# include <kineircd/user.h>
 
 #endif // _INCLUDE_KINEIRCD_DAEMON_H_ 
