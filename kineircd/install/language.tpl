@@ -1,4 +1,16 @@
 [+ AutoGen5 template lang +][+ FOR languages +][+
+   ;; Tell the console what we're up to
+   (for-each
+      display
+      (list
+         " -=> Generating langtags file for '"
+         (get "langName")
+         "' ("
+         (get "langCode")
+         ")"
+	 #\nl))
+
+   ;; Switch over to a new language file, using the language code in its name
    (out-push-new
       (sprintf "%s%s.lang" 
          (base-name)
