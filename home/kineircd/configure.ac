@@ -593,7 +593,7 @@ else
 fi
 
 dnl Best not to change these..
-AC_DEFINE(KINE_INTERNAL_CHARSET, "UCS-4",
+AC_DEFINE(KINE_INTERNAL_CHARSET, "UCS-4-INTERNAL",
           [Internal representation of unicode])
 AC_DEFINE(KINE_LANGFILE_CHARSET, "UTF-8",
           [Representation of unicode within the language files])
