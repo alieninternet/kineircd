@@ -225,8 +225,10 @@ libkineircd_la_SOURCES=\
 	src/lib/listener/list.cpp \
 	src/lib/modules/descriptor.cpp \
 	src/lib/modules/list.cpp \
+	src/lib/channel.cpp \
 	src/lib/chantypes.cpp \
 	src/lib/charconv.h \
+	src/lib/client.cpp \
 	src/lib/connection.cpp \
 	src/lib/constants.h \
 	src/lib/daemon.cpp \
@@ -238,6 +240,7 @@ libkineircd_la_SOURCES=\
 	src/lib/logger.cpp \
 	src/lib/mynetwork.cpp \
 	src/lib/myserver.cpp \
+	src/lib/network.cpp \
 	src/lib/name.cpp \
 	src/lib/protocol.cpp \
 	src/lib/registry.cpp \

@@ -1,5 +1,5 @@
 /* $Id$
- *
+ * 
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
@@ -21,16 +21,33 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIBKINEIRCD_CONSTANTS_H_
-# define _SRC_LIBKINEIRCD_CONSTANTS_H_ 1
+#ifdef HAVE_CONFIG_H
+# include "autoconf.h"
+#endif
+#include "kineircd/kineircdconf.h"
 
-namespace Kine {
-   // Various constants used internally, but are mostly generated
-   namespace Constants {
-      // A list of channel type prefix chars
-      extern const wchar_t* const standardChannelTypePrefixes;
-   }; // namespace Constants
-}; // namespace Kine
+#include "kineircd/network.h"
+#include "kineircd/config.h"
+#include "lib/debug.h"
+
+using namespace Kine;
+
+
+/* checkValidity - Check to see if the name is a valid network name
+ * Original 11/11/2003 pickle
+ */
+const Error::error_type Network::Name::checkValidity(void) const
+{
+   // Check the length..
+//   if (length() > ??) {
+//      return Error::NAME_TOO_LONG;
+//   }
    
-#endif // _SRC_LIBKINEIRCD_CONSTANTS_H_
-
+   // Currently the network name rules are pretty flimsy..
+   if (find_first_of(L"\0\007\012\015 ,:", 1) != npos) {
+      return Error::NAME_HAS_BAD_CHARS;
+   }
+   
+   // I guess the name is okay then!
+   return Error::NO_ERROR;
+}

@@ -29,11 +29,8 @@
 #include <algorithm>
 #include <cctype>
 
-#include "kineircd/entity.h"
-#include "kineircd/client.h"
-#include "kineircd/channel.h"
-#include "kineircd/config.h"
-#include "lib/constants.h"
+#include "kineircd/name.h"
+#include "lib/debug.h"
 
 using namespace Kine;
 using AIS::Util::String;
@@ -45,35 +42,20 @@ using AIS::Util::String;
 inline static wchar_t irctolower(wchar_t c)
 {
    switch (c) {
-    case '[':
-      return '{';
+    case L'[':
+      return L'{';
       
-    case ']':
-      return '}';
+    case L']':
+      return L'}';
       
-    case '\\':
-      return '|';
+    case L'\\':
+      return L'|';
       
-    case '^':
-      return '~';
+    case L'^':
+      return L'~';
    }
    
    return std::tolower(c);
-}
-
-
-/* isSpecialChar - Return true if the given character is 'special'
- * Original 12/08/2001 pickle
- */
-inline static const bool isSpecialChar(const char chr)
-{
-   /* The given char is okay if it's between the range of 0x5B-0x60 ('[', '\',
-    * ']', '^', '_', '`'), or within the range of 0x7B-0x7D ('{', '|', '}').
-    * These two weird looking ranges are acceptable due to the scandinavian
-    * origin of IRC, back a long long time ago in a universe far, far away.
-    */
-   return (((chr >= 0x5B) && (chr <= 0x60)) ||
-	   ((chr >= 0x7B) && (chr <= 0x7D)));
 }
 
 
@@ -86,91 +68,4 @@ const std::wstring Name::IRCtoLower(void) const
    std::wstring result(length(), 0);
    (void)std::transform(begin(), end(), result.begin(), irctolower);
    return result;
-}
-
-
-/* checkValidity - Check to see if the name is valid as per nickname rules
- * Original 12/08/2001 pickle
- */
-const Error::error_type Client::Name::checkValidity(void) const
-{
-   // Check the nickname's length first
-   if (length() > config().getLimitsUsersMaxNickNameLength()) {
-      return Error::NAME_TOO_LONG;
-   }
-   
-   // Check if the first character is a digit, or digit related (bad)
-   if (std::isdigit((*this)[0]) ||
-       ((*this)[0] == '-')) {
-      return Error::NICKNAME_BEGINS_WITH_DIGIT;
-   }
-   
-   // Run over the name and check each char..
-   for (size_type i = 0; i < length(); ++i) {
-      /* If the char is greater than 7-bits, it's okay (to allow for UTF-8)..
-       * If the char is alphanumeric, it's okay. 
-       */
-      if (((*this)[i] & 0x80) ||
-	  isalnum((*this)[i]) ||
-	  isSpecialChar((*this)[i]) ||
-	  ((*this)[i] == '-')) {
-	 continue;
-      }
-      
-      // If we got here, it's a bad char. Vewwy vewwy BAD char!!
-      return Error::NAME_HAS_BAD_CHARS;
-   }
-   
-   // Must be okay :)
-   return Error::NO_ERROR;
-}
-
-
-/* checkValidity - Check to see if the name is valid as per channel name rules
- * Original 18/08/2001 pickle
- */
-const Error::error_type Channel::Name::checkValidity(void) const
-{
-   // Check the channel name's length
-   if (length() > config().getLimitsChannelsMaxNameLength()) {
-      return Error::NAME_TOO_LONG;
-   }
-   
-   // Okay, check the first char is a prefix that we know of
-   const char* prefixes = Constants::standardChannelTypePrefixes;
-   while (*prefixes != '\0') {
-      if ((*this)[0] == *prefixes) {
-	 break;
-      }
-   }
-
-   // If we reached the end of the prefix char array, we did not find it..
-   if (*prefixes == '\0') {
-      return Error::CHANNEL_NAME_NONSTANDARD_PREFIX;
-   }
-   
-   /* Well okay, look for invalid chars :) This is what RFC2812 says, however
-    * we may also disallow masks depending on what the configuration says
-    */
-#ifdef KINE_DEBUG
-# warning "Not properly checking channel names..."
-#endif
-//   if (config().getLimitsChannelsAllowMaskLikeNames()) {
-//      size_type where;
-//      if ((where = find_first_of("\0\a\r\n ,:*?", 1)) != (size_type)-1) {
-//	 if (((*this)[where] == '*') ||
-//	     ((*this)[where] == '?')) {
-//	    return Error::NAME_IS_A_MASK;
-//	 }
-//	 
-//	 return Error::NAME_HAS_BAD_CHARS;
-//      }
-//   } else {
-//      if (find_first_of("\0\a\r\n ,:", 1) != (size_type)-1) {
-//	 return Error::NAME_HAS_BAD_CHARS;
-//      }
-//   }
-   
-   // Looks good, chief
-   return Error::NO_ERROR;
 }

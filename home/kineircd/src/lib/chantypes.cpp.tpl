@@ -29,5 +29,5 @@
 
 using namespace Kine;
  
-const char* const Constants::standardChannelTypePrefixes =
- "[+FOR chantypes+][+prefixchar+][+ENDFOR+]";
+const wchar_t* const Constants::standardChannelTypePrefixes =
+ L"[+FOR chantypes+][+prefixchar+][+ENDFOR+]";
