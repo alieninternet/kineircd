@@ -126,6 +126,28 @@ _______________________________________________________________________________
       average and maximum ping times over the course of the traceroute.
       Information is always given.
 
+810 - RPL_WHOWAS_DETAILS
+      <nick> <type> :<information>
+      This follows the normal RPL_WHOWASUSER and RPL_WHOWAS_TIME (ref: ircu).
+      The nickname corresponds to the nickname of the returning
+      information. The type is simply a number (8-bit, range of 0..255) 
+      which denotes what type of information is being returned, or rather 
+      what 'happened' to this user. Currently the following information
+      types have been defined:
+        0 - Quit, the user signed off (information = quit message)
+	1 - Connection break, something went wrong (information = error)
+	2 - Netsplit occured, two servers are given, but may be masked
+            depending on their status (hidden or not).
+        3 - The user was killed, the information following is the reason
+	    for being killed.
+	4 - The user changed their nickname. The information will be the
+	    user's new nickname. If the user was set invisible (user mode 
+	    +i) when the nick change occured, the new nickname will not be
+	    available unless the person calling the whowas is a helper
+            or an IRC operator.
+      eg. Mode = 1, the information could be something like "Read
+          error: No route to host" etc)
+
 813 - RPL_WHOISSECURE			
       <nick> <mode> :is connected via a secure connection
 

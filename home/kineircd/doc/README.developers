@@ -170,8 +170,7 @@ and code formatting information.
   new to CVS, don't be shy. Ask questions, or you'll do what I did and
   make a very bad embarrasing mistake. There's heaps of information on
   CVS out there, but there's also a heap of useless documentation that
-  will confuse you more than anything. At least check out the command
-  references on http://www.cvshome.org/docs
+  will confuse you more than anything.
   
 * Before you update, make the code. Make sure it compiles, make sure
   it runs, make sure whatever you did doesn't make the server die when
@@ -209,3 +208,52 @@ and code formatting information.
 * If you're new to the code, READ it. You will not be given a task to do
   until you have read the code through and know how things are done.
   Even read the makefiles, headers, documentation! This is important!!
+
+* Because of the way C++ handles 'const' differently to how C uses
+  'const', my use (which seems more logical to me) is like this:
+    char const *foo;
+  rather than:
+    const char *foo;
+    
+* By convention, please follow these naming conventions:
+   * Class names should begin with a capital letter
+     eg. class Foo;
+   * Variable/Function names should begin with a lower case letter
+     eg. int foo;
+   * With the exception for short run-on words (hostname, nickname etc),
+     variables/class names with multiple words should have each new word
+     start with a capital letter.
+     eg. class FooBarBazQux;
+     eg. int fooBarBazQux;
+   * Types should be all lower-case, words separated by underscores
+     ('_') and end with the suffix '_t'. The type should be
+     descriptive if it defines something special (like a list/map etc).
+     eg. typedef unsigned short foo_bar_t;
+     eg. typedef list <FooBahBazQux> quux_corge_grault_list_t;
+   * With the exception of simple utilitarian variables (int x, y, i;
+     for loops etc), variables and class names should be descriptive!
+       string h; // this is totally useless, what is a?
+       string hostname; // Much better, we know what this is instantly
+   * Use typedefs rather than hard-coding in lists/maps whereever
+     possible. This, and the point above, help write 'self-documented' 
+     code which future developers (or just developers other than
+     yourself) can understand without having to flick up and down the
+     source code trying to work out WTF you're doing with these weird
+     variables.
+     
+     
+     
+____________________________________________________________________________
+Information sources which will help you out:
+ * CVS information: 
+   http://www.cvshome.org/docs
+   
+ * Standard Template Library (STL) docs
+   http://www.sgi.com/tech/stl
+   
+ * IRC RFCs.. (warning: most of this is useless crap)
+   http://www.rfc-editor.org/rfc/rfc2810.txt (Architecture)
+   http://www.rfc-editor.org/rfc/rfc2811.txt (Channel)
+   http://www.rfc-editor.org/rfc/rfc2812.txt (Client)
+   http://www.rfc-editor.org/rfc/rfc2813.txt (Server)
+   http://www.rfc-editor.org/rfc/rfc1459.txt (Original from 1993)

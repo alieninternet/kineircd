@@ -11,6 +11,7 @@
 
 # include <map>
 # include <list>
+# include <deque>
 
 # ifdef STL_HAS_HASH
 #  include <hash_map>
@@ -59,6 +60,7 @@ typedef unsigned char TYPE_RPL_TIMEONSERVERIS_FLAGS;
 # include "channel.h"
 # include "str.h"
 # include "operator.h"
+# include "whowas.h"
 
 
 // If we are in debugging mode, we need this routine!
@@ -121,6 +123,7 @@ class Daemon {
    typedef list <RelationMask *> relationmask_list_t;
    typedef list <String> motd_t;
 # endif
+   typedef deque <Whowas> whowas_deque_t;
    
  private:
    String configFile;				// Main configuration file
@@ -187,6 +190,7 @@ class Daemon {
    
    user_map_t users;				// User list
    localuser_map_t localUsers;			// Local users list
+   whowas_deque_t whowas;			// Old users (whowas) list
    
    channel_map_t channels;			// Channel list
    channel_map_t localChannels;			// Local channel list (&)

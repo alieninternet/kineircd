@@ -1,0 +1,105 @@
+/* whowas.h
+ * Whowas class
+ */
+
+#ifndef __WHOWAS_H_
+# define __WHOWAS_H_
+
+# include <time.h>
+
+# include "daemon.h"
+# include "str.h"
+
+/* Whowas entry. Notice how these values are not pointers - the reason for
+ * this is firstly the user will no longer be available - this is a 'snapshot'
+ * of a user. Also, the server may have split, therefore that server record
+ * might not exist as well, so a real server is used. The quit reason is
+ * an austhex8 extension.
+ */
+class Whowas {
+ private:
+   String nickname;				// User nickname
+   String username;				// User name
+   String hostname;				// Host name
+   String vwhostname;				// Virtual world host name
+   String realname;				// User real name
+   String server;				// Empty if 'hidden'
+   String details;				// Details of departure
+   bool hideDetails;				// Hidden details?
+   unsigned char type;				// Type of details stored
+   time_t signoffTime;				// Time user signed off
+
+ public:
+   // Constructor
+   Whowas(String const &nn, String const &un, String const &hn, 
+	  String const &vwhn, String const &rn, String const &s,
+	  String const &d, bool hd, unsigned char t, time_t sot)
+     : nickname(nn),
+       username(un),
+       hostname(hn),
+       vwhostname(vwhn),
+       realname(rn),
+       server(s),
+       details(d),
+       hideDetails(hd),
+       type(t),
+       signoffTime(sot)
+     {};
+   
+   // Grab the nickname
+   String getNickname(void) const
+     {
+	return nickname;
+     };
+
+   // Grab the username
+   String getUsername(void) const
+     {
+	return username;
+     };
+
+   // Grab the hostname
+   String getHostname(void) const
+     {
+	return hostname;
+     };
+
+   // Grab the virtual-world hostname
+   String getVWHostname(void) const
+     {
+	return vwhostname;
+     };
+
+   // Grab the 'real name' field
+   String getRealname(void) const
+     {
+	return realname;
+     };
+
+   // Grab the server
+   String getServer(void) const
+     {
+	return server;
+     };
+   
+   // Grab the details
+   String getDetails(void) const
+     {
+	return details;
+     };
+
+   // Grab the type of 'was' :)
+   unsigned char getType(void) const
+     {
+	return type;
+     };
+   
+   // Grab the time this user 'signed off'
+   time_t getSignoffTime(void) const
+     {
+	return signoffTime;
+     };
+};
+
+#endif
+

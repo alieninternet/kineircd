@@ -62,7 +62,7 @@ Daemon::Daemon(String *conf)
    gettimeofday(&currentTime, NULL);
    
    // Clear sequences and FD_SETs
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
    cerr << "Clearing sequences" << endl;
 #endif
    failNicknames.clear();
@@ -73,6 +73,8 @@ Daemon::Daemon(String *conf)
    connections.clear();
    servers.clear();
    users.clear();
+   localUsers.clear();
+   whowas.clear();
    channels.clear();
    localChannels.clear();
    motd.clear();
@@ -92,7 +94,7 @@ Daemon::Daemon(String *conf)
     * control ircd messages to go to a separate file, so it's the same thing
     * in the end really.
     */
-# ifdef DEBUG
+# ifdef DEBUG_EXTENDED
    cerr << "Calling syslog's openlog()" << endl;
 # endif
    openlog(SYSLOG_IDENT, LOG_PID, LOG_DAEMON);
