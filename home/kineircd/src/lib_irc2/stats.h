@@ -24,7 +24,7 @@
 #ifndef _SRC_MOD_LIBKINEIRCD_IRC2_STATS_H_
 # define _SRC_MOD_LIBKINEIRCD_IRC2_STATS_H_ 1
 
-# include "kineircd/irc2/protocol.h"
+# include "kineircd/libirc2/protocol.h"
 # include "kineircd/client.h"
 
 

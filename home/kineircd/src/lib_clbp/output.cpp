@@ -27,7 +27,7 @@
 
 #include <algorithm>
 
-#include "kineircd/clbp/output.h"
+#include "kineircd/libclbp/output.h"
 
 using namespace Kine::LibCLBP;
 

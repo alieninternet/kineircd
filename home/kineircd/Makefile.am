@@ -131,7 +131,7 @@ rfc%.txt:
 
 # Pre-dependency building dependancies...
 BUILT_SOURCES=\
-	include/kineircd/irc2/numerics.h \
+	include/kineircd/libirc2/numerics.h \
 	include/kineircd/config.h \
 	include/kineircd/errors.h \
 	include/kineircd/events.h \
@@ -313,9 +313,9 @@ src/lib/version.h:
 # 'libkineircd_clbp' library
 ###############################################################################
 libkineircd_clbp_la_SOURCES=\
-	include/kineircd/clbp/input.h \
-	include/kineircd/clbp/output.h \
-	include/kineircd/clbp/protocol.h \
+	include/kineircd/libclbp/input.h \
+	include/kineircd/libclbp/output.h \
+	include/kineircd/libclbp/protocol.h \
 	src/lib_clbp/input.cpp \
 	src/lib_clbp/output.cpp
 
@@ -331,10 +331,10 @@ libkineircd_clbp_la_LIBADD=\
 # 'libkineircd_irc2' library
 ###############################################################################
 libkineircd_irc2_la_SOURCES=\
-	include/kineircd/irc2/library.h \
-	include/kineircd/irc2/numerics.h \
-	include/kineircd/irc2/protocol.h \
-	include/kineircd/irc2/utility.h \
+	include/kineircd/libirc2/library.h \
+	include/kineircd/libirc2/numerics.h \
+	include/kineircd/libirc2/protocol.h \
+	include/kineircd/libirc2/utility.h \
 	src/lib_irc2/common.cpp \
 	src/lib_irc2/lang.h \
 	src/lib_irc2/language.cpp \
@@ -352,10 +352,10 @@ libkineircd_irc2_la_LIBADD=\
 	libkineircd.la \
 	libkineircd_clbp.la
 		
-include/kineircd/irc2/numerics.h: include/kineircd/irc2/numerics.h.tpl $(AUTOGEN_DIR)/irc2numerics.def
+include/kineircd/libirc2/numerics.h: include/kineircd/libirc2/numerics.h.tpl $(AUTOGEN_DIR)/irc2numerics.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T include/kineircd/irc2/numerics.h.tpl \
+		-T include/kineircd/libirc2/numerics.h.tpl \
 		$(AUTOGEN_DIR)/irc2numerics.def
 
 src/lib_irc2/language.cpp src/lib_irc2/language.h: $(AUTOGEN_DIR)/language.tpl $(AUTOGEN_DIR)/language.def

@@ -25,7 +25,7 @@
 # include "autoconf.h"
 #endif
 
-#include "kineircd/irc2/library.h"
+#include "kineircd/libirc2/library.h"
 #include "lib_irc2/language.h"
 
 namespace {

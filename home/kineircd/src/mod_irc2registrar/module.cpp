@@ -27,7 +27,7 @@
 
 #include <kineircd/module.h>
 #include <kineircd/daemon.h>
-#include <kineircd/irc2/library.h>
+#include <kineircd/libirc2/library.h>
 
 #include "mod_irc2registrar/module.h"
 #include "mod_irc2registrar/protocolinfo.h"

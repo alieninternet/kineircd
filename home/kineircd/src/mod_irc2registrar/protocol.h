@@ -29,8 +29,8 @@
 # include <kineircd/registrant.h>
 # include <kineircd/config.h>
 # include <kineircd/myserver.h>
-# include <kineircd/irc2/protocol.h>
-# include <kineircd/irc2/numerics.h>
+# include <kineircd/libirc2/protocol.h>
+# include <kineircd/libirc2/numerics.h>
 
 # define KINE_MOD_REGISTRAR_FUNCTION(x) \
      void x(const Kine::LibIRC2::Protocol::parameters_type& parameters)

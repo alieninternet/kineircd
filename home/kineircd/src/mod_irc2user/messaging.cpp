@@ -29,7 +29,7 @@
 #include <aisutil/string/mask.h>
 #include <aisutil/string/tokens.h>
 #include <kineircd/config.h>
-#include <kineircd/irc2/utility.h>
+#include <kineircd/libirc2/utility.h>
 
 #include "mod_irc2user/protocol.h"
 #include "mod_irc2user/lang.h"

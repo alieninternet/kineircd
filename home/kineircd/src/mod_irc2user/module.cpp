@@ -30,7 +30,7 @@
 #endif
 #include <kineircd/module.h>
 #include <kineircd/daemon.h>
-#include <kineircd/irc2/library.h>
+#include <kineircd/libirc2/library.h>
 
 #include "mod_irc2user/module.h"
 #include "mod_irc2user/protocolinfo.h"

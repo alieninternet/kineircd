@@ -27,7 +27,7 @@
 
 #include <kineircd/registry.h>
 
-#include "kineircd/irc2/utility.h"
+#include "kineircd/libirc2/utility.h"
 
 using namespace Kine::LibIRC2;
 

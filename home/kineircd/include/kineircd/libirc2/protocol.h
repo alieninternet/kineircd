@@ -30,10 +30,10 @@
 # include <sstream>
 # include <iomanip>
 # include <aisutil/string/string.h>
-# include <kineircd/clbp/protocol.h>
+# include <kineircd/libclbp/protocol.h>
 # include <kineircd/user.h>
 # include <kineircd/myserver.h>
-# include <kineircd/irc2/numerics.h>
+# include <kineircd/libirc2/numerics.h>
 
 
 namespace Kine {

@@ -24,8 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_CLBP_PROTOCOL_H_
 # define _INCLUDE_KINEIRCD_CLBP_PROTOCOL_H_ 1
 
-# include <kineircd/clbp/input.h>
-# include <kineircd/clbp/output.h>
+# include <kineircd/libclbp/input.h>
+# include <kineircd/libclbp/output.h>
 
 
 namespace Kine {

@@ -48,7 +48,7 @@
 #include <kineircd/registry.h>
 #include <kineircd/version.h>
 
-#include "kineircd/irc2/protocol.h"
+#include "kineircd/libirc2/protocol.h"
 #include "lib_irc2/lang.h"
 #include "lib_irc2/stats.h"
 

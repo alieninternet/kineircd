@@ -25,8 +25,8 @@
 # include "autoconf.h"
 #endif
 
-#include "kineircd/clbp/input.h"
-#include "kineircd/clbp/output.h"
+#include "kineircd/libclbp/input.h"
+#include "kineircd/libclbp/output.h"
 
 using namespace Kine::LibCLBP;
 

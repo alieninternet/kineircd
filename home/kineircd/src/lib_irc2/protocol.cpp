@@ -28,7 +28,7 @@
 #include <aisutil/string/tokens.h>
 #include <kineircd/config.h>
 
-#include "kineircd/irc2/protocol.h"
+#include "kineircd/libirc2/protocol.h"
 
 using AIS::Util::StringTokens;
 using namespace Kine::LibIRC2;

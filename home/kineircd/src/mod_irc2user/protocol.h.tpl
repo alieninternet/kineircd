@@ -29,8 +29,8 @@
 
 # include <sstream>
 # include <kineircd/config.h>
-# include <kineircd/irc2/protocol.h>
-# include <kineircd/irc2/numerics.h>
+# include <kineircd/libirc2/protocol.h>
+# include <kineircd/libirc2/numerics.h>
 
 # include "mod_irc2user/user.h"
 
