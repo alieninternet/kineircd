@@ -362,5 +362,5 @@ dnl ------------------------------------------
 echo
 echo "Done!"
 echo
-echo "Type 'make' or 'gmake' to build the package."
+echo "Type 'make' to build the package."
 echo

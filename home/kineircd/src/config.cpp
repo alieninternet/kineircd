@@ -487,7 +487,7 @@ bool Daemon::configure(bool firstRun)
 	       
 	       // Check if there is a handler for this class..
 	       if (configurationClassTable[ii].classHandler) {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 		  debug(String(" +-> Class: ") + className);
 #endif
 		  
@@ -497,7 +497,7 @@ bool Daemon::configure(bool firstRun)
 							   &i, firstRun);
 	       } else {
 		  // Otherwise we are ignoring this class
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 		  debug(String::printf("Ignoring top-level configuration "
 				       "class set '%s'",
 				       (char const *)className));
@@ -575,7 +575,7 @@ void Daemon::configADMIN(Daemon *daemon, ConfigData *conf, String *line, String:
 	 command = command.toUpper().trimQuotes();
 	 parameter = parameter.trimQuotes();
 	 
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 	 debug(String::printf(" | +-> Variable: %s, Param: %s",
 			      (char const *)command,
 			      (char const *)parameter));
@@ -683,7 +683,7 @@ void Daemon::configCONF(Daemon *daemon, ConfigData *conf, String *line, String::
 	 command = command.toUpper().trimQuotes();
 	 parameter = parameter.trimQuotes();
 	 
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 	 debug(String::printf(" | +-> Variable: %s, Param: %s",
 			      (char const *)command,
 			      (char const *)parameter));
@@ -771,7 +771,7 @@ void Daemon::configFAIL(Daemon *daemon, ConfigData *conf, String *line, String::
 	 // We will be assigning this soon, so save some stress!
 	 Daemon::relationmask_list_t *failList;
 
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 	 debug(String(" | +-> Sub-Class: ") + subclassName);
 #endif
 	 
@@ -818,7 +818,7 @@ void Daemon::configFAIL(Daemon *daemon, ConfigData *conf, String *line, String::
 	       mask = mask.toLower().trimQuotes();
 	       reason = reason.trimQuotes();
 	       
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 	       debug(String::printf(" | | +-> Mask: %s (%s)",
 				    (char const *)mask,
 				    (char const *)reason));
@@ -910,7 +910,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 	 command = parameter = password = "";
 	 isGlobal = false;
 	 
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 	 debug(String(" | +-> Operator: ") + nickname);
 #endif
  
@@ -941,7 +941,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 	       command = command.toUpper().trimQuotes();
 	       parameter = parameter.trimQuotes();
 	       
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 	       debug(String::printf(" | | +-> Variable: %s, Param: %s",
 				    (char const *)command,
 				    (char const *)parameter));
@@ -998,7 +998,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 	       // Fix up the command (subclass name) variable
 	       command = command.toUpper().trimQuotes();
 	       
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 	       debug(String(" | | +-> Sub-Class: ") + command);
 #endif
 
@@ -1045,7 +1045,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 		     user = user.toLower().trimQuotes();
 		     host = host.toLower().trimQuotes();
 		     
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 		     debug(String::printf(" | | | +-> Access Identify: %s@%s",
 					  (char const *)user,
 					  (char const *)host));
@@ -1152,7 +1152,7 @@ void Daemon::configREDIRECT(Daemon *daemon, ConfigData *conf, String *line, Stri
 	 // We will be assigning this soon, so save some stress!
 	 Daemon::relationmask_list_t *redirectList;
 
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 	 debug(String(" | +-> Sub-Class: ") + subclassName);
 #endif
 	 
@@ -1198,7 +1198,7 @@ void Daemon::configREDIRECT(Daemon *daemon, ConfigData *conf, String *line, Stri
 	       mask = mask.toLower().trimQuotes();
 	       dest = dest.trimQuotes();
 	       
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 	       debug(String::printf(" | | +-> Redirect: %s, To: %s",
 				    (char const *)mask,
 				    (char const *)dest));
@@ -1293,7 +1293,7 @@ void Daemon::configSSL(Daemon *daemon, ConfigData *conf, String *line, String::l
 	    command = command.toUpper().trimQuotes();
 	    parameter = parameter.trimQuotes();
 	    
-# ifdef DEBUG
+# ifdef DEBUG_EXTENDED
 	    debug(String::printf(" | +-> Variable: %s, Param: %s",
 				 (char const *)command,
 				 (char const *)parameter));

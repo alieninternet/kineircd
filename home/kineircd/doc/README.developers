@@ -1,0 +1,140 @@
+This is a notes file for developers, outlining debugging, compilation
+and code formatting information.
+
+
+* Keep in mind two debugging defines, DEBUG and DEBUG_EXTENDED.
+  DEBUG is to be used for information that won't happen often, and
+  DEBUG_EXTENDED is for information that might occur a lot or have a lot
+  of output (such as entering certain functions, or outputting
+  configuration information etc). In debugging it is often more
+  convenient to have the limited amount of information with just 'DEBUG'
+  defined, especially in the case of a server that is linked to a
+  network (eg. heaps of users/channels, lots of extended data).
+
+  This being the case, I usually configure my package with CXXFLAGS set
+  to "-g -O0 -Wall -Wstrict-prototypes -DDEBUG" and sometimes also add
+  in -DDEBUG_EXTENDED.
+
+* I do not take ANY compilation warnings lightly, and I'd hope you wouldn't 
+  either. Please do not update to the cvs repository until the warning has 
+  been resolved, unless it's minor and will be resolved later.
+
+* If you update something that effects your system that could be
+  operating system specific, make sure you update the autoconf files and
+  confirm they work too (run 'make autoconf' in the top directory). Note
+  that I am running autoconf 2.52, and you should also grab a copy from
+  the gnu website if you're to edit this.
+
+* In general, comment heavily! While this may seem stupid or a waste
+  of time, one of the worse things that can happen is you look at your
+  code at a later date (which may seem 100% straight forward now) and
+  forget why something is done a specific way. Make sure the comment
+  will help others and yourself at a later day
+   eg. This is useless:
+    foo(bah, baz, qux & 1);  // Call foo; Force bit 1 of qux to be set
+   eg. This is better:
+    foo(bah, baz, qux & 1);  // Call foo; Bit 1 must be set - bah is local
+
+* Use C++ comments for one-liners (see above)
+    
+* Use standard C comments for multiple line comments. For neatness,
+  follow the following style.
+   eg.
+    /* Call gettimeofday(); Note that the GNU implementation of this
+     * does _not_ include the timezone structure and will fail if
+     * anything but a null pointer is given to it - damn :(
+     */
+
+* Top of the .h/.cpp files should be in this format:
+     /* <filename>
+      * <description>
+      * [<optional warnings>]
+      */
+   eg.
+     /* foo.h
+      * Foo routines for the bar-baz engine
+      */
+     
+* Use a code formatter (woops, more details later)
+
+* Explicitly specify braces.
+   eg. Use:
+    for (unsigned char i = 10; i--;) {
+       foo(i, 10, 16);
+    }
+   rather than:
+    for (unsigned char i = 10; i--;)
+      foo(i, 10, 16);
+      
+* Try to keep code within 80-columns. Naturally this cannot always be
+  done, but there are methods you can keep in mind, most importantly
+  that (const char *)'s can be continued on another line. 
+   eg.
+    foo("This is an example of how you can extend "
+        "data onto multiple lines easily");
+	
+* Only use integers of the size you *NEED*. Leave word length
+  optimisations, if any, to the compiler. Eg. 'int i' is a waste if
+  you are only using a value between -3 and 3.
+  
+* Use unsigned if at all possible. Say you use a value between 0-20000,
+  unsigned short would be most appropriate. Many systems handle unsigned
+  integers faster than signed integers, especially the common systems
+  the daemon will be compiled for.
+	
+* Start functions off with a multiline comment as a header. This is
+  important! It is also just as important to use your cvs name. This
+  is for readability, and also so you can get the credit :) Please
+  strictly follow this format:
+    /* <function name> - <short description>
+     * Original DD/MM/YY, <your name> <<email>> [<cvsname>]
+     * <date> <cvsname> - <modification details>
+     * [Note: <notes/warnings>]
+     * [Need: <what the function needs for completion>]
+     */
+  Note that the 'your name' field can either be your cvs name, or your
+  real name. If it is not your cvs name, then you can optionally shove
+  your cvs name in the 'cvsname' bit, but it's not necessary.
+   eg.
+    /* foo - Process bah and baz using the parameters in the qux bitmask
+     * Original 24/09/01, Simon Butcher <pickle@austnet.org>
+     */
+    void foo(int bah, int baz, unsigned short qux)
+    {
+       // Imagine code here.
+    }
+    
+   eg. With a modification
+    /* foo - Process bah and baz using the parameters in the qux bitmask
+     * Original 24/09/01, Simon Butcher <pickle@austnet.org>
+     * 03/01/01 drquack - Added sanity check on baz, should not be < -50
+     */
+   eg. With a note (I ran out of creativity here, hehe)
+    /* foo - Process bah and baz using the parameters in the qux bitmask
+     * Original 24/09/01, Simon Butcher <pickle@austnet.org>
+     * 03/01/01 drquack - Added sanity check on baz, should not be < -50
+     * Note: Bit 1 of qux must be set if foo is representing a local
+     *       connection number.
+     */
+
+* If you make any extensions to the protocols, DOCUMENT IT! There is
+  *no excuse* --  everything must be kept so that you don't have to go
+  through the hell I did upon starting this. New numerics should go into
+  the doc/New_Numerics file, new modes should go into doc/modes,
+  modifications to version.cpp should go into doc/VersionChars.
+  
+* Just on numerics, austnet use numerics for replies between 800 and
+  899 (inclusive). However, check the numerics.h file as it is the
+  'ultimate' registry (compiled from other ircd's). If you find another
+  numeric from another ircd, ADD IT, and find out as much as you can
+  about it incase it might be something we might like to implement.
+  Before creating a new numeric, check if it has not already been done
+  either in austhex or another ircd. Make sure another numeric cannot
+  simply be extended (RPL_ISUPPORT for example) to acheive the same
+  effect. If you do add a new numeric, check it in all major clients 
+  (ircII/epic, bitchx, mirc, etc). mirc especially has a LOT of bugs with 
+  numerics, including numerics that are undefined that suddenly do things 
+  like open up channel list boxes or crash the client. Try old and new 
+  versions of mirc too. If you have ANY doubt, please contact me
+  (pickle@austnet.org) since I've spent quite some time dealing with
+  numeric conflicts.
