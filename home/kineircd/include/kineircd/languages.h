@@ -29,12 +29,16 @@
 # include <string>
 # include <vector>
 
-# include <kineircd/languagedata.h>
 # include <kineircd/receiver.h>
 
 namespace Kine {
    class Languages {
     public:
+      /* The tag identifier type (also referred to as a 'TID').
+       * Note that TID #0 has a special purpose -- "unknown".
+       */
+      typedef unsigned int tagID_type;
+      
       /* This is the 'tag map' structure. In order for your module to know
        * the correlation of tag name to tag ID upon run-time, you need to
        * define this structure within your module and register it with the
@@ -55,9 +59,19 @@ namespace Kine {
        */
       struct TagMapEntry {
 	 const char* const tagName;
-	 LanguageData::tagID_type tagID;
+	 tagID_type tagID;
       };
       typedef TagMapEntry tagMap_type[];
+
+      // The type of a 'parameter' (used in substitutions)
+      typedef std::string parameter_type;
+      
+      /* The type of a 'parameter list'. Parameter lists are sent along side
+       * a request to return language data in order to substitute parameter
+       * tokens within the language data itself with their appropriate values
+       * prior to being returned back to the software.
+       */
+      typedef std::vector < const parameter_type* > parameterList_type;
       
       /* Replacement glyphs, both used to substitute missing or erroneous
        * values of some description. These are UTF-8 Encoded.
@@ -92,8 +106,40 @@ namespace Kine {
       // Add/remove tag name/ID correlation maps
       bool registerMap(tagMap_type map);
       void deregisterMap(const tagMap_type map);
+      
+      // Return the given language data, from the given language
+      const std::string get(const std::string& languageCode,
+			    const tagID_type tagID,
+			    const parameterList_type* const parameters = 0);
+      
+      // Lazy functions for use when you have one to five parameters..
+      const std::string get(const std::string& languageCode,
+			    const tagID_type tagID,
+			    const parameter_type& p0);
+      const std::string get(const std::string& languageCode,
+			    const tagID_type tagID,
+			    const parameter_type& p0,
+			    const parameter_type& p1);
+      const std::string get(const std::string& languageCode,
+			    const tagID_type tagID,
+			    const parameter_type& p0,
+			    const parameter_type& p1,
+			    const parameter_type& p2);
+      const std::string get(const std::string& languageCode,
+			    const tagID_type tagID,
+			    const parameter_type& p0,
+			    const parameter_type& p1,
+			    const parameter_type& p2,
+			    const parameter_type& p3);
+      const std::string get(const std::string& languageCode,
+			    const tagID_type tagID,
+			    const parameter_type& p0,
+			    const parameter_type& p1,
+			    const parameter_type& p2,
+			    const parameter_type& p3,
+			    const parameter_type& p4);
    }; // class Languages
-   
+
    
    /* Lazy reference thingy for lazy coders.. like me.. but shh, don't tell
     * anyone I'm lazy and use lazy things like this lazy reference function :(

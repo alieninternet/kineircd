@@ -130,3 +130,84 @@ void Languages::deregisterMap(const tagMap_type map)
     */
    (void)tagMaps.erase((tagMap_type*)&map);
 }
+
+
+/* get - Return the given language data, from the given language
+ * Original 15/03/2003 simonb
+ */
+const std::string Languages::get(const std::string& languageCode,
+				 const tagID_type tagID,
+				 const parameterList_type* const parameters)
+{
+   // Return 'unknown' - we have no idea what to put here..
+   return replacementObjectGlyph;
+}
+
+  
+/* get - Functions for lazy people (for one to five parameters)
+ * Original 20/03/2003 simonb
+ */
+const std::string Languages::get(const std::string& languageCode,
+				 const tagID_type tagID,
+				 const parameter_type& p0)
+{
+   parameterList_type parameters;
+   parameters.push_back(&p0);
+   return get(languageCode, tagID, &parameters);
+}
+
+const std::string Languages::get(const std::string& languageCode,
+				 const tagID_type tagID,
+				 const parameter_type& p0,
+				 const parameter_type& p1)
+{
+   parameterList_type parameters;
+   parameters.push_back(&p0);
+   parameters.push_back(&p1);
+   return get(languageCode, tagID, &parameters);
+}
+
+const std::string Languages::get(const std::string& languageCode,
+				 const tagID_type tagID,
+				 const parameter_type& p0,
+				 const parameter_type& p1,
+				 const parameter_type& p2)
+{
+   parameterList_type parameters;
+   parameters.push_back(&p0);
+   parameters.push_back(&p1);
+   parameters.push_back(&p2);
+   return get(languageCode, tagID, &parameters);
+}
+
+const std::string Languages::get(const std::string& languageCode,
+				 const tagID_type tagID,
+				 const parameter_type& p0,
+				 const parameter_type& p1,
+				 const parameter_type& p2,
+				 const parameter_type& p3)
+{
+   parameterList_type parameters;
+   parameters.push_back(&p0);
+   parameters.push_back(&p1);
+   parameters.push_back(&p2);
+   parameters.push_back(&p3);
+   return get(languageCode, tagID, &parameters);
+}
+
+const std::string Languages::get(const std::string& languageCode,
+				 const tagID_type tagID,
+				 const parameter_type& p0,
+				 const parameter_type& p1,
+				 const parameter_type& p2,
+				 const parameter_type& p3,
+				 const parameter_type& p4)
+{
+   parameterList_type parameters;
+   parameters.push_back(&p0);
+   parameters.push_back(&p1);
+   parameters.push_back(&p2);
+   parameters.push_back(&p3);
+   parameters.push_back(&p4);
+   return get(languageCode, tagID, &parameters);
+}

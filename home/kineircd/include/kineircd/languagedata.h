@@ -28,11 +28,12 @@
 # include <string>
 # include <vector>
 
+# include <kineircd/languages.h>
+
 namespace Kine {
    class LanguageData {
     public:
-      // The tag identifier type
-      typedef unsigned int tagID_type;
+      // Tag data type
       typedef std::vector <std::string> tagData_type;
       
     private:
@@ -57,7 +58,8 @@ namespace Kine {
 	{};
 
       // Look for a given TID's data, and return it if possible
-      const std::string* const findTag(const tagID_type tagID) const;
+      const std::string* const 
+	findTag(const Languages::tagID_type tagID) const;
       
       // Grab other stuff..
       const std::string& getLanguageCode(void) const

@@ -36,6 +36,7 @@
 # include <aisutil/string/string.h>
 
 # include <kineircd/languagedata.h>
+# include <kineircd/languages.h>
 
 namespace Kine {
    class LanguageList {
@@ -46,10 +47,10 @@ namespace Kine {
        * to find the appropriate data within the language data vectors.
        */
 # ifdef KINE_STL_HAS_HASH
-      typedef std::hash_map <std::string, LanguageData::tagID_type>
+      typedef std::hash_map <std::string, Languages::tagID_type>
 	tagDictionary_type;
 # else
-      typedef std::map <std::string, LanguageData::tagID_type>
+      typedef std::map <std::string, Languages::tagID_type>
 	tagDictionary_type;
 # endif
       tagDictionary_type tagDictionary;
@@ -57,7 +58,7 @@ namespace Kine {
       /* The highest identifier within the tag dictionary, for checking etc..
        * Note that the ID '0' is used for a special purpose (no data)..
        */
-      LanguageData::tagID_type highestTagID;
+      Languages::tagID_type highestTagID;
       
       // Our default language, to use if all else fails..
       LanguageData* defaultLanguage;

@@ -35,7 +35,6 @@
 #include <aisutil/string/tokens.h>
 
 #include "kineircd/languagelist.h"
-#include "kineircd/languages.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
@@ -221,7 +220,7 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	 // Do something with the control tag? Huh? Huh?? :(
 
       } else {
-	 LanguageData::tagID_type tagID;
+	 Languages::tagID_type tagID;
 	 
 	 // Look for this tag in the dictionary
 	 tagDictionary_type::const_iterator it = tagDictionary.find(tag);

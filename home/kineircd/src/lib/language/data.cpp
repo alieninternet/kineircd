@@ -35,7 +35,8 @@ using namespace Kine;
 /* findTag - Look for a given TID's data, and return it if possible
  * Original 16/03/2003 simonb
  */
-const std::string* const LanguageData::findTag(const tagID_type tagID) const
+const std::string* const 
+  LanguageData::findTag(const Languages::tagID_type tagID) const
 {
    // Grab whatever is found at the given TID
    const std::string& data = tagData[tagID];
