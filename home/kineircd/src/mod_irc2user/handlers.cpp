@@ -89,7 +89,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
    // Fix the mask up so it matches properly
    mask = mask.toUpper();
    
-   // Run through the list of functions (this should be std::for_each<>)
+   // Run through the list of functions
    for (Commands::commandList_type::const_iterator it =
 	Commands::getInstance().getCommandList().begin();
 	it != Commands::getInstance().getCommandList().end();
@@ -174,7 +174,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
    // If we do not have any parameters, we will list the languages available
    if (parameters.empty()) {
       // Run through known languages and list them to the client
-      // Hey - this needs to be for_each'd :(
       for (Languages::languageDataMap_type::const_iterator it =
 	   languages().getLanguageDataMap().begin();
 	   it != languages().getLanguageDataMap().end();
