@@ -21,10 +21,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//#ifdef HAVE_CONFIG_H
-//# include "autoconf.h"
-//#endif
-#define KINE_DEBUG 1 // <=- until 'VERSION' define from autoconf is gone :(
+#ifdef HAVE_CONFIG_H
+# include "autoconf.h"
+#endif
+
+/* Undefine the pain in the bum define from the autoconf header so that
+ * autogen's autoopts works happily -- without this, it becomes a case of
+ * autogrrr...
+ */
+#undef VERSION
 
 #include <string>
 #include <iostream>
@@ -32,12 +37,12 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
-//#ifdef HAVE_SYS_TYPES_H
+#ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
-//#endif
-//#ifdef HAVE_UNISTD_H
+#endif
+#ifdef HAVE_UNISTD_H
 # include <unistd.h>
-//#endif
+#endif
 #include <ltdl.h>
 #include <kineircd/signals.h>
 #include <kineircd/languages.h>
