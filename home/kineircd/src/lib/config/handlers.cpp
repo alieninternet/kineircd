@@ -49,6 +49,15 @@ namespace Config {
 	     &defClassArbiters,
 	     0
 	},
+#ifdef OLD_CONFIG_SUBPARSER
+	{
+	   "INCLUDEOLDCONFIG",
+	     0, // Intentionally null
+	     &varHandleOldConfig,
+	     0,
+	     0
+	},
+#endif
 	{
 	   "LISTEN",
 	     0,

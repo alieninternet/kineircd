@@ -403,6 +403,22 @@
 # ifdef HAVE_P14SERVER_PROTOCOL
 #  undef HAVE_P14SERVER_COMPRESS
 # endif
+
+  
+/* Define if we want to compile the old-style configuration subparser. When
+ * compiled in, users will be able to add a line like this to their config
+ * file to include an old-style configuration file of the same format used by
+ * older AustHex versions:
+ *
+ * includeOldConfig "oldircd.conf";
+ * 
+ * It's the same format used by traditional irc servers and seems to have 
+ * quite an amazing lifespan considering it is often considered quite a 
+ * confusing configuration file format. Hey, people still like it for some 
+ * reason! It's considered obsolete, but for the sake of completeness support 
+ * is available.
+ */
+# undef OLD_CONFIG_SUBPARSER
   
   
 /* Define if the function tzset() and variables timezone and daylight exist */

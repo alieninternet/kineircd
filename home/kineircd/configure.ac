@@ -980,6 +980,37 @@ AC_ARG_ENABLE(max-listen-queue,[
    AC_DEFINE(LISTEN_MAXQUEUE, 25)
  ])
 
+dnl
+dnl Should any developer pick up the old-style ircd.conf configuration
+dnl sub-parser code and complete it (please please please!!) this would
+dnl need to be uncommented properly, fixed up and committed.
+dnl HOWEVER if you are that developer, only uncomment and commit this if
+dnl the code works to a decent extend (determine that yourself, but it should
+dnl at least parse in the basics required for a server to run in the event
+dnl someone may want it to configure their server from completely).
+dnl
+dnl AC_MSG_CHECKING([old-config-subparser parameter])
+dnl AC_ARG_ENABLE(old-config-subparser,[
+dnl   --enable-old-config-subparser              (Default is disabled)
+dnl     Enable the old-style ircd.conf configuration format to be used via
+dnl     an include line ("includeOldConfig") in the main configuration file.
+dnl     This may be used for upgrading the server from another or older version
+dnl     of an IRC server using the traditional ircd.conf line-by-line file format.
+dnl  ],[
+dnl    if test "$enableval" = "no"; then
+dnl      AC_MSG_RESULT(no)
+dnl      austhex_test_old_config_subparser=no
+dnl    else
+dnl      AC_MSG_RESULT(yes)
+dnl      AC_DEFINE(OLD_CONFIG_SUBPARSER)
+dnl      austhex_test_old_config_subparser=yes
+dnl    fi
+dnl  ],[
+dnl    AC_MSG_RESULT([no (default)])
+   austhex_test_old_config_subparser=no
+dnl  ])
+AC_SUBST(austhex_test_old_config_subparser)
+
 AC_MSG_CHECKING([oper-wallops parameter])
 AC_ARG_ENABLE(oper-wallops,[
   --enable-oper-wallops                      (Default is enabled)
