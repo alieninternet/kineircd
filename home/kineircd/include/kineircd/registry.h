@@ -38,10 +38,12 @@
 
 
 namespace Kine {
-   
    //! The registry, the place where all entities live
    class Registry {
     public:
+      //! The 'counter' type, used for various statistical replies
+      typedef unsigned int counter_type;
+      
       //! Connected users list type
       typedef KINE_HASH_MAP_TYPE < ClientName, User* const > users_type;
       
@@ -75,19 +77,19 @@ namespace Kine {
       
 
       //! Various statistics counters/peak levels
-      unsigned int userCountPeak;
-      unsigned int localUserCount;
-      unsigned int localUserCountPeak;
-      unsigned int serviceCountPeak;
-      unsigned int localServiceCount;
-      unsigned int localServiceCountPeak;
-      unsigned int serverCountPeak;
-      unsigned int localServerCount;
-      unsigned int localServerCountPeak;
-      unsigned int networkCountPeak;
-      unsigned int localNetworkCount;
-      unsigned int localNetworkCountPeak;
-      unsigned int channelCountPeak;
+      counter_type userCountPeak;
+      counter_type localUserCount;
+      counter_type localUserCountPeak;
+      counter_type serviceCountPeak;
+      counter_type localServiceCount;
+      counter_type localServiceCountPeak;
+      counter_type serverCountPeak;
+      counter_type localServerCount;
+      counter_type localServerCountPeak;
+      counter_type networkCountPeak;
+      counter_type localNetworkCount;
+      counter_type localNetworkCountPeak;
+      counter_type channelCountPeak;
       
       
       //! Our single instance
@@ -206,91 +208,91 @@ namespace Kine {
       
       
       //! Return the number of clients on the network
-      const unsigned int getClientCount(void) const
+      const counter_type getClientCount(void) const
 	{ return (getUserCount() + getServiceCount()); };
       
       //! Return the peak number of clients on the network
-      const unsigned int getClientCountPeak(void) const
+      const counter_type getClientCountPeak(void) const
 	{ return (getUserCountPeak() + getServiceCountPeak()); };
       
       //! Return the number of clients connected locally
-      const unsigned int getLocalClientCount(void) const
+      const counter_type getLocalClientCount(void) const
 	{ return (getLocalUserCount() + getLocalServiceCount()); };
       
       //! Return the peak number of clients connected locally
-      const unsigned int getLocalClientCountPeak(void) const
+      const counter_type getLocalClientCountPeak(void) const
 	{ return (getLocalUserCountPeak() + getLocalServiceCountPeak()); };
       
       //! Return the number of users on the network
-      const unsigned int getUserCount(void) const
+      const counter_type getUserCount(void) const
 	{ return users.size(); };
       
       //! Return the peak number of users connected to the network
-      const unsigned int getUserCountPeak(void) const
+      const counter_type getUserCountPeak(void) const
 	{ return userCountPeak; };
       
       //! Return the number of users on this server locally
-      const unsigned int getLocalUserCount(void) const
+      const counter_type getLocalUserCount(void) const
 	{ return localUserCount; };
       
       //! Return the peak number of users connected locally
-      const unsigned int getLocalUserCountPeak(void) const
+      const counter_type getLocalUserCountPeak(void) const
 	{ return localUserCountPeak; };
       
       //! Return the number of services on the network
-      const unsigned int getServiceCount(void) const
+      const counter_type getServiceCount(void) const
 	{ return services.size(); };
       
       //! Return the peak number of services connected to the network
-      const unsigned int getServiceCountPeak(void) const
+      const counter_type getServiceCountPeak(void) const
 	{ return serviceCountPeak; };
       
       //! Return the number of services connected locally
-      const unsigned int getLocalServiceCount(void) const
+      const counter_type getLocalServiceCount(void) const
 	{ return localServiceCount; };
       
       //! Return the peak number of services connected locally
-      const unsigned int getLocalServiceCountPeak(void) const
+      const counter_type getLocalServiceCountPeak(void) const
 	{ return localServiceCountPeak; };
       
       //! Return the number of servers on the network
-      const unsigned int getServerCount(void) const
+      const counter_type getServerCount(void) const
 	{ return servers.size(); };
       
       //! Return the peak number of servers
-      const unsigned int getServerCountPeak(void) const
+      const counter_type getServerCountPeak(void) const
 	{ return serverCountPeak; };
 
       //! Return the number of servers connected locally
-      const unsigned int getLocalServerCount(void) const
+      const counter_type getLocalServerCount(void) const
 	{ return localServerCount; };
       
       //! Return the peak number of servers connected locally
-      const unsigned int getLocalServerCountPeak(void) const
+      const counter_type getLocalServerCountPeak(void) const
 	{ return localServerCountPeak; };
       
       //! Return the number of networks on the network
-      const unsigned int getNetworkCount(void) const
+      const counter_type getNetworkCount(void) const
 	{ return networks.size(); };
 
       //! Return the peak number of networks
-      const unsigned int getNetworkCountPeak(void) const
+      const counter_type getNetworkCountPeak(void) const
 	{ return networkCountPeak; };
       
       //! Return the number of networks conencted locally
-      const unsigned int getLocalNetworkCount(void) const
+      const counter_type getLocalNetworkCount(void) const
 	{ return localNetworkCount; };
       
       //! Return the peak number of networks connected locally
-      const unsigned int getLocalNetworkCountPeak(void) const
+      const counter_type getLocalNetworkCountPeak(void) const
 	{ return localNetworkCountPeak; };
       
       //! Return the number of channels we know about
-      const unsigned int getChannelCount(void) const
+      const counter_type getChannelCount(void) const
 	{ return channels.size(); };
       
       //! Return the peak number of channels
-      const unsigned int getChannelCountPeak(void) const
+      const counter_type getChannelCountPeak(void) const
 	{ return channelCountPeak; };
    }; // class Registry
    
