@@ -73,16 +73,6 @@ ifeq (@kineircd_test_debugging@,yes)
 SOURCES+=debug.cpp
 endif
 
-# Work out which protocols are needed to be compiled in; DO NOT EDIT THIS!!
-# Change the --enable-protocol-x/--disable-protocol-x settings on configure
-# instead!
-##ifeq (@kineircd_test_have_irc2user_protocol@,yes)
-##SOURCES+=irc2user.cpp remotes.cpp
-##endif
-##ifeq (@kineircd_test_have_p13server_protocol@,yes)
-##SOURCES+=p13server.cpp remotes.cpp
-##endif
-
 #OBJECTS=$(SOURCES:.cpp=.@OBJEXT@)
 OBJECTS=$(SOURCES:.cpp=.$(LIBTOOL_OBJ_EXT))
 LIBS+=$(SSL_LIB)
