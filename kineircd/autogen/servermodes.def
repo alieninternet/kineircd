@@ -148,3 +148,19 @@ servermodes = {
    comment	= "When set, the OPER command is rendered useless";
    broadcast	= "yes";
 };
+
+servermodes = {
+   irc2char	= "T";
+   name		= "TESTLINK";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   comment	= "Mark the server as being under a 'testlink' period. Many "
+                  "networks give new servers a testing period to give both "
+		  "the server administrator, and the network, time to "
+		  "evaluate whether or not the server will be able to remain "
+		  "permanent. Depending on network policy, testlink server "
+		  "administrators may have restricted rights, such as not "
+		  "being able to send global messages. This flag aids to "
+		  "enforce those policies.";
+   broadcast	= "yes";
+};
