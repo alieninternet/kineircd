@@ -1,0 +1,108 @@
+/* $Id$
+ *
+ * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002,2003 KineIRCd Development Team
+ * (See DEV-TEAM file for details)
+ *
+ * This file is a part of KineIRCd.
+ * 
+ * KineIRCd is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * KineIRCd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with KineIRCd; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+autogen definitions snotices;
+
+
+filter = {
+   name		= "CONNECT_LOCAL";
+   char		= "c";
+   format	= "c <nick> <username> <hostname> <masked hostname> <address> "
+                  "<class>";
+   description	= "Client connections to this server";
+};
+
+filter = {
+   name		= "CONNECT_REMOTE";
+   char		= "C";
+   format	= "C <nick> <username> <hostname> <masked hostname> <address> "
+                  "<server>";
+   description	= "Client connections anywhere on the network but this server";
+};
+
+filter = {
+   name		= "DEBUG";
+   char		= "D";
+   format	= "D <data>";
+   description	= "Debugging data (local)";
+};
+
+filter = {
+   name		= "FAILED_OPER";
+   char		= "F";
+   format	= "F <wanted oper nick> <nick> <username> <hostname>";
+   description	= "Failed OPER's (done on this server)";
+};
+
+filter = {
+   name		= "KILL_LOCAL";
+   char		= "k";
+   format	= "k <killer> <victim> [<reason>]";
+   description	= "KILLs done on this server";
+};
+
+filter = {
+   name		= "KILL_REMOTE";
+   char		= "K";
+   format	= "K <killer> <victim> [<reason>]";
+   description	= "KILLs done on any other server but this one";
+};
+
+filter = {
+   name		= "OPER_LOCAL";
+   char		= "o";
+   format	= "o <nick> <username> <hostname> {'o'|'O'} <nick on o-line>";
+   description	= "Successful OPERs on this server (big O = global oper)";
+};
+
+filter = {
+   name		= "OPER_REMOTE";
+   char		= "O";
+   format	= "O <nick> <username> <hostname> <server>";
+   description	= "Successful OPERs on any server except us (obviously global "
+                  "operators only)";
+};
+
+filter = {
+   name		= "PARANOIA";
+   char		= "P";
+   format	= "P <nick> <username> <hostname> <did what>";
+   description	= "Paranoid opers can be told when commands 'happened'. The "
+                  "'did what' field contains a command, such as 'WHOIS', etc.";
+};
+
+filter = {
+   name		= "STAFF_CHANGE";
+   char		= "S";
+   format	= "S <nick> <username> <hostname> <old status> <new status>";
+   description	= "A staff member's 'status' has changed. If they were not "
+                  "designated as staff before, the old status will be '*'";
+};
+
+filter = {
+   name		= "VERBOSE";
+   char		= "V";
+   flagOnly;
+   description	= "Instead of outputting a parameterised form of server "
+                  "notice data (designed for scripts), this instead will "
+		  "output the notices in a human-readable format";
+};
