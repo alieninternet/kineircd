@@ -604,6 +604,7 @@ Kine::Config::Config(const String &f)
 
     // "OPTIONS.LIMITS" class
     defOptionsLimitsMaxKickReasonLength(DEFAULT_OPTIONS_LIMITS_MAX_KICK_REASON_LENGTH),
+    defOptionsLimitsMaxMessageLength(DEFAULT_OPTIONS_LIMITS_MAX_MESSAGE_LENGTH),
     defOptionsLimitsMaxTargets(DEFAULT_OPTIONS_LIMITS_MAX_TARGETS),
     defOptionsLimitsMinBroadcastLength(DEFAULT_OPTIONS_LIMITS_MIN_BROADCAST_LENGTH),
 
