@@ -1677,6 +1677,7 @@ dnl  -------------------------------------------------------------------------
 LDFLAGS="$LDFLAGS_SAVE"
 AC_SUBST(INCDIRS)
 AC_OUTPUT([
+	Rules.make
 	Makefile
 	install/Makefile
 	src/Makefile

@@ -1,0 +1,34 @@
+#
+# Rules.make
+# Makefile rules which are used all over the package
+#
+
+RM=@RM@
+FIND=find
+CXX=@CXX@
+LD=@LD@
+
+CXXFLAGS=@CXXFLAGS@
+LDFLAGS=@LDFLAGS@
+
+
+# First rule (link into the 'all' rule)
+_top_: all
+
+
+# How to make object files from .cpp files rule
+%.@OBJEXT@: %.cpp
+	$(CXX) $(CXXFLAGS) $(DEFS) $(INCDIRS) -c $<
+
+
+# Our generic clean function (cleans sub-directories as an added bonus)
+clean:
+	$(RM) $(TARGETS) \
+		`$(FIND) . \( \
+			-name \*~ -o \
+			-name \*.bb -o \
+			-name \*.bbg -o \
+			-name \*.da -o \
+			-name \*.gcov -o \
+			-name \*.o \
+				\) -type f`
