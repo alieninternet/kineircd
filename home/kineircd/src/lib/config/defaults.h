@@ -27,6 +27,9 @@
 #ifndef _SRC_LIB_CONFIG_DEFAULTS_H_
 # define _SRC_LIB_CONFIG_DEFAULTS_H_ 1
 
+# ifdef HAVE_CONFIG_H
+#  include "autoconf.h"
+# endif
 # include "kineircd/kineircdconf.h"
 
 // "ADMINISTRATOR" class

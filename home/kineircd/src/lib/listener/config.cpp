@@ -21,7 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#ifdef HAVE_CONFIG_H
+# include "autoconf.h"
+#endif
 #include "kineircd/kineircdconf.h"
 
 #include <cstdlib>
@@ -29,8 +31,12 @@
 #include <cerrno> // temporary
 
 extern "C" {
-#include <netdb.h>
-#include <netinet/in.h>
+#ifdef HAVE_NETDB_H
+# include <netdb.h>
+#endif
+#ifdef HAVE_NETINET_IN_H
+# include <netinet/in.h>
+#endif
 };
 
 #include <aisutil/socket/sockets.h>

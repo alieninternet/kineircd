@@ -1,7 +1,7 @@
 /* $Id$
- * Debugging support code
+ * KineIRCd module interface for the syslog logging module
  * 
- * Copyright (c) 2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -21,30 +21,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-# include "autoconf.h"
-#endif
-#include "kineircd/kineircdconf.h"
+#ifndef _SRC_MODULES_MOD_SYSLOG_MODULE_H_
+# define _SRC_MODULES_MOD_SYSLOG_MODULE_H_ 1
 
-#include <iostream>
+# define MOD_SYSLOG_NAME_SHORT			"mod_syslog"
+# define MOD_SYSLOG_NAME_LONG			"Syslog logging module"
 
-#include "debug.h"
-//#include "kineircd/daemon.h"
+# define MOD_SYSLOG_COPYRIGHT		\
+   "Copyright (c) 2001,2002 KineIRCd Development Team"
 
-// Little check to make sure we are being compiled sanely
-#ifndef KINE_DEBUG
-# warning "Compiling without DEBUG defined?!"
-#endif
+# define MOD_SYSLOG_VERSION_MAJOR		0
+# define MOD_SYSLOG_VERSION_MINOR		0
+# define MOD_SYSLOG_VERSION_PATCHLEVEL		0
+# define MOD_SYSLOG_VERSION_EXTRA		".prealpha"
 
-
-/* debug - Output a line of debugging information (and broadcast)
- * Original 25/09/01 simonb
- */
-void debug(AISutil::String const &line)
-{
-   // Output it to stderr
-   std::cerr << line << std::endl;
-   
-//   // Also, log it
-//   Daemon::logger(line, Logger::MASK_DEBUG);
-}
+#endif // _SRC_MODULES_MOD_SYSLOG_MODULE_H_

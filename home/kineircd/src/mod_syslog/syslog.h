@@ -23,8 +23,9 @@
 #ifndef _SRC_LIB_LOGGER_SYSLOG_H_
 # define _SRC_LIB_LOGGER_SYSLOG_H_ 1
 
-# include "autoconf.h"
-# include "kineircd/kineircdconf.h"
+# ifdef HAVE_CONFIG_H
+#  include "autoconf.h"
+# endif
 
 // Only continue if we actually have syslog support on this system
 # ifdef HAVE_SYSLOG_H

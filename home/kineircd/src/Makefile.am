@@ -12,12 +12,11 @@ include $(top_builddir)/config/automake.inc
 # KINEIRCD_TARGET_LIB_IRC2=libkineircd_irc2.la
  KINEIRCD_TARGET_LIB_IRC2=
 #endif
-#if KINEIRCD_COMPILE_MODULES_LIB_LOGGER
-# KINEIRCD_TARGET_LIB_LOGGER=libkineircd_logger.la
- KINEIRCD_TARGET_LIB_LOGGER=
-#endif
 
 # Work out which modules we need to compile...
+if KINEIRCD_COMPILE_MODULES_MOD_FILELOG
+ KINEIRCD_TARGET_MOD_FILELOG=mod_filelog.la
+endif
 if KINEIRCD_COMPILE_MODULES_MOD_HTTP
  KINEIRCD_TARGET_MOD_HTTP=mod_http.la
 endif
@@ -26,6 +25,9 @@ if KINEIRCD_COMPILE_MODULES_MOD_IRC2USER
 endif
 if KINEIRCD_COMPILE_MODULES_MOD_SNMP
  KINEIRCD_TARGET_MOD_SNMP=mod_snmp.la
+endif
+if KINEIRCD_COMPILE_MODULES_MOD_SYSLOG
+ KINEIRCD_TARGET_MOD_SYSLOG=mod_syslog.la
 endif
 
 
@@ -40,10 +42,11 @@ SUBDIRS=\
 # Libraries and modules to build
 lib_LTLIBRARIES=\
 	$(KINEIRCD_TARGET_LIB_IRC2) \
-	$(KINEIRCD_TARGET_LIB_LOGGER) \
+	$(KINEIRCD_TARGET_MOD_FILELOG) \
 	$(KINEIRCD_TARGET_MOD_HTTP) \
 	$(KINEIRCD_TARGET_MOD_IRC2USER) \
-	$(KINEIRCD_TARGET_MOD_SNMP)
+	$(KINEIRCD_TARGET_MOD_SNMP) \
+	$(KINEIRCD_TARGET_MOD_SYSLOG)
 
 
 
@@ -69,6 +72,19 @@ libkineircd_irc2_la_SOURCES=\
 libkineircd_irc2_la_LDFLAGS=\
 	-avoid-version
 libkineircd_irc2_la_LIBADD=\
+	lib/libkineircd.la
+
+
+
+###############################################################################
+# 'mod_filelog' module
+###############################################################################
+mod_filelog_la_SOURCES=\
+	mod_filelog/module.cpp
+mod_filelog_la_LDFLAGS=\
+	-avoid-version \
+	-module
+mod_filelog_la_LIBADD=\
 	lib/libkineircd.la
 
 
@@ -110,6 +126,19 @@ mod_snmp_la_LDFLAGS=\
 	-avoid-version \
 	-module
 mod_snmp_la_LIBADD=\
+	lib/libkineircd.la
+
+
+
+###############################################################################
+# 'mod_syslog' module
+###############################################################################
+mod_syslog_la_SOURCES=\
+	mod_syslog/module.cpp
+mod_syslog_la_LDFLAGS=\
+	-avoid-version \
+	-module
+mod_syslog_la_LIBADD=\
 	lib/libkineircd.la
 
 

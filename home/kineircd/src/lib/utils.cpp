@@ -22,7 +22,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "autoconf.h"
+#ifdef HAVE_CONFIG_H
+# include "autoconf.h"
+#endif
 #include "kineircd/kineircdconf.h"
 
 #include <cctype>

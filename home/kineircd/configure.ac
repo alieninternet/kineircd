@@ -247,19 +247,22 @@ AC_HEADER_TIME
 AC_HEADER_SYS_WAIT
 AC_HEADER_DIRENT
 AC_CHECK_HEADERS( \
-	arpa/inet.h \
+	dlfcn.h \
 	errno.h \
 	fcntl.h \
 	limits.h \
-	netinet/in.h \
+	netdb.h \
+	pthread.h \
 	stdlib.h \
 	string.h \
+	syslog.h \
+	termios.h \
+	unistd.h \
+	arpa/inet.h \
+	netinet/in.h \
 	sys/socket.h \
 	sys/time.h \
 	sys/timeb.h \
-	syslog.h \
-	unistd.h \
-	pthread.h
 		)
 AC_CACHE_SAVE
 
