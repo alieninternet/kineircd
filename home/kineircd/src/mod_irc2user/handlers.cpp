@@ -450,6 +450,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
       doVERSION(user);
+      sendISUPPORT();
       return;
    }
    
