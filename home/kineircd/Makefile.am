@@ -69,42 +69,6 @@ INCLUDES=\
 
 
 
-# KineIRCd library header files
-include_HEADERS=\
-	include/kineircd/channel.h \
-	include/kineircd/client.h \
-	include/kineircd/config.h \
-	include/kineircd/connection.h \
-	include/kineircd/daemon.h \
-	include/kineircd/errors.h \
-	include/kineircd/exit.h \
-	include/kineircd/kineircdconf.h \
-	include/kineircd/languagedata.h \
-	include/kineircd/languagelist.h \
-	include/kineircd/listener.h \
-	include/kineircd/listenerlist.h \
-	include/kineircd/logger.h \
-	include/kineircd/loggerconfig.h \
-	include/kineircd/module.h \
-	include/kineircd/moduledescriptor.h \
-	include/kineircd/modulelist.h \
-	include/kineircd/network.h \
-	include/kineircd/password.h \
-	include/kineircd/protocol.h \
-	include/kineircd/protocolinfo.h \
-	include/kineircd/receiver.h \
-	include/kineircd/sender.h \
-	include/kineircd/server.h \
-	include/kineircd/servermodes.h \
-	include/kineircd/service.h \
-	include/kineircd/signals.h \
-	include/kineircd/str.h \
-	include/kineircd/user.h \
-	include/kineircd/utils.h \
-	include/kineircd/version.h
-
-
-
 # Stuff that needs to go into the distribution but isn't implied
 EXTRA_DIST=\
 	DEV-TEAM \
@@ -141,13 +105,6 @@ dist-hook:
 
 
 # Customised .tpl rules
-include/kineircd/config.h: include/kineircd/config.h.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
-	$(AUTOGEN) \
-		-b $(basename $@) \
-		-T $< \
-		-S $(AUTOGEN_DEF_DIR)/config.scm \
-		$(AUTOGEN_DEF_DIR)/config.def
-
 install/example.conf: install/example.conf.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
 	$(AUTOGEN) \
 		-b $(basename $@) \
@@ -183,7 +140,39 @@ endif
 BUILT_SOURCES=\
 	src/libkineircd/regnumerics.h
 
+# Source/header files
 libkineircd_la_SOURCES=\
+	include/kineircd/channel.h \
+	include/kineircd/client.h \
+	include/kineircd/config.h \
+	include/kineircd/connection.h \
+	include/kineircd/daemon.h \
+	include/kineircd/errors.h \
+	include/kineircd/exit.h \
+	include/kineircd/kineircdconf.h \
+	include/kineircd/languagedata.h \
+	include/kineircd/languagelist.h \
+	include/kineircd/listener.h \
+	include/kineircd/listenerlist.h \
+	include/kineircd/logger.h \
+	include/kineircd/loggerconfig.h \
+	include/kineircd/module.h \
+	include/kineircd/moduledescriptor.h \
+	include/kineircd/modulelist.h \
+	include/kineircd/network.h \
+	include/kineircd/password.h \
+	include/kineircd/protocol.h \
+	include/kineircd/protocolinfo.h \
+	include/kineircd/receiver.h \
+	include/kineircd/sender.h \
+	include/kineircd/server.h \
+	include/kineircd/servermodes.h \
+	include/kineircd/service.h \
+	include/kineircd/signals.h \
+	include/kineircd/str.h \
+	include/kineircd/user.h \
+	include/kineircd/utils.h \
+	include/kineircd/version.h \
 	src/libkineircd/config/config.cpp \
 	src/libkineircd/config/defaults.h \
 	src/libkineircd/config/handlers.cpp \
@@ -220,25 +209,32 @@ libkineircd_la_LIBADD=\
 	-laisutil \
 	@ssl_lib@
 
-# Customised .tpl to .cpp rules
-src/libkineircd/regnumerics.h: src/libkineircd/regnumerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
+# Customised .tpl rules
+include/kineircd/config.h: include/kineircd/config.h.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T $< \
-		$(AUTOGEN_DEF_DIR)/irc2numerics.def
+		-S $(AUTOGEN_DEF_DIR)/config.scm \
+		$(AUTOGEN_DEF_DIR)/config.def
 
-src/libkineircd/loggerconfig.cpp: src/libkineircd/loggerconfig.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
-	$(AUTOGEN) \
-		-b $(basename $@) \
-		-T $< \
-		$(AUTOGEN_DEF_DIR)/logger.def
-		
 src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T $< \
 		-S $(AUTOGEN_DEF_DIR)/config.scm \
 		$(AUTOGEN_DEF_DIR)/config.def
+		
+src/libkineircd/loggerconfig.cpp: src/libkineircd/loggerconfig.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $< \
+		$(AUTOGEN_DEF_DIR)/logger.def
+		
+src/libkineircd/regnumerics.h: src/libkineircd/regnumerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $< \
+		$(AUTOGEN_DEF_DIR)/irc2numerics.def
 		
 
 
