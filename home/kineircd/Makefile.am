@@ -466,6 +466,8 @@ src/mod_syslog/syslog.cpp: src/mod_syslog/syslog.cpp.tpl $(AUTOGEN_DEF_DIR)/logg
 # 'ircd' binary
 ###############################################################################
 ircd_SOURCES=\
+	src/ircd/bits.cpp \
+	src/ircd/bits.h \
 	src/ircd/exit.h \
 	src/ircd/ircd.cpp \
 	src/ircd/options.cpp \
