@@ -1,4 +1,4 @@
-/* utils.h
+/* $Id$
  * Utilities
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

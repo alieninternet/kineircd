@@ -1,4 +1,4 @@
-/* class.cpp
+/* $Id$
  * 'Config' class definition tables and functions
  *
  * Copyright (c) 2002 KineIRCd Development Team

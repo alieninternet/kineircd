@@ -1,4 +1,4 @@
-/* irc2user.h
+/* $Id$
  * The handler class for the IRC-2 user protocol
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

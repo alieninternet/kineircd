@@ -1,4 +1,4 @@
-/* handlerhelp.h
+/* $Id$
  * Data handler helper structures/functors
  * 
  * It is not recommended to edit this file. Instead, edit your configuration

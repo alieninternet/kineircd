@@ -1,4 +1,4 @@
-/* password.h
+/* $Id$
  * Password class
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

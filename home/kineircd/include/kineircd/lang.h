@@ -1,4 +1,4 @@
-/* lang.h
+/* $Id$
  * Text in a centralised location so it can be easily changed/fixed etc
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

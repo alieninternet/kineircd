@@ -1,4 +1,4 @@
-/* register.cpp
+/* $Id$
  * Handle registration data (before handling a real handler)
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

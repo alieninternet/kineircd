@@ -1,4 +1,4 @@
-/* language.cpp
+/* $Id$
  * Stuff for manipulating language data on the server
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

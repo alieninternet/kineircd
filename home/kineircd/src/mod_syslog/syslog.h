@@ -1,4 +1,4 @@
-/* loggersyslog.h
+/* $Id$
  * Logging functions via the "syslog" interface
  * 
  * Copyright (c) 2000,2002 Alien Internet Services

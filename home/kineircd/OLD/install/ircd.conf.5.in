@@ -1,4 +1,4 @@
-.\" ./src/doc/ircd.conf.5.in
+.\" $Id$
 .\" KineIRCd IRC daemon Configuration File Manual Page
 .\" Author: Simon Butcher <pickle@alien.net.au>
 .\" 

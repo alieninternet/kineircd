@@ -1,4 +1,4 @@
-/* utils.cpp
+/* $Id$
  * General utilities
  *
  * Copyright (C) 2001,2002 Alien Internet Services

@@ -1,4 +1,4 @@
-/* connection.cpp
+/* $Id$
  * Connection class
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

@@ -1,4 +1,4 @@
-/* sha1.cc
+/* $Id$
  * SHA1 Message Digest Routines
  * 
  * Originally released as Public Domain by Steve Reid, this software has been

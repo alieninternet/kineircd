@@ -1,4 +1,4 @@
-/* remotes.cpp
+/* $Id$
  * Protocol reply routines, remote replies. Majorly based on IRC2 :(
  * 
  * NOTE: This needs to be seriously reworked! When irc3user/AN1 comes this

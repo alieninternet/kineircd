@@ -1,4 +1,4 @@
-/* daemon.h
+/* $Id$
  * The main class
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

@@ -1,4 +1,4 @@
-/* debug.h
+/* $Id$
  * Debugging... stuff...
  * 
  * Copyright (c) 2002 KineIRCd Development Team

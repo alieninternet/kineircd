@@ -1,4 +1,4 @@
-/* version.h
+/* $Id$
  * Version and Compile information
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

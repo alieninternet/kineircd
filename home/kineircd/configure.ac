@@ -1,6 +1,5 @@
-dnl ./configure.in
-dnl AutoConf configuration script for KineIRCd
 dnl $Id$
+dnl AutoConf configuration script for KineIRCd
 dnl
 dnl Copyright (c) 2001,2002 KineIRCd Development Team
 dnl (See DEV-TEAM file for details)

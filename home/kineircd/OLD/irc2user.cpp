@@ -1,4 +1,4 @@
-/* irc2user.cpp
+/* $Id$
  * Handle USER connection data using the IRC-3 server<->user protocol
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

@@ -1,4 +1,4 @@
-/* file.cpp
+/* $Id$
  * Logging functions via any file/device
  * 
  * Copyright (c) 2000,2002 Alien Internet Services

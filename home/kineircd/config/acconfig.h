@@ -1,4 +1,5 @@
 /* kineircdconf.h
+ * $Id$
  * Compile-time configuration settings
  * 
  * This file needs major organisational work :) 

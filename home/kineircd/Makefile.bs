@@ -1,5 +1,4 @@
-#
-# Makefile.bs
+# $Id$
 # Little makefile for developers wishing to bootstrap the package
 #
 

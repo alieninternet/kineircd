@@ -1,4 +1,4 @@
-/* configdefault.h
+/* $Id$
  * Default configuration stuff
  * 
  * It is not recommended to edit this file. Instead, edit your configuration

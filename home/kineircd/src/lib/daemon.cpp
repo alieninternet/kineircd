@@ -1,4 +1,4 @@
-/* daemon.cpp
+/* $Id$
  * The main class (IRC daemon) constructors and destructors
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

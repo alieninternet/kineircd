@@ -1,6 +1,4 @@
-#
-#
-# src/lib/Makefile
+# $Id$
 # Main make rules for KineIRCd sources
 
 srcdir=@srcdir@

@@ -1,4 +1,4 @@
-/* loggerfile.h
+/* $Id$
  * Logging functions via a given file
  * 
  * Copyright (c) 2000,2002 Alien Internet Services

@@ -1,4 +1,4 @@
-/* register.h
+/* $Id$
  * The handler class for the registration handler
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team

@@ -1,4 +1,4 @@
-/* debug.cpp
+/* $Id$
  * Debugging support code
  * 
  * Copyright (c) 2002 KineIRCd Development Team

@@ -1,4 +1,4 @@
-/* module.h
+/* $Id$
  * Support class for modules
  * 
  * Copyright (c) 2002 KineIRCd Development Team
