@@ -43,16 +43,20 @@ const Commands::preInitCommand_type Commands::preInitCommands[] = {[+FOR command
  +]
      {
         "[+
- (string-upcase
-    (get "command"))
+   (string-upcase
+      (get "command"))
  +]",
 	  &Protocol::handle[+command+],
 	  [+IF (exist? "access")+]Access::[+
- (string-upcase
-    (get "access"))
+   (string-upcase
+      (get "access"))
  +][+ELSE+]Access::ANYBODY[+ENDIF+],
-	  [+IF (exist? "disabled")+]false[+ELSE+]true[+ENDIF+], [+defaultPenalty+], [+minimumParams+],
-	  &Language::tagMap[Language::irc2user_HELP_CMD_[+command+]_USAGE].tagID,
+	  [+IF (exist? "disabled")+]false[+ELSE+]true[+ENDIF+], [+defaultPenalty+], [+IF
+   (exist? "minimumParams")
+ +][+minimumParams+][+ELSE+]0[+ENDIF+],
+	  [+IF
+   (exist? "noParams")
+ +]0[+ELSE+]&Language::tagMap[Language::irc2user_HELP_CMD_[+command+]_USAGE].tagID[+ENDIF+],
 	  &Language::tagMap[Language::irc2user_HELP_CMD_[+command+]].tagID,
 	  Flags::NONE[+IF (exist? "changeIdleTime")+] |
 	    Flags::CHANGE_IDLE_TIME[+ENDIF+]

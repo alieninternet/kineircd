@@ -224,7 +224,7 @@ commands = {
 commands = {
    command		= "REHASH";
    defaultPenalty	= 0;
-   minimumParams	= 0;
+   noParams;
    access		= "OPERATOR";
 };
 

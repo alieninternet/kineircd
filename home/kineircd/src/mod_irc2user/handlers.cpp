@@ -158,68 +158,68 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
    for (Commands::commandList_type::const_iterator it =
 	commands().getCommandList().begin();
 	it != commands().getCommandList().end();
-	++it)
-     {
-	/* Check if this is the command our user was looking for, whether the
-	 * command has help, and whether the user even has access to this
-	 * command in the first place!
-	 */
-	if (mask.matches(it->first) &&
-	    (it->second.helpUsage != 0) &&
-	    it->second.hasAccess(user)) {
-	   // Send the user the usage help for this function, if we can
-	   if (*(it->second.helpUsage) != 0) {
-	      sendNumeric(LibIRC2::Numerics::RPL_HELP,
-			  it->first,
-			  GETLANG_BY_ID(*(it->second.helpUsage)));
-	   }
-	   
-	   // If we are doing extended help, send the extended lines
-	   if (extended &&
-	       (it->second.helpInfo != 0)) {
-	      // Grab the extended help string..
-	      const std::string help = GETLANG_BY_ID(*(it->second.helpInfo));
-	      
-	      // Our starting and ending positions..
-	      std::string::size_type startPosition = 0;
-	      std::string::size_type endPosition;
-	      
-	      // The max number of chars we can send.. (is this algo okay??)
-	      const std::string::size_type maxChars =
-		maxMessageSize -
-		Kine::myServer().getName().length() -
-		user.getNickname().length() -
-		25;
-	      
-	      // Loop until we have no more text left..
-	      for (;;) {
-		 // How much do we need to break this line up?
-		 if ((help.length() - startPosition) > maxChars) {
-		    // Work out where we can break this line (at a space)
-		    endPosition = help.rfind(' ',
-					     (startPosition + maxChars));
-		 } else {
-		    // Set the end position to the end of the line!
-		    endPosition = help.length();
-		 }
-		 
-		 // Send this bit..
-		 sendNumeric(LibIRC2::Numerics::RPL_MOREHELP,
-			     it->first,
-			     help.substr(startPosition,
-					 (endPosition - startPosition)));
-		 
-		 // If we're now at the end of the line, break out of this loop
-		 if (endPosition == help.length()) {
-		    break;
-		 }
-		 
-		 // If we're still going, remember where we last broke..
-		 startPosition = endPosition + 1;
-	      }
-	   }
-	}
-     }
+	++it) {
+      /* Check if this is the command our user was looking for, whether the
+       * command has help, and whether the user even has access to this
+       * command in the first place!
+       */
+      if (mask.matches(it->first) && it->second.hasAccess(user)) {
+	 // Send the user the usage help for this function, if we can
+	 if (it->second.helpUsage == 0) {
+	    sendNumeric(LibIRC2::Numerics::RPL_HELP,
+			it->first,
+			GETLANG(irc2user_HELP_NO_PARAMETERS));
+	 } else {
+	    sendNumeric(LibIRC2::Numerics::RPL_HELP,
+			it->first,
+			GETLANG_BY_ID(*(it->second.helpUsage)));
+	 }
+	 
+	 // If we are doing extended help, send the extended lines
+	 if (extended && (it->second.helpInfo != 0)) {
+	    // Grab the extended help string..
+	    const std::string help = GETLANG_BY_ID(*(it->second.helpInfo));
+	    
+	    // Our starting and ending positions..
+	    std::string::size_type startPosition = 0;
+	    std::string::size_type endPosition;
+	    
+	    // The max number of chars we can send.. (is this algo okay??)
+	    const std::string::size_type maxChars =
+	      maxMessageSize -
+	      Kine::myServer().getName().length() -
+	      user.getNickname().length() -
+	      25;
+	    
+	    // Loop until we have no more text left..
+	    for (;;) {
+	       // How much do we need to break this line up?
+	       if ((help.length() - startPosition) > maxChars) {
+		  // Work out where we can break this line (at a space)
+		  endPosition = help.rfind(' ',
+					   (startPosition + maxChars));
+	       } else {
+		  // Set the end position to the end of the line!
+		  endPosition = help.length();
+	       }
+	       
+	       // Send this bit..
+	       sendNumeric(LibIRC2::Numerics::RPL_MOREHELP,
+			   it->first,
+			   help.substr(startPosition,
+				       (endPosition - startPosition)));
+	       
+	       // If we're now at the end of the line, break out of this loop
+	       if (endPosition == help.length()) {
+		  break;
+	       }
+	       
+	       // If we're still going, remember where we last broke..
+	       startPosition = endPosition + 1;
+	    }
+	 }
+      }
+   }
    
    // Say bye bye
    sendNumeric(LibIRC2::Numerics::RPL_ENDOF_GENERIC,
