@@ -48,10 +48,16 @@ namespace Kine {
       
       //! Return the last time this user was known to be not idle
       virtual const AIS::Util::Time& getLastAwake(void) const = 0;
-      
+
+
       //! Return the server this user is connect to (that is, us!)
       Server& getServer(void) const
 	{ return myServer(); };
+
+
+      //! Send a server notice to this user
+      const Error::error_type sendServerNotice(const std::string& message)
+	{ return sendNotice(myServer(), message); };
    }; // class LocalUser
 }; // namespace Kine
 

@@ -169,13 +169,11 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	 
 	 // Send the user the usage help for this function, if we can
 	 if (it->second.helpUsage == 0) {
-	    user.sendNotice(myServer(),
-			    prefix.str() +
-			    GETLANG(irc2user_HELP_NO_PARAMETERS));
+	    user.sendServerNotice(prefix.str() +
+				  GETLANG(irc2user_HELP_NO_PARAMETERS));
 	 } else {
-	    user.sendNotice(myServer(),
-			    prefix.str() +
-			    GETLANG_BY_ID(*(it->second.helpUsage)));
+	    user.sendServerNotice(prefix.str() +
+				  GETLANG_BY_ID(*(it->second.helpUsage)));
 	 }
 	 
 	 // If we are doing extended help, send the extended lines
@@ -190,7 +188,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	    // The max number of chars we can send..
 	    const std::string::size_type maxChars =
 	      maxMessageSize -
-	      15 - /* "NOTICE :" plus a bit of room for dodgy clients */
+	      15 - /* "NOTICE :" plus a bit of room */
 	      user.getNickname().length();
 	    
 	    // Loop until we have no more text left..
@@ -206,11 +204,11 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	       }
 	       
 	       // Send this bit..
-	       user.sendNotice(myServer(),
-			       prefix.str() +
-			       help.substr(startPosition,
-					   (endPosition - startPosition)));
-	       
+	       user.sendServerNotice(prefix.str() +
+				     help.substr(startPosition,
+						 (endPosition -
+						  startPosition)));
+
 	       // If we're now at the end of the line, break out of this loop
 	       if (endPosition == help.length()) {
 		  break;
@@ -224,9 +222,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
    }
 
    // Tell the user the HELP command has completed its run
-   user.sendNotice(myServer(),
-		   GETLANG(irc2user_HELP_END,
-			   mask));
+   user.sendServerNotice(GETLANG(irc2user_HELP_END,
+				 mask));
 }
 #endif
 
