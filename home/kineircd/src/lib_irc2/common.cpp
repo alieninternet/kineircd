@@ -409,3 +409,36 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	       targets,
 	       GETLANG(irc2_RPL_ENDOFWHOIS));
 }
+
+
+/* doWHOWAS
+ * Original 09/10/2001 simonb
+ * Note: Totally imcomplete transfer ;)
+ */
+void Protocol::doWHOWAS(const User& user, const std::string& targets,
+			int count)
+{
+   sendNumeric(user, LibIRC2::Numerics::RPL_WHOWASUSER,
+	       "nickname",
+	       "username",
+	       "hostname",
+	       '*',
+	       "real name field");
+   sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSERVER,
+	       "nickname",
+	       "servername",
+	       "12345678"); // signoff time
+   sendNumeric(user, LibIRC2::Numerics::RPL_WHOWASDETAILS,
+	       "nickname",
+	       "1",
+	       "something");
+   
+   sendNumeric(user, LibIRC2::Numerics::ERR_WASNOSUCHNICK,
+	       "nickname",
+	       GETLANG(irc2_ERR_WASNOSUCHNICK));
+   
+   // Send end of whowas list
+   sendNumeric(user, LibIRC2::Numerics::RPL_ENDOFWHOWAS,
+	       targets,
+	       GETLANG(irc2_RPL_ENDOFWHOWAS));
+}

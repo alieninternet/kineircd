@@ -337,8 +337,8 @@ commands = {
    minimumParams	= 1;
 };
 
-//commands = {
-//   command		= "WHOWAS";
-//   defaultPenalty	= 2;
-//   minimumParams	= 1;
-//};
+commands = {
+   command		= "WHOWAS";
+   defaultPenalty	= 2;
+   minimumParams	= 1;
+};

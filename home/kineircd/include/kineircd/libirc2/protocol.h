@@ -339,6 +339,8 @@ namespace Kine {
 	 void doUSERS(const User& user);
 	 void doVERSION(const User& user);
 	 void doWHOIS(const User& user, const std::string& targets);
+	 void doWHOWAS(const User& user, const std::string& targets,
+		       int count = -1);
       };
    }; // namespace LibIRC2
 }; // namespace Kine

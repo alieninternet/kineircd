@@ -26,6 +26,7 @@
 #endif
 
 #include <ctime>
+#include <cstdlib>
 #include <sstream>
 #include <iomanip>
 #include <aisutil/string.h>
@@ -508,6 +509,36 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHOIS)
    // If there is only one parameter, we are the intended respondent
    if (parameters.size() < 2) {
       doWHOIS(user, parameters[0]);
+      return;
+   }
+   
+   // Look up the server?
+   const std::string& serverName = parameters[0];
+   
+   // We didn't find the server..
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
+	       serverName,
+	       GETLANG(irc2_ERR_NOSUCHSERVER));
+}
+
+
+/* handleWHOWAS
+ * Original 09/10/2001 simonb
+ * 20/04/2003 simonb - Imported from old code (incompleted)
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleWHOWAS)
+{
+   // If there is only or two parameters, we are the intended respondent
+   if (parameters.size() < 3) {
+      // Were we given the 'count' parameter?
+      if (parameters.size() == 2) {
+	 // Do the WHOWAS with the count parameter
+	 doWHOWAS(user, parameters[0], parameters[1].toInt());
+	 return;
+      } 
+
+      // Do the WHOWAS without the count parameter
+      doWHOWAS(user, parameters[0]);
       return;
    }
    
