@@ -78,7 +78,6 @@ AC_PROG_GCC_TRADITIONAL
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
-AC_PROG_LIBTOOL
 AC_PROG_LN_S
 AC_CHECK_PROG(RM, rm, rm -f, del)
 AC_CHECK_PROG(LD, ld, ld)
@@ -278,6 +277,15 @@ if test "$austhex_cv_sys_tzset_and_friends" = "yes"; then
 fi
 
 AC_CACHE_SAVE
+
+
+dnl -------------------------------------------------------------------------
+dnl  Configure libtool utility
+dnl -------------------------------------------------------------------------
+AC_DISABLE_FAST_INSTALL
+AC_LIBTOOL_DLOPEN
+dnl AC_LIBTOOL_WIN32_DLL
+AC_PROG_LIBTOOL
 
 
 dnl -------------------------------------------------------------------------
