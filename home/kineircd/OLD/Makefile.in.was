@@ -76,7 +76,7 @@ endif
 
 #OBJECTS=$(SOURCES:.cpp=.@OBJEXT@)
 OBJECTS=$(SOURCES:.cpp=.$(LIBTOOL_OBJ_EXT))
-LIBS+=$(SSL_LIB)
+LIBS+=$(SSL_LIB) -ldl # libdl included temporarily, I think..
 LDFLAGS+=$(SSL_LDFLAGS)
 
 LANGTAGS_IN_DEF=langtags.def
