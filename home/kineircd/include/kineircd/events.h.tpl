@@ -1,6 +1,5 @@
 [+ AutoGen5 template h +]
 /* $Id$
- * Error returns from functions
  *
  * Copyright (c) 2001,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2003 Alien Internet Services
@@ -29,6 +28,7 @@
 
 namespace Kine {
    namespace Error {
+      //! Events dispatcher/registry
       class Events {
        public:
 	 struct Mask { // <=- should be namespace

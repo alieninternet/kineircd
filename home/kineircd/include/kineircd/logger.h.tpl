@@ -1,10 +1,9 @@
 [+ AutoGen5 template h +]
 /* $Id$
- * Logging functions base class
  *
- * Copyright (c) 2000,2002 Alien Internet Services
- * Copyright (c) 2000,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2002 KineIRCd Development Team 
+ * Copyright (c) 2000,2002,2003 Alien Internet Services
+ * Copyright (c) 2000,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2000,2002,2003 KineIRCd Development Team 
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -33,7 +32,7 @@
 # include <aisutil/config/data.h>
 
 namespace Kine {
-   // The top Logger class the actual loggers are derived from
+   //! The top Logger class the actual loggers are derived from
    class Logger {
     public:
       // Bitmask list for a mask (type of log message)

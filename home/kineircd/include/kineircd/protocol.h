@@ -1,8 +1,7 @@
 /* $Id$
- * The protocol base class
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -32,6 +31,7 @@
 # include <kineircd/connection.h>
 
 namespace Kine {
+   //! The protocol base class
    class Protocol {
     protected:
       // The specific connection running this instance of the protocol

@@ -1,6 +1,5 @@
 [+ AutoGen5 template h +]
 /* $Id$
- * A server
  * 
  * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002,2003 KineIRCd Development Team
@@ -32,6 +31,7 @@
 # include <kineircd/sender.h>
 
 namespace Kine {
+   //! A server
    class Server : public Entity, public Sender {
     public:
       //! Server modes type 

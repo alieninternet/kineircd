@@ -1,5 +1,4 @@
 /* $Id$
- * Languages interface (langtags)
  * 
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team

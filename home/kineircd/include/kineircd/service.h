@@ -1,5 +1,4 @@
 /* $Id$
- * A service (refinement of a client)
  * 
  * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002,2003 KineIRCd Development Team
@@ -29,6 +28,7 @@
 # include <kineircd/daemon.h>
 
 namespace Kine {
+   //! A service (refinement of a client)
    class Service : public Client {
     protected:
       //! Constructor

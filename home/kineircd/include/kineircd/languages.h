@@ -1,5 +1,4 @@
 /* $Id$
- * Languages interface (langtags)
  * 
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team
@@ -37,6 +36,7 @@
 # include <vector>
 
 namespace Kine {
+   //! Languages interface (langtags)
    class Languages {
     public:
       /* The tag identifier type (also referred to as a 'TID').

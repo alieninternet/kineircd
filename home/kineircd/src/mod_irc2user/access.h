@@ -1,5 +1,4 @@
 /* $Id$
- * Access control tests
  * 
  * Copyright (c) 2001,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2003 KineIRCd Development Team
@@ -32,6 +31,7 @@
 
 namespace Kine {
    namespace mod_irc2user {
+      // Access control tests
       namespace Access {
 	 // The typedef for an access function.. (returns true for 'allowed')
 	 typedef IRC2USER_ACCESS_FUNCTION(function_type);

@@ -1,8 +1,7 @@
 /* $Id$
- * Support class for modules
  * 
- * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2002 KineIRCd Development Team
+ * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -41,7 +40,7 @@
    extern "C" KINE_MODULE_INIT_PROTOTYPE(KineIRCdModuleInit)
 
 namespace Kine {
-   // The module class modules inherit themselves from
+   //! The module class modules inherit themselves from
    class Module {
     public:
       // Flags to determine how this module needs to be configured

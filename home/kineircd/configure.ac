@@ -1,7 +1,7 @@
 dnl $Id$
 dnl AutoConf configuration script for KineIRCd
 dnl
-dnl Copyright (c) 2001,2002 KineIRCd Development Team
+dnl Copyright (c) 2001,2002,2003 KineIRCd Development Team
 dnl (See DEV-TEAM file for details)
 dnl
 dnl This file is a part of KineIRCd.

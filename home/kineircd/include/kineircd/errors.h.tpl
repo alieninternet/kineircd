@@ -1,9 +1,8 @@
 [+ AutoGen5 template h +]
 /* $Id$
- * Error returns from functions
  *
- * Copyright (c) 2000,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2000,2002 Alien Internet Services
+ * Copyright (c) 2000,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2000,2002,2003 Alien Internet Services
  *
  * This file is a part of KineIRCd.
  * 
@@ -29,6 +28,7 @@
 
 namespace Kine {
    namespace Error {
+      //! Error returns from functions
       enum error_type {
 	 NO_ERROR = 0,			//!< No error[+ FOR errors +]
 	 [+

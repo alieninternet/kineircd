@@ -1,5 +1,4 @@
 /* $Id$
- * An abstract class for a channel
  * 
  * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002,2003 KineIRCd Development Team
@@ -32,6 +31,7 @@
 namespace Kine {
    class User;
    
+   //! An abstract class for a channel
    class Channel : public Receiver {
     public:
       //! Channel member class

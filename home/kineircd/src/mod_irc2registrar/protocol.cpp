@@ -1,5 +1,4 @@
 /* $Id$
- * Handle registration (before handling a real protocol)
  * 
  * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002,2003 KineIRCd Development Team

@@ -1,6 +1,5 @@
 [+ AutoGen5 template h +]
 /* $Id$
- * List of IRC-2 related numerics, primarily used between client <-> server
  * 
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team 
@@ -31,6 +30,7 @@
 
 namespace Kine {
    namespace LibIRC2 {
+      //! List of IRC-2 related numerics, mainly used between client <-> server
       namespace Numerics {
          enum numeric_type {[+FOR irc2numerics+][+IF
  (not

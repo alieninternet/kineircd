@@ -1,8 +1,7 @@
 /* $Id$
- * Password class
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -30,6 +29,7 @@
 # include <kineircd/name.h>
 
 namespace Kine {
+   //! Password class
    class Password {
     public:
       typedef AISutil::SHA1::digest_type digest_type;

@@ -1,8 +1,7 @@
 /* $Id$
- * Listener configuration parser helper class
  * 
- * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2002 KineIRCd Development Team
+ * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -32,6 +31,7 @@
 # include "kineircd/listenerlist.h"
 
 namespace Kine {
+   // Listener configuration parser helper class
    class ListenerConfig : public AISutil::ConfigData {
     private:
       // The protocol used to locate any service's name in getservbyname()

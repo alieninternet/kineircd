@@ -1,5 +1,4 @@
 /* $Id$
- * A name, conforming to IRC rules (a specially modified form of a string)
  * 
  * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002,2003 KineIRCd Development Team
@@ -28,6 +27,7 @@
 # include <aisutil/string/string.h>
 
 namespace Kine {
+   //! A name, conforming to IRC rules (a specially modified form of a string)
    class Name : public AISutil::String {
     public:
       // Constructor

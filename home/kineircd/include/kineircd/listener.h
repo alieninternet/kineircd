@@ -1,7 +1,7 @@
 /* $Id$
- * Listener class (a listener is a 'connection' with one purpose: listening :)
  * 
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -27,6 +27,7 @@
 # include <aisutil/socket/socket.h>
 
 namespace Kine {
+   //! Listener class (a listener is a 'connection' with one purpose: listening :)
    class Listener {
     public:
       struct Flags { // <=- Should be namespace?

@@ -1,6 +1,5 @@
 [+ AutoGen5 template h +]
 /* $Id$
- * The IRC-2 user protocol class
  * 
  * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002,2003 KineIRCd Development Team
@@ -43,6 +42,7 @@
 
 namespace Kine {
    namespace mod_irc2user {
+      // The IRC-2 user protocol class
       class Protocol : public Kine::LibIRC2::Protocol {
        public:
 	 // Convenient type-definition of handler functions

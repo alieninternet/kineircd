@@ -1,5 +1,4 @@
 /* $Id$
- * A locally connected user, using the IRC-2 server <-> user protocol
  * 
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team
@@ -31,6 +30,7 @@
 
 namespace Kine {
    namespace mod_irc2user {
+      // A locally connected user, using the IRC-2 server <-> user protocol
       class User : public Kine::LocalUser {
        private:
 	 std::string description;		// Description/real name field

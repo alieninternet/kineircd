@@ -1,8 +1,7 @@
 /* $Id$
- * Signal handlers
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -42,6 +41,7 @@
 	    void *foo)
 
 namespace Kine {
+   //! Signal handlers
    class Signals {
     public:
       // The type of a mask

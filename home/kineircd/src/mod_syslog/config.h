@@ -1,8 +1,7 @@
 /* $Id$
- * Config data for mod_syslog
  * 
- * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2002 KineIRCd Development Team
+ * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -30,6 +29,7 @@
 
 namespace Kine {
    namespace mod_syslog {
+      // Config data for mod_syslog
       class Config : public Kine::Logger::Config {
        public:
 	 // The definition table, given to Kine's config parserr

@@ -1,8 +1,7 @@
 /* $Id$
- * A descriptor which describes modules.. what more did you expect? :)
  * 
- * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2002 KineIRCd Development Team
+ * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -36,6 +35,7 @@ extern "C" {
 # include <kineircd/module.h>
 
 namespace Kine {
+   //! A descriptor which describes modules
    class ModuleDescriptor {
     private:
       lt_dlhandle handle;			// Module handle from dlopen()

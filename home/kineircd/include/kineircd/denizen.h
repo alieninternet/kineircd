@@ -1,5 +1,4 @@
 /* $Id$
- * Base class for denizens, things that hang off servers, other than servers
  * 
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team
@@ -29,6 +28,7 @@
 # include <kineircd/server.h>
 
 namespace Kine {
+   //! Base class for denizens, things that hang off servers, other than servers
    class Denizen : public Entity {
     protected:
       //! Constructor

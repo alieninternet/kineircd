@@ -1,6 +1,5 @@
 [+ AutoGen5 template cpp +]
 /* $Id$
- * Configuration definition tables and class constructor/destructors
  *
  * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002,2003 KineIRCd Development Team

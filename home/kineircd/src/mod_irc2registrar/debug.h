@@ -1,5 +1,4 @@
 /* $Id$
- * Dodgy debugging macro :)
  * 
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team

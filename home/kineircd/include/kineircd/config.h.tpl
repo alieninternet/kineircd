@@ -1,6 +1,5 @@
 [+ AutoGen5 template h +]
 /* $Id$
- * Configuration file stuff
  *
  * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002,2003 KineIRCd Development Team 
@@ -43,7 +42,7 @@ extern "C" {
 # endif
 
 namespace Kine {
-   // Config class
+   //! Config class
    class Config : public AISutil::ConfigData {
     public:
       /* Operator passwords are stored as a SHA1 message digest, however I

@@ -1,5 +1,4 @@
 /* $Id$
- * The IRC-2 registrar protocol information
  * 
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team

@@ -1,5 +1,4 @@
 /* $Id$
- * The registry, the place where all entities live
  * 
  * Copyright (c) 2001,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2003 KineIRCd Development Team

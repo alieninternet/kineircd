@@ -1,5 +1,4 @@
 /* $Id$
- * Abstract base class for objects - stuff that is common to all objects
  * 
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team
@@ -32,6 +31,7 @@ extern "C" {
 }
 
 namespace Kine {
+   //! Abstract base class for objects - stuff that is common to all objects
    class Entity {
     protected:
       //! Constructor

@@ -1,5 +1,4 @@
 /* $Id$
- * IRC-2 user commands
  * 
  * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002,2003 KineIRCd Development Team
@@ -39,6 +38,7 @@
 
 namespace Kine {
    namespace mod_irc2user {
+      // IRC-2 user commands
       class Commands {
        private:
 	 // A table holding the built-in commands we always support

@@ -1,5 +1,4 @@
 /* $Id$
- * Parser for old style ircd.conf files - Data put into the 'Config' class
  *
  * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002 KineIRCd Development Team

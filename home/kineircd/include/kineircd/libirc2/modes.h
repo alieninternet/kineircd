@@ -1,8 +1,7 @@
 /* $Id$
- * Stuff relating to the wonders of mode switching!
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -29,6 +28,7 @@
 
 namespace Kine {
    namespace LibIRC2 {
+      //! Stuff relating to the wonders of mode switching!
       namespace Modes {
 	 struct serverModeMap_type {
 	    const char letter;				// Char for this mode

@@ -1,5 +1,4 @@
 /* $Id$
- * Abstract base class for objects which can send messages
  * 
  * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002,2003 KineIRCd Development Team
@@ -26,6 +25,7 @@
 # define _INCLUDE_KINEIRCD_SENDER_H_ 1
 
 namespace Kine {
+   //! Abstract base class for objects which can send messages
    class Sender {
     protected:
       //! Constructor

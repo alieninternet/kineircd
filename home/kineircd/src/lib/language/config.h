@@ -1,8 +1,7 @@
 /* $Id$
- * Language configuration handler thing
  * 
- * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2002 KineIRCd Development Team
+ * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -28,6 +27,7 @@
 # include <aisutil/config/parser.h>
 
 namespace Kine {
+   // Language configuration handler thing
    struct LanguageConfig {
       // The variable handler
       static LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varHandler);

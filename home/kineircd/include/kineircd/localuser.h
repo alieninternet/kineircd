@@ -1,5 +1,4 @@
 /* $Id$
- * A local user (refinement of a user - a user connected to this server)
  * 
  * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002,2003 KineIRCd Development Team
@@ -33,6 +32,7 @@ extern "C" {
 # include <kineircd/daemon.h>
 
 namespace Kine {
+   //! A local user (refinement of a user - a user connected to this server)
    class LocalUser : public User {
     protected:
       //! Constructor

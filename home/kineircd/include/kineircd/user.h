@@ -1,5 +1,4 @@
 /* $Id$
- * A user (refinement of a client)
  * 
  * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002,2003 KineIRCd Development Team
@@ -29,6 +28,7 @@
 # include <kineircd/languages.h>
 
 namespace Kine {
+   //! A user (refinement of a client)
    class User : public Client {
     private:
       Name nickname;				//!< User's nickname

@@ -1,8 +1,7 @@
 /* $Id$
- * Handles module loading/unloading and maintains the list of loaded modules
  * 
- * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2002 KineIRCd Development Team
+ * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -25,15 +24,13 @@
 #ifndef _INCLUDE_KINEIRCD_MODULELIST_H_
 # define _INCLUDE_KINEIRCD_MODULELIST_H_ 1
 
-// Forwarded declarations (completed after class)
-namespace Kine {
-   class ModuleDescriptor;
-};
-
 # include <vector>
 # include <aisutil/string/string.h>
 
 namespace Kine {
+   class ModuleDescriptor;
+   
+   //! Handles module loading/unloading and maintains the list of loaded modules
    class ModuleList {
     public:
       typedef std::vector < ModuleDescriptor* >	modulesList_type;

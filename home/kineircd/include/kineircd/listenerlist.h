@@ -1,6 +1,6 @@
 /* $Id$
- * Handles listener configuration, status and (of course) list management
  * 
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
@@ -35,6 +35,7 @@
 # include <kineircd/listener.h>
 
 namespace Kine {
+   //! Handles listener configuration, status and (of course) list management
    class ListenerList {
     public:
 # ifdef KINE_STL_HAS_SLIST
