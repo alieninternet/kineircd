@@ -54,7 +54,7 @@ ModuleDescriptor *ModuleDescriptor::loadModule(const String &moduleFile,
 					       String &errorReturn) 
 {
    // Try and load the given module
-   void *moduleHandle = dlopen(moduleFile.c_str(), RTLD_LAZY);
+   void *moduleHandle = dlopen(moduleFile.c_str(), RTLD_NOW);
    
    // Check if the module loaded okay
    if (moduleHandle == 0) {
