@@ -59,7 +59,7 @@ void Protocol::parseLine(const std::string& line)
    std::string destination;
    parameters_type parameters;
 
-   // Do we have an origin to break out?
+   // Do we have an origin/destination to break out?
    if (line[0] == ':') {
       origin = message.nextToken().substr(1);
       command = message.nextToken().toUpper();
