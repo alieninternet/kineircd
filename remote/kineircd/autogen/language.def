@@ -749,6 +749,52 @@ tags = {
 };
 
 tags = {
+   name		= "irc2registrar_ERROR_BAD_PONG";
+   component	= "mod_irc2registrar";
+   data_en	= "Bad pong reply - Did you really think you could fool me?";
+};
+
+tags = {
+   name		= "irc2registrar_ERROR_PROTOCOL_INIT_FAIL";
+   component	= "mod_irc2registrar";
+   data_en	= "Requested protocol did not initialise";
+};
+
+tags = {
+   name		= "irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_IIRC";
+   fields	= "0 = protocol name";
+   component	= "mod_irc2registrar";
+   data_en	= "Requested IIRC protocol (%p0) is unavailable";
+};
+
+tags = {
+   name		= "irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVER";
+   fields	= "0 = protocol name";
+   component	= "mod_irc2registrar";
+   data_en	= "Requested server protocol (%p0) is unavailable";
+};
+
+tags = {
+   name		= "irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVICE";
+   fields	= "0 = protocol name";
+   component	= "mod_irc2registrar";
+   data_en	= "Requested service protocol (%p0) is unavailable";
+};
+
+tags = {
+   name		= "irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_USER";
+   fields	= "0 = protocol name";
+   component	= "mod_irc2registrar";
+   data_en	= "Requested user protocol (%p0) is unavailable";
+};
+
+tags = {
+   name		= "irc2registrar_ERROR_TIMEOUT";
+   component	= "mod_irc2registrar";
+   data_en	= "Registration timed out";
+};
+
+tags = {
    name		= "irc2user_HELP_CMD_ACCEPT";
    component	= "mod_irc2user";
    data_en	= "This command is only useful with the user mode '+g' set. "
