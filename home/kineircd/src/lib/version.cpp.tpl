@@ -87,38 +87,17 @@ namespace Kine {
        */
       const char *versionChars =
 	// Configuration characters     
-#ifdef ALLOW_LOCALOP_CONNECT
-				"c"
-#endif
-#ifdef ALLOW_GLOBALOP_CONNECT
-				"C"
-#endif
-#ifdef DROP_BRAINDEAD_SERVERS
-				"d"
-#endif
 #ifdef DEBUG
 				"D"
 #endif
-#ifdef DEBUG_EXTENDED
-				"e"
-#endif
 #ifdef STL_HAS_HASH
 				"H"
-#endif
-#ifdef NOTIFY_ON_CMD_STATS
-				"n"
 #endif
 #ifdef STRICT_CHANNEL_NAMES
 				"N"
 #endif
 #ifdef HAVE_OPENSSL
 				"S"
-#endif
-#ifdef HAVE_CMD_TRACEROUTE
-				"T"
-#endif
-#ifdef SYSLOG_IDENT
-				"Y"
 #endif
      
 // Transport protocol phrases

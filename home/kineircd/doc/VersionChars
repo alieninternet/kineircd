@@ -15,86 +15,12 @@ These are used to see what options this IRCd has compiled in, and what needs
 a recompilation to change. It also shows which modules are active.
 
 Configuration (first section):
- 0 =
- 1 =
- 2 =
- 3 =
- 4 =
- 5 =
- 6 =
- 7 =
- 8 =
- 9 =
- a =
- A =
- b =
- B =
- c = ALLOW_LOCALOP_CONNECT
- C = ALLOW_GLOBALOP_CONNECT
- d = DROP_BRAINDEAD_SERVERS
  D = DEBUG
- e = DEBUG_EXTENDED (major big headache debugging mode)
- E =
- f =
- F =
- g =
- G =
- h =
  H = STL_HAS_HASH
- i =
- I =
- j =
- J =
- k =
- K =
- l =
- L =
- m = 
- M =
- n = NOTIFY_ON_CMD_STATS
  N = STRICT_CHANNEL_NAMES
- o =
- O =
- p = 
- P =
- q =
- Q =
- r =
- R = 
- s = 
  S = HAVE_OPENSSL
- t = 
- T = HAVE_CMD_TRACEROUTE
- u =
- U =
- v =
- V =
- w =
- W = 
- x =
- X =
- y = 
- Y = SYSLOG_IDENT (logging to syslog rather than other logging)
- z =
- Z =
-
 
 Transport Phrases (second section)
  IPv4 = HAVE_TRANSPORT_TCP_IPV4
  IPv6 = HAVE_TRANSPORT_TCP_IPV6
  IPX = HAVE_TRANSPORT_SPX_IPX
-
-Protocol Phrases (third section)
- IRC2 = HAVE_IRC2USER_PROTOCOL
-  +i = HAVE_IRC2USER_IRCII_KLUGE
-  +m = HAVE_IRC2USER_MATCH_COUNTING
-  
- IRC3 = HAVE_IRC3USER_PROTOCOL
-  
- P13 = HAVE_P13SERVER_PROTOCOL
-  +c = HAVE_P13SERVER_COMPRESS
-  +e = HAVE_P13SERVER_EXTENDED
-
- P14 = HAVE_P14SERVER_PROTOCOL
-  +c = HAVE_P14SERVER_COMPRESS
- 
