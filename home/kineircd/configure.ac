@@ -28,7 +28,7 @@ dnl Initialise the autoconf thingamebobs
 AC_INIT([KineIRCd], [ ], [kineircd@alien.net.au])
 AM_INIT_AUTOMAKE([1.7 foreign no-installinfo no-installman nostdinc subdir-objects])
 AC_COPYRIGHT([Portions Copyright (c) 2001,2002 KineIRCd Development Team])
-AC_PREREQ(2.53)
+AC_PREREQ(2.54)
 AC_CONFIG_AUX_DIR(config)
 AM_CONFIG_HEADER(include/config.h)
 AC_REVISION([$Revision$])
