@@ -91,8 +91,8 @@ namespace Kine {
 	 const ConfigParser::defTable_type* configDefinitions;
 	 
 	 // The two required functions - start and stop
-	 const startFunction_type* startFunction;
-	 const stopFunction_type* stopFunction;
+	 startFunction_type* const startFunction;
+	 stopFunction_type* const stopFunction;
 	 
 	 // Padding, for future use (ignore this, or fill it with 0's)
 	 char _padding[28];

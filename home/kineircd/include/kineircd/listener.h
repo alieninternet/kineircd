@@ -29,15 +29,27 @@
 
 namespace Kine {
    class Listener {
+    public:
+      enum {
+	 FLAG_SECURE		= 0x00000001,	// Secured? (SSL/TLS)
+	 FLAG_ALLOW_USERS	= 0x00000010,	// Users allowed?
+	 FLAG_ALLOW_SERVERS	= 0x00000020,	// Servers allowed?
+	 FLAG_ALLOW_SERVICES	= 0x00000040,	// Services allowed?
+	 FLAG_ALLOW_NETWORKS	= 0x00000080	// IIRC links allowed?
+      };
+      typedef unsigned int flags_type;
+      
     private:
-      Socket* socket;
-      bool listening;
+      Socket* socket;					// The socket
+      bool listening;					// Are we listening?
+      flags_type flags;					// Flags (see above)
       
     public:
-      // Constructor   
-      Listener(Socket* s = 0)
-	: socket(s)
-	  {};
+      // Constructor
+      Listener(Socket* const s = 0, flags_type f = 0)
+	: socket(s),
+          flags(f)
+	{};
       
       // Destructor
       ~Listener(void)
@@ -49,13 +61,19 @@ namespace Kine {
       
       // Make the socket listen
       const bool listen(void)
-	{ return (listening = (socket->bind() && socket->listen())); };
+	{ 
+	   return (listening = 
+		   ((socket != 0) && (socket->bind() && socket->listen()))); 
+	};
       
       // Are we listening?
       const bool isListening(void) const
 	{ return listening; };
+      
+      // Return the flags
+      const flags_type getFlags(void) const
+	{ return flags; };
    };
 };
    
 #endif // _INCLUDE_KINEIRCD_LISTENER_H_
-

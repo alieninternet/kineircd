@@ -1,5 +1,5 @@
 /* $Id$
- * Handles listener configuration, status and (of course) list management
+ * Listener descriptor class
  * 
  * Copyright (c) 2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
@@ -21,40 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_LISTENERLIST_H_
-# define _INCLUDE_KINEIRCD_LISTENERLIST_H_ 1
+#include "kineircd/kineircdconf.h"
 
-# ifdef KINE_STL_HAS_SLIST
-#  include <slist>
-# else
-#  include <list>
-# endif
+#include "kineircd/listener.h"
 
-# include "kineircd/listener.h"
-
-namespace Kine {
-   class ListenerList {
-    private:
-# ifdef KINE_STL_HAS_SLIST
-      typedef std::slist <Listener> listeners_type;
-# else
-      typedef std::list <Listener> listeners_type;
-# endif
-      listeners_type listeners;
-      
-    public:
-      // Constructor
-      ListenerList(void)
-	{};
-      
-      // Destructor
-      ~ListenerList(void)
-	{};
-
-      // Start all listeners listening
-      void startAll(void);
-   };
-};
-
-#endif // _INCLUDE_KINEIRCD_LISTENERLIST_H_
-   
+using namespace Kine;

@@ -1,5 +1,5 @@
 /* $Id$
- * Handles listener configuration, status and (of course) list management
+ * Handles listener status of the listeners list over-all
  * 
  * Copyright (c) 2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
@@ -21,40 +21,31 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_LISTENERLIST_H_
-# define _INCLUDE_KINEIRCD_LISTENERLIST_H_ 1
+#include "kineircd/kineircdconf.h"
 
-# ifdef KINE_STL_HAS_SLIST
-#  include <slist>
-# else
-#  include <list>
-# endif
+#include "kineircd/listenerlist.h"
+#include "debug.h"
 
-# include "kineircd/listener.h"
+using namespace Kine;
 
-namespace Kine {
-   class ListenerList {
-    private:
-# ifdef KINE_STL_HAS_SLIST
-      typedef std::slist <Listener> listeners_type;
-# else
-      typedef std::list <Listener> listeners_type;
-# endif
-      listeners_type listeners;
-      
-    public:
-      // Constructor
-      ListenerList(void)
-	{};
-      
-      // Destructor
-      ~ListenerList(void)
-	{};
 
-      // Start all listeners listening
-      void startAll(void);
-   };
-};
-
-#endif // _INCLUDE_KINEIRCD_LISTENERLIST_H_
+/* startAll - Start all listeners listening
+ * Original 07/08/2002 simonb
+ */
+void ListenerList::startAll(void)
+{
+#ifdef KINE_DEBUG_EXTENDED
+   debug("ListenerList::startAll() - Starting " + 
+	 String::convert(listeners.size()) + " listening sockets");
+#endif
    
+   // Run through the list of modules and call their start functions
+   for (listeners_type::iterator it = listeners.begin(); 
+	it != listeners.end(); it++) {
+      if (!(*it).listen()) {
+#ifdef KINE_DEBUG
+	 debug("ListenerList::startAll() - oops");
+#endif
+      }
+   }
+}

@@ -57,6 +57,9 @@ Daemon::Daemon(Config& conf, Signals& sigs)
    
    // Fire-up the modules we have loaded!
    config.getModuleList().startAll(*this);
+
+   // Start listening on all listeners.
+   config.getListenerList().startAll();
    
    // We are ready to go, go into normal running runlevel
    runlevel = RUNLEVEL_NORMAL;
