@@ -46,7 +46,8 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 		   Kine::Connection& connection, std::string& inputQueue,
 		   std::string& outputQueue)
   : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue),
-    user(registrant, connection.getSocket().getRemoteAddress())
+    user(registrant, connection.getSocket().getRemoteAddress()),
+    maxMessageSize(512) // <=- should really be configurable
 {
    // vv temporary :)
    std::ostringstream output;

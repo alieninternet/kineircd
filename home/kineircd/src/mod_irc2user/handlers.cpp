@@ -60,6 +60,9 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
       }
    }
    
+   // Fix the mask up so it matches properly
+   mask = mask.toUpper();
+   
    // Run through the list of functions (this should be std::for_each<>)
    for (Commands::commandList_type::const_iterator it =
 	Commands::getInstance().getCommandList().begin();
@@ -79,9 +82,46 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	   // If we are doing extended help, send the extended lines
 	   if (extended &&
 	       ((*it).second.helpInfo != 0)) {
-	      sendNumeric(LibIRC2::Numerics::RPL_MOREHELP,
-			  (*it).first,
-			  GETLANG_BY_ID(*((*it).second.helpInfo)));
+	      // Grab the extended help string..
+	      const std::string help = GETLANG_BY_ID(*((*it).second.helpInfo));
+	      
+	      // Our starting and ending positions..
+	      std::string::size_type startPosition = 0;
+	      std::string::size_type endPosition;
+	      
+	      // The max number of chars we can send.. (is this algo okay??)
+	      const std::string::size_type maxChars =
+		maxMessageSize -
+		Kine::config().getOptionsServerName().length() -
+		user.getNickname().length() -
+		25;
+	      
+	      // Loop until we have no more text left..
+	      for (;;) {
+		 // How much do we need to break this line up?
+		 if ((help.length() - startPosition) > maxChars) {
+		    // Work out where we can break this line (at a space)
+		    endPosition = help.rfind(' ',
+					     (startPosition + maxChars));
+		 } else {
+		    // Set the end position to the end of the line!
+		    endPosition = help.length();
+		 }
+		 
+		 // Send this bit..
+		 sendNumeric(LibIRC2::Numerics::RPL_MOREHELP,
+			     (*it).first,
+			     help.substr(startPosition,
+					 (endPosition - startPosition)));
+		 
+		 // If we're now at the end of the line, break out of this loop
+		 if (endPosition == help.length()) {
+		    break;
+		 }
+		 
+		 // If we're still going, remember where we last broke..
+		 startPosition = endPosition + 1;
+	      }
 	   }
 	}
      }
