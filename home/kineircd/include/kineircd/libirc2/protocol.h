@@ -120,7 +120,7 @@ namespace Kine {
 			      const Tpa& pa)
 	     {
 		std::ostringstream output;
-		output << ':' << origin << ' ' << command << ' ' << 
+		output << ':' << origin << ' ' << command << ' ' <<
 		  destination << " :" << pa << lineTerminator;
 		outputQueue.push(output.str());
 	     };
@@ -132,7 +132,7 @@ namespace Kine {
 	     {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << pa << " :" << pb << lineTerminator;
+		  destination << ' ' << pa << " :" << pb << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class To, class Td, class Tc,
@@ -143,7 +143,7 @@ namespace Kine {
 	     {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << pa << ' ' << pb << " :" << pc <<
+		  destination << ' ' << pa << ' ' << pb << " :" << pc <<
 		  lineTerminator;
 		outputQueue.push(output.str());
 	     };
@@ -156,8 +156,8 @@ namespace Kine {
 	     {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << pa << ' ' << pb << ' ' << pc << " :" << pd <<
-		  lineTerminator;
+		  destination << ' ' << pa << ' ' << pb << ' ' << pc << 
+		  " :" << pd << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class To, class Td, class Tc,
@@ -169,8 +169,8 @@ namespace Kine {
 	     {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
-		  " :" << pe << lineTerminator;
+		  destination << ' ' << pa << ' ' << pb << ' ' << pc <<
+		  ' ' << pd << " :" << pe << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class To, class Td, class Tc,
@@ -183,8 +183,8 @@ namespace Kine {
 	     {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
-		  ' ' << pe << " :" << pf << lineTerminator;
+		  destination << ' ' << pa << ' ' << pb << ' ' << pc << 
+		  ' ' << pd << ' ' << pe << " :" << pf << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class To, class Td, class Tc,
@@ -198,8 +198,9 @@ namespace Kine {
 	     {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
-		  ' ' << pe << ' ' << pf << " :" << pg << lineTerminator;
+		  destination << ' ' << pa << ' ' << pb << ' ' << pc << 
+		  ' ' << pd << ' ' << pe << ' ' << pf << " :" << pg <<
+		  lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 template <class To, class Td, class Tc,
@@ -213,9 +214,9 @@ namespace Kine {
 	     {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << ' ' << 
-		  destination << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
-		  ' ' << pe << ' ' << pf << ' ' << pg << " :" << ph <<
-		  lineTerminator;
+		  destination << ' ' << pa << ' ' << pb << ' ' << pc <<
+		  ' ' << pd << ' ' << pe << ' ' << pf << ' ' << pg <<
+		  " :" << ph << lineTerminator;
 		outputQueue.push(output.str());
 	     };
 	 
