@@ -39,7 +39,10 @@ chanmembers = {
    prefixchar	= "+";
    irc2mode	= "v";
    origin	= "RFC1459";
-   comment	= "Channel member is voiced. They can speak while the channel is being moderated. Some implementations also allow them to speak when barred from access to the channel for some reason (such as being banned)";
+   comment	= "Channel member is voiced. They can speak while the "
+                  "channel is being moderated. Some implementations also "
+		  "allow them to speak when barred from access to the "
+		  "channel for some reason (such as being banned)";
 };
 
 chanmembers = {
@@ -47,7 +50,11 @@ chanmembers = {
    prefixchar	= "%";
    irc2mode	= "h";
    origin	= "Hybrid";
-   comment	= "User is a channel half-operator, that is they have 'half' the access of a full operator. Half-ops can kick unopped users, voiced users, set channel modes including +v, but not kick ops or deop ops. This leads to greater security on channels.";
+   comment	= "User is a channel half-operator, that is they have "
+                  "'half' the access of a full operator. Half-ops can kick "
+		  "unopped users, voiced users, set channel modes including "
+		  "+v, but not kick ops or deop ops. This leads to greater "
+		  "security on channels.";
 };
 
 chanmembers = {
@@ -55,7 +62,8 @@ chanmembers = {
    prefixchar	= "@";
    irc2mode	= "o";
    origin	= "RFC1459";
-   comment	= "User is a channel operator. They can kick users, change modes, set other users to operator (or lower) status, etc.";
+   comment	= "User is a channel operator. They can kick users, change "
+                  "modes, set other users to operator (or lower) status, etc.";
 };
 
 chanmembers = {
@@ -63,7 +71,8 @@ chanmembers = {
    prefixchar	= "@";
    irc2mode	= "O";
    origin	= "RFC2811";
-   comment	= "The user created the channel, but only used for '!' channels according to the RFC.";
+   comment	= "The user created the channel, but only used for '!' "
+                  "channels according to the RFC.";
 };
 
 chanmembers = {

@@ -40,7 +40,10 @@ chantypes = {
    name		= "LOCAL";
    prefixchar	= "&";
    origin	= "RFC1459";
-   comment	= "This channel type is known only to the server they are created on, and as such only clients on that server can join it. Each instance of this channel type is contained per server.";
+   comment	= "This channel type is known only to the server they are "
+                  "created on, and as such only clients on that server can "
+		  "join it. Each instance of this channel type is contained "
+		  "per server.";
    clientcreate	= "yes";
 };
 
@@ -48,7 +51,8 @@ chantypes = {
    name		= "NETWORK";
    prefixchar	= "#";
    origin	= "RFC1459";
-   comment	= "This channel type is known to all servers that are connected to the network.";
+   comment	= "This channel type is known to all servers that are "
+                  "connected to the network.";
    clientcreate	= "yes";
 };
 
@@ -56,7 +60,11 @@ chantypes = {
    name		= "NETWORK_SAFE";
    prefixchar	= "!";
    origin	= "RFC2811";
-   comment	= "These channels work similar to the '#' channels, except the name is prefixed not only with the '!' but also a set of alpha-numeric digits. This is an alternative to the time-stamp method of avoiding channel-takeovers during network splits.";
+   comment	= "These channels work similar to the '#' channels, except "
+                  "the name is prefixed not only with the '!' but also a "
+		  "set of alpha-numeric digits. This is an alternative to "
+		  "the time-stamp method of avoiding channel-takeovers "
+		  "during network splits.";
    clientcreate	= "yes";
 };
 
@@ -64,7 +72,10 @@ chantypes = {
    name		= "NETWORK_UNMODERATED";
    prefixchar	= "+";
    origin	= "RFC2811";
-   comment	= "These unmoderated channels work almost exactly the same as '#' channels, except nobody can obtain channel operator status on them. Some implementations seem to set the channel mode to '+nt' upon creation.";
+   comment	= "These unmoderated channels work almost exactly the same "
+                  "as '#' channels, except nobody can obtain channel "
+		  "operator status on them. Some implementations seem to "
+		  "set the channel mode to '+nt' upon creation.";
    clientcreate	= "yes";
 };
 
@@ -73,7 +84,17 @@ chantypes = {
    prefixchar	= ".";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "This is a programmable channel type. Normal users cannot create channels of this type. Channels must be created by the software that controls them. The parameters of these channels are not set in stone, and are controlled entirely by software. This means '.' channels of different names may have different properties. The function of this channel type is to provide set channels which require rare features without channel mode bloat, or software bloat. By creating a new channel type it also avoids confusion with other channel types with fixed definitions.";
+   comment	= "This is a programmable channel type. Normal users cannot "
+                  "create channels of this type. Channels must be created "
+		  "by the software that controls them. The parameters of "
+		  "these channels are not set in stone, and are controlled "
+		  "entirely by software. This means '.' channels of "
+		  "different names may have different properties. The "
+		  "function of this channel type is to provide set channels "
+		  "which require rare features without channel mode bloat, "
+		  "or software bloat. By creating a new channel type it "
+		  "also avoids confusion with other channel types with "
+		  "fixed definitions.";
 };
 
 chantypes = {
@@ -81,6 +102,9 @@ chantypes = {
    name		= "GLOBAL";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "This is a proposed channel type for IIRC. This is available to all IRC networks visible on an IIRC network, and as such users from other networks can participate.";
+   comment	= "This is a proposed channel type for IIRC. This is "
+                  "available to all IRC networks visible on an IIRC "
+		  "network, and as such users from other networks can "
+		  "participate.";
    clientcreate	= "yes";
 };

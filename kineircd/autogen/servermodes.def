@@ -46,7 +46,10 @@ servermodes = {
    name		= "AUTOCONNECT";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "Follow the autoconnect rules - When set on, the server should follow autoconnect parameters given in the configuration file to maintain its connection to the network.";
+   comment	= "Follow the autoconnect rules - When set on, the server "
+                  "should follow autoconnect parameters given in the "
+		  "configuration file to maintain its connection to the "
+		  "network.";
    broadcast	= "yes";
 };
 
@@ -55,7 +58,13 @@ servermodes = {
    name		= "AUTO_TBS";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "Automatically switch bone/tendril links. This is used in association with server to server protocols which have redundant links to specify whether or not the server should be actively monitoring links to see if a better 'bone' can be selected. When on, this gives the server the right to switch bone connections around to benifit the network.";
+   comment	= "Automatically switch bone/tendril links. This is used in "
+                  "association with server to server protocols which have "
+		  "redundant links to specify whether or not the server "
+		  "should be actively monitoring links to see if a better "
+		  "'bone' can be selected. When on, this gives the server "
+		  "the right to switch bone connections around to benifit "
+		  "the network.";
    broadcast	= "yes";
 };
 
@@ -73,7 +82,11 @@ servermodes = {
    name		= "FULL";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "A server turns toggles this depending on its 'fullness'. If the server is full, either no more file descriptors are left, or all connection classes are full, then this is a warning to other servers not to redirect clients to it.";
+   comment	= "A server turns toggles this depending on its 'fullness'. "
+                  "If the server is full, either no more file descriptors "
+		  "are left, or all connection classes are full, then this "
+		  "is a warning to other servers not to redirect clients to "
+		  "it.";
    server_only	= "yes";
    broadcast	= "yes";
 };
@@ -83,7 +96,10 @@ servermodes = {
    name		= "HIDDEN";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "When set, the server should be completely hidden to users. This is different to masking the server's name. This allows for invisible hubs, or invisible servers which host network services, etc.";
+   comment	= "When set, the server should be completely hidden to "
+                  "users. This is different to masking the server's name. "
+		  "This allows for invisible hubs, or invisible servers "
+		  "which host network services, etc.";
    broadcast	= "yes";
 };
 
@@ -92,7 +108,10 @@ servermodes = {
    name		= "LAZY_LEAF";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "Server should consider itself a lazy leaf link to the network. This means only one connection can be made to the server, and it runs on lazy principles. The idea for lazy leafs comes from Hybrid.";
+   comment	= "Server should consider itself a lazy leaf link to the "
+                  "network. This means only one connection can be made to "
+		  "the server, and it runs on lazy principles. The idea for "
+		  "lazy leafs comes from Hybrid.";
    broadcast	= "yes";
 };
 
@@ -101,7 +120,10 @@ servermodes = {
    name		= "MODES_LOCKED";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "The server modes are locked, and can only be changed by other servers. This is useful when servers shouldn't not be touched by operators.";
+   comment	= "The server modes are locked, and can only be changed by "
+                  "other servers. This is useful when servers shouldn't not "
+		  "be touched by operators. Arbiters/U:lines servers can "
+		  "still change modes (i.e. to remove this mode!)";
    broadcast	= "yes";
 };
 
@@ -110,7 +132,9 @@ servermodes = {
    name		= "SHORT_MOTD";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "Do not send the full MOTD upon connection. Rather, send a short minature MOTD stating that the user should read the full MOTD if they have not read it."; 
+   comment	= "Do not send the full MOTD upon connection. Rather, send "
+                  "a short minature MOTD stating that the user should read "
+		  "the full MOTD if they have not read it."; 
    broadcast	= "yes";
 };
 
@@ -119,7 +143,8 @@ servermodes = {
    name		= "REMOTE_MOTD";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "Allow the MOTD to be viewed remotely. Some administrators may not want their MOTD to be remotely viewed by users.";
+   comment	= "Allow the MOTD to be viewed remotely. Some administrators "
+                  "may not want their MOTD to be remotely viewed by users.";
    broadcast	= "yes";
 };
 

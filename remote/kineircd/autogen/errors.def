@@ -95,8 +95,7 @@ errors = {
 
 errors = {
    name		= "UNREGISTERED_ENTITY";
-   reason	= "Operation could not be completed - the given entity is not "
-                  "registered";
+   reason	= "Operation could not be completed on an unregistered entity";
 };
 
 errors = {
