@@ -249,62 +249,19 @@ _______________________________________________________________________________
 
 
 687 - RPL_YOURLANGUAGEIS
-      <code> <charset> * :<name> [(Note: <info>)]
-      
-      Reply to a LANGUAGE command denoting the language selected by the
-      server. Along with a 'LANGUAGE' reply, this signifies to that client
-      that the server will be using the given language to display future
-      information, and confirms a change (if any). The code is the same as
-      the ISO-639-(1/2) or IANA assigned language code, the charset is the
-      character set the language dialogue data was written in (and the 
-      server will presume the client knows it). The next field, '*' should be
-      ignored by the client and may be used in the future. The name is the
-      name of the language, same as used in RPL_LANGUAGE. If a 'NOTE' tag is
-      given in the language dialogue data file, additionally the name will be
-      prefixed by '(Note: <info>)', where <info> is the data associated with
-      the 'NOTE' tag. This could be used to explain something about a certain
-      language type. Eg. "x-git" might be taken the wrong way by some people
-      and therefore it might be worth adding a note stating that the language
-      is intended to be humourous as to avoid complaints etc.
-      Note that when the language 'none' is being selected, the charset will
-      be "*" and the name will be "None".
+      (See 'LANGUAGE' file)
 
 
 688 - RPL_LANGUAGE
-      <code> <revision> <maintainer> <charset> <flags> * :<name>
-      
-      A list item for listing languages. The code variable is the
-      ISO-639-(1/2)/IANA assigned language code, the revision is the version of
-      the language file being used, and the maintainer is an e-mail address 
-      of the person who maintains that particular language file for contact 
-      with regards to updates/corrections etc. The character set is the same
-      as above, an IANA/MIME compliant character set name. The '*' is a 
-      field for possible future use and should be ignored for now. The name
-      is given to show the name/variation of the language and should follow
-      the same name given by the ISO-639-(1/2)IANA assigned language name
-      associated with the code. The flags are a bunch of case sensitive 
-      characters in a row with special meanings. If no flags are set on a
-      language, '*' will be replaced instead (as with RPL_TIMEONSERVERIS).
-      Currently the following flags are set:
-       'd' - Default language and is selected upon connection
-       's' - Currently selected as the server language being outputted
+      (See 'LANGUAGE' file)
 
 
 689 - RPL_ENDOFLANGUAGES
-      :End of LANGUAGE list
-      
-      Mark the end of a language list.
+      (See 'LANGUAGE' file)
 
 
 690 - RPL_WHOIS_LANGUAGE
-      <nickname> <language codes> <charset>
-      
-      This is an optional extra to the WHOIS output, showing what language
-      a user is using. The 'language codes' field is a comma-delimetered list
-      of languages a person can speak (in order of preference, highest
-      first, lowest last). The charset is the user's currently presumed
-      charset (relative to their server language setting, which may not be
-      true network-wide. Additional fields may be added to this in the future.
+      (See 'LANGUAGE' file)
 
 
 691 - RPL_SUSERHOST
@@ -330,6 +287,7 @@ _______________________________________________________________________________
       ignore. It is to be used when numerics have not been decided on, or are
       conflicting, or any situtation really where a real concrete numeric
       simply cannot be used. Just ignore it! :)
+
 
 699 - RPL_MOTD (only during forced MOTD)
       The client MUST display the MOTD when this numeric is specified

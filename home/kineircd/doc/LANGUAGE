@@ -1,0 +1,225 @@
+
+'LANGUAGE' IRC-2 command
+------------------------
+
+The LANGUAGE command is designed to break the language barrier and create an
+environment where users can use their native language comfortably.
+
+While the LANGUAGE command changes the text reply from numerics to whatever
+language selected (if it is available) this is only a tiny portion of what
+the command was designed to do.
+
+One key problem facing large international IRC networks these days is the
+large variety of languages running on the network. Many people are often
+curious as to what languages some people are speaking (especially if they
+are kludged down into US-ASCII due to previous limitations). The LANGUAGE
+command allows a user to set the language they speak, or a list of languages
+they are able to use over the network. This information is subsequently
+available via the 'WHOIS' command anywhere on the network where the LANGUAGE
+command is supported (hopefully network-wide :). Users would be able to
+easily determine if a user can speak their native tongue!
+
+Many IRC networks these days also have some form of 'services', usually a
+channel service and a nickname service at least. These services need help
+functions, and are usually only provided in English, or in a few other
+languages via a specific interface. With the LANGUAGE command, this
+information would be available to the services seamlessly (as LANGUAGE
+information is broadcast over the network) via a common interface. On
+AustNet, this functionality will be provided by keeping the language data
+local on servers (which also reduces the traffic used when transferring the
+same data over the network from the services to the user constantly). Your
+implementation may work differently, however.
+
+On networks where "u-lined" servers (servers who can act as arbiters over
+the network, like services) have control of other functions, implementors
+may wish to allow the LANGUAGE command to be set on behalf of the user. This
+would allow services to "remember" the language settings of a particular
+user and restore them upon authentication.
+
+However, the LANGUAGE implementation *DOES NOT* translate, not even between
+character sets. The recommendation is to write all translated data in UTF-8
+rather than have a mix of character sets. The may, however, be a reason for
+setting a specific character set and this option has been left open. See
+BCP-0018 for information.
+
+
+
+Numerics
+--------
+
+687 - RPL_YOURLANGUAGEIS
+      <code(s)> <charset> * :<info>
+      
+      Reply to a LANGUAGE command denoting the language selected by the
+      server. Along with a 'LANGUAGE' reply, this signifies to that client
+      that the server will be using the given language to display future
+      information, and confirms a change (if any). The code(s) are the same as
+      defined in BCP-0047. The character set the language dialogue data was 
+      written in (and the server will presume the client knows it). The next 
+      field, '*' should be ignored by the client and may be used in the 
+      future. The info is usually the name of the language (as written in the
+      language file), same as used in RPL_LANGUAGE. If additional information 
+      about the language is available file (such as a note or warning) it will
+      be appended to the info line. This could be used to explain something 
+      about a certain language type. Eg. "x-bork" (sweeedish chef) might be 
+      taken the wrong way by some people and therefore it might be worth 
+      adding a note stating that the language is intended to be humourous as 
+      to avoid complaints etc. Note that the codes are returned in order of 
+      use. The first is always the one replies will be made in (with the 
+      exception of 'none', where some replies may be made with the second
+      language on the list).
+
+
+688 - RPL_LANGUAGE
+      <code> <revision> <maintainer> <charset> <flags> * :<name>
+      
+      A list item for listing languages. The code variable is the
+      language code as described in BCP-0047 assigned language code, the 
+      revision is the version of the language file being used (just a number),
+      and the maintainer is an e-mail address of the person who maintains that
+      particular language file for contact with regards to updates/corrections
+      etc. Note that the contact field could also be used for just a nickname
+      if the author does not wish to be contactable by e-mail. The character 
+      set is the same as above, an IANA compliant character set name. 
+      The '*' is a field for possible future use and should be ignored for 
+      now. The name is given to show the name/variation of the language.
+      The flags are a bunch of case sensitive characters in a row with 
+      special meaning. If no flags are set on a language, '*' will be 
+      replaced instead (as with RPL_TIMEONSERVERIS).
+      Currently the following flags are possible:
+       'd' - Default language and is selected upon connection
+       's' - Currently selected as the server language being outputted
+
+
+689 - RPL_ENDOFLANGUAGES
+      :End of LANGUAGE list
+      
+      Mark the end of a language list.
+
+
+690 - RPL_WHOIS_LANGUAGE
+      <nickname> <language codes> <charset>
+      
+      This is an optional extra to the WHOIS output, showing what language
+      a user is using. The 'language codes' field is a comma-delimetered list
+      of languages a person can speak (in order of preference, highest
+      first, lowest last). The charset is the user's currently presumed
+      charset, relative to their server language setting, which may not be
+      true network-wide. Additional fields may be added to this in the future.
+
+
+Function
+--------
+ The LANGUAGE command is designed to remain simple. There are two forms, one
+with parameters and one without.
+
+ When used without parameters, the LANGUAGE command simply returns a list of
+languages the IRC daemon knows about, that is languages the IRC daemon can
+return text in.
+
+ Note in these examples, lines prefixed with '<' mean the line heads to the
+server, and lines prefixed with '>' mean lines from the server.
+
+ eg.
+  < LANGUAGE
+  > :server.foo.org 688 pickle en 20010710 sl7@austnet.org UTF-8 d * :English
+  > :server.foo.org 688 pickle tr 20011201 sl7@austnet.org UTF-8 * * :Turkish
+  > :server.foo.org 688 pickle fr 20010807 sl7@austnet.org UTF-8 * * :French
+  > :server.foo.org 688 pickle de 20010528 sl7@austnet.org UTF-8 s * :German
+  > :server.foo.org 689 pickle :Ende der SPRACHLISTE
+  
+ From this reply you can see (using the numerics listed above) that English
+is the default language, but German is currently selected (hense the end of
+list reply - btw my German is shocking, I never did get the grammar right at
+school).
+
+ Note that the name of the language, the revision and the contact fields are
+totally up to your own policies. The only limitation is that the revision
+and the contact fields must be one word. With AustHex 8, as an example, the
+revision is a number since it is used to update the language files via remote
+to keep the entire network syncronised and up-to-date by centralising it
+(rather than e-mailing them to server administrators).
+
+ Notice that all the character sets are the same. This seems like a waste,
+however there may be some reason to have a language using a different
+character set.
+
+ The LANGUAGE command is also used to set language(s), naturally. Here I
+will change my selected language from German to French:
+
+  < LANGUAGE fr
+  > :server.foo.org 687 pickle fr UTF-8 * :French
+  
+ And the server replies with information necessary for the client to set its
+character information. Note that this is a numeric rather than a 'LANGUAGE'
+command since numerics are easier to broadcast over the network, and this
+decision was made to simplify the implementation of any services being able
+to automatically set up a user's language settings (as described above).
+
+ I can also turn off replies from the server being in any language if my
+client has its own mechanism for languages. This will only apply to numeric
+replies, as other translations (services, for example) will remain using the
+original setting, or the default setting. Here's how:
+
+  < LANGUAGE none
+  > :server.foo.org 867 pickle none,en UTF-8 * :-
+
+ Notice how English has been added in there. This is the default language and
+has been selected as the secondary language. For information which MUST be
+displayed (such as information from services, or any other translated
+information) this information will be used. However text from numerics will
+always be "-" unless it is informative, such as the server name in WHOIS.
+ 
+ What if I wanted the server to reply in English, but I can also speak
+French and German?
+
+  < LANGUAGE en,fr,de
+  > :server.foo.org 867 pickle en,fr,de UTF-8 * :English
+  
+ Note that the information and the character are both derived from the entry
+the server can use as its response language. However:
+
+  < LANGUAGE foo,fr,de
+  > :server.foo.org 867 pickle fr,de UTF-8 * :French
+  
+ The server has rejected foo (it is not a language). You may implement any
+policies you wish on rejection of languages. If you do intend to accept
+unknown languages you don't have translations for, the follow should occur:
+
+  < LANGUAGE ru,fr,de
+  > :server.foo.org 867 pickle fr,ru,de UTF-8 * :French
+  
+ Notice how the server re-ordered the list since French is the first
+available language it can use for replies. All three languages would appear
+in WHOIS:
+  
+  < WHOIS pickle
+  > :server.foo.org 311 pickle pickle pickle simonb.alien.net.au * :Simon
+  > :server.foo.org 319 pickle pickle :+#chaty
+  > :server.foo.org 312 pickle pickle server.foo.org :Foo server
+  > :server.foo.org 317 pickle 1234 987654321 :temps de ralenti, temps de connexion
+  > :server.foo.org 690 pickle fr,ru,de UTF-8
+  > :server.foo.org 318 pickle :Fin de liste de WHOIS
+  
+ (Yes, my French is worse than my English. These translations in these
+examples really are pathetic, sorry!)
+
+ If I wished to turn off message replies, but still want to announce
+English, French and German:
+
+  < LANGUAGE none,en,fr,de
+  > :server.foo.org 687 pickle none,en,fr,de UTF-8 * :English
+  
+ Notice that the server still says English, as this is still the "default"
+language. However numeric replies are turned off. If I WHOIS myself once more:
+
+  < WHOIS pickle
+  > :server.foo.org 311 pickle pickle pickle simonb.alien.net.au * :Simon
+  > :server.foo.org 319 pickle pickle :+#chaty
+  > :server.foo.org 312 pickle pickle server.foo.org :Foo server
+  > :server.foo.org 317 pickle 2345 987654321 :-
+  > :server.foo.org 690 pickle en,fr,de UTF-8
+  > :server.foo.org 318 pickle :-
+  
+ Note that the colons and hyphens remain due to issues with older clients.
+Also note that there is no mention of "none" in the whois information.
