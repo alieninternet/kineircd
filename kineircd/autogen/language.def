@@ -25,11 +25,466 @@ autogen definitions language;
 
 
 tags = {
+   name		= "";
+   component	= "mod_irc2user";
+   data_en	= "";
+   data_tr	= "";
+};
+
+
+
+
+tags = {
+   name		= "irc2_ERR_ALREADYREGISTERED";
+   component	= "mod_irc2user";
+   data_en	= "Unauthorised command (already registered)";
+   data_tr	= "Bu komutu uygulamaya yetkiniz yok (獸^Vnceden kaydedildi)";
+};
+
+tags = {
+   name		= "irc2_ERR_BADCHANMASK";
+   component	= "mod_irc2user";
+   data_en	= "Bad channel mask";
+   data_tr	= "Yanl覺癬^_ CHANNEL MASK";
+};
+
+tags = {
+   name		= "irc2_ERR_BADCHANNELKEY";
+   component	= "mod_irc2user";
+   data_en	= "Cannot join channel (+k)";
+   data_tr	= "Kanala girilmiyor (+k)";
+};
+
+tags = {
+   name		= "irc2_ERR_BADMASK";
+   component	= "mod_irc2user";
+   data_en	= "Bad server/host mask";
+   data_tr	= "Yanl覺癬^_ server/host mask";
+};
+
+tags = {
+   name		= "irc2_ERR_BANLISTFULL";
+   fields	= "0 = max # list";
+   component	= "mod_irc2user";
+   data_en	= "Channel list is full (%p0)";
+   data_tr	= "Kanal listesi doldu (%p0)";
+};
+
+tags = {
+   name		= "irc2_ERR_BANNEDFROMCHAN";
+   component	= "mod_irc2user";
+   data_en	= "Cannot join channel (+b)";
+   data_tr	= "Kanala girilmiyor (+b)";
+};
+
+tags = {
+   name		= "irc2_ERR_CANNOTSENDTOCHAN";
+   component	= "mod_irc2user";
+   data_en	= "Cannot send to channel";
+   data_tr	= "Kanala gonderilemedi";
+};
+
+tags = {
+   name		= "irc2_ERR_CHANNELISFULL";
+   component	= "mod_irc2user";
+   data_en	= "Cannot join channel (+l)";
+   data_tr	= "Kanala girilmiyor (+l)";
+};
+
+tags = {
+   name		= "irc2_ERR_CHANOPRIVSNEEDED";
+   component	= "mod_irc2user";
+   data_en	= "You're not a channel operator";
+   data_tr	= "Kanal operatoru de繼^_ilsiniz";
+};
+
+tags = {
+   name		= "irc2_ERR_ERRONEUSNICKNAME";
+   component	= "mod_irc2user";
+   data_en	= "Erroneous nickname";
+   data_tr	= "Yanl覺癬^_ nickname";
+};
+
+tags = {
+   name		= "irc2_ERR_INVITEONLYCHAN";
+   component	= "mod_irc2user";
+   data_en	= "Cannot join channel (+i)";
+   data_tr	= "Kanala girilmiyor (+i)";
+};
+
+tags = {
+   name		= "irc2_ERR_KEYSET";
+   component	= "mod_irc2user";
+   data_en	= "Channel key already set (to change it, unset it first)";
+   data_tr	= "Kanal KEYsi zaten yerle癬^_tirilmi癬^_tir (de繼^_istirmek "
+                  "i癟in l羹tfen 繹nce KEYyi kald覺r覺n)";
+};
+
+tags = {
+   name		= "irc2_ERR_NEEDMOREPARAMS";
+   component	= "mod_irc2user";
+   data_en	= "Not enough parameters";
+   data_tr	= "Yeterince bilgi verilmedi";
+};
+
+tags = {
+   name		= "irc2_ERR_NICKCOLLISION";
+   fields	= "0 = user, 1 = host";
+   component	= "mod_irc2user";
+   data_en	= "Nickname collision from %p0@%p1";
+   data_tr	= "%p0@%p1 den nick 癟arp覺癬^_mas覺";
+};
+
+tags = {
+   name		= "irc2_ERR_NICKNAMEINUSE";
+   component	= "mod_irc2user";
+   data_en	= "Nickname is already in use";
+   data_tr	= "Bu nickname kullan覺lmaktad覺r";
+};
+
+tags = {
+   name		= "irc2_ERR_NOADMININFO";
+   component	= "mod_irc2user";
+   data_en	= "No administrative info available";
+   data_tr	= "襤dari bilgi bulunamad覺";
+};
+
+tags = {
+   name		= "irc2_ERR_NOCHANMODES";
+   component	= "mod_irc2user";
+   data_en	= "Channel doesn't support modes or mode changes";
+   data_tr	= "Kanal MODElari ve MODE de繼^_i癬^_imlerini kabul etmiyor";
+};
+
+tags = {
+   name		= "irc2_ERR_NOMOTD";
+   component	= "mod_irc2user";
+   data_en	= "MOTD File is missing";
+   data_tr	= "MOTD bulunamad覺";
+};
+
+tags = {
+   name		= "irc2_ERR_NONICKNAMEGIVEN";
+   component	= "mod_irc2user";
+   data_en	= "No nickname given";
+   data_tr	= "Nickname belirtilmedi";
+};
+
+tags = {
+   name		= "irc2_ERR_NOOPERHOST";
+   component	= "mod_irc2user";
+   data_en	= "Your host is not configured to allow the OPER command";
+   data_tr	= "HOSTunuz OPER komutunu kullanmak i癟in konfig羹re edilmedi";
+};
+
+tags = {
+   name		= "irc2_ERR_NOORIGIN";
+   component	= "mod_irc2user";
+   data_en	= "No origin specified";
+   data_tr	= "Kaynak belirtilmedi";
+};
+
+tags = {
+   name		= "irc2_ERR_NOPERMFORHOST";
+   component	= "mod_irc2user";
+   data_en	= "Your host isn't among the privileged";
+   data_tr	= "HOSTunuz ayr覺cal覺kl覺lar arasinda de繼^_il";
+};
+
+tags = {
+   name		= "irc2_ERR_NOPRIVILEGES";
+   component	= "mod_irc2user";
+   data_en	= "Permission Denied - You're not an IRC Operator";
+   data_tr	= "Yetki verilmedi 漊^@~^S IRC Operator de繼^_ilsiniz";
+};
+
+tags = {
+   name		= "irc2_ERR_NORECIPIENT";
+   fields	= "0 = command";
+   component	= "mod_irc2user";
+   data_en	= "No recipient given (%p0)";
+   data_tr	= "Alic覺 belirtilmedi (%p0)";
+};
+
+tags = {
+   name		= "irc2_ERR_NOSUCHSERVICE";
+   component	= "mod_irc2user";
+   data_en	= "No such service";
+   data_tr	= "B繹yle bir servis yok";
+};
+
+tags = {
+   name		= "irc2_ERR_NOTEXTTOSEND";
+   component	= "mod_irc2user";
+   data_en	= "No text to send";
+   data_tr	= "G繹nderilecek text yok";
+};
+
+tags = {
+   name		= "irc2_ERR_NOTONCHANNEL";
+   component	= "mod_irc2user";
+   data_en	= "You're not on that channel";
+   data_tr	= "O kanalda de繼^_ilsiniz";
+};
+
+tags = {
+   name		= "irc2_ERR_NOTOPLEVEL";
+   component	= "mod_irc2user";
+   data_en	= "No toplevel domain specified";
+   data_tr	= "Toplevel domain belirtilmedi";
+};
+
+tags = {
+   name		= "irc2_ERR_PASSWDMISMATCH";
+   component	= "mod_irc2user";
+   data_en	= "Password incorrect";
+   data_tr	= "Yanl覺癬^_ 癬^_ifre";
+};
+
+tags = {
+   name		= "irc2_ERR_RESTRICTED";
+   component	= "mod_irc2user";
+   data_en	= "Your connection is restricted";
+   data_tr	= "Baglant覺n覺z k覺s覺tlanm覺癬^_t覺r";
+};
+
+tags = {
+   name		= "irc2_ERR_SUMMONDISABLED";
+   component	= "mod_irc2user";
+   data_en	= "SUMMON has been disabled";
+   data_tr	= "SUMMON komutu kapat覺ld覺";
+};
+
+tags = {
+   name		= "irc2_ERR_TOOMANYCHANNELS";
+   component	= "mod_irc2user";
+   data_en	= "You have joined too many channels (%p0 is the limit)";
+   data_tr	= "Fazla kanala girdiniz (limit %p0 dir)";
+};
+
+tags = {
+   name		= "irc2_ERR_UMODEUNKNOWNFLAG";
+   fields	= "0 = the mode itself";
+   component	= "mod_irc2user";
+   data_en	= "Unknown MODE flag (%p0)";
+   data_tr	= "Bilinmeyen MODE FLAG (%p0)";
+};
+
+tags = {
+   name		= "irc2_ERR_UNAVAILRESOURCE";
+   component	= "mod_irc2user";
+   data_en	= "Resource is temporarily unavailable";
+   data_tr	= "Kaynak ge癟ici olarak servis d覺癬^_覺";
+};
+
+tags = {
+   name		= "irc2_ERR_UNKNOWNCOMMAND";
+   component	= "mod_irc2user";
+   data_en	= "Unknown command";
+   data_tr	= "Bilinmeyen komut";
+};
+
+tags = {
+   name		= "irc2_ERR_UNKNOWNMODE";
+   fields	= "0 = channel"
+   component	= "mod_irc2user";
+   data_en	= "is unknown mode char to me (%p0)";
+   data_tr	= "%p0 i癟in bilinmeyen MODE CHAR";
+};
+
+tags = {
+   name		= "irc2_ERR_UNIQOPPRIVSNEEDED";
+   component	= "mod_irc2user";
+   data_en	= "You're not the original channel operator";
+   data_tr	= "Kanal 繹perat繹r羹 de繼^_ilsiniz";
+};
+
+tags = {
+   name		= "irc2_ERR_USERNOTINCHANNEL";
+   component	= "mod_irc2user";
+   data_en	= "They aren't on that channel";
+   data_tr	= "Arad覺繼^_覺n覺z ki癬^_i bu kanalda de繼^_ildir";
+};
+
+tags = {
+   name		= "irc2_ERR_USERONCHANNEL";
+   component	= "mod_irc2user";
+   data_en	= "is already on channel";
+   data_tr	= "zaten kanaldalar";
+};
+
+tags = {
+   name		= "irc2_ERR_USERSDISABLED";
+   component	= "mod_irc2user";
+   data_en	= "USERS has been disabled";
+   data_tr	= "USERS komutu kapat覺ld覺";
+};
+
+tags = {
+   name		= "irc2_ERR_USERSDONTMATCH";
+   component	= "mod_irc2user";
+   data_en	= "Cannot change mode for other users";
+   data_tr	= "Ba癬^_ka kullan覺c覺 i癟in MODE de繼^_i癬^_tiremezsiniz";
+};
+
+tags = {
+   name		= "irc2_ERR_WASNOSUCHNICK";
+   component	= "mod_irc2user";
+   data_en	= "There was no such nickname, or they signed off too long "
+                  "ago";
+   data_tr	= "B繹yle bir nick bulunamad覺";
+};
+
+tags = {
+   name		= "irc2_ERR_WILDTOPLEVEL";
+   component	= "mod_irc2user";
+   data_en	= "Wildcard in toplevel domain";
+   data_tr	= "Yanl覺癬^_ gTLD belirtildi";
+};
+
+tags = {
+   name		= "irc2_ERR_YOUREBANNEDCREEP";
+   component	= "mod_irc2user";
+   data_en	= "You are banned from this server";
+   data_tr	= "Bu serverdan banland覺n覺z";
+};
+
+tags = {
+   name		= "irc2_QUIT_BUGGY";
+   fields	= "0 = error message";
+   component	= "mod_irc2user";
+   data_en	= "Bug? Error: %p0";
+};
+
+tags = {
+   name		= "irc2_QUIT_ECONNRESET";
+   component	= "mod_irc2user";
+   data_en	= "Connection reset by peer";
+   data_tr	= "Baglantiniz e癬^_d羹zey tarafindan sonlandirilmistir";
+};
+
+tags = {
+   name		= "irc2_QUIT_EHOSTUNREACH";
+   component	= "mod_irc2user";
+   data_en	= "No route to host";
+};
+
+tags = {
+   name		= "irc2_QUIT_ENETUNREACH";
+   component	= "mod_irc2user";
+   data_en	= "Network is unreachable";
+   data_tr	= "Networke baglanilamadi";
+};
+
+tags = {
+   name		= "irc2_QUIT_EPIPE";
+   component	= "mod_irc2user";
+   data_en	= "Broken pipe";
+   data_tr	= "Data hatti sorunu";
+};
+
+tags = {
+   name		= "irc2_QUIT_ETIMEDOUT";
+   component	= "mod_irc2user";
+   data_en	= "Connection timed out";
+   data_tr	= "Zaman a癬^_imina ugradi";
+};
+
+tags = {
+   name		= "irc2_QUIT_FLOODING";
+   component	= "mod_irc2user";
+   data_en	= "Excess flood";
+   data_tr	= "Bilgi a癬^_覺r覺l覺繼^_覺";
+};
+
+tags = {
+   name		= "irc2_QUIT_NORMAL";
+   fields	= "0 = the user's quit message";
+   component	= "mod_irc2user";
+   data_en	= "Quit: %p0";
+   data_tr	= "Kullanici ぇiki癬^_i: %p0";
+};
+
+tags = {
+   name		= "irc2_QUIT_NO_REASON";
+   component	= "mod_irc2user";
+   data_en	= "Client quit IRC";
+   data_tr	= "Kullanici IRC 癟ikisi";
+};
+
+tags = {
+   name		= "irc2_QUIT_PINGED_OUT";
+   component	= "mod_irc2user";
+   data_en	= "Ping timeout";
+   data_tr	= "PING zaman asimina ugradi";
+};
+
+tags = {
+   name		= "irc2_QUIT_READ_FAIL";
+   component	= "mod_irc2user";
+   data_en	= "Read error";
+};
+
+tags = {
+   name		= "irc2_QUIT_SENDQ_OVERFLOW";
+   component	= "mod_irc2user";
+   data_en	= "Send queue overflow";
+};
+
+tags = {
+   name		= "irc2_QUIT_WRITE_FAIL";
+   component	= "mod_irc2user";
+   data_en	= "Write error";
+};
+
+tags = {
+   name		= "irc2_RPL_ADMINME";
+   component	= "mod_irc2user";
+   data_en	= "Administrative Info";
+   data_tr	= "Administratif bilgi";
+};
+
+tags = {
    name		= "irc2_RPL_CREATED";
    fields	= "0 = date";
    component	= "mod_irc2user";
    data_en	= "This server was created %p0";
    data_tr	= "Bu server %p0 tarihinde yarat覺lm覺癬^_t覺r";
+};
+
+tags = {
+   name		= "irc2_RPL_ENDOFBANLIST";
+   component	= "mod_irc2user";
+   data_en	= "End of channel ban list";
+   data_tr	= "Kanal banlar覺n覺n listesinin sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_ENDOFEXCEPTLIST";
+   component	= "mod_irc2user";
+   data_en	= "End of channel exception list";
+   data_tr	= "Kanal eksepsiyonlar listensinin sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_ENDOFINFO";
+   component	= "mod_irc2user";
+   data_en	= "End of INFO list";
+   data_tr	= "INFO listensinin sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_ENDOFINVITELIST";
+   component	= "mod_irc2user";
+   data_en	= "End of channel invite list";
+   data_tr	= "Kanal invite listesinin sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_ENDOFLINKS";
+   component	= "mod_irc2user";
+   data_en	= "End of LINKS list";
+   data_tr	= "LINKler listensinin sonu";
 };
 
 tags = {
@@ -40,10 +495,59 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_RPL_ENDOFNAMES";
+   component	= "mod_irc2user";
+   data_en	= "End of NAMES list";
+   data_tr	= "NAMES (isimler) listesinin sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_ENDOFSTATS";
+   component	= "mod_irc2user";
+   data_en	= "End of STATS report";
+   data_tr	= "STATS raporunun sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_ENDOFWHO";
+   component	= "mod_irc2user";
+   data_en	= "End of WHO list";
+   data_tr	= "WHO listesinin sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_ENDOFWHOIS";
+   component	= "mod_irc2user";
+   data_en	= "End of WHOIS list";
+   data_tr	= "WHOIS listesinin sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_ENDOFWHOWAS";
+   component	= "mod_irc2user";
+   data_en	= "End of WHOWAS";
+   data_tr	= "WHOWAS komutunun sonu";
+};
+
+tags = {
    name		= "irc2_RPL_ISUPPORT";
    component	= "mod_irc2user";
    data_en	= "are supported by this server";
    data_tr	= "bu server taraf覺ndan destekleniyor";
+};
+
+tags = {
+   name		= "irc2_RPL_LISTEND";
+   component	= "mod_irc2user";
+   data_en	= "End of LIST";
+   data_tr	= "LIST komutunun sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_LUSERCHANNELS";
+   component	= "mod_irc2user";
+   data_en	= "channels formed";
+   data_tr	= "Kullanici kanal覺";
 };
 
 tags = {
@@ -92,9 +596,72 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_RPL_NOSUCHCHANNEL";
+   component	= "mod_irc2user";
+   data_en	= "No such channel";
+   data_tr	= "B繹yle bir kanal bulunamad覺";
+};
+
+tags = {
+   name		= "irc2_RPL_NOSUCHNICK";
+   component	= "mod_irc2user";
+   data_en	= "No such nick";
+   data_tr	= "B繹yle bir nick bulunamadi";
+};
+
+tags = {
+   name		= "irc2_RPL_NOSUCHSERVER";
+   component	= "mod_irc2user";
+   data_en	= "No such server";
+   data_tr	= "B繹yle bir server bulunamad覺";
+};
+
+tags = {
+   name		= "irc2_RPL_NOTOPIC";
+   component	= "mod_irc2user";
+   data_en	= "No topic is set";
+   data_tr	= "Hi癟 bir topic yoktur";
+};
+
+tags = {
+   name		= "irc2_RPL_NOWAWAY";
+   component	= "mod_irc2user";
+   data_en	= "You have been marked as being away";
+   data_tr	= "AWAY komutu kabul edildi. 癬^^u an awaysiniz";
+};
+
+tags = {
+   name		= "irc2_RPL_REHASHING";
+   component	= "mod_irc2user";
+   data_en	= "Rehashing";
+   data_tr	= "Rehash komutu uygulan覺yor";
+};
+
+tags = {
+   name		= "irc2_RPL_SERVLISTEND";
+   component	= "mod_irc2user";
+   data_en	= "End of service listing";
+   data_tr	= "Servis listesinin sonu";
+};
+
+tags = {
    name		= "irc2_RPL_TIMEONSERVERIS";
    component	= "mod_irc2user";
    data_en	= "time according to server";
+};
+
+tags = {
+   name		= "irc2_RPL_TRACEEND";
+   component	= "mod_irc2user";
+   data_en	= "End of TRACE";
+   data_tr	= "TRACE komutunun sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_UNAWAY";
+   component	= "mod_irc2user";
+   data_en	= "You are no longer marked as being away";
+   data_tr	= "Awayiniz kald覺r覺lm覺癬^_t覺r";
 };
 
 tags = {
@@ -103,6 +670,34 @@ tags = {
    component	= "mod_irc2user";
    data_en	= "Welcome to the %N Internet Relay Network %p0!%p1@%p2";
    data_tr	= "%N Internet Relay Networkune Ho癬^_geldiniz %p0!%p1@%p2";
+};
+
+tags = {
+   name		= "irc2_RPL_WHOISIDLE";
+   component	= "mod_irc2user";
+   data_en	= "seconds idle, signon time";
+   data_tr	= "saniye idle, ba繼^_lanma zaman覺";
+};
+
+tags = {
+   name		= "irc2_RPL_WHOISOPERATOR";
+   component	= "mod_irc2user";
+   data_en	= "is an IRC operator";
+   data_tr	= "bir IRC Operator";
+};
+
+tags = {
+   name		= "irc2_RPL_YOUREOPER";
+   component	= "mod_irc2user";
+   data_en	= "You are now an IRC operator";
+   data_tr	= "IRC Operator stat羹s羹ne ge癟tiniz";
+};
+
+tags = {
+   name		= "irc2_RPL_YOURESERVICE";
+   component	= "mod_irc2user";
+   data_en	= "You are service %p0";
+   data_tr	= "癬^^u an %p0 servissiniz";
 };
 
 tags = {
