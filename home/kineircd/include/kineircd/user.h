@@ -114,7 +114,10 @@ namespace Kine {
       //! Handy function to see if the user is a local operator
       const bool isLocalOperator(void) const
 	{ return false; };
-      
+
+      //! Is the user an operator (may be local or global)?
+      const bool isOperator(void) const
+	{ return (isGlobalOperator() || isLocalOperator()); };
       
       //! Return the away message for this user. If blank, there is none set
       const std::string& getAwayMessage(void) const
