@@ -705,7 +705,7 @@ tag = {
    fields	= "0 = # of users, 1 = # of services, 2 = # of servers";
    components	= "libkineircd_irc2";
    data_en	= "There are %p0 users and %p1 services on %p2 servers";
-   data_tr	= "ž^^u an serverin üstünde %p0 kullanici var ve %p2 "
+   data_tr	= "Şu an serverin üstünde %p0 kullanıcı var ve %p2 "
                   "server üzerinde %p1 servis var";
 };
 
@@ -734,7 +734,7 @@ tag = {
    name		= "irc2_RPL_LUSERUNKNOWN";
    components	= "libkineircd_irc2";
    data_en	= "unknown connection(s)";
-   data_tr	= "bilinmeyen baľ^_lantı";
+   data_tr	= "bilinmeyen bağlantı";
 };
 
 tag = {
