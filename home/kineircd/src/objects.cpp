@@ -4,8 +4,8 @@
 
 #include "config.h"
 
-#include "channel.h"
 #include "user.h"
+#include "channel.h"
 #include "numerics.h"
 #include "language.h"
 #include "utils.h"

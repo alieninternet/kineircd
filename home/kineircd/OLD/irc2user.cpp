@@ -1101,40 +1101,117 @@ void irc2userHandler::sendWatchOff(User *target)
 void irc2userHandler::sendWatchOn(Server *target)
 {
    getConnection()->sendRaw(String::printf(":%s %d %s %s * * 0 "
-				      LNG_RPL_LOGON_SERVER
-				      IRC2USER_EOL_CHARS,
-				      (char const *)getConnection()->getDaemon()->myServer()->hostname,
-				      RPL_LOGON,
-				      (char const *)user->nickname,
-				      (char const *)target->hostname));
+					   LNG_RPL_LOGON_SERVER
+					   IRC2USER_EOL_CHARS,
+					   (char const *)getConnection()->getDaemon()->myServer()->hostname,
+					   RPL_LOGON,
+					   (char const *)user->nickname,
+					   (char const *)target->hostname));
 }
 
 void irc2userHandler::sendWatchOn(Channel *target)
 {
    getConnection()->sendRaw(String::printf(":%s %d %s %s * * %lu "
-				      LNG_RPL_LOGON_CHANNEL
-				      IRC2USER_EOL_CHARS,
-				      (char const *)getConnection()->getDaemon()->myServer()->hostname,
-				      RPL_LOGON,
-				      (char const *)user->nickname,
-				      (char const *)target->name,
-				      target->creationTime));
+					   LNG_RPL_LOGON_CHANNEL
+					   IRC2USER_EOL_CHARS,
+					   (char const *)getConnection()->getDaemon()->myServer()->hostname,
+					   RPL_LOGON,
+					   (char const *)user->nickname,
+					   (char const *)target->name,
+					   target->creationTime));
 }
 
 void irc2userHandler::sendWatchOn(User *target, String *newNick /* = 0 */)
 {
    getConnection()->sendRaw(String::printf(":%s %d %s %s %s %s %lu "
-				      LNG_RPL_LOGON_USER
-				      IRC2USER_EOL_CHARS,
-				      (char const *)getConnection()->getDaemon()->myServer()->hostname,
-				      RPL_LOGON,
-				      (char const *)user->nickname,
-				      (newNick ?
-				       (char const *)(*newNick) :
-				       (char const *)target->nickname),
-				      (char const *)target->username,
-				      (char const *)target->getHost(user),
-				      target->lastNickChange));
+					   LNG_RPL_LOGON_USER
+					   IRC2USER_EOL_CHARS,
+					   (char const *)getConnection()->getDaemon()->myServer()->hostname,
+					   RPL_LOGON,
+					   (char const *)user->nickname,
+					   (newNick ?
+					    (char const *)(*newNick) :
+					    (char const *)target->nickname),
+					   (char const *)target->username,
+					   (char const *)target->getHost(user),
+					   target->lastNickChange));
+}
+
+
+/* doNAMES - Process and reply to a NAMES command
+ * Original 15/08/01, Simon Butcher <pickle@austnet.org>
+ */
+void irc2userHandler::doNAMES(String &param)
+{
+#ifdef DO_MATCH_COUNTING
+   int matches = 0;
+#endif
+   
+   // Grab the channels list
+   StringTokens channels(param);
+   
+   for (String chan = channels.nextToken(','); chan.length(); 
+	chan = channels.nextToken(',')) {
+      Channel *c = getConnection()->getDaemon()->getChannel(&chan);
+      
+      // Make sure we got a channel, otherwise we just ignore it
+      if (c) {
+#ifdef DO_MATCH_COUNTING
+	 // Increase the match counter
+	 matches++;
+#endif
+	 
+	 String reply = "";
+
+	 for (Channel::member_map_t::iterator it = c->members.begin();
+	      it != c->members.end(); it++) {
+	    // Do we need to write a new prefix?
+	    if (!reply.length()) {
+	       reply = String(((c->modes & CHANMODE_PRIVATE) ?
+			       "*" :
+			       ((c->modes & CHANMODE_SECRET) ?
+				"@" : "="))) + " " + c->name + " :";
+	    }
+	    
+	    reply = reply +
+	      (((*it).second->modes & CHANMEMMODE_OPPED) ?
+	       "@" : 
+	       (((*it).second->modes & CHANMEMMODE_HALFOPPED) ?
+		"%" : 
+		(((*it).second->modes & CHANMEMMODE_VOICED) ?
+		 "+" : ""))) +
+	      (*it).second->user->nickname + " ";
+	    
+	    // Check if we are close to breaking a limit here
+	    if (reply.length() > 400) {
+	       sendNumeric(RPL_NAMREPLY, reply);
+	       
+	       // reset the reply
+	       reply = "";
+	    }
+	 }
+	 
+	 sendNumeric(RPL_NAMREPLY, reply);
+      }
+   }
+   
+   // Send end of names list
+#ifdef DO_MATCH_COUNTING
+   sendNumeric(RPL_ENDOFNAMES,
+	       ((matches > 0) ?
+		((matches == 1) ?
+		 String::printf(LNG_RPL_ENDOFNAMES,
+				(char const *)param) :
+		 String::printf(LNG_RPL_ENDOFNAMES_MATCHES,
+				(char const *)param,
+				matches)) :
+		String::printf(LNG_RPL_ENDOFNAMES_NOMATCH,
+			       (char const *)param)));
+#else
+   sendNumeric(RPL_ENDOFNAMES,
+	       String::printf(LNG_RPL_ENDOFNAMES,
+			      (char const *)param));
+#endif
 }
 
 
@@ -1659,8 +1736,8 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 					     c->topicTime));
       }
       
-      // Send the names of the ppl in this channel
-      doNAMES(handler, handler->user, &c->name);
+      // Send the names of the ppl in this channel.
+      handler->doNAMES(c->name);
    }
 }
 
@@ -2124,7 +2201,7 @@ void irc2userHandler::parseMOTD(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseNAMES
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original 15/08/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::parseNAMES(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -2134,32 +2211,10 @@ void irc2userHandler::parseNAMES(irc2userHandler *handler, StringTokens *tokens)
 			   "NAMES" LNG_ERR_NEEDMOREPARAMS);
       return;
    }
-
-   String request = tokens->nextToken();
-   String server = tokens->nextToken();
    
-   // Server not specified, or it is us?
-   if (!server.length()) {
-      doNAMES(handler, handler->user, &request);
-   } else {
-      StringMask serverMask(server);
-      Server *s = TO_DAEMON->getServer(&serverMask);
-      
-      // Check
-      if (!s) {
-	 handler->sendNumeric(ERR_NOSUCHSERVER,
-			      server + LNG_ERR_NOSUCHSERVER);
-	 return;
-      }
-   
-      // Is this US??
-      if (s == TO_DAEMON->myServer()) {
-	 doNAMES(handler, handler->user, &request);
-	 return;
-      }
-   
-      // poll server
-   }
+   // Call our helper to do the dirty work..
+   String param = tokens->nextToken();
+   handler->doNAMES(param);
 }
 
 
@@ -3593,34 +3648,97 @@ void irc2userHandler::parseWHOIS(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseWHOWAS
- * Original 27/08/01, Simon Butcher <pickle@austnet.org>
+ * Original 09/10/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::parseWHOWAS(irc2userHandler *handler, StringTokens *tokens)
 {
-   String nicks = tokens->nextToken();
-   String count = tokens->nextToken();
-   String server = tokens->nextToken();
+#ifdef DO_MATCH_COUNTING
+   int matches = 0;
+#endif
    
-   // Server not specified, or it is us?
-   if (!server.length()) {
-      doWHOWAS(handler, handler->user, &nicks, &count);
-   } else {
-      StringMask serverMask(server);
-      Server *s = TO_DAEMON->getServer(&serverMask);
-      
-      // Check
-      if (!s) {
-	 handler->sendNumeric(ERR_NOSUCHSERVER,
-			      server + LNG_ERR_NOSUCHSERVER);
-	 return;
-      }
-   
-      // Is this US??
-      if (s == TO_DAEMON->myServer()) {
-	 doWHOWAS(handler, handler->user, &nicks, &count);
-	 return;
-      }
-   
-      // poll server
+   // Check we have at least one parameter
+   if (tokens->countTokens() < 2) {
+      handler->sendNumeric(ERR_NEEDMOREPARAMS,
+			   "WHOWAS" LNG_ERR_NEEDMOREPARAMS);
+      return;
    }
+   
+   // Grab the variables we need
+   String param = tokens->nextToken();
+   StringTokens nicks(param);
+   String countStr = tokens->nextToken();
+   int count = -1;
+   
+   // Check if we ARE counting or not
+   if (countStr.length()) {
+      // Try to convert the string to an integer
+      count = countStr.toInt();
+      
+      // Check it is valid
+      if (count <= 0) {
+	 // Reset it
+	 count = -1;
+      }
+   }
+   
+   // Run through the given nicks that are requested to be matched up
+   for (String nick = nicks.nextToken(','); nick.length();
+	nick = nicks.nextToken(',')) {
+      // Fix the nick..
+      nick = nick.IRCtoLower();
+      
+      // Run through the whowas list
+      for (Daemon::whowas_deque_t::iterator it = TO_DAEMON->whowas.begin();
+	   it != TO_DAEMON->whowas.end(); it++) {
+	 // Check for a match
+	 if ((*it).getNickname().IRCtoLower() == nick) {
+	    // Check the counter
+	    if (count-- == 0) {
+	       break;
+	    }
+      
+#ifdef DO_MATCH_COUNTING
+	    // Increase the match counter
+	    matches++;
+#endif
+   
+	    // Send the entry for this iteration
+	    handler->sendNumeric(RPL_WHOWASUSER,
+				 String::printf("%s %s %s * :%s",
+						(const char *)(*it).getNickname(),
+						(const char *)(*it).getUsername(),
+						(const char *)(*it).getHostname(handler->user),
+						(const char *)(*it).getRealname()));
+	    handler->sendNumeric(RPL_WHOISSERVER,
+				 String::printf("%s %s :%lu",
+						(const char *)(*it).getNickname(),
+						(const char *)(*it).getServer(handler->user),
+						(*it).getSignoffTime()));
+	    // If this user was away, send their old away message too (sigh)
+	    if ((*it).hasAwayMessage()) {
+	       handler->sendNumeric(RPL_AWAY,
+				    String::printf(":%s",
+						   (const char *)(*it).getAwayMessage()));
+	    }
+	 }
+      }
+   }
+   
+   // Send end of whowas list
+#ifdef DO_MATCH_COUNTING
+   handler->sendNumeric(RPL_ENDOFWHOWAS,
+			((matches > 0) ?
+			 ((matches == 1) ?
+			  String::printf(LNG_RPL_ENDOFWHOWAS,
+					 (char const *)param) :
+			  String::printf(LNG_RPL_ENDOFWHOWAS_MATCHES,
+					 (char const *)param,
+					 matches)) :
+			 String::printf(LNG_RPL_ENDOFWHOWAS_NOMATCH,
+					(char const *)param)));
+#else
+   handler->sendNumeric(RPL_ENDOFWHOWAS,
+			String::printf(LNG_RPL_ENDOFWHOWAS,
+				       (char const *)param));
+#endif
 }

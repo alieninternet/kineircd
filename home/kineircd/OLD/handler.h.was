@@ -100,12 +100,10 @@ class Handler {
    static void doLINKS(Handler *, User *, String *);
    static void doLUSERS(Handler *, User *, String *);
    static void doMOTD(Handler *, User *);
-   static void doNAMES(Handler *, User *, String *);
    static void doSTATS(Handler *, User *, String *);
    static void doTIME(Handler *, User *);
    static void doVERSION(Handler *, User *);
    static void doWHOIS(Handler *, User *, String *);
-   static void doWHOWAS(Handler *, User *, String *, String *);
 };
 
 
@@ -133,6 +131,9 @@ class irc2userHandler : public Handler {
    void sendPong(String);			// PING reply
    void sendWhoReply(User *, Channel *,
 		     ChannelMember *);		// WHO reply
+
+   // Helpers
+   void doNAMES(String &);			// Do a NAMES request
    
    // Protocol input
    static void parseACCEPT(irc2userHandler *handler, StringTokens *tokens);
@@ -270,7 +271,6 @@ class p13serverHandler : public Handler {
    static void parseM(p13serverHandler *handler, String *origin, StringTokens *tokens);
    static void parseMOTD(p13serverHandler *handler, String *origin, StringTokens *tokens);
    static void parseN(p13serverHandler *handler, String *origin, StringTokens *tokens);
-   static void parseNAMES(p13serverHandler *handler, String *origin, StringTokens *tokens);
    static void parseNO(p13serverHandler *handler, String *origin, StringTokens *tokens);
    static void parseP(p13serverHandler *handler, String *origin, StringTokens *tokens);
    static void parsePING(p13serverHandler *handler, String *origin, StringTokens *tokens);

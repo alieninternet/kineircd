@@ -5,6 +5,7 @@
 #include "config.h"
 
 #include "handler.h"
+#include "language.h"
 
 // Functions table (from P14_Notes)
 p14serverHandler::functionTableStruct p14serverHandler::functionsTable[] = {
@@ -29,7 +30,6 @@ p14serverHandler::functionTableStruct p14serverHandler::functionsTable[] = {
      { 'M',	0 },			// PRIVMSG (to user)
      { 'n',	0 },			// NICK (change)
      { 'N',	0 },			// NICK (assignment)
-     { 'o',	0 },			// NAMES (remote)
      { 'O',	0 },			// MOTD (remote)
      { 'p',	0 },			// PONG
      { 'P',	0 },			// PING
@@ -57,7 +57,7 @@ p14serverHandler::functionTableStruct p14serverHandler::functionsTable[] = {
 /* p14serverHandler - Constructor for the server handler (P14) sub-class
  * Original 07/10/01, Simon Butcher <pickle@austnet.org>
  */
-p14serverHandler::p14serverHandler(Connection *c, Server *s);
+p14serverHandler::p14serverHandler(Connection *c, Server *s)
 : Handler(c),
   server(s)
 {

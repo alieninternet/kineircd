@@ -102,16 +102,6 @@
 //# define WARN_UNKNOWN_COMMANDS_IN_REGISTRATION
 
 
-/* This define is only valid if you have servers that are 'hidden'. Some
- * commands REQUIRE the server field to be in there, so hiding the server
- * becomes a little trickier in those cases. This define follows protocol
- * sense, but if it is not defined just "*" will be used, which is acceptable
- * in the modern sense. If you are using 'hidden' servers, it is highly
- * recommended this is set to something.
- */
-#define SERVER_NAME_MASK		"*.austnet.org"
-
-
 /* Define this to limit the number of lines allowed during a /WHO output.
  * This stops unfriendly people doing /who * and listing everyone possible.
  * This limit does not effect IRC Operators since they are supposed to know
@@ -365,6 +355,12 @@
 /* Defaults :) Change at will, but be careful. */
 # define DEFAULT_CONFIG_SERVER_DESCRIPTION	"Mystery unconfigured server"
 # define DEFAULT_CONFIG_SERVER_MAX_TTL		64 // 64 is the maximum
+# define DEFAULT_CONFIG_WHOWAS_DECAY		3600 // 10 minutes
+# define DEFAULT_CONFIG_WHOWAS_MAX_ENTRIES	50
+# define DEFAULT_CONFIG_ADMIN_NAME		""
+# define DEFAULT_CONFIG_ADMIN_EMAIL		""
+# define DEFAULT_CONFIG_ADMIN_LOCATION		""
+
 
 /* This define changes how operator password SHA1 hashes are generated.
  * Change if you like, but remember if you modify it your existing passwords

@@ -195,77 +195,6 @@ void Handler::doMOTD(Handler *handler, User *from)
 }
 
 
-/* doNAMES
- * Original 15/08/01, Simon Butcher <pickle@austnet.org>
- */
-void Handler::doNAMES(Handler *handler, User *from, String *request)
-{
-#ifdef DO_MATCH_COUNTING
-   int matches = 0;
-#endif
-   
-   StringTokens channels(*request);
-   
-   for (String chan = channels.nextToken(','); chan.length(); 
-	chan = channels.nextToken(',')) {
-      Channel *c = TO_DAEMON->getChannel(&chan);
-      
-      // Make sure we got a channel, otherwise we just ignore it
-      if (c) {
-	 String reply = "";
-
-	 for (Channel::member_map_t::iterator it = c->members.begin();
-	      it != c->members.end(); it++) {
-	    // Do we need to write a new prefix?
-	    if (!reply.length()) {
-	       reply = String(((c->modes & CHANMODE_PRIVATE) ?
-			       "*" :
-			       ((c->modes & CHANMODE_SECRET) ?
-				"@" : "="))) + " " + c->name + " :";
-	    }
-	    
-	    reply = reply +
-	      (((*it).second->modes & CHANMEMMODE_OPPED) ?
-	       "@" : 
-	       (((*it).second->modes & CHANMEMMODE_HALFOPPED) ?
-		"%" : 
-		(((*it).second->modes & CHANMEMMODE_VOICED) ?
-		 "+" : ""))) +
-	      (*it).second->user->nickname + " ";
-	    
-	    // Check if we are close to breaking a limit here
-	    if (reply.length() > 400) {
-	       handler->sendNumeric(TO_DAEMON->server, RPL_NAMREPLY, 0, reply);
-	       
-	       // reset the reply
-	       reply = "";
-	    }
-	 }
-
-	 handler->sendNumeric(TO_DAEMON->server, RPL_NAMREPLY, 0, reply);
-      }
-      
-      // Send end of names list
-#ifdef DO_MATCH_COUNTING
-      handler->sendNumeric(TO_DAEMON->server, RPL_ENDOFNAMES, 0,
-			   ((matches > 0) ?
-			    ((matches == 1) ?
-			     String::printf(LNG_RPL_ENDOFNAMES,
-					    (char const *)chan) :
-			     String::printf(LNG_RPL_ENDOFNAMES_MATCHES,
-					    (char const *)chan,
-					    matches)) :
-			    String::printf(LNG_RPL_ENDOFNAMES_NOMATCH,
-					   (char const *)chan)));
-#else
-      handler->sendNumeric(TO_DAEMON->server, RPL_ENDOFNAMES, 0,
-			   String::printf(LNG_RPL_ENDOFNAMES,
-					  (char const *)chan));
-#endif
-   }
-}
-
-
 #define STATS_REPLY(name)	void name(Handler *handler, User *from)
 
 // This is in a class so it can be friends with the ircd class
@@ -655,11 +584,3 @@ void Handler::doWHOIS(Handler *handler, User *from, String *request)
 			*request + LNG_RPL_ENDOFWHOIS);
 }
 
-
-/* doWHOWAS
- * Original , Simon Butcher <pickle@austnet.org>
- */
-void Handler::doWHOWAS(Handler *handler, User *from, String *nicks,
-		       String *count)
-{
-}

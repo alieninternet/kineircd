@@ -54,13 +54,13 @@ typedef unsigned char TYPE_RPL_TIMEONSERVERIS_FLAGS;
 
 // Phew, finally onto our local header files!
 # include "user.h"
+# include "whowas.h"
 # include "connection.h"
 # include "socket.h"
 # include "server.h"
 # include "channel.h"
 # include "str.h"
 # include "operator.h"
-# include "whowas.h"
 
 
 // If we are in debugging mode, we need this routine!
@@ -186,15 +186,22 @@ class Daemon {
 			     StringTokens *);	// Process a server mode change
    
  public:
+   // Servers
    server_map_t servers;			// Servers list
-   
-   user_map_t users;				// User list
-   localuser_map_t localUsers;			// Local users list
-   whowas_deque_t whowas;			// Old users (whowas) list
-   
+
+   // Channels
    channel_map_t channels;			// Channel list
    channel_map_t localChannels;			// Local channel list (&)
 
+   // Users
+   user_map_t users;				// User list
+   localuser_map_t localUsers;			// Local users list
+
+   // WHOWAS facility for signed off users
+   whowas_deque_t whowas;			// Old users (whowas) list
+   time_t whowasDecay;				// Max 'age' of whowas entries
+   unsigned int whowasMaxEntries;		// Maximum whowas list entries
+   
    unsigned int numConns;			// Current connections number
    unsigned int numConnsPeak;			// Peak connection count
    unsigned int numClientConns;			// Current # client connections
@@ -211,7 +218,7 @@ class Daemon {
    motd_t motd;					// The cached MOTD
    
  public:
-   Daemon(String *);				// Class constructor
+   Daemon(String &);				// Class constructor
    ~Daemon(void);				// Class destructor
 
    // Do we have a network name?
@@ -277,6 +284,8 @@ class Daemon {
    void killUser(User *, String *, String *);	// Kill a user off the network
    bool addUserSilence(User *, StringMask *);	// Add/Broadcast a user silence
    bool delUserSilence(User *, StringMask *);	// Delete a user silence
+   void snapshotUser(User *, Whowas::type_t,
+		     String const &);		// Snapshot a user for WHOWAS
    
    void addChannel(Channel *);			// Add a channel to a list
    Channel *getChannel(String *);		// Find a channel

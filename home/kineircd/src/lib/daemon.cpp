@@ -22,11 +22,11 @@
 /* Daemon - Init the server
  * Original 11/08/01, Simon Butcher <pickle@austnet.org>
  */
-Daemon::Daemon(String *conf)
-: configFile(*conf),
-  adminName(""),
-  adminEmail(""),
-  adminLocation(""),
+Daemon::Daemon(String &conf)
+: configFile(conf),
+  adminName(DEFAULT_CONFIG_ADMIN_NAME),
+  adminEmail(DEFAULT_CONFIG_ADMIN_EMAIL),
+  adminLocation(DEFAULT_CONFIG_ADMIN_LOCATION),
   maxDescriptors(0),
   lastGarboRun(0),
   sentBytes(0),
@@ -37,10 +37,11 @@ Daemon::Daemon(String *conf)
   stage(INIT),
   startTime(time(NULL)),
 #ifdef HAVE_OPENSSL
-//  sslMethod(0),
   sslContext(0),
 #endif
   server(new Server()),
+  whowasDecay(DEFAULT_CONFIG_WHOWAS_DECAY),
+  whowasMaxEntries(DEFAULT_CONFIG_WHOWAS_MAX_ENTRIES),
   numConns(0),
   numConnsPeak(0),
   numClientConns(0),
@@ -225,7 +226,18 @@ Daemon::~Daemon(void)
       users.erase(users.begin());
       delete u;
    }
+
+   // .. and the local user list
+   LocalUser *lu;
+   while (!localUsers.empty()) {
+      lu = (*localUsers.begin()).second;
+      localUsers.erase(localUsers.begin());
+      delete lu;
+   }
    
+   // Clean up the whowas list
+   whowas.clear();
+
 #ifdef LOG_TO_SYSLOG
    // Kill the syslog link
    closelog();
@@ -268,10 +280,10 @@ void Daemon::logger(String line, int priority /* = LOGPRI_NOTICE */)
 
 /* garbo - Look for 'rubbish' to 'clean up' :)
  * Original 17/08/01, Simon Butcher <pickle@austnet.org>
+ * Note: the goto's are more efficient
  */
 void Daemon::garbo(bool called /* = false */ )
 {
-   bool checkagain = true;
 #ifdef MAX_GARBO_RUN_ITEMS
    int items = 0;
 #endif
@@ -279,52 +291,67 @@ void Daemon::garbo(bool called /* = false */ )
    // Mark down the garbo run time
    lastGarboRun = getTime();
    
+check_connections:
    /* Run through the connections first, they have the highest priority
     * since ppl cannot get onto the network if there aren't any descriptors
     * left, and pings also have a fairly high priority to keep control over
     * timeouts.
     */
    Connection *conn;
-   while (checkagain) {
-      checkagain = false;
-      
-      for (connection_list_t::iterator it = connections.begin();
-	   it != connections.end(); it++) {
+   for (connection_list_t::iterator it = connections.begin();
+	it != connections.end(); it++) {
 #ifdef MAX_GARBO_RUN_ITEMS
-	 // One loop is worth an 'item'; check the items count
-	 if (called && 
-	     (items > MAX_GARBO_RUN_ITEMS)) {
-	    return;
-	 }
-#endif
-	 
-	 // Check the status flag and delete if this connection is dead
-	 if ((!((*it)->status & CONFLAG_CONNECTED) &&
-	      (*it)->outQueue.empty()) || 
-	     (!(*it)->socket->isConnected())) {
-#ifdef MAX_GARBO_RUN_ITEMS
-	    items++;
-#endif
-	    
-	    // Rip it out and delete it
-	    conn = *it;
-	    connections.erase(it);
-	    delete conn;
-	    
-	    // The sequence is broken, we need to start again
-	    checkagain = true;
-	    break;
-	 }
-	 
-	 // Are we waiting for a ping to be replied to on this connection?
-	 if ((*it)->status & CONFLAG_PING_SENT) {
-	    // Check if the ping time-out has been reached
-	    
-	 } else {
-	    // Check if it is time to send a ping out
-	    
-	 }
+      // One loop is worth an 'item'; check the items count
+      if (called && 
+	  (items > MAX_GARBO_RUN_ITEMS)) {
+	 return;
       }
+#endif
+      
+      // Check the status flag and delete if this connection is dead
+      if ((!((*it)->status & CONFLAG_CONNECTED) &&
+	   (*it)->outQueue.empty()) || 
+	  (!(*it)->socket->isConnected())) {
+#ifdef MAX_GARBO_RUN_ITEMS
+	 items++;
+#endif
+	 
+	 // Rip it out and delete it
+	 conn = *it;
+	 connections.erase(it);
+	 delete conn;
+	 
+	 // The sequence is broken, we need to start again
+	 goto check_connections;
+      }
+      
+      // Are we waiting for a ping to be replied to on this connection?
+      if ((*it)->status & CONFLAG_PING_SENT) {
+	 // Check if the ping time-out has been reached
+	    
+      } else {
+	 // Check if it is time to send a ping out
+	    
+      }
+   }
+
+   // Low priority, check the whowas list for old items to 'retire'
+   Whowas *ww;
+   while (!whowas.empty()) {
+      ww = &whowas.front();
+
+      // Check the timestamp on this item
+      if ((getTime() - ww->getSignoffTime()) < whowasDecay) {
+	 /* If we got here, the rest of the queue will also be young enough
+	  * to keep within the list, so we can safely skip the rest of the
+	  * list (remember: it IS a queue)
+	  */
+	 break;
+      }
+      
+      // Otherwise, delete it
+      whowas.pop_front();
+      delete ww;
    }
    
    /* If we are being called, return a message saying we were called and how
@@ -979,6 +1006,20 @@ bool Daemon::delUserSilence(User *user, StringMask *mask)
    }
 
    return false;
+}
+
+
+/* snapshotUser - Take a 'snapshot' of a user for the whowas list
+ * Original 08/10/01, Simon Butcher <pickle@austnet.org>
+ */
+void Daemon::snapshotUser(User *u, Whowas::type_t type, String const &details)
+{
+   // Check the length of the whowas list, we may need to kill the oldest entry
+   if (whowas.size() >= whowasMaxEntries) {
+      whowas.pop_front();
+   }
+   
+   // Ok, add this entry!
 }
 
 

@@ -218,6 +218,13 @@
 # define LNG_RPL_ENDOFSTATS \
 	" :End of STATS report"
 
+# define LNG_RPL_ENDOFWHOWAS \
+	"%s :End of WHOWAS"
+# define LNG_RPL_ENDOFWHOWAS_NOMATCH \
+	"%s :End of WHOWAS (no match, or matches have expired)"
+# define LNG_RPL_ENDOFWHOWAS_MATCHES \
+	"%s :End of WHOWAS (%d matches)"
+
 # define LNG_RPL_VERSION \
 	"%s %s :%s (Type /INFO for more details)"
 
