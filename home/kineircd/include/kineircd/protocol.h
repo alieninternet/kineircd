@@ -61,11 +61,11 @@ namespace Kine {
       virtual void handleInput(std::stringstream& data) = 0;
       
       // Remove up to the amount of octets given from the output queue
-      virtual std::string 
-	withdrawOutput(AIS::Util::Socket::blockSize_type amount) = 0;
+      virtual const std::string 
+	withdrawOutput(const AIS::Util::Socket::blockSize_type amount) = 0;
       
       // Return true should there be anything in the output queue to send
-      virtual bool moreOutput(void) const = 0;
+      virtual const bool moreOutput(void) const = 0;
       
       
       //! Return the number of messages sent through this protocol
@@ -85,6 +85,6 @@ namespace Kine {
 	{ return 0; };
    };
 };
-   
+
 #endif // _INCLUDE_KINEIRCD_PROTOCOL_H_
-   
+

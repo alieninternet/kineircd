@@ -78,10 +78,11 @@ namespace Kine {
 	 
        public:
 	 //! Remove up to the amount of octets given from the output queue
-	 std::string withdrawOutput(AIS::Util::Socket::blockSize_type amount);
+	 const std::string
+	   withdrawOutput(const AIS::Util::Socket::blockSize_type amount);
 	 
 	 //! Return true should there be anything in the output queue to send
-	 bool moreOutput(void) const
+	 const bool moreOutput(void) const
 	   { return (!outputQueue.empty()); };
 	 
        protected:
