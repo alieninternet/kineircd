@@ -59,6 +59,7 @@ namespace {
       MOD_IRC2USER_VERSION_MINOR,
       MOD_IRC2USER_VERSION_PATCHLEVEL,
       MOD_IRC2USER_VERSION_EXTRA,
+      0,
 
       // Flags to define how we need to be run
       Kine::Module::basicInfo_type::Flags::UNIQUE_INSTANCE,

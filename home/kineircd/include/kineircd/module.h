@@ -55,6 +55,9 @@ namespace Kine {
 namespace Kine {
    class Module {
     public:
+      // Type definition for the version information array
+      typedef const char* const (versionInfo_type)[];
+      
       // The functions all modules are required to have - start and stop
       typedef KINE_MODULE_START(startFunction_type);
       typedef KINE_MODULE_STOP(stopFunction_type);
@@ -72,13 +75,22 @@ namespace Kine {
 	  *  <versionExtra>
 	  * Eg. FooMod-1.2.3b
 	  */
-	 const char* nameShort;
-	 const char* nameLong;
-	 const char* copyright;
+	 const char* const nameShort;
+	 const char* const nameLong;
+	 const char* const copyright;
 	 const unsigned char versionMajor;
 	 const unsigned char versionMinor;
 	 const unsigned short versionPatchLevel;
-	 const char* versionExtra;
+	 const char* const versionExtra;
+
+	 /* This is a zero-terminated array of lines to be appended to the
+	  * list for /INFO. Lines must be 60 visible characters or shorter.
+	  * That also means formatting characters (\002 etc) do not count in
+	  * that total :) Do not use \a, \b, \t, \n, \v, \f, or \r, and make
+	  * sure characters are in UTF-8. If there is no information you want
+	  * listed, simply set this pointer to 0.
+	  */
+	 const versionInfo_type* const versionInfo;
 
 	 // Flags to determine how this module needs to be configured
 	 struct Flags { // <=- should be namespace?
@@ -90,14 +102,14 @@ namespace Kine {
 	 const int flags;
 
 	 // Configuration info (optional, set to 0 if you don't want it)
-	 const AISutil::ConfigParser::defTable_type* configDefinitions;
+	 const AISutil::ConfigParser::defTable_type* const configDefinitions;
 	 
 	 // The two required functions - start and stop
 	 const startFunction_type* const startFunction;
 	 const stopFunction_type* const stopFunction;
 	 
 	 // Padding, for future use (ignore this, or fill it with 0's)
-	 char _padding[28];
+	 char _padding[24];
 	 
 	 // This little function checks if the stuff above is valid
 	 const bool isOkay(void) const {
@@ -136,7 +148,7 @@ namespace Kine {
       AISutil::String getVersionString(void) const;
       
       // Return a name worthy enough to be used as a key in a map
-      const char* getKeyName(void) const
+      const char* const getKeyName(void) const
 	{ return basicInfo.nameShort; };
    };
 };

@@ -73,6 +73,17 @@ ModuleDescriptor *ModuleList::loadModule(const String &moduleFile,
 	 moduleDesc->getModule()->getVersionString() + 
 	 " to the module list (" + String::convert(modules.size()) +
 	 " modules currently loaded)");
+   
+   // If the module has the versionInfo variable, output that stuff too :)
+   if (moduleDesc->getModule()->getBasicInfo().versionInfo != 0) {
+      debug("ModuleList::loadModule() - Module has versionInfo list:");
+      for (int i = 0;
+	   (*moduleDesc->getModule()->getBasicInfo().versionInfo)[i] != 0;
+	   i++) {
+	 debug(String("     -=> ") + 
+	       (*moduleDesc->getModule()->getBasicInfo().versionInfo)[i]);
+      }
+   }
 #endif
    
    // Smile, it all worked out okay
