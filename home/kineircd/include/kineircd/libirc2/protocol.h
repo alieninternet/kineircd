@@ -91,28 +91,21 @@ namespace Kine {
 	   };
 	 
        public:
-	 // Destructor
+	 //! Destructor
 	 virtual ~Protocol(void)
 	   {};
 	 
 	 
-	 // Return the number of messages sent through this protocol
+	 //! Return the number of messages sent through this protocol
 	 const messageCount_type getSentMessageCount(void) const
 	   { return sentMessageCount; };
 	 
-	 // Return the number of messages received through this protocol
+	 //! Return the number of messages received through this protocol
 	 const messageCount_type getReceivedMessageCount(void) const
 	   { return receivedMessageCount; };
 
-	 
-	 // Send an appropriately formatted message, without TO/FROM fields
-	 template <class Tc>
-	   void sendRawMessage(const Tc& command)
-	   {
-	      std::ostringstream output;
-	      output << command << lineTerminator;
-	      sendRawLine(output.str());
-	   };
+
+	 //! Send an appropriately formatted message with raw data (no TO/FROM)
 	 template <class Tc, class Tp>
 	   void sendRawMessage(const Tc& command, const Tp& parameters)
 	   {
@@ -122,7 +115,121 @@ namespace Kine {
 	   };
 
 	 
-	 // Send a properly formatted message with FROM field
+	 //! Send an appropriately formatted message, without TO/FROM fields
+	 template <class Tc>
+	   void sendMessage(const Tc& command)
+	   {
+	      std::ostringstream output;
+	      output << command << lineTerminator;
+	      sendRawLine(output.str());
+	   };
+	 template <class Tc,
+	           class Tpa>
+	   void sendMessage(const Tc& command,
+			    const Tpa& pa)
+	   {
+	      std::ostringstream output;
+	      output << command << " :" << pa << lineTerminator;
+	      sendRawLine(output.str());
+	   };
+	 template <class Tc,
+	           class Tpa, class Tpb>
+	   void sendMessage(const Tc& command,
+			    const Tpa& pa, const Tpb& pb)
+	   {
+	      std::ostringstream output;
+	      output << command << ' ' << pa << " :" << pb << lineTerminator;
+	      sendRawLine(output.str());
+	   };
+	 template <class Tc,
+	           class Tpa, class Tpb, class Tpc>
+	   void sendMessage(const Tc& command,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc)
+	   {
+	      std::ostringstream output;
+	      output << command << ' ' << pa << ' ' << pb << " :" << pc <<
+		lineTerminator;
+	      sendRawLine(output.str());
+	   };
+	 template <class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd>
+	   void sendMessage(const Tc& command,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			    const Tpd& pd)
+	   {
+	      std::ostringstream output;
+	      output << command << ' ' << pa << ' ' << pb << ' ' << pc <<
+		" :" << pd << lineTerminator;
+	      sendRawLine(output.str());
+	   };
+	 template <class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe>
+	   void sendMessage(const Tc& command,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			    const Tpd& pd, const Tpe& pe)
+	   {
+	      std::ostringstream output;
+	      output << command << ' ' << pa << ' ' << pb << ' ' << pc <<
+		' ' << pd << " :" << pe << lineTerminator;
+	      sendRawLine(output.str());
+	   };
+	 template <class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
+	           class Tpf>
+	   void sendMessage(const Tc& command,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			    const Tpd& pd, const Tpe& pe, const Tpf& pf)
+	   {
+	      std::ostringstream output;
+	      output << command << ' ' << pa << ' ' << pb << ' ' << pc <<
+		' ' << pd << ' ' << pe << " :" << pf << lineTerminator;
+	      sendRawLine(output.str());
+	   };
+	 template <class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
+	           class Tpf, class Tpg>
+	   void sendMessage(const Tc& command,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			    const Tpd& pd, const Tpe& pe, const Tpf& pf,
+			    const Tpg& pg)
+	   {
+	      std::ostringstream output;
+	      output << command << ' ' << pa << ' ' << pb << ' ' << pc <<
+		' ' << pd << ' ' << pe << ' ' << pf << " :" << pg <<
+		lineTerminator;
+	      sendRawLine(output.str());
+	   };
+	 template <class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
+	           class Tpf, class Tpg, class Tph>
+	   void sendMessage(const Tc& command,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			    const Tpd& pd, const Tpe& pe, const Tpf& pf,
+			    const Tpg& pg, const Tph& ph)
+	   {
+	      std::ostringstream output;
+	      output << command << ' ' << pa << ' ' << pb << ' ' << pc <<
+		' ' << pd << ' ' << pe << ' ' << pf << ' ' << pg <<
+		" :" << ph << lineTerminator;
+	      sendRawLine(output.str());
+	   };
+	 template <class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
+	           class Tpf, class Tpg, class Tph, class Tpi>
+	   void sendMessage(const Tc& command,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			    const Tpd& pd, const Tpe& pe, const Tpf& pf,
+			    const Tpg& pg, const Tph& ph, const Tpi& pi)
+	   {
+	      std::ostringstream output;
+	      output << command << ' ' << pa << ' ' << pb << ' ' << pc <<
+		' ' << pd << ' ' << pe << ' ' << pf << ' ' << pg <<
+		' ' << ph << " :" << pi << lineTerminator;
+	      sendRawLine(output.str());
+	   };
+	 
+	 
+	 //! Send a properly formatted message with FROM field
 	 template <class To, class Tc>
 	   void sendMessageFrom(const To& origin, const Tc& command)
 	     {
@@ -241,7 +348,7 @@ namespace Kine {
 	     };
 
 	 
-	 // Send a message from a particular client
+	 //! Send a message from a particular client
 	 template <class Tc>
 	   void sendMessageFrom(const Client& client, const Tc& command)
 	     {
@@ -327,7 +434,7 @@ namespace Kine {
 	     };
 
 	 
-	 // Send a numeric
+	 //! Send a numeric
 	 void sendNumeric(const Client& destination,
 			  const Numerics::numeric_type numeric)
 	   {
@@ -465,11 +572,11 @@ namespace Kine {
 	     };
 
 
-	 // Send RPL_TIMEONSERVERIS to the given client
+	 //! Send RPL_TIMEONSERVERIS to the given client
 	 void sendTimeOnServer(const User& user);
 	 
 	 
-	 // Handle the various commands which are quite common in IRC-2 modules
+	 //! Handle the various commands which are quite common in IRC-2 modules
 	 void doADMIN(const User& user);
 	 void doINFO(const User& user);
 	 void doLUSERS(const User& user);

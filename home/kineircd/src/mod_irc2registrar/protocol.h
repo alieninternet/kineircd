@@ -93,7 +93,7 @@ namespace Kine {
 	 // Send an error message and disconnect
 	 void sendError(const std::string& error)
 	   {
-	      sendRawMessage("ERROR", ':' + error);
+	      sendMessage("ERROR", error);
 	      connection.goodbye();
 	   };
 	 
