@@ -43,6 +43,7 @@ extern "C" {
 }
 
 #include "kineircd/daemon.h"
+#include "kineircd/config.h"
 #include "kineircd/version.h"
 #include "debug.h"
 #include "registrar.h"
@@ -54,9 +55,8 @@ using AISutil::String;
 /* Daemon - Init the server
  * Original 11/08/2001 simonb
  */
-Daemon::Daemon(Config& conf)
+Daemon::Daemon(void)
   : runlevel(RUNLEVEL_INIT),
-    config(conf),
     startTime(time(NULL)),
     sentBytes(0),
     receivedBytes(0)
@@ -73,10 +73,10 @@ Daemon::Daemon(Config& conf)
    srand(getTime().tv_sec);
    
    // Fire-up the modules we have loaded!
-   config.getModuleList().startAll(*this);
+   config().getModuleList().startAll(*this);
 
    // Start listening on all listeners.
-   config.getListenerList().startAll();
+   config().getListenerList().startAll();
 
    // We are ready to go, go into normal running runlevel
    runlevel = RUNLEVEL_NORMAL;
@@ -310,8 +310,8 @@ Exit::status_type Daemon::run(void)
 
    // Add the listeners to the file descriptor lists
    for (ListenerList::listeners_type::const_iterator it = 
-	config.getListenerList().getList().begin(); 
-	it != config.getListenerList().getList().end(); it++) {
+	config().getListenerList().getList().begin(); 
+	it != config().getListenerList().getList().end(); it++) {
       FD_SET((*it)->getFD(), &inFDSET);
       if ((*it)->getFD() >= maxDescriptors) {
 	 maxDescriptors = (*it)->getFD() + 1;
@@ -347,8 +347,8 @@ Exit::status_type Daemon::run(void)
 	 if (runlevel >= RUNLEVEL_NORMAL) {
 	    // Check for a new connection: Run through the listeners
 	    for (ListenerList::listeners_type::const_iterator it = 
-		 config.getListenerList().getList().begin(); 
-		 it != config.getListenerList().getList().end(); it++) {
+		 config().getListenerList().getList().begin(); 
+		 it != config().getListenerList().getList().end(); it++) {
 	       // Check if there is a new connection we should be aware of
 	       if (FD_ISSET((*it)->getFD(), &inFDtemp)) {
 		  newConnection(*(*it));

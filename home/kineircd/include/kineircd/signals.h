@@ -113,7 +113,7 @@ namespace Kine {
 //      void removeHandler(const handlerInfo &handler)
 //	{ handlers.remove(&handler); };
    };
-   
+
    
    // Lazy reference function :)
    inline static Signals& signals(void)

@@ -610,93 +610,6 @@ namespace Config {
 };
 
 
-/* Config - Configuration class constructor (mainly to load defaults if any)
- * Original 11/04/2002 simonb
- */
-Kine::Config::Config(const String &f)
-  : parser(*this, &Config::topDefs, f),
-
-    // "ADMIN" class
-    defAdminEmail(DEFAULT_ADMIN_EMAIL),
-    defAdminLocation(DEFAULT_ADMIN_LOCATION),
-    defAdminName(DEFAULT_ADMIN_NAME),
-
-    // "NETWORK" class
-    defNetworkName(DEFAULT_NETWORK_NAME),
-
-    // "OPTIONS" class
-    defOptionsDescription(DEFAULT_OPTIONS_DESCRIPTION),
-    defOptionsHidden(DEFAULT_OPTIONS_HIDDEN),
-    defOptionsPidFile(DEFAULT_OPTIONS_PID_FILE),
-    defOptionsServerName(DEFAULT_OPTIONS_SERVER_NAME),
-
-    // "OPTIONS.LIMITS" class
-    defOptionsLimitsMaxKickReasonLength(DEFAULT_OPTIONS_LIMITS_MAX_KICK_REASON_LENGTH),
-    defOptionsLimitsMaxMessageLength(DEFAULT_OPTIONS_LIMITS_MAX_MESSAGE_LENGTH),
-    defOptionsLimitsMaxTargets(DEFAULT_OPTIONS_LIMITS_MAX_TARGETS),
-    defOptionsLimitsMinBroadcastLength(DEFAULT_OPTIONS_LIMITS_MIN_BROADCAST_LENGTH),
-
-    // "OPTIONS.LIMITS.CHANNELS" class
-    defOptionsLimitsChannelsMaxBans(DEFAULT_OPTIONS_LIMITS_CHANNELS_MAX_BANS),
-    defOptionsLimitsChannelsMaxBanExceptions(DEFAULT_OPTIONS_LIMITS_CHANNELS_MAX_BAN_EXCEPTIONS),
-    defOptionsLimitsChannelsMaxInviteExceptions(DEFAULT_OPTIONS_LIMITS_CHANNELS_MAX_INVITE_EXCEPTIONS),
-    defOptionsLimitsChannelsMaxNameLength(DEFAULT_OPTIONS_LIMITS_CHANNELS_MAX_NAME_LENGTH),
-    defOptionsLimitsChannelsMaxTopicLength(DEFAULT_OPTIONS_LIMITS_CHANNELS_MAX_TOPIC_LENGTH),
-
-    // "OPTIONS.LIMITS.USERS" class
-    defOptionsLimitsUsersMaxAccepts(DEFAULT_OPTIONS_LIMITS_USERS_MAX_ACCEPTS),
-    defOptionsLimitsUsersMaxChannels(DEFAULT_OPTIONS_LIMITS_USERS_MAX_CHANNELS),
-    defOptionsLimitsUsersMaxLanguages(DEFAULT_OPTIONS_LIMITS_USERS_MAX_LANGUAGES),
-    defOptionsLimitsUsersMaxNickNameLength(DEFAULT_OPTIONS_LIMITS_USERS_MAX_NICK_NAME_LENGTH),
-    defOptionsLimitsUsersMaxRealNameLength(DEFAULT_OPTIONS_LIMITS_USERS_MAX_REAL_NAME_LENGTH),
-    defOptionsLimitsUsersMaxSilences(DEFAULT_OPTIONS_LIMITS_USERS_MAX_SILENCES),
-    defOptionsLimitsUsersMaxWatches(DEFAULT_OPTIONS_LIMITS_USERS_MAX_WATCHES),
-
-    // "OPTIONS.REGISTRAR" class
-    defOptionsRegistrarClientPingProbeCount(DEFAULT_OPTIONS_REGISTRAR_CLIENT_PING_PROBE_COUNT)
-  
-#ifdef KINE_WITH_SSL
-  , // <=- here to continue the list properly
-    // "SSL" class
-    defSSLContext(0)
-#endif
-{
-#ifdef KINE_WITH_SSL
-   // Fire up the SSL component
-   SSL_load_error_strings();
-   
-   if (SSL_library_init()) {
-      //
-      // SEED PRNG HERE IF THE OPENSSL LIBRARY WONT!!! :( :( :(
-      //
-      
-      /*
-       * Fire up the context using SSLv2 and SSLv3 methods.
-       * I think this should be configurable, but at this point I don't care!
-       * :(
-       */
-      defSSLContext = SSL_CTX_new(SSLv23_method());
-   }
-#endif
-};
-
-
-/* ~Config - Configuration class destructor
- * Original 17/06/2002 simonb
- */
-Kine::Config::~Config(void)
-{
-#ifdef KINE_WITH_SSL
-   // Clean up the SSL component
-   if (defSSLContext != 0) {
-      SSL_CTX_free(defSSLContext);
-   }
-   
-   EVP_cleanup();
-#endif
-}
-
-
 /* classHandleModule - Get a module's filename and attempt to load & configure
  * Original 21/07/2002 simonb
  */
@@ -812,4 +725,103 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleNetworkName)
 #endif
 
    return true;
+}
+
+
+/* Config - Configuration class constructor (mainly to load defaults if any)
+ * Original 11/04/2002 simonb
+ */
+Kine::Config::Config(void)
+  :
+    // "ADMIN" class
+    defAdminEmail(DEFAULT_ADMIN_EMAIL),
+    defAdminLocation(DEFAULT_ADMIN_LOCATION),
+    defAdminName(DEFAULT_ADMIN_NAME),
+
+    // "NETWORK" class
+    defNetworkName(DEFAULT_NETWORK_NAME),
+
+    // "OPTIONS" class
+    defOptionsDescription(DEFAULT_OPTIONS_DESCRIPTION),
+    defOptionsHidden(DEFAULT_OPTIONS_HIDDEN),
+    defOptionsPidFile(DEFAULT_OPTIONS_PID_FILE),
+    defOptionsServerName(DEFAULT_OPTIONS_SERVER_NAME),
+
+    // "OPTIONS.LIMITS" class
+    defOptionsLimitsMaxKickReasonLength(DEFAULT_OPTIONS_LIMITS_MAX_KICK_REASON_LENGTH),
+    defOptionsLimitsMaxMessageLength(DEFAULT_OPTIONS_LIMITS_MAX_MESSAGE_LENGTH),
+    defOptionsLimitsMaxTargets(DEFAULT_OPTIONS_LIMITS_MAX_TARGETS),
+    defOptionsLimitsMinBroadcastLength(DEFAULT_OPTIONS_LIMITS_MIN_BROADCAST_LENGTH),
+
+    // "OPTIONS.LIMITS.CHANNELS" class
+    defOptionsLimitsChannelsMaxBans(DEFAULT_OPTIONS_LIMITS_CHANNELS_MAX_BANS),
+    defOptionsLimitsChannelsMaxBanExceptions(DEFAULT_OPTIONS_LIMITS_CHANNELS_MAX_BAN_EXCEPTIONS),
+    defOptionsLimitsChannelsMaxInviteExceptions(DEFAULT_OPTIONS_LIMITS_CHANNELS_MAX_INVITE_EXCEPTIONS),
+    defOptionsLimitsChannelsMaxNameLength(DEFAULT_OPTIONS_LIMITS_CHANNELS_MAX_NAME_LENGTH),
+    defOptionsLimitsChannelsMaxTopicLength(DEFAULT_OPTIONS_LIMITS_CHANNELS_MAX_TOPIC_LENGTH),
+
+    // "OPTIONS.LIMITS.USERS" class
+    defOptionsLimitsUsersMaxAccepts(DEFAULT_OPTIONS_LIMITS_USERS_MAX_ACCEPTS),
+    defOptionsLimitsUsersMaxChannels(DEFAULT_OPTIONS_LIMITS_USERS_MAX_CHANNELS),
+    defOptionsLimitsUsersMaxLanguages(DEFAULT_OPTIONS_LIMITS_USERS_MAX_LANGUAGES),
+    defOptionsLimitsUsersMaxNickNameLength(DEFAULT_OPTIONS_LIMITS_USERS_MAX_NICK_NAME_LENGTH),
+    defOptionsLimitsUsersMaxRealNameLength(DEFAULT_OPTIONS_LIMITS_USERS_MAX_REAL_NAME_LENGTH),
+    defOptionsLimitsUsersMaxSilences(DEFAULT_OPTIONS_LIMITS_USERS_MAX_SILENCES),
+    defOptionsLimitsUsersMaxWatches(DEFAULT_OPTIONS_LIMITS_USERS_MAX_WATCHES),
+
+    // "OPTIONS.REGISTRAR" class
+    defOptionsRegistrarClientPingProbeCount(DEFAULT_OPTIONS_REGISTRAR_CLIENT_PING_PROBE_COUNT)
+  
+#ifdef KINE_WITH_SSL
+  , // <=- here to continue the list properly
+    // "SSL" class
+    defSSLContext(0)
+#endif
+{
+#ifdef KINE_WITH_SSL
+   // Fire up the SSL component
+   SSL_load_error_strings();
+   
+   if (SSL_library_init()) {
+      //
+      // SEED PRNG HERE IF THE OPENSSL LIBRARY WONT!!! :( :( :(
+      //
+      
+      /*
+       * Fire up the context using SSLv2 and SSLv3 methods.
+       * I think this should be configurable, but at this point I don't care!
+       * :(
+       */
+      defSSLContext = SSL_CTX_new(SSLv23_method());
+   }
+#endif
+};
+
+
+/* ~Config - Configuration class destructor
+ * Original 17/06/2002 simonb
+ */
+Kine::Config::~Config(void)
+{
+#ifdef KINE_WITH_SSL
+   // Clean up the SSL component
+   if (defSSLContext != 0) {
+      SSL_CTX_free(defSSLContext);
+   }
+   
+   EVP_cleanup();
+#endif
+}
+
+
+/* configure - Load/parse configuration using the filename previously set
+ * Original 17/06/2002 simonb
+ */
+bool Kine::Config::configure(void)
+{
+   // The config parser instance we will use
+   AISutil::ConfigParser parser(*this, &topDefs, configFile);
+   
+   // Configure this thing :)
+   return parser.configure();
 }

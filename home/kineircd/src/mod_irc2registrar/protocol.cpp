@@ -66,8 +66,7 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric)
     * numeric because all registration numerics are over 100 anyway!
     */
    output <<
-     ':' << connection.getDaemon().getConfig().getOptionsServerName() <<
-     ' ' << (int)numeric;
+     ':' << config().getOptionsServerName() << ' ' << (int)numeric;
    
    // Determine the appropriate nickname.
    if (registrantData.nickname.empty()) {
@@ -98,8 +97,7 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
     * numeric because all registration numerics are over 100 anyway!
     */
    output << 
-     ':' << connection.getDaemon().getConfig().getOptionsServerName() <<
-     ' ' << (int)numeric;
+     ':' << config().getOptionsServerName() << ' ' << (int)numeric;
    
    // Determine the appropriate nickname.
    if (registrantData.nickname.empty()) {
@@ -572,7 +570,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
 //   protocol = line.nextToken();
 //   realname = 
 //     line.nextColonToken().substr(0, 
-//				  connection.getDaemon().getConfig().
+//				  config().
 //				  getOptionsLimitsServersMaxDescriptionLength());
    
 //#ifdef KINE_DEBUG_PSYCHO
@@ -642,7 +640,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
    (void)line.nextToken(); // ignored (RFC-2812: reserved)
    registrantData.realname = 
      line.nextColonToken().substr(0, 
-				  connection.getDaemon().getConfig().
+				  config().
 				  getOptionsLimitsUsersMaxRealNameLength());
    
 #ifdef KINE_DEBUG_PSYCHO
@@ -688,7 +686,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
    registrantData.hostname = line.nextToken();
    registrantData.realname = 
      line.nextColonToken().substr(0, 
-				  connection.getDaemon().getConfig().
+				  config().
 				  getOptionsLimitsUsersMaxRealNameLength());
 
 #ifdef KINE_DEBUG_PSYCHO

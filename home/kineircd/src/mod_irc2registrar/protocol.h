@@ -33,6 +33,7 @@
 # include "kineircd/protocol.h"
 # include "kineircd/listener.h"
 # include "kineircd/registrant.h"
+# include "kineircd/config.h"
 # include "regnumerics.h"
 
 # define KINE_LIB_REGISTRAR_FUNCTION(x) \
@@ -103,8 +104,7 @@ namespace Kine {
 	: Protocol(c),
           listener(l),
           registrationType(RegistrationType::NONE),
-          pongsLeft(connection.getDaemon().getConfig().
-		    getOptionsRegistrarClientPingProbeCount())
+          pongsLeft(config().getOptionsRegistrarClientPingProbeCount())
 	{};
       
       // Destructor
