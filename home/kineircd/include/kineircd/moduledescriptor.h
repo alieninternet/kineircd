@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_MODULES_DESCRIPTOR_H_
-# define _SRC_LIB_MODULES_DESCRIPTOR_H_ 1
+#ifndef _INCLUDE_KINEIRCD_MODULEDESCRIPTOR_H_
+# define _INCLUDE_KINEIRCD_MODULEDESCRIPTOR_H_ 1
 
 # include "kineircd/module.h"
 # include "kineircd/str.h"
@@ -53,5 +53,5 @@ namespace Kine {
    };
 };
    
-#endif // _SRC_LIB_MODULES_DESCRIPTOR_H_
+#endif // _INCLUDE_KINEIRCD_MODULEDESCRIPTOR_H_
    

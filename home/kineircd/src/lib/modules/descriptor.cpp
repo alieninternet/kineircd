@@ -27,7 +27,7 @@ extern "C" {
 # include <dlfcn.h>
 };
 
-#include "modules/descriptor.h"
+#include "kineircd/moduledescriptor.h"
 
 using namespace Kine;
 

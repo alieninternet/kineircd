@@ -26,7 +26,7 @@
 #include <cctype>
 
 #include "kineircd/config.h"
-#include "modules/descriptor.h"
+#include "kineircd/moduledescriptor.h"
 #include "config/defaults.h"
 #include "debug.h"
 
