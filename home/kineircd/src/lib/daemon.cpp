@@ -217,11 +217,6 @@ void Daemon::log(const std::string& str, const Logger::Mask::type mask)
    
    // Only iterate through the list if it is not empty, else what is the point?
    if (!loggers.empty()) {
-#ifdef KINE_DEBUG_ASSERT
-      assert((mask != Logger::Mask::Nothing) &&
-	     (mask != Logger::Mask::Everything));
-#endif
-      
 //      // Run through the loggers to give them all the line
 //      for (loggerList_type::iterator it = loggers.begin();
 //	   it != loggers.end(); it++) {
