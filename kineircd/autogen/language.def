@@ -459,7 +459,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOSUCHNICK";
-   components	= "lib_irc2";
+   components	= "lib_irc2 mod_irc2user";
    data_en	= "No such nick";
    data_tr	= "Böyle bir nick bulunamadi";
 };
