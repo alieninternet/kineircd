@@ -252,14 +252,14 @@ const std::string
    // Make sure the tag is valid..
    if ((tagID == 0) || (tagID > tagData.size())) {
 #ifdef KINE_DEBUG
-      debug("Languages::LanguageData::findTag() - Invalid TID given");
+      debug("Languages::LanguageData::get() - Invalid TID given");
 #endif
       return "";
    }
    
 #ifdef KINE_DEBUG
    std::ostringstream out;
-   out << "Languages::LanguageData::findTag() - Returning data @ " << 
+   out << "Languages::LanguageData::get() - Returning data @ " << 
      (void *)tagData[tagID - 1];
    debug(out.str());
 #endif
@@ -289,14 +289,14 @@ bool Languages::LanguageData::get(const Languages::tagID_type tagID,
    // Make sure the tag is valid..
    if ((tagID == 0) || (tagID > tagData.size())) {
 #ifdef KINE_DEBUG
-      debug("Languages::LanguageData::findTag() - Invalid TID given");
+      debug("Languages::LanguageData::get() - Invalid TID given");
 #endif
       return false;
    }
    
 #ifdef KINE_DEBUG
    std::ostringstream out;
-   out << "Languages::LanguageData::findTag() - Returning data @ " << 
+   out << "Languages::LanguageData::get() - Returning data @ " << 
      (void *)tagData[tagID - 1];
    debug(out.str());
 #endif

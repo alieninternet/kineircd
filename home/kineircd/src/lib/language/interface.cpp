@@ -107,7 +107,7 @@ void Languages::processTagMap(tagMap_type map) const
    // Iterate through the given map, until we find a null tag name
    while (map[++i].tagName != 0) {
       // Find the tag ID for this entry
-      map[i].tagID = findTag(map[i].tagName);
+      map[i].tagID = getTagID(map[i].tagName);
    }
 }
 
@@ -435,11 +435,11 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 }
 
 
-/* loadFile - Load a given language file
- * Original 21/08/2002 simonb
+/* getTagID - Find a tag ID associated with the given tag name
+ * Original 11/04/2003 simonb
  */
 const Languages::tagID_type
-  Languages::findTag(const AISutil::String& tagName) const
+  Languages::getTagID(const AISutil::String& tagName) const
 {
    // Try to find this tag in the tag dictionary
    tagDictionary_type::const_iterator it =
@@ -448,7 +448,7 @@ const Languages::tagID_type
    // Did we find it?
    if (it == tagDictionary.end()) {
 #ifdef KINE_DEBUG
-      debug(String("Languages::findTag() - Did not find ") + tagName);
+      debug(String("Languages::getTagID() - Did not find ") + tagName);
 #endif
       
       // We didn't find it
@@ -456,7 +456,7 @@ const Languages::tagID_type
    } 
       
 #ifdef KINE_DEBUG
-   debug("Languages::findTag() - Found tag " + (*it).first + " with TID of " +
+   debug("Languages::getTagID() - Found tag " + (*it).first + " with TID of " +
 	 String::convert((*it).second));
 #endif
 

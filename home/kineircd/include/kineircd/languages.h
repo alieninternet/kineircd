@@ -250,7 +250,7 @@ namespace Kine {
 		    const bool makeDefault = false);
       
       //! Find a tag by its name (It's recommended to use a tag map, below)
-      const tagID_type findTag(const AISutil::String& name) const;
+      const tagID_type getTagID(const AISutil::String& name) const;
       
       //! Add/remove/process tag name/ID correlation maps
       bool registerMap(tagMap_type map);
