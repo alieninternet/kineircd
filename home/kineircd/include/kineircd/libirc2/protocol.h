@@ -44,6 +44,10 @@ namespace Kine {
        public:
 	 typedef unsigned int messageSize_type;
 	 const char* lineTerminator;
+
+	 //! A replacement parameter (literally a '*', used in many places)
+	 static const char* const replacementParameter;
+	 static const char replacementCharacter;
 	 
        protected:
 	 // The type of a 'parameter list'

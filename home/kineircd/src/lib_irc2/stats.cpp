@@ -88,7 +88,8 @@ KINE_IRC2_STATS_HANDLER(Stats::handleLanguages)
       protocol.sendNumeric(user, Numerics::RPL_NONE,
 			   it->second->getLanguageCode(),
 			   (it->second->getMaintainer().empty() ?
-			    "*" : it->second->getMaintainer()),
+			    Protocol::replacementParameter :
+			    it->second->getMaintainer()),
 			   it->second->getFileRevision(),
 			   it->second->getTagCount(),
 			   percentComplete.str(),
@@ -127,10 +128,12 @@ KINE_IRC2_STATS_HANDLER(Stats::handleListConnections)
 			   ((*it)->getReceivedBytes() / 1024),
 			   (daemon().getTime() -
 			    (*it)->getConnectedTime()).seconds,
-			   (false /* is secured */ ? "SSL" : "*"),
+			   (false /* is secured */ ?
+			    "SSL" :
+			    Protocol::replacementParameter),
 			   (((*it)->getProtocol() != 0) ?
 			    (*it)->getProtocol()->getProtocolName() :
-			    "*"));
+			    Protocol::replacementParameter));
    }
 }
 
@@ -143,7 +146,7 @@ KINE_IRC2_STATS_HANDLER(Stats::handleOperators)
    protocol.sendNumeric(user, Numerics::RPL_STATSOLINE,
 			(true /* is global */ ? 'O' : 'o'),
 			"user@host.mask",
-			"*", // <=- use for flags, but RFC says '*'
+			Protocol::replacementCharacter,
 			"nickname",
 			"This is a description field");
 }

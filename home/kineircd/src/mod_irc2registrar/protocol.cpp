@@ -297,7 +297,7 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseIIRCN)
    }
    
    // Check that the 'from network' field is * - it must be during registration
-   if (parameters[1] != "*") {
+   if (parameters[1] != replacementParameter) {
 #ifdef KINE_DEBUG
       debug("mod_irc2registrar::Protocol::parseIIRCN() - Invalid: from "
 	    "network != \"*\"");

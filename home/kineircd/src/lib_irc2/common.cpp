@@ -84,7 +84,7 @@ void Protocol::sendTimeOnServer(const User& user)
      ' ';
    
    // Yes, no flags.. yet..
-   data << '*';
+   data << replacementCharacter;
    
    // Send the time
    sendNumeric(user, Numerics::RPL_TIMEONSERVERIS,
@@ -417,8 +417,8 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 			foundClient->getUsername(),
 			((foundUser != 0) ?
 			 foundUser->getVirtualHostname() :
-			 "*"), // <=- simply mask the service hostname
-			'*',
+			 replacementParameter), // <=- simply mask the host
+			replacementCharacter,
 			foundClient->getDescription());
 	 } else {
 	    // Send the user entry as normal
@@ -426,7 +426,7 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 			foundClient->getNickname(),
 			foundClient->getUsername(),
 			foundClient->getHostname(),
-			'*',
+			replacementCharacter,
 			foundClient->getDescription());
 	    
 	    // If this is a user, also send the virtual host details
@@ -588,7 +588,7 @@ void Protocol::doWHOWAS(const User& user, const std::string& targets,
 	       "nickname",
 	       "username",
 	       "hostname",
-	       '*',
+	       replacementCharacter,
 	       "real name field");
    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSERVER,
 	       "nickname",

@@ -34,6 +34,13 @@ using AISutil::StringTokens;
 using namespace Kine::LibIRC2;
 
 
+// Replacement characters
+const char* const Protocol::replacementParameter = 
+  "*";
+const char Protocol::replacementCharacter =
+  '*';
+
+
 /* Protocol - Constructor for migration between protocols (copies I/O queues)
  * Original 12/08/2001 simonb
  * Note: This could be more efficient :(

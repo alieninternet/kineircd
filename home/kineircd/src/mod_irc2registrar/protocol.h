@@ -75,7 +75,8 @@ namespace Kine {
 	     {
 		sendMessageFrom(config().getOptionsServerName(), numeric,
 				(registrantData.name.empty() ?
-				 "*" : registrantData.name),
+				 replacementParameter :
+				 registrantData.name),
 				pa);
 	     };
 	 template <class Ta, class Tb>
@@ -84,7 +85,8 @@ namespace Kine {
 	     {
 		sendMessageFrom(config().getOptionsServerName(), numeric,
 				(registrantData.name.empty() ?
-				 "*" : registrantData.name),
+				 replacementParameter :
+				 registrantData.name),
 				pa, pb);
 	     };
 	 

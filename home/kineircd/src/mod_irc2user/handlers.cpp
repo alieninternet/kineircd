@@ -143,7 +143,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
    
    // Check if we weren't given any parameters
    if (parameters.empty()) {
-      mask = "*";
+      mask = replacementCharacter;
    } else {
       // Check if the first char is a '-' (for extended help)
       if (parameters[0][0] == '-') {
@@ -338,7 +338,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 	 
 	 // No modes? Fix it up with a blank thingy
 	 if (modes.empty()) {
-	    modes = '*';
+	    modes = replacementCharacter;
 	 }
 	 
 	 // Send the info on this language
@@ -346,7 +346,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 		     it->second->getLanguageCode(),
 		     it->second->getFileRevision(),
 		     (it->second->getMaintainer().empty() ?
-		      "*" : it->second->getMaintainer()),
+		      replacementParameter :
+		      it->second->getMaintainer()),
 		     modes,
 		     (it->second->getLanguageNote().empty() ?
 		      it->second->getLanguageName() :
@@ -479,7 +480,9 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 IRC2USER_COMMAND_HANDLER(Protocol::handleNAMES)
 {
    // Tokenise the requests
-   StringTokens request((parameters.empty() ? "*" : parameters[0]));
+   StringTokens request(parameters.empty() ?
+			replacementParameter :
+			parameters[0]);
 
    // Stuff we need during the request loop
    StringMask target;
@@ -771,8 +774,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleRESTART)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleSERVLIST)
 {
-   // Our mask for service names to match
-   StringMask nameMask;
+   // Our mask for service names to match (initially presume everything)
+   StringMask nameMask("*");
    
    // The type bitmask to match..
    long type = 0;
@@ -786,9 +789,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSERVLIST)
 	 // Convert the type integer across
 	 type = std::atol(parameters[1].c_str());
       }
-   } else {
-      // Presume everything (*)
-      nameMask = "*";
    }
    
    // Iterate over the list of services
@@ -1075,7 +1075,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERHOST)
 	 
 	 // If the user is an operator, add a '*' to the end of their nickname
 	 if (foundUser->isOperator()) {
-	    output << '*';
+	    output << replacementCharacter;
 	 }
 	 
 	 // Output the rest
@@ -1128,7 +1128,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERIP)
 	 
 	 // If the user is an operator, add a '*' to the end of their nickname
 	 if (foundUser->isOperator()) {
-	    output << '*';
+	    output << replacementCharacter;
 	 }
 	 
 	 // Output the rest
@@ -1182,8 +1182,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHO)
 {
    static const char* const commandName = "WHO";
    
-   // Mask of users to match
-   StringMask mask;
+   // Mask of users to match (presume everything, initially)
+   StringMask mask("*");
    
    // Were we given a mask?
    if (parameters.size() >= 1) {
@@ -1194,9 +1194,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHO)
       if (parameters.size() >= 2) {
 	 // something..
       }
-   } else {
-      // Match 'everything'
-      mask = "*";
    }
    
    // The number of lines left before we truncate the output
