@@ -191,7 +191,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/service.h \
 	include/kineircd/signals.h \
 	include/kineircd/user.h \
-	include/kineircd/utils.h \
 	include/kineircd/version.h \
 	src/libkineircd/config/config.cpp \
 	src/libkineircd/config/handlers.cpp \
@@ -216,7 +215,6 @@ libkineircd_la_SOURCES=\
 	src/libkineircd/registrar.cpp \
 	src/libkineircd/registrar.h \
 	src/libkineircd/signals.cpp \
-	src/libkineircd/utils.cpp \
 	src/libkineircd/version.cpp
 	
 # Flags..
@@ -379,6 +377,7 @@ mod_irc2user_la_SOURCES=\
 	src/mod_irc2user/commandlist.cpp \
 	src/mod_irc2user/commands.cpp \
 	src/mod_irc2user/commands.h \
+	src/mod_irc2user/handlers.cpp \
 	src/mod_irc2user/language.cpp \
 	src/mod_irc2user/language.h \
 	src/mod_irc2user/module.cpp \
