@@ -110,6 +110,21 @@ tag = {
 };
 
 tag = {
+   name		= "irc2_ERR_CANNOTSENDTOCHAN_NOT_IDENTIFIED";
+   components	= "mod_irc2user";
+   data_en	= "Cannot send to the specified channel, since you must "
+                  "identify yourself to the %N nickname registration service"
+		  "first";
+};
+
+tag = {
+   name		= "irc2_ERR_CANNOTSENDTOCHAN_UNEXPECTED";
+   components	= "mod_irc2user";
+   data_en	= "The channel specified may or may not have received your "
+                  "message since it returned an unexpected error";
+};
+
+tag = {
    name		= "irc2_ERR_CANNOTSENDTOCHAN_UNRECEPTIVE";
    components	= "mod_irc2user";
    data_en	= "The channel specified is unable to accept your message";
@@ -119,6 +134,21 @@ tag = {
    name		= "irc2_ERR_CANNOTSENDTONICK";
    components	= "mod_irc2user";
    data_en	= "You cannot send to this nickname";
+};
+
+tag = {
+   name		= "irc2_ERR_CANNOTSENDTONICK_NOT_IDENTIFIED";
+   components	= "mod_irc2user";
+   data_en	= "Cannot send to the specified client, since you must "
+                  "identify yourself to the %N nickname registration service"
+		  "first";
+};
+
+tag = {
+   name		= "irc2_ERR_CANNOTSENDTONICK_UNEXPECTED";
+   components	= "mod_irc2user";
+   data_en	= "The client specified may or may not have received your "
+                  "message since it returned an unexpected error";
 };
 
 tag = {
