@@ -337,7 +337,6 @@ String Utils::SHA1::digestToStr(const digest_type &digest,
    String output = "";
    
    for (unsigned char i = 5; i--;) {
-      cout << (int)i << ':' << hex << digest.l[i] << dec << endl;
       output += Utils::baseXStr(digest.l[i], base).prepad(pad, '0');
    }
    
