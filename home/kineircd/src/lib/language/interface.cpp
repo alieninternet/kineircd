@@ -133,8 +133,8 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 #ifdef KINE_DEBUG
    debug("Languages::loadFile() - Opening iconv() conversion descriptor");
 #endif
-   iconv_t convDesc = iconv_open(KINE_LANGTAGS_INTERNAL_CHARSET,
-				 KINE_LANGTAGS_LANGFILE_CHARSET);
+   iconv_t convDesc = iconv_open(KINE_INTERNAL_CHARSET,
+				 KINE_LANGFILE_CHARSET);
    
    // Make sure the conversion descriptor opened happily
    if (convDesc == (iconv_t)(-1)) {
