@@ -9,6 +9,12 @@ top_builddir=$(srcdir)/../..
 
 include $(top_builddir)/make/defs
 
+# Do not change these unless you really know what you are doing. In fact
+# don't even change them if you do know what you're doing.
+LIB_VERSION=@LIB_VERSION@
+LIB_REVISION=@LIB_REVISION@
+LIB_AGE=@LIB_AGE@
+
 INCDIRS=@INCDIRS@ -I$(top_builddir)/include -I$(srcdir)
 DEFS=@DEFS@
 
@@ -43,7 +49,10 @@ VER_FLG=-DBUILD_STRING="\"`date -u +%04Y%02m%02d%02H%02M%02S`\"" \
 	-DVERSION_EXTRA="\"@VERSION_EXTRA@\"" \
 	-DPACKAGE_NAME="\"@PACKAGE_NAME@\"" \
 	-DPACKAGE_VERSION="\"@PACKAGE_VERSION@\"" \
-	-DPACKAGE_BUGREPORT="\"@PACKAGE_BUGREPORT@\""
+	-DPACKAGE_BUGREPORT="\"@PACKAGE_BUGREPORT@\"" \
+	-DLIB_VERSION="$(LIB_VERSION)" \
+	-DLIB_REVISION="$(LIB_REVISION)" \
+	-DLIB_AGE="$(LIB_AGE)"
 
 # libkineircd library sources that are required
 SOURCES=\
@@ -108,12 +117,13 @@ $(SUB_DIRS):
 	$(MAKE) -C $@
 
 
-$(TARGET): subdirs $(VER_OBJ) $(OBJECTS) $(ROBJECTS)
+$(TARGET): subdirs $(OBJECTS) $(ROBJECTS)
 #	$(LD) -r $(LDFLAGS) $(LIBS) -o $@ $(VER_OBJ) $(OBJECTS) $(ROBJECTS)
 	$(LIBTOOL) --mode=compile $(CXX) -prefer-pic \
 		   $(CXXFLAGS) $(VER_FLG) $(DEFS) $(INCDIRS) \
 		   -c $(VER_SRC) -o $(VER_OBJ)
-	$(LIBTOOL) --mode=link $(CXX) -avoid-version \
+	$(LIBTOOL) --mode=link $(CXX) -rpath $(libdir) \
+		-version-info $(LIB_VERSION):$(LIB_REVISION):$(LIB_AGE) \
 		$(LDFLAGS) $(LIBS) -o $@ \
 		$(VER_OBJ) $(OBJECTS) $(ROBJECTS)
 
