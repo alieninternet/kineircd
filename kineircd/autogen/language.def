@@ -2095,6 +2095,13 @@ tag = {
 };
 
 tag = {
+   name		= "irc2user_HELP_END";
+   fields	= "0 = mask";
+   components	= "mod_irc2user";
+   data_en	= "End of HELP (%p0)";
+};
+
+tag = {
    name		= "irc2user_HELP_NO_PARAMETERS";
    components	= "mod_irc2user";
    data_en	= "Command has no parameters";
