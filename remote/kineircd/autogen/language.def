@@ -1,8 +1,8 @@
 /* $Id$
  *
- * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2003 Idil Jans <idil@users.sf.net>
- * Copyright (c) 2003 KineIRCd Development Team
+ * Copyright © 2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright © 2003 Idil Jans <idil@users.sf.net>
+ * Copyright © 2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -24,15 +24,31 @@
 autogen definitions language;
 
 
-tags = {
-   name		= "";
-   component	= "mod_irc2user";
-   data_en	= "";
-   data_tr	= "";
+/*****************************************************************************
+ **                                                                         **
+ **                          Languages information                          **
+ **                                                                         **
+ *****************************************************************************/
+
+languages = {
+   langCode		= "en";
+   langName		= "English";
+   langMaintainer	= "pickle@alien.net.au";
+};
+
+languages = {
+   langCode		= "tr";
+   langName		= "Türkçe";
+   langMaintainer	= "idil@users.sf.net";
 };
 
 
 
+/*****************************************************************************
+ **                                                                         **
+ **                        Tag data for mod_irc2user                        **
+ **                                                                         **
+ *****************************************************************************/
 
 tags = {
    name		= "irc2_ERR_ALREADYREGISTERED";
