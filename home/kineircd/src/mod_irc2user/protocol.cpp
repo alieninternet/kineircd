@@ -126,20 +126,14 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    sendTimeOnServer(user);
    
    // Do an LUSERS command, for some reason some clients want this??
-   doLUSERS(user);
+   if (true /* config value? */) {
+      doLUSERS(user);
+   }
    
    // Also do the MOTD command
-   doMOTD(user, true);
-}
-
-
-/* Protocol - Destroy the connection
- * Original 14/08/2001 simonb
- */
-Protocol::~Protocol(void)
-{
-   // Deregister our user somewhat abruptly
-   user.decamp();
+   if (true /* config value? */) {
+      doMOTD(user, true);
+   }
 }
 
 

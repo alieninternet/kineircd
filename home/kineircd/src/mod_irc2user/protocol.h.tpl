@@ -70,7 +70,8 @@ namespace Kine {
 			   const std::string& outputQueue);
 	 
 	 // Destructor
-	 ~Protocol(void);
+	 ~Protocol(void)
+	   {};
 
 	 
 	 // Return some sort of official name of this protocol
