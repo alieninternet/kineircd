@@ -67,6 +67,8 @@ INCLUDES=\
 ###############################################################################
 # 'libkineircd_irc2' library
 ###############################################################################
+noinst_libkineircd_irc2_la_HEADERS=\
+	lib_irc2/protocol.h
 libkineircd_irc2_la_SOURCES=\
 	lib_irc2/parser.cpp
 libkineircd_irc2_la_LDFLAGS=\
@@ -79,6 +81,9 @@ libkineircd_irc2_la_LIBADD=\
 ###############################################################################
 # 'mod_filelog' module
 ###############################################################################
+noinst_mod_filelog_la_HEADERS=\
+	mod_filelog/file.h \
+	mod_filelog/module.h
 mod_filelog_la_SOURCES=\
 	mod_filelog/module.cpp
 mod_filelog_la_LDFLAGS=\
@@ -92,6 +97,8 @@ mod_filelog_la_LIBADD=\
 ###############################################################################
 # 'mod_http' module
 ###############################################################################
+noinst_mod_http_la_HEADERS=\
+	mod_http/module.h
 mod_http_la_SOURCES=\
 	mod_http/module.cpp
 mod_http_la_LDFLAGS=\
@@ -105,6 +112,8 @@ mod_http_la_LIBADD=\
 ###############################################################################
 # 'mod_irc2user' module
 ###############################################################################
+noinst_mod_irc2user_la_HEADERS=\
+	mod_irc2user/module.h
 mod_irc2user_la_SOURCES=\
 	mod_irc2user/module.cpp
 mod_irc2user_la_LDFLAGS=\
@@ -119,6 +128,8 @@ mod_irc2user_la_LIBADD=\
 ###############################################################################
 # 'mod_snmp' module
 ###############################################################################
+noinst_mod_snmp_la_HEADERS=\
+	mod_snmp/module.h
 mod_snmp_la_SOURCES=\
 	mod_snmp/module.cpp \
 	mod_snmp/snmp.cpp
@@ -133,6 +144,9 @@ mod_snmp_la_LIBADD=\
 ###############################################################################
 # 'mod_syslog' module
 ###############################################################################
+noinst_mod_syslog_la_HEADERS=\
+	mod_syslog/syslog.h \
+	mod_syslog/module.h
 mod_syslog_la_SOURCES=\
 	mod_syslog/module.cpp
 mod_syslog_la_LDFLAGS=\
