@@ -73,7 +73,8 @@ servermodes = {
    name		= "DEBUGGING";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   comment	= "Turns debugging on.";
+   comment	= "Turns debugging on (if available), or shows a server which "
+                  "is in debugging mode.";
    broadcast	= "yes";
 };
 
@@ -117,6 +118,18 @@ servermodes = {
 
 servermodes = {
    irc2char	= "L";
+   name		= "DEFAULT_LANGUAGE";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   parameter    = "<language code>";
+   comment	= "Marks the given language code as the 'default' language "
+                  "for that server. Language codes are that prescribed by "
+		  "BCP-0047, and only one can be set at a time.";
+   broadcast	= "yes";
+};
+
+servermodes = {
+   irc2char	= "M";
    name		= "MODES_LOCKED";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
@@ -124,27 +137,6 @@ servermodes = {
                   "other servers. This is useful when servers shouldn't not "
 		  "be touched by operators. Arbiters/U:lines servers can "
 		  "still change modes (i.e. to remove this mode!)";
-   broadcast	= "yes";
-};
-
-servermodes = {
-   irc2char	= "m";
-   name		= "SHORT_MOTD";
-   origin	= "KineIRCd";
-   contact	= "kineircd@alien.net.au";
-   comment	= "Do not send the full MOTD upon connection. Rather, send "
-                  "a short minature MOTD stating that the user should read "
-		  "the full MOTD if they have not read it."; 
-   broadcast	= "yes";
-};
-
-servermodes = {
-   irc2char	= "M";
-   name		= "REMOTE_MOTD";
-   origin	= "KineIRCd";
-   contact	= "kineircd@alien.net.au";
-   comment	= "Allow the MOTD to be viewed remotely. Some administrators "
-                  "may not want their MOTD to be remotely viewed by users.";
    broadcast	= "yes";
 };
 
