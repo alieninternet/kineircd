@@ -108,8 +108,6 @@ definition = {
    
    defaultDefinition = {
       hasVariable = yes;
-      varType = "LanguageList";
-      variable = "LanguageList";
       varHandler = "LanguageConfig::varHandler";
       exampleValue = "languages/*.lang";
    };
