@@ -223,12 +223,6 @@
 # undef LISTEN_MAXQUEUE
 
 
-/* Define these depending on what connections you want to allow/disallow */
-# undef ALLOW_CLIENT_CONNECTIONS
-# undef ALLOW_SERVER_CONNECTIONS
-# undef ALLOW_SERVICE_CONNECTIONS
-
-
 /* Define these depending on what commands you want available */
 # undef ALLOW_COMMAND_DIE
 

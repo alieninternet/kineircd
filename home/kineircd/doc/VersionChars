@@ -66,7 +66,7 @@ Configuration (first section):
  t = CONVERT_MOTD_TABS
  T = HAVE_CMD_TRACEROUTE
  u =
- U = ALLOW_CLIENT_CONNECTIONS
+ U =
  v =
  V =
  w = ALLOW_OPER_WALLOPS
@@ -75,8 +75,8 @@ Configuration (first section):
  X = ALLOW_GLOBALOP_DIE (tba)
  y = 
  Y = SYSLOG_IDENT (logging to syslog rather than other logging)
- z = ALLOW_SERVER_CONNECTIONS
- Z = ALLOW_SERVICE_CONNECTIONS
+ z =
+ Z =
 
 
 Transport Phrases (second section)

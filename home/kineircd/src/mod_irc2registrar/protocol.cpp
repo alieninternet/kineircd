@@ -33,6 +33,12 @@
 #include "kineircd/utils.h"
 
 
+// THESE SHOULD BE REMOVED ASAP!! :(
+#define ALLOW_CLIENT_CONNECTIONS
+#define ALLOW_SERVER_CONNECTIONS
+#define ALLOW_SERVICE_CONNECTIONS
+
+
 // Functions table
 struct registerHandler::functionTableStruct const 
   registerHandler::functionsTable[] = {

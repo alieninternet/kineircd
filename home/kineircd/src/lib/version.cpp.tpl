@@ -152,9 +152,6 @@ namespace Version {
 #ifdef HAVE_CMD_TRACEROUTE
 				"T"
 #endif
-#ifdef ALLOW_CLIENT_CONNECTIONS
-     				"U"
-#endif
 #ifdef ALLOW_OPER_WALLOPS
 				"w"
 #endif
@@ -166,12 +163,6 @@ namespace Version {
 #endif
 #ifdef SYSLOG_IDENT
 				"Y"
-#endif
-#ifdef ALLOW_SERVER_CONNECTIONS
-				"z"
-#endif
-#ifdef ALLOW_SERVICE_CONNECTIONS
-     				"Z"
 #endif
      
 // Transport protocol phrases
