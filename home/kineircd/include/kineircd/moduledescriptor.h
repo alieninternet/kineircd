@@ -24,6 +24,11 @@
 #ifndef _INCLUDE_KINEIRCD_MODULEDESCRIPTOR_H_
 # define _INCLUDE_KINEIRCD_MODULEDESCRIPTOR_H_ 1
 
+// Forwarded declarations (completed after class)
+namespace Kine {
+   class Daemon;
+};
+
 # include "kineircd/module.h"
 # include "kineircd/str.h"
 
@@ -52,8 +57,8 @@ namespace Kine {
 					  String &errorReturn);
       
       // Start a module
-      bool start(void) {
-	 return module->getBasicInfo().startFunction();
+      bool start(Daemon &daemon) {
+	 return module->getBasicInfo().startFunction(daemon);
       }
 
       // Stop a module
@@ -62,6 +67,9 @@ namespace Kine {
       }
    };
 };
-   
+
+// Complete forwarded declarations
+# include "kineircd/daemon.h"
+
 #endif // _INCLUDE_KINEIRCD_MODULEDESCRIPTOR_H_
    

@@ -26,13 +26,13 @@
 
 # include "kineircd/kineircdconf.h"
 
+// Forwarded declarations (completed after class)
 namespace Kine {
-   class Daemon;
+   class Config;
+   class Signals;
 };
 
 # include "kineircd/str.h"
-# include "kineircd/config.h"
-# include "kineircd/signals.h"
 
 namespace Kine {
    // The Daemon class
@@ -58,5 +58,9 @@ namespace Kine {
       int run(void);
    };
 };
+
+// Complete forwarded declarations
+# include "kineircd/config.h"
+# include "kineircd/signals.h"
 
 #endif // _INCLUDE_KINEIRCD_DAEMON_H_ 

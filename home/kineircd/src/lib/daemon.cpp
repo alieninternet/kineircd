@@ -52,7 +52,7 @@ Daemon::Daemon(Config &conf, Signals &sigs)
     signals(sigs)
 {
    // Fire-up the modules we have loaded!
-   config.getModuleList().startAll();
+   config.getModuleList().startAll(*this);
    
    // We are ready to go, go into normal running stage
    stage = STAGE_NORMAL;

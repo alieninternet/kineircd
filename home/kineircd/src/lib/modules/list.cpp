@@ -83,7 +83,7 @@ bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
 /* startAllModules - Start all modules
  * Original 22/07/2002 simonb
  */
-void ModuleList::startAll(void) const
+void ModuleList::startAll(Daemon &daemon) const
 {
 #ifdef KINE_DEBUG_EXTENDED
    debug("ModuleList::stopAll() - Starting modules");
@@ -92,7 +92,7 @@ void ModuleList::startAll(void) const
    // Run through the list of modules and call their start functions
    for (modulesMap_type::const_iterator it = modules.begin(); 
 	it != modules.end(); it++) {
-      (*it).second->start();
+      (*it).second->start(daemon);
    }
 }
 

@@ -24,9 +24,15 @@
 #ifndef _INCLUDE_KINEIRCD_MODULELIST_H_
 # define _INCLUDE_KINEIRCD_MODULELIST_H_ 1
 
+// Forwarded declarations (completed after class)
+namespace Kine {
+   class ModuleDescriptor;
+   class Daemon;
+};
+
 # include <map>
 
-# include "kineircd/moduledescriptor.h"
+# include "kineircd/str.h"
 
 namespace Kine {
    class ModuleList {
@@ -47,12 +53,16 @@ namespace Kine {
       bool loadModule(const String &moduleFile, String &errorReturn);
       
       // Start all modules
-      void startAll(void) const;
+      void startAll(Daemon &daemon) const;
       
       // Stop and unload all modules
       void stopAll(void);
    };
 };
-   
+
+// Complete forwarded declarations
+# include "kineircd/moduledescriptor.h"
+# include "kineircd/daemon.h"
+
 #endif // _INCLUDE_KINEIRCD_MODULELIST_H_
    

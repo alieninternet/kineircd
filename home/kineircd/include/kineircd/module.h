@@ -24,6 +24,11 @@
 #ifndef _INCLUDE_KINEIRCD_MODULE_H_
 # define _INCLUDE_KINEIRCD_MODULE_H_ 1
 
+// Forwarded declarations (completed after class)
+namespace Kine {
+   class Daemon;
+};
+
 # include "kineircd/str.h"
 
 // Template for the function which initialises the module and returns the info
@@ -40,7 +45,7 @@
 
 // Template for the function which triggers a module to start
 # define KINE_MODULE_START(x) \
-   bool x(void)
+   bool x(Kine::Daemon &daemon)
 
 // Template for the function which triggers a module to stop
 # define KINE_MODULE_STOP(x) \
@@ -118,5 +123,8 @@ namespace Kine {
    };
 };
    
+// Complete forwarded declarations
+# include "kineircd/daemon.h"
+
 #endif // _INCLUDE_KINEIRCD_MODULE_H_
    
