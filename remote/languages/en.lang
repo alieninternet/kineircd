@@ -1,6 +1,13 @@
 # $Id$
 # Basic KineIRCd language file for English (ISO-639-1 code 'en')
 #
+#
+# Notice to developers:
+#  This file is to be considered the 'master' file - It defines what the other
+#  language files for distribution need to contain. I (pickle) will continue
+#  to maintain this file, however I won't maintain any other language files.
+#
+#
 .LANGCODE = en
 .LANGNAME = English
 .REVISION = 2002082300
