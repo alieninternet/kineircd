@@ -39,7 +39,7 @@ namespace Language {
    char const *L_RPL_ISUPPORT_TAG =
      " :are supported by this server";
    char const *L_RPL_TIMEONSERVERIS =
-     "%lu %ld %s %u :time according to server";
+     "%lu %ld %s %s :time according to server";
 
    // 'Spam' notification, rather server policy that demands to be read
    char const *L_RPL_SPAM_LINE1 =
@@ -319,6 +319,10 @@ namespace Language {
    char const *L_RPL_ACCEPTED =
      "%s %s %s :has put you on their ACCEPT list";
 
+   // SERVLIST replies
+   char const *L_RPL_SERVLISTEND =
+     " :End of services listing";
+   
    // SILENCE list replies
    char const *L_RPL_ENDOFSILELIST =
      " :End of SILENCE list";

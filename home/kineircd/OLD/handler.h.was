@@ -313,6 +313,7 @@ class p13serverHandler : public Handler {
    static void parseQUIT(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseRPING(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseRPONG(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseSERVICE(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseSQUIT(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseSTATS(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseTIME(p13serverHandler *handler, String const &origin, StringTokens *tokens);
@@ -383,10 +384,15 @@ class p14serverHandler : public Handler {
 class registerHandler : public Handler {
  private:
    String password;				// Logon password
+# ifdef ALLOW_CLIENT_CONNECTIONS
    String nickname;				// Nickname (client)
+# endif
    String username;				// Username (server & client)
    String hostname;				// Host name (server & client)
    String realname;				// Client Real Name/Server description
+# ifdef ALLOW_CLIENT_CONNECTIONS
+   String distribution;				// Visibility range (service)
+# endif
 # ifdef USER_CONNECTION_PINGPONG
    String pingpong;				// Ping/Pong string
    bool gotPong;				// Did we got a pong?
@@ -401,8 +407,9 @@ class registerHandler : public Handler {
    
    enum {
       IN_PROGRESS,			// Waiting for info
-      USER,				// User connection
-      SERVER				// Server connection
+      CLIENT,				// User connection
+      SERVER,				// Server connection
+      SERVICE				// Service connection
    } regmode;					// Registration mode
    
    struct functionTableStruct {

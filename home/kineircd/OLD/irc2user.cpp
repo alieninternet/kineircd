@@ -281,11 +281,14 @@ struct irc2userHandler::functionTableStruct const
 	  "This will restart the server. This command will load an entirely "
 	  "new process for the IRC Daemon."
      },
-//     { "SERVLIST",	parseSERVLIST,		2,	
-//	  ANYONE,
-//	  "[ <mask>  [ <type> ] ]",
-//	  0
-//     },
+     { "SERVLIST",	parseSERVLIST,		0,
+	  ANYONE,
+	  "[ <mask>  [ <type> ] ]",
+	  "List services currently visible on the network. If a mask is "
+	  "specified, only services matching the given mask will be shown. If "
+	  "a type is given, only services matching the mask and the type will "
+	  "be listed."
+     },
      { "SILENCE",	parseSILENCE,		1,
 	  ANYONE,
 	  "{ { '+' | '-' } { <mask> | <nickname } } | [ <nickname > ]",
@@ -426,13 +429,12 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 #endif
 
    // Send a nice notice to those who care
-   Daemon::
-     serverNotice(LocalUser::SN_SIGNONOFF,
-		  String::printf((char *)Language::L_SERVNOTICE_SIGNON,
-				 (char const *)user->getNickname(),
-				 (char const *)user->getUsername(),
-				 (char const *)user->getHost(),
-				 (char const *)user->getVWHost()));
+   Daemon::serverNotice(LocalUser::SN_SIGNONOFF,
+			String::printf((char *)Language::L_SERVNOTICE_SIGNON,
+				       (char const *)user->getNickname(),
+				       (char const *)user->getUsername(),
+				       (char const *)user->getHost(),
+				       (char const *)user->getVWHost()));
    
    // Create a LocalUser class for this user since they are obviouslly local
    user->local = new LocalUser(user, this);
@@ -490,7 +492,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			      Daemon::getTime(),
 			      Daemon::getTimeUsecs(),
 			      (char const *)Daemon::getTimeZone(),
-			      Daemon::getTimeFlags()));
+			      (char const *)Daemon::getTimeFlags()));
 
    // Send some stuff that clients seem to rely on being sent... (urgh)
    doLUSERS(this, user, 0);
@@ -3481,20 +3483,32 @@ void irc2userHandler::parseREHASH(irc2userHandler *handler, StringTokens *tokens
 
 
 /* parseRESTART
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original 28/10/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::parseRESTART(irc2userHandler *handler, StringTokens *tokens)
 {
-   handler->sendNumeric(999, ":Oops, sorry, havn't coded this yet :(");
+   // Restart.. eek
+   Daemon::restart(handler, handler->user);
 }
 
 
-/* parseSERVLIST
+/* parseSERVLIST - List services visible and on-line
  * Original , Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::parseSERVLIST(irc2userHandler *handler, StringTokens *tokens)
 {
-   handler->sendNumeric(999, ":Oops, sorry, havn't coded this yet :(");
+   StringMask mask("*");
+   String type = "0";
+   
+   handler->sendNumeric(RPL_SERVLIST,
+			"ChanOP services.austnet.org * 0 1 :ChanOP service (test)");
+   handler->sendNumeric(RPL_SERVLIST,
+			"NickOP services.austnet.org * 0 1 :NickOP service (test)");
+   
+   // Send the end of services list numerics
+   handler->sendNumeric(RPL_SERVLISTEND,
+			mask.getMask() + " " + type + 
+			Language::L_RPL_SERVLISTEND);
 }
 
 

@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <time.h>
 
 #ifdef HAVE_OPENSSL
 # include <openssl/ssl.h>
@@ -61,7 +62,7 @@ namespace Daemon {
    
    struct timeval currentTime;
    String timeZone = "+0000"; // Assume GMT to start with..
-   TYPE_RPL_TIMEONSERVERIS_FLAGS timeFlags = 0;
+   String timeFlags = "";
    time_t startTime = 0;
    
 #ifdef HAVE_OPENSSL
@@ -97,133 +98,6 @@ namespace Daemon {
    
    Daemon::motd_t motd;
 };
-
-
-/* Daemon - Init the server
- * Original 11/08/01, Simon Butcher <pickle@austnet.org>
- */
-Daemon::Daemon(String const &conf)
-#ifdef HAVE_OPENSSL
-: sslContext(0)
-#endif
-{
-#ifdef DEBUG
-   cerr << "Starting new server" << endl;
-#endif
-
-   // Reset variables
-#ifdef DEBUG_EXTENDED
-   cerr << "Resetting variables & lists" << endl;
-#endif
-   configFile = conf;
-   failNicknames.clear();
-   failChannels.clear();
-   redirectChannels.clear();
-   operators.clear();
-   listens.clear();
-   connections.clear();
-   FD_ZERO(&inFDSET);
-   FD_ZERO(&outFDSET);
-   gettimeofday(&currentTime, NULL);
-   startTime = getTime();
-   server = new Server();
-   servers.clear();
-   channels.clear();
-   localChannels.clear();
-   users.clear();
-   localUsers.clear();
-   whowas.clear();
-   motd.clear();
-   
-   /* Seed the random number thingy.. this is kinda dodgey :( */
-   srand((unsigned int)getTime());
-   
-#ifdef LOG_TO_SYSLOG
-   /* Open up logging session with syslog - The reason why I chose syslog
-    * is that syslog is an easy to read format, easy to log to, and there are
-    * heaps of utilities out there to help format, strip, grep syslogs etc.
-    * Plus it also allows system administrators to centralise their logging,
-    * or do whatever the hell they want. With syslog.conf you can always
-    * control ircd messages to go to a separate file, so it's the same thing
-    * in the end really.
-    */
-# ifdef DEBUG_EXTENDED
-   cerr << "Calling syslog's openlog()" << endl;
-# endif
-   openlog(SYSLOG_IDENT, LOG_PID, LOG_DAEMON);
-   // log out first line
-# ifdef DEBUG
-   logger(String::printf("Starting %s (debugging)", getVersion),
-	  LOGPRI_INFO);
-# else
-   logger(String::printf("Starting %s", getVersion),
-	  LOGPRI_INFO);
-# endif
-#endif
-   
-#ifdef HAVE_OPENSSL
-   // Initialise the SSL stuff
-   SSL_load_error_strings();
-   SSL_library_init();
-# ifdef MUST_INIT_PRNG
-   // Init the bloody PRNG here
-#  error "Oops, cannot init the PRNG, refusing to compile a potentially insecure ircd"
-# endif
-   
-   // Fire up the method, here we allow both SSLv2 and SSLv 3, plus TLSv1
-   sslContext = SSL_CTX_new(SSLv23_method());
-   
-   // Check.
-   if (!sslContext) {
-      String reason = "Warning: SSL will not be operational: ";
-      // get openssl error?
-      logger(&reason, LOGPRI_WARNING);
-# ifndef DEBUG
-      cout << reason << endl;
-# endif
-      
-      // For our sanity, just in case.
-      sslContext = 0;
-      
-						      exit(0);
-   }
-#endif
-
-   // Fire up the extended clock information
-   checkClock();
-   
-   // Load config!
-   if (!configure(true)) {
-      logger("IRCd not started: Configuration file error", 
-	     LOGPRI_ERROR);
-      return;
-   }
-
-   /* Make sure we have actually bound to SOMETHING and are listening,
-    * else we aren't going to be very useful at all
-    */
-   if (listens.empty()) {
-      logger("IRCd not started: No listening sockets - Nobody can connect!", 
-	     LOGPRI_ERROR);
-      return;
-   }
-
-   // Add ourselves to the server list which should be completely blank
-   servers[server->hostname.toLower()] = server;
-
-   // Last message, we are obviously going to run here. Tell the caller
-   cout << "Running..." << endl;
-   
-   // Close some descriptors we will not be using
-   close(0); // stdin
-#ifndef DEBUG
-   close(1); // stdout
-   close(2); // stderr
-#endif
-   
-   // We are ready to go, go into normal running stage
-   stage = STAGE_NORMAL;
-}
 
 
 /* ~Daemon - Deinit the server
@@ -294,6 +168,137 @@ Daemon::~Daemon(void)
    
    // Other stuff to delete
    delete server;
+}
+
+
+/* init - Init the server
+ * Original 11/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Daemon::init(String const &conf)
+{
+#ifdef DEBUG
+   cerr << "Initialising new server" << endl;
+#endif
+
+   // Reset lists
+#ifdef DEBUG_EXTENDED
+   cerr << "Resetting lists" << endl;
+#endif
+   failNicknames.clear();
+   failChannels.clear();
+   redirectChannels.clear();
+   operators.clear();
+   listens.clear();
+   connections.clear();
+   FD_ZERO(&inFDSET);
+   FD_ZERO(&outFDSET);
+   servers.clear();
+   channels.clear();
+   localChannels.clear();
+   users.clear();
+   localUsers.clear();
+   whowas.clear();
+   motd.clear();
+
+   
+   // Reset variables
+#ifdef DEBUG_EXTENDED
+   cerr << "Setting up variables" << endl;
+#endif
+   configFile = conf;
+   gettimeofday(&currentTime, NULL);
+   startTime = getTime();
+   server = new Server();
+   
+   /* Seed the random number thingy.. this is kinda dodgey :( */
+   srand((unsigned int)getTime());
+   
+#ifdef LOG_TO_SYSLOG
+   /* Open up logging session with syslog - The reason why I chose syslog
+    * is that syslog is an easy to read format, easy to log to, and there are
+    * heaps of utilities out there to help format, strip, grep syslogs etc.
+    * Plus it also allows system administrators to centralise their logging,
+    * or do whatever the hell they want. With syslog.conf you can always
+    * control ircd messages to go to a separate file, so it's the same thing
+    * in the end really.
+    */
+# ifdef DEBUG_EXTENDED
+   cerr << "Calling syslog's openlog()" << endl;
+# endif
+   openlog(SYSLOG_IDENT, LOG_PID, LOG_DAEMON);
+   // log out first line
+# ifdef DEBUG
+   logger(String::printf("Starting %s (debugging)", getVersion),
+	  LOGPRI_INFO);
+# else
+   logger(String::printf("Starting %s", getVersion),
+	  LOGPRI_INFO);
+# endif
+#endif
+   
+#ifdef HAVE_OPENSSL
+   // Initialise the SSL stuff
+   SSL_load_error_strings();
+   SSL_library_init();
+# ifdef MUST_INIT_PRNG
+   // Init the bloody PRNG here
+#  error "Oops, cannot init the PRNG, refusing to compile a potentially insecure ircd"
+# endif
+   
+   // Fire up the method, here we allow both SSLv2 and SSLv 3, plus TLSv1
+   sslContext = SSL_CTX_new(SSLv23_method());
+   
+   // Check.
+   if (!sslContext) {
+      String reason = "Warning: SSL will not be operational: ";
+      // get openssl error?
+      logger(&reason, LOGPRI_WARNING);
+# ifndef DEBUG
+      cout << reason << endl;
+# endif
+      
+      // For our sanity, just in case.
+      sslContext = 0;
+      
+						      exit(0);
+   }
+#endif
+
+   // Fire up the extended clock information
+   checkClock();
+   
+   // Load config!
+   if (!configure(true)) {
+      logger("IRCd not started: Configuration file error", 
+	     LOGPRI_ERROR);
+      return false;
+   }
+
+   /* Make sure we have actually bound to SOMETHING and are listening,
+    * else we aren't going to be very useful at all
+    */
+   if (listens.empty()) {
+      logger("IRCd not started: No listening sockets - Nobody can connect!", 
+	     LOGPRI_ERROR);
+      return false;
+   }
+
+   // Add ourselves to the server list which should be completely blank
+   servers[server->hostname.toLower()] = server;
+
+   // Last message, we are obviously going to run here. Tell the caller
+   cout << "Running..." << endl;
+   
+   // Close some descriptors we will not be using
+   close(0); // stdin
+#ifndef DEBUG
+   close(1); // stdout
+   close(2); // stderr
+#endif
+   
+   // We are ready to go, go into normal running stage
+   stage = STAGE_NORMAL;
+   return true;
 }
 
 
@@ -419,28 +424,29 @@ check_connections:
  */
 void Daemon::checkClock(void)
 {
-//   TYPE_RPL_TIMEONSERVERIS_FLAGS tosiFlags = 0;
+#ifdef HAVE_TZSET_AND_FRIENDS
+   // For the timezone information to be initialised (or re-initialised)
+   tzset();
    
-   // Are we *POSSIBLY* in DST mode? This posix variable is half-accurate..
-//   if (daylight) {
-//      tosiFlags |= TIMEONSERVERFLAG_DST;
-//   }
-   
-   // Work out the timezone (this does not seem to work too well)
-//   GMTdiffEast = (timezone > 0);
-//   GMTdiffHours = (unsigned short)(timezone / 3600);
-//   GMTdiffMins = (unsigned short)((timezone % 3600) / 60);
-   
-   // Update the timezone string
-//   timeZone = String::printf("%c%02u%02u",
-//			      ((GMTdiffEast) ? '+' : '-'),
-//			      GMTdiffHours,
-//			      GMTdiffMins);
-   
-   // Update the TOSI flags
-//   timeFlags = tosiFlags;
+   // Grab the timezone string (yes, this is kind of 'inversed')
+   timeZone = String::printf("%c%02u%02u",
+			     ((timezone > 0) ? '-' : '+'),
+			     (unsigned short)(timezone / -3600),
+			     (unsigned short)((timezone % -3600) / 60));
 
+   // Work out the time flags...
+   timeFlags = "";
    
+   // If we are in day light savings mode, toggle on the DST flag
+   if (daylight) {
+      timeFlags = "d"; // first flag, we do not need to add it
+   }
+   
+   // Problems occured during time collection?
+//   if (false) {
+//      timeFlags = timeFlags + "e";
+//   }
+#endif
 }
 
 
@@ -463,6 +469,11 @@ void Daemon::rehash(Handler *handler, User *user)
 		   String::printf((char *)Language::L_SERVNOTICE_CMD_REHASH,
 				  ((char const *)
 				   user->nickname)));
+   } else {
+      // Send out a server broadcast notifying of the rehash
+      serverNotice(LocalUser::SN_HOUSEKEEPING,
+		   String::printf((char *)Language::L_SERVNOTICE_CMD_REHASH,
+				  "Signal SIGHUP"));
    }
 
    // Check the extended clock information (hey, you never know!)
@@ -473,6 +484,14 @@ void Daemon::rehash(Handler *handler, User *user)
    
    // Reload the configuration file(s)
    configure();
+}
+
+
+/* restart - Rehash the server
+ * Original , Simon Butcher <pickle@austnet.org>
+ */
+void Daemon::restart(Handler *handler, User *user)
+{
 }
 
 

@@ -28,12 +28,6 @@
 class Daemon;
 
 
-// This is for the RPL_RIMEONSERVERIS reply. Only one byte, as you can see
-typedef unsigned char TYPE_RPL_TIMEONSERVERIS_FLAGS;
-# define TIMEONSERVERFLAG_DST		0x01	// Daylight Saving Time
-# define TIMEONSERVERFLAG_BADCLOCKZONE	0x02	// Bad clock or zone (inaccuracy)
-
-
 // Phew, finally onto our local header files!
 # include "user.h"
 # include "connection.h"
@@ -155,8 +149,7 @@ class Daemon {
    
    static struct timeval currentTime;		// Current time
    static String timeZone;			// Local timezone string (TOSI)
-   static TYPE_RPL_TIMEONSERVERIS_FLAGS
-     timeFlags;					// TOSI flags
+   static String timeFlags;			// TOSI flags
    static time_t startTime;			// Time the server started
 
 # ifdef HAVE_OPENSSL
@@ -164,6 +157,9 @@ class Daemon {
 # endif
    
    static Server *server;			// Our server record
+
+
+   Daemon(void) {};				// Constructor - cannot be run!
 
    static void configComplain(bool, 
 			      String const &);	// Configuration complaints
@@ -216,9 +212,10 @@ class Daemon {
    static motd_t motd;				// The cached MOTD
    
  public:
-   Daemon(String const &);			// Class constructor
    ~Daemon(void);				// Class destructor
 
+   static bool init(String const &);		// Initialise the daemon
+   
    // Do we have a network name?
    static bool haveNetworkName(void)
      {
@@ -249,7 +246,8 @@ class Daemon {
 	return timeZone;
      };
 
-   static unsigned char getTimeFlags(void)
+   // Get time on server flags
+   static String getTimeFlags(void)
      {
 	return timeFlags;
      };
@@ -269,7 +267,8 @@ class Daemon {
    static void logger(String const &, 
 		      int = LOGPRI_NOTICE);	// Log a string of text
 
-   static void rehash(Handler *, User *);	// Rehash
+   static void rehash(Handler *, User *);	// Rehash the server
+   static void restart(Handler *, User *);	// Restart the server
 
    static String makeISUPPORT(void);		// Make an ISUPPORT string
    

@@ -18,7 +18,7 @@ char const *Channel::modeStr =
 char const *Channel::modeParamStr = 
   "bdehIkloOv";
 char const *Channel::prefixStr = 
-  "(ohv)@%+";
+  "(-ohv).@%+";
 struct Channel::modeTableStruct const Channel::modeTable[] = {
      { 'a',	M_ANONYMOUS,		false,	false,	true,
 	Channel::toggleModeANONYMOUS 

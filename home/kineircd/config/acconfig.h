@@ -453,9 +453,13 @@
 # undef HAVE_PROTOCOL_IRC2USER
 # undef HAVE_PROTOCOL_P13SERVER
 # undef HAVE_PROTOCOL_P14SERVER
+
+  
+/* Define if the function tzset() and variables timezone and daylight exist */
+# undef HAVE_TZSET_AND_FRIENDS
   
 
-/* Define it the C++ compiler has STL (Standard Template Library) support */
+/* Define if the C++ compiler has STL (Standard Template Library) support */
 # undef HAVE_CXX_STL
 
   

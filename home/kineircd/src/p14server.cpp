@@ -10,6 +10,7 @@
 // Functions table (from P14_Notes)
 struct p14serverHandler::functionTableStruct const 
   p14serverHandler::functionsTable[] = {
+       { '0',	0 },			// SERVICE (broadcast)
        { 'a',	0 },			// ADMIN (remote)
        { 'A',	0 },			// AWAY
        { 'b',	0 },			// NOTICE (to broadcast mask)

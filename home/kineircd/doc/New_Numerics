@@ -1,50 +1,4 @@
 
-Added ISUPPORT things
----------------------
-
-  ACCEPT=<number>
- -----------------
-  This details the number of entries allowed on an ACCEPT list, and also
- shows that the +g/ACCEPT command combination are available.
- 
- eg. ACCEPT=100
-   Up to 100 nicknames on the ACCEPT list are allowed
-
-
-  LANGUAGE=<max langs>,<entry>,<entry>...
- -------------------
-  This shows that the LANGUAGE command is available for changing the
- language of the replies, and details the languages available. One language
- entry should be surrounded by brackets to show it is the 'default', otherwise
- the first language on the list should be presumed the default. Language names
- are those identical to those defined by the ISO-639-(1/2), and associated
- additions by the IANA. Note that ISO-639-1 is more preferred as it followed
- other internet standards set out by the IANA. 
- See http://www.loc.gov/standards/iso639-2/bibcodes.html for a list of codes.
-  The 'max langs' field shows how many langauges may be selected at once. The
- LANGUAGE command supports more than one language being specified, both to
- find the best language available but for WHOIS information to show what
- languages a person can speak.
-  The language 'i-default' should always be assumed and the server is to
- read 'i-default' as the specified default language. This can aid in more
- simplistic clients, or those who do not read ISUPPORT.
-  The special language 'none' is ALWAYS supported, but will never be listed,
- and never shown in the WHOIS information output, but is a magic keyword to
- tell the server no superfluous numeric text should be outputted. Really smart
- clients can use this to lower bandwidth consumption if they generate their
- own responces or handle their own language code. This can be overwritten
- due to preferences (eg. setting en,none,fr when the server supports en will
- select en, not none. setting none,en,fr will work around this and is proper)
- 
- eg. LANGUAGE=6,de,(en),fr,i-klingon
-   Show that german, english, french and for the star-trek fans 'klingon' are
-  available. English is the default, and therefore i-default is the same as 
-  'eng'. Six languages may be selected at once for the WHOIS output.
- 
- 
- 
-
-
 Added numerics
 --------------
 
@@ -260,10 +214,12 @@ _______________________________________________________________________________
       and is also easy to read, and parse a-like. For example, GMT would be
       either +0000 or -0000, Melbourne Australia would be +1000, US Eastern
       Time would be -0500, Kathmandu would be +0545 etc etc.
-      Flags are a byte - a bitmask. Currently the following bits have meaning:
-        0 - Day-light-saving time (in some zones this be inaccurate or defunct)
-	1 - Time may not match real time in zone (a bad clock or zone setting)
-      eg. a value of 3 means it is day-light-saving time, but the given time
+      The flags are a line of characters to make it easier to parse and
+      scaleability issues. The characters should be considered case sensitive.
+      Currently the following are defined:
+       'd' - Day-light-saving time
+       'e' - Time may not match real time in zone (a bad clock or zone setting)
+      eg. "db" means it is day-light-saving time, but the given time
       may not be an accurate representation of the real time in this timezone.
 
 

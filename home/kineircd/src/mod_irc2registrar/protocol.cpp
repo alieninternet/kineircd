@@ -40,10 +40,15 @@ struct registerHandler::functionTableStruct const
 registerHandler::registerHandler(Connection *c)
 : Handler(c),
   password(""),
+#ifdef ALLOW_CLIENT_CONNECTIONS
   nickname(""),
+#endif
   username(""),
   hostname(c->socket->getRemoteAddressStr()),
   realname(""),
+#ifdef ALLOW_SERVICE_CONNECTIONS
+  distribution(""),
+#endif
 #ifdef USER_CONNECTION_PINGPONG
   pingpong(""),
   gotPong(false),
@@ -161,23 +166,24 @@ void registerHandler::parseLine(String const &line)
       Handler *newHandler = 0;
       
       switch (regmode) {
-       case USER:
+#ifdef ALLOW_CLIENT_CONNECTIONS
+       case CLIENT:
 	 if (nickname.length() &&
-#ifdef USER_CONNECTION_PINGPONG
+# ifdef USER_CONNECTION_PINGPONG
 	     gotPong &&
-#endif
+# endif
 	     realname.length()) {
 	    // Check if we need to find a password here!!!
 	    if (password.length()) {
 	       // something here.
-#ifndef PASSIVE_REGISTRATION      	 
+# ifndef PASSIVE_REGISTRATION      	 
 	       sendNumeric(ERR_PASSWDMISMATCH, 0, 
 			   Language::L_ERR_PASSWDMISMATCH);
-#endif
-#ifdef DEBUG_EXTENDED
+# endif
+# ifdef DEBUG_EXTENDED
 	       debug("Invalid password, terminating!");
-#endif
-
+# endif
+	       
 	       // wrong password, bye bye
 	       getConnection()->goodbye();
 	       return;
@@ -185,13 +191,13 @@ void registerHandler::parseLine(String const &line)
 	    
 	    // Check if we are not full up on clients at the moment
 	    if (getConnection()->socket->getFD() > MAX_FD_NO_MORE_USERS) {
-#ifndef PASSIVE_REGISTRATION      	 
+# ifndef PASSIVE_REGISTRATION      	 
 	       sendNumeric(ERR_SERVERTOOFULL, 0, 
 			   Language::L_ERR_SERVERTOOFULL);
-#endif
-#ifdef DEBUG
+# endif
+# ifdef DEBUG
 	       debug("Server is too full, no more clients!");
-#endif
+# endif
 	       getConnection()->goodbye();
 	       return;
 	    }
@@ -201,22 +207,24 @@ void registerHandler::parseLine(String const &line)
 				  User::makeVWorld(hostname), realname,
 				  Daemon::getTime(),
 				  Daemon::myServer());
-
+	    
 	    // Set up the connection name
 	    getConnection()->name = &user->nickname;
-
+	    
 	    // Create the new handler for this user
 	    newHandler = new irc2userHandler(getConnection(), user, modes);
 	 }
 	 break;
+#endif
+#ifdef ALLOW_SERVER_CONNECTIONS
        case SERVER:
 	 // We MUST have a password before hitting here.
 	 if (password.length()) {
 	    // Check the password here.
 	    if (false) {
-#ifdef DEBUG
+# ifdef DEBUG
 	       debug("Invalid password, terminating!");
-#endif
+# endif
 	       getConnection()->goodbye();
 	       return;
 	    }
@@ -227,9 +235,9 @@ void registerHandler::parseLine(String const &line)
 	    
 	    // Check if we got it
 	    if (!server) {
-#ifdef DEBUG_EXTENDED
+# ifdef DEBUG_EXTENDED
 	       debug("Server not in list; Adding...");
-#endif
+# endif
 	       // Create a new server
 	       server = new Server(username, realname, 1);
 	       
@@ -238,62 +246,87 @@ void registerHandler::parseLine(String const &line)
 	    } else {
 	       // Check if this server is already connected here
 	       if (server->isLocal()) {
-#ifdef DEBUG
+# ifdef DEBUG
 		  debug(String::printf("Server %s is already connected!",
 				       (char const *)username));
-#endif
+# endif
 		  getConnection()->goodbye();
 	       }
-#ifdef DEBUG
+# ifdef DEBUG
 	       else {
 		  debug("Server already in list, fixing local handler...");
 	       }
-#endif
+# endif
 	    }
 	    
 	    // Okay, try to find a direct link to the handler they need
 	    switch (protocol) {
-#ifdef HAVE_PROTOCOL_P13SERVER
+# ifdef HAVE_PROTOCOL_P13SERVER
 	     case 13: // P13
 	       // Create the new handler for this user
 	       newHandler = new p13serverHandler(getConnection(), server,
 						 startStamp, linkStamp);
 	       break;
-#endif
-#ifdef HAVE_PROTOCOL_P14SERVER
+# endif
+# ifdef HAVE_PROTOCOL_P14SERVER
 	     case 14: // P14
 //	       newHandler = new p14serverHandler();
 	       break;
-#endif
+# endif
 	     default: // Unknown protocol, terminate connection
-#ifdef DEBUG
+# ifdef DEBUG
 	       debug(String::printf("Unsupported protocol (%d), terminating!",
 				    protocol));
-#endif
+# endif
 	       getConnection()->goodbye();
 	       return;
 	    }
 	    
 	    // Set up the connection name
 	    getConnection()->name = &server->hostname;
-
+	    
 	    // Fix server handler pointer
 	    if (!server->resetHandler(newHandler)) {
-#ifdef DEBUG
+# ifdef DEBUG
 	       debug("Server is already connected locally - woops!!");
-#endif
+# endif
 	       getConnection()->goodbye();
 	       return;
 	    }
 	 } else {
 	    // Dodgey connection, no password...
-#ifdef DEBUG_EXTENDED
+# ifdef DEBUG_EXTENDED
 	    debug("No password, terminating!");
-#endif
+# endif
 	    getConnection()->goodbye();
 	    return;
 	 }
 	 break;
+#endif
+#ifdef ALLOW_SERVICE_CONNECTIONS
+       case SERVICE:
+	 // We MUST have a password before hitting here.
+	 if (password.length()) {
+	    // Check the password here.
+	    if (false) {
+# ifdef DEBUG
+	       debug("Invalid password, terminating!");
+# endif
+	       getConnection()->goodbye();
+	       return;
+	    }
+	    
+	    // stuff here!
+	 } else {
+	    // Dodgey connection, no password...
+# ifdef DEBUG_EXTENDED
+	    debug("No password, terminating!");
+# endif
+	    getConnection()->goodbye();
+	    return;
+	 }
+	 break;
+#endif
        default:
 	 // Nothing to do here.
 	 return;
@@ -338,7 +371,7 @@ void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
    for (String ability = tokens->nextToken(); ability.length();
 	ability = tokens->nextToken()) {
 #ifdef DEBUG_EXTENDED
-      debug(String::printf(" -=>   Ability: %s",
+      debug(String::printf(" -=>     Ability: %s",
 			   (char const *)ability));
 #endif
    }
@@ -375,6 +408,15 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
       return;
    }
  
+   // Check that the nickname is not used by a service (from service list)
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   
    // Check for nicks that are not allowed here (from config)
    String reason = Daemon::failedNickname(nick);
    if (reason.length()) {
@@ -404,7 +446,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    // If we got here, the nick was ok - allow it
    handler->nickname = nick;
 #ifdef DEBUG_EXTENDED
-   debug(String::printf(" -=>       Nick: %s",
+   debug(String::printf(" -=>         Nick: %s",
 			(char const *)nick));
 #endif
    
@@ -447,7 +489,7 @@ void registerHandler::parsePASS(registerHandler *handler, StringTokens *tokens)
    handler->password = tokens->nextColonToken();
    
 #ifdef DEBUG_EXTENDED
-   debug(String::printf(" -=>   Password: %s",
+   debug(String::printf(" -=>     Password: %s",
 			(char const *)handler->password));
 #endif
 }
@@ -522,18 +564,18 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
    
 # ifdef DEBUG_EXTENDED
    // Send what we got to the debugging output
-   debug(String::printf(" -=>     Server: %s",
+   debug(String::printf(" -=>       Server: %s",
 			(char const *)handler->username));
-   debug(String::printf(" -=>       Hops: %d",
+   debug(String::printf(" -=>         Hops: %d",
 			hops));
-   debug(String::printf(" -=> startStamp: %lu",
+   debug(String::printf(" -=>   startStamp: %lu",
 			handler->startStamp));
-   debug(String::printf(" -=>  linkStamp: %lu (My time is %lu)",
+   debug(String::printf(" -=>    linkStamp: %lu (My time is %lu)",
 			handler->linkStamp,
 			Daemon::getTime()));
-   debug(String::printf(" -=>   Protocol: %d",
+   debug(String::printf(" -=>     Protocol: %d",
 			handler->protocol));
-   debug(String::printf(" -=>       Name: %s",
+   debug(String::printf(" -=>         Name: %s",
 			(char const *)handler->realname));
 # endif
    
@@ -547,6 +589,91 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
       handler->getConnection()->goodbye();
       return;
    }
+   
+   // Set the registration mode
+   handler->regmode = SERVER;
+}
+#endif
+
+
+#ifdef ALLOW_SERVICE_CONNECTIONS
+/* parseSERVICE
+ * Original 28/10/01, Simon Butcher <pickle@austnet.org>
+ */
+void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *tokens)
+{
+# ifdef STRICT_REGISTRATIONS
+   // Make sure this connection has not already been given a registration mode
+   if (handler->regmode > IN_PROGRESS) {
+#  ifdef PASSIVE_REGISTRATION      	 
+      handler->getConnection()->goodbye();
+#  else
+      handler->sendNumeric(ERR_ALREADYREGISTERED, 0,
+			   Language::L_ERR_ALREADYREGISTERED);
+      handler->getConnection()->goodbye();
+#  endif
+      return;
+   }
+# endif
+   
+   // Check there are enough tokens
+   if (!(tokens->countTokens() >= 7)) {
+# ifdef PASSIVE_REGISTRATION      	 
+      handler->getConnection()->goodbye();
+# else
+      handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
+			   String("SERVICE") + Language::L_ERR_NEEDMOREPARAMS);
+# endif
+      return;
+   }
+
+   // Grab the service name (nickname/whatever)
+   String name = tokens->nextToken();
+
+   // Firstly, make sure the nickname is within acceptable limits (size/chars)
+   if (!User::okName(name)) {
+#ifdef PASSIVE_REGISTRATION      	 
+      handler->getConnection()->goodbye();
+#else
+      handler->sendNumeric(ERR_ERRONEUSNICKNAME, 0,
+			   name + Language::L_ERR_ERRONEUSNICKNAME);
+#endif
+      return;
+   }
+
+   // Make sure that the nickname is on the service list
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   
+   // Ok, that name should be ok
+   handler->username = name;
+ 
+   // Rip out the rest of the variables
+   String res1 = tokens->nextToken(); // ignored.. (RFC-2812: reserved)
+   handler->distribution = tokens->nextToken();
+   String type = tokens->nextToken(); // ignored.. (RFC-2812: type)
+   String res2 = tokens->nextToken(); // ignored (RFC-2812: reserved)
+   handler->realname = tokens->nextColonToken().subString(0, MAXLEN_REALNAME);
+   
+# ifdef DEBUG_EXTENDED
+   // Send what we got to the debugging output
+   debug(String::printf(" -=>      Service: %s",
+			(char const *)handler->username));
+   debug(String::printf(" -=> (reserved 1): %s",
+			(char const *)res1));
+   debug(String::printf(" -=> Distribution: %s",
+			(char const *)handler->distribution));
+   debug(String::printf(" -=>       (type): %s",
+			(char const *)type));
+   debug(String::printf(" -=> (reserved 2): %s",
+			(char const *)res1));
+   debug(String::printf(" -=>  Information: %s",
+			(char const *)handler->realname));
+# endif
    
    // Set the registration mode
    handler->regmode = SERVER;
@@ -585,23 +712,23 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
       return;
    }
    
-   // Rip the command apart - the new RFCs do not do things this way..
+   // Rip the command apart
    handler->username = tokens->nextToken();
    handler->modes = tokens->nextToken();
-   (void)tokens->nextToken(); // We ignore this one.
+   (void)tokens->nextToken(); // We ignore this one, we will get our own host
    handler->realname = tokens->nextColonToken().subString(0, MAXLEN_REALNAME);
 
 # ifdef DEBUG_EXTENDED
    // Output what we got for debugging purposes
-   debug(String::printf(" -=>       User: %s",
+   debug(String::printf(" -=>         User: %s",
 			(char const *)handler->username));
-   debug(String::printf(" -=>      Modes: %s",
+   debug(String::printf(" -=>        Modes: %s",
 			(char const *)handler->modes));
-   debug(String::printf(" -=>   Realname: %s",
+   debug(String::printf(" -=>     Realname: %s",
 			(char const *)handler->realname));
 # endif
    
    // Set the registration mode
-   handler->regmode = USER;
+   handler->regmode = CLIENT;
 }
 #endif

@@ -6,6 +6,7 @@
 # define __UTILS_H_
 
 # include <stdlib.h>
+# include <netinet/in.h>
 
 # include "str.h"
 
@@ -16,6 +17,9 @@
 
 // Utility class
 class Utils {
+ private:
+   Utils(void) {};				// Constructor (cannot be run)
+   
  public:
 // utils.cc
    static String baseXStr(unsigned long, 

@@ -220,6 +220,34 @@ AC_CACHE_CHECK([default select() file fd_set bit-size],
  ])
 AC_DEFINE_UNQUOTED(SELECT_FDSET_NUMFDS, $austhex_cv_sys_fdset_numfds)
 
+AC_CACHE_CHECK([for tzset() and timezone/daytime variables],
+ austhex_cv_sys_tzset_and_friends,[
+  AC_LANG_CPLUSPLUS
+  AC_TRY_RUN([
+	#include <time.h>
+
+	int main(void)
+	{
+	   // Fire up the timezone information
+	   tzset();
+	   
+	   // Try to assign some variables
+	   long mytz = timezone;
+	   int mydst = daylight;
+	   
+	   // If that worked, woopee
+	   exit(0);
+	}
+   ],[
+     austhex_cv_sys_tzset_and_friends=yes
+   ],[
+     austhex_cv_sys_tzset_and_friends=no
+   ])
+ ])
+if test "$austhex_cv_sys_tzset_and_friends" = "yes"; then
+  AC_DEFINE(HAVE_TZSET_AND_FRIENDS) 
+fi
+
 AC_CACHE_SAVE
 
 

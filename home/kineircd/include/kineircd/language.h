@@ -171,6 +171,9 @@ class Language {
    static char const *L_RPL_NOTACCEPTED;
    static char const *L_RPL_ACCEPTNOTICE;
    static char const *L_RPL_ACCEPTED;
+
+   // SERVLIST replies
+   static char const *L_RPL_SERVLISTEND;
    
    // SILENCE list replies
    static char const *L_RPL_ENDOFSILELIST;
