@@ -26,6 +26,7 @@
 
 # include <string>
 # include <aisutil/time.h>
+# include <aisutil/peakcount.h>
 # include <kineircd/name.h>
 
 namespace Kine {
@@ -39,6 +40,24 @@ namespace Kine {
     * all an \e entity of some form.
     */
    class Entity {
+    public:
+      /*!
+       * \brief The entity counter type
+       * 
+       * A simple method of counting the number of active entities within
+       * another entity (i.e. the number of User entities connected to a
+       * Server entity, or even a Network entity) whilst remembering the peak
+       * number of entities.
+       * 
+       * This solution was already provided by a template within the
+       * LibAISutil package (yay) so we simply use that instead of reinventing
+       * it.
+       * 
+       * By using the \c unsigned \c int type, we're simply capitalising on
+       * the system's natural ability to easily manage its own word size.
+       */
+      typedef AIS::Util::PeakCount < unsigned int > counter_type;
+      
     private:
       /*!
        * \brief The time this entity was originally created

@@ -880,6 +880,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSERVLIST)
       nameMask = "*";
    }
    
+# warning "The registry can no longer be iterated over!"
    // Iterate over the list of services
    for (Registry::services_type::const_iterator it = 
 	registry().getServices().begin();
@@ -1524,6 +1525,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHO)
    // The number of lines left before we truncate the output
    unsigned int linesLeft = 100; // <=- configuration variable?!
    
+# warning "The registry can no longer be iterated over!"
    // Run over the user list
    for (Registry::users_type::const_iterator it = registry().getUsers().begin();
 	it != registry().getUsers().end();

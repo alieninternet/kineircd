@@ -46,7 +46,6 @@
 #include <kineircd/myserver.h>
 #include <kineircd/mynetwork.h>
 #include <kineircd/daemon.h>
-#include <kineircd/registry.h>
 #include <kineircd/version.h>
 #include <kineircd/localuser.h>
 
@@ -163,9 +162,9 @@ void Protocol::doLUSERS(const User& user)
 {
    sendNumeric(user, Numerics::RPL_LUSERCLIENT,
 	       GETLANG(irc2_RPL_LUSERCLIENT,
-		       Languages::toWideStr(String::convert(registry().getUserCount())),
-		       Languages::toWideStr(String::convert(registry().getServiceCount())),
-		       Languages::toWideStr(String::convert(registry().getServerCount()))));
+		       Languages::toWideStr(String::convert(myNetwork().getUserCount())),
+		       Languages::toWideStr(String::convert(myNetwork().getServiceCount())),
+		       Languages::toWideStr(String::convert(myNetwork().getServerCount()))));
    sendNumeric(user, Numerics::RPL_LUSEROP,
 	       0,
 	       GETLANG(irc2_RPL_LUSEROP));
@@ -176,20 +175,20 @@ void Protocol::doLUSERS(const User& user)
 	       0,
 	       GETLANG(irc2_RPL_LUSERUNKNOWN));
    sendNumeric(user, Numerics::RPL_LUSERCHANNELS,
-	       registry().getChannelCount(),
+	       myNetwork().getChannelCount(),
 	       GETLANG(irc2_RPL_LUSERCHANNELS));
    sendNumeric(user, Numerics::RPL_LUSERME,
 	       GETLANG(irc2_RPL_LUSERME,
-		       Languages::toWideStr(String::convert(registry().getLocalClientCount())),
-		       Languages::toWideStr(String::convert(registry().getLocalServerCount()))));
+		       Languages::toWideStr(String::convert(myServer().getClientCount())),
+		       Languages::toWideStr(String::convert(myServer().getServerCount()))));
    sendNumeric(user, Numerics::RPL_LOCALUSERS,
 	       GETLANG(irc2_RPL_LOCALUSERS,
-		       Languages::toWideStr(String::convert(registry().getLocalUserCount())),
-		       Languages::toWideStr(String::convert(registry().getLocalUserCountPeak()))));
+		       Languages::toWideStr(String::convert(myServer().getUserCount().getValue())),
+		       Languages::toWideStr(String::convert(myServer().getUserCount().getPeak()))));
    sendNumeric(user, Numerics::RPL_GLOBALUSERS,
 	       GETLANG(irc2_RPL_GLOBALUSERS,
-		       Languages::toWideStr(String::convert(registry().getUserCount())),
-		       Languages::toWideStr(String::convert(registry().getUserCountPeak()))));
+		       Languages::toWideStr(String::convert(myNetwork().getUserCount())),
+		       Languages::toWideStr(String::convert(myNetwork().getUserCount().getPeak))));
 }
 
 

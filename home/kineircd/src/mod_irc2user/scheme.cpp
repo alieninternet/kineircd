@@ -27,7 +27,7 @@
 
 #include <libguile.h>
 #include <aisutil/string/string.h>
-#include <kineircd/registry.h>
+#include <kineircd/mynetwork.h>
 
 #include "mod_irc2user/scheme.h"
 #include "mod_irc2user/schemesubs.h"
@@ -79,7 +79,7 @@ SCM Scheme::Subs::scm_isChannelOnline_p(SCM name)
    // Make sure the given parameter is a string
    if (SCM_STRINGP(name) != 0) {
       // Check if the channel is online
-      if (Kine::registry().findChannel(SCM_STRING_CHARS(name)) != 0) {
+      if (Kine::myNetwork().findChannel(SCM_STRING_CHARS(name)) != 0) {
 	 // We found the channel, return #t
 	 return SCM_BOOL_T;
       }
@@ -110,7 +110,7 @@ SCM Scheme::Subs::scm_isClientOnline_p(SCM name)
    // Make sure the given parameter is a string
    if (SCM_STRINGP(name) != 0) {
       // Check if the client is online
-      if (Kine::registry().findClient(SCM_STRING_CHARS(name)) != 0) {
+      if (Kine::myNetwork().findClient(SCM_STRING_CHARS(name)) != 0) {
 	 // We found the client, return #t
 	 return SCM_BOOL_T;
       }
@@ -134,7 +134,7 @@ SCM Scheme::Subs::scm_isNetworkOnline_p(SCM name)
    // Make sure the given parameter is a string
    if (SCM_STRINGP(name) != 0) {
       // Check if the network is online
-      if (Kine::registry().findNetwork(SCM_STRING_CHARS(name)) != 0) {
+      if (Kine::myNetwork().findNetwork(SCM_STRING_CHARS(name)) != 0) {
 	 // We found the network, return #t
 	 return SCM_BOOL_T;
       }
@@ -158,7 +158,7 @@ SCM Scheme::Subs::scm_isServerOnline_p(SCM name)
    // Make sure the given parameter is a string
    if (SCM_STRINGP(name) != 0) {
       // Check if the server is online
-      if (Kine::registry().findServer(SCM_STRING_CHARS(name)) != 0) {
+      if (Kine::myNetwork().findServer(SCM_STRING_CHARS(name)) != 0) {
 	 // We found the server, return #t
 	 return SCM_BOOL_T;
       }
@@ -182,7 +182,7 @@ SCM Scheme::Subs::scm_isServiceOnline_p(SCM name)
    // Make sure the given parameter is a string
    if (SCM_STRINGP(name) != 0) {
       // Check if the service is online
-      if (Kine::registry().findService(SCM_STRING_CHARS(name)) != 0) {
+      if (Kine::myNetwork().findService(SCM_STRING_CHARS(name)) != 0) {
 	 // We found the service, return #t
 	 return SCM_BOOL_T;
       }
@@ -206,7 +206,7 @@ SCM Scheme::Subs::scm_isUserOnline_p(SCM name)
    // Make sure the given parameter is a string
    if (SCM_STRINGP(name) != 0) {
       // Check if the user is online
-      if (Kine::registry().findUser(SCM_STRING_CHARS(name)) != 0) {
+      if (Kine::myNetwork().findUser(SCM_STRING_CHARS(name)) != 0) {
 	 // We found the user, return #t
 	 return SCM_BOOL_T;
       }

@@ -203,7 +203,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/protocolinfo.h \
 	include/kineircd/receiver.h \
 	include/kineircd/registrant.h \
-	include/kineircd/registry.h \
 	include/kineircd/sender.h \
 	include/kineircd/server.h \
 	include/kineircd/service.h \

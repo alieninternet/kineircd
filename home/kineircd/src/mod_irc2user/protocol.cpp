@@ -31,7 +31,6 @@
 #endif
 #include <kineircd/config.h>
 #include <kineircd/languages.h>
-#include <kineircd/registry.h>
 #include <kineircd/version.h>
 #include <aisutil/string/string.h>
 
@@ -70,7 +69,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    (void)changeOutputCharset("UTF-8");
 #endif
 
-   // Attempt to register the user to the registry..
+   // Attempt to register the user..
    if (myServer().addUser(user) != Error::NO_ERROR) {
       // Deal with this in a nice way.. but we don't, yet, do we?
       return;

@@ -42,6 +42,11 @@ namespace Kine {
     */
    class MyNetwork : public Network {
     private:
+      counter_type userCount;			//! Total users online
+      counter_type serviceCount;		//! Total services online
+      counter_type serverCount;			//! Total servers linked
+      counter_type networkCount;		//! Total networks linked
+      
       //! Our instance
       static MyNetwork* instance;
       
@@ -152,6 +157,78 @@ namespace Kine {
        *    The channel could not be found
        */
       Channel* const findChannel(const Channel::Name& name) const;
+
+
+      //@{
+      /*!
+       * \brief Return the number of clients on this network
+       * 
+       * Note that this is simply a combination of the number (and peak
+       * number) of users and services on this network.
+       * 
+       * \return The number of clients on this network
+       */
+      const counter_type getClientCount(void) const
+	{ return (getUserCount() + getServiceCount()); };
+      
+      /*!
+       * \brief Return the number of users on this network
+       * 
+       * \return The number of users on this network
+       */
+      const counter_type& getUserCount(void) const
+	{ return userCount; };
+      
+      /*!
+       * \brief Return the number of services on this network
+       *
+       * \return The number of services on this network
+       */
+      const counter_type& getServiceCount(void) const
+	{ return serviceCount; };
+      
+      /*!
+       * \brief Return the number of servers on this network
+       * 
+       * \return The number of servers on this network
+       */
+      const counter_type& getServerCount(void) const
+	{ return serverCount; };
+
+      /*!
+       * \brief Return the number of networks on this network
+       * 
+       * \return The number of networks on this network
+       */
+      const counter_type& getNetworkCount(void) const
+	{ return networkCount; };
+      
+      /*! 
+       * \brief Return the known number of channels available on this network
+       * 
+       * This returns the total number of channels visible to us on this
+       * network. This will include all the channels of all distribution
+       * scopes to the best we can, but obviously cannot include all channels
+       * available on the network because some of them are very tightly
+       * scoped (i.e. locally scoped channels which only exist on one server,
+       * and are not on MyServer()).
+       *
+       * Likewise, the number of channels may also not reflect what another
+       * server will believe, considering there may be channels scoped
+       * locally on this server which are not distributed to other servers.
+       * 
+       * It may seem odd, but internetwork-scoped channels (which span
+       * multiple networks) are also included in this count. Ultimately, this
+       * count contains the number of channels \e on this network, and not the
+       * number of channels \e within this network. Therefore, this count
+       * represents the number of channels \e available to the network as
+       * seen by this part of the network.
+       * 
+       * \return The number of channels on this network (as visible)
+       */
+      const counter_type getChannelCount(void) const
+	{ return counter_type(); /* fix me - zeroed for now */ };
+      //@}
    }; // class MyNetwork
 
 

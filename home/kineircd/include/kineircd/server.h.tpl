@@ -79,6 +79,10 @@ namespace Kine {
     private:
       const Name hostname;			// The server's hostname
       modes_type modes;				// Server modes set
+
+      counter_type userCount;			//! Number of users held
+      counter_type serviceCount;		//! Number of services held
+      counter_type serverCount;			//! Number of servers held
       
     protected:
       //! Constructor
@@ -121,7 +125,38 @@ namespace Kine {
       const bool isHiddenFrom(const User& user) const
 	{ return isModeSet(Mode::HIDDEN); };
       
+
+      //@{
+      /*!
+       * \brief Return the number of clients connected to this server
+       * 
+       */
+      const counter_type getClientCount(void) const
+	{ return (getUserCount() + getServiceCount()); };
+
+      /*!
+       * \brief Return the number of users connected to this server
+       * 
+       */
+      const counter_type& getUserCount(void) const
+	{ return userCount; };
       
+      /*!
+       * \brief Return the number of services connected to this server
+       * 
+       */
+      const counter_type& getServiceCount(void) const
+	{ return serviceCount; };
+      
+      /*!
+       * \brief Return the number of servers connected locally
+       * 
+       */
+      const counter_type& getServerCount(void) const
+	{ return serverCount; };
+      //@}
+
+
       //@{
       //! Request administrative information from this server
       virtual const Error::error_type requestAdminInfo(const Client& who)
