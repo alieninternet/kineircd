@@ -113,7 +113,7 @@ _______________________________________________________________________________
 
 
 679 - RPL_TIMEONSERVERIS
-      <seconds> [<microseconds> | '*'] <timezone> <flags> :time according to server
+      <seconds> [<nanoseconds> | '0'] <timezone> <flags> :time according to server
       
       This is the time on the server, used to allow clients to receive a more
       precise time from the server and is sent upon client connection. This
@@ -125,10 +125,9 @@ _______________________________________________________________________________
       cannot be relied on), and allow for the user's perspective of the time
       to be altered to reflect the user's actual timezone.
       Seconds are the number of seconds since Jan 1, 00:00 UTC, 1970. 
-      Microseconds are obviously the number of microseconds past the second.
-      Remember that this is in microseconds and not milliseconds! If you want
-      milliseconds (ala old 'C' ftime()) you will need to do a small division
-      calculation. This can be safely ignored anyway, it is just here for
+      Nanoseconds are obviously the number of nanoseconds past the second.
+      Remember that this is in nanoseconds and not milliseconds or
+      microseconds! This can be safely ignored anyway, it is just here for
       completeness :) Insane client writers could use it to sync a clock
       'accurately' to an IRC server, as long as network lag was calculated,
       but it was not intended to be a replacement for nettime/ntp.
