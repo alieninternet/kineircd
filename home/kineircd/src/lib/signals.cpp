@@ -29,8 +29,8 @@
 #include <functional>
 
 #include "kineircd/signals.h"
-#include "kineircd/debug.h"
 #include "kineircd/exit.h"
+#include "debug.h"
 
 using namespace Kine;
 

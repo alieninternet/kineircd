@@ -31,8 +31,8 @@
 # warning "Compiling syslog logging feature without syslog support!!"
 #endif
 
-#include "kineircd/debug.h"
 #include "logger/syslog.h"
+#include "debug.h"
 
 using namespace Kine;
 

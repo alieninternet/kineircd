@@ -36,9 +36,9 @@ extern "C" {
 }
 
 #include "kineircd/daemon.h"
-#include "kineircd/debug.h"
 #include "kineircd/exit.h"
 #include "kineircd/version.h"
+#include "debug.h"
 
 using namespace Kine;
 

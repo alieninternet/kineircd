@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_DEBUG_H_
-# define _INCLUDE_KINEIRCD_DEBUG_H_ 1
+#ifndef _SRC_LIB_DEBUG_H_
+# define _SRC_LIB_DEBUG_H_ 1
 
 # include "kineircd/kineircdconf.h"
 
@@ -38,4 +38,4 @@
 extern void debug(Kine::String const &);
    
 # endif // DEBUG
-#endif // _INCLUDE_KINEIRCD_DEBUG_H_
+#endif // _SRC_LIB_DEBUG_H_

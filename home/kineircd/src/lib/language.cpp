@@ -35,9 +35,10 @@ extern "C" {
 }
    
 #include "kineircd/lang.h"
-#include "kineircd/debug.h"
+#include "debug.h"
 
 using namespace Kine;
+
 
 namespace Kine {
    namespace Lang {

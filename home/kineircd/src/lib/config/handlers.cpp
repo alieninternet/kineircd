@@ -26,11 +26,12 @@
 #include <cctype>
 
 #include "kineircd/config.h"
-#include "kineircd/debug.h"
 #include "modules/descriptor.h"
 #include "config/defaults.h"
+#include "debug.h"
 
 using namespace Kine;
+
 
 namespace Config {
 

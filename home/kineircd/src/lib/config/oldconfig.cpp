@@ -28,7 +28,8 @@
 #include <stack>
 
 #include "kineircd/config.h"
-#include "kineircd/debug.h"
+#include "debug.h"
+
 
 // Are we compiled properly?
 #ifndef KINE_OLD_CONFIG_SUBPARSER

@@ -25,10 +25,10 @@
 
 #include "kineircd/register.h"
 #include "kineircd/daemon.h"
-#include "kineircd/debug.h"
 #include "kineircd/numerics.h"
 #include "kineircd/lang.h"
 #include "kineircd/utils.h"
+#include "debug.h"
 
 using namespace Kine;
 

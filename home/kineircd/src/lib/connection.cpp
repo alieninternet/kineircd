@@ -28,9 +28,9 @@
 
 #include "kineircd/connection.h"
 #include "kineircd/register.h"
-#include "kineircd/debug.h"
 #include "kineircd/daemon.h"
 #include "kineircd/utils.h"
+#include "debug.h"
 
 using namespace Kine;
 
