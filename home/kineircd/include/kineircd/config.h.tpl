@@ -70,7 +70,7 @@ namespace Kine {
 #ifdef [+condition+][+ENDIF+][+(pushPrefix (get "name"))+]
 
       // '[+(getPrefix)+]' section...
-      static const AISutil::ConfigParser::defTable_type def[+(getPrefix)+];[+output-variables+][+(popPrefix)+][+IF .condition+]
+      static const AISutil::ConfigParser::defTable_type defClass[+(getPrefix)+];[+output-variables+][+(popPrefix)+][+IF .condition+]
 #endif[+ENDIF+][+ENDIF+][+IF .hasVariable+][+IF .varType+][+IF .condition+]
 #ifdef [+condition+][+ENDIF+]
       [+varType+] def[+output-variable-name+];[+IF .condition+]

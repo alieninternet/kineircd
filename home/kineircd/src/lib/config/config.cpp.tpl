@@ -44,7 +44,7 @@ using namespace Kine;
 	  [+IF .varHandler+]&[+varHandler+][+ELSE+]0[+ENDIF+],
 	  [+IF .definition+]&defClass[+(getPrefix)+][+name+][+ELSE+]0[+ENDIF+],
 	  [+IF .classHandler+]&[+classHandler+][+ELSE+]0[+ENDIF+]
-     },[+IF condition+]
+     },[+IF .condition+]
 #endif // [+condition+][+ENDIF+][+ENDFOR+]
      {
 	0, 0,
