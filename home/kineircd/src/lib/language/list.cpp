@@ -112,7 +112,7 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 		isdigit(data[i + 1]) &&
 		isdigit(data[i + 2])) {
 	       // Convert the three digits found from octal to a long
-	       long escape = strtol(data.substr(i, 3).c_str(), NULL, 8);
+	       long value = strtol(data.substr(i, 3).c_str(), NULL, 8);
 	       
 	       /* Skip over the next numbers.. (the last will be skipped
 		* automatically, so we only need to skip two of them)
@@ -120,18 +120,13 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	       i += 2;
 	       
 	       // Is this a naughty char?
-	       if ((escape > 0) &&
-		   (escape < 256) &&
-		   (escape != '\n') &&
-		   (escape != '\r') &&
-		   (escape != '\v') &&
-		   (escape != '\b') &&
-		   ((escape < '\021') || (escape > '\024'))) {
-		  line += char(escape);
+	       if ((value > 0) && (value < 256)) {
+		  // Replace our 'current' character for further analysis..
+		  data[i] = char(value);
+	       } else {
+		  // Force this character to be replaced
+		  data[i] = 0;
 	       }
-	       
-	       // Next!!
-	       continue;
 	    } else {
 	       /* Something else, a single character tells us what to do then!
 		* If this gets larger, reconsider using 512 byte table..
@@ -139,7 +134,7 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	       switch (data[i]) {
 		case '\\': // A slash..
 		  break; // just skip to the bit where we copy the char flat
-
+		  
 		case 'b': // Bold
 		  line += '\002';
 		  continue;
@@ -175,7 +170,36 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	    }
 	 }
 	    
-	 // If we got here, nothing special happened.. just copy the char over
+	 // Make sure this character isn't going to cause problems..
+	 if ((data[i] == 0) ||
+	     (data[i] == '\b') ||
+	     (data[i] == '\n') ||
+	     (data[i] == '\v') ||
+	     (data[i] == '\f') ||
+	     (data[i] == '\r') ||
+	     ((data[i] >= '\021') && (data[i] <= '\024'))) {
+	    /* Okay, it's a naughty char, we must replace it. Following
+	     * Unicode specifications, here we replace the bad character
+	     * with the "replacement" character (U0FFFD, or 0xEFBFBD in 
+	     * UTF-8).
+	     * 
+	     * Since all these bad chars are in the control char region,
+	     * I have considered up-converting them to their symbols, so
+	     * they'd appear like a dumb terminal in debug mode. It would
+	     * be fairly easy, since all you need to do is add 0x2400 and
+	     * convert it to UTF-8. I reconsidered this, since the
+	     * characters aren't supposed to be there anyway, so a single,
+	     * boring, replacement character does the job.
+	     * 
+	     * Then again, in the time it's taken me to write out my
+	     * reasoning, I probably could have written, and tested an
+	     * upconverter.. Hmm.. :)
+	     */
+	    line += "\357\277\275";
+	    continue;
+	 } 
+	    
+	 // If we got here, just copy the char over
 	 line += data[i];
       }
 
