@@ -41,6 +41,29 @@ Notes on the format of these files
 
 
 
+Editing language files
+----------------------
+
+  Since language files are to be written in UTF-8, they should be edited in an
+ appropriate editor. Notepad for Windows XP has UTF-8 support, but is hopeless
+ at providing the level of support required (and likes to mess around with the
+ file in ugly ways).
+ 
+  Ignore how the file is represented in most programs. Chances are, characters
+ turn into all sorts of funny looking things purely because that program is
+ incapable of supporting the UTF-8 character set, or presumes it's another
+ character set (Windows Notepad makes such presumptions).
+ 
+  My recommendation is to use UniRed. From what I've seen, it's stable. It
+ doesn't fart around with the file format, and supports UTF-8 perfectly. You
+ can download it from http://sf.net/projects/unired
+ 
+  When using UniRed, that make sure when you open a language file you select
+ "UTF-8" from the "Charset" drop-down box. Other Unicode/UTF-8 editors will
+ have a similar requirement.
+
+
+
 Control tags
 ------------
 
