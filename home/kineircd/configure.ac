@@ -557,6 +557,30 @@ AC_ARG_ENABLE(pid-file,[
    AC_MSG_RESULT([no (default)])
  ])
 
+AC_MSG_CHECKING([security-conscious parameter])
+AC_ARG_ENABLE(security-conscious,
+              AC_HELP_STRING([--disable-security-conscious],
+                             [Disable security conscious checking]),
+ [
+   if test "$enableval" \!= "yes"; then
+     AC_MSG_RESULT(yes)
+     kineircd_test_security_conscious=yes
+   else
+     kineircd_test_security_conscious=no
+   fi
+ ],[
+   AC_MSG_RESULT([yes (default)])
+   kineircd_test_security_conscious=yes
+ ])
+if test "$kineircd_test_security_conscious" = "yes"; then
+  AC_DEFINE(KINE_SECURITY_CONSCIOUS, 1,
+            [Define if you want to have anal security checks upon start-up])
+fi
+
+
+dnl
+dnl Which transports do we require (this should move to libais)
+dnl
 AC_MSG_CHECKING([transport-tcp-ipv4 parameter])
 AC_ARG_ENABLE(transport-tcp-ipv4,[
   --enable-transport-tcp-ipv4                (Default is enabled)
