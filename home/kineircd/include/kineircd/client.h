@@ -1,7 +1,7 @@
 /* $Id$
  * 
- * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002,2003 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003,2004 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003,2004 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -26,6 +26,7 @@
 
 # include <string>
 # include <map>
+# include <cstdlib>
 # include <aisutil/time.h>
 
 # include <kineircd/name.h>
@@ -87,6 +88,10 @@ namespace Kine {
       channels_type channels;
       
     protected:
+      // Constructor - Do not use this!
+      explicit Client(void)
+	{ abort(); };
+      
       /*!
        * \brief Constructor
        *
@@ -178,7 +183,7 @@ namespace Kine {
        *    The client isn't registered, and therefore (obviously) cannot
        *    leave the network and be deregistered
        */
-      const Error::error_type quit(void);
+      virtual const Error::error_type quit(void) = 0;
       
       /*!
        * \brief Quit, with a \p reason
@@ -192,7 +197,7 @@ namespace Kine {
        *    client is expecting the quit to continue, you should crop the
        *    \p reason text prior to calling this.
        */
-      const Error::error_type quit(const std::wstring reason);
+      virtual const Error::error_type quit(const std::wstring reason) = 0;
 
 
       /*!

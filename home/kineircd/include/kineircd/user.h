@@ -1,7 +1,7 @@
 /* $Id$
  * 
- * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002,2003 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003,2004 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003,2004 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -25,6 +25,7 @@
 # define _INCLUDE_KINEIRCD_USER_H_ 1
 
 # include <string>
+# include <cstdlib>
 # include <kineircd/client.h>
 # include <kineircd/errors.h>
 # include <kineircd/languages.h>
@@ -38,7 +39,7 @@ namespace Kine {
       
     private:
       //!< User's nickname
-      Client::Name nickname;
+      User::Name nickname;
       
       //! The User's username
       std::wstring username;
@@ -56,8 +57,12 @@ namespace Kine {
       Languages::languageDataList_type languageList;
 
     protected:
+      // Constructor - Do not use this!
+      explicit User(void)
+	{ abort(); };
+      
       //! Constructor
-      explicit User(const Client::Name& _nickname,
+      explicit User(const User::Name& _nickname,
 		    const std::wstring& _username,
 		    const std::wstring& _hostname,
 		    const AIS::Util::Time& _signonTime)
@@ -77,7 +82,7 @@ namespace Kine {
       //! An event called whenever a user's nickname has been changed (maybe us)
       virtual void doEventNicknameChange(const Denizen& changer,
 					 const User& user,
-					 const Client::Name& newNickname)
+					 const User::Name& newNickname)
 	{};
       
       //! An event called when a message was successfully sent to us
@@ -163,8 +168,8 @@ namespace Kine {
 
       //! Set this user as 'here' (or in IRC terminology, 'UNAWAY' ;)
       const Error::error_type setHere(const Denizen& changer); 
- 
-      
+
+
       //! Return the user's staff status
       const std::string& getStaffStatus(void) const
 	{ return staffStatus; };
@@ -205,8 +210,11 @@ namespace Kine {
 		   Receiver::Directivity());
 
 
-      // Decamp
-      void decamp(void) {};
+      // Quit, with no reason
+      const Error::error_type quit(void);
+      
+      // Quit, with a reason
+      const Error::error_type quit(const std::wstring reason);
    }; // class User
 }; // namespace Kine
 

@@ -1,7 +1,7 @@
 /* $Id$
  * 
- * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2003 KineIRCd Development Team
+ * Copyright (c) 2003,2004 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2003,2004 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -28,13 +28,14 @@
 # include <aisutil/time.h>
 # include <kineircd/localuser.h>
 # include <kineircd/registrant.h>
+# include <kineircd/libirc2/user.h>
 
 namespace Kine {
    namespace mod_irc2user {
       class Protocol;
       
       // A locally connected user, using the IRC-2 server <-> user protocol
-      class User : public Kine::LocalUser {
+      class User : public Kine::LibIRC2::User, public Kine::LocalUser {
        private:
 	 Protocol& protocol;			// Connection we are bound to
 	 
@@ -68,9 +69,11 @@ namespace Kine {
 	 explicit User(Protocol& _protocol,
 		       const Kine::Registrant& _registrant,
 		       const std::wstring& _hostname)
-	   : LocalUser(_registrant.name,
-		       _registrant.username,
-		       _hostname),
+	   : Kine::User(_registrant.name,
+			_registrant.username,
+			_hostname,
+			Kine::daemon().getTime()),
+	     Kine::LibIRC2::User(reinterpret_cast<Kine::LibIRC2::Output&>(_protocol)),
 	     protocol(_protocol),
 	     description(_registrant.description),
 	     lastAwake(Kine::daemon().getTime())

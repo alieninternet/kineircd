@@ -29,23 +29,19 @@
 # include <kineircd/myserver.h>
 
 namespace Kine {
-   //! A local user (refinement of a user - a user connected to this server)
-   class LocalUser : public User {
+   //! A local user (extension of a user - a user connected to this server)
+   class LocalUser : virtual public User {
     protected:
       //! Constructor
-      explicit LocalUser(const Client::Name& _nickname,
-			 const std::wstring& _username,
-			 const std::wstring& _hostname,
-			 const AIS::Util::Time& _signonTime =
-			 daemon().getTime())
-	: User(_nickname, _username, _hostname, _signonTime)
-        {};
+      explicit LocalUser(void)
+	{};
       
     public:
       //! Destructor
       virtual ~LocalUser(void)
 	{};
-      
+
+
       //! Return the last time this user was known to be not idle
       virtual const AIS::Util::Time& getLastAwake(void) const = 0;
 
