@@ -137,18 +137,18 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "RPL_BOUNCE";
+   numeric	= "10";
+   format	= "<hostname> <port> :<info>";
+   comment	= "Sent to the client to redirect it to another server. Also "
+                  "known as RPL_REDIR";
+};
+
+irc2numerics = {
    name		= "RPL_STATMEM";
    numeric	= "10";
    origin	= "ircu";
    obsolete	= "yes";
-};
-
-irc2numerics = {
-   name		= "RPL_REDIR";
-   numeric	= "10";
-   format	= "<hostname> <port> :<info>";
-   comment	= "Sent to the client to redirect it to another server. Also "
-                  "known as RPL_BOUNCE (IRCnet)";
 };
 
 irc2numerics = {
