@@ -30,10 +30,6 @@
 
 # include "kineircd/str.h"
 
-// Macros
-# define octStr(x)	baseXStr(x, 8)		// Convert decimal to octal
-# define hexStr(x)	baseXStr(x, 16)		// Convert decimal to hex
-
 
 namespace Kine {
    
@@ -50,8 +46,10 @@ namespace Kine {
       // utils.cpp
       static String baseXStr(unsigned long, 
 			     const base_type);	// Convert to another base
+      
       static bool toBool(const String &,
 			 const bool);		// Convert a string to boolean
+      
       static StringMask 
 	fixToIdentityMask(const String &);	// Fix a mask into an id mask
       
