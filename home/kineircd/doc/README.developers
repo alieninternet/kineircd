@@ -1,23 +1,27 @@
 This is a notes file for developers, outlining debugging, compilation
-and code formatting information.
+and code formatting information. Last updated 200203252022
 
 
-* Keep in mind two debugging defines, DEBUG and DEBUG_EXTENDED.
-  DEBUG is to be used for information that won't happen often, and
-  DEBUG_EXTENDED is for information that might occur a lot or have a lot
+* Keep in mind three debugging defines, DEBUG, DEBUG_EXTENDED and DEBUG_PSYCHO.
+  DEBUG is to be used for information that won't send via debug() often and
+  for *ALL* assert() calls or pointer/sanity checks. DEBUG_EXTENDED is for 
+  information sent via debug() that might occur frequently or have a fair bit
   of output (such as entering certain functions, or outputting
-  configuration information etc). In debugging it is often more
-  convenient to have the limited amount of information with just 'DEBUG'
-  defined, especially in the case of a server that is linked to a
-  network (eg. heaps of users/channels, lots of extended data).
+  configuration information etc). DEBUG_PSYCHO is for procedures which will
+  output a LOT of data, usually in something which has an enormous amount of
+  iterations, but it is also used for anything which is heavily technical
+  such as an enormous dump of pointer values etc. In debugging it is often more
+  convenient to have the limited amount of information with just 'DEBUG' or
+  'DEBUG_EXTENDED' defined, especially in the case of a server that is linked 
+  to a network (eg. heaps of users/channels, lots of debug() data).
 
-  This being the case, I usually configure my package with CXXFLAGS set
-  to "-g -O0 -Wall -Wstrict-prototypes -DDEBUG" and sometimes also add
-  in -DDEBUG_EXTENDED.
+  Debug can be configured on the ./configure line - see ./configure --help.
+
 
 * I do not take ANY compilation warnings lightly, and I'd hope you wouldn't 
   either. Please do not update to the cvs repository until the warning has 
-  been resolved, unless it's minor and will be resolved later.
+  been resolved, unless it's minor and WILL be resolved later.
+
 
 * If you update something that effects your system that could be
   operating system specific, make sure you update the autoconf files and
@@ -25,21 +29,27 @@ and code formatting information.
   that I am running autoconf 2.52, and you should also grab a copy from
   the gnu website if you're to edit this.
 
+
 * C++ files are '.cpp', this is because the '.cpp' extension is more widely
   recognisable than the runner up '.cc' extension.
+
 
 * In general, comment heavily! While this may seem stupid or a waste
   of time, one of the worse things that can happen is you look at your
   code at a later date (which may seem 100% straight forward now) and
   forget why something is done a specific way. Make sure the comment
   will help others and yourself at a later day
+
    eg. This is useless:
     foo(bah, baz, qux & 1);  // Call foo; Force bit 1 of qux to be set
+    
    eg. This is better:
     foo(bah, baz, qux & 1);  // Call foo; Bit 1 must be set - bah is local
 
+
 * Use C++ comments for one-liners (see above)
-    
+
+
 * Use standard C comments for multiple line comments. For neatness,
   follow the following style.
    eg.
@@ -48,29 +58,37 @@ and code formatting information.
      * anything but a null pointer is given to it - damn :(
      */
 
+
 * Do not rush and ignore comments - Comments should be read all the
   time, and changed if necessary. Old, stale comments are obviously
   useless and a potential hinderance in the future. I will get cranky
   if comments are stale, and I expect you to get cranky with me if my
   comments are stale too!
-  
+
+
 * Top of the .h/.cpp files should be in this format:
      /* <filename>
       * <description>
       * [<optional warnings>]
+      *
+      * <License info>
       */
+      
    eg.
      /* foo.h
       * Foo routines for the bar-baz engine
       */
   
+  
 * Always head up header files with an #ifndef to avoid conflicting
   reiterations cropping up in a compilation (yes, this is important!). Say
-  the header file is foo.h, you should wrap the code with this:
+  the header file is foo.h, you should wrap the code in this manner:
+  
    #ifndef __FOO_H
    # define __FOO_H
      <stuff>
    #endif
+
 
 * Include header files we use with quotation marks, and system/library
   header files (external stuff we do not deal with) with right-angle brackets.
@@ -81,47 +99,60 @@ and code formatting information.
      #include <openssl/openssl.h>
     but
      #include "daemon.h"
-  
+
+
 * Following the head of the .cpp files, included files should be
   included in this order:
-    1. config.h
-    2. system wide header files
+    1. autoconf.h
+    2. system wide header files (C++ STYLE!!)
     3. Header file relating to the content of this file
     4. Other local header files.
    eg.
-    #include "config.h"
+    #include "autoconf.h"
     
-    #include <stdlib.h>
-    #include <errno.h>
+    #include <cstdlib>
+    #include <cerrno>
+    #include <list>
     
     #include "foo.h"
+    #include "str.h"
     #include "user.h"
     #include "server.h"
-  
-* Explicitly specify braces.
+
+
+* Explicitly specify braces/parenthesis for EVERYTHING.
    eg. Use:
+   
     for (unsigned char i = 10; i--;) {
        foo(i, 10, 16);
     }
+    
    rather than:
+   
     for (unsigned char i = 10; i--;)
       foo(i, 10, 16);
    Also, use:
+   
     if (((x == y) && (x > 12)) || !z) {
        // Stuff here
     }
+    
    .. or if it's a long or overly complex logical statement, split it up:
+   
     if ((((x == y) && (x > 12)) ||
          (!z && (z < 1234) && (((foo / fooMax) * 100) < 50))) &&
 	((bar[0] != '\a') || ((baz ^ qux) & quux))) {
        // Rediculously hard to get to statement here :)
     }
+    
   I have been accused of "over-using" my braces, but I believe it makes it
   especially easier to read, and easier to confirm an operation. Consider
   the following:
+  
     if (x == y || x > 12 && !z || baz ^ qux & quux) {
        // Stuff.
     }
+    
   The logic is less apparent and bloody hard to follow. Also consider this:
     if (x == y)
       if (x++) {
@@ -129,8 +160,10 @@ and code formatting information.
       } else {
          // Other stuff..
       }
+      
   Lucky for us, we know by the formatting that the else is attached to the
   if (x++) statement. Does the compiler? How dissimilar is the above to this:
+  
     if (x == y)
       if (x++) {
          // Stuff
@@ -138,6 +171,7 @@ and code formatting information.
     else {
        // Other stuff..
     }
+    
   It's not - the compiler does not look at our formatting! Also it makes it
   easier in the future to quickly insert something, say an if-statement with
   one line of code in there, could be without set braces, but what if you
@@ -145,26 +179,30 @@ and code formatting information.
   (something that annoys me if I have to bother with it and I'm in a rush,
    or doing a copy 'n' paste job for a debug() function..)
 
+
 * Try to keep code within 80-columns. Naturally this cannot always be
-  done, but there are methods you can keep in mind, most importantly
-  that (const char *)'s can be continued on another line. 
-   eg.
+  done, but try :) Remember you can extend character arrays:
+
     foo("This is an example of how you can extend "
         "data onto multiple lines easily");
-	
+
+
 * Only use integers of the size you *NEED*. Leave word length
   optimisations, if any, to the compiler. Eg. 'int i' is a waste if
   you are only using a value between -3 and 3.
-  
+
+
 * Use unsigned if at all possible. Say you use a value between 0-20000,
-  unsigned short would be most appropriate. Many systems handle unsigned
-  integers faster than signed integers, especially the common systems
-  the daemon will be compiled for.
+  unsigned short would be most appropriate. Most systems handle unsigned
+  integers faster than signed integers.
+
 
 * Define functions *when you need them*. C++ allows for variables to be
   defined anywhere within the body, so USE IT! Note: this may require you to
   add hooks (set braces) within a switch's case statement to avoid compiler
-  confusion. This is mainly a readability issue more than anything.
+  confusion. This is mainly a readability issue more than anything, but
+  with newer compilers can allow for some optimisations.
+
 
 * Start functions off with a multiline comment as a header. This is
   important! It is also just as important to use your cvs name. This
@@ -176,13 +214,15 @@ and code formatting information.
      * [Note: <notes/warnings>]
      * [Need: <what the function needs for completion>]
      */
+     
   Note that the 'your name' field can either be your cvs name, or your
   real name. If it is not your cvs name, then you can optionally shove
   your cvs name in the 'cvsname' bit, but it's not necessary.
-  Also, make sure the date is in DD/MM/YY format!!
+  Also, make sure the date is in DD/MM/YYYY format!!
+  
    eg.
     /* foo - Process bah and baz using the parameters in the qux bitmask
-     * Original 23/04/00 simonb
+     * Original 23/04/2000 simonb
      */
     void foo(int bah, int baz, unsigned short qux)
     {
@@ -191,28 +231,33 @@ and code formatting information.
     
    eg. With a modification
     /* foo - Process bah and baz using the parameters in the qux bitmask
-     * Original 23/04/00 simonb
+     * Original 23/04/2000 simonb
      * 03/01/01 scottm - Added sanity check on baz, should not be < -50
      */
+     
    eg. With a note (I ran out of creativity here, hehe)
     /* foo - Process bah and baz using the parameters in the qux bitmask
-     * Original 23/04/00 simonb
+     * Original 23/04/2000 simonb
      * 03/01/01 scottm - Added sanity check on baz, should not be < -50
      * Note: Bit 1 of qux must be set if foo is representing a local
      *       connection number.
      */
+     
    If you are just placing an empty function/method in the code, or whatever
    is in the function is useless/temporary, you may omit the date:
+   
     /* foo - Process bah and baz using the parameters in the qux bitmask
      * Original  simonb
      */
+
 
 * If you make any extensions to the protocols, DOCUMENT IT! There is
   *no excuse* --  everything must be kept so that you don't have to go
   through the hell I did upon starting this. New numerics should go into
   the doc/New_Numerics file, new modes should go into doc/modes,
   modifications to version.cpp should go into doc/VersionChars.
-  
+
+
 * Just on numerics, austnet use numerics for replies between 800 and
   899 (inclusive). However, check the numerics.h file as it is the
   'ultimate' registry (compiled from other ircd's). If you find another
@@ -226,9 +271,10 @@ and code formatting information.
   numerics, including numerics that are undefined that suddenly do things 
   like open up channel list boxes or crash the client. Try old and new 
   versions of mirc too. If you have ANY doubt, please contact me
-  (pickle@austnet.org) since I've spent quite some time dealing with
-  numeric conflicts.
-  
+  (pickle@austnet.org) since I've spent quite some time (too much IMHO) 
+  dealing with numeric conflicts.
+
+
 * CVS is VERY important. It is not just a tool to keep the source code
   in sync with all the other developers, but it is also important to
   keep track of what is being done to the code, and also what can be
@@ -240,14 +286,16 @@ and code formatting information.
   CVS out there, but there's also a heap of useless documentation that
   will confuse you more than anything.
   
-* Before you update, make the code. Make sure it compiles, make sure
+  
+* Before you update, 'make' the code. Make sure it compiles, make sure
   it runs, make sure whatever you did doesn't make the server die when
   it's run (by all permutations too, if possible). Make sure there
-  aren't any warnings during compilation, or if you can't help them, make 
-  sure there aren't any major warnings at least. This will save other
-  people time so that they will be able to keep updating often and not
-  have to work around or fix bugs they don't need to fix.
-  
+  aren't any warnings during compilation (see above re: compilation warnings)
+  This will save other people time so that they will be able to keep 
+  updating often and not have to work around or fix bugs they shouldn't have
+  to fix.
+
+
 * It is very highly recommended (read: People will get angry if you don't
   do this) that you are subscribed to the development list (dev@austnet.org). 
   CVS commits notifications and logs are sent there so that the entire 
@@ -258,14 +306,17 @@ and code formatting information.
   to be disconnected" is a much better explanation of what was going on, and 
   will help in future revision tracking.
   
+  
 * Do not code text or special values in directly at the source unless
   there is no other choice. Instead, to make it easier for future 
-  updates, use language.h or another method that allows it to be easily 
-  updated.
-  
+  updates, use defines or a tag in the languages text or another method 
+  which allows it to be VERY easily updated by other developers, or if
+  necessary for the users too.
+
+
 * Alphabetical ordering of items in the Makefile and various tables,
-  classes, source code etc in the source code is not an accident. It
-  helps find things faster in the code, and makes it look neater. I
+  classes, source code etc in the source code is not a coincidence. It
+  helps find/edit things faster in the code, and makes it look neater. I
   would hope that you would also place new items in alphabetical order
   with the other items too to help find things faster in the future. The
   only exception is that in the makefile the file lists are in
@@ -273,11 +324,15 @@ and code formatting information.
   which is specified last. If this didn't make sense, read the next
   point.
   
+  
 * If you're new to the code, READ it. You will not be given a task to do
   until you have read the code through and know how things are done.
-  Even read the makefiles, headers, documentation! This is important!!
+  Even read the makefiles, headers, documentation. Ask questions, don't be
+  shy. This is important, and if you don't you will make people angry when
+  you stumble!
 
-* Prematurely break loops if you can.
+
+* Prematurely break loops if you can for optimisation reasons.
    eg.
     void foo(char const *bah) {
        for (int i = 1000; i--;) {
@@ -286,41 +341,57 @@ and code formatting information.
 	   case 'b':
 	   case 'c':
 	      baz(foo, i);
-	      continue; // No need to run to the end only to jmp back
+	      continue; // No need to run to the end only to jump back
 	   case 'd':
 	      return; // We are done here, no more checks needed
           }
        }
     }
 
-* It's ok to leave out a 'default:' case in a switch if it is not necessary
+
+* It's ok to leave out a 'default:' case in a switch if it is not necessary.
   (as with the above example)
 
-* Because of the way C++ handles 'const' differently to how C uses
-  'const', my use (which seems more logical to me) is like this:
-    char const *foo;
-  rather than:
-    const char *foo;
+
+* Write *EVERYTHING* in ENGLISH, not AMERICAN ENGLISH, nor any other language.
+  This is because English is more standard and world-wide than American
+  English, and if you're reading this now then you can obviously understand
+  it! :) Naturally, language files for other languages are exempt from this
+  else it would obviously negate the purpose..
+    
     
 * Please follow these naming conventions:
-   * Class names should begin with a capital letter
-     eg. class Foo;
+   * Class names should begin with a capital letter to differentiate them
+     from other standards:
+      eg. 
+        class Foo;
+	
    * Variable/Function names should begin with a lower case letter
-     eg. int foo;
+      eg. 
+        int foo;
+	
    * With the exception for short run-on words (hostname, nickname etc),
      variables/class names with multiple words should have each new word
      start with a capital letter.
-     eg. class FooBarBazQux;
-     eg. int fooBarBazQux;
-   * Types should be all lower-case, words separated by underscores
-     ('_') and end with the suffix '_t'. The type should be
-     descriptive if it defines something special (like a list/map etc).
-     eg. typedef unsigned short foo_bar_t;
-     eg. typedef list <FooBahBazQux> quux_corge_grault_list_t;
-   * With the exception of simple utilitarian variables (int x, y, i;
-     for loops etc), variables and class names should be descriptive!
-       string h; // this is totally useless, what is a?
+      eg.
+        class FooBarBazQux;
+        int fooBarBazQux;
+	
+   * Types should be all lower-case and end with the suffix '_type'. 
+     The type should be descriptive if it defines something special, such
+     as anything other than base types.
+      eg.
+       typedef unsigned short fooBar_type;
+       typedef list <FooBahBazQux> quuxCorgeGraultList_type;
+       
+   * With the exception of simple utilitarian variables (int x, y, i, j etc
+     for very local variables), variables and class names should be 
+     descriptive! This is for self-documentation purposes. It also saves
+     you writing a comment for something with is obvious.
+      eg.
+       string h; // this is totally useless, what is it?
        string hostname; // Much better, we know what this is instantly
+       
    * Use typedefs rather than hard-coding in lists/maps whereever
      possible. This, and the point above, help write 'self-documented' 
      code which future developers (or just developers other than
@@ -328,17 +399,7 @@ and code formatting information.
      source code trying to work out WTF you're doing with these weird
      variables.
 
-* Finally -- Use a code formatter (will give a file for use soon)
-   * Three spaces are used for indentation (with the exception of a few
-     instances, see examples below)
-   * Indent the second characters of pre-processor commands (#-prefixed 
-     lines) by a space per depth step
-   * Use a space before and after operators (+ - / * ^ etc etc)
-   * Use a space after if/for/while/switch etc etc
-   * Don't shift the set-braces (or hooks) onto new lines for
-     if/for/while/switch functions - this is annoying and makes things ugly
-   Examples follow (base indentation removed to avoid confusion)
-   
+
 Functions:   
 <return type> [<class name>::]<function name>(<param type> <param name>, ...)
 {
