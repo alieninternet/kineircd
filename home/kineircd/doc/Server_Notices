@@ -53,6 +53,9 @@ Char | Description/Format
   D  | Debugging notices
      | (no specific format)
      |
+  E  | Received an ERROR (or similar) from a server link
+     | <from_server> <to_server> <error message...>
+     |
   g  | G-line activation notice
      | <nick>
      |
