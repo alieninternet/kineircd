@@ -2,8 +2,8 @@
  * User class
  */
 
-#ifndef __USER_H_
-# define __USER_H_
+#ifndef __USER_H__
+# define __USER_H__
 
 # include <ctime>
 # include <map>

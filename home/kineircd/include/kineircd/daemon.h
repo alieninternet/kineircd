@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __DAEMON_H_
-# define __DAEMON_H_
+#ifndef __DAEMON_H__
+# define __DAEMON_H__
 
 # include <ctime>
 # include <sys/time.h>

@@ -26,8 +26,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __LANGTAGS_H_
-# define __LANGTAGS_H_
+#ifndef __LANGTAGS_H__
+# define __LANGTAGS_H__
 
 class LangTags {
  public:

@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __LOGGERFILE_H_
-# define __LOGGERFILE_H_
+#ifndef __LOGGERFILE_H__
+# define __LOGGERFILE_H__
 
 # include <fstream>
 

@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __LOGGER_H_
-# define __LOGGER_H_
+#ifndef __LOGGER_H__
+# define __LOGGER_H__
 
 # include "autoconf.h"
 

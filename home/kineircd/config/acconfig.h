@@ -23,8 +23,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __AUTOCONF_H_
-# define __AUTOCONF_H_
+#ifndef __AUTOCONF_H__
+# define __AUTOCONF_H__
 
 
 /******************************************************************************

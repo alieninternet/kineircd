@@ -2,8 +2,8 @@
  * Operator class
  */
 
-#ifndef __OPERATOR_H_
-# define __OPERATOR_H_
+#ifndef __OPERATOR_H__
+# define __OPERATOR_H__
 
 # include "str.h"
 # include "utils.h"

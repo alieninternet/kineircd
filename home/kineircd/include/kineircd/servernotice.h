@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __SERVNOTICE_H_
-# define __SERVNOTICE_H_
+#ifndef __SERVNOTICE_H__
+# define __SERVNOTICE_H__
 
 // Locally connected user class
 class ServerNotice {

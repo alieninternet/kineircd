@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __REGISTER_H_
-# define __REGISTER_H_
+#ifndef __REGISTER_H__
+# define __REGISTER_H__
 
 # include "handler.h"
 
