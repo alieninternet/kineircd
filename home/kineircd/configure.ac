@@ -30,6 +30,7 @@ AM_INIT_AUTOMAKE([1.7 foreign no-installinfo no-installman nostdinc subdir-objec
 AC_COPYRIGHT([Portions Copyright (c) 2001,2002 KineIRCd Development Team])
 AC_PREREQ(2.57)
 AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_SRCDIR(src/libkineircd/config/config.cpp)
 AM_CONFIG_HEADER(include/autoconf.h)
 AC_REVISION([$Revision$])
 
@@ -108,11 +109,10 @@ dnl -------------------------------------------------------------------------
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CXX
+AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
-AC_CHECK_PROG(RM, rm, rm -f, del)
-AC_CHECK_PROG(LD, ld, ld)
 AC_CACHE_SAVE
 
 
@@ -250,6 +250,7 @@ dnl  Checking for header files
 dnl -------------------------------------------------------------------------
 AC_TIME_WITH_SYS_TIME
 AC_HEADER_STDC
+AC_HEADER_STDBOOL
 AC_HEADER_STAT
 AC_HEADER_TIME
 AC_HEADER_SYS_WAIT
@@ -265,6 +266,7 @@ AC_CHECK_HEADERS( \
 	syslog.h \
 	termios.h \
 	unistd.h \
+	utmpx.h \
 	arpa/inet.h \
 	netinet/in.h \
 	sys/socket.h \
@@ -277,7 +279,8 @@ AC_CACHE_SAVE
 dnl -------------------------------------------------------------------------
 dnl  Checking for libraries and specific library functions
 dnl -------------------------------------------------------------------------
-AC_CHECK_LIB(resolv, res_init)
+dnl AC_CHECK_LIB(aisutil, something????)
+AC_CHECK_LIB(opts, optionProcess)
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
 AC_FUNC_FNMATCH
@@ -292,8 +295,11 @@ AC_CHECK_FUNCS(
 	memset \
 	select \
 	socket \
+	strcasecmp \
 	strchr \
 	strerror \
+	strtol \
+	tzset \
 		)
 
 GUILE_FLAGS
