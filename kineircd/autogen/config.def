@@ -395,8 +395,8 @@ definition = {
 definition = {
    name = "Options";
    comment =
-      "This is the main options section. This is where the more important "
-      "core configuration settings for the daemon are kept.";
+      "This is the main options section. This is where the configuration "
+      "settings for the daemon are kept.";
 
    definition = {
       name = "ChGroup";
@@ -422,16 +422,6 @@ definition = {
    };
    
    definition = {
-      name = "Description";
-      hasVariable = yes;
-      varType = "AISutil::String";
-      varHandler = "varHandleString";
-      defaultValue = "\"Unconfigured server\"";
-      comment =
-         "This description appears in WHOIS messages, server listings etc.";
-   };
-
-   definition = {
       name = "EnableUsersCommand";
       hasVariable = yes;
       varType = "bool";
@@ -441,16 +431,6 @@ definition = {
          "Set this if you wish to allow users (connected to the server "
 	 "via a virtual terminal of some description) to be visible via the "
 	 "USERS command (or something similar).";
-   };
-   
-   definition = {
-      name = "Hidden";
-      hasVariable = yes;
-      varType = "bool";
-      varHandler = "varHandleBoolean";
-      defaultValue = "false";
-      comment =
-         "Setting this will hide your server from users";
    };
    
    definition = {
@@ -522,16 +502,6 @@ definition = {
 	    "you know what you're doing.";
       };
    };
-   
-   definition = {
-      name = "ServerName";
-      hasVariable = yes;
-      varType = "AISutil::String";
-      varHandler = "varHandleHostName";
-      defaultValue = "\"unconfigured.kineircd.server\"";
-      comment =
-         "This is the host name of your server";
-   };
 };
  
 definition = {
@@ -543,6 +513,43 @@ definition = {
    };
 };
   
+definition = {
+   name = "Server";
+   comment =
+      "Configuration for ourself as a server";
+   
+   definition = {
+      name = "Description";
+      hasVariable = yes;
+      varType = "AISutil::String";
+      varHandler = "varHandleString";
+      defaultValue = "\"Unconfigured server\"";
+      comment =
+         "This description appears in WHOIS messages, server listings etc.";
+   };
+
+   definition = {
+      name = "Hidden";
+      hasVariable = yes;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "false";
+      comment =
+         "Setting this will hide your server from users";
+   };
+   
+   definition = {
+      name = "Name";
+      hasVariable = yes;
+      varType = "AISutil::String";
+      varHandler = "varHandleHostName";
+      defaultValue = "\"unconfigured.kineircd.server\"";
+      comment =
+         "This is the host name of your server";
+   };
+};
+
+
 definition = {
    name = "SSL";
    hasVariable = yes;
