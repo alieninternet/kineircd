@@ -3327,6 +3327,21 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "RPL_WHOISSTAFF";
+   numeric	= "689";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   format	= ":<info>";
+   comment	= "The user is a staff member. The information may explain "
+                  "the user's job role, or simply state that they are a part "
+		  "of the network staff. Staff members are not IRC operators, "
+		  "but rather people who have special access in association "
+		  "with network services. KineIRCd uses this numeric instead "
+		  "of the existing numerics due to the overwhelming number of "
+		  "conflicts.";
+};
+
+irc2numerics = {
    name		= "RPL_WHOISLANGUAGE";
    numeric	= "690";
    origin	= "KineIRCd";
