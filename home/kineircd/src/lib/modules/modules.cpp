@@ -38,12 +38,12 @@ String Module::getVersionString(void) const
    ostringstream output;
    
    // Add the start of the string, these are required fields
-   output << basicInfo.nameShort << '-' << basicInfo.versionMajor << '.' <<
-     basicInfo.versionMinor;
+   output << basicInfo.nameShort << '-' << 
+     (int)basicInfo.versionMajor << '.' << (int)basicInfo.versionMinor;
    
    // Do we need to add the patch level?
    if (basicInfo.versionPatchLevel > 0) {
-      output << '.' << basicInfo.versionPatchLevel;
+      output << '.' << (int)basicInfo.versionPatchLevel;
    }
    
    // Do we need to add the extra version info?
