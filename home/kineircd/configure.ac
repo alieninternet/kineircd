@@ -101,7 +101,6 @@ dnl -------------------------------------------------------------------------
 dnl  Checking for programs we need
 dnl -------------------------------------------------------------------------
 AC_PROG_CC
-AC_PROG_GCC_TRADITIONAL
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
