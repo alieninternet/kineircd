@@ -126,6 +126,20 @@ definition = {
 	 "Limits for channels";
 
       definition = {
+         name = "AllowMaskLikeNames";
+         hasVariable = yes;
+         varType = "bool";
+         varHandler = "varHandleBoolean";
+         defaultValue = "false";
+         comment =
+	    "Set this if you wish to allow channel names to include mask "
+	    "characters ('*' and '?') and still remain valid. This may "
+	    "cause complications on some networks with network services, and "
+	    "it is probably safer to keep mask characters disallowed, unless "
+	    "you have a reason to allow them.";
+      };
+   
+      definition = {
 	 name = "MaxBans";
 	 hasVariable = yes;
          varType = "unsigned long";
