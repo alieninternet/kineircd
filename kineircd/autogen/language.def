@@ -812,7 +812,7 @@ tags = {
    component	= "mod_irc2user";
    data_en	= "{ <channel> | <nickname mask> | '0' }  "
                   "[ 'H' | 'I' | 'N' | 'O' | 'R' | 'S' | 'U' | 'X' ] "
-		  "[ '%' { 'C' | 'D' | 'F' | 'H' | 'I' | 'N' | 'R' | 'S' | "
+		  "[ '%%' { 'C' | 'D' | 'F' | 'H' | 'I' | 'N' | 'R' | 'S' | "
 		  "'T' | 'U' } [ ',' <query type> ] ]";
 };
 
