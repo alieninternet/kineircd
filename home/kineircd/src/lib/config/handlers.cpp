@@ -741,7 +741,7 @@ CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleModule)
 
    // Attempt to open the module
    return (dataClass.*((ModuleList ConfigData::*)dataVariable)).
-     loadModule(values.front().trim(), errString, /*false*/true);
+     loadModule(values.front().trim(), errString);
 }
 
 

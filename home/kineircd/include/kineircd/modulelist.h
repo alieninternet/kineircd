@@ -50,8 +50,7 @@ namespace Kine {
 	{ stopAll(); };
       
       // Load a module, return false if we failed (reason in 'errorReturn')
-      bool loadModule(const String &moduleFile, String &errorReturn,
-		      const bool beingConfigured);
+      bool loadModule(const String &moduleFile, String &errorReturn);
       
       // Start all modules
       void startAll(Daemon &daemon) const;

@@ -32,8 +32,7 @@ using namespace Kine;
 /* loadModule - Load a module, check it and add it to our list if it is okay
  * Original 21/07/2002 simonb
  */
-bool ModuleList::loadModule(const String &moduleFile, String &errorReturn,
-			    const bool beingConfigured)
+bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
 {
 #ifdef KINE_DEBUG_PSYCHO
    debug("ModuleList::loadModule() - Trying to load " + moduleFile);
