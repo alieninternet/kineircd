@@ -1479,5 +1479,5 @@ AC_OUTPUT([
 echo
 echo "Done!"
 echo
-echo "Type 'make' to build the package."
+echo "Type 'gmake' to build the package."
 echo
