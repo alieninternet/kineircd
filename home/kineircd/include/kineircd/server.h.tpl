@@ -27,7 +27,7 @@
 
 [+(make-header-guard "kine")+]
 
-# include <kineircd/entity.h>
+# include <kineircd/denizen.h>
 # include <kineircd/sender.h>
 # include <kineircd/user.h>
 # include <kineircd/errors.h>
@@ -36,7 +36,7 @@ namespace Kine {
    class Client;
    
    //! A server
-   class Server : public Entity, public Sender {
+   class Server : public Denizen, public Sender {
     public:
       //! Server modes type 
       typedef unsigned long modes_type;
@@ -61,7 +61,7 @@ namespace Kine {
       //! Constructor
       Server(const std::string& _hostname,
 	     const AISutil::Time& _signonTime)
-	: Entity(_signonTime),
+	: Denizen(_signonTime),
           hostname(_hostname),
 	  modes(0)
 	{};
