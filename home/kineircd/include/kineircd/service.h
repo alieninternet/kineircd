@@ -36,8 +36,10 @@ namespace Kine {
       
     protected:
       //! Constructor
-      Service(const AISutil::Time& _signonTime)
-	: Client(_signonTime),
+      Service(const std::string& _nickname,
+	      const std::string& _hostname,
+	      const AISutil::Time& _signonTime)
+	: Client(_nickname, _hostname, _signonTime),
           scopeMask("*")
 	{};
       
@@ -45,6 +47,12 @@ namespace Kine {
       //! Destructor
       virtual ~Service(void)
 	{};
+
+      
+      //! Return the user name (default to the service nickname)
+      virtual const std::string& getUsername(void) const
+	{ return getName(); };
+      
       
       //! Return the server scope mask
       const AISutil::StringMask& getScopeMask(void) const

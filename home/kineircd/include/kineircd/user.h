@@ -40,9 +40,8 @@ namespace Kine {
       static const std::string::size_type maxStaffStatusLength;
       
     private:
-      Name nickname;				//!< User's nickname
-      std::string username;			//!< User's username
-      std::string hostname;			//!< User's hostname
+      //! The User's username
+      std::string username;
       
       //! Away message. If this is empty, the user should be considered 'here'
       std::string awayMessage;
@@ -59,10 +58,8 @@ namespace Kine {
 	   const std::string& _username,
 	   const std::string& _hostname,
 	   const AISutil::Time& _signonTime)
-	: Client(_signonTime),
-	  nickname(_nickname),
-          username(_username),
-          hostname(_hostname)
+	: Client(_nickname, _hostname, _signonTime),
+          username(_username)
 	{};
 
       //! An event called if we are marked away or returning from away
@@ -83,20 +80,11 @@ namespace Kine {
 	{};
       
       
-      //! Return the users' nickname
-      const Name& getNickname(void) const
-	{ return nickname; };
-
-      
       //! Return the users' username / identd reply
       const std::string& getUsername(void) const
 	{ return username; };
 
       
-      //! Return the users' hostname
-      const std::string& getHostname(void) const
-	{ return hostname; };
-
       //! Return the virtual hostname of this user
       virtual const std::string& getVirtualHostname(void) const
 	{ return getHostname(); };

@@ -39,14 +39,21 @@ namespace Kine {
    //! An abstract class defining a client, since there are a few types
    class Client : public Denizen, public Sender, public Receiver {
     private:
+      Name nickname;				//!< Client's nickname
+      std::string hostname;			//!< Client's hostname
+      
       // The channel list for this client
       typedef std::map < std::string, Channel* const > channels_type;
       channels_type channels;
       
     protected:
       //! Constructor
-      Client(const AISutil::Time& _signonTime)
-	: Denizen(_signonTime)
+      Client(const std::string& _nickname,
+	     const std::string& _hostname,
+	     const AISutil::Time& _signonTime)
+	: Denizen(_signonTime),
+          nickname(_nickname),
+          hostname(_hostname)
 	{};
 
       //! An event called when someone (maybe us) has joined a channel
@@ -71,15 +78,20 @@ namespace Kine {
 	{};
       
       //! Return the client's nickname
-      virtual const Name& getNickname(void) const = 0;
+      const Name& getNickname(void) const
+	{ return nickname; };
 
-      //! Return the 'name'
+      //! Return the client's nickname (which is also its unique 'name')
       const std::string& getName(void) const
-	{ return getNickname(); };
+	{ return nickname; };
       
       //! Return the client's user name
       virtual const std::string& getUsername(void) const = 0;
-      
+
+      //! Return the client's hostname
+      const std::string& getHostname(void) const
+	{ return hostname; };
+
       
       //! Make a user@host string
       const std::string makeUserHostIdent(void) const
