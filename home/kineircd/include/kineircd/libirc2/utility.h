@@ -32,7 +32,9 @@ namespace Kine {
       //! IRC-2 protocol related utilities
       namespace Utility {
 	 //! Find a message's destination target based on the given string
-	 extern Receiver* const findMessageTarget(const std::string& target);
+	 extern Receiver* const
+	   findMessageTarget(const std::string& target,
+			     const bool includeServices = false);
       }; // namespace Utility
    }; // namespace LibIRC2
 }; // namespace Kine

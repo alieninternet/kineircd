@@ -58,7 +58,8 @@ using namespace Kine::LibIRC2;
  * 
  *   .. Try to stay with me :)
  */
-Kine::Receiver* const Utility::findMessageTarget(const std::string& target)
+Kine::Receiver* const Utility::findMessageTarget(const std::string& target,
+						 const bool includeServices)
 {
    // Sanity!
    if (!target.empty()) {
@@ -71,6 +72,29 @@ Kine::Receiver* const Utility::findMessageTarget(const std::string& target)
       /* Okay, then presume this is a nickname.. This is the bit
        * where it gets complicated :)
        */
+      Kine::Receiver* receiver;
+      
+      // Find a client with just the name
+      receiver = registry().findUser(target);
+
+      // After all that, did we find a user?
+      if (receiver != 0) {
+	 return receiver;
+      }
+      
+      /* If we did not find anything, and we are supposed to include services
+       * (although it is contrary to the RFC), try the same search, but on the
+       * services list
+       */
+      if (includeServices) {
+	 // Try to find the service
+	 receiver = registry().findService(target);
+	 
+	 // Did we find it?
+	 if (receiver != 0) {
+	    return receiver;
+	 }
+      }
    }
    
    // No idea, return a null pointer

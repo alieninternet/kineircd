@@ -740,7 +740,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSQUERY)
 	 if ((--targets > 0) || user.isOperator()) {
 	    // Find something of this name
 	    Receiver* const receiver =
-	      LibIRC2::Utility::findMessageTarget(target);
+	      LibIRC2::Utility::findMessageTarget(target, true);
 	    
 	    // Did we find something?
 	    if (receiver != 0) {
