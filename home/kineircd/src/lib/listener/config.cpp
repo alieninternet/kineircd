@@ -161,7 +161,8 @@ bool ListenerConfig::setupSocket(AISutil::Socket& socket,
    // Bind
    if (!socket.bind()) {
       // Delete the socket and complain
-      errString = "Unable to bind on '" + socket.getLocalAddress() + "': " +
+      errString = "Unable to bind on '" + socket.getLocalAddress() + 
+	"' port " + String::convert(socket.getLocalPort()) + ": " +
 	socket.getErrorMessage();
       delete &socket;
       return false;
@@ -452,7 +453,11 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 	 if (!lookupNames) {
 	    return false;
 	 } else {
+	    /* Increase the error count and skip to the next loop so this
+	     * broken socket does not make it any further!
+	     */
 	    ++manyErrors;
+	    continue;
 	 }
       }
       
