@@ -1,0 +1,79 @@
+/* user.cpp
+ * User and associated classes
+ */
+
+#include "config.h"
+
+#include "daemon.h"
+#include "user.h"
+#include "channel.h"
+#include "numerics.h"
+#include "language.h"
+#include "utils.h"
+#include "modes.h"
+
+
+/* getChannel - Look through our local channel list for a channel
+ * Original 15/08/01, Simon Butcher <pickle@austnet.org>
+ * Note: Minature version of what appears for the main channel list, why
+ *       we do this is for speed purposes mainly
+ */
+Channel *User::getChannel(String &channel)
+{
+   // Look for this channel
+   String chan = channel.IRCtoLower();
+   Channel *c = channels[chan];
+   
+   // Make sure we got this user
+   if (c) {
+      return c;
+   };
+   
+   // Else we gotta delete this empty record we just made and return nothing
+   channels.erase(chan);
+
+   return 0;
+}
+
+
+/* markAway - Toggle the user's away 
+ * Original 11/09/01, Simon Butcher <pickle@austnet.org
+ */
+void User::markAway(String &message)
+{
+   // Set the away message
+#ifdef DEBUG
+   if (message.length()) {
+#endif
+      awayMessage = message;
+#ifdef DEBUG
+   } else {
+      // Sanity, but we should never get here honestly...
+      debug(String::printf("Null away message on %s - very wrong!!",
+			   (char const *)nickname));
+   }
+#endif
+   
+   // Broadcast the change
+   
+}
+
+
+/* isSilencing - Check if the given user matches a mask on our silence list
+ * Original 24/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::isSilencing(User *target)
+{
+   // Run through the list to find the mask
+   for (silence_list_t::iterator it = silences.begin();
+	it != silences.end(); it++) {
+      // Check for a match on either the real or virtual world addresses
+      if (it->matches(target->getAddress()) ||
+	  it->matches(target->getVWAddress())) {
+	 return true;
+      }
+   }
+   
+   // Must not be on the list..
+   return false;
+}
