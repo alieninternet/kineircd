@@ -208,6 +208,21 @@ namespace Kine {
 		  ' ' << pf << ' ' << pg << " :" << ph << lineTerminator;
 		outputQueue.push(output.str());
 	     };
+	 template <class To, class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
+	           class Tpf, class Tpg, class Tph, class Tpi>
+	   void sendMessageFrom(const To& origin, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd, const Tpe& pe, const Tpf& pf,
+				const Tpg& pg, const Tph& ph, const Tpi& pi)
+	     {
+		std::ostringstream output;
+		output << ':' << origin << ' ' << command << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
+		  ' ' << pf << ' ' << pg << ' ' << ph << " :" << pi <<
+		  lineTerminator;
+		outputQueue.push(output.str());
+	     };
 	 
 	 // Send a message from a particular client
 	 template <class Tc>
@@ -282,6 +297,16 @@ namespace Kine {
 	     {
 		sendMessageFrom(client.makeNickUserHostIdent(),
 				command, pa, pb, pc, pd, pe, pf, pg, ph);
+	     };
+	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
+	           class Tpe, class Tpf, class Tpg, class Tph, class Tpi>
+	   void sendMessageFrom(const Client& client, const Tc& command,
+				const Tpa& pa, const Tpb& pb, const Tpc& pc,
+				const Tpd& pd, const Tpe& pe, const Tpf& pf,
+				const Tpg& pg, const Tph& ph, const Tpi& pi)
+	     {
+		sendMessageFrom(client.makeNickUserHostIdent(),
+				command, pa, pb, pc, pd, pe, pf, pg, ph, pi);
 	     };
 	 
 	 // Send a numeric
@@ -401,6 +426,23 @@ namespace Kine {
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
 		  ' ' << pf << ' ' << pg << " :" << ph << lineTerminator;
+		outputQueue.push(output.str());
+	     };
+	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
+	           class Tg, class Th, class Ti>
+	   void sendNumeric(const Client& destination,
+			    const Numerics::numeric_type numeric,
+			    const Ta& pa, const Tb& pb, const Tc& pc,
+			    const Td& pd, const Te& pe, const Tf& pf,
+			    const Tg& pg, const Th& ph, const Ti& pi)
+	     {
+		std::ostringstream output;
+		output << ':' << config().getOptionsServerName() <<
+		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
+		  ' ' << destination.getNickname() << ' ' << pa <<
+		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
+		  ' ' << pf << ' ' << pg << ' ' << ph << " :" << pi <<
+		  lineTerminator;
 		outputQueue.push(output.str());
 	     };
 
