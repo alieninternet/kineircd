@@ -231,7 +231,9 @@ libkineircd_la_SOURCES=\
 	src/libkineircd/modules/modules.cpp \
 	src/libkineircd/modules/descriptor.cpp \
 	src/libkineircd/modules/list.cpp \
+	src/libkineircd/chantypes.cpp \
 	src/libkineircd/connection.cpp \
+	src/libkineircd/constants.h \
 	src/libkineircd/daemon.cpp \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_CPP) \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_H) \
@@ -275,6 +277,12 @@ src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOG
 		-T src/libkineircd/config/config.cpp.tpl \
 		-S $(AUTOGEN_DIR)/config.scm \
 		$(AUTOGEN_DIR)/config.def
+
+src/libkineircd/chantypes.cpp: src/libkineircd/chantypes.cpp.tpl $(AUTOGEN_DIR)/chantypes.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T src/libkineircd/chantypes.cpp.tpl \
+		$(AUTOGEN_DIR)/chantypes.def
 
 # This is intentionally *not* in the sources list or it will fudge the checksum
 .PHONY: src/libkineircd/version.h

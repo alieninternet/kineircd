@@ -32,6 +32,7 @@
 #include "kineircd/channelname.h"
 #include "kineircd/clientname.h"
 #include "kineircd/config.h"
+#include "libkineircd/constants.h"
 
 using namespace Kine;
 using AISutil::String;
@@ -135,8 +136,16 @@ const Error::error_type ChannelName::checkValidity(void) const
    }
    
    // Okay, check the first char is a prefix that we know of
-   if (false) {
-      return Error::CHANNEL_NAME_PREFIX_UNKNOWN;
+   const char* prefixes = Constants::standardChannelTypePrefixes;
+   while (*prefixes != '\0') {
+      if ((*this)[0] == *prefixes) {
+	 break;
+      }
+   }
+
+   // If we reached the end of the prefix char array, we did not find it..
+   if (*prefixes == '\0') {
+      return Error::CHANNEL_NAME_NONSTANDARD_PREFIX;
    }
    
    /* Well okay, look for invalid chars :) This is what RFC2812 says, however
