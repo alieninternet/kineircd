@@ -37,7 +37,8 @@
  * then the daemon pointer will be null.
  */
 # define KINE_SIGNAL_HANDLER_FUNC(x)	\
-     void x(const int signal, const Kine::Signals::mask_type signalMask)
+     void x(const int signal, const Kine::Signals::mask_type signalMask, \
+	    void *foo)
 
 namespace Kine {
    class Signals {
@@ -59,6 +60,7 @@ namespace Kine {
       struct handlerInfo_type {
 	 const KINE_SIGNAL_HANDLER_FUNC((*handler));
 	 const mask_type mask;
+	 void *foo;			// Variable for your own use
 	 
 	 // Is the structure OKAY?
 	 bool isOkay(void) const

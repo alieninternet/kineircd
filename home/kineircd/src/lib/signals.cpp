@@ -56,7 +56,7 @@ struct checkMask
      void operator()(const Signals::handlerInfo_type *handlerInfo)
        {
 	  if (handlerInfo->mask & maskBit) {
-	     (*handlerInfo->handler)(signum, maskBit);
+	     (*handlerInfo->handler)(signum, maskBit, handlerInfo->foo);
 	  }
        };
   };
