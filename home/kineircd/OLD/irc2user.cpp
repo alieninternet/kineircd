@@ -22,7 +22,8 @@
  */
 irc2userHandler::functionTableStruct irc2userHandler::functionsTable[] = {
      { "ACCEPT",	parseACCEPT,		1,	0,
-	  "{ <nickname> | -<nickname> | * } ( SPACE { nickname | -nickname | * } )",
+	  "{ <nickname> | -<nickname> | * } ( SPACE { nickname | -nickname "
+	  "| * } )",
 	  "This command is only useful with the user mode '+g' set. When set, "
 	  "this command allows you to accept people, thus enabling them to "
 	  "talk to you while you are ignoring everyone with user-mode '+g'."
@@ -95,11 +96,17 @@ irc2userHandler::functionTableStruct irc2userHandler::functionsTable[] = {
      },
      { "JOIN",		parseJOIN,		3,	0,
 	  "{ <channel> ( ',' <channel> )  [ <key> ( ',' <key> ) ] } | '0'",
-	  0
+	  "Join the given channels. If the channel(s) require a key, or "
+	  "keys, then the keys list (if it exists) will be checked for a "
+	  "valid key. If the special channel name '0' is used, it is "
+	  "considered a 'partall' command, and will part you from any "
+	  "channel you are currently on. Any channels specified before the "
+	  "'0' on the list will not be joined."
      }, 
      { "KICK",		parseKICK,		1,	0,
 	  "<channel> ( ',' <channel> )  <user> ( ',' <user> )  [ <reason> ]",
-	  0
+	  "Kick the given user(s) from the given channel(s), optionally "
+	  "with a reason for your actions."
      },
      { "KILL",		parseKILL,		0,	User::isGlobalOper,
 	  "<nickname>  <reason>",
@@ -109,11 +116,17 @@ irc2userHandler::functionTableStruct irc2userHandler::functionsTable[] = {
      },
      { "LINKS",		parseLINKS,		2,	0,
 	  "[ [ <remote server> ]  <server mask> ]",
-	  0
+	  "Generate a list of server links. If a server mask is specified, "
+	  "only servers matching the mask will be shown. If a remote server "
+	  "is given, the request will be generated from the given server "
+	  "instead of this server. Only helpers and operators will see "
+	  "hidden servers."
      },
      { "LIST",		parseLIST,		5,	0,
-	  "[ <channel> ( ',' <channel> )  [ <server> ] ]",
-	  0
+	  "[ <channel> ( ',' <channel> ) ]",
+	  "Return a list of channels currently created on the network. "
+	  "The information returned also includes the number of users on "
+	  "the channels, and the current topic."
      },
      { "LOCOPS",	parseLOCOPS,		0,	User::isOper,
 	  "<message>",
@@ -130,7 +143,8 @@ irc2userHandler::functionTableStruct irc2userHandler::functionsTable[] = {
 	  "extended to also include global users, and peak user counts."
      },
      { "MODE",		parseMODE,		2,	0,
-	  "{ <channel> | <nickname> | <server> }  ( [ '-' | '+' ] <mode> )  [ <modeparams> ]",
+	  "{ <channel> | <nickname> | <server> }  ( [ '-' | '+' ] <mode> )  "
+	  "[ <modeparams> ]",
 	  0
      },
      { "MOTD",		parseMOTD,		3,	0,
@@ -140,7 +154,7 @@ irc2userHandler::functionTableStruct irc2userHandler::functionsTable[] = {
 	  "server will allow you to receive it remotely."
      }, 
      { "NAMES",		parseNAMES,		1,	0,
-	  "[ <channel> ( ',' <channel> )  [ <server> ] ]",
+	  "[ <channel> ( ',' <channel> ) ]",
 	  0
      },
      { "NICK",		parseNICK,		3,	0,
@@ -152,8 +166,14 @@ irc2userHandler::functionTableStruct irc2userHandler::functionsTable[] = {
 	  "connection is restricted."
      },
      { "NOTICE",	parseNOTICE,		4,	0,
-	  "{ <nickname> | <channel> } ( ',' { <nickname> | <channel> } )  <message>",
-	  0
+	  "{ <nickname> | <channel> } ( ',' { <nickname> | <channel> } )  "
+	  "<message>",
+	  "Send the given NOTICE message to the given channel(s)/"
+	  "nickname(s). Any combination of nicknames/channels can be "
+	  "specified. Note that the NOTICE interface does not return any "
+	  "responce, including erroneous target replies. This is done "
+	  "intentionally to avoid never-ending automated replies bouncing "
+	  "back and forth."
      },
      { "OPER",		parseOPER,		5,	0,
 	  "<nickname>  <password>",
@@ -180,8 +200,12 @@ irc2userHandler::functionTableStruct irc2userHandler::functionsTable[] = {
 	  "is still active."
      },
      { "PRIVMSG",	parsePRIVMSG,		4,	0,
-	  "{ <nickname> | <channel> } ( ',' { <nickname> | <channel> } )  <message>",
-	  0
+	  "{ <nickname> | <channel> } ( ',' { <nickname> | <channel> } )  "
+	  "<message>",
+	  "Send the given PRIVMSG message to the given channel(s)/"
+	  "nickname(s). Any combination of nicknames/channels can be "
+	  "specified. Note that if you are being silenced by one of the "
+	  "given nicks, the message may simply be ignored without warning. "
      },
      { "QUIT",		parseQUIT,		0,	0,
 	  "[ <reason> ]",
@@ -267,7 +291,8 @@ irc2userHandler::functionTableStruct irc2userHandler::functionsTable[] = {
 	  "user or service is connected to."
      },
      { "WATCH",		parseWATCH,		3,	0,
-	  "'C' | 'S' | 'L' | { '+' | '-' } { <nickname> | <channel> | <server> } ( SPACE { '+' | '-' } { <nickname> | <channel> | <server> } )",
+	  "'C' | 'S' | 'L' | { '+' | '-' } { <nickname> | <channel> | <server> } ( SPACE { '+' | '-' } { <nickname> | <channel> | "
+	  "<server> } )",
 	  "Used as an alternative to ISON, WATCH sets up a list of "
 	  "nicknames, channels or servers you can 'watch'. You will be "
 	  "notified of their appearance and disappearances on the network. "
@@ -285,7 +310,10 @@ irc2userHandler::functionTableStruct irc2userHandler::functionsTable[] = {
      },
 #endif
      { "WHO",		parseWHO,		2,	0,
-	  "[ <channel> | <nickname mask> | '0' ]  [ 'O' ]",
+	  "[ <channel> | <nickname mask> | '0' ]  "
+	  "[ 'H' / 'I' / 'N' / 'O' / 'R' / 'S' / 'U' / 'X' ] "
+	  "[ '%' { 'C' / 'D' / 'F' / 'H' / 'I' / 'N' / 'R' / 'S' / 'T' / "
+	  "'U' } [ ',' <query type> ] ]",
 	  0
      },
      { "WHOIS",		parseWHOIS,		2,	0,
@@ -1476,6 +1504,9 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
       return;
    }
 
+   // This command effects the user idle time, so we must change it here
+   handler->getConnection()->touch();
+   
    // Rip out the two token sequences
    StringTokens channels(tokens->nextToken());
    StringTokens keys(tokens->nextToken());
@@ -2476,6 +2507,10 @@ void irc2userHandler::parsePART(irc2userHandler *handler, StringTokens *tokens)
       return;
    }
    
+   // This command effects the user idle time, so we must change it here
+   handler->getConnection()->touch();
+   
+   // Grab the variables we need
    StringTokens channels(tokens->nextToken());
    String reason = tokens->nextColonToken();
    
@@ -2537,7 +2572,7 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
    StringTokens targets(targetStr);
    String message = tokens->nextColonToken();
 
-   // This message effects the user idle time, so we must change it here
+   // This command effects the user idle time, so we must change it here
    handler->getConnection()->touch();
    
    // Check the length...
@@ -2748,6 +2783,9 @@ void irc2userHandler::parseQUIT(irc2userHandler *handler, StringTokens *tokens)
  */
 void irc2userHandler::parseREHASH(irc2userHandler *handler, StringTokens *tokens)
 {
+   // This command effects the user idle time, so we must change it here
+   handler->getConnection()->touch();
+   
    // Rehash.. gee this is hard!
    TO_DAEMON->rehash(handler, handler->user);
 }
@@ -2896,6 +2934,9 @@ void irc2userHandler::parseSTATS(irc2userHandler *handler, StringTokens *tokens)
 			   "STATS" LNG_ERR_NEEDMOREPARAMS);
    }
    
+   // This command effects the user idle time, so we must change it here
+   handler->getConnection()->touch();
+   
    // Server not specified, or it is us?
    if (!server.length()) {
       doSTATS(handler, handler->user, &request);
@@ -2948,6 +2989,9 @@ void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
 			   "TOPIC" LNG_ERR_NEEDMOREPARAMS);
       return;
    }
+   
+   // This command effects the user idle time, so we must change it here
+   handler->getConnection()->touch();
    
    // Grab the variables
    String channel = tokens->nextToken();
