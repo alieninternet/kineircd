@@ -286,7 +286,7 @@ Signals::~Signals(void)
 bool Signals::addHandler(const handlerPtr_type handler,
 			 const mask_type mask, void* foo)
 {
-#ifdef DEBUG_EXTENDED
+#ifdef KINE_DEBUG_EXTENDED
    debug("Signals::addHandler() - Adding a handler @ ptr " + 
 	 String::convert((int)handler));
 #endif
@@ -299,7 +299,7 @@ bool Signals::addHandler(const handlerPtr_type handler,
    // Okay, add it then
    handlers.push_front(handlerInfo(handler, mask, foo));
 
-#ifdef DEBUG_PSYCHO
+#ifdef KINE_DEBUG_PSYCHO
    debug("Signals::addHandler() - Handlers list now has " +
 	 String::convert(handlers.size()) + "entries");
 #endif
