@@ -470,6 +470,11 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
       }
    }
 
+   // If we are looping through service names, we need to close the database
+   if (lookupNames) {
+      endservent();
+   }
+   
    // Check if there were errors we couldn't deal with
    if (manyErrors > 1) {
       errString = 
