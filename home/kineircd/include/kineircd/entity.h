@@ -38,36 +38,22 @@ namespace Kine {
     * all an \e entity of some form.
     */
    class Entity {
-    protected:
+    private:
       /*!
        * \brief The time this entity was originally created
        * 
-       * In most cases, this is the time the entity 'signed on' to the
-       * network, in that it is the time it was created and propagated.
+       * This is the time the entity 'appeared' on the network.
        * 
-       * Most <em>server to server</em> protocols require this information as
-       * an aide for conflict resolution, and statistical modules will want
-       * this information too.
-       * 
-       * This time \b must be relevant to the time on the system that
-       * \e KineIRCd is running on. %Kine requires this relation for
-       * consistancy, and simplicity. If the sign-on time of the entity is
-       * intended to be \e now, assign with the value from
-       * Kine::Daemon::getTime().
-       *
-       * Since the likely-hood of two IRC servers maintaining the same time
-       * is rare, or indeed time-zone for that matter, it's likely that
-       * protocol modules will want to offset the time somehow. Since some
-       * protocols deal with time in very different manners, time offsets are
-       * left up to those individual protocol modules to deal with.
+       * \see getSignonTime()
        */
       const AIS::Util::Time signonTime;
 
+    protected:
       /*!
        * \brief Default Constructor
        * 
        * It's recommended to use Entity(const AIS::Util::Time& _signonTime)
-       * for explicit initialisation of \a signonTime, specifically.
+       * for explicit initialisation of \a signonTime.
        */
       explicit Entity(void)
 	: signonTime() // Initialise the signonTime as zeros
@@ -81,7 +67,11 @@ namespace Kine {
        * require this information.
        * 
        * \param _signonTime The time the entity was created, or when it
-       *    connected
+       *    connected. This time \b must be relevant to the time on the
+       *    system that \e KineIRCd is running on. %Kine requires this
+       *    relation for consistancy, and simplicity. If the sign-on time
+       *    of the entity is intended to be \e now, assign with the value
+       *    from Kine::Daemon::getTime().
        */
       explicit Entity(const AIS::Util::Time& _signonTime)
 	: signonTime(_signonTime)
@@ -121,7 +111,20 @@ namespace Kine {
       /*!
        * \brief Return the time this entity <em>signed on</em>
        * 
-       * This returns the \a signonTime of this entity.
+       * This returns the \a signonTime of this entity. In most cases, this
+       * is the time the entity 'signed on' to the network, in that it is
+       * the time it was created and propagated.
+       * 
+       * Most <em>server to server</em> protocols require this information as
+       * an aide for conflict resolution, and statistical modules will want
+       * this information too.
+       * 
+       * Since the likely-hood of two IRC servers maintaining the same time
+       * is rare, or indeed the same time-zone for that matter, it's likely
+       * that protocol modules will want to offset the time somehow. Since
+       * some protocols deal with time in very different manners, time
+       * offsets are left up to those individual protocol modules to deal
+       * with.
        * 
        * \return The time the entity was created, or connected to the network
        */
