@@ -58,7 +58,7 @@ namespace Kine {
       
     private:
       //! The list of pending tasks (the map is to sort it by its due time)
-      typedef std::map < Task* > tasks_type;
+      typedef std::map < const unsigned int, Task* > tasks_type;
       tasks_type tasks;
       
       //! Our instance
