@@ -24,5 +24,32 @@
 #include "kineircd/kineircdconf.h"
 
 #include "kineircd/modulelist.h"
+#include "debug.h"
 
 using namespace Kine;
+
+
+/* loadModule - Load a module, check it and add it to our list if it is okay
+ * Original 21/07/2002 simonb
+ */
+bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
+{
+#ifdef KINE_DEBUG_PSYCHO
+   debug("ModuleList::loadModule() - Trying to load " + moduleFile);
+#endif
+   
+   ModuleDescriptor *desc =
+     ModuleDescriptor::loadModule(moduleFile, errorReturn);
+   
+   // Make sure it loaded happily
+   if (desc == 0) {
+      return false;
+   }
+
+#ifdef KINE_DEBUG_EXTENDED
+   debug("ModuleList::loadModule() - Loaded module: " + moduleFile);
+#endif
+   
+   // Smile, it all worked out okay
+   return true;
+}

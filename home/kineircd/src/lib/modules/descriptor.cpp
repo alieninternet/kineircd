@@ -47,10 +47,10 @@ ModuleDescriptor::~ModuleDescriptor(void)
 }
       
 
-/* openModule - Open a module using the given file
+/* loadModule - Open a module using the given file
  * Original 04/07/2002 simonb
  */
-ModuleDescriptor *ModuleDescriptor::openModule(const String &moduleFile, 
+ModuleDescriptor *ModuleDescriptor::loadModule(const String &moduleFile, 
 					       String &errorReturn) 
 {
    // Try and load the given module

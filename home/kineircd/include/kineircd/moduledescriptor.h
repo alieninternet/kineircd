@@ -48,7 +48,7 @@ namespace Kine {
 	{ return module; };
 
       // Load a module, hopefully. Returns 0 (null) if we failed
-      static ModuleDescriptor *openModule(const String &moduleFile,
+      static ModuleDescriptor *loadModule(const String &moduleFile,
 					  String &errorReturn);
    };
 };

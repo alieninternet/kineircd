@@ -77,7 +77,7 @@ namespace Config {
 	},
 	{
 	   "MODULE",
-	     0, // Intentionally null
+	     (void *)&Config::defModuleList,
 	     &varHandleModule,
 	     0,
 	     0
@@ -719,6 +719,10 @@ Kine::Config::~Config(void)
  */
 CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleModule)
 {
+#ifdef KINE_DEBUG_ASSERT
+   assert(dataVariable != 0);
+#endif
+   
    // Check if the first value is empty (the filename field)
    if (values.front().empty()) {
       // Get cranky
@@ -727,20 +731,8 @@ CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleModule)
    }
 
    // Attempt to open the module
-   ModuleDescriptor *desc = 
-     ModuleDescriptor::openModule(values.front().trim().c_str(), errString);
-   
-   // Make sure it loaded happily
-   if (desc == 0) {
-      return false;
-   }
-
-#ifdef DEBUG_EXTENDED
-   debug("Loaded module: " + values.front().trim());
-#endif
-   
-   // Smile, it all worked out okay
-   return true;
+   return (dataClass.*((ModuleList ConfigData::*)dataVariable)).
+     loadModule(values.front().trim(), errString);
 }
 
 
