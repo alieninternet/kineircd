@@ -318,13 +318,13 @@ void Daemon::log(const std::string& str, const Logger::Mask::type mask)
  *       methods such as poll(), /dev/epoll etc.). At this stage it's to get 
  *       the show on the road sooner rather than later)
  */
-Exit::status_type Daemon::run(void)
+bool Daemon::run(void)
 {
    /* Make sure the init was all happy, else there isn't much point us
     * going beyond this point really
     */
    if (runlevel != RUNLEVEL_NORMAL) {
-      return Exit::ERR_DAEMON_INIT;
+      return false;
    }
    
    // Fire-up the modules we have loaded!
@@ -442,5 +442,5 @@ Exit::status_type Daemon::run(void)
       }
    }
    
-   return Exit::NO_ERROR;
+   return true;
 }

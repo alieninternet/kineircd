@@ -34,7 +34,6 @@
 #include <aisutil/string/string.h>
 
 #include "kineircd/signals.h"
-#include "kineircd/exit.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;

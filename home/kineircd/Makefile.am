@@ -170,7 +170,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/denizen.h \
 	include/kineircd/entity.h \
 	include/kineircd/errors.h \
-	include/kineircd/exit.h \
 	include/kineircd/kineircdconf.h \
 	include/kineircd/languages.h \
 	include/kineircd/listener.h \
@@ -466,6 +465,7 @@ src/mod_syslog/syslog.cpp: src/mod_syslog/syslog.cpp.tpl $(AUTOGEN_DEF_DIR)/logg
 # 'ircd' binary
 ###############################################################################
 ircd_SOURCES=\
+	src/ircd/exit.h \
 	src/ircd/ircd.cpp
 
 ircd_LDADD=\

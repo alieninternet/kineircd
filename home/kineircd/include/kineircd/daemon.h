@@ -45,7 +45,6 @@ extern "C" {
 # include <unistd.h>
 };
 
-# include <kineircd/exit.h>
 # include <kineircd/listener.h>
 # include <kineircd/logger.h>
 # include <kineircd/connection.h>
@@ -149,7 +148,7 @@ namespace Kine {
 	       const Logger::Mask::type mask = Logger::Mask::Housekeeping);
       
       //! Main loop
-      Exit::status_type run(void);
+      bool run(void);
    };
 
    
