@@ -30,37 +30,22 @@
 
 namespace Kine {
    //! Password class
-   class Password {
-    public:
-      typedef AIS::Util::SHA1::digest_type digest_type;
-      
+   class Password : public AIS::Util::SHA1_Digest {
     private:
       // DO NOT CHANGE THIS, unless you want to be hurt very painfully :(
-      static const char delim = '\0';		//!< Security delimeter :)
+      static const char dataDelimiter = '\0';
 
-      digest_type const password;		//!< Password (hashed)
-      
     public:
       // Constructor   
-      Password(const digest_type& p)
-	: password(p)
+      Password(const ClientName& nickname, const std::string& password)
+	: AIS::Util::SHA1_Digest(nickname.IRCtoLower() +
+				 dataDelimiter +
+				 password)
 	{};
 
       // Destructor
       ~Password(void)
 	{};
-      
-      // Return the password digest
-      const digest_type& getPassword(void) const {
-	 return password;
-      };
-      
-      // Transform the nickname and password pair into SHA1 output
-      static digest_type makePassword(const ClientName& nickname,
-				      const std::string& password) {
-	 return AIS::Util::SHA1::generate(nickname.IRCtoLower() + delim + 
-					  password);
-      };
    };
 };
    
