@@ -26,8 +26,8 @@ TARGET=libkineircd.$(LIBTOOL_LIB_EXT)
 # Sub-directories
 SUB_DIRS=\
 	config \
-	logger #\
-#	socket
+	logger \
+	socket
 
 # This should be automatic.. I forgot how to do that tho.. I'll fix it soon!!
 ROBJECTS=config/config.lo logger/logger.lo #socket/socket.lo
