@@ -1557,8 +1557,10 @@ AC_OUTPUT([
 	Makefile
 	install/Makefile
 	src/Makefile
-	src/config/Makefile
-	src/logger/Makefile
+	src/lib/Makefile
+	src/lib/config/Makefile
+	src/lib/logger/Makefile
+	src/lib/socket/Makefile
 	src/protocols/Makefile
 	src/protocols/server/Makefile
 	src/protocols/server/an-p13/Makefile
@@ -1566,7 +1568,6 @@ AC_OUTPUT([
 	src/protocols/user/Makefile
 	src/protocols/user/irc2/Makefile
 	src/protocols/user/irc3/Makefile
-	src/socket/Makefile
 	])
 
 
