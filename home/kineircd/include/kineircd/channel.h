@@ -195,9 +195,9 @@ namespace Kine {
       
 
       //! Is the given client on the channel?
-      const bool onChannel(const Client& who) const
+      const bool hasClient(const Client& who) const
 	{ return false; /* temporary ? */ };
-      
+
       //! Is the given user banned? (+b list)
       virtual const bool isBanned(const User& who) const
 	{ return false; };
