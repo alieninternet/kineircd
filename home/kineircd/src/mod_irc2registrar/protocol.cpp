@@ -103,8 +103,7 @@ registerHandler::registerHandler(Connection *c)
 void registerHandler::sendGeneric(char const *command, 
 				  String const &line) const
 {
-   getConnection()->sendRaw(':' + Daemon::myServer()->getHostname() + ' ' +
-			    command +
+   getConnection()->sendRaw(command +
 #ifdef ALLOW_CLIENT_CONNECTIONS
 			    ' ' + (nickname.empty() ? '*' : nickname) + ' ' +
 #else

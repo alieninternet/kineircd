@@ -403,8 +403,9 @@ void Handler::doVERSION(Handler *handler, User *from)
 {
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_VERSION, from,
-		 Version::version + ' ' + Daemon::myServer()->getHostname() +
-		 " :" + Version::versionChars + " (" +
+		 String(Version::version) + ' ' + 
+		 Daemon::myServer()->getHostname() + " :" + 
+		 Version::versionChars + " (" +
 		 from->lang(LangTags::L_RPL_VERSION) + ')');
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_ISUPPORT, from,

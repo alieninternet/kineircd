@@ -213,8 +213,11 @@ bool Daemon::init(Config &conf)
 #endif
    gettimeofday(&currentTime, NULL);
    startTime = getTime();
-   server = new Server();
-   
+
+   // Make our server record according to the configuration data
+   server = new Server(getConfig().getOptionsServername(),
+		       getConfig().getOptionsDescription());
+
    /* Seed the random number thingy.. this is kinda dodgey :( */
    srand((unsigned int)getTime());
    
@@ -255,6 +258,27 @@ bool Daemon::init(Config &conf)
 
    // Fire up the extended clock information
    checkClock();
+   
+   // THIS IS DODGEY TEMPORARY CRAP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   // THIS IS DODGEY TEMPORARY CRAP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   Socket *s = 0;
+   s = new SocketIPv4(0, 6666, true, false);
+   if (!s->setNonBlocking() || !s->setReuseAddress()) {
+      cout << "socketopts fail" << endl; 
+      return false;
+   }
+   if (!s->bind()) {
+      cout << "bind fail" << endl;
+      return false;
+   }
+   if (!s->listen(LISTEN_MAXQUEUE)) {
+      cout << "listen fail" << endl;
+      return false;
+   }
+   listens.push_front(new Listen(s, false));
+   addInputFD(s->getFD());
+   // THIS IS DODGEY TEMPORARY CRAP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   // THIS IS DODGEY TEMPORARY CRAP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    
    /* Make sure we have actually bound to SOMETHING and are listening,
     * else we aren't going to be very useful at all

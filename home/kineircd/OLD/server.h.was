@@ -107,9 +107,9 @@ class Server {
    static char const *modeParamStr;		// Chars of modes with params
 
    // Constructors
-   Server(void)
-     : hostname(""), 
-       description(""), 
+   Server(String const &hn, String const &d)
+     : hostname(hn),
+       description(d), 
        flags(0), 
        modes(0), 
        handler(0),
@@ -121,9 +121,9 @@ class Server {
 	servers.clear();
      };
    
-   Server(String const &ho, String const &d, unsigned char p, 
+   Server(String const &hn, String const &d, unsigned char p, 
 	  unsigned char hops)
-     : hostname(ho),
+     : hostname(hn),
        description(d),
        flags(0),
        modes(0),
