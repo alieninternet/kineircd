@@ -1,0 +1,36 @@
+#! /bin/sh
+
+# Go 'home' :)
+cd /home/groups/k/ki/kineircd/www
+
+# Go up a directory
+pushd .
+cd ..
+
+# Check out two modules we need (the includes and the web site modules)
+cvs -d:pserver:anonymous@cvs1:/cvsroot/kineircd co kineircd/include
+cvs -d:pserver:anonymous@cvs1:/cvsroot/kineircd co www
+
+# Return to the directory we were in
+popd
+
+# Remove old docs and tag files
+rm -rf ./htdocs/manual ./*.tag*
+
+# Get tag files
+wget http://libais.sourceforge.net/manual/libais.tag
+
+# Process the files
+doxygen ./doxygen.conf
+
+# Remove the source module, we don't need it to sit here, and the old web stuff
+echo "Removing source and tag files"
+rm -rf ../kineircd ../cgi-bin/* ../htdocs/* ./*.tag*
+
+# Move the new stuff over the old stuff (above)
+echo "Moving new stuff over old stuff"
+mv cgi-bin/* ../cgi-bin/.
+mv htdocs/* ../htdocs/.
+
+# Say we're done, so I don't go insane
+echo "Done."
