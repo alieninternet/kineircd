@@ -29,6 +29,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <map>
 #include <aisutil/string/tokens.h>
 
 #include "kineircd/languagelist.h"
@@ -42,7 +43,7 @@ using AISutil::StringTokens;
 /* loadFile - Load a language file
  * Original 21/08/2002 simonb
  */
-bool LanguageList::loadFile(const String& filename, String& errString)
+bool LanguageList::loadFile(const std::string& filename, String& errString)
 {
    // Open the file
 #ifdef KINE_DEBUG_PSYCHO
@@ -84,6 +85,7 @@ bool LanguageList::loadFile(const String& filename, String& errString)
       
       // Is the line empty, or perhaps even a comment?
       if (line.empty() || (line[0] == '#')) {
+	 // Skip this line!
 	 continue;
       }
       
@@ -101,25 +103,45 @@ bool LanguageList::loadFile(const String& filename, String& errString)
 	 debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
 	       ": Got control tag '" + tag + '\'');
 #endif
+	 
+	 // Do something with the control tag? Huh? Huh?? :(
+
       } else {
+	 LanguageData::tagID_type tagID;
+	 
 #ifdef KINE_DEBUG_PSYCHO
 	 debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
 	       ": Got tag '" + tag + '\'');
 #endif
 
 	 // Look for this tag in the dictionary
-	 LanguageData::tagID_type tagID = tagDictionary[tag];
-
-	 // Check the ID, if it is 0 then we must add this new ID
-	 if (tagID == 0) {
-	    // Since the ID would have been made (and set to 0), fix it
-	    tagID = tagDictionary[tag] = ++highestTagID;
-	 }
+	 tagDictionary_type::const_iterator it = tagDictionary.find(tag);
 	 
+	 // Did we find it?
+	 if (it == tagDictionary.end()) {
+	    // We did not find it - make a new tag..
+	    tagID = ++highestTagID;
+	    
 #ifdef KINE_DEBUG_PSYCHO
-	 debug("LanguageList::loadFile() - " + tag + ": TUID# " +
-	       String::convert(tagID));
+	    debug("LanguageList::loadFile() - " + tag + ": TUID #" +
+		  String::convert(tagID) + " (new)");
 #endif
+
+	    // .. and insert its TUID into the tag dictionary
+	    tagDictionary.
+	      insert(tagDictionary_type::value_type(tag, tagID));
+	 } else {
+#ifdef KINE_DEBUG_PSYCHO
+	    debug("LanguageList::loadFile() - " + tag + ": TUID #" +
+		  String::convert(tagID) + " (found)");
+#endif
+	    
+	    // Use the tag ID we found
+	    tagID = (*it).second;
+	 }
+
+	 // Remember the tag's data and TUID.. here... :)
+	 
       }
    }
    

@@ -32,7 +32,7 @@
 # else
 #  include <map>
 # endif
-
+# include <string>
 # include <aisutil/string/string.h>
 
 # include <kineircd/languagedata.h>
@@ -40,19 +40,18 @@
 namespace Kine {
    class LanguageList {
     private:
-# ifdef KINE_STL_HAS_HASH
-      typedef std::hash_map <AISutil::String, LanguageData::tagID_type>
-	tagDictionary_type;
-# else
-      typedef std::map <AISutil::String, LanguageData::tagID_type>
-	tagDictionary_type;
-# endif
-
       /* Our "Tag Dictionary". As language files are loaded, tags are thrown
        * into the tag dictionary with a unique identifier for easier reference.
-       * Later, tag tables can discover their unique identifier for their tags
+       * Later, the tag table bindery can discover each tag's unique identifier
        * to find the appropriate data within the language data vectors.
        */
+# ifdef KINE_STL_HAS_HASH
+      typedef std::hash_map <std::string, LanguageData::tagID_type>
+	tagDictionary_type;
+# else
+      typedef std::map <std::string, LanguageData::tagID_type>
+	tagDictionary_type;
+# endif
       tagDictionary_type tagDictionary;
 
       /* The highest identifier within the tag dictionary, for checking etc..
@@ -75,8 +74,7 @@ namespace Kine {
 	{};
       
       // Load a new language data file
-      bool loadFile(const AISutil::String& filename, 
-		    AISutil::String& errString);
+      bool loadFile(const std::string& filename, AISutil::String& errString);
    };
 };
 
