@@ -32,14 +32,20 @@
 #ifndef _SRC_MOD_IRC2USER_COMMANDS_H_
 # define _SRC_MOD_IRC2USER_COMMANDS_H_ 1
 
+# include <kineircd/languages.h>
+
 namespace Kine {
    namespace mod_irc2user {
       class Commands {
        private:
 	 // A table holding the built-in commands we always support
 	 struct preInitCommand_type {
-	    const char* const commandName;	// Name of the command
-	    const unsigned char defaultPenalty;	// Initial penalty rate
+	    const char* const commandName;		// Name of the command
+	    const unsigned char defaultPenalty;		// Initial penalty rate
+	    const Kine::Languages::tagID_type* const 
+	      helpUsage;				// Command usage hint
+	    const Kine::Languages::tagID_type* const 
+	      helpInfo;					// Detailed help tag
 	 } static const preInitCommands[];
 	 
        public:

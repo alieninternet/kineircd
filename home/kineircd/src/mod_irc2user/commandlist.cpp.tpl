@@ -31,6 +31,7 @@
 #endif
 
 #include "mod_irc2user/commands.h"
+#include "mod_irc2user/language.h"
 
 using namespace Kine::mod_irc2user;
 
@@ -39,7 +40,9 @@ using namespace Kine::mod_irc2user;
 const Commands::preInitCommand_type Commands::preInitCommands[] = {[+FOR commands+]
      {
         "[+command+]",
-          [+defaultPenalty+]
+          [+defaultPenalty+],
+	  &Language::tagMap[Language::irc2_HELP_CMD_[+command+]_USAGE].tagID,
+	  &Language::tagMap[Language::irc2_HELP_CMD_[+command+]].tagID
      },[+ENDFOR+]
-     { 0, 0 }
+     { 0, 0, 0, 0 }
 };
