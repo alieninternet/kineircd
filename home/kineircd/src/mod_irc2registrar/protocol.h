@@ -61,7 +61,7 @@ namespace Kine {
       // A list of command parsing functions
       struct commandTable_type {
 	 const char* const command;			// Command name
-	 const handler_type Registrar::* const handler;	// Parser/Handler
+	 handler_type Registrar::* const handler;	// Parser/Handler
       } static const commandTable[];
 
       // Send a numeric
