@@ -258,6 +258,7 @@ tag = {
 tag = {
    name		= "irc2_ERR_NORECIPIENT";
    fields	= "0 = command";
+   components	= "libkineircd_irc2";
    data_en	= "No recipient given (%p0)";
    data_tr	= "Alicı belirtilmedi (%p0)";
 };
@@ -297,6 +298,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOTEXTTOSEND";
+   components	= "libkineircd_irc2";
    data_en	= "No text to send";
    data_tr	= "Gönderilecek text yok";
 };
@@ -309,6 +311,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOTOPLEVEL";
+   components	= "libkineircd_irc2";
    data_en	= "No toplevel domain specified";
    data_tr	= "Toplevel domain belirtilmedi";
 };
@@ -349,8 +352,11 @@ tag = {
 };
 
 tag = {
-   name		= "irc2_ERR_TOOMANYTARGETS";
-   data_en	= "Duplicate recipients. No message delivered";
+   name		= "irc2_ERR_TOOMANYTARGETS_TARGET_OVERFLOW";
+   fields	= "0 = maximum number of allowed targets";
+   components	= "libkineircd_irc2";
+   data_en	= "Too many recipients given (maximum of %p0 allowed). One or "
+                  "more recipients may not have received your message.";
 };
 
 tag = {
@@ -432,6 +438,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_WILDTOPLEVEL";
+   components	= "libkineircd_irc2";
    data_en	= "Wildcard in toplevel domain";
    data_tr	= "Yanlıž^_ gTLD belirtildi";
 };
