@@ -52,15 +52,15 @@ namespace Kine {
       virtual ~User(void)
 	{};
       
-      //! Return the users's nickname
+      //! Return the users' nickname
       const Nickname& getNickname(void) const
 	{ return nickname; };
 
-      //! Return the users's username / identd reply
+      //! Return the users' username / identd reply
       const std::string& getUsername(void) const
 	{ return username; };
 
-      //! Return the users's hostname
+      //! Return the users' hostname
       const std::string& getHostname(void) const
 	{ return hostname; };
 
