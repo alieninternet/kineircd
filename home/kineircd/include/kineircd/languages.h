@@ -412,11 +412,6 @@ namespace Kine {
     */
    inline static Languages& languages(void)
      { return Languages::getInstance(); };
-   
-   
-   // Oh dear, another lazy function for the truely pathetic lazy sods ;)
-   inline static Languages& langs(void)
-     { return Languages::getInstance(); };
 }; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_LANGUAGES_H_
