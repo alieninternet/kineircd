@@ -380,6 +380,8 @@ mod_iirc1_la_LIBADD=\
 ###############################################################################
 mod_irc2registrar_la_SOURCES=\
 	src/mod_irc2registrar/debug.h \
+	src/mod_irc2registrar/language.cpp \
+	src/mod_irc2registrar/language.h \
 	src/mod_irc2registrar/module.cpp \
 	src/mod_irc2registrar/module.h \
 	src/mod_irc2registrar/protocol.cpp \
@@ -393,6 +395,13 @@ mod_irc2registrar_la_LDFLAGS=\
 mod_irc2registrar_la_LIBADD=\
 	libkineircd.la \
 	libkineircd_irc2.la
+
+src/mod_irc2registrar/language.cpp src/mod_irc2registrar/language.h: $(AUTOGEN_DIR)/language.tpl $(AUTOGEN_DIR)/language.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $(AUTOGEN_DIR)/language.tpl \
+		-DCOMPONENT=mod_irc2registrar \
+		$(AUTOGEN_DIR)/language.def
 
 
 

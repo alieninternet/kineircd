@@ -31,6 +31,7 @@
 
 #include "mod_irc2registrar/module.h"
 #include "mod_irc2registrar/protocolinfo.h"
+#include "mod_irc2registrar/language.h"
 
 
 namespace {
@@ -66,6 +67,10 @@ namespace {
       // Destructor
       ~mod_irc2registrar(void) 
 	{
+	   // Deregister our language tag map
+	   Kine::languages().
+	     deregisterMap(Kine::mod_irc2registrar::Language::tagMap);
+	   
 	   // Deregister the protocol
 	   Kine::daemon().deregisterProtocol(protocolInfo);
 	};
@@ -80,6 +85,12 @@ namespace {
       bool start(void) {
 	 // Try to register our protocol information to the core
 	 if (!Kine::daemon().registerProtocol(protocolInfo)) {
+	    return false;
+	 }
+	 
+	 // Attempt to register our language tag map
+	 if (!Kine::languages().
+	     registerMap(Kine::mod_irc2registrar::Language::tagMap)) {
 	    return false;
 	 }
 	 

@@ -35,6 +35,7 @@
 #include <kineircd/registry.h>
 
 #include "mod_irc2registrar/protocol.h"
+#include "mod_irc2registrar/language.h"
 #ifdef KINE_DEBUG
 # include "mod_irc2registrar/debug.h"
 #endif
@@ -133,7 +134,7 @@ void Protocol::parseMessage(const std::string& origin,
       // Check if we found something..
       if (protocolInfo == 0) {
 	 // Complain
-	 sendError("Requested user protocol unavailable");
+	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_USER));
 	 return;
       }
 
@@ -158,7 +159,7 @@ void Protocol::parseMessage(const std::string& origin,
 	   daemon().findProtocol(ProtocolInfo::Type::NETWORK,
 				 registrantData.protocol.toUpper())) == 0) {
 	 // Complain
-	 sendError("Requested IIRC protocol unavailable");
+	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_IIRC));
 	 return;
       }
 
@@ -173,7 +174,7 @@ void Protocol::parseMessage(const std::string& origin,
       }
       
       // No support yet...
-      sendError("Requested server protocol unavailable");
+      sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVER));
       return;
       
       
@@ -186,7 +187,7 @@ void Protocol::parseMessage(const std::string& origin,
       }
        
       // No support yet...
-      sendError("Requested service protocol unavailable");
+      sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVICE));
       return;
    }
    
@@ -227,7 +228,7 @@ void Protocol::parseMessage(const std::string& origin,
    }
 
    // Uh oh - the protocol was not created..
-   sendError("Requested protocol did not initialise");
+   sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_INIT_FAIL));
 }
 
 
@@ -264,7 +265,8 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseIIRCN)
 {
    // Does the port this person connected to accept this type of connection?
    if (!listener.isFlagSet(Listener::Flags::ALLOW_NETWORKS)) {
-      // Throw away this connection.. We should report an error here?
+      // Throw away this connection..
+      sendError(GETLANG(irc2registrar_ERROR_CONN_DISALLOWED_IIRC));
       connection.goodbye();
       return;
    }
@@ -288,6 +290,7 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseIIRCN)
       debug("mod_irc2registrar::Protocol::parseIIRCN() - Invalid: from "
 	    "network != \"*\"");
 #endif
+      sendError(GETLANG(irc2registrar_ERROR_BROKEN_REGISTRATION_DATA));
       connection.goodbye();
       return;
    }
@@ -316,6 +319,7 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseIIRCN)
       debug("mod_irc2registrar::Protocol::parseIIRCN() - Invalid: "
 	    "timestamp <= 0");
 #endif
+      sendError(GETLANG(irc2registrar_ERROR_BROKEN_REGISTRATION_DATA));
       connection.goodbye();
       return;
    }
@@ -401,6 +405,7 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parsePASS)
    // Have we already got the password?
    if (!registrantData.password.empty()) {
       // Drop this connection..
+      sendError(GETLANG(irc2registrar_ERROR_BROKEN_REGISTRATION_DATA));
       connection.goodbye();
       return;
    }
@@ -438,13 +443,17 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parsePONG)
    // Were we expecting a pong reply? Is this pong empty?
    if ((pongsLeft == 0) || (parameters.empty())) {
       // Drop this connection..
+      sendError(GETLANG(irc2registrar_ERROR_BAD_PONG));
       connection.goodbye();
       return;
    }
 
    // Make sure this pong is valid
    if (parameters[0] != pongMatch) {
-      // They tried to trick us - drop them off for being naughty
+      // They tried to trick us!
+      sendError(GETLANG(irc2registrar_ERROR_BAD_PONG));
+      
+      // Drop them off for being naughty
       connection.goodbye();
       return;
    }
@@ -487,7 +496,8 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVER)
 {
    // Does the port this person connected to accept this type of connection?
    if (!listener.isFlagSet(Listener::Flags::ALLOW_SERVERS)) {
-      // Throw away this connection.. We should report an error here?
+      // Throw away this connection..
+      sendError(GETLANG(irc2registrar_ERROR_CONN_DISALLOWED_SERVER));
       connection.goodbye();
       return;
    }
@@ -524,6 +534,7 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVER)
    // Check the hop count, it must be 1, any other value is incorrect
    if (hops != 1) {
       // Oh well - nice try.. We don't like servers which want to lie to us :(
+      sendError(GETLANG(irc2registrar_ERROR_BROKEN_REGISTRATION_DATA));
       connection.goodbye();
       return;
    }
@@ -562,7 +573,8 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVICE)
 {
    // Does the port this person connected to accept this type of connection?
    if (!listener.isFlagSet(Listener::Flags::ALLOW_SERVICES)) {
-      // Throw away this connection.. We should report an error here?
+      // Throw away this connection..
+      sendError(GETLANG(irc2registrar_ERROR_CONN_DISALLOWED_SERVICE));
       connection.goodbye();
       return;
    }
@@ -628,7 +640,8 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseUSER)
 {
    // Does the port this person connected to accept this type of connection?
    if (!listener.isFlagSet(Listener::Flags::ALLOW_USERS)) {
-      // Throw away this connection.. We should report an error here?
+      // Throw away this connection..
+      sendError(GETLANG(irc2registrar_ERROR_CONN_DISALLOWED_USER));
       connection.goodbye();
       return;
    }

@@ -25,6 +25,7 @@
 #ifndef _SRC_MOD_IRC2REGISTRAR_PROTOCOL_H_
 # define _SRC_MOD_IRC2REGISTRAR_PROTOCOL_H_ 1
 
+# include <string>
 # include <kineircd/listener.h>
 # include <kineircd/registrant.h>
 # include <kineircd/config.h>
@@ -85,7 +86,7 @@ namespace Kine {
 	   };
 	 
 	 // Send an error message and disconnect
-	 void sendError(const char* const error)
+	 void sendError(const std::string& error)
 	   {
 	      sendMessage("ERROR", error);
 	      connection.goodbye();
@@ -127,6 +128,13 @@ namespace Kine {
       }; // class Protocol
    }; // namespace mod_irc2registrar
 }; // namespace Kine
-   
+
+
+// Language related macros
+# define GETLANG(n) \
+   Kine::languages().get("en", \
+			 Language::tagMap[Language::n].tagID)
+
+
 #endif // _SRC_MOD_PROTOCOL_REGISTRAR_H_
 
