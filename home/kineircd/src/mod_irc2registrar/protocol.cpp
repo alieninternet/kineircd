@@ -280,8 +280,9 @@ void Registrar::parseMessage(const std::string& origin,
    }
    
    // Second, we create the new protocol
-   Kine::Protocol* const newProtocol =
-     protocolInfo->createProtocol(registrantData, connection, buffer, output);
+   Kine::Protocol* const newProtocol = 
+     protocolInfo->createProtocol(registrantData, connection, inputQueue,
+				  output);
       
    // That protocol instance may not have been created, so let's just check..
    if (newProtocol != 0) {

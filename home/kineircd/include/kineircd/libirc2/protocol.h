@@ -38,8 +38,8 @@ namespace Kine {
 	 // The type of a 'parameter list'
 	 typedef std::vector <AISutil::String> parameters_type;
 
-	 // Our input buffer..
-	 std::string buffer;
+	 // Our input queue..
+	 std::string inputQueue;
 
 	 // The output data queue
 	 std::queue <std::string> outputQueue;
@@ -59,7 +59,10 @@ namespace Kine {
 	 Protocol(Kine::Connection& c)
 	   : Kine::Protocol(c)
 	   {};
-	 
+
+	 // Constructor (for migrating I/O queues)
+	 Protocol(Kine::Connection& c, std::string& iq, std::string& oq);
+
        public:
 	 // Destructor
 	 virtual ~Protocol(void)

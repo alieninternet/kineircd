@@ -44,7 +44,7 @@ namespace Kine {
 	 Protocol(const Kine::Registrant& registrant,
 		  Kine::Connection& connection, std::string& inputQueue,
 		  std::string& outputQueue)
-	   : Kine::LibIRC2::Protocol(connection)
+	   : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue)
 	   {};
 	 
 	 // Destructor

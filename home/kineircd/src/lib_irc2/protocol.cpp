@@ -34,6 +34,19 @@ using AISutil::StringTokens;
 using namespace Kine::LibIRC2;
 
 
+/* Protocol - Constructor for migration between protocols (copies I/O queues)
+ * Original 12/08/2001 simonb
+ * Note: This could be more efficient :(
+ */
+Protocol::Protocol(Kine::Connection& c, std::string& iq, std::string& oq)
+  : Kine::Protocol(c),
+    inputQueue(iq)
+{
+   // Push the old output queue onto the new one..
+   outputQueue.push(oq);
+}
+
+
 /* parseLine - Break up a protocol message into its components, and pass it on
  * Original 12/08/2001 simonb
  * Note: This could be more efficient :(
@@ -103,13 +116,13 @@ void Protocol::handleInput(std::stringstream& data)
 	    (void)data.ignore();
 	 }
 
-	 // Check if the buffer has something in it (perhaps a command?)
-	 if (!buffer.empty()) {
+	 // Check if the buffer has something in it (perhaps a message?)
+	 if (!inputQueue.empty()) {
 	    // Hand the data over to the parser (as a single line
-	    parseLine(buffer);
+	    parseLine(inputQueue);
 	    
 	    // Clear the buffer
-	    buffer.clear();
+	    inputQueue.clear();
 	 }
       } else {
 	 /* If the buffer has grown too large. For strict compatibility, we
@@ -121,12 +134,12 @@ void Protocol::handleInput(std::stringstream& data)
 	  * pumping inordinate amount of data our way, we will disconnect them
 	  * should they break this limit.
 	  */
-	 if (buffer.length() > 510) {
+	 if (inputQueue.length() > 510) {
 	    connection.goodbye();
 	 }
 	 
 	 // Just add the char to the buffer
-	 buffer += (char)data.get();
+	 inputQueue += (char)data.get();
       }
    }
 }
