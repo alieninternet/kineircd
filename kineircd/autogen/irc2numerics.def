@@ -1851,6 +1851,7 @@ irc2numerics = {
    origin	= "RFC1459";
    format	= "<server> [<unix_time>] :<string_showing_server's_local_time>";
    comment	= "Response to the TIME command. Some implementations also return the time in 'unix time' format. The string format may vary, see RPL_TIMEONSERVERIS for something more accurate.";
+   seealso	= "679";
 };
 
 irc2numerics = {
@@ -3223,8 +3224,17 @@ irc2numerics = {
    numeric	= "679";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   format	= "<secs> [<μsecs> | '*'] <timezone> <flags> :<info>";
-   comment	= "Optionally sent upon connection and possibly from the TIME command, this returns the time on the server in a uniform manner.";
+   format	= "<seconds> [<nanoseconds> | '0'] <timezone> <flags> :<info>";
+   comment	= "Optionally sent upon connection, and/or sent as a reply to "
+                  "the TIME command. This returns the time on the server in "
+		  "a uniform manner. The seconds (and optionally nanoseconds) "
+		  "is the time since the UNIX Epoch, and is used since many "
+		  "existing timestamps in the IRC-2 protocol are done this "
+		  "way (i.e. ban lists). The timezone is hours and minutes "
+		  "each of Greenwich ('[+/-]HHMM'). Since all timestamps sent "
+		  "from the server are in a similar format, this numeric is "
+		  "designed to give clients the ability to provide accurate "
+		  "timestamps to their users.";
 };
 
 irc2numerics = {
