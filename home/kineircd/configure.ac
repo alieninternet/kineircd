@@ -313,55 +313,44 @@ AC_CHECK_FUNCS(
 	strerror \
 		)
 
-dnl AC_MSG_CHECKING([snmp-agent parameter])
-dnl AC_ARG_ENABLE(snmp-agent,[
-dnl   --enable-snmp-agent=[agentx|master]        (Default is disabled)
-dnl     SNMP additions to the server allow you to monitor the server remotely
-dnl     via the standard SNMP protocols. This will requre you to have the 
-dnl     NET-SNMP libraries installed, however. Specifying agentx here will allow
-dnl     the server's SNMP component to connect to a master agent (eg. snmpd) which
-dnl     will proxy the requests to the server (this is recommended). Specifying
-dnl     master here will allow this server to become a master SNMP agent itself.
-dnl     For better control, it is preferred that you use the agentx method.
-dnl     Anything else specified here will automatically presume 'agentx'.
-dnl  ],[
-dnl    if test "$enableval" = "no"; then
-dnl      AC_MSG_RESULT(no)
-dnl      kineircd_test_have_snmp_agent=no
-dnl    else
-dnl      dnl "Master or agentx?"
-dnl      if test "$enableval" = "master"; then
-dnl        AC_MSG_RESULT([yes (master agent)])
-dnl        AC_DEFINE(HAVE_SNMP_AGENT_MASTER)
-dnl        AC_DEFINE(HAVE_SNMP_AGENT_MASTER_PORT, 161)
-dnl      else
-dnl        AC_MSG_RESULT([yes (agentx)])
-dnl        AC_DEFINE(HAVE_SNMP_AGENT)
-dnl      fi
-dnl      
-dnl      dnl We want to know if we have a valid snmp library here..
-dnl dnl     AC_CHECK_LIB(ucdagent, init_agent,[
-dnl        AC_DEFINE(HAVE_SNMP_AGENT)
-dnl        kineircd_test_have_snmp_agent=yes
-dnl        snmp_lib="-lucdagent -lucdmibs -lsnmp -ldl"
-dnl        snmp_ldflags="-L/usr/local/lib -L/usr/lib"
-dnl        kineircd_test_need_openssl=yes
-dnl dnl      ],[
-dnl dnl       AC_MSG_WARN([Could not find the appropriate SNMP libraries --
-dnl dnl                    SNMP disabled])
-dnl dnl       kineircd_test_have_snmp_agent=no
-dnl dnl      ])
-dnl    fi
-dnl  ],[
-dnl    AC_MSG_RESULT([no (default)])
-dnl    kineircd_test_have_snmp_agent=no
-dnl  ]) 
-dnl AC_SUBST(kineircd_test_have_snmp_agent)
-dnl AC_SUBST(snmp_lib)
-dnl AC_SUBST(snmp_ldflags)
+AC_MSG_CHECKING([for Net-SNMP library/include path])
+AC_ARG_WITH(net-snmp,
+                AC_HELP_STRING([--with-net-snmp=DIR],
+		               [location of Net-SNMP library/include files]),
+ [
+   dnl Just run with the given path.. we will check it soon
+   snmp_dir="$withval"
+ ])
+dnl Check that the 'snmp_dir' environment variable is not empty
+if test -z "$snmp_dir"; then
+  dnl Check for files in numerous different paths :-/
+  for dirA in /usr/local /usr/lib /var/lib /usr /var /opt .. . ~; do
+    for dirB in $dirA $dirA/net-snmp; do
+      if test -f "$dirB/include/net-snmp/net-snmp-config.h"; then
+        snmp_dir="$dirB"
+        break 2
+      fi
+    done
+  done
+fi
+dnl Check that we have an snmp_dir variable, and the lib directory exist
+if test -n "$snmp_dir" -a -d "$snmp_dir/lib"; then
+    dnl Blindly agree on that basis. How stupid is that..
+    AC_MSG_RESULT($snmp_dir)
+    MOD_SNMP_INCDIRS="-I$snmp_dir/include"
+    MOD_SNMP_LIBS="-L$snmp_dir/libs -lnetsnmpagent -lnetsnmpmibs -lsnmp"
+    kineircd_test_netsnmp_broken=no
+else
+  AC_MSG_RESULT(not found)
+  kineircd_test_netsnmp_broken=yes
+fi
+AC_SUBST(MOD_SNMP_INCDIRS)
+AC_SUBST(MOD_SNMP_LIBS)
 
 AC_MSG_CHECKING([for OpenSSL library/include path])
-AC_ARG_WITH(openssl,[  --with-openssl=DIR      location of OpenSSL library/include files],
+AC_ARG_WITH(openssl,
+            AC_HELP_STRING([--with-openssl=DIR],
+                           [location of OpenSSL library/include files]),
  [
    dnl Just run with the given path.. we will check it soon
    ssl_dir="$withval"
@@ -709,11 +698,30 @@ if test "$kineircd_test_compile_socket_type_seqpacket" = "yes"; then
 fi
 
 dnl
-dnl Protocol toggles
+dnl Which modules shall we compile?
 dnl
+AC_MSG_CHECKING([which modules to compile])
 
-dnl FIX ME! ;)
+if test "$kineircd_test_netsnmp_broken" = "no"; then
+  AC_ARG_ENABLE(module-mod-snmp,
+                AC_HELP_STRING([--disable-mod-snmp],
+		               [Enable the SNMP module]),
+   [
+     if test "$enableval" \!= "yes"; then
+       echo -n "mod_snmp "
+       kineircd_test_compile_extensions_mod_snmp=yes
+     fi
+   ],[
+     echo -n "mod_snmp "
+     kineircd_test_compile_extensions_mod_snmp=yes
+   ])
+else
+  kineircd_test_compile_extensions_mod_snmp=no
+fi
+AC_SUBST(kineircd_test_compile_extensions_mod_snmp)
 
+dnl finish off the line
+echo
 
 dnl
 dnl Developer stuff
