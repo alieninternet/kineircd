@@ -34,6 +34,60 @@
 ******************************************************************************/
 
 
+/* Defaults for the Config class :) Change at will, but be careful.
+ * It is HIGHLY RECOMMENDED you just edit your configuration file.
+ */
+# define DEFAULT_CONFIG_ADMIN_EMAIL		"nobody@nowhere"
+# define DEFAULT_CONFIG_ADMIN_LOCATION		"I need to configure my server"
+# define DEFAULT_CONFIG_ADMIN_NAME		"Mr. Nobody"
+
+/* Stuff that will be in the Config Class, just not yet. */
+# define DEFAULT_CONFIG_SERVER_DESCRIPTION	"Mystery unconfigured server"
+# define DEFAULT_CONFIG_SERVER_MAX_TTL		64 /* 64 is the maximum */
+# define DEFAULT_CONFIG_WHOWAS_DECAY		3600 /* 10 minutes */
+# define DEFAULT_CONFIG_WHOWAS_MAX_ENTRIES	50
+# define DEFAULT_CONFIG_MOTD_FILE		"@MOTD_FILE@"
+# define DEFAULT_MAX_ACCEPTS_PER_USER		100
+# define DEFAULT_MAX_BANS_PER_CHANNEL		50
+# define DEFAULT_MAX_LANGS_PER_USER		6
+# define DEFAULT_MAX_SILENCES_PER_USER		20
+# define DEFAULT_MAX_WATCHES_PER_USER		128
+
+/* Stuff that should be in the Config class. */
+# define MAX_WHO_LIST_LINES			20 /* opers are not constricted by this. */
+# define ANONYMOUS_IDENT_MASK		"anonymous!anonymous@anonymous" /* for +a channels */
+
+/* Stuff that COULD/SHOULD be in the config file, but can break things.
+ * (maybe some of these could be for tuning sub-classes in the config file)
+ */
+# define MAXLEN_NICKNAME	15
+# define MAXLEN_CHANNELNAME	40
+# define MAXLEN_REALNAME	50
+# define MAXLEN_SERVERNAME	63	/* from RFC */
+# define MAXLEN_SERVERDESC	80
+# define MAXLEN_TOPIC		300	/* Keep these under 350 */
+# define MAXLEN_KICK_REASON	300
+# define MAXLEN_LANGCODE	10	// Keep small..
+# define MINLEN_OP_BROADCAST	15
+# define MAX_CHANNELS_PER_USER	10
+# define MIN_INVITE_TIMEOUT	30	/* 30 second min timeout */
+# define MAX_GARBO_DELAY_TIME	30	/* max delay per garbo run */
+# define MAX_GARBO_RUN_ITEMS	100	/* number of garbo items before breaking garbo run - this is 'low' */
+# define MAX_OUTQUEUE_DUMP_SIZE	2048	/* amount of data, in bytes, forced out of an output queue per main loop */
+# define MAX_MODES_PER_COMMAND 	6	/* this only applies to irc2 user really */
+
+/* Stuff that needs to be rewritten, or re-worked/re-thought, and put in the 
+ * Config class for flexibility reasons. Hrrm.
+ */
+# define LANG_FILE_PREFIX		"ircdlang."
+# define LANG_FILE_PREFIX_LEN		9
+
+
+/***************************************************************************
+ ***************************************************************************
+ ***************************************************************************/
+
+
 /* Define this if you want PRIVMSG and NOTICE to work traditionally for IRC
  * operators in the respect that they cannot send simply to $* or #*, but need
  * to include at least one decimal point, eg #*.au for all users from 
@@ -49,44 +103,11 @@
 #define TRADITIONAL_IRCOP_MESSAGES
 
 
-/* Define this to limit the number of lines allowed during a /WHO output.
- * This stops unfriendly people doing /who * and listing everyone possible.
- * This limit does not effect IRC Operators since they are supposed to know
- * what they are doing :)
- * 
- * Keep in mind, when changing this, some people like to use /who to find out
- * who they can turn to for help. "/who 0 O" (or "/who * O") will tell the
- * user any visible IRC Operators that are currently online, for example.
- * 
- * This setting does not truncate channel listings ("/who #channel"), which
- * cannot be of a mask (eg "/who #chan*" doesn't work). This is so that a
- * client is able to get information on the people inside a particular channel.
- */
-#define MAX_WHO_LIST_LINES		20
-
-
 /* These are the modes a user is automatically given upon registration.
  * Check user.h for more usermodes you can 'or' together.
  * Undefining this will stop users automatically being set a mode.
  */
 #define USER_REGISTRATION_MODES		User::M_VWORLD
-
-
-/* Maximums for various things, probably best not to touch these.
- * The lengths **MUST** be the same as other servers on the network or things
- * could break.
- */
-# define MAXLEN_NICKNAME		15
-# define MAXLEN_CHANNELNAME		40
-# define MAXLEN_REALNAME		50
-# define MAXLEN_SERVERNAME		63	/* from RFC */
-# define MAXLEN_SERVERDESC		80
-# define MAXLEN_TOPIC			300	/* Keep these under 350 */
-# define MAXLEN_KICK_REASON		300
-# define MAXLEN_LANGCODE		10	// Keep small..
-# define MINLEN_OP_BROADCAST		15
-# define MAX_CHANNELS_PER_USER		10
-# define MIN_INVITE_TIMEOUT		30	/* 30 second min timeout */
 
 
 /* Maximum protocol line lengths (pre-compressor) */
@@ -138,14 +159,6 @@
 # define MAX_REGISTRATION_LINES		5
 
 
-/* This is the prefix for the language files. Best not to change this unless
- * you really need to for some odd reason. If you do change it, make sure
- * the LANG_FILE_PREFIX_LEN size matches the string.
- */
-# define LANG_FILE_PREFIX		"ircdlang."
-# define LANG_FILE_PREFIX_LEN		9
-
-
 /* Time-out value for select(). Everytime select() times out, the daemon does
  * a few checks to make sure there isn't anything dead lurking around and the
  * like, basically cleans itself up. If you have a sort of busy server, such
@@ -159,68 +172,6 @@
  * If any of that went right over your head, leave this at 1 :)
  */
 # define SELECT_TIMEOUT			1
-
-
-/* This is the maximum amount of time (in seconds) allowed before a garbage
- * collection run (which cleans up sockets, memory etc) is called. Do not
- * keep this up too high, else the server could run out of resources faster
- * than it can clear them. At the same time, do not keep this too low, else
- * your server could be wasting time by looking for things to clean up when
- * there is nothing to really clean up.
- * 
- * Keep in mind that the garbo is a nice bloke who also sends out pings if
- * they are needed, and deals with timeouts etc. The garbo's called in every
- * time select times out, in other words whenever the server isn't busy, so
- * this should be worked out with SELECT_TIMEOUT (above).
- * 
- * Perhaps a dynamic time system would be more appropriate, but at this stage
- * I'm not sure if it matters that much
- */
-# define MAX_GARBO_DELAY_TIME		30
-
-
-/* This controls how much work our garbage collector is allowed to do per
- * run. This is so that the garbo routine doesn't go nuts if heaps of things
- * need to be cleaned up at once, and causes lag spikes. The garbo doesn't
- * really take that long to do what it has to do, but this should be kept to
- * a realistic level as to avoid lag spikes... or visible ones at least..
- * 
- * Note that an 'item' isn't just one thing being cleaned, it is also a count
- * of how many 'expensive' operations have been called (eg. loops etc).
- * 
- * If this is not defined, the garbage collector routine will just run until
- * it is done (I don't recommend that, but you might want need it if your
- * server is extraordinarily busy and you don't care about speed)
- */
-# define MAX_GARBO_RUN_ITEMS		100 /* this is quite low */
-
-
-/* This controls how much data is forced out of the output queue per
- * main loop. The way this works is the output queue will try to send as much
- * as it can up until the output queue is empty, or the size is about to go
- * over this limit. Be reasonable here :) Keep in mind how tcp/ip works..
- * This value seems ok to me..
- */
-# define MAX_OUTQUEUE_DUMP_SIZE		2048
-
-
-/* This is the mask used when a channel is set +a (anonymous). Change this
- * only if you really need to, since the RFC says it should be set to
- * "anonymous!anonymous@anonymous" but this is meaningless in some languages,
- * or might conflict with a network policy or something *shrugs*
- */
-# define ANONYMOUS_IDENT_MASK		"anonymous!anonymous@anonymous"
-
-
-/* Defaults :) Change at will, but be careful. */
-# define DEFAULT_CONFIG_ADMIN_EMAIL		"nobody@nowhere"
-# define DEFAULT_CONFIG_ADMIN_LOCATION		"I need to configure my server"
-# define DEFAULT_CONFIG_ADMIN_NAME		"Mr. Nobody"
-# define DEFAULT_CONFIG_SERVER_DESCRIPTION	"Mystery unconfigured server"
-# define DEFAULT_CONFIG_SERVER_MAX_TTL		64 /* 64 is the maximum */
-# define DEFAULT_CONFIG_WHOWAS_DECAY		3600 /* 10 minutes */
-# define DEFAULT_CONFIG_WHOWAS_MAX_ENTRIES	50
-# define DEFAULT_CONFIG_MOTD_FILE		"@MOTD_FILE@"
 
 
 /* This define changes how operator password SHA1 hashes are generated.
@@ -270,7 +221,7 @@
  * with the '-f' command line option, so don't stress too much about this.
  * Here, we set it to whatever is in the local directory for this test version
  */
-# define DEFAULT_CONFIG_FILE		"ircd.conf"
+# undef DEFAULT_CONFIG_FILE
 
 
 /* This is the location to the PID file, generated upon startup. Edit to fit
@@ -281,18 +232,6 @@
 # undef PID_FILE
 
 
-/* Default maximums for various things - see the INSTALL file for more info */
-# undef DEFAULT_MAX_ACCEPTS_PER_USER
-# undef DEFAULT_MAX_BANS_PER_CHANNEL
-# undef DEFAULT_MAX_LANGS_PER_USER
-# undef DEFAULT_MAX_SILENCES_PER_USER
-# undef DEFAULT_MAX_WATCHES_PER_USER
-
-
-/* Constant maximums for various things - see the INSTALL file for more info */
-# undef MAX_MODES_PER_COMMAND
-
- 
 /* Define this if you want the LANGUAGE command to accept languages that are 
  * not defined/loaded by this server. This is wise to cut down abuse..
  * (eg. x-dickheads doesn't exist and probably never will :)
@@ -550,9 +489,13 @@
  * Note: DEBUG must be define if the others are also wanted 
  */
 # undef DEBUG
-# undef DEBUG_EXTENDED
-# undef DEBUG_PSYCHO
-  
+# ifdef DEBUG
+#  define DEBUG_ASSERT /* we force this on. bad move? oh well. */
+#  undef DEBUG_EXTENDED
+#  ifdef DEBUG_EXTENDED
+#   undef DEBUG_PSYCHO
+#  endif
+#endif
   
 @BOTTOM@
 
@@ -588,7 +531,8 @@
   
 /* Work out some true level values for our maximum file descriptor checks */
 # ifndef MAX_FD_PER_PROCESS
-#  define MAX_FD_PER_PROCESS		256 /* assume 8-bit system, eek! */
+#  warning "No MAX_FD_PER_PROCESS defined: Presuming 256 File Descriptors!!"
+#  define MAX_FD_PER_PROCESS		256
 # endif
 
   
