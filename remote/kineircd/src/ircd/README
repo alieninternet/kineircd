@@ -1,0 +1,2 @@
+Everything in here is for the 'ircd' binary itself, the binary which fires
+up components of the ircd and gets the ball rolling.
