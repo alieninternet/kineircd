@@ -1,7 +1,7 @@
 /* $Id$
  *
- * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2002,2003 KineIRCd Development Team
+ * Copyright (c) 2002,2003,2004 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002,2003,2004 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -23,6 +23,12 @@
 autogen definitions config;
 
 
+/*****************************************************************************
+ **                                                                         **
+ **               Configuration data for the IRCd as a whole                **
+ **                                                                         **
+ *****************************************************************************/
+
 definition = {
    name = "Administrator";
    comment = 
@@ -32,7 +38,7 @@ definition = {
    
    definition = {
       name = "Contact";
-      hasVariable = yes;
+      hasVariable;
       varType = "AIS::Util::String";
       varHandler = "varHandleString";
       exampleValue = "\"unconfigured@server.foo.org\"";
@@ -44,7 +50,7 @@ definition = {
    
    definition = {
       name = "Location";
-      hasVariable = yes;
+      hasVariable;
       varType = "AIS::Util::String";
       varHandler = "varHandleString";
       exampleValue = "\"Server located in Woop-Woop, NoWhereLand\"";
@@ -58,7 +64,7 @@ definition = {
    
    definition = {
       name = "Name";
-      hasVariable = yes;
+      hasVariable;
       varType = "AIS::Util::String";
       varHandler = "varHandleString";
       exampleValue = "Joe Bloggs";
@@ -96,7 +102,7 @@ definition = {
    name = "IncludeOldConfig";
    condition = "KINE_OLD_CONFIG_SUBPARSER";
    varHandler = "varHandleOldConfig";
-   hidden = yes; // hidden because nobody is actively developing this, yet.
+   hidden; // hidden because nobody is actively developing this, yet.
 };
 
 definition = {
@@ -107,7 +113,7 @@ definition = {
       "the first language being the default language for all output.";
    
    defaultDefinition = {
-      hasVariable = yes;
+      hasVariable;
       varHandler = "LanguageConfig::varHandler";
       exampleValue = "languages/*.lang";
    };
@@ -127,7 +133,7 @@ definition = {
 
       definition = {
          name = "AllowMaskLikeNames";
-         hasVariable = yes;
+         hasVariable;
          varType = "bool";
          varHandler = "varHandleBoolean";
          defaultValue = "false";
@@ -141,7 +147,7 @@ definition = {
    
       definition = {
 	 name = "MaxBans";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned long";
 	 varHandler = "varHandleUnsignedLongNoZero";
 	 defaultValue = "50";
@@ -151,7 +157,7 @@ definition = {
 	 
       definition = {
 	 name = "MaxBanExceptions";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned long";
 	 varHandler = "varHandleUnsignedLongNoZero";
 	 defaultValue = "50";
@@ -161,7 +167,7 @@ definition = {
 	 
       definition = {
 	 name = "MaxInviteExceptions";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned long";
 	 varHandler = "varHandleUnsignedLongNoZero";
 	 defaultValue = "50";
@@ -172,7 +178,7 @@ definition = {
 	 
       definition = {
 	 name = "MaxNameLength";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned short";
 	 varHandler = "varHandleUnsignedShortNoZero";
 	 defaultValue = "40";
@@ -182,7 +188,7 @@ definition = {
 	 
       definition = {
 	 name = "MaxTopicLength";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned short";
 	 varHandler = "varHandleUnsignedShortNoZero";
 	 defaultValue = "300";
@@ -193,7 +199,7 @@ definition = {
       
    definition = {
       name = "MaxKickReasonLength";
-      hasVariable = yes;
+      hasVariable;
       varType = "unsigned short";
       varHandler = "varHandleUnsignedShortNoZero";
       defaultValue = "300";
@@ -203,7 +209,7 @@ definition = {
       
    definition = {
       name = "MaxMessageLength";
-      hasVariable = yes;
+      hasVariable;
       varType = "unsigned short";
       varHandler = "varHandleUnsignedShortNoZero";
       defaultValue = "400";
@@ -213,7 +219,7 @@ definition = {
       
    definition = {
       name = "MaxTargets";
-      hasVariable = yes;
+      hasVariable;
       varType = "unsigned char";
       varHandler = "varHandleUnsignedCharNoZero";
       defaultValue = "4";
@@ -224,7 +230,7 @@ definition = {
       
    definition = {
       name = "MinBroadcastLength";
-      hasVariable = yes;
+      hasVariable;
       varType = "unsigned short";
       varHandler = "varHandleUnsignedShort";
       defaultValue = "0";
@@ -243,7 +249,7 @@ definition = {
 
       definition = {
          name = "MaxAccepts";
-         hasVariable = yes;
+         hasVariable;
          varType = "unsigned long"; 
          varHandler = "varHandleUnsignedLongNoZero";
 	 defaultValue = "100";
@@ -253,7 +259,7 @@ definition = {
 	 
       definition = {
 	 name = "MaxChannels";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned long"; 
 	 varHandler = "varHandleUnsignedLongNoZero";	
 	 defaultValue = "10";
@@ -264,7 +270,7 @@ definition = {
 	 
       definition = {
 	 name = "MaxLanguages";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned char";
 	 varHandler = "varHandleUnsignedCharNoZero";
 	 defaultValue = "6";
@@ -274,7 +280,7 @@ definition = {
 	 
       definition = {
 	 name = "MaxNickNameLength";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned char"; 
 	 varHandler = "varHandleUnsignedCharNoZero";
 	 defaultValue = "9";
@@ -284,7 +290,7 @@ definition = {
 	 
       definition = {
 	 name = "MaxRealNameLength";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned char";
 	 varHandler = "varHandleUnsignedCharNoZero";
 	 defaultValue = "50";
@@ -294,7 +300,7 @@ definition = {
 	 
       definition = {
 	 name = "MaxSilences";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned long"; 
 	 varHandler = "varHandleUnsignedLongNoZero";
 	 defaultValue = "20";
@@ -304,7 +310,7 @@ definition = {
 	 
       definition = {
 	 name = "MaxWatches";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned long"; 
 	 varHandler = "varHandleUnsignedLongNoZero";
 	 defaultValue = "128";
@@ -320,7 +326,7 @@ definition = {
 	 
       definition = {
 	 name = "MaxDescriptionLength";
-	 hasVariable = yes;
+	 hasVariable;
          varType = "unsigned char";
 	 varHandler = "varHandleUnsignedCharNoZero";
 	 defaultValue = "50";
@@ -332,23 +338,23 @@ definition = {
    
 definition = {
    name = "Listener";
-   hasVariable = yes;
+   hasVariable;
    varType = "ListenerList";
    varTypeProtected = "ListenerList&";
-   varPublicModify = yes;
+   varPublicModify;
    variable = "ListenerList";
    classHandler = "ListenerConfig::classHandler";
-   hidden = yes; // for now..
+   hidden; // for now..
 };
 
 definition = {
    name = "Module";
-   hasVariable = yes;
+   hasVariable;
    varType = "ModuleList";
    variable = "ModuleList";
    varHandler = "varHandleModule";
    classHandler = "classHandleModule";
-   hidden = yes; // for now..
+   hidden; // for now..
 };
    
 definition = {
@@ -359,7 +365,7 @@ definition = {
    
    definition = {
       name = "Name";
-      hasVariable = yes;
+      hasVariable;
       varType = "AIS::Util::String";
       varHandler = "varHandleNetworkName";
       exampleValue = "Unconfigured";
@@ -423,7 +429,7 @@ definition = {
    
    definition = {
       name = "EnableUsersCommand";
-      hasVariable = yes;
+      hasVariable;
       varType = "bool";
       varHandler = "varHandleBoolean";
       defaultValue = "false";
@@ -445,7 +451,7 @@ definition = {
    
    definition = {
       name = "PidFile";
-      hasVariable = yes;
+      hasVariable;
       varType = "AIS::Util::String";
       varHandler = "varHandleString";
       exampleValue = "./ircd.pid";
@@ -461,7 +467,7 @@ definition = {
 
    definition = {
       name = "WrapOperWallops";
-      hasVariable = yes;
+      hasVariable;
       varType = "bool";
       varHandler = "varHandleBoolean";
       defaultValue = "true";
@@ -472,55 +478,11 @@ definition = {
 	 "from IRC operators, and those generated by servers or special "
 	 "services. This only effects IRC operators connected to this server.";
    };
-
-   definition = {
-      name = "Registrar";
-      comment =
-         "Normally, when servers, services, clients, and IRC networks connect "
-	 "to your server, they are presented with the traditional IRC "
-	 "registrar, which accepts their connection and attempts to determine "
-	 "what type of connection it is talking to, and what protocol it "
-	 "should pass the connection over to. This configuration section "
-	 "configures how the registrar, which performs these functions, should"
-	 "respond to connections.";
-      
-      definition = {
-         name = "UserPingProbeCount";
-	 hasVariable = yes;
-         varType = "unsigned char";
-	 varHandler = "varHandleUnsignedChar";
-         defaultValue = "0";
-	 exampleValue = "1";
-	 comment =
-	    "For validity checking, clients connection can be 'probed' to see "
-	    "if they are cheap scripts or actually real clients. This is done "
-	    "by sending a PING with random data attached. This can ween out "
-	    "many unwanted connections (such as badly programmed clones or "
-	    "spam-bots). Since many IRC Daemons do this PING probe now, many "
-	    "scripts are ready for just one PING. To counter-act this, here "
-	    "we allow you to configure the registrar to probe as many times "
-	    "as you want to, if necessary. Comment this out, or set this to "
-	    "0 if you do not want to PING probe clients. Setting this to 1 "
-	    "will mimic other servers.";
-      };
-      
-      definition = {
-         name = "UserProtocolDefault";
-	 hasVariable = yes;
-         varType = "AIS::Util::String";
-	 varHandler = "varHandleStringOneWord";
-         defaultValue = "\"IRC/2\"";
-	 hidden = yes;
-	 comment =
-	    "Default protocol to boot-strap into. Don't change this unless "
-	    "you know what you're doing.";
-      };
-   };
 };
  
 definition = {
    name = "Redirection";
-   hidden = yes; // for now..
+   hidden; // for now..
 
    definition = {
       name = "Channels";
@@ -534,7 +496,7 @@ definition = {
    
    definition = {
       name = "Description";
-      hasVariable = yes;
+      hasVariable;
       varType = "AIS::Util::String";
       varHandler = "varHandleString";
       defaultValue = "\"Unconfigured server\"";
@@ -544,7 +506,7 @@ definition = {
 
    definition = {
       name = "Hidden";
-      hasVariable = yes;
+      hasVariable;
       varType = "bool";
       varHandler = "varHandleBoolean";
       defaultValue = "false";
@@ -554,7 +516,7 @@ definition = {
    
    definition = {
       name = "Name";
-      hasVariable = yes;
+      hasVariable;
       varType = "AIS::Util::String";
       varHandler = "varHandleHostName";
       defaultValue = "\"unconfigured.kineircd.server\"";
@@ -566,7 +528,7 @@ definition = {
 
 definition = {
    name = "SSL";
-   hasVariable = yes;
+   hasVariable;
    varType = "SSL_CTX*";
    varTypeProtected = "const SSL_CTX* const";
    variable = "SSLContext";
@@ -591,5 +553,413 @@ definition = {
 	 "interested, the type of certificate should be in 'PEM' (Base64 "
 	 "Privacy Enhanced Mail encoded certificate) format, because it "
 	 "seems to be the 'preferred' format, and is easier to transport.";
+   };
+};
+
+
+
+/*****************************************************************************
+ **                                                                         **
+ **                Configuration data for mod_channellog                    **
+ **                                                                         **
+ *****************************************************************************/
+
+module = {
+   name = "mod_channellog";
+   hasOptions;
+   comment =
+      "This is the channel logging module, used to send KineIRCd log messages "
+      "to users within a pre-defined channel on IRC. It's designed primarily "
+      "for remote administration and server debugging, since it can give IRC "
+      "operators a complete view of what's happening within the server.";
+
+   definition = {
+      name = "Channel";
+      hasVariable;
+      varType = "AIS::Util::String";
+      varHandler = "varHandleStringOneWord";
+      defaultValue = "\".serverlog\"";
+      comment =
+         "The soft-channel to create where users may join and receive "
+	 "real-time server messages.";
+   };
+   
+   definition = {
+      name = "LogMask";
+      hasVariable;
+      varHandler = "varHandleLogMask";
+      defaultValue = "everything";
+      comment =
+         "What do you want to be logged to the system log? See the man page "
+	 "for information on log masks.";
+   };
+};
+
+
+
+/*****************************************************************************
+ **                                                                         **
+ **                  Configuration data for mod_filelog                     **
+ **                                                                         **
+ *****************************************************************************/
+
+module = {
+   name = "mod_filelog";
+   hasOptions;
+   comment =
+      "Load the file logging module. This is a simple logging mechanism, "
+      "which sends log messages to the specified file (which can also be "
+      "a device such as /dev/stdlog, if your system supports it). Output "
+      "formats can be fine tuned, allowing you fit existing log file formats "
+      "or use your own file format.";
+
+   definition = {
+      name = "Filename";
+      hasVariable;
+      varType = "AIS::Util::String";
+      varHandler = "varHandleString";
+      exampleValue = "\"kineircd.log\"";
+      exampleValue = "\"/dev/stdlog\"";
+      comment =
+         "The filename to log to";
+   };
+   
+   definition = {
+      name = "Format";
+      hasVariable;
+      varType = "AIS::Util::String";
+      varHandler = "varHandleString";
+      exampleValue = "\"%Y%m%dT%H%M%S %! %$%n\"";
+      comment =
+         "The format of everything logged. Characters prefixed with a '%' are"
+	 "treated specially, as below. All other characters are copied "
+	 " verbatim. The conversion specifiers are similar to those used by "
+	 "the unix 'date' command, and are as follows: "
+	 ""
+	 " %$ - The log string"
+	 " %! - The character corresponding with the item being logged"
+	 " %# - The name of what is being logged"
+	 " %@ - The name of what is being logged, in upper-case"
+	 " %% - A percentage sign"
+	 " %C - Century (2 digits)"
+	 " %d - Day of the month (01 to 31)"
+	 " %e - Same as above, but using a space for padding"
+	 " %H - Hour (24-hour clock, 00 to 23)"
+	 " %I - Hour (12-hour clock, 01 to 12)"
+	 " %j - Day of the year (001 to 366)"
+	 " %k - Same as %H but using space instead of zero as padding"
+	 " %l - Same as %I but using space instead of zero as padding"
+	 " %m - Month (01 to 12)"
+	 " %M - Minute (00 to 59)"
+	 " %n - A new-line"
+	 " %p - 'AM' or 'PM', depending on the time of the day"
+	 " %P - Lower-case version of %p ('am'/'pm')"
+	 " %r - Equivalent to '%I:%M:%S %p'"
+	 " %R - Equivalent to '%H:%M'"
+	 " %s - Number of seconds since the 'Unix Epoch' (00:00:00 1/1/1970)"
+	 " %S - Seconds (00 to 61, the extra seconds are leap seconds)"
+	 " %t - A tab"
+	 " %T - Equivalent to '%H:%M:%S'"
+	 " %u - Number of the day in the week (1 to 7)"
+	 " %w - Number of the day in the week (0 to 6)"
+	 " %y - The year, without the century (00 to 99)"
+	 " %Y - The year (1900 onwards)"
+	 ""
+	 "Any unrecognised conversion specifiers are ignored. Don't forget, "
+	 "if you want each item logged to be on a separate line, you must "
+	 "put '%n' at the end of the format string. The default format, "
+	 "below, uses ISO-8601 style timestamps.";
+   };
+   
+   definition = {
+      name = "LogMask";
+      hasVariable;
+      varHandler = "varHandleLogMask";
+      defaultValue = "everything";
+      comment =
+         "What do you want to be logged to the system log? See the man page "
+	 "for information on log masks.";
+   };
+
+   definition = {
+      name = "UTC";
+      hasVariable;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "false";
+      comment =
+         "If you wish the time used in each log message's prefix to be in UTC "
+	 "instead of your local time zone, enable this function. For this to "
+	 "work properly, your local time zone must be set correctly.";
+   };
+};
+
+
+
+/*****************************************************************************
+ **                                                                         **
+ **                Configuration data for mod_irc2registrar                 **
+ **                                                                         **
+ *****************************************************************************/
+
+module = {
+   name = "mod_irc2registrar";
+   hasOptions;
+   comment =
+      "This is the IRC-2 registrar module, which will greet the majority "
+      "(if not all) of your connections. It's required to handle users "
+      "connecting with the IRC-2 protocol, and most server protocols. Once "
+      "this module has determined which protocol the connection requires, it "
+      "hands the connection over to a dedicated module for that protocol.";
+
+   definition = {
+      name = "PingProbeCount";
+      hasVariable;
+      varType = "unsigned char";
+      varHandler = "varHandleUnsignedChar";
+      defaultValue = "0";
+      exampleValue = "1";
+      comment =
+	 "For validity checking, clients connection can be 'probed' to see "
+	 "if they are cheap scripts or actually real clients. This is done "
+	 "by sending a PING with random data attached. This can ween out "
+	 "many unwanted connections (such as badly programmed clones or "
+	 "spam-bots). Since many IRC Daemons do this PING probe now, many "
+	 "scripts are ready for just one PING. To counter-act this, here we "
+	 "allow you to configure the registrar to probe as many times as you "
+	 "want to, if necessary. Comment this out, or set this to 0 if you "
+	 "do not want to PING probe clients. Setting this to 1 "
+	 "will mimic other servers.";
+   };
+
+   definition = {
+      name = "PingProbeNotice";
+      hasVariable;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "true";
+      comment =
+         "When anti-spoofing ping checks are enabled, turning this on will "
+	 "send a notice to the user connecting to warn them about the check. "
+	 "Ordinarily, this notice includes help for the user in case their "
+	 "software doesn't work properly, so normally it's a good idea to "
+	 "have this turned on. Having said that, though, most software "
+	 "around these days will cope perfectly and this notice could be "
+	 "considered redundant.";
+   };
+
+   definition = {
+      name = "DefaultUserProtocol";
+      hasVariable;
+      varType = "AIS::Util::String";
+      varHandler = "varHandleStringOneWord";
+      defaultValue = "\"IRC/2\"";
+      hidden;
+      comment =
+	 "Default protocol to boot-strap into. Don't change this unless "
+	 "you know what you're doing.";
+   };
+};
+
+
+
+/*****************************************************************************
+ **                                                                         **
+ **                  Configuration data for mod_irc2user                    **
+ **                                                                         **
+ *****************************************************************************/
+
+module = {
+   name = "mod_irc2user";
+   hasOptions;
+   comment =
+      "This is the IRC-2 user protocol module, which handles user "
+      "connections handed to it from the IRC-2 registrar module. Since users "
+      "are complex things, this module is fairly configurable to allow "
+      "IRC server administrators to tweak their server to their market.";
+      
+   definition = {
+      name = "AwayReturnsReason";
+      hasVariable;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "false";
+      exampleValue = "true";
+      comment =
+         "When enabled, this will return the reason given by the user back "
+	 "to them for confirmation upon them setting AWAY. When disabled, "
+	 "the normal behavior of simply stating that the user is now away "
+	 "is observed.";
+   };
+
+   definition = {
+      name = "ConnectionLUSERS";
+      hasVariable;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "true";
+      comment =
+         "Simulate an LUSERS call upon connection to the server. There are "
+	 "some older clients which rely on this behavior, but disabling it "
+	 "will reduce traffic output from new connections.";
+   };
+
+   definition = {
+      name = "ConnectionMOTD";
+      hasVariable;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "false";
+      comment =
+         "Simulate an MOTD call upon connection to the server by sending the "
+	 "MOTD to the user, or a small notice stating the user should be "
+	 "aware of the MOTD (depending on the current server's mode "
+	 "settings).";
+   };
+
+   definition = {
+      name = "MaxMessageSizeDefault";
+      hasVariable;
+      varType = "unsigned short";
+      varHandler = "varHandleUnsignedShortNoZero";
+      defaultValue = "512";
+      hidden;
+      comment =
+         "The default maximum message size used to be imposed on incoming and "
+	 "outgoing protocol messages. This should not be changed unless there "
+	 "is a very specific reason to do so, as the default (512) is "
+	 "designed to conform to the old specifications. Lowering this may "
+	 "cause clients to become confused, and raising this may cause "
+	 "clients to crash.";
+   };
+
+   definition = {
+      name = "MaxUserhostTargets";
+      hasVariable;
+      varType = "unsigned char";
+      varHandler = "varHandleUnsignedCharNoZero";
+      defaultValue = "5";
+      hidden;
+      comment =
+	 "Maximum number of targets possible to be specified for the commands "
+	 "USERHOST and USERIP. Normally this should not be changed.";
+   };
+      
+   definition = {
+      name = "MaxWhoReplies";
+      hasVariable;
+      varType = "unsigned short";
+      varHandler = "varHandleUnsignedShort";
+      defaultValue = "100";
+      comment =
+         "The maximum number of replies the WHO command will generate "
+	 "before truncating and aborting the query. Normally clients using "
+	 "the WHO command are not looking for an enormous responce, and the "
+	 "WHO command is considered expensive. You can set this to a value of "
+	 "'0' to let users receive untruncated replies. IRC Operators are not "
+	 "effected by this limit.";
+   };
+
+   definition = {
+      name = "MessageServices";
+      hasVariable;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "false";
+      comment =
+         "When enabled, this will allow services to be sent messages via "
+	 "PRIVMSG and NOTICE commands instead of just SQUERY, provided the "
+	 "service can support it.";
+   };
+
+   definition = {
+      name = "SendErrorOnQuit";
+      hasVariable;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "true";
+      hidden;
+      comment =
+         "Send an ERROR message to the client upon them using the QUIT "
+	 "command. This is the normal behavior, but is not required as the "
+	 "connection is dropped by the server with this enabled or disabled.";
+   };
+
+   definition = {
+      name = "SendKillDone";
+      hasVariable;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "false";
+      exampleValue = "true";
+      hidden;
+      comment =
+         "Send a 'kill done' numeric to an IRC Operator after a successful "
+	 "KILL command was called. This message is considered to be obsolete "
+	 "by IRC-2 standards, but may still be useful.";
+   };
+};
+
+
+
+/*****************************************************************************
+ **                                                                         **
+ **                   Configuration data for mod_syslog                     **
+ **                                                                         **
+ *****************************************************************************/
+
+module = {
+   name = "mod_syslog";
+   hasOptions;
+   comment =
+      "Load the syslog logging module, responsible for relaying KineIRCd log "
+      "messages to the system's syslog logging daemon.";
+
+   definition = {
+      name = "ConsoleOutput";
+      hasVariable;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "false";
+      hidden;
+      comment =
+         "Enable this if you wish the syslog daemon to output the log to the "
+	 "system console if for some reason the system logging facility is "
+	 "unavailable. Normally this is strongly discouraged.";
+   };
+
+   definition = {
+      name = "Identity";
+      hasVariable;
+      varType = "AIS::Util::String";
+      varHandler = "varHandleStringOneWord";
+      defaultValue = "kineircd";
+      comment =
+         "The process identity to log to the system log with. Normally the "
+	 "default is sufficient, but some administrators may wish to use "
+	 "this to identify the daemon specifically, such as when multiple "
+	 "IRC daemons are running.";
+   };
+
+   definition = {
+      name = "LogMask";
+      hasVariable;
+      varHandler = "varHandleLogMask";
+      defaultValue = "everything";
+      comment =
+         "What do you want to be logged to the system log? See the man page "
+	 "for information on log masks.";
+   };
+
+   definition = {
+      name = "ShowPID";
+      hasVariable;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "false";
+      comment =
+         "Enable this if you want the Process ID (PID) of the daemon to be "
+	 "sent to the syslog daemon. This is useful if you have multiple "
+	 "copies of KineIRCd running on the same machine.";
    };
 };
