@@ -34,6 +34,8 @@
 # endif
 # include <string>
 # include <vector>
+# include <aisutil/string/string.h>
+
 
 namespace Kine {
    //! Languages interface (langtags)
@@ -202,10 +204,10 @@ namespace Kine {
        * to find the appropriate data within the language data vectors.
        */
 # ifdef KINE_STL_HAS_HASH
-      typedef std::hash_map < std::string, Languages::tagID_type >
+      typedef std::hash_map < std::string, tagID_type >
 	tagDictionary_type;
 # else
-      typedef std::map < std::string, Languages::tagID_type >
+      typedef std::map < std::string, tagID_type >
 	tagDictionary_type;
 # endif
       tagDictionary_type tagDictionary;
@@ -246,6 +248,9 @@ namespace Kine {
       //! Load a given language file
       bool loadFile(const std::string& fileName, std::string& errString,
 		    const bool makeDefault = false);
+      
+      //! Find a tag by its name (It's recommended to use a tag map, below)
+      const tagID_type findTag(const AISutil::String& name) const;
       
       //! Add/remove/process tag name/ID correlation maps
       bool registerMap(tagMap_type map);
