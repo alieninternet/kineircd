@@ -26,9 +26,15 @@
 # include "autoconf.h"
 #endif
 
+#include <cassert>
+
 #include "mod_irc2user/commands.h"
 
 using namespace Kine::mod_irc2user;
+
+
+// The pointer to our single instance
+Commands* Commands::instance = 0;
 
 
 /* Commands - Constructor for the command list managing singleton
@@ -46,4 +52,17 @@ Commands::Commands(void)
 	insert(commandsList_type::value_type(preInitCommands[i].commandName,
 					     preInitCommands[i]));
    }
+}
+
+
+/* initInstance - Create the single instance of this class
+ * Original 01/04/2003 simonb
+ */
+void Commands::initInstance(void)
+{
+   // Make sure we don't already exist - big woops if we do
+   assert(instance == 0);
+   
+   // Okay, create ourselves then
+   instance = new Commands();
 }

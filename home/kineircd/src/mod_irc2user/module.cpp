@@ -31,6 +31,7 @@
 
 #include "mod_irc2user/module.h"
 #include "mod_irc2user/protocolinfo.h"
+#include "mod_irc2user/commands.h"
 #include "mod_irc2user/language.h"
 
 
@@ -71,6 +72,9 @@ namespace {
 	 
 	 // Deregister the protocol itself
 	 Kine::daemon().deregisterProtocol(protocolInfo);
+	 
+	 // Finally, destroy the dynamic commands table thingy
+	 delete &Kine::mod_irc2user::Commands::getInstance();
       };
 
       // Return the information
@@ -99,4 +103,10 @@ namespace {
 
 
 // The initialisation function, called by Kine
-KINE_MODULE_INIT { return new mod_irc2user(); };
+KINE_MODULE_INIT {
+   // Fire up the commands singleton (important to do this before configuring)
+   Kine::mod_irc2user::Commands::initInstance();
+   
+   // Return the module :)
+   return new mod_irc2user();
+};

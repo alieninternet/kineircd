@@ -83,13 +83,23 @@ namespace Kine {
 # endif
 	 commandsList_type commandsList;
 	 
-       public:
+	 // Our single instance
+	 static Commands* instance;
+	 
 	 // Constructor
 	 Commands(void);
 	 
+       public:
 	 // Destructor
 	 ~Commands(void)
 	   {};
+	 
+	 // Create the single instance of this class
+	 static void initInstance(void);
+	 
+	 // Grab the single instance of ourself
+	 static Commands& getInstance(void)
+	   { return *instance; };
       };
    }; // namespace mod_irc2user
 }; // namespace Kine
