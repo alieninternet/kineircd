@@ -165,20 +165,7 @@ namespace Kine {
       const info_type& getInfo(void) const
 	{ return info; };
 
-      //! Rehash (reload configuration, language files, etc)
-      const Error::error_type rehash(const User* const caller = 0)
-	{ return Error::UNKNOWN_ERROR; };
-      
-      //! Restart the server
-      const Error::error_type restart(const std::string& reason,
-				       const User* const caller = 0)
-	{ return Error::UNKNOWN_ERROR; };
-      
-      //! Shut down the server with the given reason
-      const Error::error_type shutdown(const std::string& reason,
-					const User* const caller = 0)
-	{ return Error::UNKNOWN_ERROR; };
-      
+
       //! Main loop
       bool run(void);
    };

@@ -109,7 +109,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleDIE)
    Error::error_type error;
    
    // Try to shutdown the server - eek!
-   if ((error = daemon().shutdown(parameters[0], &user)) != Error::NO_ERROR) {
+   if ((error = myServer().shutdown(user, parameters[0])) !=
+       Error::NO_ERROR) {
       // What's the error?
       if (error == Error::PERMISSION_DENIED) {
 	 // Complain about not having access to this command
@@ -711,7 +712,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleREHASH)
    Error::error_type error;
    
    // Try to rehash
-   if ((error = daemon().rehash(&user)) == Error::NO_ERROR) {
+   if ((error = myServer().rehash(user)) == Error::NO_ERROR) {
       /* Tell the user we are rehashing.. Technically, we have rehashed! Even
        * if we told the user we were rehashing *before* we started rehashing,
        * the output would not normally not be sent to the user until after the
@@ -749,7 +750,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleRESTART)
    Error::error_type error;
    
    // Try to rehash
-   if ((error = daemon().restart(parameters[0], &user)) != Error::NO_ERROR) {
+   if ((error = myServer().restart(user, parameters[0])) != Error::NO_ERROR) {
       // What's the error?
       if (error == Error::PERMISSION_DENIED) {
 	 // Complain about not having access to this command
