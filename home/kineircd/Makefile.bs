@@ -10,7 +10,7 @@ __bs__:
 
 
 # Create AutoConf files from templates
-autoconf: autoconf/configure.in autoconf/acconfig.h
+autoconf: autoconf/configure.in
 	autoconf -I autoconf -o configure autoconf/configure.in
 	-chmod 755 configure
 	autoheader --localdir=autoconf autoconf/configure.in >include/kineircd/kineircdconf.h.in

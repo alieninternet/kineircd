@@ -62,6 +62,18 @@ dnl Save LDFLAGS since we will be making a mess of it soon..
 LDFLAGS_SAVE="$LDFLAGS"
 INCDIRS=""
 
+dnl I am lazy, these should be configurable but for now they are constants
+AC_DEFINE(CONFIG_FILE_ENV_VAR, "KINEIRCD_CONF",
+          [Environment variable to check for a location of the config file])
+AC_DEFINE(STRICT_CHANNEL_NAMES, 1,
+          [
+    Define this if you want strict channel names to be allowed. This means
+    channel names are not allowed to have any control characters in them, nor
+    the character 0xA0, which is a blank character in many standard character
+    sets. The result of this is nobody can fake (on appearances) channels
+    without the fake being obvious.
+	  ])
+
 
 dnl -------------------------------------------------------------------------
 dnl  Checking 'default' definitions
@@ -740,18 +752,21 @@ AC_ARG_ENABLE(debugging,[
    else
      if test "$enableval" = "psycho"; then
        AC_MSG_RESULT([yes (psycho)])
-       AC_DEFINE(DEBUG_PSYCHO)
-       AC_DEFINE(DEBUG_EXTENDED)
-       AC_DEFINE(DEBUG)
+       AC_DEFINE(DEBUG_PSYCHO,1,[psychotic-debugging?])
+       AC_DEFINE(DEBUG_EXTENDED,1,[extended debugging?])
+       AC_DEFINE(DEBUG,1,[debugging?])
+       AC_DEFINE(DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
        kineircd_test_debugging=yes
      elif test "$enableval" = "extended"; then
        AC_MSG_RESULT([yes (extended)])
-       AC_DEFINE(DEBUG_EXTENDED)
-       AC_DEFINE(DEBUG)
+       AC_DEFINE(DEBUG_EXTENDED,1,[extended debugging?])
+       AC_DEFINE(DEBUG,1,[debugging?])
+       AC_DEFINE(DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
        kineircd_test_debugging=yes
      else
        AC_MSG_RESULT(yes)
-       AC_DEFINE(DEBUG)
+       AC_DEFINE(DEBUG,1,[debugging?])
+       AC_DEFINE(DEBUG_ASSERT,1,[do assert() calls for excellent sanity?])
        kineircd_test_debugging=yes
      fi
    fi

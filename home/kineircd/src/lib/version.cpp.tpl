@@ -102,26 +102,8 @@ namespace Kine {
 #ifdef DEBUG_EXTENDED
 				"e"
 #endif
-#ifdef HELPERS_CAN_SEE_USER_MODES
-				"h"
-#endif
 #ifdef STL_HAS_HASH
 				"H"
-#endif
-#ifdef ALLOW_LOCALOP_GLOBAL_KILL
-				"k"
-#endif
-#ifdef ALLOW_GLOBALOP_GLOBAL_KILL
-				"K"
-#endif
-#ifdef ALLOW_LOCALOP_LOCAL_KILL
-				"l"
-#endif
-#ifdef ALLOW_GLOBALOP_LOCAL_KILL
-				"L"
-#endif
-#ifdef FORCE_MOTD
-				"M"
 #endif
 #ifdef NOTIFY_ON_CMD_STATS
 				"n"
@@ -129,35 +111,11 @@ namespace Kine {
 #ifdef STRICT_CHANNEL_NAMES
 				"N"
 #endif
-#ifdef NOTIFY_PARANOID_OPERS_ON_WHOIS
-				"P"
-#endif
-#ifdef ALLOW_LOCALOP_SQUIT
-				"q"
-#endif
-#ifdef ALLOW_GLOBALOP_SQUIT
-				"Q"
-#endif
-#ifdef STRICT_REGISTRATIONS
-				"r"
-#endif
-#ifdef USER_CONNECTION_PINGPONG
-				"s"
-#endif
 #ifdef HAVE_OPENSSL
 				"S"
 #endif
 #ifdef HAVE_CMD_TRACEROUTE
 				"T"
-#endif
-#ifdef ALLOW_OPER_WALLOPS
-				"w"
-#endif
-#ifdef ALLOW_LOCALOP_DIE
-				"x"
-#endif
-#ifdef ALLOW_GLOBALOP_DIE
-				"X"
 #endif
 #ifdef SYSLOG_IDENT
 				"Y"
