@@ -166,6 +166,12 @@ commands = {
 //   minimumParams	= 0;
 //};
 
+commands = {
+   command		= "NETWORKS";
+   defaultPenalty	= 1;
+   minimumParams	= 0;
+};
+
 //commands = {
 //   command		= "NICK";
 //   defaultPenalty	= 3;

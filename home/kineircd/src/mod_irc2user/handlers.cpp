@@ -442,6 +442,28 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 #endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_NETWORKS
+/* handleNETWORKS
+ * Original 01/05/2003 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleNETWORK)
+{
+   static const char* const commandName = "NETWORKS";
+   
+   // If there are no parameters, the user simply wants to list the networks
+   if (parameters.empty()) {
+      // Send the end of networks list numerics
+      sendNumeric(LibIRC2::Numerics::RPL_ENDOF_GENERIC,
+		  commandName,
+		  GETLANG(irc2_RPL_ENDOF_GENERIC_NETWORKS));
+      return;
+   }
+   
+   // Check permissions!   
+}
+#endif
+
+
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_NOTICE
 /* handleNOTICE
  * Original 01/09/2001 simonb
