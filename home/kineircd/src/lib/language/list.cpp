@@ -157,7 +157,7 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 		  continue;
 		  
 		case 's': // Space (often used at the end of a line as a hack)
-		  line.push_back('\040');
+		  line += '\040';
 		  continue;
 		  
 		case 't': // Horizontal tab
@@ -176,7 +176,7 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	 }
 	    
 	 // If we got here, nothing special happened.. just copy the char over
-	 line.push_back(data[i]);
+	 line += data[i];
       }
 
 #ifdef KINE_DEBUG_PSYCHO
