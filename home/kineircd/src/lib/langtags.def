@@ -1,0 +1,1413 @@
+autogen definitions langtags;
+
+langtags = {
+   tag_name	= B_ERR_TOOMANYWATCH;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_QUIT_EXIT;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_QUIT_KILLED;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_QUIT_READ_ERROR;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_QUIT_WRITE_ERROR;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_RPL_CREATED;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_RPL_GLOBALUSERS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_RPL_LOCALUSERS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_RPL_LUSERCLIENT;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_RPL_LUSERME;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_RPL_STATSCONN;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_RPL_STATSUPTIME;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_RPL_TIMEONSERVERIS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_RPL_WATCHSTAT;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_RPL_WELCOME;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= B_RPL_YOURHOST;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= CHARSET;
+   tag_required = true;
+   tag_oneword  = true;
+};
+
+langtags = {
+   tag_name	= E_ERR_ACCEPTEXIST;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_ERR_ACCEPTNOT;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_ERR_NOLANGUAGE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_ERR_TOOMANYWATCH;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_ERR_UNKNOWNMODE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_ERR_UNKNOWNSERVERMODE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_ERR_USERONCHANNEL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_01;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_02;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_03;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_04;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_05;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_06;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_07;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_08;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_09;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_10;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_11;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_12;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_13;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_14;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_15;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_16;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_17;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_18;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_19;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_20;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_21;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_22;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_23;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_24;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_25;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_26;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_27;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_28;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_29;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_30;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_31;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_32;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_33;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_34;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_35;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_36;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_37;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_38;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_39;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_40;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_41;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_42;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_43;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_44;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_45;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_46;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_47;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_48;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_49;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_50;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_51;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_52;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_53;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_54;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_55;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_56;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_57;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_58;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_59;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_60;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_61;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_62;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_HELPER_63;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_ACCEPTED;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_ACCEPTNOTICE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_ISUPPORT;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_KNOCKING;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LOGOFF_CHANNEL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LOGOFF_SERVER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LOGOFF_USER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LOGON_CHANNEL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LOGON_SERVER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LOGON_USER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LUSERCHANNELS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LUSERCLIENT;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LUSERHELPERS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LUSERME;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LUSEROP;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_LUSERUNKNOWN;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_NOTACCEPTED;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_NOWOFF;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_NOWON_CHANNEL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_NOWON_SERVER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_NOWON_USER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_WATCHOFF;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_WATCHSTAT;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_WELCOME;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_WHOISIDLE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_WHOISOPERATOR;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= E_RPL_WHOISSECURE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_DEFAULT_KNOCK_REASON;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_ACCEPTFULL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_ALREADYREGISTERED;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_BADCHANNELKEY;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_BADCHANNAME;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_BADCHANNAME_FAILMASK;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_BADCHANNAME_SAFECHAN;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_BANNEDFROMCHAN;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CANNOTCHANGECHANMODE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CANNOTSENDTOCHAN_BANNED;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CANNOTSENDTOCHAN_MODERATED;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CANNOTSENDTOCHAN_NOOUTSIDEMSG;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CANNOTSENDTONICK_REGNICKSONLY;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CANNOTCHANGESERVERMODE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CANNOTCHANGEUMODE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CANTKILLSERVICES;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CHANNELISFULL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CHANOPRIVSNEEDED;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_ERRONEUSNICKNAME;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_EVENTNICKCHANGE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_KEYSET;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_INVITEONLYCHAN;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_ISCHANSERVICE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NEEDMOREPARAMS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NICKNAMEINUSE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOCHANMODES;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOKNOCK_INVITED;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOKNOCK_ONCHANNEL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOKNOCK_OPENCHANNEL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOKNOCK_REGONLY;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOMORELANGS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOMOTD;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOMOTD_NOREMOTE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NONICKNAMEGIVEN;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NONONREG_CHANNEL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOOPERHOST;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOOPERHOST_NOOP;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOPRIVILEGES_PLUS_HELPER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOPRIVILEGES_PLUS_IRCOPER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOPRIVILEGES_PLUS_SERVNOTICES;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NORECIPIENT;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOSUCHCHANNEL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOSUCHNICK;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOSUCHNICK_NICK;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOSUCHNICK_OR_SERVER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOSUCHSERVER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOTEXTTOSEND;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOTEXTTOSEND_NEEDMORE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_NOTONCHANNEL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_PASSWDMISMATCH;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_SERVERMODELOCK;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_SERVERTOOFULL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_SILELISTFULL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_TOOMANYCHANNELS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_UMODEUNKNOWNFLAG;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_UNIQOPRIVSNEEDED;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_UNKNOWNCOMMAND;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_USERNOTINCHANNEL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_USERSDONTMATCH_MODE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_ERR_WHOTRUNC;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ADMINME;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_CHANREDIR;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFACCEPT;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFBANLIST;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFEXCEPTLIST;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFHELP;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFHELP_SIMPLE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFINFO;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFINVITELIST;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFLANGUAGES;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFLINKS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFMOTD;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFNAMES;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFSILELIST;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFSTATS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFWATCHLIST;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFWHO;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFWHOIS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_ENDOFWHOWAS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_KILLDONE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_LISTEND;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_MODECHANGEWARN_HELPER_PLUS_REGONLY;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_MODECHANGEWARN_OPER_MINUS_WALLOPS;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_MODECHANGEWARN_MINUS_VWORLD;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_MOTD_SHORT_A;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_MOTD_SHORT_B;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_MOTD_SHORT_C;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_MOTDSTART;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_NOTOPIC;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_NOWAWAY;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_REHASHING;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_SERVLISTEND;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_SPAM_A;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_SPAM_B;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_SPAM_C;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_SPAM_D;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_TRYAGAIN_AWAY;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_TRYAGAIN_KNOCK;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_UNAWAY;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_VERSION;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_YOUREOPER;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= L_RPL_YOUREOPER_ALREADY;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= LANGCODE;
+   tag_required = true;
+   tag_oneword  = true;
+};
+
+langtags = {
+   tag_name	= LANGNAME;
+   tag_required = true;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= LANGNOTE;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= M_RPL_LUSERCLIENT_A;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= M_RPL_LUSERCLIENT_B;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= M_RPL_LUSERME;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= M_RPL_YOURHOST;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= MAINTAINER;
+   tag_required = true;
+   tag_oneword  = true;
+};
+
+langtags = {
+   tag_name	= P_NO_MATCH;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= P_RPL_WHOISVIRT;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= REVISION;
+   tag_required = true;
+   tag_oneword  = true;
+};
+
+langtags = {
+   tag_name	= W_CLIENT_PL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= W_DAY_PL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= W_LANGUAGE_PL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= W_MATCH;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= W_MATCH_PL;
+   tag_required = false;
+   tag_oneword  = false;
+};
+
+langtags = {
+   tag_name	= W_PEAK;
+   tag_required = false;
+   tag_oneword  = true;
+};
+
+
