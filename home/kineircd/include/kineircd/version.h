@@ -5,8 +5,14 @@
 #ifndef __VERSION_H_
 # define __VERSION_H_
 
-extern char const *getBuild;
-extern char const *getVersion;
-extern char const *getVersionChars;
+class Version {
+ private:
+   Version(void) {};				// Constructor (cannot be run)
+   
+ public:
+   static char const *build;
+   static char const *version;
+   static char const *versionChars;
+};
 
 #endif

@@ -2,16 +2,16 @@
  * Version and Compile information
  */
 
-#include "version.h"
 #include "config.h"
+#include "version.h"
 
+namespace Version {
 
-// Strings
-char const *getBuild = BUILD_STRING;
+   char const *build = BUILD_STRING;
 
-char const *getVersion = PROGNAME_STRING VERSION_STRING;
+   char const *version = PROGNAME_STRING VERSION_STRING;
 
-char const *getVersionChars = 
+   char const *versionChars = 
 #ifdef ALLOW_LOCALOP_CONNECT
 				"c"
 #endif
@@ -103,4 +103,4 @@ char const *getVersionChars =
 				"z"
 #endif
 					; // The end, phew!
-
+}

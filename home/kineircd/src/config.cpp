@@ -702,6 +702,11 @@ void Daemon::configCONF(ConfigData *conf, String *line, String::length_t *pos, b
 	 } else if (command == "HIDDEN") {
 	    conf->confHidden = Utils::toBool(parameter, conf->confHidden);
 	 } else if (command == "LANGDIR") {
+	    // Check the parameter, the directory needs a trailing '/'
+	    if (parameter[parameter.length()] != '/') {
+	       parameter = parameter + String('/');
+	    }
+	    
 	    conf->confLanguageDir = parameter;
 	 } else if (command == "MOTD") {
 	    conf->confMOTD = parameter;

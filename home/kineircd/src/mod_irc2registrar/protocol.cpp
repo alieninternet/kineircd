@@ -228,6 +228,25 @@ void registerHandler::parseLine(String const &line)
 	       getConnection()->goodbye();
 	       return;
 	    }
+
+	    // Okay, check if we support the protocol
+	    switch (protocol) {
+# ifdef HAVE_PROTOCOL_P13SERVER
+	     case 13: // P13
+	       break;
+# endif
+# ifdef HAVE_PROTOCOL_P14SERVER
+	     case 14: // P14
+	       break;
+# endif
+	     default: // Unknown protocol, terminate connection
+# ifdef DEBUG
+	       debug(String::printf("Unsupported protocol (%d), terminating!",
+				    protocol));
+# endif
+	       getConnection()->goodbye();
+	       return;
+	    }
 	    
 	    // Try to find the server record
 	    Server *server = 0;
@@ -236,7 +255,7 @@ void registerHandler::parseLine(String const &line)
 	    // Check if we got it
 	    if (!server) {
 # ifdef DEBUG_EXTENDED
-	       debug("Server not in list; Adding...");
+	       debug("Server not in list; Will add it..");
 # endif
 	       // Create a new server
 	       server = new Server(username, realname, 1);
@@ -273,13 +292,12 @@ void registerHandler::parseLine(String const &line)
 //	       newHandler = new p14serverHandler();
 	       break;
 # endif
-	     default: // Unknown protocol, terminate connection
 # ifdef DEBUG
-	       debug(String::printf("Unsupported protocol (%d), terminating!",
-				    protocol));
-# endif
-	       getConnection()->goodbye();
+	     default: // Unknown protocol, sanity check :)
+	       debug("Unknown protocol found, however we should have ditched "
+		     "this connection already - VERY BAD?!?!!!");
 	       return;
+# endif
 	    }
 	    
 	    // Set up the connection name
@@ -676,7 +694,7 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
 # endif
    
    // Set the registration mode
-   handler->regmode = SERVER;
+   handler->regmode = SERVICE;
 }
 #endif
 

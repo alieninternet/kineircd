@@ -5,15 +5,57 @@
 #ifndef __LANGUAGE_H_
 # define __LANGUAGE_H_
 
+# ifdef STL_HAS_HASH
+#  include <hash_map>
+# else
+#  include <map>
+# endif
+
+# include <vector>
+
 # include "str.h"
 
+# define NUM_LANG_TAGS	4
+
+class LanguageData;
+
 class Language {
- private:
-   // This is here because this class CANNOT be constructed
-   Language(void) {};
+ public:
+# ifdef STL_HAS_HASH
+   typedef hash_map <String, LanguageData *> languages_map_t;
+# else
+   typedef hash_map <String, LanguageData *> languages_map_t;
+# endif
+   
+   /* Corresponding numbers for the language data vector
+    * WARNING!! Make sure this list is in perfect sync with the language tag
+    * list in language.cpp!!
+    */
+   enum tag_t {
+      REVISION,
+      MAINTAINER,
+      LANGNAME,
+      CHARSET
+   };
+   
+// private:
+ public:
+   // List of language tags (for the parser)
+   static char const *languageTags[NUM_LANG_TAGS];
+
+   // Languages installed! Lookup map for LanguageData:: pointers
+   static languages_map_t languages;
+
+   // Default language
+   static LanguageData *defaultLanguage;
+   
+   Language(void) {};				// Constructor (cannot be run)
+   virtual ~Language(void) {};			// Destructor
    
  public:
    static bool loadLanguages(String const &);
+   
+   virtual String get(tag_t n) {return "";};	// Return languag dialogue
    
    // Greeting lines sent when a user connects
    static char const *L_PINGPONG_NOTICE;
@@ -258,6 +300,37 @@ class Language {
    static char const *L_RPL_YOUREOPER_ALREADY;
    static char const *L_RPL_REHASHING;
    static char const *L_RPL_ENDOFLINKS;
+   
+   friend class LanguageData;
+};
+
+
+// Language data class
+class LanguageData : public Language {
+ private:
+   vector <String> dialogue;
+   
+ public:
+   // Constructor
+   LanguageData(void)
+     : Language()
+     {
+	dialogue.clear();
+     };
+   
+   // Destructor
+   ~LanguageData(void)
+     {
+	dialogue.clear();
+     };
+   
+   // Grab a string from the language dialogue data
+   String get(tag_t n) 
+     { 
+	return dialogue[n]; 
+     };
+
+   friend class Language;
 };
 
 #endif

@@ -16,6 +16,7 @@ class LocalUser;
 # include "user.h"
 # include "channel.h"
 # include "handler.h"
+# include "language.h"
 # include "str.h"
 
 
@@ -64,7 +65,8 @@ class LocalUser {
  public:
    User *user;					// Link into main user class
    Handler *handler;				// Link into user handler
-
+   LanguageData *language;			// Language dialogue data
+   
    servnotice_t serverNotices;			// Server notices to receive
    
    watch_set_t watches;				// Watching these nicknames
@@ -100,9 +102,10 @@ class LocalUser {
    static servnotice_t const SN_SIGNONOFF	= 0x00001000; // +s
 
    // Constructor
-   LocalUser(User *u, Handler *h)
+   LocalUser(User *u, Handler *h, LanguageData *l)
      : user(u),
        handler(h),
+       language(l),
        serverNotices(0)
      {
 	watches.clear();
@@ -188,6 +191,18 @@ class LocalUser {
 				   c->getName().IRCtoLower());
      };
 # endif
+   
+   // Grab a language string
+   String getLang(Language::tag_t t) 
+     {
+	// Return it from the language dialogue data if we can
+	if (language) { 
+	   return language->get(t);
+	}
+	
+	// Oh well :(
+	return "";
+     };
 };
 
 #endif

@@ -399,9 +399,9 @@ void Handler::doVERSION(Handler *handler, User *from)
 {
    handler->sendNumeric(Daemon::myServer(), RPL_VERSION, from,
 			String::printf((char *)Language::L_RPL_VERSION,
-				       getVersion,
+				       Version::version,
 				       (char const *)Daemon::myServer()->getHostname(),
-				       getVersionChars));
+				       Version::versionChars));
    handler->sendNumeric(Daemon::myServer(), RPL_ISUPPORT, from,
 			Daemon::makeISUPPORT());
 }

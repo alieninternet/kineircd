@@ -221,6 +221,7 @@ _______________________________________________________________________________
        'e' - Time may not match real time in zone (a bad clock or zone setting)
       eg. "db" means it is day-light-saving time, but the given time
       may not be an accurate representation of the real time in this timezone.
+      Note: if no flags are set, a '*' will be put in the flag spot instead.
 
 
 820 - RPL_HELP
@@ -275,39 +276,22 @@ _______________________________________________________________________________
       the same way.
 
 
-827 - RPL_YOURLANGUAGEIS 
-      <language code> <charset> :<language/variation name>
-      When listing languages (LANGUAGE command with no parameters) this 
-      starts off the list showing the user their current language setting.
-      The language code follows ISO-639-(1/2)/IANA assigned language codes, 
-      and the charset is an IANA/MIME style compliant character which is used 
-      to view the language selected (the client should change to this for 
-      proper viewing). The charset field is used to show which character set 
-      should be used when viewing this language correctly, and follows 
-      IANA/MIME style specifications 
-      (see http://www.iana.org/assignments/character-sets; eg. ISO-8859-1,
-      ISO-10646-UCS-4 etc). The language/variation name is the name of the 
-      language IN that language. Eg. not 'German' but 'Deutsch', not 'Spanish' 
-      but 'Espa¤ol' (hopefully that's an n with a tilde), not 'French' but
-      'Francais' (I cannot do a cedilla on the c on this terminal) etc etc.
-      Note that this ONLY refers to the server specific language selection and
-      does not show other languages. The WHOIS language information serves
-      that purpose, but the client should already know what other languages
-      it has set.
-
-
 828 - RPL_LANGUAGE
-      <language code> <version> <maintainer> <charset> * 
-       :<language/variation name>
+      <language code> <revision> <maintainer> <charset> <flags> :<name>
       A list item for listing languages. The language code is the 
-      ISO-639-(1/2)/IANA assigned language name, the version is the version of 
+      ISO-639-(1/2)/IANA assigned language code, the revision is the version of
       the language file being used, and the maintainer is an e-mail address 
       of the person who maintains that particular language file for contact 
       with regards to updates/corrections etc. The character set is the same
       as above, an IANA/MIME compliant character set name. The '*' is a 
-      field for possible future use and should be ignored for now. The 
-      language/variation name is given to show the name of the language, and 
-      is the name of the language IN that language, as with RPL_YOURLANGUAGEIS.
+      field for possible future use and should be ignored for now. The name
+      is given to show the name/variation of the language and should follow
+      the same name given by the ISO-639-(1/2)IANA assigned language name
+      associated with the code. The flags are a bunch of case sensitive 
+      characters in a row with special meanings. If no flags are set on a
+      language, '*' will be replaced instead (as with RPL_TIMEONSERVERIS).
+      Currently the following flags are set:
+       's' - Currently selected as the server language being outputted
 
 
 829 - RPL_ENDOFLANGUAGES

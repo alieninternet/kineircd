@@ -484,8 +484,19 @@ bool User::toggleModeSERVNOTICES(bool setting, Handler *handler, User *user, cha
    
    // Check if we are setting this mode
    if (setting) {
-      user->local->serverNotices = 0xFFFFFFFF;
-      return true; // fix me
+      // Check if we are a helper/oper
+      if (User::isHelper(user)) {
+	 user->local->serverNotices = 0xFFFFFFFF; // fix this.
+	 return true;
+      } else {
+	 // Get cranky
+	 if (handler) {
+	    handler->sendNumeric(Daemon::myServer(),
+				 ERR_NOPRIVILEGES, 0,
+				 Language::L_ERR_NOPRIVILEGES_PLUS_SERVNOTICES);
+	 }
+	 return false;
+      }
    } 
 
    // Turn off all the modes

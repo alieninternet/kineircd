@@ -437,7 +437,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 				       (char const *)user->getVWHost()));
    
    // Create a LocalUser class for this user since they are obviouslly local
-   user->local = new LocalUser(user, this);
+   user->local = new LocalUser(user, this, Language::defaultLanguage);
    
    // Add this user to the connection list
    Daemon::addUser(user);
@@ -455,7 +455,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
    sendNumeric(RPL_YOURHOST,
 	       String::printf((char *)Language::L_RPL_YOURHOST,
 			      (char const *)Daemon::myServer()->getHostname(),
-			      (char const *)getVersion));
+			      (char const *)Version::version));
    
 #ifdef BLOODY_IRCII_KLUGE
    /* I hate this. It makes the signon look ugly, and us like a pack of idiots.
@@ -467,24 +467,24 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
      sendRaw(String::printf((char *)Language::L_RPL_YOURHOST_IRCII_KLUGE_NOTICE,
 			    (char const *)user->nickname,
 			    (char const *)Daemon::myServer()->getHostname(),
-			    (char const *)getVersion,
+			    (char const *)Version::version,
 			    IRC2USER_EOL_CHARS));
 #endif
    
    sendNumeric(RPL_CREATED,
 	       String::printf((char *)Language::L_RPL_CREATED,
-			      getBuild));
+			      Version::build));
    sendNumeric(RPL_MYINFO,
 	       String::printf("%s %s %s %s %s %s %s %s %s",
 			      (char const *)Daemon::myServer()->getHostname(),
-			      getVersion,
+			      Version::version,
 			      User::modeStr,
 			      Channel::modeStr,
 			      Channel::modeParamStr,
 			      User::modeParamStr,
 			      Server::modeStr,
 			      Server::modeParamStr,
-			      getVersionChars));
+			      Version::versionChars));
    sendNumeric(RPL_ISUPPORT, 
 	       Daemon::makeISUPPORT() + Language::L_RPL_ISUPPORT_TAG);
    sendNumeric(RPL_TIMEONSERVERIS,
@@ -581,13 +581,12 @@ irc2userHandler::~irc2userHandler(void)
 void irc2userHandler::goodbye(String const &reason)
 {
    // Send a notice to those who care
-   Daemon::
-     serverNotice(LocalUser::SN_SIGNONOFF,
-		  String::printf((char *)Language::L_SERVNOTICE_SIGNOFF,
-				 (char const *)user->getNickname(),
-				 (char const *)user->getUsername(),
-				 (char const *)user->getHost(),
-				 (char const *)reason));
+   Daemon::serverNotice(LocalUser::SN_SIGNONOFF,
+			String::printf((char *)Language::L_SERVNOTICE_SIGNOFF,
+				       (char const *)user->getNickname(),
+				       (char const *)user->getUsername(),
+				       (char const *)user->getHost(),
+				       (char const *)reason));
 
    // Tell the user why the link is being closed if we need to
    sendGoodbye(reason);
@@ -2429,11 +2428,25 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
    // Check we have at least one parameter
    if (tokens->countTokens() < 2) {
 #ifdef DO_MATCH_COUNTING
-      int numLanguages = 0;
+      unsigned int numLanguages = 0;
 #endif
       
       // Run through known languages and list them to the client
-      
+      for (Language::languages_map_t::iterator it = 
+	   Language::languages.begin(); 
+	   it != Language::languages.end(); it++) {
+#ifdef DO_MATCH_COUNTING
+	 numLanguages++;
+#endif
+	 handler->
+	   sendNumeric(RPL_LANGUAGE,
+		       String::printf("%s %s %s %s * :%s",
+				      (char const *)(*it).first,
+				      (char const *)(*it).second->get(Language::REVISION),
+				      (char const *)(*it).second->get(Language::MAINTAINER),
+				      (char const *)(*it).second->get(Language::CHARSET),
+				      (char const *)(*it).second->get(Language::LANGNAME)));
+      }
       
       // Send the end of list tag
 #ifdef DO_MATCH_COUNTING

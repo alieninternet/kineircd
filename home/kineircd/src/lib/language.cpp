@@ -13,6 +13,29 @@
 #include <errno.h>
 
 #include "language.h"
+#include "daemon.h"
+
+
+namespace Language {
+   /* This is a list of language tags so that the language parser knows 
+    * where to shove the language data.
+    * WARNING!!! Make sure this list is in perfect sync with the enumeration 
+    * list in the language header file!
+    */
+   char const *languageTags[NUM_LANG_TAGS] =
+     {
+	"REVISION",
+	"MAINTAINER",
+	"LANGNAME",
+	"CHARSET"
+     };
+
+   // The map with the languages in it..
+   Language::languages_map_t languages;
+   
+   // Default language, start off with it being none...
+   LanguageData *defaultLanguage = 0;
+}
 
 /* Do not change these lines unless you know how they are used/referenced or
  * integrate with the IRC protocol etc. Often white-space before/after a
@@ -251,7 +274,7 @@ namespace Language {
    // LANGUAGE command messages
 #ifdef DO_MATCH_COUNTING
    char const *L_RPL_ENDOFLANGUAGES =
-     ":End of LANGUAGES list (%d languages)";
+     ":End of LANGUAGES list (%d language(s))";
 #else
    char const *L_RPL_ENDOFLANGUAGES =
      ":End of LANGUAGES list";
@@ -498,56 +521,143 @@ namespace Language {
 
 bool Language::loadLanguages(String const &directory)
 {
+#ifdef DEBUG
+   debug("Loading language files...");
+#endif
+   
    struct dirent *dirEntry;
    DIR *dir = opendir(directory);
 
    // Make sure we opened that directory
    if (!dir) {
 #ifdef DEBUG
-      cerr << String("Error opening language file direcotry: ") <<
-	strerror(errno) << endl;
+      debug(String("Error opening language file direcotry: ") +
+	    strerror(errno));
 #endif
       return 1;
    }
    
+   // Stuff we need
+#ifdef STL_HAS_HASH
+   hash_map <String, String *> langData;
+#else
+   map <String, String *> langData;
+#endif
+   String line = "";
+   String tag = "";
+   String data = "";
+   unsigned int lineNum = 0;
+   
    // Run through the directory list and look for files we want
    while ((dirEntry = readdir(dir)) != NULL) {
-#ifdef DEBUG
-      cerr << "Checking " << dirEntry->d_name << endl;
-#endif
-      
       // Check the name...
       if (!strncasecmp(dirEntry->d_name, LANG_FILE_PREFIX,
 		       LANG_FILE_PREFIX_LEN)) {
 	 // Open the file
 	 String fileName = String(dirEntry->d_name);
 	 ifstream file(directory + fileName);
-	 
+
 	 // Check that we opened the file properly
 	 if (!file) {
-	    // complain here
 #ifdef DEBUG
-	    cerr << "File not opened" << endl;
+	    debug(String("Could not open language file: ") + fileName);
 #endif
 	    continue;
 	 }
 	 
 	 // Grab the language code from the filename
-	 String code = fileName.subString(LANG_FILE_PREFIX_LEN);
+	 String code = fileName.subString(LANG_FILE_PREFIX_LEN).toLower();
 
-#ifdef DEBUG
-	 cerr << String::printf("Loading language file %s (%s)",
-				(char const *)fileName,
-				(char const *)code) << endl;
+#ifdef DEBUG_EXTENDED
+	 debug(String::printf("Loading language file %s (%s)",
+			      (char const *)fileName,
+			      (char const *)code));
 #endif
 	 
-	 // READ!
-	 // READ!
-	 // READ!
-	 // READ!
+	 // Reset some variables
+	 LanguageData *lang = new LanguageData();
+	 langData.clear();
+	 line = "";
+	 tag = "";
+	 data = "";
+	 lineNum = 0;
+	 
+	 while (!file.eof()) {
+	    // Reset some more variables
+	    tag = "";
+	    data = "";
+	    
+	    // Read the line
+	    file >> line;
+	    lineNum++;
+	    
+	    // Trim the line
+	    line = line.trim();
+	    
+	    // Is the line a comment or a blank line?
+	    if (!line.length() || (line[0] == '#')) {
+	       continue;
+	    }
+	    
+	    // Grab the two tokens
+	    StringTokens st(line);
+	    tag = st.nextToken('=').trim().toUpper();
+	    data = st.rest().trim();
+
+	    // Check the data for this line
+	    if (!tag.length() || !data.length()) {
+#ifdef DEBUG
+	       debug(String::printf("Bad language line %u: %s",
+				    lineNum,
+				    (char const *)line));
+#endif
+	       continue;
+	    }
+	    
+#ifdef DEBUG_EXTENDED
+	    debug(String::printf(" +-> Tag: '%s', data: '%s'",
+				 (char const *)tag,
+				 (char const *)data));
+#endif
+
+	    // Is this data already in the map?
+	    if (langData[tag]) {
+	       // Delete this and add a fresh one
+	       delete langData[tag];
+	    } 
+	    
+	    // Add it..
+	    langData[tag] = new String(data);
+	 }
 	 
 	 // Close the file
 	 file.close();
+	 
+	 // Run through our language tags list and grab data from the map
+	 for (int i = 0; i < NUM_LANG_TAGS; i++) {
+	    if (langData[languageTags[i]]) {
+	       cout << "t: " << languageTags[i] << " d: " << 
+		 *langData[languageTags[i]] << endl;
+	       lang->dialogue.push_back(*langData[languageTags[i]]);
+	    } else {
+	       cout << "t: " << languageTags[i] << " null" << endl;
+	       lang->dialogue.push_back("");
+	       
+	       // Erase that entry so the map can delete properly
+	       langData.erase(languageTags[i]);
+	    }
+	 }
+
+	 // Add this language to the map thingy
+       	 languages[code] = lang;
+
+	 // Clean out the map
+	 String *foo;
+	 while (!langData.empty()) {
+	    foo = (*langData.begin()).second;
+	    langData.erase(langData.begin());
+	    delete foo;
+	 }
       }
    }
    

@@ -228,10 +228,10 @@ bool Daemon::init(String const &conf)
    openlog(SYSLOG_IDENT, LOG_PID, LOG_DAEMON);
    // log out first line
 # ifdef DEBUG
-   logger(String::printf("Starting %s (debugging)", getVersion),
+   logger(String::printf("Starting %s (debugging)", Version::version),
 	  LOGPRI_INFO);
 # else
-   logger(String::printf("Starting %s", getVersion),
+   logger(String::printf("Starting %s", Version::version),
 	  LOGPRI_INFO);
 # endif
 #endif
