@@ -7,10 +7,9 @@ include $(top_builddir)/config/automake.inc
 
 
 # Work out which additional libraries we need to compile...
-#if KINEIRCD_COMPILE_LIB_IRC2
-# KINEIRCD_TARGET_LIB_IRC2=libkineircd_irc2.la
- KINEIRCD_TARGET_LIB_IRC2=
-#endif
+if KINEIRCD_COMPILE_LIB_IRC2
+ KINEIRCD_TARGET_LIB_IRC2=libkineircd_irc2.la
+endif
 
 # Work out which modules we need to compile...
 if KINEIRCD_COMPILE_MOD_FILELOG
@@ -128,8 +127,9 @@ lib/loggerconfig.cpp: lib/loggerconfig.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
 # 'libkineircd_irc2' library
 ###############################################################################
 libkineircd_irc2_la_SOURCES=\
-	lib_irc2/parser.cpp \
-	lib_irc2/protocol.h
+	lib_irc2/modes.h \
+	lib_irc2/protocol.h \
+	lib_irc2/servermodes.cpp
 libkineircd_irc2_la_LDFLAGS=\
 	-avoid-version
 libkineircd_irc2_la_LIBADD=\
@@ -180,7 +180,7 @@ mod_irc2user_la_LDFLAGS=\
 	-module
 mod_irc2user_la_LIBADD=\
 	libkineircd.la \
-	#libkineircd_irc2.la
+	libkineircd_irc2.la
 
 
 

@@ -45,6 +45,7 @@ include_HEADERS=\
 	include/kineircd/protocolinfo.h \
 	include/kineircd/protocolname.h \
 	include/kineircd/server.h \
+	include/kineircd/servermodes.h \
 	include/kineircd/signals.h \
 	include/kineircd/str.h \
 	include/kineircd/user.h \
