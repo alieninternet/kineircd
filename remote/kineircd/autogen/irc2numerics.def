@@ -1746,7 +1746,7 @@ irc2numerics = {
    numeric	= "376";
    origin	= "RFC1459";
    format	= ":<info>";
-   comment	= "Termination of an RPL_INFO list";
+   comment	= "Termination of an RPL_MOTD list";
 };
 
 irc2numerics = {
