@@ -3315,6 +3315,17 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "RPL_NETWORKS";
+   numeric	= "682";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   information	= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/kineircd/kineircd/doc/IIRC?rev=HEAD";
+   format	= "<name> <through_name> <hops> :<info>";
+   comment	= "A reply to the NETWORKS command when requesting a list of "
+                  "known networks (within the IIRC domain).";
+};
+
+irc2numerics = {
    name		= "RPL_YOURLANGUAGEIS";
    numeric	= "687";
    origin	= "KineIRCd";

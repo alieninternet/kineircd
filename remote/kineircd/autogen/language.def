@@ -570,6 +570,12 @@ tag = {
 };
 
 tag = {
+   name		= "irc2_RPL_ENDOF_GENERIC_NETWORKS";
+   components	= "mod_irc2user";
+   data_en	= "End of NETWORKS list";
+};
+
+tag = {
    name		= "irc2_RPL_ENDOFINFO";
    components	= "libkineircd_irc2";
    data_en	= "End of INFO list";
