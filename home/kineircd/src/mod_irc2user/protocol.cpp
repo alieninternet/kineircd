@@ -26,7 +26,6 @@
 # include "autoconf.h"
 #endif
 
-#include <iostream>
 #include <sstream>
 #include <kineircd/config.h>
 #include <kineircd/languages.h>
@@ -98,9 +97,6 @@ void Protocol::parseMessage(const std::string& origin,
 			    const Kine::LibIRC2::Protocol::parameters_type&
 			    parameters)
 {
-   std::cout << "COMMAND: " << command << "\nFrom: " << origin << "\nTo: " <<
-     destination << "\nParam count: " << parameters.size() << std::endl;
-   
    // Try and find the command..
    const Commands::CommandInfo* const commandInfo =
      Commands::getInstance().findCommand(command);
