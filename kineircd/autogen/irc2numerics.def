@@ -1862,6 +1862,7 @@ irc2numerics = {
    format	= "<server> <timestamp> <offset> :<time string>";
    comment	= "This extention adds the timestamp and timestamp-offet "
                   "information for clients.";
+   repeated	= "yes";
 };
 
 irc2numerics = {
@@ -1873,6 +1874,7 @@ irc2numerics = {
 		  "the UNIX epoch, however it is relative to the local "
 		  "timezone of the server. The timezone field is ambiguous, "
 		  "since it only appears to include American zones.";
+   repeated	= "yes";
 };
 
 irc2numerics = {
@@ -1881,6 +1883,7 @@ irc2numerics = {
    format	= "<server> <year> <month> <day> <hour> <minute> <second>";
    comment	= "Yet another variation, including the time broken down "
                   "into its components. Time is supposedly relative to UTC.";
+   repeated	= "yes";
 };
 
 irc2numerics = {
