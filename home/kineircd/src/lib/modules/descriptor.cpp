@@ -72,6 +72,13 @@ ModuleDescriptor* const ModuleDescriptor::loadModule(const String& filename,
       return 0;
    }
 
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream out;
+   out << "ModuleDescriptor::loadModule() - Loaded " << filename << 
+     " with an initial handle @ " << (void *)&handle;
+   debug(out.str());
+#endif
+   
    char* error = 0;
    
    // Attempt to find the init function
@@ -90,8 +97,10 @@ ModuleDescriptor* const ModuleDescriptor::loadModule(const String& filename,
    }
    
 #ifdef KINE_DEBUG_PSYCHO
-   debug("ModuleDescriptor::loadModule() - Running the init function in " +
-	 filename);
+   std::ostringstream out2;
+   out2 << "ModuleDescriptor::loadModule() - Running the init function in " <<
+     filename << " @ " << (void *)initFunction;
+   debug(out2.str());
 #endif
 
    // Initialise the module and grab its info!
@@ -109,6 +118,13 @@ ModuleDescriptor* const ModuleDescriptor::loadModule(const String& filename,
       return 0;
    }
    
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream out3;
+   out3 << "ModuleDescriptor::loadModule() - Returning module @ " <<
+     (void *)module;
+   debug(out3.str());
+#endif
+
    // Return a new module descriptor
    return new ModuleDescriptor(handle, *module);
 }
