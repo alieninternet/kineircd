@@ -29,7 +29,7 @@
    const Kine::Module::basicInfo_type &x(void)
 
 // The correct name of the symbol which is searched for by dlopen()
-# define KINE_MODULE_INIT_SYMBOL_NAME_STR \
+# define KINE_MODULE_INIT_SYMBOL_NAME \
    "KineIRCdModuleInit"
 
 // Template for the above, which you should use in your modules (correct name)
