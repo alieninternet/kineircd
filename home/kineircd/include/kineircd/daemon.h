@@ -24,6 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_DAEMON_H_
 # define _INCLUDE_KINEIRCD_DAEMON_H_ 1
 
+# include "kineircd/kineircdconf.h"
+
 namespace Kine {
    class Daemon;
 };

@@ -24,6 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_CONNECTION_H_
 # define _INCLUDE_KINEIRCD_CONNECTION_H_ 1
 
+# include "kineircd/kineircdconf.h"
+
 # include <queue>
 
 namespace Kine {

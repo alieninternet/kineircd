@@ -24,6 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_REGISTER_H_
 # define _INCLUDE_KINEIRCD_REGISTER_H_ 1
 
+# include "kineircd/kineircdconf.h"
+
 # include "kineircd/handler.h"
 
 namespace Kine {

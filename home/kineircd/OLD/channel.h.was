@@ -24,6 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_CHANNEL_H_
 # define _INCLUDE_KINEIRCD_CHANNEL_H_ 1
 
+# include "kineircd/kineircdconf.h"
+
 # include <ctime>
 
 # ifdef STL_HAS_HASH

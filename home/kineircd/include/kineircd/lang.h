@@ -24,6 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_LANG_H_
 # define _INCLUDE_KINEIRCD_LANG_H_ 1
 
+# include "kineircd/kineircdconf.h"
+
 # ifdef STL_HAS_HASH
 #  include <hash_map>
 # else

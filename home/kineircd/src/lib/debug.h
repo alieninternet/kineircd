@@ -23,6 +23,9 @@
 
 #ifndef _INCLUDE_KINEIRCD_DEBUG_H_
 # define _INCLUDE_KINEIRCD_DEBUG_H_ 1
+
+# include "kineircd/kineircdconf.h"
+
 # ifdef DEBUG
 
 #  ifdef DEBUG_ASSERT
