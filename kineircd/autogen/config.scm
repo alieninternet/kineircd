@@ -74,5 +74,7 @@
 
 ;;; shadowTable? - Determine if the table in scope has a shadow table
 (define (shadowTable?)
-   ;; for now, cheat.
-   (exist? ".defaultDefinition"))
+   (and
+      (not
+         (exist? ".definition"))
+      (exist? ".defaultDefinition")))
