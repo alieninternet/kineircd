@@ -26,6 +26,7 @@
 
 # include <kineircd/user.h>
 # include <kineircd/daemon.h>
+# include <kineircd/myserver.h>
 
 namespace Kine {
    //! A local user (refinement of a user - a user connected to this server)
@@ -49,7 +50,8 @@ namespace Kine {
       virtual const AIS::Util::Time& getLastAwake(void) const = 0;
       
       //! Return the server this user is connect to (that is, us!)
-      Server& getServer(void) const;
+      Server& getServer(void) const
+	{ return myServer(); };
    }; // class LocalUser
 }; // namespace Kine
 

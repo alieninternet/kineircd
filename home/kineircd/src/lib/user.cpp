@@ -214,12 +214,3 @@ const Error::error_type
 
    return Error::NO_ERROR;
 }
-
-
-/* getServer - Return the server local users are connected to (ie. 'my server')
- * Original 20/06/2003 simonb
- */
-Server& LocalUser::getServer(void) const
-{
-   return myServer();
-}
