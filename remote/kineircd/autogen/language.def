@@ -89,7 +89,7 @@ tag = {
 tag = {
    name		= "irc2_ERR_BADCHARENCODING";
    data_en	= "Given text contained one or more incorrectly encoded "
-                  "characters and as been modified.";
+                  "characters and has been modified.";
 };
 
 tag = {
