@@ -47,7 +47,6 @@ using AISutil::StringTokens;
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_ADMIN
 /* handleADMIN
  * Original 27/08/2001 simonb
- * 10/04/2003 simonb - Imported from old code (incomplete)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleADMIN)
 {
@@ -71,7 +70,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleADMIN)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_AWAY
 /* handleAWAY
  * Original 13/08/2001 simonb
- * 18/04/2003 simonb - Imported from old code (incomplete)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
 {
@@ -101,7 +99,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_HELP
 /* handleHELP
  * Original 13/08/2001 simonb
- * 02/04/2003 simonb - Imported from old code
  * Note: Not the best use on CPU since it's checking a match no matter how
  *       this is called, but since this is very rarely called I decided the
  *       code should be small rather than faster :)
@@ -204,7 +201,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_INFO
 /* handleINFO
  * Original 14/08/2001 simonb
- * 21/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleINFO)
 {
@@ -228,7 +224,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleINFO)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_ISON
 /* handleISON
  * Original 14/08/2001 simonb
- * 27/04/2003 simonb - Imported from old code
  * Note: Should this check to see the maximum output length and not be so
  *       trusting?
  */
@@ -264,7 +259,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleISON)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_LANGUAGE
 /* handleLANGUAGE
  * Original 26/10/2001 simonb
- * 03/04/2003 simonb - Imported from old code
  * Note: Needs to allow for the configuration option allowing unknown langs.
  *       It also needs duplicates checks (i.e. /language en,en,en = crappy)
  */
@@ -405,7 +399,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_LUSERS
 /* handleLUSERS
  * Original 27/08/2001 simonb
- * 03/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 {
@@ -429,7 +422,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_MOTD
 /* handleMOTD
  * Original 13/08/2001 simonb
- * 03/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 {
@@ -453,7 +445,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_PING
 /* handlePING
  * Original 25/08/2001 simonb
- * 03/04/2003 simonb - Imported from old code
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
 {
@@ -476,7 +467,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_QUIT
 /* handleQUIT
  * Original 14/08/2001 simonb
- * 08/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 {
@@ -493,7 +483,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_STATS
 /* handleSTATS
  * Original 14/08/2001 simonb
- * 23/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleSTATS)
 {
@@ -570,7 +559,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSUMMON)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_TIME
 /* handleTIME
  * Original 27/08/2001 simonb
- * 14/04/2003 simonb - Imported from old code (incompleted; needs config stuff)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
 {
@@ -617,7 +605,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERS)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_VERSION
 /* handleVERSION
  * Original 24/08/2001 simonb
- * 03/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
 {
@@ -642,7 +629,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_WHOIS
 /* handleWHOIS
  * Original 23/08/2001 simonb
- * 20/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleWHOIS)
 {
@@ -666,7 +652,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHOIS)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_WHOWAS
 /* handleWHOWAS
  * Original 09/10/2001 simonb
- * 20/04/2003 simonb - Imported from old code (incompleted)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleWHOWAS)
 {
