@@ -91,6 +91,7 @@ BUILT_SOURCES=\
 libkineircd_la_SOURCES=\
 	libkineircd/config/config.cpp \
 	libkineircd/config/defaults.h \
+	libkineircd/config/handlers.cpp \
 	$(KINEIRCD_SOURCE_LIB_CONFIG_OLDCONFIG_CPP) \
 	libkineircd/language/config.cpp \
 	libkineircd/language/config.h \

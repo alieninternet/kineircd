@@ -61,11 +61,13 @@ EXTRA_DIST=\
 	autogen/chanmembers.def \
 	autogen/chanmodes.def \
 	autogen/chantypes.def \
+	autogen/config.def \
 	autogen/errors.def \
 	autogen/irc2numerics.def \
 	autogen/logger.def \
 	autogen/servermodes.def \
 	autogen/usermodes.def \
+	autogen/version.def \
 	config/automake.inc \
 	doc/rfc1413.txt \
 	doc/rfc1459.txt \

@@ -31,7 +31,6 @@
 
 #include "kineircd/config.h"
 #include "kineircd/moduledescriptor.h"
-#include "libkineircd/config/defaults.h"
 #include "libkineircd/language/config.h"
 #include "libkineircd/listener/config.h"
 #include "libkineircd/debug.h"
