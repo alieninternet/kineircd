@@ -5,6 +5,7 @@
 #include "autoconf.h"
 
 #include "p14server.h"
+#include "daemon.h"
 #include "debug.h"
 #include "language.h"
 

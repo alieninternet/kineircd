@@ -9,7 +9,7 @@
 
 class Connection;
 
-# include "daemon.h"
+# include "user.h"
 # include "handler.h"
 # include "socket.h"
 

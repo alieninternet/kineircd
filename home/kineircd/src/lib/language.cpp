@@ -24,13 +24,29 @@ namespace Language {
     */
    Language::languageTagsStruct languageTags[Language::_END_] =
      {
+	  { "B_ERR_TOOMANYWATCH",			false,	false },
+	  { "B_QUIT_EXIT",				false,	false },
+	  { "B_QUIT_KILLED",				false,	false },
+	  { "B_QUIT_READ_ERROR",			false,	false },
+	  { "B_QUIT_WRITE_ERROR",			false,	false },
 	  { "B_RPL_CREATED",				false,	false },
+	  { "B_RPL_GLOBALUSERS",			false,	false },
+	  { "B_RPL_LOCALUSERS",				false,	false },
+	  { "B_RPL_LUSERCLIENT",			false,	false },
+	  { "B_RPL_LUSERME",				false,	false },
+	  { "B_RPL_STATSCONN",				false,	false },
+	  { "B_RPL_STATSUPTIME",			false,	false },
 	  { "B_RPL_TIMEONSERVERIS",			false,	false },
+	  { "B_RPL_WATCHSTAT",				false,	false },
+	  { "B_RPL_WELCOME",				false,	false },
+	  { "B_RPL_YOURHOST",				false,	false },
 	  { "CHARSET",					true,	true },
 	  { "E_ERR_ACCEPTEXIST",			false,	false },
 	  { "E_ERR_ACCEPTNOT",				false,	false },
 	  { "E_ERR_NOLANGUAGE",				false,	false },
+	  { "E_ERR_TOOMANYWATCH",			false,	false },
 	  { "E_ERR_UNKNOWNMODE",			false,	false },
+	  { "E_ERR_UNKNOWNSERVERMODE",			false,	false },
 	  { "E_ERR_USERONCHANNEL",			false,	false },
 	  { "E_RPL_ACCEPTED",				false,	false },
 	  { "E_RPL_ACCEPTNOTICE",			false,	false },
@@ -43,7 +59,9 @@ namespace Language {
 	  { "E_RPL_LOGON_SERVER",			false,	false },
 	  { "E_RPL_LOGON_USER",				false,	false },
 	  { "E_RPL_LUSERCHANNELS",			false,	false },
+	  { "E_RPL_LUSERCLIENT",			false,	false },
 	  { "E_RPL_LUSERHELPERS",			false,	false },
+	  { "E_RPL_LUSERME",				false,	false },
 	  { "E_RPL_LUSEROP",				false,	false },
 	  { "E_RPL_LUSERUNKNOWN",			false,	false },
 	  { "E_RPL_NOTACCEPTED",			false,	false },
@@ -52,6 +70,8 @@ namespace Language {
 	  { "E_RPL_NOWON_SERVER",			false,	false },
 	  { "E_RPL_NOWON_USER",				false,	false },
 	  { "E_RPL_WATCHOFF",				false,	false },
+	  { "E_RPL_WATCHSTAT",				false,	false },
+	  { "E_RPL_WELCOME",				false,	false },
 	  { "E_RPL_WHOISIDLE",				false,	false },
 	  { "E_RPL_WHOISOPERATOR",			false,	false },
 	  { "E_RPL_WHOISSECURE",			false,	false },
@@ -63,24 +83,33 @@ namespace Language {
 	  { "L_ERR_BADCHANNAME_FAILMASK",		false,	false },
 	  { "L_ERR_BADCHANNAME_SAFECHAN",		false,	false },
 	  { "L_ERR_BANNEDFROMCHAN",			false,	false },
+	  { "L_ERR_CANNOTCHANGECHANMODE",		false,	false },
 	  { "L_ERR_CANNOTSENDTOCHAN_BANNED",		false,	false },
 	  { "L_ERR_CANNOTSENDTOCHAN_MODERATED",		false,	false },
 	  { "L_ERR_CANNOTSENDTOCHAN_NOOUTSIDEMSG",	false,	false },
 	  { "L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY",	false,	false },
 	  { "L_ERR_CANNOTSENDTONICK_REGNICKSONLY",	false,	false },
+	  { "L_ERR_CANNOTCHANGESERVERMODE",		false,	false },
 	  { "L_ERR_CANNOTCHANGEUMODE",			false,	false },
 	  { "L_ERR_CANTKILLSERVICES",			false,	false },
 	  { "L_ERR_CHANNELISFULL",			false,	false },
+	  { "L_ERR_CHANOPRIVSNEEDED",			false,	false },
+	  { "L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER",	false,	false },
 	  { "L_ERR_ERRONEUSNICKNAME",			false,	false },
 	  { "L_ERR_EVENTNICKCHANGE",			false,	false },
+	  { "L_ERR_KEYSET",				false,	false },
 	  { "L_ERR_INVITEONLYCHAN",			false,	false },
+	  { "L_ERR_ISCHANSERVICE",			false,	false },
 	  { "L_ERR_NEEDMOREPARAMS",			false,	false },
 	  { "L_ERR_NICKNAMEINUSE",			false,	false },
+	  { "L_ERR_NOCHANMODES",			false,	false },
 	  { "L_ERR_NOKNOCK_INVITED",			false,	false },
 	  { "L_ERR_NOKNOCK_ONCHANNEL",			false,	false },
 	  { "L_ERR_NOKNOCK_OPENCHANNEL",		false,	false },
 	  { "L_ERR_NOKNOCK_REGONLY",			false,	false },
 	  { "L_ERR_NOMORELANGS",			false,	false },
+	  { "L_ERR_NOMOTD",				false,	false },
+	  { "L_ERR_NOMOTD_NOREMOTE",			false,	false },
 	  { "L_ERR_NONICKNAMEGIVEN",			false,	false },
 	  { "L_ERR_NONONREG_CHANNEL",			false,	false },
 	  { "L_ERR_NOOPERHOST",				false,	false },
@@ -91,6 +120,7 @@ namespace Language {
 	  { "L_ERR_NORECIPIENT",			false,	false },
 	  { "L_ERR_NOSUCHCHANNEL",			false,	false },
 	  { "L_ERR_NOSUCHNICK",				false,	false },
+	  { "L_ERR_NOSUCHNICK_NICK",			false,	false },
 	  { "L_ERR_NOSUCHNICK_OR_SERVER",		false,	false },
 	  { "L_ERR_NOSUCHSERVER",			false,	false },
 	  { "L_ERR_NOTEXTTOSEND",			false,	false },
@@ -102,17 +132,23 @@ namespace Language {
 	  { "L_ERR_SILELISTFULL",			false,	false },
 	  { "L_ERR_TOOMANYCHANNELS",			false,	false },
 	  { "L_ERR_UMODEUNKNOWNFLAG",			false,	false },
+	  { "L_ERR_UNIQOPRIVSNEEDED",			false,	false },
 	  { "L_ERR_UNKNOWNCOMMAND",			false,	false },
-	  { "L_ERR_USERSDONTMATCH",			false,	false },
+	  { "L_ERR_USERNOTINCHANNEL",			false,	false },
+	  { "L_ERR_USERSDONTMATCH_MODE",		false,	false },
 	  { "L_ERR_WHOTRUNC",				false,	false },
 	  { "L_RPL_ADMINME",				false,	false },
 	  { "L_RPL_CHANREDIR",				false,	false },
 	  { "L_RPL_ENDOFACCEPT",			false,	false },
+	  { "L_RPL_ENDOFBANLIST",			false,	false },
+	  { "L_RPL_ENDOFEXCEPTLIST",			false,	false },
 	  { "L_RPL_ENDOFHELP",				false,	false },
 	  { "L_RPL_ENDOFHELP_SIMPLE",			false,	false },
 	  { "L_RPL_ENDOFINFO",				false,	false },
+	  { "L_RPL_ENDOFINVITELIST",			false,	false },
 	  { "L_RPL_ENDOFLANGUAGES",			false,	false },
 	  { "L_RPL_ENDOFLINKS",				false,	false },
+	  { "L_RPL_ENDOFMOTD",				false,	false },
 	  { "L_RPL_ENDOFNAMES",				false,	false },
 	  { "L_RPL_ENDOFSILELIST",			false,	false },
 	  { "L_RPL_ENDOFSTATS",				false,	false },
@@ -125,6 +161,10 @@ namespace Language {
 	  { "L_RPL_MODECHANGEWARN_HELPER_PLUS_REGONLY",	false,	false },
 	  { "L_RPL_MODECHANGEWARN_OPER_MINUS_WALLOPS",	false,	false },
 	  { "L_RPL_MODECHANGEWARN_MINUS_VWORLD",	false,	false },
+	  { "L_RPL_MOTD_SHORT_A",			false,	false },
+	  { "L_RPL_MOTD_SHORT_B",			false,	false },
+	  { "L_RPL_MOTD_SHORT_C",			false,	false },
+	  { "L_RPL_MOTDSTART",				false,	false },
 	  { "L_RPL_NOTOPIC",				false,	false },
 	  { "L_RPL_NOWAWAY",				false,	false },
 	  { "L_RPL_REHASHING",				false,	false },
@@ -142,13 +182,20 @@ namespace Language {
 	  { "LANGCODE",					true,	true },
 	  { "LANGNAME",					true,	false },
 	  { "LANGNOTE",					false,	false },
+	  { "M_RPL_LUSERCLIENT_A",			false,	false },
+	  { "M_RPL_LUSERCLIENT_B",			false,	false },
+	  { "M_RPL_LUSERME",				false,	false },
+	  { "M_RPL_YOURHOST",				false,	false },
 	  { "MAINTAINER",				true,	true },
 	  { "P_NO_MATCH",				false,	false },
 	  { "P_RPL_WHOISVIRT",				false,	false },
 	  { "REVISION",					true,	true },
+	  { "W_CLIENT_PL",				false,	false },
+	  { "W_DAY_PL",					false,	false },
 	  { "W_LANGUAGE_PL",				false,	false },
 	  { "W_MATCH",					false,	false },
-	  { "W_MATCH_PL",				false,	false }
+	  { "W_MATCH_PL",				false,	false },
+	  { "W_PEAK",					false,	true },
      };
 
    // The map with the languages in it..
@@ -174,74 +221,7 @@ namespace Language {
      "trouble connecting, please e-mail help@austnet.org with the name "
      "and version of the client you are using, and the server you tried "
      "to connect to (%s).";
-   char const *L_RPL_WELCOME =
-     ":Welcome to the AustNet IRC Network %s -- For more information "
-     "visit http://www.austnet.org";
-   char const *L_RPL_YOURHOST =
-     ":Your server is %s, running version %s";
 
-   // Channel related messages
-   char const *L_ERR_USERNOTINCHANNEL =
-     "%s %s :They aren't on that channel";
-
-   char const *L_ERR_CHANOPRIVSNEEDED =
-     " :You're not a channel operator";
-   char const *L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER =
-     " :You're not a full channel operator";
-   char const *L_ERR_UNIQOPRIVSNEEDED =
-     ":You're not the original channel operator";
-
-   // Mode related messages
-   char const *L_RPL_ENDOFBANLIST =
-     " :End of channel ban list";
-   char const *L_RPL_ENDOFEXCEPTLIST =
-     " :End of channel ban exception list";
-   char const *L_RPL_ENDOFINVITELIST =
-     " :End of channel invite list";
-   char const *L_ERR_UNKNOWNSERVERMODE =
-     "%c :is an unknown server mode";
-   char const *L_ERR_CANNOTCHANGECHANMODE =
-     "%c :Cannot modify this channel mode";
-   char const *L_ERR_CANNOTCHANGESERVERMODE =
-     "%c :Cannot modify this server mode";
-   char const *L_ERR_NOCHANMODES =
-     " :Channel doesn't support modes";
-   char const *L_ERR_KEYSET =
-     " :Channel key already set";
-
-   // MOTD (Message of the day) replies
-   char const *L_RPL_MOTDSTART =
-     ":- %s Message of the day -";
-   char const *L_RPL_MOTD_SHORT1 =
-     ":- Please read the MOTD by typing /motd";
-   char const *L_RPL_MOTD_SHORT2 =
-     ":- Connection to this server from this point onwards assumes that";
-   char const *L_RPL_MOTD_SHORT3 =
-     ":- you have read and agree to all terms and conditions in the MOTD";
-   char const *L_RPL_MOTD_PREFIX =
-     ":- ";
-   char const *L_RPL_ENDOFMOTD =
-     ":End of MOTD";
-   char const *L_ERR_NOMOTD =
-     ":MOTD File is missing";
-   char const *L_ERR_NOMOTD_NOREMOTE =
-     ":MOTD on %s cannot be viewed remotely";
-
-   // WATCH command messages
-   char const *L_ERR_TOOMANYWATCH =
-     "%s :Maximum size for WATCH-list is %d entries";
-   char const *L_RPL_WATCHSTAT =
-     ":You have %d and are on %d WATCH entries";
-
-   // LUSERS command replies
-   char const *L_RPL_LUSERCLIENT =
-     ":There are %d users and %d services on %d servers";
-   char const *L_RPL_LUSERME =
-     ":I have %u clients and %u servers";
-   char const *L_RPL_LOCALUSERS =
-     ":Current local users: %u Peak: %u";
-   char const *L_RPL_GLOBALUSERS =
-     ":Current global users: %u Peak: %u";
 
    /* Server notice output strings
     * Note: This ties in with GLOBOPS, HELPME and LOCOPS broadcasts too since
@@ -278,9 +258,6 @@ namespace Language {
    char const *L_NOTIFY_PARANOID_OPERS_ON_WHOIS =
      "*** Notice -- %s (%s) did a /whois on you";
 
-   char const *L_ERR_ISCHANSERVICE =
-     "%s %s :AustNet services cannot be kicked or deoped";
-
    char const *L_QUIT_KILLED =
      "Killed (%s (%s))";
 
@@ -292,14 +269,6 @@ namespace Language {
      "ERROR :Closing Link: %s\r\n";
    char const *L_ERROR_CLOSING_LINK_DEFAULT_REASON =
      "Unknown error";
-
-   char const *L_RPL_STATSUPTIME =
-     ":Server Up %d days %d:%02d:%02d";
-   char const *L_RPL_STATSCONN =
-     ":Highest connection count: %u (%u clients)";
-
-   char const *L_ERR_NOSUCHNICK_NICK =
-     " :No such nickname";
 
    char const *L_DEFAULT_QUIT_MESSAGE =
      "Exit: Austnet Chat Network";
@@ -322,7 +291,7 @@ bool Language::loadLanguages(String const &directory,
    // Make sure we opened that directory
    if (!dir) {
 #ifdef DEBUG
-      debug(String("Error opening language file direcotry: ") +
+      debug(String("Error opening language file directory: ") +
 	    strerror(errno));
 #endif
       return false;

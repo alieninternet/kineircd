@@ -17,6 +17,7 @@
 #include <string.h>
 
 #include "handler.h"
+#include "daemon.h"
 #include "numerics.h"
 #include "language.h"
 #include "version.h"
@@ -54,11 +55,16 @@ void Handler::doADMIN(Handler *handler, User *from)
  */
 void Handler::doLUSERS(Handler *handler, User *from, String const &request)
 {
-   handler->sendNumeric(Daemon::myServer(), RPL_LUSERCLIENT, from,
-			String::printf((char *)Language::L_RPL_LUSERCLIENT,
-				       Daemon::numTotalUsers,
-				       Daemon::numServices,
-				       Daemon::numServers));
+   handler->
+     sendNumeric(Daemon::myServer(), RPL_LUSERCLIENT, from,
+		 String::printf(":%s %u %s %u %s %u %s",
+				(char const *)from->lang(Language::B_RPL_LUSERCLIENT),
+				Daemon::numTotalUsers,
+				(char const *)from->lang(Language::M_RPL_LUSERCLIENT_A),
+				Daemon::numServices,
+				(char const *)from->lang(Language::M_RPL_LUSERCLIENT_B),
+				Daemon::numServers,
+				(char const *)from->lang(Language::E_RPL_LUSERCLIENT)));
    handler->
      sendNumeric(Daemon::myServer(), RPL_LUSEROP, from,
 		 String::printf("%u :%s",
@@ -80,18 +86,28 @@ void Handler::doLUSERS(Handler *handler, User *from, String const &request)
 				(Daemon::channels.size() +
 				 Daemon::localChannels.size()),
 				(char const *)from->lang(Language::E_RPL_LUSERCHANNELS)));
-   handler->sendNumeric(Daemon::myServer(), RPL_LUSERME, from,
-			String::printf((char *)Language::L_RPL_LUSERME,
-				       Daemon::numClientConns,
-				       Daemon::numServerConns));
-   handler->sendNumeric(Daemon::myServer(), RPL_LOCALUSERS, from,
-			String::printf((char *)Language::L_RPL_LOCALUSERS,
-				       Daemon::numClientConns,
-				       Daemon::numClientConnsPeak));
-   handler->sendNumeric(Daemon::myServer(), RPL_GLOBALUSERS, from,
-			String::printf((char *)Language::L_RPL_GLOBALUSERS,
-				       Daemon::numTotalUsers,
-				       Daemon::numTotalUsersPeak));
+   handler->
+     sendNumeric(Daemon::myServer(), RPL_LUSERME, from,
+		 String::printf(":%s %u %s %u %s",
+				(char const *)from->lang(Language::B_RPL_LUSERME),
+				Daemon::numClientConns,
+				(char const *)from->lang(Language::M_RPL_LUSERME),
+				Daemon::numServerConns,
+				(char const *)from->lang(Language::E_RPL_LUSERME)));
+   handler->
+     sendNumeric(Daemon::myServer(), RPL_LOCALUSERS, from,
+		 String::printf(":%s: %u %s: %u",
+				(char const *)from->lang(Language::B_RPL_LOCALUSERS),
+				Daemon::numClientConns,
+				(char const *)from->lang(Language::W_PEAK),
+				Daemon::numClientConnsPeak));
+   handler->
+     sendNumeric(Daemon::myServer(), RPL_GLOBALUSERS, from,
+		 String::printf(":%s: %u %s: %u",
+				(char const *)from->lang(Language::B_RPL_GLOBALUSERS),
+				Daemon::numTotalUsers,
+				(char const *)from->lang(Language::W_PEAK),
+				Daemon::numTotalUsersPeak));
 }
 
 
@@ -134,33 +150,36 @@ void Handler::doMOTD(Handler *handler, User *from)
       // Not allowed to send the motd over the network
       handler->
 	sendNumeric(Daemon::myServer(), ERR_NOMOTD, from,
-		    String::printf((char *)Language::L_ERR_NOMOTD_NOREMOTE,
-				   ((char const *)
-				    Daemon::myServer()->getHostname())));
+		    String(':') + from->lang(Language::L_ERR_NOMOTD_NOREMOTE));
       return;
    }
    
    // Check if we have an MOTD to send..
    if (!Daemon::motd.empty()) {
       // Send the header
-      handler->sendNumeric(Daemon::myServer(), RPL_MOTDSTART, from,
-			   String::printf((char *)Language::L_RPL_MOTDSTART,
-					  (char const *)Daemon::myServer()->getHostname()));
+      handler->
+	sendNumeric(Daemon::myServer(), RPL_MOTDSTART, from,
+		    String::printf(":- %s %s -",
+				   (char const *)Daemon::myServer()->getHostname(),
+				   (char const *)from->lang(Language::L_RPL_MOTDSTART)));
 
       // Run through the MOTD and send each line in the list
       for (Daemon::motd_t::iterator it = Daemon::motd.begin();
 	   it != Daemon::motd.end(); 
 	   it++) {
-	 handler->sendNumeric(Daemon::myServer(), RPL_MOTD, from, *it);
+	 handler->sendNumeric(Daemon::myServer(), RPL_MOTD, from, 
+			      String(":- ") + *it);
       }
 	 
       // Send the footer
-      handler->sendNumeric(Daemon::myServer(), RPL_ENDOFMOTD, from, 
-			   Language::L_RPL_ENDOFMOTD);
+      handler->
+	sendNumeric(Daemon::myServer(), RPL_ENDOFMOTD, from, 
+		    String(':') + from->lang(Language::L_RPL_ENDOFMOTD));
    } else {
       // No MOTD to send
-      handler->sendNumeric(Daemon::myServer(), ERR_NOMOTD, from, 
-			   Language::L_ERR_NOMOTD);
+      handler->
+	sendNumeric(Daemon::myServer(), ERR_NOMOTD, from,
+		    String(':') + from->lang(Language::L_ERR_NOMOTD));
    }
 }
 
@@ -274,18 +293,24 @@ class statsFunctions {
      {
         time_t uptime = (Daemon::getTime() - Daemon::startTime);
 
-	handler->sendNumeric(Daemon::myServer(),
-			     RPL_STATSUPTIME, from,
-			     String::printf((char *)Language::L_RPL_STATSUPTIME,
-					    (int)(uptime / 86400),
-					    ((int)(uptime % 86400) / 3600),
-					    ((int)(uptime % 3600) / 60),
-					    (int)(uptime % 60)));
-	handler->sendNumeric(Daemon::myServer(),
-			     RPL_STATSCONN, from,
-			     String::printf((char *)Language::L_RPL_STATSCONN,
-					    Daemon::numConnsPeak,
-					    Daemon::numClientConnsPeak));
+	handler->
+	  sendNumeric(Daemon::myServer(),
+		      RPL_STATSUPTIME, from,
+		      String::printf(":%s %d %s %d:%02d:%02d",
+				     (char const *)from->lang(Language::B_RPL_STATSUPTIME),
+				     (int)(uptime / 86400),
+				     (char const *)from->lang(Language::W_DAY_PL),
+				     ((int)(uptime % 86400) / 3600),
+				     ((int)(uptime % 3600) / 60),
+				     (int)(uptime % 60)));
+	handler->
+	  sendNumeric(Daemon::myServer(),
+		      RPL_STATSCONN, from,
+		      String::printf(":%s: %u (%u %s)",
+				     (char *)Language::B_RPL_STATSCONN,
+				     Daemon::numConnsPeak,
+				     Daemon::numClientConnsPeak,
+				     (char const *)from->lang(Language::W_CLIENT_PL)));
      }
 };
    
@@ -401,7 +426,8 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       // Make sure we found that user record
       if (!u) {
 	 handler->sendNumeric(Daemon::myServer(), ERR_NOSUCHNICK, from,
-			      user + Language::L_ERR_NOSUCHNICK_NICK);
+			      user + " :" +
+			      from->lang(Language::L_ERR_NOSUCHNICK_NICK));
 	 continue; 
       }
       

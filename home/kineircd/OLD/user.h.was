@@ -17,7 +17,6 @@
 class User;
 
 # include "localuser.h"
-# include "daemon.h"
 # include "str.h"
 # include "server.h"
 # include "channel.h"

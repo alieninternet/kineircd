@@ -33,13 +33,29 @@ class Language {
     * list in language.cpp!!
     */
    enum tag_t {
+	B_ERR_TOOMANYWATCH,
+	B_QUIT_EXIT,		// pending
+	B_QUIT_KILLED,		// pending
+	B_QUIT_READ_ERROR,	// pending
+	B_QUIT_WRITE_ERROR,	// pending
 	B_RPL_CREATED,
+	B_RPL_GLOBALUSERS,
+	B_RPL_LOCALUSERS,
+	B_RPL_LUSERCLIENT,
+	B_RPL_LUSERME,
+	B_RPL_STATSCONN,
+	B_RPL_STATSUPTIME,
 	B_RPL_TIMEONSERVERIS,
+	B_RPL_WATCHSTAT,
+	B_RPL_WELCOME,
+	B_RPL_YOURHOST,
 	CHARSET,
 	E_ERR_ACCEPTEXIST,
 	E_ERR_ACCEPTNOT,
 	E_ERR_NOLANGUAGE,
+	E_ERR_TOOMANYWATCH,
 	E_ERR_UNKNOWNMODE,
+	E_ERR_UNKNOWNSERVERMODE,
 	E_ERR_USERONCHANNEL,
 	E_RPL_ACCEPTED,
 	E_RPL_ACCEPTNOTICE,
@@ -52,7 +68,9 @@ class Language {
 	E_RPL_LOGON_SERVER,
 	E_RPL_LOGON_USER,
 	E_RPL_LUSERCHANNELS,
+	E_RPL_LUSERCLIENT,
 	E_RPL_LUSERHELPERS,
+	E_RPL_LUSERME,
 	E_RPL_LUSEROP,
 	E_RPL_LUSERUNKNOWN,
 	E_RPL_NOTACCEPTED,
@@ -61,6 +79,8 @@ class Language {
 	E_RPL_NOWON_SERVER,
 	E_RPL_NOWON_USER,
 	E_RPL_WATCHOFF,
+	E_RPL_WATCHSTAT,
+	E_RPL_WELCOME,
 	E_RPL_WHOISIDLE,
 	E_RPL_WHOISOPERATOR,
 	E_RPL_WHOISSECURE,
@@ -72,24 +92,33 @@ class Language {
 	L_ERR_BADCHANNAME_FAILMASK,
 	L_ERR_BADCHANNAME_SAFECHAN,
 	L_ERR_BANNEDFROMCHAN,
+	L_ERR_CANNOTCHANGECHANMODE,
 	L_ERR_CANNOTSENDTOCHAN_BANNED,
 	L_ERR_CANNOTSENDTOCHAN_MODERATED,
 	L_ERR_CANNOTSENDTOCHAN_NOOUTSIDEMSG,
 	L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY,
 	L_ERR_CANNOTSENDTONICK_REGNICKSONLY,
+	L_ERR_CANNOTCHANGESERVERMODE,
 	L_ERR_CANNOTCHANGEUMODE,
 	L_ERR_CANTKILLSERVICES,
 	L_ERR_CHANNELISFULL,
+	L_ERR_CHANOPRIVSNEEDED,
+	L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER,
 	L_ERR_ERRONEUSNICKNAME,
 	L_ERR_EVENTNICKCHANGE,
+	L_ERR_KEYSET,
 	L_ERR_INVITEONLYCHAN,
+	L_ERR_ISCHANSERVICE,
 	L_ERR_NEEDMOREPARAMS,
 	L_ERR_NICKNAMEINUSE,
+	L_ERR_NOCHANMODES,
 	L_ERR_NOKNOCK_INVITED,
 	L_ERR_NOKNOCK_ONCHANNEL,
 	L_ERR_NOKNOCK_OPENCHANNEL,
 	L_ERR_NOKNOCK_REGONLY,
 	L_ERR_NOMORELANGS,
+	L_ERR_NOMOTD,
+	L_ERR_NOMOTD_NOREMOTE,
 	L_ERR_NONICKNAMEGIVEN,
 	L_ERR_NONONREG_CHANNEL,
 	L_ERR_NOOPERHOST,
@@ -100,6 +129,7 @@ class Language {
 	L_ERR_NORECIPIENT,
 	L_ERR_NOSUCHCHANNEL,
 	L_ERR_NOSUCHNICK,
+	L_ERR_NOSUCHNICK_NICK,
 	L_ERR_NOSUCHNICK_OR_SERVER,
 	L_ERR_NOSUCHSERVER,
 	L_ERR_NOTEXTTOSEND,
@@ -111,17 +141,23 @@ class Language {
 	L_ERR_SILELISTFULL,
 	L_ERR_TOOMANYCHANNELS,
 	L_ERR_UMODEUNKNOWNFLAG,
+	L_ERR_UNIQOPRIVSNEEDED,
 	L_ERR_UNKNOWNCOMMAND,
+	L_ERR_USERNOTINCHANNEL,
 	L_ERR_USERSDONTMATCH_MODE,
 	L_ERR_WHOTRUNC,
 	L_RPL_ADMINME,
 	L_RPL_CHANREDIR,
 	L_RPL_ENDOFACCEPT,
+	L_RPL_ENDOFBANLIST,
+	L_RPL_ENDOFEXCEPTLIST,
 	L_RPL_ENDOFHELP,
 	L_RPL_ENDOFHELP_SIMPLE,
 	L_RPL_ENDOFINFO,
+	L_RPL_ENDOFINVITELIST,
 	L_RPL_ENDOFLANGUAGES,
 	L_RPL_ENDOFLINKS,
+	L_RPL_ENDOFMOTD,
 	L_RPL_ENDOFNAMES,
 	L_RPL_ENDOFSILELIST,
 	L_RPL_ENDOFSTATS,
@@ -134,6 +170,10 @@ class Language {
 	L_RPL_MODECHANGEWARN_HELPER_PLUS_REGONLY,
 	L_RPL_MODECHANGEWARN_OPER_MINUS_WALLOPS,
 	L_RPL_MODECHANGEWARN_MINUS_VWORLD,
+	L_RPL_MOTD_SHORT_A,
+	L_RPL_MOTD_SHORT_B,
+	L_RPL_MOTD_SHORT_C,
+	L_RPL_MOTDSTART,
 	L_RPL_NOTOPIC,
 	L_RPL_NOWAWAY,
 	L_RPL_REHASHING,
@@ -151,24 +191,23 @@ class Language {
 	LANGCODE,
 	LANGNAME,
 	LANGNOTE,
+	M_RPL_LUSERCLIENT_A,
+	M_RPL_LUSERCLIENT_B,
+	M_RPL_LUSERME,
+	M_RPL_YOURHOST,
 	MAINTAINER,
 	P_NO_MATCH,
 	P_RPL_WHOISVIRT,
         REVISION,
+	W_CLIENT_PL,
+	W_DAY_PL,
 	W_LANGUAGE_PL,
 	W_MATCH,
 	W_MATCH_PL,
-	_END_
+	W_PEAK,
+	_END_ // this must be last..
    };
-   // 'Spam' notification, rather server policy that demands to be read
-   static char const *L_RPL_SPAM_LINE1;
-   static char const *L_RPL_SPAM_LINE2;
-   static char const *L_RPL_SPAM_LINE3;
-   static char const *L_RPL_SPAM_LINE4;
-   static char const *L_RPL_SPAM_LINE5;
-   static char const *L_RPL_SPAM_LINE6;
-   
-   
+
 // private:
  public:
    // List of language tags (for the parser)
@@ -204,46 +243,6 @@ class Language {
    
    // Greeting lines sent when a user connects
    static char const *L_PINGPONG_NOTICE;
-   static char const *L_RPL_WELCOME;
-   static char const *L_RPL_YOURHOST;
-
-
-   // Channel related messages
-   static char const *L_ERR_USERNOTINCHANNEL;
-   static char const *L_ERR_CHANOPRIVSNEEDED;
-   static char const *L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER;
-   static char const *L_ERR_UNIQOPRIVSNEEDED;
-
-   
-   // Mode related messages
-   static char const *L_RPL_ENDOFBANLIST;
-   static char const *L_RPL_ENDOFEXCEPTLIST;
-   static char const *L_RPL_ENDOFINVITELIST;
-   static char const *L_ERR_UNKNOWNSERVERMODE;
-   static char const *L_ERR_CANNOTCHANGECHANMODE;
-   static char const *L_ERR_CANNOTCHANGESERVERMODE;
-   static char const *L_ERR_NOCHANMODES;
-   static char const *L_ERR_KEYSET;
-   
-   // MOTD (Message of the day) replies
-   static char const *L_RPL_MOTDSTART;
-   static char const *L_RPL_MOTD_SHORT1;
-   static char const *L_RPL_MOTD_SHORT2;
-   static char const *L_RPL_MOTD_SHORT3;
-   static char const *L_RPL_MOTD_PREFIX;
-   static char const *L_RPL_ENDOFMOTD;
-   static char const *L_ERR_NOMOTD;
-   static char const *L_ERR_NOMOTD_NOREMOTE;
-   
-   // WATCH command messages
-   static char const *L_ERR_TOOMANYWATCH;
-   static char const *L_RPL_WATCHSTAT;
-
-   // LUSERS command replies
-   static char const *L_RPL_LUSERCLIENT;
-   static char const *L_RPL_LUSERME;
-   static char const *L_RPL_LOCALUSERS;
-   static char const *L_RPL_GLOBALUSERS;
 
    // Server notice output strings
    static char const *L_SERVNOTICE_LINK;
@@ -262,16 +261,12 @@ class Language {
    
    // Misc/Disorganised
    static char const *L_NOTIFY_PARANOID_OPERS_ON_WHOIS;
-   static char const *L_ERR_ISCHANSERVICE;
    static char const *L_QUIT_KILLED;
    static char const *L_REQUESTED_SHUTDOWN;
    static char const *L_BYE_BYE_USER;
    static char const *L_ERROR_CLOSING_LINK;
    static char const *L_ERROR_CLOSING_LINK_DEFAULT_REASON;
 
-   static char const *L_RPL_STATSUPTIME;
-   static char const *L_RPL_STATSCONN;
-   static char const *L_ERR_NOSUCHNICK_NICK;
    static char const *L_DEFAULT_QUIT_MESSAGE;
    
    friend class LanguageData;

@@ -215,7 +215,7 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
 	    file >> temp;
 	    
 #ifdef CONVERT_MOTD_TABS
-	    String newLine = ":- ";
+	    String newLine = "";
 	    
 	    // Run through the line and look for tabs to fix
 	    for (String::length_t i = 0; i < temp.length(); i++) {
@@ -230,16 +230,16 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
 
 	    // Add the line to the MOTD in memory
 # ifdef STL_HAS_SLIST
-	    conf->motd.push_front(String(":- ") + temp);
+	    conf->motd.push_front(temp);
 # else
 	    motd.push_back(newLine);
 # endif
 #else
 	    // Add the line to the MOTD in memory
 # ifdef STL_HAS_SLIST
-	    conf->motd.push_front(String(Language::L_RPL_MOTD_PREFIX) + temp);
+	    conf->motd.push_front(temp);
 # else
-	    motd.push_back(String(Language::L_RPL_MOTD_PREFIX) + temp);
+	    motd.push_back(String(temp);
 # endif
 #endif
 	 }

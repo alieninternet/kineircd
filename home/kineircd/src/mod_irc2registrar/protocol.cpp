@@ -9,7 +9,7 @@
 #include "irc3user.h"
 #include "p13server.h"
 #include "p14server.h"
-
+#include "daemon.h"
 #include "debug.h"
 #include "numerics.h"
 #include "language.h"

@@ -6,10 +6,8 @@
 
 #include <ctype.h>
 
-#include "daemon.h"
 #include "user.h"
-#include "localuser.h"
-#include "channel.h"
+#include "daemon.h"
 #include "numerics.h"
 #include "language.h"
 #include "utils.h"

@@ -10,7 +10,6 @@
 class Whowas;
 
 # include "user.h"
-# include "daemon.h"
 # include "str.h"
 
 /* Whowas entry. Notice how these values are not pointers - the reason for

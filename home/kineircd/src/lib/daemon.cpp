@@ -1612,7 +1612,7 @@ Server *Daemon::getServer(StringMask const &hostmask)
  * Original 21/09/01, Simon Butcher <pickle@austnet.org>
  */
 String Daemon::processServerModes(Server *server, Handler *handler, 
-				  String const &modes, 
+				  User *user, String const &modes,
 				  StringTokens *tokens)
 {
    bool toggle = true;
@@ -1674,10 +1674,10 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 	       } else {
 		  // Complain to the user that they cannot change this mode
 		  if (handler) {
-		     handler->sendNumeric(server,
-					  ERR_CANNOTCHANGESERVERMODE, 0,
-					  String::printf((char *)Language::L_ERR_CANNOTCHANGESERVERMODE,
-							 modes[i]));
+		     handler->
+		       sendNumeric(server, ERR_CANNOTCHANGESERVERMODE, 0,
+				   String::printf((char *)Language::L_ERR_CANNOTCHANGESERVERMODE,
+						  modes[i]));
 		  }
 	       }
 	       
@@ -1686,11 +1686,12 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 	 }
 	 
 	 // Check if we found a valid char. If not,c omplain if we can
-	 if (!gotModeChar && handler) {
-	    handler->sendNumeric(server, ERR_UNKNOWNSERVERMODE, 0,
-				 String::printf((char *)Language::L_ERR_UNKNOWNSERVERMODE,
-						modes[i]));
-
+	 if (!gotModeChar && handler && user) {
+	    handler->
+	      sendNumeric(server, ERR_UNKNOWNSERVERMODE, 0,
+			  String::printf("%c :%s",
+					 modes[i],
+					 (char const *)user->lang(Language::E_ERR_UNKNOWNSERVERMODE)));
 	 }
       }
    }
@@ -1721,7 +1722,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 void Daemon::changeServerMode(Server *server, Server *from, 
 			      String const &modes, StringTokens *tokens)
 {
-   String modeStr = processServerModes(server, 0, modes, tokens);
+   String modeStr = processServerModes(server, 0, 0, modes, tokens);
 
    // Check we actually have something here
    if (!modeStr.length()) {
@@ -1755,8 +1756,8 @@ void Daemon::changeServerMode(Server *server, Server *from,
 void Daemon::changeServerMode(Server *server, Handler *handler, User *from, 
 			      String const &modes, StringTokens *tokens)
 {
-   String modeStr = processServerModes(server, handler, modes, tokens);
-   
+   String modeStr = processServerModes(server, handler, from, modes, tokens);
+
    // Check we actually have something here
    if (!modeStr.length()) {
       return;

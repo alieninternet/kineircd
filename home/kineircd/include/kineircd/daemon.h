@@ -170,7 +170,7 @@ class Daemon {
 			String const &);	// Check for a bad channel name
 
    static String 
-     processServerModes(Server *, Handler *, String const &,
+     processServerModes(Server *, Handler *, User *, String const &,
 			StringTokens *);	// Process a server mode change
    
  public:
