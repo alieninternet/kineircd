@@ -345,7 +345,6 @@ void Protocol::sendTimeOnServer(void)
 
 // Stuff not transferred yet..
 IRC2USER_COMMAND_HANDLER(Protocol::handleACCEPT) {};
-IRC2USER_COMMAND_HANDLER(Protocol::handleADMIN) {};
 IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY) {};
 IRC2USER_COMMAND_HANDLER(Protocol::handleCONNECT) {};
 IRC2USER_COMMAND_HANDLER(Protocol::handleDIE) {};
