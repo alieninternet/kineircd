@@ -2049,12 +2049,6 @@ irc2numerics = {
 // 400-599, errors
 
 irc2numerics = {
-   name		= "ERR_FIRSTERROR";
-   numeric	= "400";
-   obsolete	= "yes";
-};
-
-irc2numerics = {
    name		= "ERR_UNKNOWNERROR";
    numeric	= "400";
    format	= "<command> [<?>] :<info>";
@@ -2969,14 +2963,6 @@ irc2numerics = {
 irc2numerics = {
    name		= "ERR_USERNOTONSERV";
    numeric	= "504";
-   conflict	= "yes";
-};
-
-irc2numerics = {
-   name		= "ERR_LAST_ERR_MSG";
-   numeric	= "504";
-   origin	= "Hybrid";
-   conflict	= "yes";
 };
 
 irc2numerics = {
