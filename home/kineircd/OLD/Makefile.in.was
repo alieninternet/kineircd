@@ -5,10 +5,11 @@
 
 srcdir=@srcdir@
 VPATH=@srcdir@
+top_builddir=$(srcdir)/../..
 
-include $(srcdir)/../../make/defs
+include $(top_builddir)/make/defs
 
-INCDIRS=@INCDIRS@ -I$(srcdir)/../../include -I$(srcdir)
+INCDIRS=@INCDIRS@ -I$(top_builddir)/include -I$(srcdir)
 DEFS=@DEFS@
 
 SSL_LIB=@ssl_lib@
@@ -88,7 +89,7 @@ LANGTAGS_OUT_H=langtags.h
 
 ########################################################################
 
-include $(srcdir)/../../make/rules
+include $(top_builddir)/make/rules
 
 .PHONY: _top_ subdirs $(SUB_DIRS) install distclean
 
