@@ -52,10 +52,10 @@ namespace Kine {
       typedef KINE_HASH_MAP_TYPE < Client::Name, Service* const > services_type;
       
       //! Connected servers list type
-      typedef KINE_HASH_MAP_TYPE < std::wstring, Server* const > servers_type;
+      typedef KINE_HASH_MAP_TYPE < Server::Name, Server* const > servers_type;
       
       //! Connected networks list type
-      typedef KINE_HASH_MAP_TYPE < std::wstring, Network* const > networks_type;
+      typedef KINE_HASH_MAP_TYPE < Network::Name, Network* const > networks_type;
       
       //! Known channel list type
       typedef KINE_HASH_MAP_TYPE < Channel::Name, Channel* const > channels_type;
@@ -169,7 +169,7 @@ namespace Kine {
        * \retval 0
        *    The server could not be found
        */
-      Server* const findServer(const std::wstring& name) const;
+      Server* const findServer(const Server::Name& name) const;
       
       /*!
        * \brief Find the given network, using its name
@@ -184,7 +184,7 @@ namespace Kine {
        * \retval 0
        *    The network could not be found
        */
-      Network* const findNetwork(const std::wstring& name) const;
+      Network* const findNetwork(const Network::Name& name) const;
       
       /*!
        * \brief Find the given channel, using its name

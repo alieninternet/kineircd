@@ -28,10 +28,10 @@
 # include <map>
 # include <aisutil/time.h>
 
+# include <kineircd/name.h>
 # include <kineircd/denizen.h>
 # include <kineircd/sender.h>
 # include <kineircd/receiver.h>
-# include <kineircd/name.h>
 
 namespace Kine {
    class Channel;

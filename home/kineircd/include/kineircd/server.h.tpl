@@ -40,6 +40,27 @@ namespace Kine {
    //! A server
    class Server : public Denizen, public Sender {
     public:
+      //! A server's hostname, conforming to IRC rules
+      class Name : public Kine::Name {
+       public:
+	 //! Constructor
+	 Name(void)
+	   {};
+	 
+	 //! Constructor (a magic one)
+	 template <class T>
+	   Name(const T& string)
+	     : Kine::Name(string)
+	     {};
+	 
+	 //! Destructor
+	 ~Name(void)
+	   {};
+	 
+	 // Check if the name is valid, according to server host naming rules
+	 const Error::error_type checkValidity(void) const;
+      }; // class Name
+
       //! Server modes type
       typedef unsigned long modes_type;
 
@@ -56,12 +77,12 @@ namespace Kine {
       };
       
     private:
-      const std::wstring hostname;		// The server's hostname
+      const Name hostname;			// The server's hostname
       modes_type modes;				// Server modes set
       
     protected:
       //! Constructor
-      explicit Server(const std::wstring& _hostname,
+      explicit Server(const Name& _hostname,
 		      const AIS::Util::Time& _signonTime)
 	: Entity(_signonTime),
           hostname(_hostname),
@@ -74,13 +95,17 @@ namespace Kine {
 	{};
 
 
+      //! Return the name of the server
+      const Name& getServerName(void) const
+	{ return hostname; };
+      
       // Return the hostname of the server
       const std::wstring& getHostname(void) const
-        { return hostname; };
+        { return getServerName(); };
 	
       // Return the 'name' (a server's hostname is normally its name)
       const std::wstring& getName(void) const
-	{ return getHostname(); };
+	{ return getServerName(); };
 
 
       //! Return the server modes

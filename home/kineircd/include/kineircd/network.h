@@ -26,6 +26,7 @@
 
 # include <kineircd/entity.h>
 # include <kineircd/sender.h>
+# include <kineircd/name.h>
 
 namespace Kine {
    /*!
@@ -34,8 +35,30 @@ namespace Kine {
     * This is literally an IRC network.
     */
    class Network : public Entity {
+    public:
+      //! A network's short name, conforming to IRC rules
+      class Name : public Kine::Name {
+       public:
+	 //! Constructor
+	 Name(void)
+	   {};
+	 
+	 //! Constructor (a magic one)
+	 template <class T>
+	   Name(const T& string)
+	     : Kine::Name(string)
+	     {};
+	 
+	 //! Destructor
+	 ~Name(void)
+	   {};
+
+	 // Check if the name is valid, according to network naming rules
+	 const Error::error_type checkValidity(void) const;
+      }; // class Name
+
     private:
-      std::wstring shortName;			//! The network's short name
+      Name shortName;				//! The network's short name
       
     protected:
       /*!
@@ -44,7 +67,7 @@ namespace Kine {
        * \param _signonTime The time the Network connected. For more
        *    information, see Kine::Entity::signonTime.
        */
-      explicit Network(const std::wstring& _shortName,
+      explicit Network(const Name& _shortName,
 		       const AIS::Util::Time& _signonTime)
 	: Entity(_signonTime),
           shortName(_shortName)
@@ -64,7 +87,7 @@ namespace Kine {
        * 
        * \return The short network name
        */
-      const std::wstring& getNetworkName(void) const
+      const Name& getNetworkName(void) const
 	{ return shortName; };
       
       // Return the 'name'
