@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_NETWORK_H_
 # define _INCLUDE_KINEIRCD_NETWORK_H_ 1
 
-# include <kineircd/denizen.h>
+# include <kineircd/entity.h>
 # include <kineircd/sender.h>
 
 namespace Kine {
@@ -33,7 +33,7 @@ namespace Kine {
     * 
     * This is literally an IRC network.
     */
-   class Network : public Denizen {
+   class Network : public Entity {
     protected:
       /*!
        * \brief Constructor
