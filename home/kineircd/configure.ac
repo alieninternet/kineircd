@@ -461,8 +461,12 @@ dnl
 dnl Stuff that effects the following arguments
 dnl
 AC_MSG_CHECKING([lower-cpu parameter])
-AC_ARG_ENABLE(lower-cpu,[  --enable-lower-cpu             bias defaults to lower cpu usage],
- [
+AC_ARG_ENABLE(lower-cpu,[
+  --enable-lower-cpu                         (Default is disabled)
+    With this enabled, it will effect the defaults of some of the feature
+    settings below in order to reduce cpu usage. The change will not be
+    very dramatic, however.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -475,8 +479,13 @@ AC_ARG_ENABLE(lower-cpu,[  --enable-lower-cpu             bias defaults to lower
 
 
 AC_MSG_CHECKING([lower-memory parameter])
-AC_ARG_ENABLE(lower-memory,[  --enable-lower-memory          bias defaults to lower memory usage],
- [
+AC_ARG_ENABLE(lower-memory,[
+  --enable-lower-memory                      (Default is disabled)
+    With this enabled, like the option above, it will effect the default
+    setting of some of the feature settings below, however this option
+    will reduce any additional memory usage instead. Similar to the option
+    above, this change will not be a dramatic one.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -492,8 +501,20 @@ dnl
 dnl Misc feature settings
 dnl
 AC_MSG_CHECKING([accept-unknown-langs parameter])
-AC_ARG_ENABLE(accept-unknown-langs,[  --enable-accept-unknown-langs  allow unknown languages to be set],
- [
+AC_ARG_ENABLE(accept-unknown-langs,[
+  --enable-accept-unknown-langs              (Default is disabled)
+    When enabled, this allows languages that are unknown to this server to
+    be set by a user and become visible to other servers, users and services
+    on the network. This can be good in the case of other servers/services
+    on the network being aware of more languages than are known locally
+    (eg. the langages being requested). This can be bad in the respect that
+    it leaves the language command open to abuse with users being able to
+    select rediculous languages that don't exist (the server does not check
+    against existing language codes). This probably isn't worthwhile if
+    the linguistic dialogs are remotely updated over the network (which means
+    every server on the network would be updated with the same
+    specifications).
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -505,8 +526,15 @@ AC_ARG_ENABLE(accept-unknown-langs,[  --enable-accept-unknown-langs  allow unkno
  ])
 
 AC_MSG_CHECKING([allow-clients parameter])
-AC_ARG_ENABLE(allow-clients,[  --enable-allow-clients         allow connections from users (clients)],
- [
+AC_ARG_ENABLE(allow-clients,[
+  --enable-allow-clients                     (Default is enabled)
+    This allows clients (users/bots/scouts - anything that uses a normal
+    client protocol) to connect to the server. Disabling this also has the
+    same effect as disabling client protocols on the server if services
+    are also not allowed to connect. Normally this should be left unless
+    the server is designed explicitly as a hubbing server alone and clients
+    are not allowed.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -514,19 +542,23 @@ AC_ARG_ENABLE(allow-clients,[  --enable-allow-clients         allow connections 
      AC_DEFINE(ALLOW_CLIENT_CONNECTIONS)
 
      dnl This uses user protocols so we need this
-     austhex_test_enable_user_protocols="yes"
+     austhex_test_enable_client_protocols="yes"
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
    AC_DEFINE(ALLOW_CLIENT_CONNECTIONS)
 
    dnl This uses user protocols so we need this
-   austhex_test_enable_user_protocols="yes"
+   austhex_test_enable_client_protocols="yes"
  ])
 
 AC_MSG_CHECKING([allow-servers parameter])
-AC_ARG_ENABLE(allow-servers,[  --enable-allow-servers         allow connections from servers],
- [
+AC_ARG_ENABLE(allow-servers,[
+  --enable-allow-servers                     (Default is enabled)
+    This allows servers to connect to the server. Normally this should be
+    enabled, unless in the case of a stand-alone server which will never
+    accept connections to a network of IRC servers.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -539,8 +571,17 @@ AC_ARG_ENABLE(allow-servers,[  --enable-allow-servers         allow connections 
  ])
 
 AC_MSG_CHECKING([allow-services parameter])
-AC_ARG_ENABLE(allow-services,[  --enable-allow-services        allow connections from services (clients)],
- [
+AC_ARG_ENABLE(allow-services,[
+  --enable-allow-services                    (Default is disabled)
+    This allows services to connect to this server. Services are very
+    similar to bots using the client interface, however they MUST have
+    authorisation to connect as they have a very different level of access
+    (in some cases higher and in others lower levels of access). Normally
+    services use the same protocols as the client protocols, so disabling
+    this and clients will result in client protocols being disabled. Do
+    not confuse this with servers with built in services such as
+    ChanOP/ChanServ et cetra, as they are unrelated.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -548,15 +589,22 @@ AC_ARG_ENABLE(allow-services,[  --enable-allow-services        allow connections
      AC_DEFINE(ALLOW_SERVICE_CONNECTIONS)
      
      dnl This uses user protocols so we need this
-     austhex_test_enable_user_protocols="yes"
+     austhex_test_enable_client_protocols="yes"
    fi
  ],[
    AC_MSG_RESULT([no (default)])
  ])
 
 AC_MSG_CHECKING([convert-motd-tabs parameter])
-AC_ARG_ENABLE(convert-motd-tabs,[  --enable-convert-motd-tabs     fix motd tabs into spaces for dumb GUI clients],
- [
+AC_ARG_ENABLE(convert-motd-tabs,[
+  --enable-convert-motd-tabs                 (Default is enabled)
+    When this is enabled, TAB characters in your MOTD file will be converted
+    to a series of spaces upon loading into memory to 'simulate' a TAB. Some
+    text editors use tabs to shrink the size of large spaces (jed for example)
+    and this can effect some IRC clients (especially GUI clients) which do
+    not translate the TAB character properly resulting in a messy looking
+    MOTD. Disabling this will only effect the MOTD loading process.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -573,8 +621,15 @@ AC_ARG_ENABLE(convert-motd-tabs,[  --enable-convert-motd-tabs     fix motd tabs 
  ])
 
 AC_MSG_CHECKING([drop-lame-servers parameter])
-AC_ARG_ENABLE(drop-lame-servers,[  --enable-drop-lame-servers     drop out of sync (lame) servers],
- [
+AC_ARG_ENABLE(drop-lame-servers,[
+  --enable-drop-lame-servers                 (Default is disabled)
+    This allows your server to drop other servers that are potentially
+    'spoofing' data, however this may also be produced by major 'out-of-sync'
+    conditions which can temporarily exist on lagging connections. Arguably
+    having this on is a good idea, but may become a disasterous nightmare
+    on large networks with soggy links, especially networks based on a
+    star-topology. Do not set this unless you know what you're doing.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -586,8 +641,15 @@ AC_ARG_ENABLE(drop-lame-servers,[  --enable-drop-lame-servers     drop out of sy
  ])
 
 AC_MSG_CHECKING([floodlock-accept-msg parameter])
-AC_ARG_ENABLE(floodlock-accept-msg,[  --enable-floodlock-accept-msg  set the accept message floodlock timeout],
- [
+AC_ARG_ENABLE(floodlock-accept-msg,[
+  --enable-floodlock-accept-msg=seconds      (Default is '120')
+    This enabled the accept-request message flood-lock. When in the
+    'caller-id' user mode (+g), as user that is not on your ACCEPT list who
+    is trying to send a message to you will cause a message to be sent to you
+    notifying their request to talk to you. The period of time between those
+    request messages can be limited here (a number in seconds) to avoid
+    people being able to flood while you're trying to 'ignore' them.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(off)
    else
@@ -609,8 +671,17 @@ AC_ARG_ENABLE(floodlock-accept-msg,[  --enable-floodlock-accept-msg  set the acc
  ])
 
 AC_MSG_CHECKING([floodlock-away-reply parameter])
-AC_ARG_ENABLE(floodlock-away-reply,[  --enable-floodlock-away-reply  set the away-reply floodlock timeout],
- [
+AC_ARG_ENABLE(floodlock-away-reply,[
+  --enable-floodlock-away-reply=seconds      (Default is '60')
+    This enabled the away-reply flood-lock. When talking to someone who is
+    marked as away, the server sends you a message notifying you of the
+    user being away. This makes the server only send a 'user is away' reply
+    to a message upon the first message, and then only after this flood-lock
+    timeout (in seconds) has expired. This can reduce the amount of traffic 
+    leaving the server dramatically, but does use a tiny bit more memory. 
+    Disabling this feature follows the traditional functionality -- one away 
+    notification reply per message sent.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(off)
    else
@@ -634,8 +705,22 @@ AC_ARG_ENABLE(floodlock-away-reply,[  --enable-floodlock-away-reply  set the awa
  ])
 
 AC_MSG_CHECKING([floodlock-away-set parameter])
-AC_ARG_ENABLE(floodlock-away-set,[  --enable-floodlock-away-set    set the away-setting floodlock timeout],
- [
+AC_ARG_ENABLE(floodlock-away-set,[
+  --enable-floodlock-away-set=seconds        (Default is '45')
+    This enabled the away-set flood-lock, which reduces the amount of time
+    between a user being able to set /AWAY. The user will be able to change
+    their away message twice before having to wait the amount of time given
+    in this flood-lock (in seconds) to change their away message. The
+    flood-lock remains in place if they unset their away message, which they
+    can do anytime regardless of the flood-lock state. This mainly effects
+    server to server output, as the away message is broadcast over the network
+    to maintain network synchronicity. Many scripts these days will change
+    their away message every couple of seconds to acheive an 'idle time'
+    counter in their away message (which is highly wasteful since WHOIS
+    already does this). This uses a slight bit more memory, but the server
+    protocol output can be dramatically reduced. Disabling this will allow
+    anyone to change their away message whenever they like.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(off)
    else
@@ -657,8 +742,14 @@ AC_ARG_ENABLE(floodlock-away-set,[  --enable-floodlock-away-set    set the away-
  ])
 
 AC_MSG_CHECKING([floodlock-knock-msg parameter])
-AC_ARG_ENABLE(floodlock-knock-msg,[  --enable-floodlock-knock-msg   set the knock message floodlock timeout],
- [
+AC_ARG_ENABLE(floodlock-knock-msg,[
+  --enable-floodlock-knock-msg=seconds       (Default is '300')
+    This enabled the channel KNOCK message flood-lock, to avoid flooders
+    taking advantage of the KNOCK command and using it to flood a channel
+    while they are not allowed in (invite only). When disabled, users are
+    able to KNOCK as many times as they like. When enabled, they can only
+    send one KNOCK per time given above in seconds, per channel.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(off)
    else
@@ -680,8 +771,13 @@ AC_ARG_ENABLE(floodlock-knock-msg,[  --enable-floodlock-knock-msg   set the knoc
  ])
 
 AC_MSG_CHECKING([helpers-see-umodes parameter])
-AC_ARG_ENABLE(helpers-see-umodes,[  --enable-helpers-see-umodes    allow helpers/opers to see other users' modes],
- [
+AC_ARG_ENABLE(helpers-see-umodes,[
+  --enable-helpers-see-umodes                (Default is enabled)
+    This enabled helpers and operators to be able to see user modes via
+    the /mode commands (eg. /mode nickname). This command has the potential
+    to be abused, but can be very handy in instances where a user needs help
+    and does not know how to see what modes they have enabled.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -693,27 +789,16 @@ AC_ARG_ENABLE(helpers-see-umodes,[  --enable-helpers-see-umodes    allow helpers
    AC_DEFINE(HELPERS_CAN_SEE_USER_MODES)
  ])
 
-AC_MSG_CHECKING([match-counting parameter])
-AC_ARG_ENABLE(match-counting,[  --enable-match-counting        add match counts to end of listing numerics],
- [
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(DO_MATCH_COUNTING)
-   fi
- ],[
-   if test "$austhex_test_lower_cpu" = "yes"; then
-     AC_MSG_RESULT([no (lower-cpu default)])
-   else
-     AC_MSG_RESULT([yes (default)])
-     AC_DEFINE(DO_MATCH_COUNTING)
-   fi
- ])
-
 AC_MSG_CHECKING([max-accepts-per-user parameter])
-AC_ARG_ENABLE(max-accepts-per-user,[  --enable-max-accepts-per-user  maximum number of ACCEPTs per user],
- [
+AC_ARG_ENABLE(max-accepts-per-user,[
+  --enable-max-accepts-per-user=number       (Default is '100')
+    This cannot be disabled. This defines how many entries on a user's
+    ACCEPT list can be used. A reasonable number of ACCEPTS should be given
+    for users as this is used in conjunction with usermode +g which blocks
+    messages from everyone. Having said that, though, it is unlikely that
+    people will need to accept more than 100 people at one time. This
+    feature uses less CPU-time than SILENCE lists.
+ ],[
    if test "$enableval" -gt 0 -a "$enableval" -lt 65534; then
      AC_MSG_RESULT($enableval)
      AC_DEFINE_UNQUOTED(DEFAULT_MAX_ACCEPTS_PER_USER, $enableval)
@@ -727,8 +812,13 @@ AC_ARG_ENABLE(max-accepts-per-user,[  --enable-max-accepts-per-user  maximum num
  ])
 
 AC_MSG_CHECKING([max-bans-per-channel parameter])
-AC_ARG_ENABLE(max-bans-per-channel,[  --enable-max-bans-per-channel  maximum number of bans per channel],
- [
+AC_ARG_ENABLE(max-bans-per-channel,[
+  --enable-max-bans-per-channel=number       (Default is '50')
+    This cannot be disabled. This defines how many bans (channel mode +b)
+    can be set on a channel at any one given time. This can be over-written
+    by the server configuration file. Currently this also restricts the 
+    number of auto-invitations (mode +I) and ban-exemptions (mode +e).
+ ],[
    if test "$enableval" -gt 0 -a "$enableval" -lt 65534; then
      AC_MSG_RESULT($enableval)
      AC_DEFINE_UNQUOTED(DEFAULT_MAX_BANS_PER_CHANNEL, $enableval)
@@ -742,8 +832,13 @@ AC_ARG_ENABLE(max-bans-per-channel,[  --enable-max-bans-per-channel  maximum num
  ])
 
 AC_MSG_CHECKING([max-langs-per-user parameter])
-AC_ARG_ENABLE(max-langs-per-user,[  --enable-max-langs-per-user    maximum number of languages per user],
- [
+AC_ARG_ENABLE(max-langs-per-user,[
+  --enable-max-langs-per-user=number         (Default is '6')
+    This cannot be disabled. This defines how many languages can be set
+    per user. Is is unlikely that someone would want to speak more than
+    6 languages on IRC, so the default is a reasonable value. This can be
+    over-written by the server configuration file.
+ ],[
    if test "$enableval" -gt 0 -a "$enableval" -lt 65534; then
      AC_MSG_RESULT($enableval)
      AC_DEFINE_UNQUOTED(DEFAULT_MAX_LANGS_PER_USER, $enableval)
@@ -757,8 +852,14 @@ AC_ARG_ENABLE(max-langs-per-user,[  --enable-max-langs-per-user    maximum numbe
  ])
 
 AC_MSG_CHECKING([max-modes-per-command parameter])
-AC_ARG_ENABLE(max-modes-per-command,[  --enable-max-modes-per-command maximum number of mode characters per channel],
- [
+AC_ARG_ENABLE(max-modes-per-command,[
+  --enable-max-modes-per-command=number      (Default is '6')
+    This cannot be disabled. This defines how many mode characters can be
+    used on a MODE command line. Until clients become more aware of this
+    setting and the 'ISUPPORT' line upon connection it may be wise not
+    to change this setting. This can be over-written by the server
+    configuration file.
+ ],[
    if test "$enableval" -gt 0 -a "$enableval" -lt 100; then
      AC_MSG_RESULT($enableval)
      AC_DEFINE_UNQUOTED(MAX_MODES_PER_COMMAND, $enableval)
@@ -772,8 +873,14 @@ AC_ARG_ENABLE(max-modes-per-command,[  --enable-max-modes-per-command maximum nu
  ])
 
 AC_MSG_CHECKING([max-silences-per-user parameter])
-AC_ARG_ENABLE(max-silences-per-user,[  --enable-max-silences-per-user maximum number of SILENCEs per user],
- [
+AC_ARG_ENABLE(max-silences-per-user,[
+  --enable-max-silences-per-user=number      (Default is '20')
+    This cannot be disabled. This defines how many entries in a user's
+    SILENCE list can be used. Not many silences are usually needed because
+    clients are usually smart enough to utilise other methods to block
+    messages if things are that serious (eg. Usermode +g and ACCEPT). This
+    can be overwritten by the server configuration file.
+ ],[
    if test "$enableval" -gt 0 -a "$enableval" -lt 65534; then
      AC_MSG_RESULT($enableval)
      AC_DEFINE_UNQUOTED(DEFAULT_MAX_SILENCES_PER_USER, $enableval)
@@ -787,8 +894,13 @@ AC_ARG_ENABLE(max-silences-per-user,[  --enable-max-silences-per-user maximum nu
  ])
 
 AC_MSG_CHECKING([max-watches-per-user parameter])
-AC_ARG_ENABLE(max-watches-per-user,[  --enable-max-watches-per-user  maximum number of WATCHes per user],
- [
+AC_ARG_ENABLE(max-watches-per-user,[
+  --enable-max-watches-per-user=number       (Default is '128')
+    This cannot be disabled. This defines how many entries on a user's
+    WATCH list can be used. Higher numbers will take up more CPU time,
+    while lower numbers will frustrate users! This can be over-written by
+    the server configuration file.
+ ],[
    if test "$enableval" -gt 0 -a "$enableval" -lt 65534; then
      AC_MSG_RESULT($enableval)
      AC_DEFINE_UNQUOTED(DEFAULT_MAX_WATCHES_PER_USER, $enableval)
@@ -802,8 +914,16 @@ AC_ARG_ENABLE(max-watches-per-user,[  --enable-max-watches-per-user  maximum num
  ])
 
 AC_MSG_CHECKING([oper-wallops parameter])
-AC_ARG_ENABLE(oper-wallops,[  --enable-oper-wallops          allow operators to use WALLOPS (can be abused)],
- [
+AC_ARG_ENABLE(oper-wallops,[
+  --enable-oper-wallops                      (Default is enabled)
+    Following IRC protocol specifications nobody but servers are allowed to
+    generate WALLOPS messages (sent to anyone with usermode +w set).
+    Fortunately we can bend the rules a little from the older days of IRC
+    and allow IRC operators to use WALLOPS to send messages about the network
+    to people. The reason for this being disabled in the IRC specifications
+    is to avoid the abuse which is so common with this command, so the
+    option exists to disable it.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -816,8 +936,14 @@ AC_ARG_ENABLE(oper-wallops,[  --enable-oper-wallops          allow operators to 
  ])
 
 AC_MSG_CHECKING([paranoid-opers parameter])
-AC_ARG_ENABLE(paranoid-opers,[  --enable-paranoid-opers        operators need to know when they are /whois'd],
- [
+AC_ARG_ENABLE(paranoid-opers,[
+  --enable-paranoid-opers                    (Default is enabled)
+    This feature sends a notification to operators when they are being
+    'checked out' via WHOIS. When a user executes a WHOIS on an operator while
+    they are on-line, they will receive notification that someone has looked
+    at their WHOIS information. Currently this does not effect any other
+    commands but may in the future.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -825,12 +951,20 @@ AC_ARG_ENABLE(paranoid-opers,[  --enable-paranoid-opers        operators need to
      AC_DEFINE(NOTIFY_PARANOID_OPERS_ON_WHOIS)
    fi
  ],[
-   AC_MSG_RESULT([no (default)])
+   AC_MSG_RESULT([yes (default)])
+   AC_DEFINE(NOTIFY_PARANOID_OPERS_ON_WHOIS)
  ])
 
 AC_MSG_CHECKING([passive-registration parameter])
-AC_ARG_ENABLE(passive-registration,[  --enable-passive-registration  report no errors on connection registrations],
- [
+AC_ARG_ENABLE(passive-registration,[
+  --enable-passive-registration              (Default is disabled)
+    This feature increases registration security by never saying anything
+    to the client/server during the connection phase. This means no errors
+    will be reported, instead the user will be disconnected. Unfortunately
+    this means that nicknames that are currently in use will result in
+    people being disconnected. This was implemented for servers who receive
+    a lot of registration attackers.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -842,8 +976,15 @@ AC_ARG_ENABLE(passive-registration,[  --enable-passive-registration  report no e
  ])
 
 AC_MSG_CHECKING([strict-channel-names parameter])
-AC_ARG_ENABLE(strict-channel-names,[  --enable-strict-channel-names  enforce strict channel names to avoid spoofs],
- [
+AC_ARG_ENABLE(strict-channel-names,[
+  --enable-strict-channel-names              (Default is enabled)
+    This enabled stricter channel name checking than usual. This stops
+    channels with potentially nasty characters being created, such as any
+    control character, and the mysterious 'extra-space' (nbsp) character
+    which exists in the standard ISO-8859-1 and derivative character sets.
+    This will stop many fake channels being created and has been requested
+    by many users.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -856,8 +997,14 @@ AC_ARG_ENABLE(strict-channel-names,[  --enable-strict-channel-names  enforce str
  ])
 
 AC_MSG_CHECKING([strict-registration parameter])
-AC_ARG_ENABLE(strict-registration,[  --enable-strict-registration   enforce strict connection registration],
- [
+AC_ARG_ENABLE(strict-registration,[
+  --enable-strict-registration               (Default is enabled)
+    This enabled a stricter registration process. Once a connection type
+    has been established (user/server/service etc) it cannot be changed.
+    The can stop many registration-attacks which exploit the fact that the
+    server is a little brain-dead during the registration phase, or attempt 
+    to exploit the single-parser issues of other IRC daemons.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -870,8 +1017,14 @@ AC_ARG_ENABLE(strict-registration,[  --enable-strict-registration   enforce stri
  ])
 
 AC_MSG_CHECKING([time-to-be-idle parameter])
-AC_ARG_ENABLE(time-to-be-idle,[  --enable-time-to-be-idle       set the away-reply floodlock timeout],
- [
+AC_ARG_ENABLE(time-to-be-idle,[
+  --enable-time-to-be-idle=seconds           (Default is '30')
+    When enabled, idle information will only be considered/shown when the
+    idle time of a user is greater than the given time (in seconds). This
+    is a small addition to the code and will lower some bandwidth output.
+    When disabled, idle times will always be shown (even if a person is only
+    idle 0 seconds).
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(off)
    else
@@ -893,8 +1046,16 @@ AC_ARG_ENABLE(time-to-be-idle,[  --enable-time-to-be-idle       set the away-rep
  ])
 
 AC_MSG_CHECKING([traceroute parameter])
-AC_ARG_ENABLE(traceroute,[  --enable-traceroute            allow the TRACEROUTE command (can be abused)],
- [
+AC_ARG_ENABLE(traceroute,[
+  --enable-traceroute                        (Default is enabled)
+    This enabled the traceroute command for network routing staff to use.
+    This command can be used to probe other networks so it is a command
+    that has the potential to be abused. Also, on some servers, it may not
+    be worth enabled it since it is common to firewall ICMP to the server
+    to avoid some attacks. This command can be useful, however, for
+    detecting quality of links to other servers in instances where a simple
+    ping isn't enough.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -907,8 +1068,10 @@ AC_ARG_ENABLE(traceroute,[  --enable-traceroute            allow the TRACEROUTE 
  ])
 
 AC_MSG_CHECKING([transport-tcp-ipv4 parameter])
-AC_ARG_ENABLE(transport-tcp-ipv4,[  --enable-transport-tcp-ipv4    allow IPv4 connectivity to the server],
- [
+AC_ARG_ENABLE(transport-tcp-ipv4,[
+  --enable-transport-tcp-ipv4                (Default is enabled)
+    Enable TCP/IPv4 connectivity to the server.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -921,8 +1084,11 @@ AC_ARG_ENABLE(transport-tcp-ipv4,[  --enable-transport-tcp-ipv4    allow IPv4 co
  ])
 
 AC_MSG_CHECKING([transport-tcp-ipv6 parameter])
-AC_ARG_ENABLE(transport-tcp-ipv6,[  --enable-transport-tcp-ipv6    allow IPv6 connectivity to the server],
- [
+AC_ARG_ENABLE(transport-tcp-ipv6,[
+  --enable-transport-tcp-ipv6                (Default is disabled)
+    Enable TCP/IPv6 connectivity to the server. The implementation is
+    currently incomplete.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -934,8 +1100,14 @@ AC_ARG_ENABLE(transport-tcp-ipv6,[  --enable-transport-tcp-ipv6    allow IPv6 co
  ])
 
 AC_MSG_CHECKING([user-conn-ping parameter])
-AC_ARG_ENABLE(user-conn-ping,[  --enable-user-conn-ping        enable anti-spoof connection ping requirement],
- [
+AC_ARG_ENABLE(user-conn-ping,[
+  --enable-user-conn-ping                    (Default is enabled)
+    This feature will force clients to reply to a PING request with random
+    data upon connection to the server before allowing the client to
+    proceed and complete registration. This can trip up poorly programmed
+    bots which cannot reply to server requests like a PING by not allowing
+    them onto the network.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -948,8 +1120,17 @@ AC_ARG_ENABLE(user-conn-ping,[  --enable-user-conn-ping        enable anti-spoof
  ])
 
 AC_MSG_CHECKING([warn-bad-reg-cmds parameter])
-AC_ARG_ENABLE(warn-bad-reg-cmds,[  --enable-warn-bad-reg-cmds     complain about unknown registration commands],
- [
+AC_ARG_ENABLE(warn-bad-reg-cmds,[
+  --enable-warn-bad-reg-cmds                 (Default is disabled)
+    This can open up a security issue with the registration phase. With this
+    disabled, unknown commands being sent during the registration phase are
+    simply ighnored. When this is enabled, however, unknown commands will
+    return an error reply (providing passive registrations are not enabled,
+    otherwise unknown commands will result in the connection being dropped).
+    When enabled, this follows proper registration protocols, but leaves you
+    open to attacks that exploit this, as it could be used for registration
+    attacks that flood your out-bound pipe.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -963,169 +1144,213 @@ AC_ARG_ENABLE(warn-bad-reg-cmds,[  --enable-warn-bad-reg-cmds     complain about
 dnl
 dnl Protocol toggles
 dnl
-AC_MSG_CHECKING([protocol-irc2user parameter])
-if test "$austhex_test_enable_user_protocols" = "yes"; then
-  AC_ARG_ENABLE(protocol-irc2user,[  --enable-protocol-irc2user     allow the IRC-2 user/client protocol],
-   [
+AC_MSG_CHECKING([irc2user-protocol parameter])
+if test "$austhex_test_enable_client_protocols" = "yes"; then
+  AC_ARG_ENABLE(irc2user-protocol,[
+  --enable-irc2user-protocol                 (Default is enabled)
+    The IRC-2 protocol is used with every irc client these days. Unless the
+    server is being set up for something specific (such as hubbing) it would
+    be wise to leave this enabled.
+   ],[
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)
-       austhex_test_have_protocol_irc2user=no
+       austhex_test_have_irc2user_protocol=no
      else
        AC_MSG_RESULT(yes)
-       AC_DEFINE(HAVE_PROTOCOL_IRC2USER)
-       austhex_test_have_protocol_irc2user=yes
+       AC_DEFINE(HAVE_IRC2USER_PROTOCOL)
+       austhex_test_have_irc2user_protocol=yes
      fi
    ],[
      AC_MSG_RESULT([yes (default)])
-     AC_DEFINE(HAVE_PROTOCOL_IRC2USER)
-     austhex_test_have_protocol_irc2user=yes
+     AC_DEFINE(HAVE_IRC2USER_PROTOCOL)
+     austhex_test_have_irc2user_protocol=yes
    ])
 
   dnl If we are using the protocol, we may need some more stuff...
-  if test "$austhex_test_have_protocol_irc2user" = "yes"; then
-    AC_MSG_CHECKING([ircii-kluge parameter])
-    AC_ARG_ENABLE(ircii-kluge,[  --enable-ircii-kluge           kluge to allow old ircII clients to work],
-     [
+  if test "$austhex_test_have_irc2user_protocol" = "yes"; then
+    AC_MSG_CHECKING([irc2user-ircii-kluge parameter])
+    AC_ARG_ENABLE(irc2user-ircii-kluge,[
+  --enable-irc2user-ircii-kluge              (Default is enabled)
+    This enables a kluge (a workaround) to allow the old ircII client and
+    other technically broken clients to connect by adding additional data
+    to the server's output. This unfortunate anomaly was created during the
+    change-over from the IRC-1 protocol to the IRC-2 protocol, and will
+    generate a very slight increase in outgoing client data. This kluge
+    is arguably not necessary these days as the effected clients are
+    practically extinct.
+     ],[
        if test "$enableval" = "no"; then
          AC_MSG_RESULT(no)
        else
          AC_MSG_RESULT(yes)
-         AC_DEFINE(BLOODY_IRCII_KLUGE)
+         AC_DEFINE(HAVE_IRC2USER_IRCII_KLUGE)
        fi
      ],[
        AC_MSG_RESULT([yes (default)])
-       AC_DEFINE(BLOODY_IRCII_KLUGE)
+       AC_DEFINE(HAVE_IRC2USER_IRCII_KLUGE)
+     ])
+     
+    AC_MSG_CHECKING([irc2user-match-counting parameter])
+    AC_ARG_ENABLE(irc2user-match-counting,[
+  --enable-irc2user-match-counting           (Default is enabled)
+    This enabled an aesthetics option to many commands that involve a
+    variable list of items, such as HELP, NAMES, WHO etc. Instead of a
+    simple 'End of X list' (where X is the command name), it will add the
+    number of matches if there is more than one match, or a 'no matches'
+    message if there were no matches. This uses only a very slight amount of
+    CPU usage, but if you're being tight on the CPU usage you may wish to
+    disable this as it does not effect any commands' functionality.
+     ],[
+       if test "$enableval" = "no"; then
+         AC_MSG_RESULT(no)
+       else
+         AC_MSG_RESULT(yes)
+         AC_DEFINE(HAVE_IRC2USER_MATCH_COUNTING)
+       fi
+     ],[
+       if test "$austhex_test_lower_cpu" = "yes"; then
+         AC_MSG_RESULT([no (lower-cpu default)])
+       else
+         AC_MSG_RESULT([yes (default)])
+         AC_DEFINE(HAVE_IRC2USER_MATCH_COUNTING)
+       fi
      ])
   fi
 else
   AC_MSG_RESULT([no (clients disallowed)])
-  austhex_test_have_protocol_irc2user=no
+  austhex_test_have_irc2user_protocol=no
 fi
-AC_SUBST(austhex_test_have_protocol_irc2user)
+AC_SUBST(austhex_test_have_irc2user_protocol)
 
-AC_MSG_CHECKING([protocol-irc3user parameter])
-if test "$austhex_test_enable_user_protocols" = "yes"; then
-  AC_ARG_ENABLE(protocol-irc3user,[  --enable-protocol-irc3user     allow the IRC-3 user/client protocol],
-   [
+AC_MSG_CHECKING([irc3user-protocol parameter])
+if test "$austhex_test_enable_client_protocols" = "yes"; then
+  AC_ARG_ENABLE(irc3user-protocol,[
+  --enable-irc3user-protocol                 (Default is disabled)
+    The IRC-3 protocol is currently highly experimental and is not used
+    in any available clients. The protocol is still on the drawing boards
+    so this function should be ignored.
+   ],[
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)
-       austhex_test_have_protocol_irc3user=no
+       austhex_test_have_irc3user_protocol=no
      else
        AC_MSG_RESULT(yes)
-       AC_DEFINE(HAVE_PROTOCOL_IRC3USER)
-       austhex_test_have_protocol_irc3user=yes
+       AC_DEFINE(HAVE_IRC3USER_PROTOCOL)
+       austhex_test_have_irc3user_protocol=yes
      fi
    ],[
      AC_MSG_RESULT([no (default)])
-     austhex_test_have_protocol_irc3user=no
+     austhex_test_have_irc3user_protocol=no
    ])
-
-  dnl Check for other stuff if irc3user is on...
-  if test "$austhex_test_have_protocol_irc3user" = "yes"; then
-  AC_MSG_CHECKING([compress-irc3user parameter])
-    AC_ARG_ENABLE(compress-irc3user,[  --enable-compress-irc3user     allow compression of the IRC-3 user protocol],
-     [
-       if test "$enableval" = "no"; then
-         AC_MSG_RESULT(no)
-         austhex_test_compress_protocol_irc3user=no
-       else
-         AC_MSG_RESULT(yes)
-         AC_DEFINE(COMPRESS_PROTOCOL_IRC3USER)
-         austhex_test_compress_protocol_irc3user=yes
-       fi
-     ],[
-       AC_MSG_RESULT([yes (default)])
-       AC_DEFINE(COMPRESS_PROTOCOL_IRC3USER)
-       austhex_test_compress_protocol_irc3user=yes
-     ])
-  else
-    austhex_test_compress_protocol_irc3user=no
-  fi
 else
   AC_MSG_RESULT([no (clients disallowed)])
-  austhex_test_have_protocol_irc3user=no
+  austhex_test_have_irc3user_protocol=no
 fi
-AC_SUBST(austhex_test_have_protocol_irc3user)
-AC_SUBST(austhex_test_compress_protocol_irc3user)
+AC_SUBST(austhex_test_have_irc3user_protocol)
  
-AC_MSG_CHECKING([protocol-p13server parameter])
-AC_ARG_ENABLE(protocol-p13server,[  --enable-protocol-p13server    allow the P13 server protocol],
- [
+AC_MSG_CHECKING([p13server-protocol parameter])
+AC_ARG_ENABLE(p13server-protocol,[
+  --enable-p13server-protocol                (Default is enabled)
+    The P13 protocol is the last textual AustNet server the server protocol.
+    The protocol is very bulky, and only handles star-topology based
+    networks. This protocol mains for compatibility back to austhex.servd7.x.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     austhex_test_have_protocol_p13server=no
+     austhex_test_have_p13server_protocol=no
    else
      AC_MSG_RESULT(yes)
-     AC_DEFINE(HAVE_PROTOCOL_P13SERVER)
-     austhex_test_have_protocol_p13server=yes
+     AC_DEFINE(HAVE_P13SERVER_PROTOCOL)
+     austhex_test_have_p13server_protocol=yes
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(HAVE_PROTOCOL_P13SERVER)
-   austhex_test_have_protocol_p13server=yes
+   AC_DEFINE(HAVE_P13SERVER_PROTOCOL)
+   austhex_test_have_p13server_protocol=yes
  ])
-AC_SUBST(austhex_test_have_protocol_p13server)
+AC_SUBST(austhex_test_have_p13server_protocol)
 
-if test "$austhex_test_have_protocol_p13server" = "yes"; then
-AC_MSG_CHECKING([compress-p13server parameter])
-  AC_ARG_ENABLE(compress-p13server,[  --enable-compress-p13server    allow compression of the P13 server protocol],
-   [
+if test "$austhex_test_have_p13server_protocol" = "yes"; then
+AC_MSG_CHECKING([p13server-compress parameter])
+  AC_ARG_ENABLE(p13server-compress,[
+  --enable-p13server-compress                (Default is enabled)
+    This allows server to server links using the P13 protocol (above) to be
+    negotiated for compression which will significantly reduce the amount of
+    data being transferred. Unfortunately due to the nature of this protocol
+    and the tightness of the compression it will add a large amount of 
+    memory usage and CPU load to the server, but it should not be noticable 
+    on properly set up servers.
+   ],[
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)
-       austhex_test_compress_protocol_p13server=no
+       austhex_test_have_p13server_compress=no
      else
        AC_MSG_RESULT(yes)
-       AC_DEFINE(COMPRESS_PROTOCOL_P13SERVER)
-       austhex_test_compress_protocol_p13server=yes
+       AC_DEFINE(HAVE_P13SERVER_COMPRESS)
+       austhex_test_have_p13server_compress=yes
      fi
    ],[
      AC_MSG_RESULT([yes (default)])
-     AC_DEFINE(COMPRESS_PROTOCOL_P13SERVER)
-     austhex_test_compress_protocol_p13server=yes
+     AC_DEFINE(HAVE_P13SERVER_COMPRESS)
+     austhex_test_have_p13server_compress=yes
    ])
 else
-  austhex_test_compress_protocol_p13server=no
+  austhex_test_have_p13server_compress=no
 fi
-AC_SUBST(austhex_test_compress_protocol_p13server)
+AC_SUBST(austhex_test_have_p13server_compress)
  
-AC_MSG_CHECKING([protocol-p14server parameter])
-AC_ARG_ENABLE(protocol-p14server,[  --enable-protocol-p14server    allow the P14 server protocol],
- [
+AC_MSG_CHECKING([p14server-protocol parameter])
+AC_ARG_ENABLE(p14server-protocol,[
+  --enable-p14server-protocol                (Default is disabled)
+    The P14 protocol is a major advancement in IRC server to server
+    protocols. While being tightly implemented, it allows for endless
+    expandability using variable width identifiers, and helps assist security
+    and lower bandwidth network-wide. The major component of this protocol
+    is that it no longer requires a star-topology network design by
+    implementing 'bone' and 'tendril' links thus allowing for well designed
+    virtually split-free network design with minimal lag.
+    This protocol is currently experimental and incomplete.
+ ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     austhex_test_have_protocol_p14server=no
+     austhex_test_have_p14server_protocol=no
    else
      AC_MSG_RESULT(yes)
-     AC_DEFINE(HAVE_PROTOCOL_P14SERVER)
-     austhex_test_have_protocol_p14server=yes
+     AC_DEFINE(HAVE_P14SERVER_PROTOCOL)
+     austhex_test_have_p14server_protocol=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
-   austhex_test_have_protocol_p14server=no
+   austhex_test_have_p14server_protocol=no
  ]) 
-AC_SUBST(austhex_test_have_protocol_p14server)
+AC_SUBST(austhex_test_have_p14server_protocol)
 
-if test "$austhex_test_have_protocol_p14server" = "yes"; then
-AC_MSG_CHECKING([compress-p14server parameter])
-  AC_ARG_ENABLE(compress-p14server,[  --enable-compress-p14server    allow compression of the P14 server protocol],
-   [
+if test "$austhex_test_have_p14server_protocol" = "yes"; then
+AC_MSG_CHECKING([p14server-compress parameter])
+  AC_ARG_ENABLE(p14server-compress,[
+  --enable-p14server-compress                (Default is enabled)
+    This allows server to server links using the P14 protocol (above) to be
+    negotiated for compression which will reduce the amount of data being 
+    transferred. This compression is tight and will use noticable amounts of
+    CPU usage.
+   ],[
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)
-       austhex_test_compress_protocol_p14server=no
+       austhex_test_have_p14server_compress=no
      else
        AC_MSG_RESULT(yes)
-       AC_DEFINE(COMPRESS_PROTOCOL_P14SERVER)
-       austhex_test_compress_protocol_p14server=yes
+       AC_DEFINE(HAVE_P14SERVER_COMPRESS)
+       austhex_test_have_p14server_compress=yes
      fi
    ],[
      AC_MSG_RESULT([yes (default)])
-     AC_DEFINE(COMPRESS_PROTOCOL_P14SERVER)
-     austhex_test_compress_protocol_p14server=yes
+     AC_DEFINE(HAVE_P14SERVER_COMPRESS)
+     austhex_test_have_p14server_compress=yes
    ])
 else
-  austhex_test_compress_protocol_p14server=no
+  austhex_test_have_p14server_compress=no
 fi
-AC_SUBST(austhex_test_compress_protocol_p14server)
+AC_SUBST(austhex_test_have_p14server_compress)
  
 
 dnl  -------------------------------------------------------------------------

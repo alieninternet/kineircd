@@ -466,7 +466,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			      (char const *)lang(Language::M_RPL_YOURHOST),
 			      (char const *)Version::version));
    
-#ifdef BLOODY_IRCII_KLUGE
+#ifdef HAVE_IRC2USER_IRCII_KLUGE
    /* I hate this. It makes the signon look ugly, and us like a pack of idiots.
     * This is essentially THE SAME as RPL_YOURHOST, except the ircII client
     * desparately needs it.. or so they say - First person to confirm that to
@@ -1321,7 +1321,7 @@ inline String irc2userHandler::lang(Language::tag_t const &t) const
  */
 void irc2userHandler::doNAMES(String const &param)
 {
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
    unsigned int matches = 0;
 #endif
    
@@ -1334,7 +1334,7 @@ void irc2userHandler::doNAMES(String const &param)
       
       // Make sure we got a channel, otherwise we just ignore it
       if (c) {
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
 	 // Increase the match counter
 	 matches++;
 #endif
@@ -1374,7 +1374,7 @@ void irc2userHandler::doNAMES(String const &param)
    }
    
    // Send end of names list
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
    sendNumeric(Numerics::RPL_ENDOFNAMES,
 	       ((matches > 0) ?
 		((matches == 1) ?
@@ -1749,7 +1749,7 @@ void irc2userHandler::parseGLOBOPS(irc2userHandler *handler, StringTokens *token
  */
 void irc2userHandler::parseHELP(irc2userHandler *handler, StringTokens *tokens)
 {
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
    unsigned int matches = 0;
 #endif
    bool extended = false;
@@ -1778,7 +1778,7 @@ void irc2userHandler::parseHELP(irc2userHandler *handler, StringTokens *tokens)
 	 // Display this command if the user has the rights to use it
 	 if (!functionsTable[i].access ||
 	     functionsTable[i].access(handler->user)) {
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
 	    // Increase the match counter
 	    matches++;
 #endif
@@ -1802,7 +1802,7 @@ void irc2userHandler::parseHELP(irc2userHandler *handler, StringTokens *tokens)
 
    // Send the end of help numeric
    if (extended) {
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
       handler->
 	sendNumeric(Numerics::RPL_ENDOFHELP,
 		    ((matches > 0) ?
@@ -1827,7 +1827,7 @@ void irc2userHandler::parseHELP(irc2userHandler *handler, StringTokens *tokens)
 				   (char const *)handler->lang(Language::L_RPL_ENDOFHELP)));
 #endif
    } else {
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
       handler->
 	sendNumeric(Numerics::RPL_ENDOFHELP,
 		    ((matches > 0) ?
@@ -2522,7 +2522,7 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
 {
    // Check we have at least one parameter
    if (tokens->countTokens() < 2) {
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
       unsigned int numLanguages = 0;
 #endif
       
@@ -2530,7 +2530,7 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
       for (Language::languages_map_t::iterator it =
 	   Language::languages.begin(); 
 	   it != Language::languages.end(); it++) {
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
 	 numLanguages++;
 #endif
 	 handler->
@@ -2545,7 +2545,7 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
       }
       
       // Send the end of list tag
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
       if (numLanguages > 1) {
 	 handler->
 	   sendNumeric(Numerics::RPL_ENDOFLANGUAGES,
@@ -2557,7 +2557,7 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
 #endif
 	 handler->sendNumeric(Numerics::RPL_ENDOFLANGUAGES, String(':') +
 			      handler->lang(Language::L_RPL_ENDOFLANGUAGES));
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
       }
 #endif
       return;
@@ -4505,7 +4505,7 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
  */
 void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
 {
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
    unsigned int matches = 0;
 #endif
    
@@ -4558,7 +4558,7 @@ void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
 	       // more options?!
 	    }
 
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
 	    // Increase the match counter
 	    matches++;
 #endif
@@ -4606,7 +4606,7 @@ void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
    }
    
    // Send the end of help numeric
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
    handler->
      sendNumeric(Numerics::RPL_ENDOFWHO,
 		 ((matches > 0) ?
@@ -4682,7 +4682,7 @@ void irc2userHandler::parseWHOIS(irc2userHandler *handler, StringTokens *tokens)
  */
 void irc2userHandler::parseWHOWAS(irc2userHandler *handler, StringTokens *tokens)
 {
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
    unsigned int matches = 0;
 #endif
    
@@ -4728,7 +4728,7 @@ void irc2userHandler::parseWHOWAS(irc2userHandler *handler, StringTokens *tokens
 	       break;
 	    }
       
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
 	    // Increase the match counter
 	    matches++;
 #endif
@@ -4757,7 +4757,7 @@ void irc2userHandler::parseWHOWAS(irc2userHandler *handler, StringTokens *tokens
    }
    
    // Send end of whowas list
-#ifdef DO_MATCH_COUNTING
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
    handler->
      sendNumeric(Numerics::RPL_ENDOFWHOWAS,
 		 ((matches > 0) ?

@@ -2,7 +2,7 @@
  * The handler class for the IRC-3 user protocol
  */
 
-#ifdef HAVE_PROTOCOL_IRC3USER
+#ifdef HAVE_IRC3USER_PROTOCOL
 # ifndef __IRC3USER_H_
 #  define __IRC3USER_H_
 

@@ -338,21 +338,6 @@
 # undef NOTIFY_PARANOID_OPERS_ON_WHOIS
 
 
-/* *SIGH* Nobody seems to know what a standard means, especially in the IRC
- * world. In the old days, the ircII client used to have a bug where it needed
- * a \r\n at the end of a line rather than a \n. Defining this will send a
- * full \r\n for all clients to work around this. Not only this, but these
- * thick clients do not understand some simple numerics and break if they
- * do not get the same numerics but in a NOTICE form from the server! 
- * Probably not needed these days, but you know the laws of the universe: if 
- * you disable it, someone will need it, but if you enable it, nobody will
- * need it! :) You can't win, safe to leave it on, even though it generates a
- * little more traffic than is necessary, and makes the neat presentation of
- * the server a little less-neat.
- */
-# undef BLOODY_IRCII_KLUGE
-
-
 /* Define this if you want strict channel names to be allowed. This means
  * channel names are not allowed to have any control characters in them, nor
  * the character 0xA0, which is a blank character in the windows character set.
@@ -430,14 +415,6 @@
 # undef CONVERT_MOTD_TABS
 
 
-/* Define this is you want a handy little feature - 'match counting' - counts
- * the number of matches on certain commands and adds a talley on the
- * 'End of X' reply. This is very handy for operators, but in any case if you
- * want to turn it off then here's your chance!
- */
-# undef DO_MATCH_COUNTING
-
-
 /* Define this if you want to allow IRC operators to use the WALLOPS command.
  * Usually it's ok to allow this, but some networks do not like this very much
  * as it is often abused. Many clients/scripts turn +w on automatically like
@@ -468,21 +445,22 @@
 # undef HAVE_TRANSPORT_TCP_IPV6
   
 /* Define these depending on what protocols you want compiled in */
-# undef HAVE_PROTOCOL_IRC2USER
-# undef HAVE_PROTOCOL_IRC3USER
-# undef HAVE_PROTOCOL_P13SERVER
-# undef HAVE_PROTOCOL_P14SERVER
+# undef HAVE_IRC2USER_PROTOCOL
+# undef HAVE_IRC3USER_PROTOCOL
+# undef HAVE_P13SERVER_PROTOCOL
+# undef HAVE_P14SERVER_PROTOCOL
 
   
 /* Define these depending on what compression you want added to the above */
-# ifdef HAVE_PROTOCOL_IRC3USER
-#  undef COMPRESS_PROTOCOL_IRC3USER
+# ifdef HAVE_IRC2USER_PROTOCOL
+#  undef HAVE_IRC2USER_IRCII_KLUGE
+#  undef HAVE_IRC2USER_MATCH_COUNTING
 # endif
-# ifdef HAVE_PROTOCOL_P13SERVER
-#  undef COMPRESS_PROTOCOL_P13SERVER
+# ifdef HAVE_P13SERVER_PROTOCOL
+#  undef HAVE_P13SERVER_COMPRESS
 # endif
-# ifdef HAVE_PROTOCOL_P14SERVER
-#  undef COMPRESS_PROTOCOL_P14SERVER
+# ifdef HAVE_P14SERVER_PROTOCOL
+#  undef HAVE_P14SERVER_COMPRESS
 # endif
   
   
@@ -546,14 +524,15 @@
  * change the BLOODY_IRCII_KLUGE define rather than edit these.. The name
  * irc2user refers to the protocol name, not the ircII client, btw.
  */
-# ifdef HAVE_PROTOCOL_IRC2USER
-#  ifdef BLOODY_IRCII_KLUGE
+# ifdef HAVE_IRC2USER_PROTOCOL
+/* #  ifdef BLOODY_IRCII_KLUGE */
 #   define MAXLEN_IRC2USER_OUTPUT_CALC	(MAXLEN_IRC2USER_OUTPUT - 2)
 #   define IRC2USER_EOL_CHARS		"\r\n"
-#  else
-#   define MAXLEN_IRC2USER_OUTPUT_CALC	(MAXLEN_IRC2USER_OUTPUT - 1)
-#   define IRC2USER_EOL_CHARS		"\n"
-#  endif
+/* #  else
+ * #   define MAXLEN_IRC2USER_OUTPUT_CALC	(MAXLEN_IRC2USER_OUTPUT - 1)
+ * #   define IRC2USER_EOL_CHARS		"\n"
+ * #  endif
+ */
 # endif
 
   
@@ -588,10 +567,10 @@
 # endif
 
 /* Work out the highest protocol major number we support */
-# ifdef HAVE_PROTOCOL_P14SERVER
+# ifdef HAVE_P14SERVER_PROTOCOL
 #  define HIGHEST_SUPPORTED_SERVER_PROTOCOL 14
 # else
-#  if HAVE_PROTOCOL_P13SERVER
+#  if HAVE_P13SERVER_PROTOCOL
 #   define HIGHEST_SUPPORTED_SERVER_PROTOCOL 13
 #  else
 #   define HIGHEST_SUPPORTED_SERVER_PROTOCOL 0 /* blind */

@@ -516,7 +516,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 	 // Send a notice to a paranoid operator, sheesh
 	 Daemon::routeTo(u)->
 	   sendNotice(Daemon::myServer(), from,
-		      String::printf(Language::L_NOTIFY_PARANOID_OPERS_ON_WHOIS,
+		      String::printf((char *)Language::L_NOTIFY_PARANOID_OPERS_ON_WHOIS,
 				     (char const *)from->nickname,
 				     (char const *)from->getAddress()));
 #endif

@@ -118,9 +118,6 @@ namespace Version {
 #ifdef ALLOW_GLOBALOP_DIE
 				"X"
 #endif
-#ifdef DO_MATCH_COUNTING
-				"y"
-#endif
 #ifdef LOG_TO_SYSLOG
 				"Y"
 #endif
@@ -136,28 +133,28 @@ namespace Version {
 #ifdef HAVE_TRANSPORT_TCP_IPV6
      				",IPv6"
 #endif
-#ifdef HAVE_PROTOCOL_P13SERVER
-     				",P13"
-#endif
-#ifdef COMPRESS_PROTOCOL_P13SERVER
-     					"c"
-#endif
-#ifdef HAVE_PROTOCOL_P14SERVER
-     				",P14"
-#endif
-#ifdef COMPRESS_PROTOCOL_P14SERVER
-     					"c"
-#endif
-#ifdef HAVE_PROTOCOL_IRC2USER
+#ifdef HAVE_IRC2USER_PROTOCOL
      				",IRC2"
 #endif
-#ifdef BLOODY_IRCII_KLUGE
+#ifdef HAVE_IRC2USER_IRCII_KLUGE
 					"k"
 #endif
-#ifdef HAVE_PROTOCOL_IRC3USER
+#ifdef HAVE_IRC2USER_MATCH_COUNTING
+					"m"
+#endif
+#ifdef HAVE_IRC3USER_PROTOCOL
      				",IRC3"
 #endif
-#ifdef COMPRESS_PROTOCOL_IRC3USER
+#ifdef HAVE_P13SERVER_PROTOCOL
+     				",P13"
+#endif
+#ifdef HAVE_P13SERVER_COMPRESS
+     					"c"
+#endif
+#ifdef HAVE_P14SERVER_PROTOCOL
+     				",P14"
+#endif
+#ifdef HAVE_P14SERVER_COMPRESS
      					"c"
 #endif
 					; // The end, phew!

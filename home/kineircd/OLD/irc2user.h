@@ -2,7 +2,7 @@
  * The handler class for the IRC-2 user protocol
  */
 
-#ifdef HAVE_PROTOCOL_IRC2USER
+#ifdef HAVE_IRC2USER_PROTOCOL
 # ifndef __IRC2USER_H_
 #  define __IRC2USER_H_
 

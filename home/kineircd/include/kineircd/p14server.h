@@ -2,7 +2,7 @@
  * The handler class for the P14 server protocol
  */
 
-#ifdef HAVE_PROTOCOL_P14SERVER
+#ifdef HAVE_P14SERVER_PROTOCOL
 # ifndef __P14SERVER_H_
 #  define __P14SERVER_H_
 
