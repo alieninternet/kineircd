@@ -66,6 +66,9 @@ ModuleDescriptor *ModuleDescriptor::loadModule(const String &moduleFile,
    if (moduleHandle == 0) {
       // Set the error string
       errorReturn = dlerror();
+#ifdef KINE_DEBUG_PSYCHO
+   debug("ModuleDescriptor::loadModule() - dlopen() gave: " + errorReturn);
+#endif
       return 0;
    }
 
