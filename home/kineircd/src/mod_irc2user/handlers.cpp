@@ -147,16 +147,49 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
    if (parameters.empty()) {
       // Run through known languages and list them to the client
       // Hey - this needs to be for_each'd :(
-      for (Languages::languageDataList_type::const_iterator it =
-	   languages().getLanguageDataList().begin();
-	   it != languages().getLanguageDataList().end();
+      for (Languages::languageDataMap_type::const_iterator it =
+	   languages().getLanguageDataMap().begin();
+	   it != languages().getLanguageDataMap().end();
 	   it++) {
-	 sendNumeric(LibIRC2::Numerics::RPL_LANGUAGE,
-		     (*it).second->getLanguageCode(),
-		     (*it).second->getFileRevision(),
-		     (*it).second->getMaintainer(),
-		     '*',
-		     (*it).second->getLanguageName());
+	 // Make the modes string
+	 std::string modes;
+	 
+	 // If this is the default language, add a 'd'
+	 if ((*it).second == languages().getDefaultLanguage()) {
+	    modes += 'd';
+	 }
+	 
+	 // If this is the current language, add a 's'
+//	 if ((*it).second == something) {
+//	    modes += 's';
+//	 }
+	 
+	 // No modes? Fix it up with a blank thingy
+	 if (modes.empty()) {
+	    modes = '*';
+	 }
+	 
+	 // Do we send the language with or without a note?
+	 if ((*it).second->getLanguageNote().empty()) {
+	    sendNumeric(LibIRC2::Numerics::RPL_LANGUAGE,
+			(*it).second->getLanguageCode(),
+			(*it).second->getFileRevision(),
+			(*it).second->getMaintainer(),
+			modes,
+			(*it).second->getLanguageName());
+	 } else {
+	    // Put together the name field
+	    std::ostringstream nameField;
+	    nameField <<
+	      (*it).second->getLanguageName() << " (" <<
+	      (*it).second->getLanguageNote() << ')';
+	    sendNumeric(LibIRC2::Numerics::RPL_LANGUAGE,
+			(*it).second->getLanguageCode(),
+			(*it).second->getFileRevision(),
+			(*it).second->getMaintainer(),
+			modes,
+			nameField.str());
+	 }
       }
       
       // Send the end of list tag
