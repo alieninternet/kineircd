@@ -228,6 +228,7 @@ libkineircd_la_SOURCES=\
 	src/lib/modules/descriptor.cpp \
 	src/lib/modules/list.cpp \
 	src/lib/chantypes.cpp \
+	src/lib/charconv.h \
 	src/lib/connection.cpp \
 	src/lib/constants.h \
 	src/lib/daemon.cpp \
