@@ -53,6 +53,14 @@ namespace Kine {
 
       // Destructor
       ~Daemon(void);
+
+      // Grab the configuration data
+      Config &getConfig(void) const
+	{ return config; };
+      
+      // Grab the signal handler
+      Signals &getSignalHandlers(void)
+	{ return signals; };
       
       // Main loop
       int run(void);
