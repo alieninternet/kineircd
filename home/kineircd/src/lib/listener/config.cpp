@@ -308,7 +308,7 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
    // Check if that worked
    if (*portEndPtr != 0) {
       errString = "bah.";
-cout << "************************** IS TEXT" << endl;
+      std::cout << "************************** IS TEXT" << std::endl;
       return false;
    }
    
