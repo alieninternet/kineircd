@@ -8,5 +8,6 @@ install-sh
 ircd
 ircpasswd
 libltdl
+libopts
 ltmain.sh
 missing

@@ -3,7 +3,8 @@
 #
 
 # Include our rules
-include $(top_builddir)/config/automake.inc
+include $(srcdir)/config/automake.inc
+include $(srcdir)/libopts/MakeDefs.inc
 
 
 
@@ -94,10 +95,16 @@ dist-hook:
 	rm -rf $(distdir)/kineircd/kineircdconf.h
 
 
+# Do we need to build libopts too?
+if NEED_LIBOPTS
+ LIBOPTS_SOURCE_DIR=libopts
+endif
+
 
 # Subdirectories to recurse into..
 SUBDIRS=\
 	libltdl \
+	$(LIBOPTS_SOURCE_DIR) \
 	.
 
 
@@ -587,8 +594,11 @@ ircd_SOURCES=\
 
 ircd_LDADD=\
 	libkineircd.la \
-	-lopts
+	$(LIBOPTS_LDADD)
 	
+ircd_CFLAGS=\
+	$(LIBOPTS_CFLAGS)
+
 src/ircd/options.c src/ircd/options.h: src/ircd/options.def
 	$(AUTOGEN) \
 		-b $(basename $@) \

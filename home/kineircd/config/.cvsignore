@@ -3,6 +3,7 @@ config.guess
 config.sub
 depcomp
 install-sh
+libopts.m4
 ltmain.sh
 missing
 mkinstalldirs
