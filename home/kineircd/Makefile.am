@@ -432,7 +432,10 @@ mod_filelog_la_LIBADD=\
 ###############################################################################
 mod_http_la_SOURCES=\
 	src/mod_http/module.cpp \
-	src/mod_http/module.h
+	src/mod_http/module.h \
+	src/mod_http/protocol.cpp \
+	src/mod_http/protocol.h \
+	src/mod_http/protocolinfo.h
 
 mod_http_la_LDFLAGS=\
 	-avoid-version \
