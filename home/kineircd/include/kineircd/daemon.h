@@ -26,7 +26,7 @@
 
 # include "kineircd/kineircdconf.h"
 
-# ifdef STL_HAS_SLIST
+# ifdef KINE_STL_HAS_SLIST
 #  include <slist>
 # else
 #  include <list>
@@ -74,7 +74,7 @@ namespace Kine {
       unsigned long long receivedBytes;		// Total bytes received
       
       // The list of connections
-# ifdef STL_HAS_SLIST
+# ifdef KINE_STL_HAS_SLIST
       typedef std::slist <Connection*> connections_type;
 # else
       typedef std::list <Connection*> connections_type;

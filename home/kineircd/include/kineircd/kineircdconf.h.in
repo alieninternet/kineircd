@@ -27,11 +27,14 @@
 /* Part of our configuration is dependant on LibAISutil's configuration */
 # include <aisutil/aisutilconf.h>
 
-/* Define if your C++ STL has an SGI-compatible slist<> template */
-@KINEIRCD_DEFINE__KINE_STL_HAS_SLIST@
-
 # ifdef LIBAISUTIL_STL_HAS_HASH
 #  define KINE_STL_HAS_HASH
 # endif
+
+/* Define if your C++ STL has an SGI-compatible slist<> template */
+@KINEIRCD_DEFINE__KINE_STL_HAS_SLIST@
+
+/* Define if you wish to compile the old-style config parser */
+@KINEIRCD_DEFINE__KINE_OLD_CONFIG_SUBPARSER@
 
 #endif // _INCLUDE_KINEIRCD_KINEIRCDCONF_H_

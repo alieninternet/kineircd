@@ -24,6 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_LISTENERLIST_H_
 # define _INCLUDE_KINEIRCD_LISTENERLIST_H_ 1
 
+#include <kineircd/kineircdconf.h>
+
 # ifdef KINE_STL_HAS_SLIST
 #  include <slist>
 # else
