@@ -113,10 +113,6 @@ namespace Kine {
       // Start the module
       virtual bool start(void) = 0;
 
-      // Stop the module (called just before the module is unloaded)
-      virtual void stop(void)
-	{};
-      
       // Return the name (from the information) in full version format
       const AISutil::String getVersionString(void) const;
       

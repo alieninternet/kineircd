@@ -55,19 +55,24 @@ namespace {
    };
 
 
-   class mod_irc2user_module : public Kine::Module {
+   class mod_irc2user : public Kine::Module {
     private:
       Kine::mod_irc2user::ProtocolInfo protocolInfo;
 
     public:
       // Constructor
-      mod_irc2user_module(void)
+      mod_irc2user(void)
 	{};
       
       // Destructor
-      ~mod_irc2user_module(void)
-	{};
-      
+      ~mod_irc2user(void) {
+	 // Deregister our language tag map
+	 Kine::langs().deregisterMap(Kine::mod_irc2user::Language::tagMap);
+	 
+	 // Deregister the protocol itself
+	 Kine::daemon().deregisterProtocol(protocolInfo);
+      };
+
       // Return the information
       const Kine::Module::Info& getInfo(void) const
 	{ return info; };
@@ -89,20 +94,9 @@ namespace {
 	 // Smile :)
 	 return true;
       };
-      
-      /* stop - Stop the module
-       * Original 23/03/2003 simonb
-       */
-      void stop(void) {
-	 // Deregister our language tag map
-	 Kine::langs().deregisterMap(Kine::mod_irc2user::Language::tagMap);
-
-	 // Deregister the protocol itself
-	 Kine::daemon().deregisterProtocol(protocolInfo);
-      };
    }; // class mod_irc2user
 }; // namespace {anonymous}
 
 
 // The initialisation function, called by Kine
-KINE_MODULE_INIT { return new mod_irc2user_module(); };
+KINE_MODULE_INIT { return new mod_irc2user(); };
