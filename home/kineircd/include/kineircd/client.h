@@ -40,7 +40,8 @@ namespace Kine {
    class Client : public Denizen, public Sender, public Receiver {
     private:
       std::string hostname;			//!< Client's hostname
-      
+      char attentionGlyph;			//!< Listen prefix while deaf
+
       // The channel list for this client
       typedef std::map < std::string, Channel* const > channels_type;
       channels_type channels;
@@ -50,7 +51,8 @@ namespace Kine {
       Client(const std::string& _hostname,
 	     const AISutil::Time& _signonTime)
 	: Denizen(_signonTime),
-          hostname(_hostname)
+          hostname(_hostname),
+          attentionGlyph('\0')
 	{};
 
       //! An event called when someone (maybe us) has joined a channel
@@ -92,14 +94,25 @@ namespace Kine {
       //! Return the client's nickname (which is also its unique 'name')
       const std::string& getName(void) const
 	{ return getNickname(); };
-      
+
+
       //! Return the client's user name
       virtual const std::string& getUsername(void) const = 0;
+
 
       //! Return the client's hostname
       const std::string& getHostname(void) const
 	{ return hostname; };
 
+      
+      //! Return the attention character used whilst being deaf
+      const char getAttentionGlyph(void) const
+	{ return attentionGlyph; };
+      
+      //! Are we 'deaf' to normal (un-prefixed) channel messages?
+      const char hasSelectiveHearing(void) const
+	{ return (attentionGlyph != '\0'); };
+      
       
       //! Make a user@host string
       const std::string makeUserHostIdent(void) const
