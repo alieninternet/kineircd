@@ -27,6 +27,7 @@
 
 #include "kineircd/config.h"
 #include "kineircd/debug.h"
+#include "modules/descriptor.h"
 #include "config/defaults.h"
 
 using namespace Kine;
@@ -71,6 +72,13 @@ namespace Config {
 	     0,
 	     0,
 	     &defClassLogging,
+	     0
+	},
+	{
+	   "MODULE",
+	     0, // Intentionally null
+	     &varHandleModule,
+	     0,
 	     0
 	},
 	{
@@ -702,6 +710,36 @@ Kine::Config::~Config(void)
    
    EVP_cleanup();
 #endif
+}
+
+
+/* varHandleModule - Read in a module's filename and attempt to load it
+ * Original 21/07/2002 simonb
+ */
+CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleModule)
+{
+   // Check if the first value is empty (the filename field)
+   if (values.front().empty()) {
+      // Get cranky
+      errString = "No module filename supplied!";
+      return false;
+   }
+
+   // Attempt to open the module
+   ModuleDescriptor *desc = 
+     ModuleDescriptor::openModule(values.front().trim().c_str(), errString);
+   
+   // Make sure it loaded happily
+   if (desc == 0) {
+      return false;
+   }
+
+#ifdef DEBUG_EXTENDED
+   debug("Loaded module: " + values.front().trim());
+#endif
+   
+   // Smile, it all worked out okay
+   return true;
 }
 
 
