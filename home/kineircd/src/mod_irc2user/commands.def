@@ -231,11 +231,11 @@ commands = {
 //   disabled;
 //};
 
-//commands = {
-//   command		= "SERVLIST";
-//   defaultPenalty	= 1;
-//   minimumParams	= 0;
-//};
+commands = {
+   command		= "SERVLIST";
+   defaultPenalty	= 1;
+   minimumParams	= 0;
+};
 
 //commands = {
 //   command		= "SILENCE";

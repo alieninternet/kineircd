@@ -63,6 +63,15 @@ namespace Kine {
       
       //! Return the client's user name
       virtual const std::string& getUsername(void) const = 0;
+      
+      
+      //! Make a user@host string
+      const std::string makeUserHostIdent(void) const
+	{ return getUsername() + '@' + getHostname(); };
+      
+      //! Make a nick!user@host string
+      const std::string makeNickUserHostIdent(void) const
+	{ return getNickname() + '!' + getUsername() + '@' + getHostname(); };
    }; // class Client
 }; // namespace Kine
 

@@ -52,6 +52,10 @@ namespace Kine {
       //! Return the client's description/real name/gecos field
       virtual const std::string& getDescription(void) const = 0;
 
+      //! Return the number of hops from us to this entity
+      virtual const unsigned int getHopCount(void) const
+	{ return 0; };
+      
       //! Return the time this entity initially connected to the network
       const AISutil::Time& getSignonTime(void) const
 	{ return signonTime; };

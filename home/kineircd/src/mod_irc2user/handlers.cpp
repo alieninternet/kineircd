@@ -133,21 +133,21 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	 * command has help, and whether the user even has access to this
 	 * command in the first place!
 	 */
-	if (mask.matches((*it).first) &&
-	    ((*it).second.helpUsage != 0) &&
-	    (*it).second.hasAccess(user)) {
+	if (mask.matches(it->first) &&
+	    (it->second.helpUsage != 0) &&
+	    it->second.hasAccess(user)) {
 	   // Send the user the usage help for this function, if we can
-	   if (*((*it).second.helpUsage) != 0) {
+	   if (*(it->second.helpUsage) != 0) {
 	      sendNumeric(LibIRC2::Numerics::RPL_HELP,
-			  (*it).first,
-			  GETLANG_BY_ID(*((*it).second.helpUsage)));
+			  it->first,
+			  GETLANG_BY_ID(*(it->second.helpUsage)));
 	   }
 	   
 	   // If we are doing extended help, send the extended lines
 	   if (extended &&
-	       ((*it).second.helpInfo != 0)) {
+	       (it->second.helpInfo != 0)) {
 	      // Grab the extended help string..
-	      const std::string help = GETLANG_BY_ID(*((*it).second.helpInfo));
+	      const std::string help = GETLANG_BY_ID(*(it->second.helpInfo));
 	      
 	      // Our starting and ending positions..
 	      std::string::size_type startPosition = 0;
@@ -174,7 +174,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 		 
 		 // Send this bit..
 		 sendNumeric(LibIRC2::Numerics::RPL_MOREHELP,
-			     (*it).first,
+			     it->first,
 			     help.substr(startPosition,
 					 (endPosition - startPosition)));
 		 
@@ -480,6 +480,61 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 #endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_SERVLIST
+/* handleSERVLIST
+ * Original 30/04/2003 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleSERVLIST)
+{
+   // Our mask for service names to match
+   StringMask nameMask;
+   
+   // Were we given a specific mask to match?
+   if (parameters.size() >= 1) {
+      nameMask = parameters[0];
+   } else {
+      // Presume everything (*)
+      nameMask = "*";
+   }
+   
+   // The type bitmask to match..
+   long type = 0;
+   
+   // Were we provided a type bitmask?
+   if (parameters.size() >= 2) {
+      // Convert the type integer across
+      type = std::atol(parameters[1].c_str());
+   }
+   
+   // Iterate over the list of services
+   for (Registry::services_type::const_iterator it = 
+	registry().getServices().begin();
+	it != registry().getServices().end();
+	++it) {
+      // Does this server match the name mask and the type bitmask?
+      if (nameMask.matches(it->second->getNickname().toLower()) &&
+	  ((type & it->second->getServiceType()) ||
+	   (it->second->getServiceType() == 0))) {
+	 // Tell the client about this service
+	 sendNumeric(LibIRC2::Numerics::RPL_SERVLIST,
+		     it->second->makeUserHostIdent(),
+		     /*it->second->getServer().getHostname()*/"server.name",
+		     it->second->getScopeMask(),
+		     it->second->getServiceType(),
+		     it->second->getHopCount(),
+		     it->second->getDescription());
+      }
+   }
+   
+   // Send the end of services list numeric
+   sendNumeric(LibIRC2::Numerics::RPL_SERVLISTEND,
+	       nameMask,
+	       type,
+	       GETLANG(irc2_RPL_SERVLISTEND));
+}
+#endif
+  
+  
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_STATS
 /* handleSTATS
  * Original 14/08/2001 simonb
@@ -507,8 +562,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSTATS)
 	      ++it) {
 	    // Send information about this command
 	    sendNumeric(LibIRC2::Numerics::RPL_STATSCOMMANDS,
-			(*it).first,
-			(*it).second.callCount);
+			it->first,
+			it->second.callCount);
 	 }
 	 
 	 // Send the footer

@@ -24,21 +24,34 @@
 #ifndef _INCLUDE_KINEIRCD_SERVICE_H_
 # define _INCLUDE_KINEIRCD_SERVICE_H_ 1
 
+# include <aisutil/string/mask.h>
 # include <kineircd/client.h>
 
 namespace Kine {
    //! A service (refinement of a client)
    class Service : public Client {
+    private: 
+      const AISutil::StringMask scopeMask;	//!< Service server scope mask
+      
     protected:
       //! Constructor
       Service(const AISutil::Time& _signonTime)
-	: Client(_signonTime)
+	: Client(_signonTime),
+          scopeMask("*")
 	{};
       
     public:
       //! Destructor
       virtual ~Service(void)
 	{};
+      
+      //! Return the server scope mask
+      const AISutil::StringMask& getScopeMask(void) const
+	{ return scopeMask; };
+      
+      //! Return the service 'type' bitmask
+      const long getServiceType(void) const
+	{ return 0; /* replace this! */ };
    }; // class Service
 }; // namespace Kine
 
