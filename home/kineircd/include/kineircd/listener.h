@@ -41,6 +41,9 @@ namespace Kine {
       // The socket
       Socket& socket;
       
+      // The pending acceptance backlog for this socket (for when we listen())
+      unsigned short listenBacklog;
+      
       // Flags (see above)
       flags_type flags;	
       
@@ -52,8 +55,9 @@ namespace Kine {
       
     public:
       // Constructor
-      Listener(Socket& s, flags_type f = 0)
+      Listener(Socket& s, unsigned short lb, flags_type f = 0)
 	: socket(s),
+          listenBacklog(lb),
           flags(f),
           listening(false),
           acceptCount(0)

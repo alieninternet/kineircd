@@ -49,7 +49,7 @@ const bool Listener::listen(void)
    }
 
    // Try and listen..
-   if (!socket.listen()) {
+   if (!socket.listen(listenBacklog)) {
 #ifdef KINE_DEBUG_EXTENDED
       debug("Could not listen on " + socket.getLocalAddressStr() + ": " +
 	    socket.getErrorMessage());

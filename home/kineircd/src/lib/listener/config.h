@@ -48,12 +48,15 @@ namespace Kine {
       bool varAllowServices;
       bool varAllowUsers;
 
+      // The backlog number to send listen()
+      unsigned short varListenBacklog;
+      
       // The port to bind to
       String varPort;
 
       // Should this port be configured as secure if possible? (SSL etc)
       bool varSecure;
-      
+
       // A helper to set the socket up
       bool setupSocket(Socket& socket, String& errString, int port = 0);
       

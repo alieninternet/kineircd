@@ -81,6 +81,13 @@ const ConfigParser::defTable_type ListenerConfig::classDefs = {
 	  0
      },
      {
+	"LISTENBACKLOG",
+	  (void *)&ListenerConfig::varListenBacklog,
+	  &varHandleUnsignedShortNoZero,
+	  0,
+	  0
+     },
+     {
 	"PORT",
 	  (void *)&ListenerConfig::varPort,
 	  &varHandleString,
@@ -112,6 +119,7 @@ ListenerConfig::ListenerConfig(void)
     varAllowServers(false),
     varAllowServices(false),
     varAllowUsers(false),
+    varListenBacklog(KINE_SOCKET_DEFAULT_LISTEN_BACKLOG),
     varSecure(false)
 {
 }
@@ -310,7 +318,7 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
       
       // Add it to the list
       (dataClass.*((ListenerList ConfigData::*)dataVariable)).listeners.
-	push_front(new Listener(*socket, flags));
+	push_front(new Listener(*socket, config.varListenBacklog, flags));
       return true;
    }
 #endif
