@@ -734,6 +734,12 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_RPL_WHOISLANGUAGE";
+   component	= "mod_irc2user";
+   data_en	= "speaks these language(s)";
+};
+
+tags = {
    name		= "irc2_RPL_WHOISOPERATOR";
    component	= "mod_irc2user";
    data_en	= "is an IRC operator";
