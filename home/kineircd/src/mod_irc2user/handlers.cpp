@@ -446,7 +446,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 /* handleNETWORKS
  * Original 01/05/2003 simonb
  */
-IRC2USER_COMMAND_HANDLER(Protocol::handleNETWORK)
+IRC2USER_COMMAND_HANDLER(Protocol::handleNETWORKS)
 {
    static const char* const commandName = "NETWORKS";
    
