@@ -28,6 +28,7 @@
 #include <ctime>
 #include <kineircd/module.h>
 #include <kineircd/daemon.h>
+#include <kineircd/irc2/library.h>
 
 #include "mod_irc2user/module.h"
 #include "mod_irc2user/protocolinfo.h"
@@ -73,8 +74,11 @@ namespace {
 	 // Deregister the protocol itself
 	 Kine::daemon().deregisterProtocol(protocolInfo);
 	 
-	 // Finally, destroy the dynamic commands table thingy
+	 // Destroy the dynamic commands table thingy
 	 delete &Kine::mod_irc2user::Commands::getInstance();
+	 
+	 // Deinitialise the IRC-2 library
+	 Kine::LibIRC2::deinit();
       };
 
       // Return the information
@@ -87,6 +91,11 @@ namespace {
       bool start(void) {
 	 // Make sure the timezone information exists (we need it)
 	 tzset();
+	 
+	 // Initialise the IRC-2 library
+	 if (!Kine::LibIRC2::init()) {
+	    return false;
+	 }
 	 
 	 // Attempt to register our protocol to the daemon
 	 if (!Kine::daemon().registerProtocol(protocolInfo)) {

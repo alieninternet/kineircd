@@ -49,7 +49,7 @@ using AISutil::String;
 
 
 /* sendTimeOnServer - Send RPL_TIMEONSERVERIS
- * Original 12/08/2003 simonb
+ * Original 12/08/2001 simonb
  */
 void Protocol::sendTimeOnServer(const User& user)
 {

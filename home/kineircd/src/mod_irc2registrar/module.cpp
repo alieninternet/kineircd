@@ -27,6 +27,7 @@
 
 #include <kineircd/module.h>
 #include <kineircd/daemon.h>
+#include <kineircd/irc2/library.h>
 
 #include "mod_irc2registrar/module.h"
 #include "mod_irc2registrar/protocolinfo.h"
@@ -64,15 +65,17 @@ namespace {
 	{};
       
       // Destructor
-      ~mod_irc2registrar(void) 
-	{
-	   // Deregister our language tag map
-	   Kine::languages().
-	     deregisterMap(Kine::mod_irc2registrar::Language::tagMap);
-	   
-	   // Deregister the protocol
-	   Kine::daemon().deregisterProtocol(protocolInfo);
-	};
+      ~mod_irc2registrar(void) {
+	 // Deregister our language tag map
+	 Kine::languages().
+	   deregisterMap(Kine::mod_irc2registrar::Language::tagMap);
+	 
+	 // Deregister the protocol
+	 Kine::daemon().deregisterProtocol(protocolInfo);
+	 
+	 // Deinitialise the IRC-2 library
+	 Kine::LibIRC2::deinit();
+      };
 
       // Return the information
       const Kine::Module::Info& getInfo(void) const
@@ -82,6 +85,11 @@ namespace {
        * Original 03/04/2003 simonb
        */
       bool start(void) {
+	 // Initialise the IRC-2 library
+	 if (!Kine::LibIRC2::init()) {
+	    return false;
+	 }
+	 
 	 // Try to register our protocol information to the core
 	 if (!Kine::daemon().registerProtocol(protocolInfo)) {
 	    return false;

@@ -301,12 +301,14 @@ src/libkineircd/version.h:
 # 'libkineircd_irc2' library
 ###############################################################################
 libkineircd_irc2_la_SOURCES=\
+	include/kineircd/irc2/library.h \
 	include/kineircd/irc2/modes.h \
 	include/kineircd/irc2/numerics.h \
 	include/kineircd/irc2/protocol.h \
 	src/libkineircd_irc2/common.cpp \
 	src/libkineircd_irc2/language.cpp \
 	src/libkineircd_irc2/language.h \
+	src/libkineircd_irc2/library.cpp \
 	src/libkineircd_irc2/protocol.cpp \
 	src/libkineircd_irc2/servermodes.cpp
 
