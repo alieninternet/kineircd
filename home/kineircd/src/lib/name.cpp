@@ -26,10 +26,36 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
+#include <algorithm>
+#include <cctype>
+
 #include "kineircd/name.h"
 
 using namespace Kine;
 using AISutil::String;
+
+
+/* irctolower - Tiny procedure to assist in transforming IRC aliases
+ * Original 12/08/2001 pickle
+ */
+static char irctolower(char c)
+{
+   switch (c) {
+    case '[':
+      return '{';
+      
+    case ']':
+      return '}';
+      
+    case '\\':
+      return '|';
+      
+    case '~':
+      return '^';
+   }
+   
+   return std::tolower(c);
+}
 
 
 /* IRCtoLower - Convert to lowercase while considering irc chars (eg {} and [])
@@ -38,35 +64,7 @@ using AISutil::String;
  */
 const AISutil::String Name::IRCtoLower(void) const
 {
-   char *temp = new char[length() + 1];
-   
-   for (register size_type i = (length() + 1); i != 0; --i) {
-      char ch = (*this)[i];
-      
-      switch (ch) {
-       case '[':
-	 temp[i] = '{';
-	 continue;
-	 
-       case ']':
-	 temp[i] = '}';
-	 continue;
-	 
-       case '\\':
-	 temp[i] = '|';
-	 continue;
-	 
-       case '~':
-	 temp[i] = '^';
-	 continue;
-	 
-       default:
-	 temp[i] = tolower(ch);
-      }
-   }
-   
-   String result(temp);
-   delete temp;
-   
+   String result(length(), 0);
+   (void)std::transform(begin(), end(), result.begin(), irctolower);
    return result;
 }
