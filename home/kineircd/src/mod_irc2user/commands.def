@@ -144,13 +144,6 @@ commands = {
 };
 
 commands = {
-   command		= "MAP";
-   defaultPenalty	= 2;
-   minimumParams	= 0;
-   access		= "oper";
-};
-
-commands = {
    command		= "MODE";
    defaultPenalty	= 2;
    minimumParams	= 1;
