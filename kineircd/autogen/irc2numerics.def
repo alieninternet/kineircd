@@ -2771,6 +2771,7 @@ irc2numerics = {
    name		= "ERR_DISABLED";
    numeric	= "517";
    origin	= "ircu";
+   format	= "<command> :<info/reason>";
 };
 
 irc2numerics = {
