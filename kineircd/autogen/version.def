@@ -42,3 +42,24 @@ version_chars = {
    char		= "S";
    ifdef	= "KINE_WITH_SSL";
 };
+
+// these are after the chars themselves on purpose..
+version_chars = {
+   char		= ",IPv4";
+   ifdef	= "LIBAISUTIL_HAVE_SOCKET_IPv4_TCP";
+};
+
+version_chars = {
+   char		= ",IPv6";
+   ifdef	= "LIBAISUTIL_HAVE_SOCKET_IPv6_TCP";
+};
+
+version_chars = {
+   char		= ",Unix";
+   ifdef	= "LIBAISUTIL_HAVE_SOCKET_UNIX";
+};
+
+version_chars = {
+   char		= ",IPX";
+   ifdef	= "LIBAISUTIL_HAVE_SOCKET_IPX_SPX";
+};
