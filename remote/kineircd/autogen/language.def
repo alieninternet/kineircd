@@ -27,65 +27,88 @@ tags = {
    name		= "irc2_RPL_CREATED";
    fields	= "0 = date";
    component	= "mod_irc2user";
+   data_en	= "This server was created %p0";
+   data_tr	= "Bu server %p0 tarihinde yarat覺lm覺癬^_t覺r";
 };
 
 tags = {
    name		= "irc2_RPL_ENDOFMOTD";
    component	= "mod_irc2user";
+   data_en	= "End of MOTD command";
+   data_tr	= "MOTDnin sonu";
 };
 
 tags = {
    name		= "irc2_RPL_ISUPPORT";
    component	= "mod_irc2user";
+   data_en	= "are supported by this server";
+   data_tr	= "bu server taraf覺ndan destekleniyor";
 };
 
 tags = {
    name		= "irc2_RPL_LUSERCLIENT";
    fields	= "0 = # of users, 1 = # of services, 2 = # of servers";
    component	= "mod_irc2user";
+   data_en	= "There are %p0 users and %p1 services on %p2 servers";
+   data_tr	= "癬^^u an serverin 羹st羹nde %p0 kullanici var ve %p2 "
+                  "server 羹zerinde %p1 servis var";
 };
 
 tags = {
    name		= "irc2_RPL_LUSERHELPERS";
    component	= "mod_irc2user";
+   data_en	= "helper(s) online";
 };
 
 tags = {
    name		= "irc2_RPL_LUSERME";
    fields	= "0 = clients, 1 = servers";
    component	= "mod_irc2user";
+   data_en	= "I have %p0 clients and %p1 servers";
+   data_tr	= "%p0 kullan覺c覺m ve %p1 server覺m var";
 };
 
 tags = {
    name		= "irc2_RPL_LUSEROP";
    component	= "mod_irc2user";
+   data_en	= "operator(s) online";
+   data_tr	= "online operator";
 };
 
 tags = {
    name		= "irc2_RPL_LUSERUNKNOWN";
    component	= "mod_irc2user";
+   data_en	= "unknown connection(s)";
+   data_tr	= "bilinmeyen ba繼^_lant覺";
 };
 
 tags = {
    name		= "irc2_RPL_MOTDSTART";
    fields	= "0 = server name";
    component	= "mod_irc2user";
+   data_en	= "%p0 Message of the day";
+   data_tr	= "%p0 G羹n羹n mesaj覺";
 };
 
 tags = {
    name		= "irc2_RPL_TIMEONSERVERIS";
    component	= "mod_irc2user";
+   data_en	= "time according to server";
 };
 
 tags = {
    name		= "irc2_RPL_WELCOME";
    fields	= "0 = nick, 1 = user, 2 = host";
    component	= "mod_irc2user";
+   data_en	= "Welcome to the %N Internet Relay Network %p0!%p1@%p2";
+   data_tr	= "%N Internet Relay Networkune Ho癬^_geldiniz %p0!%p1@%p2";
 };
 
 tags = {
    name		= "irc2_RPL_YOURHOST";
    fields	= "0 = server name, 1 = version";
    component	= "mod_irc2user";
+   data_en	= "Your host is %p0, running version %p1";
+   data_tr	= "Host addressiniz %p0, %p1 versiyonu kullaniyorsunuz";
 };
 
