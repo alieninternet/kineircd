@@ -175,8 +175,9 @@ Substitutions within tag data
 
 
     %p0 -> %p9	- Parameters, depending on the tag. (params 1..10)
-    %q0 -> %q9	- More parameters, rarely used (params 11..20)
-    %r0 -> %r9	- More parameters, very rarely used (params 21..30)
+    %P0 -> %P9	- More parameters, rarely used (params 11..20)
+    %q0 -> %q9	- More parameters, rarely used (params 21..30)
+    %Q0 -> %Q9	- More parameters, rarely used (params 31..40)
   
 	%%	- A percentage sign
 	%a	- The name of the server's administrator
