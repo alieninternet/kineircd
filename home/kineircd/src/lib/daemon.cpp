@@ -52,6 +52,11 @@ Daemon::Daemon(Config& conf, Signals& sigs)
     signals(sigs),
     startTime(time(NULL))
 {
+#ifdef KINE_DEBUG_ASSERT
+   // Check the STL stuff are really empty
+   assert(connections.empty());
+#endif
+   
    // Set up the current time variable for the first time
    setTime();
    
@@ -89,7 +94,7 @@ void Daemon::newConnection(Listener& listener)
 #endif
    
    // Accept the connection
-   Socket *newSocket = listener.accept();
+   Socket* const newSocket = listener.accept();
    
    // Check if that worked..
    if (newSocket == 0) {

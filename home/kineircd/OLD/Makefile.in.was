@@ -55,6 +55,7 @@ VER_FLG=-DBUILD_STRING="\"`date -u +%04Y%02m%02d%02H%02M%02S`\"" \
 
 # libkineircd library sources that are required
 SOURCES=\
+	connection.cpp \
 	daemon.cpp \
 	sha1.cpp \
 	signals.cpp \
@@ -63,7 +64,6 @@ SOURCES=\
 
 SOURCES_NOT_YET=\
 	channel.cpp \
-	connection.cpp \
 	langtags.cpp \
 	language.cpp \
 	register.cpp \

@@ -28,25 +28,16 @@
 
 # include <queue>
 
-namespace Kine {
-   class Connection;
-};
-
-# include "kineircd/user.h"
-# include "kineircd/handler.h"
 # include "kineircd/socket.h"
-
-// Connection status flags
-//# define CONFLAG_CONNECTED	0x0001	// Connected
-//# define CONFLAG_PING_SENT	0x0002	// Sent a ping, waiting for a pong
+# include "kineircd/daemon.h"
 
 namespace Kine {
-   
    class Connection {
     private:
-      Socket *socket;			// The connected socket
+      const Daemon& daemon;		// Call-back to the daemon
+      Socket& socket;			// The connected socket
 
-      std::queue <String> outQueue;	// Output queue
+      std::queue <String> outputQueue;	// Output data queue
       
       unsigned long long sentBytes;	// Number of bytes sent
       unsigned long sentMessages;	// Number of messages sent (lines)
@@ -54,54 +45,32 @@ namespace Kine {
       unsigned long long receivedBytes;	// Number of bytes received
       unsigned long receivedMessages;	// Number of messages sent (lines)
       
-      short status;			// Connection status flags
-      
-      Handler *handler;			// Data handler
-      
-      bool secure;			// Is this connection secured?
-      
-      time_t const connectedTime;	// Time connection was established
+      const time_t connectedTime;	// Time connection was established
       time_t lastSpoke;			// Time the connection last spoke
-      
-      String *name;			// The name of this connection
+
+      // Fix the lastSpoke variable to 'now'
+      void touch(void)
+	{ lastSpoke = daemon.getTime().tv_sec; };
       
     public:
-      Connection(Socket *, bool);	// Class constructor
-      ~Connection(void);		// Shutdown connection
+      // Class constructor
+      Connection(const Daemon& d, Socket& s);
       
-      // Is this connection secure?
-      bool isSecure(void) const {
-	 return secure;
-      };
+      // Shutdown connection
+      ~Connection(void) 
+	{ delete &socket; };
       
       // Return the connection time
-      time_t getConnectedTime(void) const {
-	 return connectedTime;
-      };
+      const time_t getConnectedTime(void) const 
+	{ return connectedTime; };
       
       // Return the last time this connection 'spoke'
-      time_t getLastSpoke(void) const {
-	 return lastSpoke;
-      };
-      
-      // Update the 'lastSpoke' variable (this should be inlined0)
-      void touch(void);
-      
-      void handleInput(void);		// Handle input on connection
-      
-      void sendRaw(String const &);	// Send a line to the connection raw
-      
-      void killQueue(void);		// Kill the queue
-      void sendQueue(void);		// Send an output queue line
-      
-      void goodbye(String const & = "");// Close down socket
-      void kill(void);			// Kill the connection (sharp)
-      
-      friend class Daemon;
-      friend class statsFunctions;
-      friend class registerHandler;
+      time_t getLastSpoke(void) const 
+	{ return lastSpoke; };
+
+      // Handle input on connection
+      void handleInput(void);
    };
-   
 };
    
 #endif // _INCLUDE_KINEIRCD_CONNECTION_H_ 

@@ -26,6 +26,12 @@
 
 # include "kineircd/kineircdconf.h"
 
+# ifdef STL_HAS_SLIST
+#  include <slist>
+# else
+#  include <list>
+# endif
+
 # include <ctime>
 
 extern "C" {
@@ -38,6 +44,7 @@ extern "C" {
 namespace Kine {
    class Config;
    class Signals;
+   class Connection;
 };
 
 # include "kineircd/exit.h"
@@ -63,6 +70,14 @@ namespace Kine {
       const long startTime;			// Time the daemon started
       timeval currentTime;			// The time now
 
+      // The list of connections
+# ifdef STL_HAS_SLIST
+      typedef std::slist <Connection> connections_type;
+# else
+      typedef std::list <Connection> connections_type;
+# endif
+      connections_type connections;
+      
       // For select()
       fd_set inFDSET, outFDSET;			// Input/Output descriptor sets
       int maxDescriptors;			// Highest descriptor to check
@@ -109,5 +124,6 @@ namespace Kine {
 // Complete forwarded declarations
 # include "kineircd/config.h"
 # include "kineircd/signals.h"
+# include "kineircd/connection.h"
 
 #endif // _INCLUDE_KINEIRCD_DAEMON_H_ 
