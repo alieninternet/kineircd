@@ -25,20 +25,32 @@
 # define _INCLUDE_KINEIRCD_PROTOCOL_INPUT_H_ 1
 
 # include <kineircd/protocol/base.h>
+# include <kineircd/errors.h>
+# include <iconv.h>
 
 namespace Kine {
    namespace Protocol {
       //! Generic protocol input base
       class Input : virtual public Base {
+       private:
+	 //! iconv() input conversion descriptor
+	 iconv_t inputCharConvDesc;
+
+
        protected:
 	 //! Constructor
 	 explicit Input(void)
+	   : inputCharConvDesc((iconv_t)(-1))
 	   {};
 	 
        public:
 	 //! Destructor
 	 virtual ~Input(void)
-	   {};
+	   {
+	      if (inputCharConvDesc != (iconv_t)(-1)) {
+		 (void)iconv_close(inputCharConvDesc);
+	      }
+	   };
 
 
 	 /*!
@@ -54,8 +66,19 @@ namespace Kine {
 	  * \param string The string (in the remote character set) to localise
 	  * \return The string, in the internal character set
 	  */
-	 virtual const std::wstring
-	   localiseStr(const std::string& string) const;
+	 const std::wstring localiseStr(const std::string& string) const;
+	 
+	 /*!
+	  * \brief Change the input character set
+	  * 
+	  * \param charset The name of the character set to switch to
+	  * \return Whether the given character set is now being used or not
+	  * \retval Error::NO_ERROR
+	  *    The given character set is now being used
+	  * \retval Error::UNKNOWN_CHARSET
+	  *    The given character set is unknown/invalid/unsupported
+	  */
+	 const Error::error_type changeInputCharset(const char* const charset);
       }; // class Input
    }; // namespace Protocol
 }; // namespace Kine

@@ -35,7 +35,7 @@ using namespace Kine;
 
 
 /* delocaliseStr - Convert the string from the internal character set
- * Original 06/11/2003
+ * Original 06/11/2003 pickle
  */
 const std::string
   Protocol::Output::delocaliseStr(const std::wstring& string) const
@@ -51,10 +51,70 @@ const std::string
 
 
 /* localiseStr - Convert the string into the internal character set
- * Original 06/11/2003
+ * Original 06/11/2003 pickle
  */
 const std::wstring
   Protocol::Input::localiseStr(const std::string& string) const
 {
    return Languages::toWideStr(string);
+}
+
+
+/* changeConvDesc - Change the given charset conversion descriptor..
+ * Original 06/11/2003 pickle
+ */
+inline static const Error::error_type
+  changeConvDesc(iconv_t& convDesc,
+		 const char* const charsetTo,
+		 const char* const charsetFrom)
+{
+#ifdef KINE_DEBUG
+   std::ostringstream out;
+   out << "::changeConvDesc - descriptor @ " << &convDesc << " to " <<
+     charsetFrom << " -> " << charsetTo;
+   debug(out.str());
+#endif
+
+   // Close the previous character set descriptor, if needs be..
+   if (convDesc != (iconv_t)(-1)) {
+      // Try to close it..
+#ifdef KINE_DEBUG_ASSERT
+      assert(iconv_close(convDesc) == 0);
+#else
+      (void)iconv_close(convDesc);
+#endif
+   }
+
+   // Try to open the new character set conversion descriptor
+   if ((convDesc = iconv_open(charsetTo, charsetFrom)) != (iconv_t)(-1)) {
+      return Error::NO_ERROR;
+   }
+
+   // Check if the charset was invalid for some reason..
+   if (errno == EINVAL) {
+      return Error::UNKNOWN_CHARSET;
+   }
+
+   // No idea what happened..
+   return Error::UNKNOWN_ERROR;
+}
+
+
+/* changeOutputCharset - Change the output charset conversion descriptor
+ * Original 06/11/2003 pickle
+ */
+const Error::error_type
+  Protocol::Output::changeOutputCharset(const char* const charset)
+{
+   return changeConvDesc(outputCharConvDesc, charset, KINE_INTERNAL_CHARSET);
+}
+
+
+/* changeInputCharset - Change the input charset conversion descriptor
+ * Original 06/11/2003 pickle
+ */
+const Error::error_type
+  Protocol::Input::changeInputCharset(const char* const charset)
+{
+   return changeConvDesc(inputCharConvDesc, KINE_INTERNAL_CHARSET, charset);
 }

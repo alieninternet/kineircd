@@ -26,11 +26,18 @@
 
 # include <kineircd/protocol/base.h>
 # include <kineircd/connection.h>
+# include <kineircd/errors.h>
+# include <iconv.h>
 
 namespace Kine {
    namespace Protocol {
       //! Generic protocol output base
       class Output : virtual public Base {
+       private:
+	 //! iconv() output conversion descriptor
+	 iconv_t outputCharConvDesc;
+
+
        protected:
 	 //! The specific connection running this instance of the protocol
 	 Connection& connection;
@@ -38,13 +45,18 @@ namespace Kine {
 	 
 	 //! Constructor
 	 explicit Output(Connection& _connection)
-	   : connection(_connection)
+	   : outputCharConvDesc((iconv_t)(-1)),
+	     connection(_connection)
 	   {};
 	 
        public:
 	 //! Destructor
 	 virtual ~Output(void)
-	   {};
+	   {
+	      if (outputCharConvDesc != (iconv_t)(-1)) {
+		 (void)iconv_close(outputCharConvDesc);
+	      }
+	   };
 
       
 	 //! Delocalise the given text into the external character set
@@ -60,8 +72,19 @@ namespace Kine {
 	  * \param string The internally encoded wide-string
 	  * \return The string, encoded appropriately for the remote connection
 	  */
-	 virtual const std::string
-	   delocaliseStr(const std::wstring& string) const;
+	 const std::string delocaliseStr(const std::wstring& string) const;
+	 
+	 /*!
+	  * \brief Change the output character set
+	  * 
+	  * \param charset The name of the character set to switch to
+	  * \return Whether the given character set is now being used or not
+	  * \retval Error::NO_ERROR
+	  *    The given character set is now being used
+	  * \retval Error::UNKNOWN_CHARSET
+	  *    The given character set is unknown/invalid/unsupported
+	  */
+	 const Error::error_type changeOutputCharset(const char* const charset);
       }; // class Output
    }; // namespace Protocol
 }; // namespace Kine

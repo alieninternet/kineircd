@@ -61,6 +61,16 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 	Languages::toWideStr(connection.getSocket().getRemoteAddress())),
    maxMessageSize(512) // <=- should really be configurable
 {
+   // Set the connection (input and output) to use UTF-8 for i18n fields
+#ifdef KINE_DEBUG_ASSERT
+   assert((changeInputCharset("UTF-8") == Error::NO_ERROR) &&
+	  (changeOutputCharset("UTF-8") == Error::NO_ERROR));
+#else
+   (void)changeInputCharset("UTF-8");
+   (void)changeOutputCharset("UTF-8");
+#endif
+
+   
    // Attempt to register the user to the registry..
    if (myServer().addUser(user) != Error::NO_ERROR) {
       // Deal with this in a nice way.. but we don't, yet, do we?
