@@ -135,3 +135,51 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	       "HELP", mask,
 	       GETLANG(irc2_RPL_ENDOF_GENERIC_HELP));
 }
+
+
+/* handleLUSERS
+ * Original 27/08/2001 simonb
+ * 03/04/2001 simonb - Imported from old code
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
+{
+   // If there are no parameters, the user was wants us to reply..
+   if (parameters.empty()) {
+      sendLUSERS(user);
+      return;
+   }
+   
+   // Look up the server?
+}
+
+
+/* handleMOTD
+ * Original 13/08/2001 simonb
+ * 03/04/2001 simonb - Imported from old code
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
+{
+   // If there are no parameters, the user was wants us to reply..
+   if (parameters.empty()) {
+      sendMOTD(user);
+      return;
+   }
+   
+   // Look up the server?
+}
+
+
+/* handleVERSION
+ * Original 24/08/2001 simonb
+ * 03/04/2001 simonb - Imported from old code
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
+{
+   // If there are no parameters, the user was wants us to reply..
+   if (parameters.empty()) {
+      sendVERSION(user);
+      return;
+   }
+   
+   // Look up the server?
+}
