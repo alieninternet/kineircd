@@ -97,7 +97,6 @@ class Handler {
    // Calls for remotes (similar to sends, really)
    virtual void callADMIN(Server *, User *) const {};
    virtual void callINFO(Server *, User *) const {};
-   virtual void callLINKS(Server *, User *, String const &) const {};
    virtual void callLUSERS(Server *, User *, String const &) const {};
    virtual void callMOTD(Server *, User *) const {};
    virtual void callSTATS(Server *, User *, String const &) const {};
@@ -111,7 +110,6 @@ class Handler {
    // These are responces to requests by either remote or local users
    static void doADMIN(Handler *, User *);
    static void doINFO(Handler *, User *);
-   static void doLINKS(Handler *, User *, String const &);
    static void doLUSERS(Handler *, User *, String const &);
    static void doMOTD(Handler *, User *);
    static void doSTATS(Handler *, User *, String const &);
@@ -177,6 +175,7 @@ class irc2userHandler : public Handler {
    static void parseLIST(irc2userHandler *handler, StringTokens *tokens);
    static void parseLOCOPS(irc2userHandler *handler, StringTokens *tokens);
    static void parseLUSERS(irc2userHandler *handler, StringTokens *tokens);
+   static void parseMAP(irc2userHandler *handler, StringTokens *tokens);
    static void parseMODE(irc2userHandler *handler, StringTokens *tokens);
    static void parseMOTD(irc2userHandler *handler, StringTokens *tokens);
    static void parseNAMES(irc2userHandler *handler, StringTokens *tokens);
@@ -290,6 +289,7 @@ class p13serverHandler : public Handler {
 		    String const & = "") const;	// Generic remote call function
    
    // Protocol input
+   static void parseACCEPT(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseADMIN(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseAWAY(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseCONNECT(p13serverHandler *handler, String const &origin, StringTokens *tokens);
@@ -302,7 +302,6 @@ class p13serverHandler : public Handler {
    static void parseKICK(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseKILL(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseLANGUAGE(p13serverHandler *handler, String const &origin, StringTokens *tokens);
-   static void parseLINKS(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseMODE(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseMOTD(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseNICK(p13serverHandler *handler, String const &origin, StringTokens *tokens);
@@ -314,7 +313,10 @@ class p13serverHandler : public Handler {
    static void parseQUIT(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseRPING(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseRPONG(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseSERVER(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseSERVICE(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseSETTIME(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseSILENCE(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseSQUIT(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseSTATS(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseTIME(p13serverHandler *handler, String const &origin, StringTokens *tokens);
@@ -347,7 +349,6 @@ class p13serverHandler : public Handler {
    // Calls for remotes (similar to sends, really)
    void callADMIN(Server *, User *) const;
    void callINFO(Server *, User *) const;
-   void callLINKS(Server *, User *, String const &) const;
    void callLUSERS(Server *, User *, String const &) const;
    void callMOTD(Server *, User *) const;
    void callSTATS(Server *, User *, String const &) const;

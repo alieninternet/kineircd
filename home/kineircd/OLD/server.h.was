@@ -38,6 +38,7 @@ class Server {
    flags_t flags;				// Server flags
    modes_t modes;				// Server modes
    Handler *handler;				// Link into user handler
+   unsigned char protocol;			// Protocol number
    unsigned char numHops;			// Number of hops away
    unsigned int numUsers;			// Number of users connected
 
@@ -74,16 +75,19 @@ class Server {
        flags(0), 
        modes(0), 
        handler(0),
+       protocol(0),
        numHops(0),
        numUsers(0)
      {};
    
-   Server(String const &ho, String const &d, unsigned char hops)
+   Server(String const &ho, String const &d, unsigned char p, 
+	  unsigned char hops)
      : hostname(ho),
        description(d),
        flags(0),
        modes(0),
        handler(0),
+       protocol(p),
        numHops(hops),
        numUsers(0)
      {};
@@ -149,11 +153,16 @@ class Server {
 	return false;
      };
    
+   unsigned char getProtocol(void) const	// Grab protocol number
+     {
+	return protocol;
+     };
+   
    unsigned char getNumHops(void) const		// Grab number of hops
      {
 	return numHops;
      };
-   
+
    unsigned int getNumUsers(void) const		// Grab number of users there
      {
 	return numUsers;

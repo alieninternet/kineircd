@@ -990,6 +990,28 @@ AC_ARG_ENABLE(protocol-p13server,[  --enable-protocol-p13server    allow the P13
    austhex_test_have_protocol_p13server=yes
  ])
 AC_SUBST(austhex_test_have_protocol_p13server)
+
+if test "$austhex_test_have_protocol_p13server" = "yes"; then
+AC_MSG_CHECKING([protocol-p13server parameter])
+  AC_ARG_ENABLE(compress-p13server,[  --enable-compress-p13server    allow compression of the P13 server protocol],
+   [
+     if test "$enableval" = "no"; then
+       AC_MSG_RESULT(no)
+       austhex_test_compress_protocol_p13server=no
+     else
+       AC_MSG_RESULT(yes)
+       AC_DEFINE(COMPRESS_PROTOCOL_P13SERVER)
+       austhex_test_compress_protocol_p13server=yes
+     fi
+   ],[
+     AC_MSG_RESULT([yes (default)])
+     AC_DEFINE(COMPRESS_PROTOCOL_P13SERVER)
+     austhex_test_compress_protocol_p13server=yes
+   ])
+else
+  austhex_test_compress_protocol_p13server=no
+fi
+AC_SUBST(austhex_test_compress_protocol_p13server)
  
 AC_MSG_CHECKING([protocol-p14server parameter])
 AC_ARG_ENABLE(protocol-p14server,[  --enable-protocol-p14server    allow the P14 server protocol],
@@ -1008,6 +1030,28 @@ AC_ARG_ENABLE(protocol-p14server,[  --enable-protocol-p14server    allow the P14
  ]) 
 AC_SUBST(austhex_test_have_protocol_p14server)
 
+if test "$austhex_test_have_protocol_p14server" = "yes"; then
+AC_MSG_CHECKING([protocol-p14server parameter])
+  AC_ARG_ENABLE(compress-p14server,[  --enable-compress-p14server    allow compression of the P14 server protocol],
+   [
+     if test "$enableval" = "no"; then
+       AC_MSG_RESULT(no)
+       austhex_test_compress_protocol_p14server=no
+     else
+       AC_MSG_RESULT(yes)
+       AC_DEFINE(COMPRESS_PROTOCOL_P14SERVER)
+       austhex_test_compress_protocol_p14server=yes
+     fi
+   ],[
+     AC_MSG_RESULT([yes (default)])
+     AC_DEFINE(COMPRESS_PROTOCOL_P14SERVER)
+     austhex_test_compress_protocol_p14server=yes
+   ])
+else
+  austhex_test_compress_protocol_p14server=no
+fi
+AC_SUBST(austhex_test_compress_protocol_p14server)
+ 
 
 dnl  -------------------------------------------------------------------------
 echo " -=> Determining installation information"

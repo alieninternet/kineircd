@@ -258,8 +258,8 @@ void registerHandler::parseLine(String const &line)
 	       debug("Server not in list; Will add it..");
 # endif
 	       // Create a new server
-	       server = new Server(username, realname, 1);
-	       
+	       server = new Server(username, realname, protocol, 1);
+
 	       // Add this server to the server list
 	       Daemon::addServer(server);
 	    } else {
@@ -561,7 +561,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
 # endif
    
    // Check there are enough tokens
-   if (!(tokens->countTokens() >= 10)) {
+   if (!(tokens->countTokens() >= 7)) {
 # ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 # else

@@ -157,7 +157,7 @@ struct irc2userHandler::functionTableStruct const
      },
      { "LINKS",		parseLINKS,		2,
 	  ANYONE,
-	  "[ [ <remote server> ]  <server mask> ]",
+	  "[ <server mask> ]",
 	  "Generate a list of server links. If a server mask is specified, "
 	  "only servers matching the mask will be shown. If a remote server "
 	  "is given, the request will be generated from the given server "
@@ -186,6 +186,12 @@ struct irc2userHandler::functionTableStruct const
 	  "[ <mask>  [ <server> ] ]",
 	  "Show the current local-user status. This command has been "
 	  "extended to also include global users, and peak user counts."
+     },
+     { "MAP",		parseMAP,		2,
+	  ANYONE,
+	  "",
+	  "Display a map of the major bone links in the network, along with "
+	  "other server information."
      },
      { "MODE",		parseMODE,		2,
 	  ANYONE,
@@ -1238,7 +1244,7 @@ void irc2userHandler::sendWatchOff(User *target) const
 			    (char const *)user->nickname,
 			    (char const *)target->nickname,
 			    (char const *)target->username,
-			    (char const *)target->getAddress(user),
+			    (char const *)target->getHost(user),
 			    target->lastNickChange,
 			    Language::L_RPL_LOGOFF_USER));
 }
@@ -2552,34 +2558,46 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
 
 /* parseLINKS
  * Original 27/08/01, Simon Butcher <pickle@austnet.org>
+ * Note: In accordance with other servers around the world, this command works
+ *       somewhat differently to how traditional links works. Traditionally,
+ *       this command gives enough information to know the topology of the
+ *       network, but this can lead to showing weak-points on the network
+ *       perfect for attack. This command has been modified so that it only
+ *       returns information about other servers, even the hop count has been
+ *       replaced with the number of users, on purpose. The result of this is
+ *       that the command no longer needs to be used remotely so that
+ *       component of it has been removed as well.
  */
 void irc2userHandler::parseLINKS(irc2userHandler *handler, StringTokens *tokens)
 {
-   String server = tokens->nextToken();
-   String mask = tokens->nextToken();
+   // Grab the appropriate mask requested
+   String maskStr = tokens->nextToken().toLower();
    
-   // Server not specified, or it is us?
-   if (!server.length()) {
-      doLINKS(handler, handler->user, mask);
-   } else {
-      Server *s = Daemon::getServer(StringMask(server));
-      
-      // Check
-      if (!s) {
-	 handler->sendNumeric(ERR_NOSUCHSERVER,
-			      server + Language::L_ERR_NOSUCHSERVER);
-	 return;
-      }
-   
-      // Is this US??
-      if (s == Daemon::myServer()) {
-	 doLINKS(handler, handler->user, mask);
-	 return;
-      }
-   
-      // Poll the remote server
-      Daemon::routeTo(s)->callLINKS(s, handler->user, mask);
+   if (!maskStr.length()) {
+      maskStr = "*";
    }
+   
+   StringMask mask(maskStr);
+   
+   // Run through the list
+   for (Daemon::server_map_t::iterator it = Daemon::servers.begin();
+	it != Daemon::servers.end(); it++) {
+      // Check for a match, and send this if the server is not hidden
+      if (mask.matches((*it).second->getHostname()) &&
+	  !((*it).second->isModeSet(Server::M_HIDDEN))) {
+	 // Send the user this record
+	 handler->
+	   sendNumeric(RPL_LINKS,
+		       String::printf("%s * :%u %s",
+				      (char const *)(*it).second->getHostname(),
+				      (*it).second->getNumUsers(),
+				      (char const *)(*it).second->getDescription()));
+      }
+   }
+   
+   // End of the list
+   handler->sendNumeric(RPL_ENDOFLINKS,
+			maskStr + Language::L_RPL_ENDOFLINKS);
 }
 
 
@@ -2694,6 +2712,28 @@ void irc2userHandler::parseLUSERS(irc2userHandler *handler, StringTokens *tokens
       // Poll the remote server
       Daemon::routeTo(s)->callLUSERS(s, handler->user, mask);
    }
+}
+
+
+/* parseMAP
+ * Original 01/11/01, Simon Butcher <pickle@austnet.org>
+ */
+void irc2userHandler::parseMAP(irc2userHandler *handler, StringTokens *tokens)
+{
+   // Run through the server list (this needs to change, ripped from LINKS)
+   for (Daemon::server_map_t::iterator it = Daemon::servers.begin();
+	it != Daemon::servers.end(); it++) {
+      // Send the user this record
+      handler->
+	sendNumeric(RPL_MAP,
+		    String::printf(":P%u H%u U%u %s",
+				   (*it).second->getProtocol(),
+				   (*it).second->getNumHops(),
+				   (*it).second->getNumUsers(),
+				   (char const *)(*it).second->getHostname()));
+   }
+   
+   handler->sendNumeric(RPL_MAPEND, "End of dodgey map command");
 }
 
 

@@ -1536,6 +1536,24 @@ void Daemon::addServer(Server *server)
    }
 }
 
+/* delServer - Remove a server from the servers map
+ * Original 01/11/01, Simon Butcher <pickle@austnet.org>
+ */
+void Daemon::delServer(Server *server)
+{
+#ifdef DEBUG_EXTENDED
+   debug(String::printf("delServer() <- %s",
+			(char const *)server->hostname));
+#endif
+
+   // Remove it from the map
+   servers.erase(server->hostname.toLower());
+
+   // And finally, delete the server data itself
+   delete server;
+}
+
+
 /* getServer - [Various Forms] Grab a record from the servers list if we can
  * Original 10/09/01, Simon Butcher <pickle@austnet.org>
  */

@@ -329,6 +329,7 @@ class Daemon {
      *getOperator(String const &);		// Grab an operator record
 
    static void addServer(Server *);		// Add a server to the list
+   static void delServer(Server *);		// Remove a server off the list
    static Server *getServer(char);		// Grab a server record
    static Server *getServer(String const &);
    static Server *getServer(StringMask const &);

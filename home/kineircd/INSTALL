@@ -397,6 +397,16 @@
        It is quite bulky, and only handles star-topology based networks.
        This protocol maintains compatibility back to austhex.servd7.6.
     
+    
+     --enable-compress-p13server (default)
+     --disable-compress-p13server
+    
+       Only valid when the P13 server protocol is enabled (above), this allows
+       the links to be negotiated for compression which will significantly
+       reduce the amount of data transferred, however in the case of this
+       protocol it will add quite a large amount of additional memory usage.
+       Compression uses significantly increased CPU usage too.
+
 
      --enable-protocol-p14server
      --disable-protocol-p14server (default)
@@ -409,6 +419,15 @@
        by implementing 'bone' and 'tendril' links, allowing for well designed
        networks to be virtually split-free with minimal lag.
        This protocol is currently experimental and incomplete.
+
+
+     --enable-compress-p14server (default)
+     --disable-compress-p14server
+    
+       Only valid when the P14 server protocol is enabled (above), this allows
+       the links to be negotiated for compression which will significantly
+       reduce the amount of data transferred. Note that compression uses a 
+       lot of CPU usage too.
     
     
     

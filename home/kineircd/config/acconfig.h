@@ -463,6 +463,11 @@
 # undef HAVE_PROTOCOL_P14SERVER
 
   
+/* Define these depending on what compression you want added to the above */
+# undef COMPRESS_PROTOCOL_P13SERVER
+# undef COMPRESS_PROTOCOL_P14SERVER
+  
+  
 /* Define if the function tzset() and variables timezone and daylight exist */
 # undef HAVE_TZSET_AND_FRIENDS
   

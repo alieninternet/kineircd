@@ -65,51 +65,6 @@ void Handler::doINFO(Handler *handler, User *from)
 }
 
 
-/* doLINKS
- * Original 10/09/01, Simon Butcher <pickle@austnet.org>
- * Note: Yes, this works a little differently than usual. Usually with send
- *       out a server name and the link to name, then the hops etc. This time
- *       we send out the server name and OUR name. Why? Firstly the client
- *       doesn't need that much information anyway, and secondly when it comes
- *       to a routed network rather than the star topology network of
- *       old IRC networks, the data is meaningless and all that matters are
- *       the hops.
- */
-void Handler::doLINKS(Handler *handler, User *from, String const &request)
-{
-   // Grab the appropriate mask requested
-   String maskStr = "";
-   
-   if (!request.length()) {
-      maskStr = "*";
-   } else {
-      maskStr = request.toLower();
-   }
-   
-   StringMask mask(maskStr);
-   
-   // Run through the list
-   for (Daemon::server_map_t::iterator it = Daemon::servers.begin();
-	it != Daemon::servers.end(); it++) {
-      // Check for a match, and send this if the server is not hidden
-      if (mask.matches((*it).second->getHostname()) && 
-	  !((*it).second->isModeSet(Server::M_HIDDEN))) {
-	 // Send the user this record
-	 handler->sendNumeric(Daemon::myServer(), RPL_LINKS, from,
-			      String::printf("%s %s :%d %s",
-					     (char const *)(*it).second->getHostname(),
-					     (char const *)Daemon::myServer()->getHostname(),
-					     (*it).second->getNumHops(),
-					     (char const *)(*it).second->getDescription()));
-      }
-   }
-   
-   // End of the list
-   handler->sendNumeric(Daemon::myServer(), RPL_ENDOFLINKS, from, 
-			request + Language::L_RPL_ENDOFLINKS);
-}
-
-   
 /* doLUSERS
  * Original 13/08/01, Simon Butcher <pickle@austnet.org>
  */
