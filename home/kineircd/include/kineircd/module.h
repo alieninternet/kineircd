@@ -83,7 +83,7 @@ namespace Kine {
 	 enum flags_type {
 	    FLAG_NONE = 0,			      // No flags set
 	    FLAG_NEEDS_ROOT_START	= 0x00000001, // Must be SUID to start
-	    FLAG_NEEDS_ROOT_RUN		= 0x00000002, // Must be superuser always
+	    FLAG_NEEDS_ROOT_RUN		= 0x00000002, // Must be SUID always
             FLAG_UNIQUE_INSTANCE	= 0x00000004  // No multiple instances
 	 } const flags;
 	 
