@@ -111,6 +111,10 @@ namespace Kine {
       
       // Return the name (from the basic information) in full version format
       String getVersionString(void) const;
+      
+      // Return a name worthy enough to be used as a key in a map
+      const char *getKeyName(void) const
+	{ return basicInfo.nameShort; };
    };
 };
    
