@@ -1,5 +1,5 @@
 /* $Id$
- * Handles listener status of the listeners list over-all
+ * Listener configuration parser helper class
  * 
  * Copyright (c) 2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
@@ -21,31 +21,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "kineircd/kineircdconf.h"
+#ifndef _SRC_LIB_LISTENER_CONFIG_H_
+# define _SRC_LIB_LISTENER_CONFIG_H_ 1
 
-#include "kineircd/listenerlist.h"
-#include "debug.h"
+# include "kineircd/listener.h"
+# include "kineircd/listenerlist.h"
+# include "kineircd/configparser.h"
+# include "kineircd/configdata.h"
 
-using namespace Kine;
+namespace Kine {
+   class ListenerConfig : public ConfigData {
+    private:
+      // The list of definitions for the configuration handler
+      static const ConfigParser::defTable_type classDefs;
 
+    public:
+      ListenerConfig(void)
+	{};
 
-/* startAll - Start all listeners listening
- * Original 07/08/2002 simonb
- */
-void ListenerList::startAll(void)
-{
-#ifdef KINE_DEBUG_EXTENDED
-   debug("ListenerList::startAll() - Starting " + 
-	 String::convert(listeners.size()) + " listening sockets");
-#endif
+      // The class handler for the configuration class
+      static CONFIG_CLASS_HANDLER(classHandler);
+   };
+};
    
-   // Run through the list of modules and call their start functions
-   for (listeners_type::iterator it = listeners.begin(); 
-	it != listeners.end(); it++) {
-      if (!(*it).listen()) {
-#ifdef KINE_DEBUG
-	 debug("ListenerList::startAll() - oops");
-#endif
-      }
-   }
-}
+#endif // _SRC_LIB_LISTENER_CONFIG_H_
+   

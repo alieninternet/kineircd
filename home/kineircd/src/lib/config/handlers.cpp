@@ -28,6 +28,7 @@
 #include "kineircd/config.h"
 #include "kineircd/moduledescriptor.h"
 #include "config/defaults.h"
+#include "listener/config.h"
 #include "debug.h"
 
 using namespace Kine;
@@ -66,7 +67,7 @@ namespace Config {
 	     0,
 	     0,
 	     0,
-	     &ListenerList::configClassHandler
+	     &ListenerConfig::classHandler
 	},
 	{
 	   "LOGGING",
