@@ -8,6 +8,10 @@
     is most likely not of the quality you may want it to be. You may run
     this software AT YOUR OWN RISK.
 
+    Quick warning for GCC users: Run "gcc --version", if you get version 2.96,
+    change your compiler to either 2.95.3 or 3.0. Version 2.96 is not an 
+    official GCC.
+
 
 
  1. What is KineIRCd? What does it do? What's so special about it?
