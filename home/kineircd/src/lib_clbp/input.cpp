@@ -26,46 +26,55 @@
 #endif
 
 #include "kineircd/clbp/input.h"
+#include "kineircd/clbp/output.h"
 
 using namespace Kine::LibCLBP;
 
 
 /* handleInput - Handle incoming data
  * Original 11/08/2001 simonb
- * Note: This could be more efficient :(
  */
 void Input::handleInput(std::stringstream& data)
 {
+   std::string::size_type pos = 0;
+   
    for (;;) {
-      // Make sure the stream has something left..
-      if (data.peek() == -1) {
+      // Find the next \r or \n
+      std::string::size_type eolPos = 
+	data.str().find_first_of(Output::EOL_CR_LF, pos);
+      
+      // Is this an incomplete line? (no termination in the given input)
+      if (eolPos == std::string::npos) {
+	 // Buffer what we were given and simply return
+	 inputQueue += data.str();
 	 return;
       }
-
-      // Check for special chars..
-      if (data.peek() == '\0') {
-	// Quietly ignore it and move along..
-	(void)data.ignore();
-      } else if ((data.peek() == '\r') || (data.peek() == '\n')) {
-	 // Skip it - we are at the end of a line
-	 (void)data.ignore();
-	 
-	 // If the next char is also a part of it (ie. a \r\n sequence) skip it
-	 if ((data.peek() == '\r') || (data.peek() == '\n')) {
-	    (void)data.ignore();
-	 }
-
-	 // Check if the buffer has something in it (perhaps a message?)
-	 if (!inputQueue.empty()) {
-	    // Hand the data over to the parser (as a single line
-	    parseLine(inputQueue);
-	    
-	    // Clear the buffer
-	    inputQueue.clear();
-	 }
+      
+      // If the input queue is empty, we can skip throwing the string around
+      if (inputQueue.empty()) {
+	 // Throw it to the line parser..
+	 parseLine(data.str().substr(pos, eolPos));
       } else {
-	 // Just add the char to the buffer
-	 inputQueue += (char)data.get();
+	 // Throw the input queue *and* the broken apart data to the parser
+	 parseLine(inputQueue + data.str().substr(pos, eolPos));
+	 
+	 // Clear the input queue
+	 inputQueue.clear();
+      }
+      
+      // Reposition the starting position
+      pos = eolPos + 1;
+      
+      // Check if this is a \r\n sequence
+      if ((data.str()[pos - 1] == '\r') &&
+	  (data.str()[pos] == '\n')) {
+	 // Skip the next char too!
+	 ++pos;
+      }
+      
+      // If the position is at the end of the string, break
+      if (pos >= data.str().length()) {
+	 return;
       }
    }
 }
