@@ -462,6 +462,10 @@
 # undef HELPERS_CAN_SEE_USER_MODES
 
   
+/* Define these depending on which transport types you wish to support */
+# undef HAVE_TRANSPORT_TCP_IPV4
+# undef HAVE_TRANSPORT_TCP_IPV6
+  
 /* Define these depending on what protocols you want compiled in */
 # undef HAVE_PROTOCOL_IRC2USER
 # undef HAVE_PROTOCOL_IRC3USER
@@ -580,6 +584,17 @@
 /* Fix the server name mask if it is not here */
 # ifndef SERVER_NAME_MASK
 #  define SERVER_NAME_MASK		"*"
+# endif
+
+/* Work out the highest protocol major number we support */
+# ifdef HAVE_PROTOCOL_P14SERVER
+#  define HIGHEST_SUPPORTED_SERVER_PROTOCOL 14
+# else
+#  if HAVE_PROTOCOL_P13SERVER
+#   define HIGHEST_SUPPORTED_SERVER_PROTOCOL 13
+#  else
+#   define HIGHEST_SUPPORTED_SERVER_PROTOCOL 0 /* blind */
+#  endif
 # endif
   
 #endif

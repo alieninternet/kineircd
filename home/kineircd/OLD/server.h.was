@@ -75,7 +75,7 @@ class Server {
        flags(0), 
        modes(0), 
        handler(0),
-       protocol(0),
+       protocol(HIGHEST_SUPPORTED_SERVER_PROTOCOL),
        numHops(0),
        numUsers(0)
      {};

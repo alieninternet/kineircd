@@ -333,7 +333,7 @@
        This can stop many denial of service attacks which exploit the fact
        that the server is a little braindead during registration time.
 
-       
+   
      --enable-time-to-be-idle (default = 30)
      --disable-time-to-be-idle
      
@@ -355,6 +355,23 @@
        quality of links to other servers in instances where a simple ping
        isn't enough.
        
+       
+     --enable-transport-tcp-ipv4 (default)
+     --disable-transport-tcp-ipv4
+     
+       Enable IPv4 connectivity to the server. This will only be useful to
+       disable in the distant future! :)
+       
+    
+     --enable-transport-tcp-ipv6
+     --disable-transport-tcp-ipv6 (default)
+     
+       IPv6 support works, but has only been tested on a glibc2 platform.
+       There are other IPv6 stacks and the results may be unknown. Fortunately
+       IPv6 support is not a total requirement on the internet yet so it
+       should be safe just to leave this, unless you are providing IPv6
+       connectivity.
+
        
      --enable-user-conn-ping (default)
      --disable-user-conn-ping

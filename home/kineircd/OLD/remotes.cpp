@@ -122,10 +122,12 @@ void Handler::doMAP(Handler *handler, User *from)
       // Send the user this record
       handler->
 	sendNumeric(Daemon::myServer(), Numerics::RPL_MAP, from,
-		    String::printf("%u %u %u modes * * : ?- %s",
+		    String::printf("x %u %u %u %.3f * * * * +ModesGoHere :?- %s",
 				   (*it).second->getProtocol(),
 				   (*it).second->getNumHops(),
 				   (*it).second->getNumUsers(),
+				   (((float)(*it).second->getNumUsers() / 
+				     Daemon::numTotalUsers) * 100),
 				   (char const *)(*it).second->getHostname()));
    }
    

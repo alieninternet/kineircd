@@ -906,6 +906,33 @@ AC_ARG_ENABLE(traceroute,[  --enable-traceroute            allow the TRACEROUTE 
    AC_DEFINE(HAVE_CMD_TRACEROUTE)
  ])
 
+AC_MSG_CHECKING([transport-tcp-ipv4 parameter])
+AC_ARG_ENABLE(transport-tcp-ipv4,[  --enable-transport-tcp-ipv4    allow IPv4 connectivity to the server],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(HAVE_TRANSPORT_TCP_IPV4)
+   fi
+ ],[
+   AC_MSG_RESULT([yes (default)])
+   AC_DEFINE(HAVE_TRANSPORT_TCP_IPV4)
+ ])
+
+AC_MSG_CHECKING([transport-tcp-ipv6 parameter])
+AC_ARG_ENABLE(transport-tcp-ipv6,[  --enable-transport-tcp-ipv6    allow IPv6 connectivity to the server],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(HAVE_TRANSPORT_TCP_IPV6)
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+ ])
+
 AC_MSG_CHECKING([user-conn-ping parameter])
 AC_ARG_ENABLE(user-conn-ping,[  --enable-user-conn-ping        enable anti-spoof connection ping requirement],
  [

@@ -11,6 +11,7 @@ _______________________________________________________________________________
 
 590 - ERR_SERVERTOOFULL		
       :This server cannot accept anymore user connections
+
       May follow an RPL_REDIR (#010)
 
 
@@ -20,26 +21,31 @@ _______________________________________________________________________________
 
 592 - ERR_SERVERTEMPCLOSED	
       :This server is temporarily unavailable
+      
       May follow an RPL_REDIR (#010)
 
 
 593 - ERR_CANNOTCHANGEUMODE	
       <mode char> :Cannot toggle this user mode [<reason>]
+      
       Cannot change a specific user mode. May also include a reason why
 
 
 594 - ERR_CANNOTCHANGECHANMODE	
       <mode char> :Cannot modify this channel mode [<reason>]
+      
       Same as above (ERR_CHANNOTCHANGEUMODE) except for channel modes
 
 
 595 - ERR_CANNOTCHANGESERVERMODE
       <mode char> :Cannot modify this server mode [<reason>]
+      
       Same as above (ERR_CHANNOTCHANGEUMODE) except for server modes
 
 
 596 - ERR_CANNOTSENDTONICK
       <nickname> :Cannot send to this nickname
+      
       This means the message is being sent to a user who has +R set and the
       sender has not been identified with the network services yet (hasn't
       got a +I on their user modes)
@@ -47,11 +53,13 @@ _______________________________________________________________________________
 
 597 - ERR_UNKNOWNSERVERMODE
       <modechar> :Unknown server mode
+      
       Extension to ERR_UNKNOWNMODE, same deal except for server modes :)
 
 
 599 - ERR_SERVERMODELOCK
       <target> :Cannot change server modes (+L)
+      
       This is returned when the given server cannot accept mode changes by
       any object except its own configuration file or other servers due to
       server mode +L (mode-lock) being set.
@@ -67,6 +75,7 @@ _______________________________________________________________________________
 
 802 - RPL_MODECHANGEWARN
       <mode char> :<Warning message>
+      
       This is a replacement of ERR_VWORLDWARN, which can be used for a
       variety of things such as warning operators about turning off wallops
       etc.
@@ -74,6 +83,7 @@ _______________________________________________________________________________
 
 803 - RPL_CHANREDIR
       <old channel> <new channel> :Note: You are being redirected
+      
       This is used when a channel is being redirected by the server so that
       the client is aware that it is not 'out of sync' with the server. This
       is designed to be used mainly with 'official' channels on the network
@@ -85,6 +95,7 @@ _______________________________________________________________________________
 
 804 - RPL_SERVMODEIS
       <server> <modes> <parameters>
+      
       Reply to a /mode <servername> request with the mode setting of a
       particular server. This is essentially a copy of RPL_CHANNELMODEIS,
       except for servers so that clients do not get confused.
@@ -92,6 +103,7 @@ _______________________________________________________________________________
 
 805 - RPL_OTHERUMODEIS
       <nickname> <modes>
+      
       Extension to 'RPL_UMODEIS' except only operators/helpers can receive
       this this - To assist in helping users with problems and due to the
       increasing complexity in modes (+R for example) that clients do not
@@ -104,6 +116,7 @@ _______________________________________________________________________________
 
 806 - RPL_TRACEROUTE_START
       <target> <target FQDN> <target IP> <max hops>
+      
       This is for the /traceroute command, it is the start of a traceroute.
       Target is the given target to traceroute to, the target FQDN is the
       name found for that target, the target IP is the IP found for that
@@ -114,6 +127,7 @@ _______________________________________________________________________________
 807 - RPL_TRACEROUTE_HOP      
       <target> <hop number> <hop back number> <hop FQDN> <hop IP> 
        <ping1> <ping2> <ping3> [:<information>]
+      
       Continuation of /traceroute output. Target is the same as above, hop
       number if the number of the hop, while hop back number is the number of
       hops as the reply came back (this can be different). Hop FQDN and 
@@ -124,6 +138,7 @@ _______________________________________________________________________________
 
 808 - RPL_TRACEROUTE_NOHOP
       <target> <hop number> :<information>
+      
       Similar to RPL_TRACEROUTE_HOP except no information was obtained from
       this hop. Information is always given why, even if it is just something
       like "timed out". Information strings are the same as with
@@ -133,6 +148,7 @@ _______________________________________________________________________________
 809 - RPL_TRACEROUTE_END
       <target> <hops to> <hops from> <min ping> <avg ping> <max ping> 
        :<information>
+      
       End of the traceroute information. Hops to/Hops from are the number of
       hops to/from the target respectively. Min/Avg/Max ping are minimum,
       average and maximum ping times over the course of the traceroute.
@@ -141,6 +157,7 @@ _______________________________________________________________________________
 
 810 - RPL_WHOWAS_DETAILS
       <nick> <type> :<information>
+      
       This follows the normal RPL_WHOWASUSER and RPL_WHOWAS_TIME (ref: ircu).
       The nickname corresponds to the nickname of the returning
       information. The type is simply a number (8-bit, range of 0..255) 
@@ -168,6 +185,7 @@ _______________________________________________________________________________
 
 814 - RPL_YOURHELPER
       :You are now a network helper
+      
       (From original austhex prior to version 8, this was #380. Moved to
        avoid possible conflict)
       Similar function to YOUREOPER, except for the 'helper' status.
@@ -175,6 +193,7 @@ _______________________________________________________________________________
 
 815 - RPL_YOURVREMOVER
       :You are not a network virus remover
+      
       (From original austhex prior to version 8, this was #386. Moved to
        avoid possible conflict)
       Same as above -- Virus Remover status.
@@ -182,6 +201,7 @@ _______________________________________________________________________________
 
 818 - RPL_LUSERHELPERS
       <number of helpers online> :helper(s) online
+      
       This is complimentary of RPL_LUSEROP, however this is to count the
       number of network staff currently on the network. This could be of
       benefit to other networks such as dalnet as well since AFAIK they also
@@ -192,6 +212,7 @@ _______________________________________________________________________________
 
 819 - RPL_TIMEONSERVERIS
       <seconds> <microseconds> <timezone> <flags> :time according to server
+      
       This is the time on the server, used to allow clients to receive a more
       precise time from the server and is sent upon client connection. This
       allows clients to calculate how long an object has been around for since
@@ -226,12 +247,14 @@ _______________________________________________________________________________
 
 820 - RPL_HELP
       <command> :<parameter string>
+      
       This is a reply to a help request. The parameter string is a string
       giving help to the command specified.
       
 
 821 - RPL_MOREHELP
       <command> :<string>
+      
       This is an addition to RPL_HELP, if requested, and builds on any
       information given above, usually in the form of an explanation of the
       command.
@@ -239,6 +262,7 @@ _______________________________________________________________________________
 
 822 - RPL_ENDOFHELP
       <mask> :End of HELP
+      
       Reply to help; mainly to assist when help search masks do not match etc
       This matches RPL_HELP (#820) and RPL_MOREHELP (#821)
 
@@ -246,6 +270,7 @@ _______________________________________________________________________________
 823 - RPL_NOTACCEPTED
       <nickname> :is in server side ignore mode (+g) but has been notified
        you wish to talk to them
+      
       Different spin on using a notice like hybrid does -- this is designed so
       that smarter clients can tell the user exactly why the message was not
       sent in whatever interface they require. The nickname is the target
@@ -255,6 +280,7 @@ _______________________________________________________________________________
 824 - RPL_ACCEPTNOTICE
       <nick> <user> <host> :is messaging you. You are in server side ignore 
        mode (+g). Use the ACCEPT command if you wish to talk to them.
+      
       Like above, this is a replacement for hybrid's notice version of someone
       trying to message you. More-so than the above numeric, this is designed
       for clients that are smart enough so that they can either set up
@@ -266,11 +292,13 @@ _______________________________________________________________________________
 
 825 - RPL_KNOCKING
       <channel> :has received your knocking
+      
       Confirmation that a /KNOCK is being sent
 
 
 826 - RPL_ACCEPTED
       <nick> <user> <host> :has added you to their ACCEPT list
+      
       Indicate that a user has added you to their accept list. See
       RPL_ACCEPTNOTICE for information on the fields, as this works in 
       the same way.
@@ -278,6 +306,7 @@ _______________________________________________________________________________
 
 827 - RPL_YOURLANGUAGEIS
       <code> <charset> * :<name> [(Note: <info>)]
+      
       Reply to a LANGUAGE command denoting the language selected by the
       server. Along with a 'LANGUAGE' reply, this signifies to that client
       that the server will be using the given language to display future
@@ -299,6 +328,7 @@ _______________________________________________________________________________
 
 828 - RPL_LANGUAGE
       <code> <revision> <maintainer> <charset> <flags> * :<name>
+      
       A list item for listing languages. The code variable is the
       ISO-639-(1/2)/IANA assigned language code, the revision is the version of
       the language file being used, and the maintainer is an e-mail address 
@@ -318,11 +348,13 @@ _______________________________________________________________________________
 
 829 - RPL_ENDOFLANGUAGES
       :End of LANGUAGE list
+      
       Mark the end of a language list.
 
 
 830 - RPL_WHOIS_LANGUAGE
       <nickname> <language codes> <charset>
+      
       This is an optional extra to the WHOIS output, showing what language
       a user is using. The 'language codes' field is a comma-delimetered list
       of languages a person can speak (in order of preference, highest
@@ -333,6 +365,7 @@ _______________________________________________________________________________
 
 835 - RPL_DUMMY_NUMERIC
       Anything here!
+      
       This is a dummy numeric, put here to be something a client is always to
       ignore. It is to be used when numerics have not been decided on, or are
       conflicting, or any situtation really where a real concrete numeric
@@ -349,11 +382,13 @@ _______________________________________________________________________________
 
 991 - ERR_NOMORELANGS
       <max languages> :No more languages can be set
+      
       Tell the client it cannot set any more languages, the maximum given.
       
       
 992 - ERR_NOLANGUAGE
       <language code> :is an unknown language to me
+      
       Report to the client that the language given was unknown and will not
       be used, or shown in the WHOIS output.
 
@@ -363,6 +398,7 @@ Extensions:
       <server hostname> <server version> <user modes> <channel modes>
        <channel modes with parameters> <user modes with parameters>
        <server modes> <server modes with parameters> <version chars>
+
       ircu started adding 'channel modes with parameters' to the string, this
       has been further extended to contain the server modes (and austnet
       addition) and user modes with parameters since the '+s' user mode in
@@ -371,3 +407,28 @@ Extensions:
       be needed on servers that do not have user modes with parameters, or
       server modes/server modes with parameters. The out-of-order sequence
       of the strings are simply due to the way this mode has evolved.
+
+
+xxx - RPL_MAP
+      <sUID> <pmajor> <#hops> <#users> <netload> * * * * <modes>
+       :<map drawing> <server name>
+      
+      Note that all fields are as the replying server sees them at the time
+      of calling, therefore they may change constantly.
+      'sUID' is the server's unique identification number (used in newer
+      protocols) as seen network-wide.
+      'pmajor' is the major protocol number of the connection. Note that this
+      may be different via another link depending on the network topology.
+      '#hops' is the number of hops in the current routing table.
+      '#users' are the number of users currently on the server.
+      'netload' is a percentage (0..100) how many users are on this server
+      compared with the entire network (eg. 25 means the server is holding
+      1/4 of the current users network-wide). Note this is a floating point
+      number.
+      The '*' fields are for future use.
+      'modes' are the modes set (modes without parameters), breif list
+      'map drawing' is a number of characters (all US-ASCII) used to "draw"
+      the current map of the network, however this only works when the fields
+      are aligned properly
+      'server name' is always last, and is the name of the server in this map
+      entry

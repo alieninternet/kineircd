@@ -24,12 +24,12 @@
 #include "debug.h"
 #include "daemon.h"
 
-#if defined(__MACH__)
+#ifdef __MACH__
 typedef int socklen_t;
 #endif
 
-#if defined(__MACH__)
-#define NO_IPV6_SUPPORT
+#ifdef __MACH__
+# define NO_IPV6_SUPPORT
 #endif
 
 /* Socket - Base class destructor
@@ -116,6 +116,8 @@ bool Socket::setReuseAddress(void)
 }
 
 
+#ifdef HAVE_TRANSPORT_TCP_IPV4
+
 /* SocketIPv4 - [Various forms] Create a new socket
  * Original 06/02/99, Simon Butcher <simonb@alien.net.au
  */
@@ -132,21 +134,21 @@ SocketIPv4::SocketIPv4(unsigned long newAddress, unsigned short newPort,
    remoteAddress.s_addr = 0;
    localAddress.s_addr = htonl(newAddress);
 
-#ifdef HAVE_OPENSSL
+# ifdef HAVE_OPENSSL
    if (!secure) {
-#ifdef DEBUG_EXTENDED
+#  ifdef DEBUG_EXTENDED
       debug("New SocketIPv4 with PlainSocketIO");
-#endif
+#  endif
       io = new PlainSocketIO(this);
    } else {
-#ifdef DEBUG_EXTENDED
+#  ifdef DEBUG_EXTENDED
       debug("New SocketIPv4 with SSLSocketIO");
-#endif
+#  endif
       io = new SSLSocketIO(this, accepting);
    }
-#else
+# else
    io = new PlainSocketIO(this);
-#endif
+# endif
 }
 
 SocketIPv4::SocketIPv4(int newfd, in_addr newAddress, unsigned short newPort,
@@ -156,21 +158,21 @@ SocketIPv4::SocketIPv4(int newfd, in_addr newAddress, unsigned short newPort,
 {
    localAddress.s_addr = 0;
 
-#ifdef HAVE_OPENSSL
+# ifdef HAVE_OPENSSL
    if (!secure) {
-#ifdef DEBUG_EXTENDED
+#  ifdef DEBUG_EXTENDED
       debug("New SocketIPv4 with PlainSocketIO");
-#endif
+#  endif
       io = new PlainSocketIO(this);
    } else {
-#ifdef DEBUG_EXTENDED
+#  ifdef DEBUG_EXTENDED
       debug("New SocketIPv4 with SSLSocketIO");
-#endif
+#  endif
       io = new SSLSocketIO(this, accepting);
    }
-#else
+# else
    io = new PlainSocketIO(this);
-#endif
+# endif
 }
 
 
@@ -261,8 +263,9 @@ bool SocketIPv4::connect(void)
    return (::connect(fd, (struct sockaddr *)&addr, sizeof(addr)) == 0);
 }
 
+#endif
 
-#if !defined(NO_IPV6_SUPPORT)
+#ifdef HAVE_TRANSPORT_TCP_IPV6
 
 /* SocketIPv6 - [Various forms] Create a new socket
  * Original 19/08/01, Simon Butcher <simonb@alien.net.au
@@ -287,21 +290,21 @@ SocketIPv6::SocketIPv6(unsigned long newAddress, unsigned short newPort,
    // localAddress = ?!
    memset(&localAddress, 0, sizeof(localAddress));
 
-#ifdef HAVE_OPENSSL
+# ifdef HAVE_OPENSSL
    if (!secure) {
-#ifdef DEBUG_EXTENDED
+#  ifdef DEBUG_EXTENDED
       debug("New SocketIPv6 with PlainSocketIO");
-#endif
+#  endif
       io = new PlainSocketIO(this);
    } else {
-#ifdef DEBUG_EXTENDED
+#  ifdef DEBUG_EXTENDED
       debug("New SocketIPv6 with SSLSocketIO");
-#endif
+#  endif
       io = new SSLSocketIO(this, accepting);
    }
-#else
+# else
    io = new PlainSocketIO(this);
-#endif
+# endif
 }
 
 SocketIPv6::SocketIPv6(int newfd, in6_addr newAddress, unsigned short newPort,
@@ -310,22 +313,22 @@ SocketIPv6::SocketIPv6(int newfd, in6_addr newAddress, unsigned short newPort,
   remoteAddress(newAddress)
 {
    memset(&localAddress, 0, sizeof(localAddress));
-
-#ifdef HAVE_OPENSSL
+   
+# ifdef HAVE_OPENSSL
    if (!secure) {
-#ifdef DEBUG_EXTENDED
+#  ifdef DEBUG_EXTENDED
       debug("New SocketIPv6 with PlainSocketIO");
-#endif
+#  endif
       io = new PlainSocketIO(this);
    } else {
-#ifdef DEBUG_EXTENDED
+#  ifdef DEBUG_EXTENDED
       debug("New SocketIPv6 with SSLSocketIO");
-#endif
+#  endif
       io = new SSLSocketIO(this, accepting);
    }
-#else
+# else
    io = new PlainSocketIO(this);
-#endif
+# endif
 }
 
 
