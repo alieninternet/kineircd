@@ -74,9 +74,18 @@ int main(int argc, char **argv)
    std::cout << Version::versionFull << "\nPassword Generation Utility\n" << 
      std::endl;
 
-   // Read in the nickname
-   std::cout << "Nickname: " << std::flush;
-   std::cin >> nickname;
+   // Ask for the nickname
+   std::cout << "Nickname: ";
+   
+   // Was a nickname specified?
+   if (argc > 1) {
+      // Set, and output the given nickname and continue on
+      std::cout << (nickname = argv[1]) << std::endl;
+   } else {
+      // Okay, read in the nickname
+      std::cout << std::flush;
+      std::cin >> nickname;
+   }
 
 #ifdef HAVE_TCGETATTR
    /* Stop the standard input echo, just in case someone is reading over
