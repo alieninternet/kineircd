@@ -1492,8 +1492,13 @@ irc2numerics = {
    name		= "RPL_INVITING";
    numeric	= "341";
    origin	= "RFC1459";
-   format	= "<channel> <nick>";
-   comment	= "Returned by the server to indicate that the attempted INVITE message was successful and is being passed onto the end client";
+   format	= "<nick> <channel>";
+   comment	= "Returned by the server to indicate that the attempted "
+                  "INVITE message was successful and is being passed onto "
+		  "the end client. Note that RFC1459 documents the parameters "
+		  "in the reverse order. The format given here is the format "
+		  "used on production servers, and should be considered the "
+		  "standard reply above that given by RFC1459.";
 };
 
 irc2numerics = {
