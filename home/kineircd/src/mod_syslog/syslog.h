@@ -49,7 +49,7 @@ namespace Kine {
 	 
        public:
 	 // Constructor
-	 Syslog(Kine::Logger::Mask::type, const char *, const bool);
+	 Syslog(Kine::Logger::Mask::lazy_type, const char *, const bool);
 	 
 	 // Destructor
 	 ~Syslog(void)

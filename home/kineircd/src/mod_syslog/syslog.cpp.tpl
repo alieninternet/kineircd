@@ -38,7 +38,7 @@ using namespace Kine::mod_syslog;
  * 04/04/2002 simonb - Added PID boolean option
  * 04/04/2002 simonb - Added debugging info
  */
-Syslog::Syslog(Kine::Logger::Mask::type mask, const char *processName, 
+Syslog::Syslog(Kine::Logger::Mask::lazy_type mask, const char *processName, 
 	       const bool showPid)
  : Logger(mask)
 {
