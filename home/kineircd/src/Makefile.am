@@ -12,12 +12,23 @@ if KINEIRCD_COMPILE_LIB_IRC2
 endif
 
 # Work out which modules we need to compile...
+#if KINEIRCD_COMPILE_MOD_BOVINI1
+# KINEIRCD_TARGET_MOD_BOVINI1=mod_bovini1.la
+ KINEIRCD_TARGET_MOD_BOVINI1=
+#endif
+if KINEIRCD_COMPILE_MOD_CHANNELLOG
+ KINEIRCD_TARGET_MOD_CHANNELLOG=mod_channellog.la
+endif
 if KINEIRCD_COMPILE_MOD_FILELOG
  KINEIRCD_TARGET_MOD_FILELOG=mod_filelog.la
 endif
 if KINEIRCD_COMPILE_MOD_HTTP
  KINEIRCD_TARGET_MOD_HTTP=mod_http.la
 endif
+#if KINEIRCD_COMPILE_MOD_IIRC1
+# KINEIRCD_TARGET_MOD_IIRC1=mod_iirc1.la
+ KINEIRCD_TARGET_MOD_IIRC1=
+#endif
 if KINEIRCD_COMPILE_MOD_IRC2USER
  KINEIRCD_TARGET_MOD_IRC2USER=mod_irc2user.la
 endif
@@ -35,8 +46,11 @@ endif
 lib_LTLIBRARIES=\
 	libkineircd.la \
 	$(KINEIRCD_TARGET_LIB_IRC2) \
+	$(KINEIRCD_TARGET_MOD_BOVINI1) \
+	$(KINEIRCD_TARGET_MOD_CHANNELLOG) \
 	$(KINEIRCD_TARGET_MOD_FILELOG) \
 	$(KINEIRCD_TARGET_MOD_HTTP) \
+	$(KINEIRCD_TARGET_MOD_IIRC1) \
 	$(KINEIRCD_TARGET_MOD_IRC2USER) \
 	$(KINEIRCD_TARGET_MOD_SNMP) \
 	$(KINEIRCD_TARGET_MOD_SYSLOG)
@@ -139,6 +153,38 @@ libkineircd_irc2_la_LIBADD=\
 
 
 ###############################################################################
+# 'mod_bovini1' module
+###############################################################################
+mod_bovini1_la_SOURCES=\
+	mod_bovini1/module.cpp \
+	mod_bovini1/module.h
+mod_bovini1_la_LDFLAGS=\
+	-avoid-version \
+	-module
+mod_bovini1_la_LIBADD=\
+	libkineircd.la
+
+
+
+###############################################################################
+# 'mod_channellog' module
+###############################################################################
+mod_channellog_la_SOURCES=\
+	mod_channellog/channellog.cpp \
+	mod_channellog/channellog.h \
+	mod_channellog/config.cpp \
+	mod_channellog/config.h \
+	mod_channellog/module.cpp \
+	mod_channellog/module.h
+mod_channellog_la_LDFLAGS=\
+	-avoid-version \
+	-module
+mod_channellog_la_LIBADD=\
+	libkineircd.la
+
+
+
+###############################################################################
 # 'mod_filelog' module
 ###############################################################################
 mod_filelog_la_SOURCES=\
@@ -167,6 +213,21 @@ mod_http_la_LDFLAGS=\
 	-module
 mod_http_la_LIBADD=\
 	libkineircd.la
+
+
+
+###############################################################################
+# 'mod_iirc1' module
+###############################################################################
+mod_iirc1_la_SOURCES=\
+	mod_iirc1/module.cpp \
+	mod_iirc1/module.h
+mod_iirc1_la_LDFLAGS=\
+	-avoid-version \
+	-module
+mod_iirc1_la_LIBADD=\
+	libkineircd.la \
+	libkineircd_irc2.la
 
 
 

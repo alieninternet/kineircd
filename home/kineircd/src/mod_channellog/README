@@ -1,0 +1,2 @@
+This is the channel based logger, which logs to a specified channel on IRC
+itself.
