@@ -42,3 +42,8 @@ errors = {
    name		= "SERVICE_EXISTS";
    reason	= "Service already in list";
 };
+
+errors = {
+   name		= "UNSUPPORTED_BY_ENTITY";
+   reason	= "Cannot complete action, it is not supported by the entity";
+};
