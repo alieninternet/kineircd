@@ -286,6 +286,11 @@ Signals::~Signals(void)
 bool Signals::addHandler(const handlerPtr_type handler,
 			 const mask_type mask, void* foo)
 {
+#ifdef DEBUG_EXTENDED
+   debug("Signals::addHandler() - Adding a handler @ ptr " + 
+	 String::convert((int)handler));
+#endif
+   
    // Make sure the given data is okay
    if ((handler) && (mask != 0)) {
       return false;
@@ -295,7 +300,7 @@ bool Signals::addHandler(const handlerPtr_type handler,
    handlers.push_front(handlerInfo(handler, mask, foo));
 
 #ifdef DEBUG_PSYCHO
-   debug("Signals::addHandler() - handlers list now has " + 
+   debug("Signals::addHandler() - Handlers list now has " +
 	 String::convert(handlers.size()) + "entries");
 #endif
    
