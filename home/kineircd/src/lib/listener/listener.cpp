@@ -24,6 +24,7 @@
 #include "autoconf.h"
 #include "kineircd/kineircdconf.h"
 
+#include <sstream>
 #include <aisutil/socket/sockets.h>
 
 #include "kineircd/listener.h"
@@ -39,8 +40,11 @@ using AISutil::String;
 const bool Listener::listen(void)
 {
 #ifdef KINE_DEBUG_PSYCHO
-   debug("Listener::listen() on file descriptor " + 
-	 String::convert(socket.getFD()));
+   std::ostringstream output;
+   output << "Listener::listen() on file descriptor " << socket.getFD() <<
+     " (" << socket.getLocalAddress() << " port " <<
+     socket.getLocalPort() << ')';
+   debug(output.str());
 #endif
    
    // Make sure we are not already listening, and that the socket exists
