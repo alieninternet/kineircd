@@ -90,11 +90,15 @@ namespace Kine {
 }; // namespace Kine
 
 
-// Macro to make the code neater (hopefully)
-# define GETLANG(n,...) \
+// Macros to make the code neater (hopefully)
+# define GETLANG_BY_ID(id,...) \
    Kine::langs().get("en", \
-                     Language::tagMap[Language::n].tagID, \
+                     id, \
                      ##__VA_ARGS__)
+
+# define GETLANG(n,...) \
+   GETLANG_BY_ID(Language::tagMap[Language::n].tagID, \
+                 ##__VA_ARGS__)
 
 
 #endif // _SRC_MOD_IRC2USER_LANGUAGE_H_
