@@ -369,8 +369,8 @@ void Protocol::doVERSION(const User& user)
 {
    // Send the RPL_VERSION reply
    sendNumeric(user, LibIRC2::Numerics::RPL_VERSION,
-	       config().getOptionsServerName(),
 	       Version::version,
+	       config().getOptionsServerName(),
 	       Version::versionChars);
 }
 
