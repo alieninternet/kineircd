@@ -610,18 +610,21 @@ AC_ARG_ENABLE(transport-tcp-ipv4,[
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT(yes)
+     kineircd_test_compile_socket_ipv4_tcp=yes
      kineircd_test_compile_socket_domain_ipv4=yes
      kineircd_test_compile_socket_type_stream=yes
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
+   kineircd_test_compile_socket_ipv4_tcp=yes
    kineircd_test_compile_socket_domain_ipv4=yes
    kineircd_test_compile_socket_type_stream=yes
  ])
+AC_SUBST(kineircd_test_compile_socket_ipv4_tcp)
 AC_SUBST(kineircd_test_compile_socket_domain_ipv4)
-if test "$kineircd_test_compile_socket_domain_ipv4" = "yes"; then
-  AC_DEFINE(HAVE_SOCKET_DOMAIN_IPV4, 1,
-            [Define if you want IPv4 transport])
+if test "$kineircd_test_compile_socket_ipv4_tcp" = "yes"; then
+  AC_DEFINE(HAVE_SOCKET_IPV4_TCP, 1,
+            [Define if you want TCP/IPv4 transport])
 fi
 
 AC_MSG_CHECKING([transport-tcp-ipv6 parameter])
@@ -633,16 +636,18 @@ AC_ARG_ENABLE(transport-tcp-ipv6,[
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT(yes)
+     kineircd_test_compile_socket_ipv6_tcp=yes
      kineircd_test_compile_socket_domain_ipv6=yes
      kineircd_test_compile_socket_type_stream=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
  ])
+AC_SUBST(kineircd_test_compile_socket_ipv6_tcp)
 AC_SUBST(kineircd_test_compile_socket_domain_ipv6)
-if test "$kineircd_test_compile_socket_domain_ipv6" = "yes"; then
-  AC_DEFINE(HAVE_SOCKET_DOMAIN_IPV6, 1,
-            [Define if you want IPv6 transport])
+if test "$kineircd_test_compile_socket_ipv6_tcp" = "yes"; then
+  AC_DEFINE(HAVE_SOCKET_IPV6_TCP, 1,
+            [Define if you want TCP/IPv6 transport])
 fi
 
 AC_MSG_CHECKING([transport-ipx-spx parameter])
@@ -654,16 +659,18 @@ AC_ARG_ENABLE(transport-ipx-spx,[
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT(yes)
+     kineircd_test_compile_socket_ipx_spx=yes
      kineircd_test_compile_socket_domain_ipx=yes
      kineircd_test_compile_socket_type_seqpacket=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
  ])
+AC_SUBST(kineircd_test_compile_socket_ipx_spx)
 AC_SUBST(kineircd_test_compile_socket_domain_ipx)
-if test "$kineircd_test_compile_socket_domain_ipx" = "yes"; then
-  AC_DEFINE(HAVE_SOCKET_DOMAIN_IPX, 1,
-            [Define if you want IPX transport])
+if test "$kineircd_test_compile_socket_ipx_spx" = "yes"; then
+  AC_DEFINE(HAVE_SOCKET_IPX_SPX, 1,
+            [Define if you want IPX/SPX transport])
 fi
 
 AC_MSG_CHECKING([transport-unix parameter])
@@ -675,16 +682,18 @@ AC_ARG_ENABLE(transport-unix,[
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT(yes)
+     kineircd_test_compile_socket_unix=yes
      kineircd_test_compile_socket_domain_unix=yes
      kineircd_test_compile_socket_type_stream=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
  ])
+AC_SUBST(kineircd_test_compile_socket_unix)
 AC_SUBST(kineircd_test_compile_socket_domain_unix)
-if test "$kineircd_test_compile_socket_domain_unix" = "yes"; then
-  AC_DEFINE(HAVE_SOCKET_DOMAIN_UNIX, 1,
-            [Define if you want UNIX sockets])
+if test "$kineircd_test_compile_socket_unix" = "yes"; then
+  AC_DEFINE(HAVE_SOCKET_UNIX, 1,
+            [Define if you want UNIX sockets transport])
 fi
 
 dnl Now fix up the socket types...
