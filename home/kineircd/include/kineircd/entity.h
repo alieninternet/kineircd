@@ -48,6 +48,16 @@ namespace Kine {
        */
       const AIS::Util::Time signonTime;
 
+      /*!
+       * \brief Whether or not the entity is 'registered'
+       * 
+       * This boolean is used internally to easily determine whether or not
+       * the entity is registered on the network or not.
+       * 
+       * \see isRegistered()
+       */
+      mutable bool registered;
+      
     protected:
       /*!
        * \brief Default Constructor
@@ -56,7 +66,8 @@ namespace Kine {
        * for explicit initialisation of \a signonTime.
        */
       explicit Entity(void)
-	: signonTime() // Initialise the signonTime as zeros
+	: signonTime(), // Initialise the signonTime as zeros
+          registered(false)
 	{};
       
       /*!
@@ -74,13 +85,15 @@ namespace Kine {
        *    from Kine::Daemon::getTime().
        */
       explicit Entity(const AIS::Util::Time& _signonTime)
-	: signonTime(_signonTime)
+	: signonTime(_signonTime),
+          registered(false)
 	{};
       
     public:
       //! Destructor
       virtual ~Entity(void)
 	{};
+
 
       /*!
        * \brief Return whatever is an acceptable name for this entity
@@ -92,7 +105,8 @@ namespace Kine {
        * \return The \e unique name for this entity
        */
       virtual const std::string& getName(void) const = 0;
-      
+
+
       /*!
        * \brief Is this entity hidden from the given user?
        *
@@ -107,6 +121,7 @@ namespace Kine {
        */
       virtual const bool isHiddenFrom(const User& user) const
 	{ return false; };
+
 
       /*!
        * \brief Return the time this entity <em>signed on</em>
@@ -130,6 +145,22 @@ namespace Kine {
        */
       const AIS::Util::Time& getSignonTime(void) const
 	{ return signonTime; };
+
+
+      /*!
+       * \brief Is the entity registered?
+       * 
+       * Determine whether or not the entity is currently registered on the
+       * network or not. When registered, the entity is considered to be
+       * connected to the network, or \e online, and can be found in the
+       * Registry, the internal database of entities.
+       * 
+       * \return Whether the entity is registered or not
+       * \retval true The entity is registered (found within the Registry)
+       * \retval false The entity is not currently registered
+       */
+      const bool isRegistered(void) const
+	{ return registered; };
    }; // class Entity
 }; // namespace Kine
 
