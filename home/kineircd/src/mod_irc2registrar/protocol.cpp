@@ -587,7 +587,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
    debug(" -=>   startStamp: " + String::convert(handler->startStamp));
    debug(" -=>    linkStamp: " + String::convert(handler->linkStamp) +
 	 " (My time is " + String::convert(Daemon::getTime()) + ')');
-   debug(" -=>     Protocol: " + handler->protocol);
+   debug(" -=>     Protocol: " + String::convert(handler->protocol));
    debug(" -=>         Name: " + handler->realname);
 # endif
    
