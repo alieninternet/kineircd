@@ -660,9 +660,49 @@ Kine::Config::Config(const String &f)
     defOptionsLimitsUsersMaxRealNameLength(DEFAULT_OPTIONS_LIMITS_USERS_MAX_REAL_NAME_LENGTH),
     defOptionsLimitsUsersMaxSilences(DEFAULT_OPTIONS_LIMITS_USERS_MAX_SILENCES),
     defOptionsLimitsUsersMaxWatches(DEFAULT_OPTIONS_LIMITS_USERS_MAX_WATCHES)
+  
+#ifdef WITH_SSL
+  , // <=- here to continue the list properly
+    // "SSL" class
+    defSSLContext(0)
+#endif
 {
    defLoggingLog = new Log();  // temporary
+   
+#ifdef WITH_SSL
+   // Fire up the SSL component
+   SSL_load_error_strings();
+   
+   if (SSL_library_init()) {
+      //
+      // SEED PRNG HERE IF THE OPENSSL LIBRARY WONT!!! :( :( :(
+      //
+      
+      /*
+       * Fire up the context using SSLv2 and SSLv3 methods.
+       * I think this should be configurable, but at this point I don't care!
+       * :(
+       */
+      defSSLContext = SSL_CTX_new(SSLv23_method());
+   }
+#endif
 };
+
+
+/* ~Config - Configuration class destructor
+ * Original 17/06/2002 simonb
+ */
+Kine::Config::~Config(void)
+{
+#ifdef WITH_SSL
+   // Clean up the SSL component
+   if (defSSLContext != 0) {
+      SSL_CTX_free(defSSLContext);
+   }
+   
+   EVP_cleanup();
+#endif
+}
 
 
 /* varHandleNetworkName - Read a network name (front value) and check it
