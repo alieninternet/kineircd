@@ -69,13 +69,13 @@ p14serverHandler::p14serverHandler(Connection *c, Server *s)
 #endif
 
    // Send a nice server notice out
-   getConnection()->getDaemon()->
-     broadcastServerNotice(SERVERNOTICE_NETWORK,
-			   String::printf(LNG_SERVNOTICE_LINK " (P14)",
-					  (char const *)server->getHostname()));
+   Daemon::serverNotice(LocalUser::SN_NETWORK,
+			String::printf((char *)Language::L_SERVNOTICE_LINK,
+				       (char const *)server->getHostname(),
+				       "P14"));
    
    // Increase the server connection count
-   getConnection()->getDaemon()->numServerConns++;
+   Daemon::numServerConns++;
 }
 
 
@@ -85,7 +85,7 @@ p14serverHandler::p14serverHandler(Connection *c, Server *s)
 p14serverHandler::~p14serverHandler(void)
 {
    // Lower the server connection count
-   getConnection()->getDaemon()->numServerConns--;
+   Daemon::numServerConns--;
 }
 
 

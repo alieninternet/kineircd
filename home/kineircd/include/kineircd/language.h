@@ -5,51 +5,7 @@
 #ifndef __LANGUAGE_H_
 # define __LANGUAGE_H_
 
-/* Do not change these lines unless you know how they are used/referenced or
- * integrate with the IRC protocol etc. Often white-space before/after a
- * string of text is there for a very specific reason.
- */
-# define LNG_RPL_YOURHOST_IRCII_KLUGE_NOTICE \
-   "NOTICE %s :*** Your host is %s, running version %s"
-# define LNG_ERR_NEEDMOREPARAMS \
-   " :Not enough parameters"
-# define LNG_SERVNOTICE_LINK \
-   "Link with %s established"
-# define LNG_SERVNOTICE_DELINK \
-   "Link with %s cancelled: %s"
-# define LNG_SERVNOTICE_HELPME \
-   "*** Help -- from %s: %s"
-# define LNG_ERR_NOTEXTTOSEND \
-   ":No text to send"
-# ifdef MINLEN_OP_BROADCAST
-#  define LNG_ERR_NOTEXTTOSEND_NEEDMORE \
-   ":No text to send, or a larger message is required for this command"
-# endif
-# define LNG_RPL_LOGOFF_SERVER \
-   ":has net-split"
-# define LNG_RPL_LOGOFF_CHANNEL \
-   ":has disappeared"
-# define LNG_RPL_LOGOFF_USER \
-   ":has logged off"
-# define LNG_RPL_LOGON_SERVER \
-   ":has net-joined"
-# define LNG_RPL_LOGON_CHANNEL \
-   ":has been created"
-# define LNG_RPL_LOGON_USER \
-   ":has logged on"
-# define LNG_RPL_NOWON_SERVER \
-   ":is connected"
-# define LNG_RPL_NOWON_CHANNEL \
-   ":exists"
-# define LNG_RPL_NOWON_USER \
-   ":is online"
-# define LNG_RPL_NOWOFF \
-   ":is offline"
-# define LNG_RPL_WATCHOFF \
-   ":stopped watching"
-# define LNG_ERROR_CLOSING_LINK \
-   "ERROR :Closing Link: %s"
-
+# include "str.h"
 
 class Language {
  private:
@@ -57,6 +13,8 @@ class Language {
    Language(void) {};
    
  public:
+   static bool loadLanguages(String const &);
+   
    // Greeting lines sent when a user connects
    static char const *L_PINGPONG_NOTICE;
    static char const *L_RPL_WELCOME;
@@ -243,6 +201,8 @@ class Language {
    // Server notice output strings
    static char const *L_SERVNOTICE_LINK;
    static char const *L_SERVNOTICE_DELINK;
+   static char const *L_SERVNOTICE_SIGNON; 
+   static char const *L_SERVNOTICE_SIGNOFF;
    static char const *L_SERVNOTICE_RECV_EOB;
    static char const *L_SERVNOTICE_CMD_DIE;
    static char const *L_SERVNOTICE_CMD_REHASH;
@@ -262,6 +222,9 @@ class Language {
    static char const *L_RPL_KILLDONE;
    static char const *L_ERR_NORECIPIENT;
    static char const *L_ERR_NOTEXTTOSEND;
+# ifdef MINLEN_OP_BROADCAST
+   static char const *L_ERR_NOTEXTTOSEND_NEEDMORE;
+# endif
    static char const *L_REQUESTED_SHUTDOWN;
    static char const *L_BYE_BYE_USER;
    static char const *L_ERROR_CLOSING_LINK;

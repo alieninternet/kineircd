@@ -28,6 +28,13 @@ Added ISUPPORT things
   The language 'i-default' should always be assumed and the server is to
  read 'i-default' as the specified default language. This can aid in more
  simplistic clients, or those who do not read ISUPPORT.
+  The special language 'none' is ALWAYS supported, but will never be listed,
+ and never shown in the WHOIS information output, but is a magic keyword to
+ tell the server no superfluous numeric text should be outputted. Really smart
+ clients can use this to lower bandwidth consumption if they generate their
+ own responces or handle their own language code. This can be overwritten
+ due to preferences (eg. setting en,none,fr when the server supports en will
+ select en, not none. setting none,en,fr will work around this and is proper)
  
  eg. LANGUAGE=6,de,(en),fr,i-klingon
    Show that german, english, french and for the star-trek fans 'klingon' are
@@ -353,7 +360,7 @@ _______________________________________________________________________________
 
 
 830 - RPL_WHOIS_LANGUAGE
-      <language codes> <charset>
+      <nickname> <language codes> <charset>
       This is an optional extra to the WHOIS output, showing what language
       a user is using. The 'language codes' field is a comma-delimetered list
       of languages a person can speak (in order of preference, highest
@@ -362,7 +369,7 @@ _______________________________________________________________________________
       true network-wide. Additional fields may be added to this in the future.
 
 
-880 - ERR_NOKNOCK
+990 - ERR_NOKNOCK
       <channel> :<reason>
       Indicate to a client that a knock to the given channel was not
       performed. The channel is the channel the user tried to 'knock' on,
@@ -370,7 +377,7 @@ _______________________________________________________________________________
       'you are on that channel' or 'you are already invited').
 
 
-881 - ERR_NOLANGUAGE
+991 - ERR_NOLANGUAGE
       <langage code> :is an unknown language to me
       This is returned for every language the server does not know until a 
       known language has been reached. Futher unknown languages are ignored
@@ -380,7 +387,7 @@ _______________________________________________________________________________
       selected for other servers' output.
 
 
-882 - ERR_NOMORELANGS
+992 - ERR_NOMORELANGS
       <max languages> :No more languages can be set
       Tell the client it cannot set any more languages, the maximum given.
       

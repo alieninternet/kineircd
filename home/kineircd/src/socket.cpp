@@ -118,16 +118,15 @@ bool Socket::setReuseAddress(void)
 /* SocketIPv4 - [Various forms] Create a new socket
  * Original 06/02/99, Simon Butcher <simonb@alien.net.au
  */
-SocketIPv4::SocketIPv4(Daemon *d, Connection *c /* = 0 */ )
-: Socket(d, c, ::socket(AF_INET, SOCK_STREAM, 0), Socket::IPv4, 0, 0)
+SocketIPv4::SocketIPv4(Connection *c /* = 0 */ )
+: Socket(c, ::socket(AF_INET, SOCK_STREAM, 0), Socket::IPv4, 0, 0)
 {
    remoteAddress.s_addr = localAddress.s_addr = 0;
 }
 
 SocketIPv4::SocketIPv4(unsigned long newAddress, unsigned short newPort,
-		       bool accepting, bool secure, Daemon *d, 
-		       Connection *c /* = 0 */)
-: Socket(d, c, ::socket(AF_INET, SOCK_STREAM, 0), Socket::IPv4, 0, newPort)
+		       bool accepting, bool secure, Connection *c)
+: Socket(c, ::socket(AF_INET, SOCK_STREAM, 0), Socket::IPv4, 0, newPort)
 {
    remoteAddress.s_addr = 0;
    localAddress.s_addr = htonl(newAddress);
@@ -150,9 +149,8 @@ SocketIPv4::SocketIPv4(unsigned long newAddress, unsigned short newPort,
 }
 
 SocketIPv4::SocketIPv4(int newfd, in_addr newAddress, unsigned short newPort,
-		       bool accepting, bool secure, Daemon *d, 
-		       Connection *c /* = 0 */)
-: Socket(d, c, newfd, Socket::IPv4, newPort, 0),
+		       bool accepting, bool secure, Connection *c)
+: Socket(c, newfd, Socket::IPv4, newPort, 0),
   remoteAddress(newAddress)
 {
    localAddress.s_addr = 0;
@@ -235,7 +233,7 @@ SocketIPv4 *SocketIPv4::accept(bool secure /* = false */)
    SocketIPv4 *newsock = new SocketIPv4(newfd,
 					addr.sin_addr,
 					ntohs(addr.sin_port),
-					true, secure, daemon);
+					true, secure);
 
    // Fix up local details
    newsock->localPort = localPort;
@@ -268,17 +266,16 @@ bool SocketIPv4::connect(void)
 /* SocketIPv6 - [Various forms] Create a new socket
  * Original 19/08/01, Simon Butcher <simonb@alien.net.au
  */
-SocketIPv6::SocketIPv6(Daemon *d, Connection *c = 0)
-: Socket(d, c, ::socket(AF_INET6, SOCK_STREAM, 0), Socket::IPv6, 0, 0)
+SocketIPv6::SocketIPv6(Connection *c = 0)
+: Socket(c, ::socket(AF_INET6, SOCK_STREAM, 0), Socket::IPv6, 0, 0)
 {
    memset(&remoteAddress, 0, sizeof(remoteAddress));
    memset(&localAddress, 0, sizeof(localAddress));
 }
 
 SocketIPv6::SocketIPv6(unsigned long newAddress, unsigned short newPort,
-		       bool accepting, bool secure, Daemon *d,
-		       Connection *c = 0)
-: Socket(d, c, ::socket(AF_INET6, SOCK_STREAM, 0), Socket::IPv6, 0, newPort)
+		       bool accepting, bool secure, Connection *c)
+: Socket(c, ::socket(AF_INET6, SOCK_STREAM, 0), Socket::IPv6, 0, newPort)
 {
    memset(&remoteAddress, 0, sizeof(remoteAddress));
    // localAddress = ?!
@@ -307,9 +304,8 @@ SocketIPv6::SocketIPv6(unsigned long newAddress, unsigned short newPort,
 }
 
 SocketIPv6::SocketIPv6(int newfd, in6_addr newAddress, unsigned short newPort,
-		       bool accepting, bool secure, Daemon *d, 
-		       Connection *c = 0)
-: Socket(d, c, newfd, Socket::IPv6, newPort, 0),
+		       bool accepting, bool secure, Connection *c)
+: Socket(c, newfd, Socket::IPv6, newPort, 0),
   remoteAddress(newAddress)
 {
    memset(&localAddress, 0, sizeof(localAddress));
@@ -397,7 +393,7 @@ SocketIPv6 *SocketIPv6::accept(bool secure = false)
    SocketIPv6 *newsock = new SocketIPv6(newfd,
 					addr.sin6_addr,
 					ntohs(addr.sin6_port),
-					true, secure, daemon);
+					true, secure);
    
    // Fix up local details
    newsock->localPort = localPort;
@@ -533,7 +529,7 @@ SSLSocketIO::SSLSocketIO(Socket *sock, bool accepting)
 # ifdef DEBUG
    debug("Setting up new SSL data");
 # endif
-   ssl = SSL_new(socket->daemon->sslContext);
+   ssl = SSL_new(Daemon::sslContext);
    SSL_set_fd(ssl, socket->fd);
    
    // Assert the link

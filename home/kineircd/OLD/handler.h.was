@@ -14,8 +14,6 @@ class Handler;
 # include "channel.h"
 # include "user.h"
 
-// Little macro to make life easier
-# define TO_DAEMON		handler->getConnection()->getDaemon()
 
 class Handler {
  protected:

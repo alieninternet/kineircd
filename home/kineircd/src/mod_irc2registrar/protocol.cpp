@@ -77,7 +77,7 @@ void registerHandler::sendGeneric(char const *command,
 {
    getConnection()->
      sendRaw(String::printf(":%s %s %s %s" REGISTRATION_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			    (char const *)Daemon::myServer()->getHostname(),
 			    command,
 			    (nickname.length() ?
 			     (char const *)nickname :
@@ -96,7 +96,7 @@ void registerHandler::sendNumeric(short numeric, User *to,
 {
    getConnection()->
      sendRaw(String::printf(":%s %d %s %s" REGISTRATION_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			    (char const *)Daemon::myServer()->getHostname(),
 			    numeric,
 			    (nickname.length() ?
 			     (char const *)nickname :
@@ -199,8 +199,8 @@ void registerHandler::parseLine(String const &line)
 	    // Create a new user
 	    User *user = new User(nickname, username, "", hostname, 
 				  User::makeVWorld(hostname), realname,
-				  getConnection()->getDaemon()->getTime(),
-				  getConnection()->getDaemon()->myServer());
+				  Daemon::getTime(),
+				  Daemon::myServer());
 
 	    // Set up the connection name
 	    getConnection()->name = &user->nickname;
@@ -223,7 +223,7 @@ void registerHandler::parseLine(String const &line)
 	    
 	    // Try to find the server record
 	    Server *server = 0;
-	    server = getConnection()->getDaemon()->getServer(username);
+	    server = Daemon::getServer(username);
 	    
 	    // Check if we got it
 	    if (!server) {
@@ -234,7 +234,7 @@ void registerHandler::parseLine(String const &line)
 	       server = new Server(username, realname, 1);
 	       
 	       // Add this server to the server list
-	       getConnection()->getDaemon()->addServer(server);
+	       Daemon::addServer(server);
 	    } else {
 	       // Check if this server is already connected here
 	       if (server->isLocal()) {
@@ -302,7 +302,7 @@ void registerHandler::parseLine(String const &line)
       // If we got here, we should cross over to the new handler, if we can
       if (newHandler) {
 	 // Decrease the unknown connection counter
-	 getConnection()->getDaemon()->numUnknown--;
+	 Daemon::numUnknown--;
 	 
 	 // Copy the new handler across
 	 getConnection()->handler = newHandler;
@@ -327,7 +327,7 @@ void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 #else
       handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
-			   "CAPAB" LNG_ERR_NEEDMOREPARAMS);
+			   String("CAPAB") + Language::L_ERR_NEEDMOREPARAMS);
 #endif
       return;
    }
@@ -376,7 +376,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    }
  
    // Check for nicks that are not allowed here (from config)
-   String reason = TO_DAEMON->failedNickname(nick);
+   String reason = Daemon::failedNickname(nick);
    if (reason.length()) {
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
@@ -391,7 +391,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    }
    
    // Check that the nickname is not already in use
-   if (TO_DAEMON->getUser(nick)) {
+   if (Daemon::getUser(nick)) {
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else
@@ -412,7 +412,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    // Make up some dodgey random stuff with xor!
    handler->pingpong = 
      String::printf("%08lX",
-		    ((unsigned long)TO_DAEMON->getTime() ^
+		    ((unsigned long)Daemon::getTime() ^
 		     (unsigned long)(((0xFFFFFFFE + 1.0) * rand()) / 
 				     RAND_MAX)));
 
@@ -422,7 +422,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 			String::printf((char *)Language::L_PINGPONG_NOTICE,
 				       (char const *)handler->pingpong, 
 				       (char const *)handler->pingpong,
-				       (char const *)TO_DAEMON->myServer()->getHostname()));
+				       (char const *)Daemon::myServer()->getHostname()));
 # endif
    handler->getConnection()->sendRaw(String("PING :") + handler->pingpong + "\r\n");
 #endif
@@ -506,7 +506,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
       handler->getConnection()->goodbye();
 # else
       handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
-			   "SERVER" LNG_ERR_NEEDMOREPARAMS);
+			   String("SERVER") + Language::L_ERR_NEEDMOREPARAMS);
 # endif
       return;
    }
@@ -530,7 +530,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
 			handler->startStamp));
    debug(String::printf(" -=>  linkStamp: %lu (My time is %lu)",
 			handler->linkStamp,
-			TO_DAEMON->getTime()));
+			Daemon::getTime()));
    debug(String::printf(" -=>   Protocol: %d",
 			handler->protocol));
    debug(String::printf(" -=>       Name: %s",
@@ -580,7 +580,7 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 # else
       handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
-			   "USER" LNG_ERR_NEEDMOREPARAMS);
+			   String("USER") + Language::L_ERR_NEEDMOREPARAMS);
 # endif
       return;
    }

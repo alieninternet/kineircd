@@ -55,13 +55,13 @@ class Server {
     * WARNING!! Do not change these once they are set! P14 relies on them
     * being constant over ALL servers!
     */
-   static modes_t const MODE_HIDDEN		= 0x0000000000000001; // +h
-   static modes_t const MODE_NOOP		= 0x0000000000000002; // +n
-   static modes_t const MODE_AUTOTBS		= 0x0000000000000004; // +a
-   static modes_t const MODE_REMOTEMOTD		= 0x0000000000000008; // +M
-   static modes_t const MODE_SHORTMOTD		= 0x0000000000000010; // +m
-   static modes_t const MODE_MODELOCK		= 0x0000000000000020; // +L
-   static modes_t const MODE_USERSFULL		= 0x0000000000000040; // +F
+   static modes_t const M_HIDDEN		= 0x0000000000000001; // +h
+   static modes_t const M_NOOP			= 0x0000000000000002; // +n
+   static modes_t const M_AUTOTBS		= 0x0000000000000004; // +a
+   static modes_t const M_REMOTEMOTD		= 0x0000000000000008; // +M
+   static modes_t const M_SHORTMOTD		= 0x0000000000000010; // +m
+   static modes_t const M_MODELOCK		= 0x0000000000000020; // +L
+   static modes_t const M_USERSFULL		= 0x0000000000000040; // +F
 
    // Server mode stuff
    static char const *modeStr;			// Chars of modes

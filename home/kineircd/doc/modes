@@ -169,7 +169,32 @@ Similar to channel mode +R, this means the user can only accept private
 messages from people who have been identifed (have +I)
 
 s - Receive server notices
-Receive server destined notices
+Receive server destined notices. Depending on how you use this, this can
+modify the output of the server notices in order to reduce the pile of user
+modes and make it easier to control what you see/don't see. To add a
+receive-mask, use a + char, to remove one, use a - char. Very similar to the
+mode command itself. Specifying a -s will remove all the masks (no messages
+at all) etc etc. Examples help in this messy description:
+  /mode foo +s             <=- turns on default setting (compiled in)
+  /mode foo +s +no-k	   <=- turns on network/oper notices, and kills off
+  /mode foo +s -n          <=- turns off network notices
+  /mode foo -s             <=- turns off all notices, if there were any
+The following is a rough list of what is available and breif definitions:
+  +c    Configuration/Rehash/Garbo, etc - Housekeeping information; general
+  +D	Debugging information
+  +g    GLOBOPS messages
+  +h    HELPME messages
+  +H	High-Traffic Mode messages
+  +k	Kill notifications
+  +l    LOCOPS messages
+  +n	Network connect/squit/tendril-bone-swaps etc
+  +o	OPER commands, attempts, and deops
+  +s	User connection and disconnection notices
+  +S	General out-of-sync errors
+  +t	Target sync errors
+  +T	Timestamp sync errors
+  
+  
 
 S - Secure
 Cannot be toggled; Set upon connection. This mode means the connection is

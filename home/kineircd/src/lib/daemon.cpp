@@ -19,77 +19,122 @@
 #include "numerics.h"
 
 
+// Variables
+namespace Daemon {
+   String configFile = DEFAULT_CONFIG_FILE;
+   
+   String adminName = DEFAULT_CONFIG_ADMIN_NAME;
+   String adminEmail = DEFAULT_CONFIG_ADMIN_EMAIL;
+   String adminLocation = DEFAULT_CONFIG_ADMIN_LOCATION;
+   
+   unsigned short confMaxAcceptsPerUser = DEFAULT_MAX_ACCEPTS_PER_USER;
+   unsigned short confMaxBansPerChannel = DEFAULT_MAX_BANS_PER_CHANNEL;
+   unsigned char confMaxLangsPerUser = DEFAULT_MAX_LANGS_PER_USER;
+   unsigned short confMaxSilencesPerUser = DEFAULT_MAX_SILENCES_PER_USER;
+   unsigned short confMaxWatchesPerUser = DEFAULT_MAX_WATCHES_PER_USER;
+   
+   Daemon::relationmask_list_t failNicknames;
+   Daemon::relationmask_list_t failChannels;
+   
+   Daemon::relationmask_list_t redirectChannels;
+   
+   Daemon::operator_map_t operators;
+   
+   Daemon::listen_list_t listens;
+   Daemon::connection_list_t connections;
+   
+   int maxDescriptors = 0;
+   fd_set inFDSET;
+   fd_set outFDSET;
+   
+   time_t lastGarboRun = 0;
+   unsigned long long sentBytes = 0;
+   unsigned long long receivedBytes = 0;
+   
+   unsigned long long lastDataMark = 0;
+   time_t lastDataMarkTime = 0;
+   unsigned long dataRate = 0;
+   
+   Daemon::stages stage = Daemon::STAGE_INIT;
+   
+   String networkName = "";
+   
+   struct timeval currentTime;
+   String timeZone = "+0000"; // Assume GMT to start with..
+   TYPE_RPL_TIMEONSERVERIS_FLAGS timeFlags = 0;
+   time_t startTime = 0;
+   
+#ifdef HAVE_OPENSSL
+   SSL_CTX *sslContext = 0;
+#endif
+   
+   Server *server = 0;
+   
+   Daemon::server_map_t servers;
+   
+   Daemon::channel_map_t channels;
+   Daemon::channel_map_t localChannels;
+   
+   Daemon::user_map_t users;
+   Daemon::localuser_map_t localUsers;
+   
+   Daemon::whowas_deque_t whowas;
+   time_t whowasDecay = DEFAULT_CONFIG_WHOWAS_DECAY;
+   unsigned short whowasMaxEntries = DEFAULT_CONFIG_WHOWAS_MAX_ENTRIES;
+   
+   unsigned int numConns = 0;
+   unsigned int numConnsPeak = 0;
+   unsigned int numClientConns = 0;
+   unsigned int numClientConnsPeak = 0;
+   unsigned int numServerConns = 0;
+   unsigned int numServices = 0;
+   unsigned int numTotalUsers = 0;
+   unsigned int numTotalUsersPeak = 0;
+   unsigned int numServers = 0;
+   unsigned int numOpers = 0;
+   unsigned int numUnknown = 0;
+   unsigned int numHelpers = 0;
+   
+   Daemon::motd_t motd;
+};
+
+
 /* Daemon - Init the server
  * Original 11/08/01, Simon Butcher <pickle@austnet.org>
  */
 Daemon::Daemon(String const &conf)
-: configFile(conf),
-  adminName(DEFAULT_CONFIG_ADMIN_NAME),
-  adminEmail(DEFAULT_CONFIG_ADMIN_EMAIL),
-  adminLocation(DEFAULT_CONFIG_ADMIN_LOCATION),
-  confMaxAcceptsPerUser(DEFAULT_MAX_ACCEPTS_PER_USER),
-  confMaxBansPerChannel(DEFAULT_MAX_BANS_PER_CHANNEL),
-  confMaxLangsPerUser(DEFAULT_MAX_LANGS_PER_USER),
-  confMaxSilencesPerUser(DEFAULT_MAX_SILENCES_PER_USER),
-  confMaxWatchesPerUser(DEFAULT_MAX_WATCHES_PER_USER),
-  maxDescriptors(0),
-  lastGarboRun(0),
-  sentBytes(0),
-  receivedBytes(0),
-  lastDataMark(0),
-  lastDataMarkTime(0),
-  dataRate(0),
-  stage(INIT),
-  timeZone("+0000"), // Presume UTC upon initialisation, just in case
-  timeFlags(0),
-  startTime(time(NULL)),
 #ifdef HAVE_OPENSSL
-  sslContext(0),
+: sslContext(0)
 #endif
-  server(new Server()),
-  whowasDecay(DEFAULT_CONFIG_WHOWAS_DECAY),
-  whowasMaxEntries(DEFAULT_CONFIG_WHOWAS_MAX_ENTRIES),
-  numConns(0),
-  numConnsPeak(0),
-  numClientConns(0),
-  numClientConnsPeak(0),
-  numServerConns(0),
-  numServices(0),
-  numTotalUsers(0),
-  numTotalUsersPeak(0),
-  numServers(1),
-  numOpers(0),
-  numUnknown(0),
-  numHelpers(0)
 {
 #ifdef DEBUG
    cerr << "Starting new server" << endl;
 #endif
 
-   // Set up the initial 'currentTime' value
-   gettimeofday(&currentTime, NULL);
-   
-   // Clear sequences and FD_SETs
+   // Reset variables
 #ifdef DEBUG_EXTENDED
-   cerr << "Clearing sequences" << endl;
+   cerr << "Resetting variables & lists" << endl;
 #endif
+   configFile = conf;
    failNicknames.clear();
    failChannels.clear();
    redirectChannels.clear();
    operators.clear();
    listens.clear();
    connections.clear();
+   FD_ZERO(&inFDSET);
+   FD_ZERO(&outFDSET);
+   gettimeofday(&currentTime, NULL);
+   startTime = getTime();
+   server = new Server();
    servers.clear();
+   channels.clear();
+   localChannels.clear();
    users.clear();
    localUsers.clear();
    whowas.clear();
-   channels.clear();
-   localChannels.clear();
    motd.clear();
    
-   FD_ZERO(&inFDSET);
-   FD_ZERO(&outFDSET);
-
    /* Seed the random number thingy.. this is kinda dodgey :( */
    srand((unsigned int)getTime());
    
@@ -153,7 +198,7 @@ Daemon::Daemon(String const &conf)
 	     LOGPRI_ERROR);
       return;
    }
-   
+
    /* Make sure we have actually bound to SOMETHING and are listening,
     * else we aren't going to be very useful at all
     */
@@ -177,7 +222,7 @@ Daemon::Daemon(String const &conf)
 #endif
    
    // We are ready to go, go into normal running stage
-   stage = NORMAL;
+   stage = STAGE_NORMAL;
 }
 
 
@@ -358,12 +403,12 @@ check_connections:
     */
    if (called) {
 #ifdef MAX_GARBO_RUN_ITEMS
-      broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING,
-			    String::printf((char *)Language::L_SERVNOTICE_GARBO_ITEMS,
-					   items));
+      serverNotice(LocalUser::SN_HOUSEKEEPING,
+		   String::printf((char *)Language::L_SERVNOTICE_GARBO_ITEMS,
+				  items));
 #else
-      broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING, 
-			    Language::L_SERVNOTICE_GARBO);
+      serverNotice(LocalUser::SN_HOUSEKEEPING, 
+		   Language::L_SERVNOTICE_GARBO);
 #endif
    }
 }
@@ -414,10 +459,10 @@ void Daemon::rehash(Handler *handler, User *user)
       }
       
       // Send out a server broadcast notifying of the rehash
-      broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING,
-			    String::printf((char *)Language::L_SERVNOTICE_CMD_REHASH,
-					   ((char const *)
-					    user->nickname)));
+      serverNotice(LocalUser::SN_HOUSEKEEPING,
+		   String::printf((char *)Language::L_SERVNOTICE_CMD_REHASH,
+				  ((char const *)
+				   user->nickname)));
    }
 
    // Check the extended clock information (hey, you never know!)
@@ -474,22 +519,11 @@ String Daemon::makeISUPPORT(void)
 }
 
 
-/* broadcastServerNotice - [Various Forms] Broadcast a server notice to +s's
+/* serverNotice - [Various Forms] Broadcast a server notice to +s's
  * Original 18/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::broadcastServerNotice(snotice_bitmask_t type, 
-				   String const &message)
+void Daemon::serverNotice(LocalUser::servnotice_t type, String const &message)
 {
-#ifdef DEBUG
-   /* If we are debugging this could be called prematurely, so we need to just
-    * ignore it. This is a really dodgey kluge, but it's only here during
-    * debugging, so shh, hopefully nobody will notice :)
-    */
-   if (!this) {
-      return;
-   }
-#endif
-   
    // Run through the local user list
    for (localuser_map_t::iterator it = localUsers.begin();
 	it != localUsers.end(); it++) {
@@ -540,7 +574,7 @@ void Daemon::broadcastWallops(Server *from, String const &message)
 #endif
       
       // Check if this user is to receive server notices
-      if ((*it).second->user->modes & User::MODE_WALLOPS) {
+      if ((*it).second->user->modes & User::M_WALLOPS) {
 	 // Send the message via the notice interface
 	 (*it).second->handler->sendWallops(from, message);
       }
@@ -570,7 +604,7 @@ void Daemon::broadcastWallops(User *from, String const &message)
 #endif
       
       // Check if this user is to receive server notices
-      if ((*it).second->user->modes & User::MODE_WALLOPS) {
+      if ((*it).second->user->modes & User::M_WALLOPS) {
 	 // Send the message via the notice interface
 	 (*it).second->handler->sendWallops(from, message);
       }
@@ -669,7 +703,7 @@ void Daemon::newConnection(Listen *l)
    
 
    // Make a new connection and tell the socket about it
-   Connection *conn = new Connection(newsock, this, l->secure);
+   Connection *conn = new Connection(newsock, l->secure);
    newsock->connection = conn;
    
    // Add the connection to the list, and the FD SET for select()
@@ -910,7 +944,7 @@ void Daemon::delUser(User *user)
    }
 
    // If this user was also a global operator, we need to decrement the counter
-   if (user->modes & User::MODE_GLOBALOPER) {
+   if (user->modes & User::M_GLOBALOPER) {
       numOpers--;
    }
    
@@ -970,7 +1004,7 @@ void Daemon::quitUser(User *user, String const &reason, bool broadcast)
 	    // If we have not already done so, send a message to this user
 	    if (!messages[(*it).second->getUser()->nickname]) {
 	       // Send a quit if the channel is not marked anonymous
-	       if (!(chan->modes & Channel::MODE_ANONYMOUS)) {
+	       if (!(chan->modes & Channel::M_ANONYMOUS)) {
 		  // Mark this user down as being touched upon
 		  messages[(*it).second->getUser()->nickname] = true;
 
@@ -1470,9 +1504,9 @@ void Daemon::addServer(Server *server)
 #endif
 
       // Check if this user is not an operator or a helper
-      if (!((*it).second->user->modes & User::MODE_GLOBALOPER) &&
-	  !((*it).second->user->modes & User::MODE_LOCALOPER) &&
-	  !((*it).second->user->modes & User::MODE_HELPER)) {
+      if (!((*it).second->user->modes & User::M_GLOBALOPER) &&
+	  !((*it).second->user->modes & User::M_LOCALOPER) &&
+	  !((*it).second->user->modes & User::M_HELPER)) {
 	 continue;
       }
       
@@ -1668,8 +1702,8 @@ void Daemon::changeServerMode(Server *server, Server *from,
 #endif
       
       // Check if this user is to receive this mode change
-      if (((*it).second->user->modes & User::MODE_GLOBALOPER) ||
-	  ((*it).second->user->modes & User::MODE_LOCALOPER)) {
+      if (((*it).second->user->modes & User::M_GLOBALOPER) ||
+	  ((*it).second->user->modes & User::M_LOCALOPER)) {
 	 // Send the mode change
 	 (*it).second->handler->sendServerMode(server, from, modeStr);
       }
@@ -1702,8 +1736,8 @@ void Daemon::changeServerMode(Server *server, Handler *handler, User *from,
 #endif
       
       // Check if this user is to receive this mode change
-      if (((*it).second->user->modes & User::MODE_GLOBALOPER) ||
-	  ((*it).second->user->modes & User::MODE_LOCALOPER)) {
+      if (((*it).second->user->modes & User::M_GLOBALOPER) ||
+	  ((*it).second->user->modes & User::M_LOCALOPER)) {
 	 // Send the mode change
 	 (*it).second->handler->sendServerMode(server, from, modeStr);
       }
@@ -1858,7 +1892,7 @@ void Daemon::shutdown(String const &reason)
       }
    }
    
-   stage = SHUTDOWN;
+   stage = STAGE_SHUTDOWN;
 }
 
 
@@ -1873,7 +1907,7 @@ void Daemon::run(void)
    /* Make sure the init was all happy, else there isn't much point us
     * going beyond this point really
     */
-   if (stage != NORMAL) {
+   if (stage != STAGE_NORMAL) {
       return;
    }
    
@@ -1913,7 +1947,7 @@ void Daemon::run(void)
 	 garbo();
 	 break;
        default:
-	 if (stage >= NORMAL) {
+	 if (stage >= STAGE_NORMAL) {
 	    // Check for a new connection
 	    for (listen_list_t::iterator it = listens.begin();
 		 it != listens.end(); it++) {
@@ -1953,7 +1987,7 @@ void Daemon::run(void)
       }
       
       // Check if we are in shutdown mode
-      if (stage == SHUTDOWN) {
+      if (stage == STAGE_SHUTDOWN) {
 	 unsigned int totalQueued = 0;
 	 
 	 // Talley up the total queue length

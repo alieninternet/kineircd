@@ -46,10 +46,10 @@ class ChannelMember {
     * WARNING!! Do not change these once they are set! P14 relies on them
     * being constant over ALL servers!
     */
-   static modes_t const MODE_CREATOR		= 0x0001; // +O
-   static modes_t const MODE_OPPED		= 0x0002; // +o
-   static modes_t const MODE_VOICED		= 0x0004; // +v
-   static modes_t const MODE_HALFOPPED		= 0x0008; // +h
+   static modes_t const M_CREATOR		= 0x0001; // +O
+   static modes_t const M_OPPED			= 0x0002; // +o
+   static modes_t const M_VOICED		= 0x0004; // +v
+   static modes_t const M_HALFOPPED		= 0x0008; // +h
 
    // Constructors
    ChannelMember(void)
@@ -81,20 +81,20 @@ class ChannelMember {
    
    bool isPrivileged(void) const			// Full/HalfOp/Voiced?
      {
-	return ((modes & MODE_OPPED) ||
-		(modes & MODE_HALFOPPED) ||
-		(modes & MODE_VOICED));
+	return ((modes & M_OPPED) ||
+		(modes & M_HALFOPPED) ||
+		(modes & M_VOICED));
      };
    
    bool isChanOper(void) const				// Full/Half chan oper?
      {
-	return ((modes & MODE_OPPED) ||
-		(modes & MODE_HALFOPPED));
+	return ((modes & M_OPPED) ||
+		(modes & M_HALFOPPED));
      };
    
    bool isFullChanOper(void) const			// Full chan oper?
      {
-	return (modes & MODE_OPPED);
+	return (modes & M_OPPED);
      };
    
    friend class Channel;
@@ -183,8 +183,6 @@ class Channel {
 
    member_map_t members;			// List of channel members
 
-   Daemon *daemon;				// Hook back into the daemon
-
    // Channel mode change routines
    static bool toggleModeANONYMOUS(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
    static bool toggleModeBAN(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
@@ -213,17 +211,17 @@ class Channel {
     * WARNING!! Do not change these once they are set! P14 relies on them
     * being constant over ALL servers!
     */
-   static modes_t const MODE_INVITE		= 0x0000000000000001; // +i
-   static modes_t const MODE_MODERATED		= 0x0000000000000002; // +m
-   static modes_t const MODE_NOOUTSIDEMSG	= 0x0000000000000004; // +n
-   static modes_t const MODE_TOPICLOCK		= 0x0000000000000008; // +t
-   static modes_t const MODE_PRIVATE		= 0x0000000000000010; // +p
-   static modes_t const MODE_SECRET		= 0x0000000000000020; // +s
-   static modes_t const MODE_QUIET		= 0x0000000000000040; // +q
-   static modes_t const MODE_ANONYMOUS		= 0x0000000000000080; // +a
-   static modes_t const MODE_EVENT		= 0x0000000000000100; // +E
-   static modes_t const MODE_REOP		= 0x0000000000000200; // +r
-   static modes_t const MODE_REGNICKSONLY	= 0x0000000000000400; // +R
+   static modes_t const M_INVITE		= 0x0000000000000001; // +i
+   static modes_t const M_MODERATED		= 0x0000000000000002; // +m
+   static modes_t const M_NOOUTSIDEMSG		= 0x0000000000000004; // +n
+   static modes_t const M_TOPICLOCK		= 0x0000000000000008; // +t
+   static modes_t const M_PRIVATE		= 0x0000000000000010; // +p
+   static modes_t const M_SECRET		= 0x0000000000000020; // +s
+   static modes_t const M_QUIET			= 0x0000000000000040; // +q
+   static modes_t const M_ANONYMOUS		= 0x0000000000000080; // +a
+   static modes_t const M_EVENT			= 0x0000000000000100; // +E
+   static modes_t const M_REOP			= 0x0000000000000200; // +r
+   static modes_t const M_REGNICKSONLY		= 0x0000000000000400; // +R
 
    // Channel mode stuff
    static char const *modeStr;			// Chars of modes
@@ -231,7 +229,7 @@ class Channel {
    static char const *prefixStr;		// Modes vs Prefixes (ISUPPORT)
 
    // Constructor
-   Channel(String const &n, time_t ct, Daemon *d)
+   Channel(String const &n, time_t ct)
      : name(n),
        modes(0),
        creationTime(ct),
@@ -239,8 +237,7 @@ class Channel {
        topicWho(""),
        topicTime(0),
        key(""),
-       limit(0),
-       daemon(d)
+       limit(0)
      {
 	bans.clear();
 	exceptions.clear();
@@ -269,8 +266,8 @@ class Channel {
    // Access checking
    bool isHidden(void) const
      {
-	return ((modes & MODE_PRIVATE) ||
-		(modes & MODE_SECRET));
+	return ((modes & M_PRIVATE) ||
+		(modes & M_SECRET));
      };
    
    ChannelMember *getMember(User *);		// Grab a channel member record

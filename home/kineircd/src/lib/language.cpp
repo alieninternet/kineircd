@@ -4,6 +4,14 @@
 
 #include "config.h"
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <string.h>
+#include <iostream.h>
+#include <fstream.h>
+#include <errno.h>
+
 #include "language.h"
 
 /* Do not change these lines unless you know how they are used/referenced or
@@ -361,9 +369,13 @@ namespace Language {
     *	    they are sent by the same notice mechanism.
     */
    char const *L_SERVNOTICE_LINK =
-     "Link with %s established";
+     "Link with %s established (%s)";
    char const *L_SERVNOTICE_DELINK =
      "Link with %s cancelled: %s";
+   char const *L_SERVNOTICE_SIGNON =
+     "*** Notice -- Client connecting: %s (%s@%s) <%s>";
+   char const *L_SERVNOTICE_SIGNOFF =
+     "*** Notice -- Client exiting: %s (%s@%s> [%s]";
    char const *L_SERVNOTICE_RECV_EOB =
      "Completed receiving Burst Data from %s";
    char const *L_SERVNOTICE_CMD_DIE =
@@ -382,7 +394,7 @@ namespace Language {
      "*** Local -- from %s: %s";
    char const *L_SERVNOTICE_NOTIFY_ON_CMD_STATS =
      "*** Notice -- STATS %s by %s (%s)";
-
+   
    // Misc/Disorganised
    char const *L_NOTIFY_PARANOID_OPERS_ON_WHOIS =
      "*** Notice -- %s (%s) did a /whois on you";
@@ -404,13 +416,17 @@ namespace Language {
      ":No recipient given ";
    char const *L_ERR_NOTEXTTOSEND =
      ":No text to send";
+# ifdef MINLEN_OP_BROADCAST
+   char const *L_ERR_NOTEXTTOSEND_NEEDMORE =
+     ":No text to send, or a larger message is required for this command";
+# endif
 
    char const *L_REQUESTED_SHUTDOWN =
      " requested shutdown";
    char const *L_BYE_BYE_USER =
      "Exit: %s";
    char const *L_ERROR_CLOSING_LINK =
-     "ERROR :Closing Link: %s";
+     "ERROR :Closing Link: %s\r\n";
    char const *L_ERROR_CLOSING_LINK_DEFAULT_REASON =
      "Unknown error";
 
@@ -473,4 +489,64 @@ namespace Language {
 
    char const *L_RPL_ENDOFLINKS =
      " :End of LINKS list";
+};
+
+
+bool Language::loadLanguages(String const &directory)
+{
+   struct dirent *dirEntry;
+   DIR *dir = opendir(directory);
+
+   // Make sure we opened that directory
+   if (!dir) {
+#ifdef DEBUG
+      cerr << String("Error opening language file direcotry: ") <<
+	strerror(errno) << endl;
+#endif
+      return 1;
+   }
+   
+   // Run through the directory list and look for files we want
+   while ((dirEntry = readdir(dir)) != NULL) {
+#ifdef DEBUG
+      cerr << "Checking " << dirEntry->d_name << endl;
+#endif
+      
+      // Check the name...
+      if (!strncasecmp(dirEntry->d_name, LANG_FILE_PREFIX,
+		       LANG_FILE_PREFIX_LEN)) {
+	 // Open the file
+	 String fileName = String(dirEntry->d_name);
+	 ifstream file(directory + fileName);
+	 
+	 // Check that we opened the file properly
+	 if (!file) {
+	    // complain here
+#ifdef DEBUG
+	    cerr << "File not opened" << endl;
+#endif
+	    continue;
+	 }
+	 
+	 // Grab the language code from the filename
+	 String code = fileName.subString(LANG_FILE_PREFIX_LEN);
+
+#ifdef DEBUG
+	 cerr << String::printf("Loading language file %s (%s)",
+				(char const *)fileName,
+				(char const *)code) << endl;
+#endif
+	 
+	 // READ!
+	 // READ!
+	 // READ!
+	 // READ!
+	 
+	 // Close the file
+	 file.close();
+      }
+   }
+   
+   // OK!
+   return 0;
 };

@@ -15,7 +15,7 @@
 /* Connection - Initialise new connection
  * Original 12/08/01, Simon Butcher <pickle@austnet.org>
  */
-Connection::Connection(Socket *sock, Daemon *d, bool sec)
+Connection::Connection(Socket *sock, bool sec)
 : socket(sock),
   sentBytes(0),
   sentMessages(0),
@@ -23,10 +23,9 @@ Connection::Connection(Socket *sock, Daemon *d, bool sec)
   receivedMessages(0),
   status(CONFLAG_CONNECTED),
   handler(new registerHandler(this)),
-  daemon(d),
   secure(sec),
-  connectedTime(daemon->getTime()),
-  lastSpoke(daemon->getTime()),
+  connectedTime(Daemon::getTime()),
+  lastSpoke(Daemon::getTime()),
   name(0)
 {
 #ifdef DEBUG_EXTENDED
@@ -38,13 +37,13 @@ Connection::Connection(Socket *sock, Daemon *d, bool sec)
    killQueue();
 
    // Add ourselves to the input descriptor set
-   daemon->addInputFD(socket->getFD());
+   Daemon::addInputFD(socket->getFD());
    
    // Increase connection counters
-   daemon->numConns++;
-   daemon->numUnknown++;
-   if (daemon->numConns > daemon->numConnsPeak) {
-      daemon->numConnsPeak = daemon->numConns;
+   Daemon::numConns++;
+   Daemon::numUnknown++;
+   if (Daemon::numConns > Daemon::numConnsPeak) {
+      Daemon::numConnsPeak = Daemon::numConns;
    }
 }
 
@@ -71,14 +70,14 @@ Connection::~Connection(void)
    delete socket;
    
    // Reduce the connection count
-   daemon->numConns--;
+   Daemon::numConns--;
 }
 
 
 // this needs to be inlined - connection.h?!
 void Connection::touch(void)
 {
-   lastSpoke = daemon->getTime();
+   lastSpoke = Daemon::getTime();
 };
 
 
@@ -96,7 +95,7 @@ void Connection::handleInput(void)
 	 // Increment our input counters
 	 receivedMessages++;
 	 receivedBytes += line.length();
-	 daemon->receivedBytes += line.length();
+	 Daemon::receivedBytes += line.length();
       
 	 // Handle the data (finally!)
 	 handler->parseLine(line);
@@ -113,7 +112,7 @@ void Connection::handleInput(void)
    debug(String::printf("[%d] handleInput(): Dead connection",
 			socket->getFD()));
 #endif
-   daemon->delOutputFD(socket->getFD());
+   Daemon::delOutputFD(socket->getFD());
 }
 
 
@@ -124,7 +123,7 @@ void Connection::sendRaw(String const &line)
 {
    if (status & CONFLAG_CONNECTED) {
       if (outQueue.empty()) {
-	 daemon->addOutputFD(socket->getFD());
+	 Daemon::addOutputFD(socket->getFD());
       }
 
       outQueue.push(line);
@@ -158,7 +157,7 @@ void Connection::sendQueue(void)
 			   "connection!",
 			socket->getFD()));
 #endif
-      daemon->delOutputFD(socket->getFD());
+      Daemon::delOutputFD(socket->getFD());
       return;
    }
    
@@ -197,11 +196,11 @@ void Connection::sendQueue(void)
 
    // Increment our output counters
    sentBytes += outdata.length();
-   daemon->sentBytes += outdata.length();
+   Daemon::sentBytes += outdata.length();
    
    // Do we need to turn off output checking for select()?
    if (outQueue.empty()) {
-      daemon->delOutputFD(socket->getFD());
+      Daemon::delOutputFD(socket->getFD());
    }
 }
 
@@ -222,7 +221,7 @@ void Connection::goodbye(String const &reason)
       
       // Mark this connection as dead for the garbage collector
       status &= ~CONFLAG_CONNECTED;
-      daemon->delInputFD(socket->getFD());
+      Daemon::delInputFD(socket->getFD());
       
       // Mask this as a dead connection with the name (for stats l)
       name = 0;
@@ -251,7 +250,7 @@ void Connection::kill(void)
 
       // Mark this connection as dead for the garbage collector
       status &= ~CONFLAG_CONNECTED;
-      daemon->delInputFD(socket->getFD());
+      Daemon::delInputFD(socket->getFD());
 
       // Mask this as a dead connection with the name (for stats l)
       name = 0;

@@ -33,8 +33,6 @@ class Connection {
 
    Handler *handler;			// Data handler
    
-   Daemon *daemon;			// **RECURSIVE** Return path
-
    bool secure;				// Is this connection secured?
    
    time_t const connectedTime;		// Time connection was established
@@ -43,16 +41,9 @@ class Connection {
    String *name;			// The name of this connection
    
  public:
-   Connection(Socket *, Daemon *,
-	      bool);			// Class constructor
+   Connection(Socket *, bool);		// Class constructor
    ~Connection(void);			// Shutdown connection
 
-   // Return the link up to the Daemon class
-   Daemon *getDaemon(void) const
-     {
-	return daemon;
-     };
-   
    // Is this connection secure?
    bool isSecure(void) const
      {

@@ -425,18 +425,25 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
    debug("New Handler: irc2userHandler");
 #endif
 
+   // Send a nice notice to those who care
+   Daemon::
+     serverNotice(LocalUser::SN_SIGNONOFF,
+		  String::printf((char *)Language::L_SERVNOTICE_SIGNON,
+				 (char const *)user->getNickname(),
+				 (char const *)user->getUsername(),
+				 (char const *)user->getHost(),
+				 (char const *)user->getVWHost()));
+   
    // Create a LocalUser class for this user since they are obviouslly local
    user->local = new LocalUser(user, this);
    
    // Add this user to the connection list
-   getConnection()->getDaemon()->addUser(user);
+   Daemon::addUser(user);
 	    
    // Increase the client connection count, and the peak too if we need to
-   getConnection()->getDaemon()->numClientConns++;
-   if (getConnection()->getDaemon()->numClientConns > 
-       getConnection()->getDaemon()->numClientConnsPeak) {
-      getConnection()->getDaemon()->numClientConnsPeak = 
-	getConnection()->getDaemon()->numClientConns;
+   Daemon::numClientConns++;
+   if (Daemon::numClientConns > Daemon::numClientConnsPeak) {
+      Daemon::numClientConnsPeak = Daemon::numClientConns;
    }
 
    // Send the greeting lines
@@ -445,7 +452,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			      (char const *)user->getAddress()));
    sendNumeric(RPL_YOURHOST,
 	       String::printf((char *)Language::L_RPL_YOURHOST,
-			      (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			      (char const *)Daemon::myServer()->getHostname(),
 			      (char const *)getVersion));
    
 #ifdef BLOODY_IRCII_KLUGE
@@ -455,11 +462,11 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
     * be false gets the honours of removing this crap :)
     */
    getConnection()->
-     sendRaw(String::printf(LNG_RPL_YOURHOST_IRCII_KLUGE_NOTICE
-			    IRC2USER_EOL_CHARS,
+     sendRaw(String::printf((char *)Language::L_RPL_YOURHOST_IRCII_KLUGE_NOTICE,
 			    (char const *)user->nickname,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
-			    (char const *)getVersion));
+			    (char const *)Daemon::myServer()->getHostname(),
+			    (char const *)getVersion,
+			    IRC2USER_EOL_CHARS));
 #endif
    
    sendNumeric(RPL_CREATED,
@@ -467,7 +474,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			      getBuild));
    sendNumeric(RPL_MYINFO,
 	       String::printf("%s %s %s %s %s %s %s %s %s",
-			      (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			      (char const *)Daemon::myServer()->getHostname(),
 			      getVersion,
 			      User::modeStr,
 			      Channel::modeStr,
@@ -477,25 +484,24 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			      Server::modeParamStr,
 			      getVersionChars));
    sendNumeric(RPL_ISUPPORT, 
-	       connection->getDaemon()->makeISUPPORT() +
-	       Language::L_RPL_ISUPPORT_TAG);
+	       Daemon::makeISUPPORT() + Language::L_RPL_ISUPPORT_TAG);
    sendNumeric(RPL_TIMEONSERVERIS,
 	       String::printf((char *)Language::L_RPL_TIMEONSERVERIS,
-			      getConnection()->getDaemon()->getTime(),
-			      getConnection()->getDaemon()->getTimeUsecs(),
-			      (char const *)getConnection()->getDaemon()->getTimeZone(),
-			      getConnection()->getDaemon()->getTimeFlags()));
+			      Daemon::getTime(),
+			      Daemon::getTimeUsecs(),
+			      (char const *)Daemon::getTimeZone(),
+			      Daemon::getTimeFlags()));
 
    // Send some stuff that clients seem to rely on being sent... (urgh)
    doLUSERS(this, user, 0);
    
    // Should we send a minature motd or the full thing?
-   if (getConnection()->getDaemon()->myServer()->
-       isModeSet(Server::MODE_SHORTMOTD)) {
+   if (Daemon::myServer()->
+       isModeSet(Server::M_SHORTMOTD)) {
       // Send a fake three-line motd
       sendNumeric(RPL_MOTDSTART,
 		  String::printf((char *)Language::L_RPL_MOTDSTART, 
-				 (char const *)getConnection()->getDaemon()->myServer()->hostname));
+				 (char const *)Daemon::myServer()->hostname));
       sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT1);
       sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT2);
       sendNumeric(RPL_MOTD, Language::L_RPL_MOTD_SHORT3);
@@ -541,11 +547,11 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 	  * mask setup appropriately. This mess is just for sanity sake, just
 	  * in case the user specifies something really ugly.
 	  */
-	 if (modeBitMask & User::MODE_WALLOPS) {
-	    user->modes |= User::MODE_WALLOPS;
+	 if (modeBitMask & User::M_WALLOPS) {
+	    user->modes |= User::M_WALLOPS;
 	 }
-	 if (modeBitMask & User::MODE_INVISIBLE) {
-	    user->modes |= User::MODE_INVISIBLE;
+	 if (modeBitMask & User::M_INVISIBLE) {
+	    user->modes |= User::M_INVISIBLE;
 	 }
       }
    }
@@ -563,7 +569,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 irc2userHandler::~irc2userHandler(void)
 {
    // Lower the connection count
-   getConnection()->getDaemon()->numClientConns--;
+   Daemon::numClientConns--;
 }
 
 
@@ -572,11 +578,20 @@ irc2userHandler::~irc2userHandler(void)
  */
 void irc2userHandler::goodbye(String const &reason)
 {
+   // Send a notice to those who care
+   Daemon::
+     serverNotice(LocalUser::SN_SIGNONOFF,
+		  String::printf((char *)Language::L_SERVNOTICE_SIGNOFF,
+				 (char const *)user->getNickname(),
+				 (char const *)user->getUsername(),
+				 (char const *)user->getHost(),
+				 (char const *)reason));
+
    // Tell the user why the link is being closed if we need to
    sendGoodbye(reason);
 
    // Deregister us from the network
-   getConnection()->getDaemon()->quitUser(user, reason, true);
+   Daemon::quitUser(user, reason, true);
 }
 
 
@@ -640,7 +655,6 @@ String irc2userHandler::processUserModes(String &modes, StringTokens *tokens,
 		  // If this runs, we will need to add the output char
 		  if (User::modeTable[ii].toggler(toggle, 
 						  (silent ? 0 : this),
-						  getConnection()->getDaemon(), 
 						  user,
 						  &modes[i], &param) &&
 		      !silent) {
@@ -738,8 +752,7 @@ void irc2userHandler::sendChannelMode(Channel *c, User *u,
 void irc2userHandler::sendGoodbye(String const &reason) const
 {
    getConnection()->
-     sendRaw(String::printf(LNG_ERROR_CLOSING_LINK
-			    IRC2USER_EOL_CHARS,
+     sendRaw(String::printf((char *)Language::L_ERROR_CLOSING_LINK,
 			    (reason.length() ?
 			     (char const *)reason :
 			     Language::L_ERROR_CLOSING_LINK_DEFAULT_REASON)));
@@ -914,7 +927,7 @@ void irc2userHandler::sendNumeric(short numeric, String const &line) const
 {
    getConnection()->
      sendRaw(String::printf(":%s %03d %s %s" IRC2USER_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			    (char const *)Daemon::myServer()->getHostname(),
 			    numeric,
 			    (char const *)user->getNickname(),
 			    (char const *)line));
@@ -954,7 +967,7 @@ void irc2userHandler::sendPing(void) const
 {
    getConnection()->
      sendRaw(String::printf("PING :%s" IRC2USER_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname()));
+			    (char const *)Daemon::myServer()->getHostname()));
 }
 
 
@@ -965,8 +978,8 @@ void irc2userHandler::sendPong(String const &reply) const
 {
    getConnection()->
      sendRaw(String::printf(":%s PONG %s %s" IRC2USER_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			    (char const *)Daemon::myServer()->getHostname(),
+			    (char const *)Daemon::myServer()->getHostname(),
 			    (char const *)reply));
 }
 
@@ -1138,7 +1151,7 @@ void irc2userHandler::sendWhoReply(User *u, Channel *c,
 			      (u->showVW(user) ?
 			       (char const *)u->vwhostname :
 			       (char const *)u->hostname),
-			      (((u->server->isModeSet(Server::MODE_HIDDEN)) &&
+			      (((u->server->isModeSet(Server::M_HIDDEN)) &&
 				!User::isOper(user)) ?
 			       (char const *)u->server->getHostname() :
 			       SERVER_NAME_MASK),
@@ -1149,11 +1162,11 @@ void irc2userHandler::sendWhoReply(User *u, Channel *c,
 			       (String(User::isOper(u) ?
 				       "*" : "") +
 				(cm ?
-				 (cm->isModeSet(ChannelMember::MODE_OPPED) ?
+				 (cm->isModeSet(ChannelMember::M_OPPED) ?
 				  "@" :
-				  (cm->isModeSet(ChannelMember::MODE_HALFOPPED) ?
+				  (cm->isModeSet(ChannelMember::M_HALFOPPED) ?
 				   "%" :
-				   (cm->isModeSet(ChannelMember::MODE_VOICED) ?
+				   (cm->isModeSet(ChannelMember::M_VOICED) ?
 				    "+" : ""))) : ""))),
 			      u->server->getNumHops(),
 			      (char const *)u->realname));
@@ -1186,41 +1199,41 @@ void irc2userHandler::sendWallops(User *from, String const &message) const
 void irc2userHandler::sendWatchOff(Server *target) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s * * 0 "
-			    LNG_RPL_LOGOFF_SERVER
+     sendRaw(String::printf(":%s %d %s %s * * 0 %s"
 			    IRC2USER_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGOFF,
 			    (char const *)user->nickname,
-			    (char const *)target->getHostname()));
+			    (char const *)target->getHostname(),
+			    Language::L_RPL_LOGOFF_SERVER));
 }
 
 void irc2userHandler::sendWatchOff(Channel *target) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s * * %lu "
-			    LNG_RPL_LOGOFF_CHANNEL
+     sendRaw(String::printf(":%s %d %s %s * * %lu %s"
 			    IRC2USER_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGOFF,
 			    (char const *)user->nickname,
 			    (char const *)target->name,
-			    target->creationTime));
+			    target->creationTime,
+			    Language::L_RPL_LOGOFF_CHANNEL));
 }
 
 void irc2userHandler::sendWatchOff(User *target) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s %s %s %lu "
-			    LNG_RPL_LOGOFF_USER
+     sendRaw(String::printf(":%s %d %s %s %s %s %lu %s"
 			    IRC2USER_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGOFF,
 			    (char const *)user->nickname,
 			    (char const *)target->nickname,
 			    (char const *)target->username,
 			    (char const *)target->getAddress(user),
-			    target->lastNickChange));
+			    target->lastNickChange,
+			    Language::L_RPL_LOGOFF_USER));
 }
 
 
@@ -1230,36 +1243,35 @@ void irc2userHandler::sendWatchOff(User *target) const
 void irc2userHandler::sendWatchOn(Server *target) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s * * 0 "
-			    LNG_RPL_LOGON_SERVER
+     sendRaw(String::printf(":%s %d %s %s * * 0 %s"
 			    IRC2USER_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGON,
 			    (char const *)user->getNickname(),
-			    (char const *)target->getHostname()));
+			    (char const *)target->getHostname(),
+			    Language::L_RPL_LOGON_SERVER));
 }
 
 void irc2userHandler::sendWatchOn(Channel *target, String const &creator) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s %s * %lu "
-			    LNG_RPL_LOGON_CHANNEL
+     sendRaw(String::printf(":%s %d %s %s %s * %lu %s"
 			    IRC2USER_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGON,
 			    (char const *)user->getNickname(),
 			    (char const *)target->getName(),
 			    (char const *)creator,
-			    target->creationTime));
+			    target->creationTime,
+			    Language::L_RPL_LOGON_CHANNEL));
 }
 
 void irc2userHandler::sendWatchOn(User *target, String const &newNick) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s %s %s %lu "
-			    LNG_RPL_LOGON_USER
+     sendRaw(String::printf(":%s %d %s %s %s %s %lu %s"
 			    IRC2USER_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
+			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGON,
 			    (char const *)user->nickname,
 			    (newNick.length() ?
@@ -1267,7 +1279,8 @@ void irc2userHandler::sendWatchOn(User *target, String const &newNick) const
 			     (char const *)target->nickname),
 			    (char const *)target->username,
 			    (char const *)target->getHost(user),
-			    target->lastNickChange));
+			    target->lastNickChange,
+			    Language::L_RPL_LOGON_USER));
 }
 
 
@@ -1285,7 +1298,7 @@ void irc2userHandler::doNAMES(String const &param)
    
    for (String chan = channels.nextToken(','); chan.length(); 
 	chan = channels.nextToken(',')) {
-      Channel *c = getConnection()->getDaemon()->getChannel(chan);
+      Channel *c = Daemon::getChannel(chan);
       
       // Make sure we got a channel, otherwise we just ignore it
       if (c) {
@@ -1300,18 +1313,18 @@ void irc2userHandler::doNAMES(String const &param)
 	      it != c->members.end(); it++) {
 	    // Do we need to write a new prefix?
 	    if (!reply.length()) {
-	       reply = String(((c->modes & Channel::MODE_PRIVATE) ?
+	       reply = String(((c->modes & Channel::M_PRIVATE) ?
 			       "*" :
-			       ((c->modes & Channel::MODE_SECRET) ?
+			       ((c->modes & Channel::M_SECRET) ?
 				"@" : "="))) + " " + c->name + " :";
 	    }
 	    
 	    reply = reply +
-	      ((*it).second->isModeSet(ChannelMember::MODE_OPPED) ?
+	      ((*it).second->isModeSet(ChannelMember::M_OPPED) ?
 	       "@" : 
-	       ((*it).second->isModeSet(ChannelMember::MODE_HALFOPPED) ?
+	       ((*it).second->isModeSet(ChannelMember::M_HALFOPPED) ?
 		"%" : 
-		((*it).second->isModeSet(ChannelMember::MODE_VOICED) ?
+		((*it).second->isModeSet(ChannelMember::M_VOICED) ?
 		 "+" : ""))) +
 	      (*it).second->getUser()->nickname + " ";
 	    
@@ -1392,7 +1405,7 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
    // Check we have a parameter
    if (tokens->countTokens() < 2) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "ACCEPT" LNG_ERR_NEEDMOREPARAMS);
+			   String("ACCEPT") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
 
@@ -1444,7 +1457,7 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
 	 }
 	 
 	 // Find this user
-	 User *u = TO_DAEMON->getUser(nick);
+	 User *u = Daemon::getUser(nick);
 	 
 	 // Check
 	 if (!u) {
@@ -1454,7 +1467,7 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
 	 }
 	 
 	 // Delete the nick
-	 if (TO_DAEMON->delUserAccept(handler->user, u)) {
+	 if (Daemon::delUserAccept(handler->user, u)) {
 	    // Done! Apparently we do not send any confirmation of this...
 	    continue;
 	 } 
@@ -1478,7 +1491,7 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
       }
       
       // Find this user
-      User *u = TO_DAEMON->getUser(nick);
+      User *u = Daemon::getUser(nick);
 	 
       // Check the user
       if (!u) {
@@ -1488,10 +1501,10 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
       }
       
       // Add the nick
-      if (TO_DAEMON->addUserAccept(handler->user, u)) {
+      if (Daemon::addUserAccept(handler->user, u)) {
 	 // Done! Send confirmation to the remote party
-	 TO_DAEMON->routeTo(u)->
-	   sendNumeric(TO_DAEMON->myServer(),
+	 Daemon::routeTo(u)->
+	   sendNumeric(Daemon::myServer(),
 		       RPL_ACCEPTED, handler->user,
 		       String::printf((char *)Language::L_RPL_ACCEPTED,
 				      (char const *)handler->user->getNickname(),
@@ -1518,7 +1531,7 @@ void irc2userHandler::parseADMIN(irc2userHandler *handler, StringTokens *tokens)
    if (!server.length()) {
       doADMIN(handler, handler->user);
    } else {
-      Server *s = TO_DAEMON->getServer(StringMask(server));
+      Server *s = Daemon::getServer(StringMask(server));
       
       // Check
       if (!s) {
@@ -1528,13 +1541,13 @@ void irc2userHandler::parseADMIN(irc2userHandler *handler, StringTokens *tokens)
       }
       
       // Is this US??
-      if (s == TO_DAEMON->myServer()) {
+      if (s == Daemon::myServer()) {
 	 doADMIN(handler, handler->user);
 	 return;
       }
    
       // Poll the remote server
-      TO_DAEMON->routeTo(s)->callADMIN(s, handler->user);
+      Daemon::routeTo(s)->callADMIN(s, handler->user);
    }
 }
 
@@ -1552,7 +1565,7 @@ void irc2userHandler::parseAWAY(irc2userHandler *handler, StringTokens *tokens)
 #ifdef FLOODLOCK_AWAY_SET
       // Check they can change this, first look at the time...
       if ((handler->lastAwaySet + FLOODLOCK_AWAY_SET) >
-	  TO_DAEMON->getTime()) {
+	  Daemon::getTime()) {
 	 // Ok... maybe they have a grace period then?
 	 if (!handler->lastAwaySetGrace) {
 	    // Tell them they have to be a little more patient :)
@@ -1575,7 +1588,7 @@ void irc2userHandler::parseAWAY(irc2userHandler *handler, StringTokens *tokens)
 	 
 #ifdef FLOODLOCK_AWAY_SET
       // Mark the change down..
-      handler->lastAwaySet = TO_DAEMON->getTime();
+      handler->lastAwaySet = Daemon::getTime();
 #endif
       
       // Tell them it worked
@@ -1609,18 +1622,18 @@ void irc2userHandler::parseDIE(irc2userHandler *handler, StringTokens *tokens)
    String reason = tokens->rest();
 
    // Send out a server notice
-   TO_DAEMON->
-     broadcastServerNotice(SERVERNOTICE_OPER,
-			   String::printf((char *)Language::L_SERVNOTICE_CMD_DIE,
-					  ((char const *)
-					   handler->user->nickname)));
+   Daemon::
+     serverNotice(LocalUser::SN_OPER,
+		  String::printf((char *)Language::L_SERVNOTICE_CMD_DIE,
+				 ((char const *)
+				  handler->user->nickname)));
    
    // Check if we have a reason
    if (reason.length()) {
-      TO_DAEMON->shutdown(reason + " (" + 
+      Daemon::shutdown(reason + " (" + 
 					  handler->user->nickname + ")");
    } else {
-      TO_DAEMON->shutdown(handler->user->nickname + 
+      Daemon::shutdown(handler->user->nickname + 
 			  Language::L_REQUESTED_SHUTDOWN);
    }
 }
@@ -1646,22 +1659,23 @@ void irc2userHandler::parseGLOBOPS(irc2userHandler *handler, StringTokens *token
 	 message = message.subString(1);
       }
    
-      TO_DAEMON->
-	broadcastServerNotice(SERVERNOTICE_GLOBOPS,
-			      String::printf((char *)Language::L_SERVNOTICE_GLOBOPS,
-					     ((char const *)
-					      handler->user->nickname), 
-					     (char const *)message));
+      Daemon::
+	serverNotice(LocalUser::SN_GLOBOPS,
+		     String::printf((char *)Language::L_SERVNOTICE_GLOBOPS,
+				    ((char const *)
+				     handler->user->nickname), 
+				    (char const *)message));
       return;
    }
    
    // Complain bitterly!
 #ifdef MINLEN_OP_BROADCAST
    handler->sendNumeric(ERR_NOTEXTTOSEND, 
-			LNG_ERR_NOTEXTTOSEND_NEEDMORE " (GLOBOPS)");
+			String(Language::L_ERR_NOTEXTTOSEND_NEEDMORE) + 
+			" (GLOBOPS)");
 #else
    handler->sendNumeric(ERR_NOTEXTTOSEND, 
-			LNG_ERR_NOTEXTTOSEND " (GLOBOPS)");
+			String(Language::L_ERR_NOTEXTTOSEND + " (GLOBOPS)"));
 #endif
 }
 
@@ -1790,21 +1804,23 @@ void irc2userHandler::parseHELPME(irc2userHandler *handler, StringTokens *tokens
 	 message = message.subString(1);
       }
    
-      TO_DAEMON->broadcastServerNotice(SERVERNOTICE_HELPME,
-				     String::printf(LNG_SERVNOTICE_HELPME,
-						    ((char const *)
-						     handler->user->nickname),
-						    (char const *)message));
+      Daemon::
+	serverNotice(LocalUser::SN_HELPME,
+		     String::printf((char *)Language::L_SERVNOTICE_HELPME,
+				    ((char const *)
+				     handler->user->nickname),
+				    (char const *)message));
       return;
    }
    
    // Complain bitterly!
 #ifdef MINLEN_OP_BROADCAST
    handler->sendNumeric(ERR_NOTEXTTOSEND, 
-			LNG_ERR_NOTEXTTOSEND_NEEDMORE " (HELPME)");
+			String(Language::L_ERR_NOTEXTTOSEND_NEEDMORE) + 
+			" (HELPME)");
 #else
    handler->sendNumeric(ERR_NOTEXTTOSEND,
-			LNG_ERR_NOTEXTTOSEND " (HELPME)");
+			String(Language::L_ERR_NOTEXTTOSEND) + " (HELPME)");
 #endif
 }
 
@@ -1820,7 +1836,7 @@ void irc2userHandler::parseINFO(irc2userHandler *handler, StringTokens *tokens)
    if (!server.length()) {
       doINFO(handler, handler->user);
    } else {
-      Server *s = TO_DAEMON->getServer(StringMask(server));
+      Server *s = Daemon::getServer(StringMask(server));
       
       // Check
       if (!s) {
@@ -1830,13 +1846,13 @@ void irc2userHandler::parseINFO(irc2userHandler *handler, StringTokens *tokens)
       }
    
       // Is this US??
-      if (s == TO_DAEMON->myServer()) {
+      if (s == Daemon::myServer()) {
 	 doINFO(handler, handler->user);
 	 return;
       }
    
       // Poll the remote server
-      TO_DAEMON->routeTo(s)->callINFO(s, handler->user);
+      Daemon::routeTo(s)->callINFO(s, handler->user);
    }
 }
 
@@ -1849,7 +1865,7 @@ void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens
    // Check we have at least two parameters
    if (tokens->countTokens() < 3) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "INVITE" LNG_ERR_NEEDMOREPARAMS);
+			   String("INVITE") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
 
@@ -1865,15 +1881,15 @@ void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens
    }
    
    // The expiry is the current time plus the timeout length...
-   expiry = (time_t)(TO_DAEMON->getTime() + timeout);
+   expiry = (time_t)(Daemon::getTime() + timeout);
    
    // .. But this might be in the past due to an overload, so check
-   if (expiry < (TO_DAEMON->getTime() + MIN_INVITE_TIMEOUT)) {
+   if (expiry < (Daemon::getTime() + MIN_INVITE_TIMEOUT)) {
       expiry = 0;
    }
    
    // Try to look up the given user
-   User *u = TO_DAEMON->getUser(nick);
+   User *u = Daemon::getUser(nick);
    
    // Check
    if (!u) {
@@ -1883,7 +1899,7 @@ void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens
    }
    
    // Look up the channel
-   Channel *c = TO_DAEMON->getChannel(chan);
+   Channel *c = Daemon::getChannel(chan);
    
    // Check
    if (!c) {
@@ -1913,7 +1929,7 @@ void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens
    }
    
    // If this channel is invite only, we must be a full op or half op..
-   if (c->isModeSet(Channel::MODE_INVITE) && 
+   if (c->isModeSet(Channel::M_INVITE) && 
        !cm->isChanOper()) {
       handler->sendNumeric(ERR_CHANOPRIVSNEEDED,
 			   chan + Language::L_ERR_CHANOPRIVSNEEDED); 
@@ -1927,7 +1943,7 @@ void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens
    }
    
    // Do the invitation
-   TO_DAEMON->routeTo(u)->sendInvite(u, c, handler->user, expiry);
+   Daemon::routeTo(u)->sendInvite(u, c, handler->user, expiry);
    
    // Tell the user the invitation is happening
    handler->sendNumeric(RPL_INVITING,
@@ -1957,7 +1973,7 @@ void irc2userHandler::parseISON(irc2userHandler *handler, StringTokens *tokens)
    // Check we have at least one parameter
    if (tokens->countTokens() < 2) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "ISON" LNG_ERR_NEEDMOREPARAMS);
+			   String("ISON") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
 
@@ -1967,7 +1983,7 @@ void irc2userHandler::parseISON(irc2userHandler *handler, StringTokens *tokens)
    for (String iter = tokens->nextToken(); iter.length(); 
 	iter = tokens->nextToken()) {
       // Check if we have that nick in our userlist
-      if (TO_DAEMON->getUser(iter)) {
+      if (Daemon::getUser(iter)) {
 	 reply = reply + iter + " ";
       }
    }
@@ -1990,7 +2006,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
    // Check we have at least one parameter
    if (tokens->countTokens() < 2) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "JOIN" LNG_ERR_NEEDMOREPARAMS);
+			   String("JOIN") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
 
@@ -2006,7 +2022,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	chan = channels.nextToken(',')) {
       if (!User::isHelper(handler->user)) {
 	 // Check if this channel is being redirected to another channel
-	 String redir = TO_DAEMON->redirectedChannel(chan);
+	 String redir = Daemon::redirectedChannel(chan);
 	 if (redir.length()) {
 	    // Notify a savvy client
 	    handler->
@@ -2034,7 +2050,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
       }
 
       // Find this channel in the channel list
-      Channel *c = TO_DAEMON->getChannel(chan);
+      Channel *c = Daemon::getChannel(chan);
       
       // Check if we got this channel or not
       if (c) {
@@ -2047,8 +2063,8 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	 /* Check if this channel is a 'registered nicknames only' channel and
 	  * that this user is identified
 	  */
-	 if ((c->modes & Channel::MODE_REGNICKSONLY) &&
-	     !(handler->user->modes & User::MODE_IDENTIFIED)) {
+	 if ((c->modes & Channel::M_REGNICKSONLY) &&
+	     !(handler->user->modes & User::M_IDENTIFIED)) {
 	    handler->sendNumeric(ERR_NONONREG,
 				 chan + Language::L_ERR_NONONREG_CHANNEL);
 	    continue;
@@ -2070,7 +2086,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	    handler->user->local->delInvitation(c);
 	 } else {
 	    // Check if this channel is set invite only
-	    if (c->isModeSet(Channel::MODE_INVITE)) {
+	    if (c->isModeSet(Channel::M_INVITE)) {
 	       // Check this user is not invited or not on the invite list
 	       if (!c->onInvite(handler->user)) {
 		  handler->sendNumeric(ERR_INVITEONLYCHAN,
@@ -2097,7 +2113,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	 }
 	 
 	 // Join the user to their new channel
-	 TO_DAEMON->joinChannel(c, handler->user);
+	 Daemon::joinChannel(c, handler->user);
       } else {
 	 // This channel did not exist. Is it a safe channel?
 	 if (chan[0] == '!') {
@@ -2110,7 +2126,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	 // Check for stuff that helpers/operators skip
 	 if (!User::isHelper(handler->user)) {
 	    // Check if this channel is not marked on the fail mask list
-	    String reason = TO_DAEMON->failedChannel(chan);
+	    String reason = Daemon::failedChannel(chan);
 	    if (reason.length()) {
 	       // Tell the user they cannot join, giving them the reaso
 	       handler->
@@ -2123,11 +2139,11 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	 }
 	 
 	 // Create this channel with this user as the channel creator
-	 c = new Channel(chan, TO_DAEMON->getTime(), TO_DAEMON);
-	 TO_DAEMON->addChannel(c, handler->user->getNickname());
+	 c = new Channel(chan, Daemon::getTime());
+	 Daemon::addChannel(c, handler->user->getNickname());
       
 	 // Join the user to their new channel
-	 TO_DAEMON->joinChannel(c, handler->user);
+	 Daemon::joinChannel(c, handler->user);
 
 	 /* If this is an open channel we cannot +O/+o the user. The only
 	  * mode that gets set is +t, which means only server can change the
@@ -2140,7 +2156,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	     * Note: This is a 'mysterious hidden mode change'.
 	     */
 	    c->members[handler->user->nickname.IRCtoLower()]->modes |=
-	      ChannelMember::MODE_CREATOR | ChannelMember::MODE_OPPED;
+	      ChannelMember::M_CREATOR | ChannelMember::M_OPPED;
 	 }
       }
       
@@ -2171,7 +2187,7 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
    // Check we have at least one parameter
    if (tokens->countTokens() < 3) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "KICK" LNG_ERR_NEEDMOREPARAMS);
+			   String("KICK") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
    
@@ -2224,7 +2240,7 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       }
       
       // Try and get the target user record
-      User *u = TO_DAEMON->getUser(target);
+      User *u = Daemon::getUser(target);
       
       // Check
       if (!u) {
@@ -2247,7 +2263,7 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       }
       
       // Check if this user is immune from kicks
-      if (u->modes & User::MODE_NONKICKABLE) {
+      if (u->modes & User::M_NONKICKABLE) {
 	 handler->
 	   sendNumeric(ERR_ISCHANSERVICE,
 		       String::printf((char *)Language::L_ERR_ISCHANSERVICE,
@@ -2257,9 +2273,9 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       }
       
       // Check that the kickee is not an op while this guy is just a half op
-      if (kickee->isModeSet(ChannelMember::MODE_OPPED) &&
-	  kicker->isModeSet(ChannelMember::MODE_HALFOPPED) &&
-	  !kicker->isModeSet(ChannelMember::MODE_OPPED)) {
+      if (kickee->isModeSet(ChannelMember::M_OPPED) &&
+	  kicker->isModeSet(ChannelMember::M_HALFOPPED) &&
+	  !kicker->isModeSet(ChannelMember::M_OPPED)) {
 	 handler->sendNumeric(ERR_CHANOPRIVSNEEDED,
 			      chan + 
 			      Language::L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER);
@@ -2267,7 +2283,7 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       }
       
       // Finally, all things say we can kick this bloke out!
-      TO_DAEMON->kickChannelMember(c, handler->user, u, reason);
+      Daemon::kickChannelMember(c, handler->user, u, reason);
    }
 }
 
@@ -2280,7 +2296,7 @@ void irc2userHandler::parseKILL(irc2userHandler *handler, StringTokens *tokens)
    // Check we have at least two parameters
    if (tokens->countTokens() < 3) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "KILL" LNG_ERR_NEEDMOREPARAMS);
+			   String("KILL") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
 
@@ -2289,7 +2305,7 @@ void irc2userHandler::parseKILL(irc2userHandler *handler, StringTokens *tokens)
    String reason = tokens->nextColonToken();
    
    // Find the target
-   User *u = TO_DAEMON->getUser(target);
+   User *u = Daemon::getUser(target);
    
    // Check
    if (!u) {
@@ -2299,7 +2315,7 @@ void irc2userHandler::parseKILL(irc2userHandler *handler, StringTokens *tokens)
    }
    
    // Check if this user is immune from kills
-   if (u->modes & User::MODE_NONKICKABLE) {
+   if (u->modes & User::M_NONKICKABLE) {
       handler->sendNumeric(ERR_CANTKILLSERVICES, 
 			   Language::L_ERR_CANTKILLSERVICES);
       // Broadcast this blunder
@@ -2309,7 +2325,7 @@ void irc2userHandler::parseKILL(irc2userHandler *handler, StringTokens *tokens)
    // Check permissions here
    
    // Do the kill
-   TO_DAEMON->killUser(u, handler->user->nickname, reason);
+   Daemon::killUser(u, handler->user->nickname, reason);
 
    /* This is 'obsolete' but it is a good idea if the oper has server notices
     * turned off just to confirm the kill.
@@ -2327,7 +2343,7 @@ void irc2userHandler::parseKNOCK(irc2userHandler *handler, StringTokens *tokens)
    // Check we have at least one parameter
    if (tokens->countTokens() < 2) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "KNOCK" LNG_ERR_NEEDMOREPARAMS);
+			   String("KNOCK") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
    
@@ -2336,7 +2352,7 @@ void irc2userHandler::parseKNOCK(irc2userHandler *handler, StringTokens *tokens)
    String reason = tokens->nextColonToken();
 
    // Look up the channel
-   Channel *chan = TO_DAEMON->getChannel(channel);
+   Channel *chan = Daemon::getChannel(channel);
    
    // Check the channel
    if (!chan) {
@@ -2353,7 +2369,7 @@ void irc2userHandler::parseKNOCK(irc2userHandler *handler, StringTokens *tokens)
    }
    
    // Check if the channel is open (not invite only)
-   if (!chan->isModeSet(Channel::MODE_INVITE)) {
+   if (!chan->isModeSet(Channel::M_INVITE)) {
       handler->sendNumeric(ERR_NOKNOCK,
 			   channel + Language::L_ERR_NOKNOCK_OPENCHANNEL);
       return;
@@ -2370,8 +2386,8 @@ void irc2userHandler::parseKNOCK(irc2userHandler *handler, StringTokens *tokens)
    /* Check that this channel is not a registered-user-only channel and this
     * user has not identified themselves
     */
-   if (chan->isModeSet(Channel::MODE_REGNICKSONLY) &&
-       !handler->user->isModeSet(User::MODE_IDENTIFIED)) {
+   if (chan->isModeSet(Channel::M_REGNICKSONLY) &&
+       !handler->user->isModeSet(User::M_IDENTIFIED)) {
       handler->sendNumeric(ERR_NOKNOCK,
 			   channel + Language::L_ERR_NOKNOCK_REGONLY);
       return;
@@ -2389,7 +2405,7 @@ void irc2userHandler::parseKNOCK(irc2userHandler *handler, StringTokens *tokens)
    /* Check if this channel can receive outside messages, or there is no 
     * reason to use, and replace the reason if necessary
     */
-   if (chan->isModeSet(Channel::MODE_NOOUTSIDEMSG) ||
+   if (chan->isModeSet(Channel::M_NOOUTSIDEMSG) ||
        !reason.length()) {
       reason = Language::L_DEFAULT_KNOCK_REASON;
    }
@@ -2474,7 +2490,7 @@ void irc2userHandler::parseLINKS(irc2userHandler *handler, StringTokens *tokens)
    if (!server.length()) {
       doLINKS(handler, handler->user, mask);
    } else {
-      Server *s = TO_DAEMON->getServer(StringMask(server));
+      Server *s = Daemon::getServer(StringMask(server));
       
       // Check
       if (!s) {
@@ -2484,13 +2500,13 @@ void irc2userHandler::parseLINKS(irc2userHandler *handler, StringTokens *tokens)
       }
    
       // Is this US??
-      if (s == TO_DAEMON->myServer()) {
+      if (s == Daemon::myServer()) {
 	 doLINKS(handler, handler->user, mask);
 	 return;
       }
    
       // Poll the remote server
-      TO_DAEMON->routeTo(s)->callLINKS(s, handler->user, mask);
+      Daemon::routeTo(s)->callLINKS(s, handler->user, mask);
    }
 }
 
@@ -2508,10 +2524,8 @@ void irc2userHandler::parseLIST(irc2userHandler *handler, StringTokens *tokens)
    String request = tokens->nextToken();
 
    // List relayed channels
-   for (Daemon::channel_map_t::iterator it = 
-	TO_DAEMON->channels.begin();
-	it != TO_DAEMON->channels.end(); 
-	it++) {
+   for (Daemon::channel_map_t::iterator it = Daemon::channels.begin();
+	it != Daemon::channels.end(); it++) {
       handler->sendNumeric(RPL_LIST,
 			   String::printf("%s %d :%s",
 					  (char const *)(*it).second->name,
@@ -2521,8 +2535,8 @@ void irc2userHandler::parseLIST(irc2userHandler *handler, StringTokens *tokens)
 
    // Then local channels
    for (Daemon::channel_map_t::iterator it = 
-	TO_DAEMON->localChannels.begin();
-	it != TO_DAEMON->localChannels.end(); 
+	Daemon::localChannels.begin();
+	it != Daemon::localChannels.end(); 
 	it++) {
       handler->sendNumeric(RPL_LIST,
 			   String::printf("%s %d :%s",
@@ -2556,22 +2570,24 @@ void irc2userHandler::parseLOCOPS(irc2userHandler *handler, StringTokens *tokens
 	 message = message.subString(1);
       }
    
-      TO_DAEMON->
-	broadcastServerNotice(SERVERNOTICE_LOCOPS,
-			      String::printf((char *)Language::L_SERVNOTICE_LOCOPS,
-					     ((char const *)
-					      handler->user->nickname), 
-					     (char const *)message));
+      Daemon::
+	serverNotice(LocalUser::SN_LOCOPS,
+		     String::printf((char *)Language::L_SERVNOTICE_LOCOPS,
+				    ((char const *)
+				     handler->user->nickname), 
+				    (char const *)message));
       return;
    }
    
    // Complain bitterly!
 #ifdef MINLEN_OP_BROADCAST
    handler->sendNumeric(ERR_NOTEXTTOSEND, 
-			LNG_ERR_NOTEXTTOSEND_NEEDMORE " (LOCOPS)");
+			String(Language::L_ERR_NOTEXTTOSEND_NEEDMORE) +
+			" (LOCOPS)");
 #else
    handler->sendNumeric(ERR_NOTEXTTOSEND,
-			LNG_ERR_NOTEXTTOSEND " (LOCOPS)");
+			String(Language::L_ERR_NOTEXTTOSEND) +
+			" (LOCOPS)");
 #endif
 }
 
@@ -2588,7 +2604,7 @@ void irc2userHandler::parseLUSERS(irc2userHandler *handler, StringTokens *tokens
    if (!server.length()) {
       doLUSERS(handler, handler->user, mask);
    } else {
-      Server *s = TO_DAEMON->getServer(StringMask(server));
+      Server *s = Daemon::getServer(StringMask(server));
 
       // Check
       if (!s) {
@@ -2598,13 +2614,13 @@ void irc2userHandler::parseLUSERS(irc2userHandler *handler, StringTokens *tokens
       }
    
       // Is this US??
-      if (s == TO_DAEMON->myServer()) {
+      if (s == Daemon::myServer()) {
 	 doLUSERS(handler, handler->user, mask);
 	 return;
       }
    
       // Poll the remote server
-      TO_DAEMON->routeTo(s)->callLUSERS(s, handler->user, mask);
+      Daemon::routeTo(s)->callLUSERS(s, handler->user, mask);
    }
 }
 
@@ -2617,7 +2633,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    // Check we have at least one parameter
    if (tokens->countTokens() < 2) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "MODE" LNG_ERR_NEEDMOREPARAMS);
+			   String("MODE") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
 
@@ -2628,7 +2644,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    // Is the target a user or a channel
    if (Channel::isChannel(target)) {
       // Grab the channel
-      Channel *c = TO_DAEMON->getChannel(target);
+      Channel *c = Daemon::getChannel(target);
       
       // Make sure we got that channel
       if (!c) {
@@ -2693,7 +2709,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    }
    
    // Look the user up
-   User *u = TO_DAEMON->getUser(target);
+   User *u = Daemon::getUser(target);
    
    // Check, show the modes if possible
    if (u) {
@@ -2714,7 +2730,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    }
    
    // Woah, must be a server! Try and find this server
-   Server *server = TO_DAEMON->getServer(StringMask(target));
+   Server *server = Daemon::getServer(StringMask(target));
    
    // Check
    if (!server) {
@@ -2724,7 +2740,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    }
 
    // Is this server unlocked for mode changes?
-   if (server->isModeSet(Server::MODE_MODELOCK)) {
+   if (server->isModeSet(Server::M_MODELOCK)) {
       handler->sendNumeric(ERR_SERVERMODELOCK,
 			   server->getHostname() + 
 			   Language::L_ERR_SERVERMODELOCK);
@@ -2733,7 +2749,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    
    // OK! Are we setting modes or just getting the modes
    if (modes.length()) {
-      TO_DAEMON->changeServerMode(server, handler, handler->user, modes,
+      Daemon::changeServerMode(server, handler, handler->user, modes,
 				  tokens);
       return;
    }
@@ -2757,7 +2773,7 @@ void irc2userHandler::parseMOTD(irc2userHandler *handler, StringTokens *tokens)
    if (!server.length()) {
       doMOTD(handler, handler->user);
    } else {
-      Server *s = TO_DAEMON->getServer(StringMask(server));
+      Server *s = Daemon::getServer(StringMask(server));
       
       // Check
       if (!s) {
@@ -2767,13 +2783,13 @@ void irc2userHandler::parseMOTD(irc2userHandler *handler, StringTokens *tokens)
       }
    
       // Is this US??
-      if (s == TO_DAEMON->myServer()) {
+      if (s == Daemon::myServer()) {
 	 doMOTD(handler, handler->user);
 	 return;
       }
    
       // Poll the remote server
-      TO_DAEMON->routeTo(s)->callMOTD(s, handler->user); 
+      Daemon::routeTo(s)->callMOTD(s, handler->user); 
   }
 }
 
@@ -2786,7 +2802,7 @@ void irc2userHandler::parseNAMES(irc2userHandler *handler, StringTokens *tokens)
    // Check we have at least one parameter
    if (tokens->countTokens() < 2) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "NAMES" LNG_ERR_NEEDMOREPARAMS);
+			   String("NAMES") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
    
@@ -2821,7 +2837,7 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
    // Checks that IRC operators can bypass
    if (!User::isOper(handler->user)) {
       // Check if this nickname is marked on the fail mask list
-      String reason = TO_DAEMON->failedNickname(nick);
+      String reason = Daemon::failedNickname(nick);
       if (reason.length()) {
 	 // Tell the user they cannot join, giving them the reaso
 	 handler->
@@ -2849,7 +2865,7 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
 	 // Sanity check
 	 if (cm) {
 	    if (!cm->isPrivileged() &&
-		((*it).second->modes & Channel::MODE_EVENT)) {
+		((*it).second->modes & Channel::M_EVENT)) {
 	       handler->sendNumeric(ERR_EVENTNICKCHANGE,
 				    (*it).second->name + 
 				    Language::L_ERR_EVENTNICKCHANGE);
@@ -2864,7 +2880,7 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
     * since it uses the master user list for a lookup.
     */
    if (!(handler->user->nickname.IRCtoLower() == nick.IRCtoLower()) &&
-       TO_DAEMON->getUser(nick)) {
+       Daemon::getUser(nick)) {
       handler->sendNumeric(ERR_NICKNAMEINUSE,
 			   nick + Language::L_ERR_NICKNAMEINUSE);
       return;
@@ -2874,7 +2890,7 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
    handler->sendNickChange(handler->user, nick);
 
    // Do the change (this also broadcasts the nick change)
-   TO_DAEMON->changeUserNick(handler->user, nick);
+   Daemon::changeUserNick(handler->user, nick);
 }
 
 
@@ -2915,7 +2931,7 @@ void irc2userHandler::parseNOTICE(irc2userHandler *handler, StringTokens *tokens
 	 // Check.
 	 if (!c) {
 	    // Try and get the channel from the main channel list
-	    c = TO_DAEMON->getChannel(iter);
+	    c = Daemon::getChannel(iter);
 	 }
 	 
 	 // Check.
@@ -2935,13 +2951,13 @@ void irc2userHandler::parseNOTICE(irc2userHandler *handler, StringTokens *tokens
 		*/
 	       if (!cm->isPrivileged()) {
 		  // Check if this channel is moderated
-		  if (c->modes & Channel::MODE_MODERATED) {
+		  if (c->modes & Channel::M_MODERATED) {
 		     continue;
 		  }
 		  
 		  // Check if this is a registered user only channel
-		  if ((c->modes & Channel::MODE_REGNICKSONLY) && 
-		      !(handler->user->modes & User::MODE_IDENTIFIED)) {
+		  if ((c->modes & Channel::M_REGNICKSONLY) && 
+		      !(handler->user->modes & User::M_IDENTIFIED)) {
 		     continue;
 		  }
 		  
@@ -2953,13 +2969,13 @@ void irc2userHandler::parseNOTICE(irc2userHandler *handler, StringTokens *tokens
 	       }
 	    } else {
 	       // Check if the user can still send while not on the channel
-	       if (c->modes & Channel::MODE_NOOUTSIDEMSG) {
+	       if (c->modes & Channel::M_NOOUTSIDEMSG) {
 		  continue;
 	       }
 	       
 	       // Check if this is a registered user only channel
-	       if ((c->modes & Channel::MODE_REGNICKSONLY) && 
-		   !(handler->user->modes & User::MODE_IDENTIFIED)) {
+	       if ((c->modes & Channel::M_REGNICKSONLY) && 
+		   !(handler->user->modes & User::M_IDENTIFIED)) {
 		  continue;
 	       }
 	       
@@ -2977,7 +2993,7 @@ void irc2userHandler::parseNOTICE(irc2userHandler *handler, StringTokens *tokens
 	 // We might be able to save some time here, is this user themselves?
 	 if (iter.IRCtoLower() != handler->user->nickname.IRCtoLower()) {
 	    // Look for this user in the userlist
-	    User *u = TO_DAEMON->getUser(iter);
+	    User *u = Daemon::getUser(iter);
 	    
 	    // Did we not get a user record and this user is not an oper?
 	    if (!u) {
@@ -2986,8 +3002,8 @@ void irc2userHandler::parseNOTICE(irc2userHandler *handler, StringTokens *tokens
 	       }
 	    } else {
 	       // Check if this user is allowed to send to this user
-	       if ((u->modes & User::MODE_REGNICKSMSG) &&
-		   (!(handler->user->modes & User::MODE_IDENTIFIED) ||
+	       if ((u->modes & User::M_REGNICKSMSG) &&
+		   (!(handler->user->modes & User::M_IDENTIFIED) ||
 		    !User::isOper(handler->user))) {
 		  continue;
 	       }
@@ -3000,13 +3016,13 @@ void irc2userHandler::parseNOTICE(irc2userHandler *handler, StringTokens *tokens
 	       /* Check if this user is doing the caller-id thing (+g) and
 		* we are on their ACCEPT list to be able to send to them...
 		*/
-	       if (u->isModeSet(User::MODE_IGNORING) &&
+	       if (u->isModeSet(User::M_IGNORING) &&
 		   !u->isAccepting(handler->user)) {
 		  continue;
 	       }
 
 	       // Send this message to the user
-	       TO_DAEMON->routeTo(u)->sendNotice(handler->user, u, message);
+	       Daemon::routeTo(u)->sendNotice(handler->user, u, message);
 	       continue;
 	    }
 	 } else {
@@ -3045,7 +3061,7 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    // Check we have at least one parameter
    if (tokens->countTokens() < 3) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "OPER" LNG_ERR_NEEDMOREPARAMS);
+			   String("OPER") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
 
@@ -3057,7 +3073,7 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    }
    
    // Check if the server is in NOOPER mode
-   if (TO_DAEMON->myServer()->isModeSet(Server::MODE_NOOP)) {
+   if (Daemon::myServer()->isModeSet(Server::M_NOOP)) {
       handler->sendNumeric(ERR_NOOPERHOST, 
 			   Language::L_ERR_NOOPERHOST_NOOP);
       return;
@@ -3068,7 +3084,7 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    String password = tokens->nextToken();
    
    // Get the operator
-   Operator *oper = TO_DAEMON->getOperator(nickname);
+   Operator *oper = Daemon::getOperator(nickname);
    
    // Check.
    if (!oper) {
@@ -3089,29 +3105,29 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    User::modes_t modes = 0;
    if (oper->isGlobal()) {
       // Log this action
-      TO_DAEMON->logger(handler->user->nickname + " is now a global operator",
+      Daemon::logger(handler->user->nickname + " is now a global operator",
 		      LOGPRI_NOTICE);
 
       // Count this oper in on the number of global opers/helpers on-line
-      TO_DAEMON->numOpers++;
-      TO_DAEMON->numHelpers++;
+      Daemon::numOpers++;
+      Daemon::numHelpers++;
       
       // Fix the modes
 #ifdef GIVE_MODES_GLOBALOP
-      modes = User::MODE_GLOBALOPER | User::MODE_HELPER | GIVE_MODES_GLOBALOP;
+      modes = User::M_GLOBALOPER | User::M_HELPER | GIVE_MODES_GLOBALOP;
 #else
-      modes = User::MODE_GLOBALOPER | User::MODE_HELPER;
+      modes = User::M_GLOBALOPER | User::M_HELPER;
 #endif
    } else {
       // Log this action
-      TO_DAEMON->logger(handler->user->nickname + " is now a local operator",
+      Daemon::logger(handler->user->nickname + " is now a local operator",
 		      LOGPRI_NOTICE);
       
       // Fix the modes
 #ifdef GIVE_MODES_LOCALOP
-      modes = User::MODE_LOCALOPER | GIVE_MODES_LOCALOP;
+      modes = User::M_LOCALOPER | GIVE_MODES_LOCALOP;
 #else
-      modes = User::MODE_LOCALOPER;
+      modes = User::M_LOCALOPER;
 #endif
    }
    
@@ -3139,7 +3155,7 @@ void irc2userHandler::parsePART(irc2userHandler *handler, StringTokens *tokens)
    // Check we have at least one parameter
    if (tokens->countTokens() < 2) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "PART" LNG_ERR_NEEDMOREPARAMS);
+			   String("PART") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
    
@@ -3163,7 +3179,7 @@ void irc2userHandler::parsePART(irc2userHandler *handler, StringTokens *tokens)
       } 
       
       // Do the part
-      TO_DAEMON->partChannel(c, handler->user, reason);
+      Daemon::partChannel(c, handler->user, reason);
    }
 }
 
@@ -3215,7 +3231,8 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
    // Check the length...
    if (!message.length()) {
       handler->sendNumeric(ERR_NOTEXTTOSEND, 
-			   LNG_ERR_NOTEXTTOSEND "(PRIVMSG)");
+			   String(Language::L_ERR_NOTEXTTOSEND) +
+			   "(PRIVMSG)");
       return;
    }
    
@@ -3234,7 +3251,7 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	 // Check.
 	 if (!c) {
 	    // Try and get the channel from the main channel list
-	    c = TO_DAEMON->getChannel(iter);
+	    c = Daemon::getChannel(iter);
 	 }
 	 
 	 // Check.
@@ -3257,7 +3274,7 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 		*/
 	       if (!cm->isPrivileged()) {
 		  // Check if this channel is moderated
-		  if (c->modes & Channel::MODE_MODERATED) {
+		  if (c->modes & Channel::M_MODERATED) {
 		     handler->
 		       sendNumeric(ERR_CANNOTSENDTOCHAN,
 				   iter + 
@@ -3266,8 +3283,8 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 		  }
 		  
 		  // Check if this is a registered user only channel
-		  if ((c->modes & Channel::MODE_REGNICKSONLY) && 
-		      !(handler->user->modes & User::MODE_IDENTIFIED)) {
+		  if ((c->modes & Channel::M_REGNICKSONLY) && 
+		      !(handler->user->modes & User::M_IDENTIFIED)) {
 		     handler->
 		       sendNumeric(ERR_CANNOTSENDTOCHAN,
 				   iter + 
@@ -3287,7 +3304,7 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	       }
 	    } else {
 	       // Check if the user can still send while not on the channel
-	       if (c->modes & Channel::MODE_NOOUTSIDEMSG) {
+	       if (c->modes & Channel::M_NOOUTSIDEMSG) {
 		  handler->
 		    sendNumeric(ERR_CANNOTSENDTOCHAN,
 				iter + 
@@ -3296,8 +3313,8 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	       }
 	       
 	       // Check if this is a registered user only channel
-	       if ((c->modes & Channel::MODE_REGNICKSONLY) && 
-		   !(handler->user->modes & User::MODE_IDENTIFIED)) {
+	       if ((c->modes & Channel::M_REGNICKSONLY) && 
+		   !(handler->user->modes & User::M_IDENTIFIED)) {
 		  handler->
 		    sendNumeric(ERR_CANNOTSENDTOCHAN,
 				iter + 
@@ -3323,7 +3340,7 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	 // We might be able to save some time here, is this user themselves?
 	 if (iter.IRCtoLower() != handler->user->nickname.IRCtoLower()) {
 	    // Look for this user in the userlist
-	    User *u = TO_DAEMON->getUser(iter);
+	    User *u = Daemon::getUser(iter);
 	    
 	    // Did we not get a user record and this user is not an oper?
 	    if (!u) {
@@ -3336,8 +3353,8 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	       }
 	    } else {
 	       // Check if this user is allowed to send to this user
-	       if ((u->modes & User::MODE_REGNICKSMSG) &&
-		   (!(handler->user->modes & User::MODE_IDENTIFIED) ||
+	       if ((u->modes & User::M_REGNICKSMSG) &&
+		   (!(handler->user->modes & User::M_IDENTIFIED) ||
 		    !User::isOper(handler->user))) {
 		  handler->
 		    sendNumeric(ERR_CANNOTSENDTONICK,
@@ -3354,7 +3371,7 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	       /* Check if this user is doing the caller-id thing (+g) and
 		* we are on their ACCEPT list to be able to send to them...
 		*/
-	       if (u->isModeSet(User::MODE_IGNORING) &&
+	       if (u->isModeSet(User::M_IGNORING) &&
 		   !u->isAccepting(handler->user)) {
 		  // Tell the user that their message was not delivered
 		  handler->sendNumeric(RPL_NOTACCEPTED, 
@@ -3365,8 +3382,8 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 #ifdef FLOODLOCK_ACCEPT_MSG
 		  if (!handler->user->local->onAcceptMessageFloodlock(u)) {
 #endif
-		     TO_DAEMON->routeTo(u)->
-		       sendNumeric(TO_DAEMON->myServer(),
+		     Daemon::routeTo(u)->
+		       sendNumeric(Daemon::myServer(),
 				   RPL_ACCEPTNOTICE, handler->user,
 				   String::printf((char *)Language::L_RPL_ACCEPTNOTICE,
 						  (char const *)handler->user->getNickname(),
@@ -3379,7 +3396,7 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	       }
 
 	       // Send this message to the user
-	       TO_DAEMON->routeTo(u)->sendPrivmsg(handler->user, u, message);
+	       Daemon::routeTo(u)->sendPrivmsg(handler->user, u, message);
 	       
 	       // If this user is 'away', tell the user
 	       if (u->awayMessage.length()) {
@@ -3459,7 +3476,7 @@ void irc2userHandler::parseREHASH(irc2userHandler *handler, StringTokens *tokens
    handler->getConnection()->touch();
    
    // Rehash.. gee this is hard!
-   TO_DAEMON->rehash(handler, handler->user);
+   Daemon::rehash(handler, handler->user);
 }
 
 
@@ -3521,7 +3538,7 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
 	      }
 	      
 	      // Add the mask
-	      if (TO_DAEMON->addUserSilence(handler->user, mask)) {
+	      if (Daemon::addUserSilence(handler->user, mask)) {
 		 // Send confirmation to the client
 		 handler->sendSilence(handler->user, true, mask);
 	      }
@@ -3535,7 +3552,7 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
 	      mask = Utils::fixToIdentityMask(param);
 	      
 	      // Add the mask
-	      if (TO_DAEMON->delUserSilence(handler->user, mask)) {
+	      if (Daemon::delUserSilence(handler->user, mask)) {
 		 // Send confirmation to the client
 		 handler->sendSilence(handler->user, false, mask);
 	      }
@@ -3546,9 +3563,9 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
       /* If we got here, we must be requesting a silence list of a user. We
        * need to be an operator or a helper to do this, however.
        */
-      if (!(handler->user->modes & User::MODE_GLOBALOPER) &&
-	  !(handler->user->modes & User::MODE_LOCALOPER) &&
-	  !(handler->user->modes & User::MODE_HELPER)) {
+      if (!(handler->user->modes & User::M_GLOBALOPER) &&
+	  !(handler->user->modes & User::M_LOCALOPER) &&
+	  !(handler->user->modes & User::M_HELPER)) {
 	 /* We SHOULD tell them permission denied or something but *sigh* this
 	  * appears to be how dalnet ppl do it. Anyone think we should just
 	  * send a customised permission denied?
@@ -3559,7 +3576,7 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
       }
       
       // Look up the requested user, this will follow through to the list below
-      u = TO_DAEMON->getUser(param);
+      u = Daemon::getUser(param);
       
       // Check
       if (!u) {
@@ -3608,7 +3625,7 @@ void irc2userHandler::parseSTATS(irc2userHandler *handler, StringTokens *tokens)
    // Make sure we have a request
    if (!request.length()) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "STATS" LNG_ERR_NEEDMOREPARAMS);
+			   String("STATS") + Language::L_ERR_NEEDMOREPARAMS);
    }
    
    // This command effects the user idle time, so we must change it here
@@ -3618,7 +3635,7 @@ void irc2userHandler::parseSTATS(irc2userHandler *handler, StringTokens *tokens)
    if (!server.length()) {
       doSTATS(handler, handler->user, request);
    } else {
-      Server *s = TO_DAEMON->getServer(StringMask(server));
+      Server *s = Daemon::getServer(StringMask(server));
       
       // Check
       if (!s) {
@@ -3629,13 +3646,13 @@ void irc2userHandler::parseSTATS(irc2userHandler *handler, StringTokens *tokens)
       }
    
       // Is this US??
-      if (s == TO_DAEMON->myServer()) {
+      if (s == Daemon::myServer()) {
 	 doSTATS(handler, handler->user, request);
 	 return;
       }
    
       // Poll the remote server
-      TO_DAEMON->routeTo(s)->callSTATS(s, handler->user, request);
+      Daemon::routeTo(s)->callSTATS(s, handler->user, request);
    }
 }
 
@@ -3651,12 +3668,12 @@ void irc2userHandler::parseTIME(irc2userHandler *handler, StringTokens *tokens)
    if (!target.length()) {
       doTIME(handler, handler->user);
    } else {
-      Server *s = TO_DAEMON->getServer(StringMask(target));
+      Server *s = Daemon::getServer(StringMask(target));
       
       // Check
       if (!s) {
 	 // Ohh, well perhaps it is a user then?
-	 User *u = TO_DAEMON->getUser(target);
+	 User *u = Daemon::getUser(target);
 	 
 	 // Check
 	 if (!u) {
@@ -3671,12 +3688,12 @@ void irc2userHandler::parseTIME(irc2userHandler *handler, StringTokens *tokens)
       }
    
       // Is this US??
-      if (s == TO_DAEMON->myServer()) {
+      if (s == Daemon::myServer()) {
 	 doTIME(handler, handler->user);
       }
    
       // Poll the remote server
-      TO_DAEMON->routeTo(s)->callTIME(s, handler->user);
+      Daemon::routeTo(s)->callTIME(s, handler->user);
    }
 }
 
@@ -3689,7 +3706,7 @@ void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
    // Check the parameter count
    if (tokens->countTokens() < 2) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "TOPIC" LNG_ERR_NEEDMOREPARAMS);
+			   String("TOPIC") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
    
@@ -3744,7 +3761,7 @@ void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
    }
    
    // Check the access, is the channel +t?
-   if (c->modes & Channel::MODE_TOPICLOCK) {
+   if (c->modes & Channel::M_TOPICLOCK) {
       // Check if this user is an operator
       if (!cm->isChanOper()) {
 	 handler->sendNumeric(ERR_CHANOPRIVSNEEDED,
@@ -3754,7 +3771,7 @@ void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
    }
 
    // Change the topic, finally.
-   TO_DAEMON->changeChannelTopic(c, handler->user, topic);
+   Daemon::changeChannelTopic(c, handler->user, topic);
 }
 
 
@@ -3786,7 +3803,7 @@ void irc2userHandler::parseUSERHOST(irc2userHandler *handler, StringTokens *toke
    // Check we have at least one parameter
    if (tokens->countTokens() < 2) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "USERHOST" LNG_ERR_NEEDMOREPARAMS);
+			   String("USERHOST") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
 
@@ -3796,7 +3813,7 @@ void irc2userHandler::parseUSERHOST(irc2userHandler *handler, StringTokens *toke
    // Run through the parameter tokens
    for (String iter = tokens->nextToken(); iter.length();
 	iter = tokens->nextToken()) {
-      User *u = TO_DAEMON->getUser(iter);
+      User *u = Daemon::getUser(iter);
       count++;
 
       // Check we have not broken a limit (max 5 requests allowed)
@@ -3840,7 +3857,7 @@ void irc2userHandler::parseVERSION(irc2userHandler *handler, StringTokens *token
    if (!server.length()) {
       doVERSION(handler, handler->user);
    } else {
-      Server *s = TO_DAEMON->getServer(StringMask(server));
+      Server *s = Daemon::getServer(StringMask(server));
       
       // Check
       if (!s) {
@@ -3850,12 +3867,12 @@ void irc2userHandler::parseVERSION(irc2userHandler *handler, StringTokens *token
       }
    
       // Is this US??
-      if (s == TO_DAEMON->myServer()) {
+      if (s == Daemon::myServer()) {
 	 doTIME(handler, handler->user);
       }
    
       // Poll the remote server
-      TO_DAEMON->routeTo(s)->callTIME(s, handler->user);
+      Daemon::routeTo(s)->callTIME(s, handler->user);
    }
 }
 
@@ -3885,17 +3902,19 @@ void irc2userHandler::parseWALLOPS(irc2userHandler *handler, StringTokens *token
        message.length()
 # endif
        ) {
-      TO_DAEMON->broadcastWallops(handler->user, message);
+      Daemon::broadcastWallops(handler->user, message);
       return;
    }
    
    // Complain bitterly!
 # ifdef MINLEN_OP_BROADCAST
    handler->sendNumeric(ERR_NOTEXTTOSEND, 
-			LNG_ERR_NOTEXTTOSEND_NEEDMORE " (WALLOPS)");
+			String(Language::L_ERR_NOTEXTTOSEND_NEEDMORE) +
+			" (WALLOPS)");
 # else
    handler->sendNumeric(ERR_NOTEXTTOSEND,
-			LNG_ERR_NOTEXTTOSEND " (WALLOPS)");
+			String(Language::L_ERR_NOTEXTTOSEND) + 
+			" (WALLOPS)");
 # endif
 }
 #endif
@@ -3977,53 +3996,54 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	    // Ok, maybe this is a channel? If not, it barely dints cpu..
 	    if (Channel::isChannel(watch)) {
 	       // Look for this channel
-	       Channel *c = TO_DAEMON->getChannel(watch);
+	       Channel *c = Daemon::getChannel(watch);
 	       
 	       // Check
 	       if (c) {
 		  handler->
 		    sendNumeric(RPL_NOWON,
-				String::printf("%s * * %lu "
-					       LNG_RPL_NOWON_CHANNEL,
+				String::printf("%s * * %lu %s",
 					       ((char const *)
 						c->name),
-					       c->creationTime));
+					       c->creationTime,
+					       Language::L_RPL_NOWON_CHANNEL));
 		  continue;
 	       }
 	    }
 	    
 	    // Look for a user, this is the most likely case though
-	    User *u = TO_DAEMON->getUser(watch);
+	    User *u = Daemon::getUser(watch);
 	    
 	    // Check
 	    if (u) {
-	       handler->sendNumeric(RPL_NOWON,
-				    String::printf("%s %s %s %lu "
-						   LNG_RPL_NOWON_USER,
-						   ((char const *)
-						    u->nickname),
-						   ((char const *)
-						    u->username),
-						   ((char const *)
-						    u->getHost(handler->user)),
-						   u->lastNickChange));
+	       handler->
+		 sendNumeric(RPL_NOWON,
+			     String::printf("%s %s %s %lu %s",
+					    ((char const *)
+					     u->nickname),
+					    ((char const *)
+					     u->username),
+					    ((char const *)
+					     u->getHost(handler->user)),
+					    u->lastNickChange,
+					    Language::L_RPL_NOWON_USER));
 	       continue;
 	    }
 	    
 	    // If this user is an oper, check for a server..
-	    if ((handler->user->modes & User::MODE_GLOBALOPER) ||
-		(handler->user->modes & User::MODE_LOCALOPER) ||
-		(handler->user->modes & User::MODE_HELPER)) {
-	       Server *s = TO_DAEMON->getServer(watch);
+	    if ((handler->user->modes & User::M_GLOBALOPER) ||
+		(handler->user->modes & User::M_LOCALOPER) ||
+		(handler->user->modes & User::M_HELPER)) {
+	       Server *s = Daemon::getServer(watch);
 	       
 	       // Check
 	       if (s) {
 		  handler->
 		    sendNumeric(RPL_NOWON,
-				String::printf("%s * * 0 "
-					       LNG_RPL_NOWON_SERVER,
+				String::printf("%s * * 0 %s",
 					       ((char const *)
-						u->nickname)));
+						u->nickname),
+					       Language::L_RPL_NOWON_SERVER));
 		  continue;
 	       }
 	    }
@@ -4032,9 +4052,9 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	    if (isupper(param[0])) {
 	       // If we got here, whatever it is must be offline.
 	       handler->sendNumeric(RPL_NOWOFF,
-				    String::printf("%s * * 0 "
-						   LNG_RPL_NOWOFF,
-						   (char const *)watch));
+				    String::printf("%s * * 0 %s",
+						   (char const *)watch,
+						   Language::L_RPL_NOWOFF));
 	    }
 	 }
 	 
@@ -4086,62 +4106,62 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	       */
 	      if (Channel::isChannel(param)) {
 		 // Look for this channel
-		 Channel *c = TO_DAEMON->getChannel(param);
+		 Channel *c = Daemon::getChannel(param);
 		 
 		 // Check
 		 if (c) {
 		    handler->
 		      sendNumeric(RPL_NOWON,
-				  String::printf("%s * * %lu "
-						 LNG_RPL_NOWON_CHANNEL,
+				  String::printf("%s * * %lu %s",
 						 ((char const *)
 						  c->name),
-						 c->creationTime));
+						 c->creationTime,
+						 Language::L_RPL_NOWON_CHANNEL));
 		    continue;
 		 }
 	      }
 	      
 	      // Look for a user, this is the most likely case though
-	      User *u = TO_DAEMON->getUser(param);
+	      User *u = Daemon::getUser(param);
 	      
 	      // Check
 	      if (u) {
 		 handler->sendNumeric(RPL_NOWON,
-				      String::printf("%s %s %s %lu "
-						     LNG_RPL_NOWON_USER,
+				      String::printf("%s %s %s %lu %s",
 						     ((char const *)
 						      u->nickname),
 						     ((char const *)
 						      u->username),
 						     ((char const *)
 						      u->getAddress(handler->user)),
-						     u->lastNickChange));
+						     u->lastNickChange,
+						     Language::L_RPL_NOWON_USER));
 		 continue;
 	      }
 	      
 	      // If this user is an oper, check for a server..
-	      if ((handler->user->modes & User::MODE_GLOBALOPER) ||
-		  (handler->user->modes & User::MODE_LOCALOPER) ||
-		  (handler->user->modes & User::MODE_HELPER)) {
-		 Server *s = TO_DAEMON->getServer(param);
+	      if ((handler->user->modes & User::M_GLOBALOPER) ||
+		  (handler->user->modes & User::M_LOCALOPER) ||
+		  (handler->user->modes & User::M_HELPER)) {
+		 Server *s = Daemon::getServer(param);
 		 
 		 // Check
 		 if (s) {
 		    handler->
 		      sendNumeric(RPL_NOWON,
-				  String::printf("%s * * 0 "
-						 LNG_RPL_NOWON_SERVER,
+				  String::printf("%s * * 0 %s",
 						 ((char const *)
-						  s->getHostname())));
+						  s->getHostname()),
+						 Language::L_RPL_NOWON_SERVER));
 		    continue;
 		 }
 	      }
 	      
 	      // If we got here, whatever it is must be offline.
 	      handler->sendNumeric(RPL_NOWOFF,
-				   String::printf("%s * * 0 "
-						  LNG_RPL_NOWOFF,
-						  (char const *)param));
+				   String::printf("%s * * 0 %s",
+						  (char const *)param,
+						  Language::L_RPL_NOWOFF));
 	   }
 	 continue;
        case '-': // Removing a watch
@@ -4158,9 +4178,9 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	 
 	 // Tell the client we deleted it
 	 handler->sendNumeric(RPL_WATCHOFF,
-			      String::printf("%s * * 0 " 
-					     LNG_RPL_WATCHOFF,
-					     (char const *)param));
+			      String::printf("%s * * 0 %s",
+					     (char const *)param,
+					     Language::L_RPL_WATCHOFF));
 	 continue;
       }
    }
@@ -4184,7 +4204,7 @@ void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
 
    // Are we looking for a channel, or a mask/nickname?
    if (Channel::isChannel(maskStr)) {
-      Channel *chan = TO_DAEMON->getChannel(maskStr);
+      Channel *chan = Daemon::getChannel(maskStr);
 
       // Make sure we got that channel record, and this user is a member
       if (chan && chan->getMember(handler->user)) {
@@ -4208,8 +4228,8 @@ void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
       unsigned short lines = 0;
 #endif
       
-      for (Daemon::user_map_t::iterator it = TO_DAEMON->users.begin();
-	   it != TO_DAEMON->users.end(); it++) {
+      for (Daemon::user_map_t::iterator it = Daemon::users.begin();
+	   it != Daemon::users.end(); it++) {
 	 // Check for a match (we could match a heap of things here)
 	 if (mask.matches((*it).first) ||
 	     mask.matches((*it).second->vwhostname) ||
@@ -4238,7 +4258,7 @@ void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
 	    ChannelMember *chanmem = 0;
 	    
 	    // If this user is 'invisible', we should not show the channel...
-	    if (!((*it).second->modes & User::MODE_INVISIBLE)) {
+	    if (!((*it).second->modes & User::M_INVISIBLE)) {
 	       // Check that they are actually on a channel first
 	       if (!(*it).second->channels.empty()) {
 		  // Grab the first one on their list (fastest to grab, really)
@@ -4307,7 +4327,7 @@ void irc2userHandler::parseWHOIS(irc2userHandler *handler, StringTokens *tokens)
    if (!param2.length()) {
       doWHOIS(handler, handler->user, param1);
    } else {
-      Server *s = TO_DAEMON->getServer(StringMask(param1));
+      Server *s = Daemon::getServer(StringMask(param1));
       
       // Check
       if (!s) {
@@ -4317,12 +4337,12 @@ void irc2userHandler::parseWHOIS(irc2userHandler *handler, StringTokens *tokens)
       }
    
       // Is this US??
-      if (s == TO_DAEMON->myServer()) {
+      if (s == Daemon::myServer()) {
 	 doWHOIS(handler, handler->user, param2);
       }
    
       // Poll the remote server
-      TO_DAEMON->routeTo(s)->callWHOIS(s, handler->user, param2);
+      Daemon::routeTo(s)->callWHOIS(s, handler->user, param2);
    }
 }
 
@@ -4339,7 +4359,7 @@ void irc2userHandler::parseWHOWAS(irc2userHandler *handler, StringTokens *tokens
    // Check we have at least one parameter
    if (tokens->countTokens() < 2) {
       handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			   "WHOWAS" LNG_ERR_NEEDMOREPARAMS);
+			   String("WHOWAS") + Language::L_ERR_NEEDMOREPARAMS);
       return;
    }
    
@@ -4368,8 +4388,8 @@ void irc2userHandler::parseWHOWAS(irc2userHandler *handler, StringTokens *tokens
       nick = nick.IRCtoLower();
       
       // Run through the whowas list
-      for (Daemon::whowas_deque_t::iterator it = TO_DAEMON->whowas.begin();
-	   it != TO_DAEMON->whowas.end(); it++) {
+      for (Daemon::whowas_deque_t::iterator it = Daemon::whowas.begin();
+	   it != Daemon::whowas.end(); it++) {
 	 // Check for a match
 	 if ((*it).getNickname().IRCtoLower() == nick) {
 	    // Check the counter

@@ -81,7 +81,7 @@
  * Check user.h for more usermodes you can 'or' together.
  * Undefining this will stop users automatically being set a mode.
  */
-#define USER_REGISTRATION_MODES		User::MODE_VWORLD
+#define USER_REGISTRATION_MODES		User::M_VWORLD
 
 
 /******************************************************************************
@@ -149,6 +149,14 @@
  * different nick requests, but not many.
  */
 # define MAX_REGISTRATION_LINES		5
+
+
+/* This is the prefix for the language files. Best not to change this unless
+ * you really need to for some odd reason. If you do change it, make sure
+ * the LANG_FILE_PREFIX_LEN size matches the string.
+ */
+# define LANG_FILE_PREFIX		"ircdlang."
+# define LANG_FILE_PREFIX_LEN		9
 
 
 /* Time-out value for select(). Everytime select() times out, the daemon does
@@ -247,8 +255,8 @@
  * +O/+o which is given to the user. Modes should be or'd together with the
  * '|' character.
  */
-# define GIVE_MODES_GLOBALOP		User::MODE_WALLOPS | \
-					User::MODE_ROUTINGSTAFF
+# define GIVE_MODES_GLOBALOP		User::M_WALLOPS | \
+					User::M_ROUTINGSTAFF
 /* # define GIVE_MODES_LOCALOP */
 
 

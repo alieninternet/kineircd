@@ -13,12 +13,13 @@
 #include "daemon.h"
 #include "operator.h"
 #include "utils.h"
+#include "language.h"
 
 
 // Classes table. Many many duplicates to make config file writing easier..
 struct {
    char *className;
-	void (*classHandler)(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
+	void (*classHandler)(ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
 }
 
  configurationClassTable[] = {
@@ -59,6 +60,7 @@ ConfigData::ConfigData(void)
   confAutobone(true),
   confDescription(""),
   confHidden(false),
+  confLanguageDir("."),
   confMOTD(DEFAULT_CONFIG_MOTD_FILE),
   confNetwork(""),
   confNoop(false),
@@ -85,7 +87,7 @@ void Daemon::configComplain(bool firstRun, String const &complaint)
       cout << message << endl;
    } else {
       logger(message, LOGPRI_ERROR);
-      broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING, message);
+      serverNotice(LocalUser::SN_HOUSEKEEPING, message);
    }
 }
 
@@ -101,7 +103,7 @@ void Daemon::configWarning(bool firstRun, String const &complaint)
       cout << message << endl;
    } else {
       logger(message, LOGPRI_WARNING);
-      broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING, message);
+      serverNotice(LocalUser::SN_HOUSEKEEPING, message);
    }
 }
 
@@ -177,8 +179,8 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
    // Check the AUTOBONE setting
 //   if (conf->confAutobone) {
       // Is this a change?
-//      if (!(server->modes & Server::MODE_AUTOBONE)) {
-//	 server->modes |= Server::MODE_AUTOBONE;
+//      if (!(server->modes & Server::M_AUTOBONE)) {
+//	 server->modes |= Server::M_AUTOBONE;
 //	 toggleOnStr = toggleOnStr + String('a');
 //      }
 //   } else {
@@ -258,7 +260,9 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
 		       ")");
       }
    }
-   
+
+   // Fire up the languages now that we know the directory
+   Language::loadLanguages(conf->confLanguageDir);
    
    // If we got here, all must be well...
    return true;
@@ -280,7 +284,7 @@ bool Daemon::configure(bool firstRun)
       wipeListens();
       
       // Temporary: poor checking..
-      s = new SocketIPv4(0x00000000, 6667, true, false, this);
+      s = new SocketIPv4(0x00000000, 6667, true, false);
       
       if (!s->setNonBlocking() ||
 	  !s->setReuseAddress()) {
@@ -492,7 +496,7 @@ bool Daemon::configure(bool firstRun)
 #endif
 		  
 		  // Enter the handler
-		  configurationClassTable[ii].classHandler(this, &conf,
+		  configurationClassTable[ii].classHandler(&conf,
 							   &configData, 
 							   &i, firstRun);
 	       } else {
@@ -546,7 +550,7 @@ bool Daemon::configure(bool firstRun)
 /* configADMIN
  * Original 03/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::configADMIN(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configADMIN(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
 {
    String command = "", parameter = "";
    bool doingCommand = true;
@@ -555,7 +559,7 @@ void Daemon::configADMIN(Daemon *daemon, ConfigData *conf, String *line, String:
    while ((*line)[*pos] != '}') {
       // Check we have not skipped over the EOL..
       if (++(*pos) >= line->length()) {
-	 daemon->configComplain(firstRun, 
+	 Daemon::configComplain(firstRun, 
 			      "Unterminated ADMIN class in configuration");
 	 return;
       }
@@ -565,7 +569,7 @@ void Daemon::configADMIN(Daemon *daemon, ConfigData *conf, String *line, String:
        case ';': // End of command marker, process the given command/paramter
 	 // Check if this is right..
 	 if (doingCommand) {
-	    daemon->configComplain(firstRun,
+	    Daemon::configComplain(firstRun,
 				 "Semi-colon found in variable name side of "
 				 "'=' in ADMIN class (Missing semi-colon?)");
 	    return;
@@ -589,7 +593,7 @@ void Daemon::configADMIN(Daemon *daemon, ConfigData *conf, String *line, String:
 	 } else if (command == "EMAIL") {
 	    conf->adminEmail = String(":") + parameter;
 	 } else {
-	    daemon->configComplain(firstRun,
+	    Daemon::configComplain(firstRun,
 				 String("Ignoring unknown variable in ADMIN "
 					"class: ") +
 				 command);
@@ -602,7 +606,7 @@ void Daemon::configADMIN(Daemon *daemon, ConfigData *conf, String *line, String:
        case '=': // Command/Parameter separator
 	 // Check if we have not already gotten this..
 	 if (!doingCommand) {
-	    daemon->configComplain(firstRun,
+	    Daemon::configComplain(firstRun,
 				 command + 
 				 " variable is invalid (two equal signs) in "
 				 "ADMIN class");
@@ -629,7 +633,7 @@ void Daemon::configADMIN(Daemon *daemon, ConfigData *conf, String *line, String:
 /* configARBITER
  * Original , Simon Butcher <pickle@austnet.org>
  */
-void Daemon::configARBITER(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configARBITER(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
 {
    int c = 1;
    (*pos)++;
@@ -654,7 +658,7 @@ void Daemon::configARBITER(Daemon *daemon, ConfigData *conf, String *line, Strin
 /* configCONF
  * Original 03/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::configCONF(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configCONF(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
 {
    String command = "", parameter = "";
    bool doingCommand = true;
@@ -663,7 +667,7 @@ void Daemon::configCONF(Daemon *daemon, ConfigData *conf, String *line, String::
    while ((*line)[*pos] != '}') {
       // Check we have not skipped over the EOL..
       if (++(*pos) >= line->length()) {
-	 daemon->configComplain(firstRun,
+	 Daemon::configComplain(firstRun,
 			      "Unterminated CONF class in configuration");
 	 return;
       }
@@ -673,7 +677,7 @@ void Daemon::configCONF(Daemon *daemon, ConfigData *conf, String *line, String::
        case ';': // End of command marker, process the given command/paramter
 	 // Check if this is right..
 	 if (doingCommand) {
-	    daemon->configComplain(firstRun,
+	    Daemon::configComplain(firstRun,
 				 "Semi-colon found in variable name side of "
 				 "'=' in CONF class (Missing semi-colon?)");
 	    return;
@@ -697,6 +701,8 @@ void Daemon::configCONF(Daemon *daemon, ConfigData *conf, String *line, String::
 	    conf->confDescription = parameter;
 	 } else if (command == "HIDDEN") {
 	    conf->confHidden = Utils::toBool(parameter, conf->confHidden);
+	 } else if (command == "LANGDIR") {
+	    conf->confLanguageDir = parameter;
 	 } else if (command == "MOTD") {
 	    conf->confMOTD = parameter;
 	 } else if ((command == "NETWORK") ||
@@ -710,7 +716,7 @@ void Daemon::configCONF(Daemon *daemon, ConfigData *conf, String *line, String::
 	 } else if (command == "SERVERNAME") {
 	    conf->confServername = parameter;
 	 } else {
-	    daemon->configWarning(firstRun,
+	    Daemon::configWarning(firstRun,
 				String("Ignoring unknown variable in "
 				       "CONF class: ") +
 				command);
@@ -723,7 +729,7 @@ void Daemon::configCONF(Daemon *daemon, ConfigData *conf, String *line, String::
        case '=': // Command/Parameter separator
 	 // Check if we have not already gotten this..
 	 if (!doingCommand) {
-	    daemon->configComplain(firstRun,
+	    Daemon::configComplain(firstRun,
 				 command +
 				 " variable is invalid (two equal signs) "
 				 "in CONF class");
@@ -748,7 +754,7 @@ void Daemon::configCONF(Daemon *daemon, ConfigData *conf, String *line, String::
 /* configFAIL
  * Original 06/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::configFAIL(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configFAIL(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
 {
    String subclassName = "", mask = "", reason = "";
    bool doingMask = true;
@@ -785,7 +791,7 @@ void Daemon::configFAIL(Daemon *daemon, ConfigData *conf, String *line, String::
 		    (subclassName == "CHANNEL")) {
 	    failList = &conf->failChannels;
 	 } else {
-	    daemon->configComplain(firstRun,
+	    Daemon::configComplain(firstRun,
 				 String("Unknown subclass '") + subclassName +
 				 "' found in FAIL class");
 	    return;
@@ -795,7 +801,7 @@ void Daemon::configFAIL(Daemon *daemon, ConfigData *conf, String *line, String::
 	 while ((*line)[*pos] != '}') {
 	    // Check we have not skipped over EOL
 	    if (++(*pos) >= line->length()) {
-	       daemon->configComplain(firstRun,
+	       Daemon::configComplain(firstRun,
 				    String("Unterminated FAIL.") + 
 				    subclassName + " class in configuration");
 	       return;
@@ -806,7 +812,7 @@ void Daemon::configFAIL(Daemon *daemon, ConfigData *conf, String *line, String::
 	     case ';': // End of variable marker. Processing time
 	       // Check if this was wrong
 	       if (doingMask) {
-		  daemon->configComplain(firstRun,
+		  Daemon::configComplain(firstRun,
 				       String("Semi-colon found in mask name "
 					      "side of '=' in FAIL.") +
 				       subclassName + 
@@ -835,7 +841,7 @@ void Daemon::configFAIL(Daemon *daemon, ConfigData *conf, String *line, String::
 	     case '=': // Mask/Reason separator
 	       // Check if this is right
 	       if (!doingMask) {
-		  daemon->configComplain(firstRun,
+		  Daemon::configComplain(firstRun,
 				       mask + " mask is invalid (two "
 				       "equal signs) in FAIL." +
 				       subclassName + " class");
@@ -865,7 +871,7 @@ void Daemon::configFAIL(Daemon *daemon, ConfigData *conf, String *line, String::
    }
 
    // If we hit the end, we failed. Damn.
-   daemon->configComplain(firstRun,
+   Daemon::configComplain(firstRun,
 			"Unterminated FAIL class in configuration");
    return;
 }
@@ -874,7 +880,7 @@ void Daemon::configFAIL(Daemon *daemon, ConfigData *conf, String *line, String::
 /* configLISTEN
  * Original , Simon Butcher <pickle@austnet.org>
  */
-void Daemon::configLISTEN(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configLISTEN(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
 {
    while ((*line)[*pos] != '}') {
       // Check we have not skipped over the EOL..
@@ -888,7 +894,7 @@ void Daemon::configLISTEN(Daemon *daemon, ConfigData *conf, String *line, String
 /* configOPERS
  * Original 07/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configOPERS(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
 {
    String command = "", parameter = "";
    String nickname = "", name = "", password = "", user = "", host = "";
@@ -918,7 +924,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 	 while ((*line)[*pos] != '}') {
 	    // Check that we have not gone over the EOL
 	    if (++(*pos) >= line->length()) {
-	       daemon->configComplain(firstRun,
+	       Daemon::configComplain(firstRun,
 				    String("Unterminated operator '") +
 				    nickname + 
 				    "' in OPERS class in configuration");
@@ -930,7 +936,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 	     case ';': // End of command marker, process the given stuff
 	       // Make sure we are not being called prematurely
 	       if (doingCommand) {
-		  daemon->configComplain(firstRun,
+		  Daemon::configComplain(firstRun,
 				       "Semi-colon found in variable name side "
 				       "of '=' in ADMIN class (Missing "
 				       "semi-colon?)");
@@ -962,14 +968,14 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 		  } else if (parameter == "LOCAL") {
 		     isGlobal = false;
 		  } else {
-		     daemon->configComplain(firstRun,
+		     Daemon::configComplain(firstRun,
 					  String("Unknown operator type in "
 						 "operator '") + nickname +
 					  "' in OPERS class in configuration");
 		     return;
 		  }
 	       } else {
-		  daemon->configComplain(firstRun,
+		  Daemon::configComplain(firstRun,
 				       String("Ignoring unknown variable '") +
 				       command + "' in operator '" + nickname +
 				       "' in OPERS class in configuration");
@@ -982,7 +988,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 	     case '=': // Variable/Paramter separator thingy
 	       // Check if we have not already gotten this..
 	       if (!doingCommand) {
-		  daemon->configComplain(firstRun,
+		  Daemon::configComplain(firstRun,
 				       command +
 				       " variable is invalid (two equal "
 				       "signs) in operator '" + 
@@ -1005,7 +1011,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 	       // Check what to do
 	       if (command != "HOSTS") {
 
-		  daemon->configComplain(firstRun,
+		  Daemon::configComplain(firstRun,
 				       String("Unknown sub-class '") +
 				       command + "' in operator '" + nickname +
 				       "' in OPERS class in configuration");
@@ -1020,7 +1026,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 	       while ((*line)[*pos] != '}') {
 		  // Check for jumping over the EOL..
 		  if (++(*pos) >= line->length()) {
-		     daemon->configComplain(firstRun,
+		     Daemon::configComplain(firstRun,
 					  String("Unterminated HOSTS "
 						 "subclass in operator '") +
 					  nickname + 
@@ -1060,7 +1066,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 		   case '@':
 		     // Check if we have not already gotten this
 		     if (!doingUser) {
-			daemon->configComplain(firstRun,
+			Daemon::configComplain(firstRun,
 					     String("Syntax error (identity "
 						    "mask has two '@' "
 						    "characters) in operator "
@@ -1120,7 +1126,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
    }
 
    // If we hit the end, oops
-   daemon->configComplain(firstRun,
+   Daemon::configComplain(firstRun,
 			"Unterminated OPERS class in configuration");
    return;
 }
@@ -1129,7 +1135,7 @@ void Daemon::configOPERS(Daemon *daemon, ConfigData *conf, String *line, String:
 /* configREDIRECT
  * Original 13/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::configREDIRECT(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configREDIRECT(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
 {
    String subclassName = "", mask = "", dest = "";
    bool doingMask = true;
@@ -1165,7 +1171,7 @@ void Daemon::configREDIRECT(Daemon *daemon, ConfigData *conf, String *line, Stri
 	    // skip
 	    continue;
 	 } else {
-	    daemon->configComplain(firstRun,
+	    Daemon::configComplain(firstRun,
 				 String("Unknown subclass '") + subclassName +
 				 "' found in REDIRECT class");
 	    return;
@@ -1175,7 +1181,7 @@ void Daemon::configREDIRECT(Daemon *daemon, ConfigData *conf, String *line, Stri
 	 while ((*line)[*pos] != '}') {
 	    // Check we have not skipped over EOL
 	    if (++(*pos) >= line->length()) {
-	       daemon->configComplain(firstRun,
+	       Daemon::configComplain(firstRun,
 				    String("Unterminated REDIRECT.") + 
 				    subclassName + " class in configuration");
 	       return;
@@ -1186,7 +1192,7 @@ void Daemon::configREDIRECT(Daemon *daemon, ConfigData *conf, String *line, Stri
 	     case ';': // End of variable marker. Processing time
 	       // Check if this was wrong
 	       if (doingMask) {
-		  daemon->configComplain(firstRun,
+		  Daemon::configComplain(firstRun,
 				       String("Semi-colon found in mask name "
 					      "side of '=' in REDIRECT.") +
 				       subclassName + 
@@ -1215,7 +1221,7 @@ void Daemon::configREDIRECT(Daemon *daemon, ConfigData *conf, String *line, Stri
 	     case '=': // Mask/dest separator
 	       // Check if this is right
 	       if (!doingMask) {
-		  daemon->configComplain(firstRun,
+		  Daemon::configComplain(firstRun,
 				       mask + " mask is invalid (two "
 				       "equal signs) in REDIRECT." +
 				       subclassName + " class");
@@ -1245,7 +1251,7 @@ void Daemon::configREDIRECT(Daemon *daemon, ConfigData *conf, String *line, Stri
    }
 
    // If we hit the end, we failed. Damn.
-   daemon->configComplain(firstRun,
+   Daemon::configComplain(firstRun,
 			"Unterminated REDIRECT class in configuration");
    return;
 }
@@ -1254,14 +1260,14 @@ void Daemon::configREDIRECT(Daemon *daemon, ConfigData *conf, String *line, Stri
 /* configSSL
  * Original 17/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::configSSL(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configSSL(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
 {
    /* We can only read this information on the FIRST RUN as it could screw up
     * any SSL connections being run at this point in time
     */
    if (firstRun) {
 #ifndef HAVE_OPENSSL
-      daemon->configWarning(firstRun, 
+      Daemon::configWarning(firstRun, 
 			  "Ignoring SSL class - No SSL support has been "
 			  "compiled");
 #else
@@ -1272,7 +1278,7 @@ void Daemon::configSSL(Daemon *daemon, ConfigData *conf, String *line, String::l
       while ((*line)[*pos] != '}') {
 	 // Check we have not skipped over the EOL..
 	 if (++(*pos) >= line->length()) {
-	    daemon->configComplain(firstRun,
+	    Daemon::configComplain(firstRun,
 				 "Unterminated SSL class in configuration");
 	    return;
 	 }
@@ -1282,7 +1288,7 @@ void Daemon::configSSL(Daemon *daemon, ConfigData *conf, String *line, String::l
 	  case ';': // End of command marker, process the given command/paramter
 	    // Check if this is right..
 	    if (doingCommand) {
-	       daemon->configComplain(firstRun,
+	       Daemon::configComplain(firstRun,
 				    "Semi-colon found in variable name side "
 				    "of '=' in SSL class (Missing "
 				    "semi-colon?)");
@@ -1304,7 +1310,7 @@ void Daemon::configSSL(Daemon *daemon, ConfigData *conf, String *line, String::l
 		(command == "CERT")) {
 //	       conf->confServername = parameter;
 	    } else {
-	       daemon->configComplain(firstRun,
+	       Daemon::configComplain(firstRun,
 				    String("Ignoring unknown variable in "
 					   "SSL class: ") +
 				    command);
@@ -1317,7 +1323,7 @@ void Daemon::configSSL(Daemon *daemon, ConfigData *conf, String *line, String::l
 	  case '=': // Command/Parameter separator
 	    // Check if we have not already gotten this..
 	    if (!doingCommand) {
-	       daemon->configComplain(firstRun,
+	       Daemon::configComplain(firstRun,
 				    command +
 				    " variable is invalid (two equal signs) "
 				    "in SSL class");
@@ -1358,7 +1364,7 @@ void Daemon::configSSL(Daemon *daemon, ConfigData *conf, String *line, String::l
 	 
 	 // Check we have not skipped over the EOL..
 	 if (++(*pos) >= line->length()) {
-	    daemon->configComplain(firstRun,
+	    Daemon::configComplain(firstRun,
 				 "Unterminated SSL class in configuration");
 	    return;
 	 }
@@ -1372,7 +1378,7 @@ void Daemon::configSSL(Daemon *daemon, ConfigData *conf, String *line, String::l
 /* configSTATUS
  * Original , Simon Butcher <pickle@austnet.org>
  */
-void Daemon::configSTATUS(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
+void Daemon::configSTATUS(ConfigData *conf, String *line, String::length_t *pos, bool firstRun)
 {
    while ((*line)[++(*pos)] != '}');
 }

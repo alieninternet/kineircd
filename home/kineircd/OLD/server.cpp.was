@@ -13,25 +13,25 @@ char const *Server::modeStr =
 char const *Server::modeParamStr = 
   "*";
 struct Server::modeTableStruct const Server::modeTable[] = {
-     { 'a',	MODE_AUTOTBS,		false,	false,	true,
+     { 'a',	M_AUTOTBS,		false,	false,	true,
 	Server::toggleModeAUTOTBS
      },
-     { 'F',	MODE_USERSFULL,		false,	false,	false,
+     { 'F',	M_USERSFULL,		false,	false,	false,
 	Server::toggleModeUSERSFULL
      },
-     { 'h',	MODE_HIDDEN,		false,	false,	true,
+     { 'h',	M_HIDDEN,		false,	false,	true,
 	Server::toggleModeHIDDEN
      },
-     { 'L',	MODE_MODELOCK,		false,	false,	false,
+     { 'L',	M_MODELOCK,		false,	false,	false,
 	Server::toggleModeMODELOCK
      },
-     { 'm',	MODE_SHORTMOTD,		false,	false,	true,
+     { 'm',	M_SHORTMOTD,		false,	false,	true,
 	Server::toggleModeSHORTMOTD
      },
-     { 'M',	MODE_REMOTEMOTD,	false,	false,	true,
+     { 'M',	M_REMOTEMOTD,		false,	false,	true,
 	Server::toggleModeREMOTEMOTD
      },
-     { 'n',	MODE_NOOP,		false,	false,	true,
+     { 'n',	M_NOOP,			false,	false,	true,
 	Server::toggleModeNOOP
      },
      { 0 }
@@ -64,11 +64,11 @@ String Server::makeModes(Server *server)
  */
 bool Server::toggleModeAUTOTBS(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & Server::MODE_AUTOTBS)) {
-      server->modes |= Server::MODE_AUTOTBS;
+   if (setting && !(server->modes & Server::M_AUTOTBS)) {
+      server->modes |= Server::M_AUTOTBS;
       return true;
-   } else if (!setting && (server->modes & Server::MODE_AUTOTBS)) {
-      server->modes &= ~Server::MODE_AUTOTBS;
+   } else if (!setting && (server->modes & Server::M_AUTOTBS)) {
+      server->modes &= ~Server::M_AUTOTBS;
       return true;
    }
    
@@ -81,11 +81,11 @@ bool Server::toggleModeAUTOTBS(bool setting, Server *server, String *param)
  */
 bool Server::toggleModeHIDDEN(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & Server::MODE_HIDDEN)) {
-      server->modes |= Server::MODE_HIDDEN;
+   if (setting && !(server->modes & Server::M_HIDDEN)) {
+      server->modes |= Server::M_HIDDEN;
       return true;
-   } else if (!setting && (server->modes & Server::MODE_HIDDEN)) {
-      server->modes &= ~Server::MODE_HIDDEN;
+   } else if (!setting && (server->modes & Server::M_HIDDEN)) {
+      server->modes &= ~Server::M_HIDDEN;
       return true;
    }
    
@@ -98,11 +98,11 @@ bool Server::toggleModeHIDDEN(bool setting, Server *server, String *param)
  */
 bool Server::toggleModeMODELOCK(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & Server::MODE_MODELOCK)) {
-      server->modes |= Server::MODE_MODELOCK;
+   if (setting && !(server->modes & Server::M_MODELOCK)) {
+      server->modes |= Server::M_MODELOCK;
       return true;
-   } else if (!setting && (server->modes & Server::MODE_MODELOCK)) {
-      server->modes &= ~Server::MODE_MODELOCK;
+   } else if (!setting && (server->modes & Server::M_MODELOCK)) {
+      server->modes &= ~Server::M_MODELOCK;
       return true;
    }
    
@@ -115,11 +115,11 @@ bool Server::toggleModeMODELOCK(bool setting, Server *server, String *param)
  */
 bool Server::toggleModeNOOP(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & Server::MODE_NOOP)) {
-      server->modes |= Server::MODE_NOOP;
+   if (setting && !(server->modes & Server::M_NOOP)) {
+      server->modes |= Server::M_NOOP;
       return true;
-   } else if (!setting && (server->modes & Server::MODE_NOOP)) {
-      server->modes &= ~Server::MODE_NOOP;
+   } else if (!setting && (server->modes & Server::M_NOOP)) {
+      server->modes &= ~Server::M_NOOP;
       return true;
    }
    
@@ -132,11 +132,11 @@ bool Server::toggleModeNOOP(bool setting, Server *server, String *param)
  */
 bool Server::toggleModeREMOTEMOTD(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & Server::MODE_REMOTEMOTD)) {
-      server->modes |= Server::MODE_REMOTEMOTD;
+   if (setting && !(server->modes & Server::M_REMOTEMOTD)) {
+      server->modes |= Server::M_REMOTEMOTD;
       return true;
-   } else if (!setting && (server->modes & Server::MODE_REMOTEMOTD)) {
-      server->modes &= ~Server::MODE_REMOTEMOTD;
+   } else if (!setting && (server->modes & Server::M_REMOTEMOTD)) {
+      server->modes &= ~Server::M_REMOTEMOTD;
       return true;
    }
    
@@ -149,11 +149,11 @@ bool Server::toggleModeREMOTEMOTD(bool setting, Server *server, String *param)
  */
 bool Server::toggleModeSHORTMOTD(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & Server::MODE_SHORTMOTD)) {
-      server->modes |= Server::MODE_SHORTMOTD;
+   if (setting && !(server->modes & Server::M_SHORTMOTD)) {
+      server->modes |= Server::M_SHORTMOTD;
       return true;
-   } else if (!setting && (server->modes & Server::MODE_SHORTMOTD)) {
-      server->modes &= ~Server::MODE_SHORTMOTD;
+   } else if (!setting && (server->modes & Server::M_SHORTMOTD)) {
+      server->modes &= ~Server::M_SHORTMOTD;
       return true;
    }
    
@@ -166,11 +166,11 @@ bool Server::toggleModeSHORTMOTD(bool setting, Server *server, String *param)
  */
 bool Server::toggleModeUSERSFULL(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & Server::MODE_USERSFULL)) {
-      server->modes |= Server::MODE_USERSFULL;
+   if (setting && !(server->modes & Server::M_USERSFULL)) {
+      server->modes |= Server::M_USERSFULL;
       return true;
-   } else if (!setting && (server->modes & Server::MODE_USERSFULL)) {
-      server->modes &= ~Server::MODE_USERSFULL;
+   } else if (!setting && (server->modes & Server::M_USERSFULL)) {
+      server->modes &= ~Server::M_USERSFULL;
       return true;
    }
    

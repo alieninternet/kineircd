@@ -21,52 +21,52 @@ char const *User::modeStr =
 char const *User::modeParamStr = 
   "s";
 struct User::modeTableStruct const User::modeTable[] = {
-     { 'd',	MODE_DEAF,		false,	false,	true,
+     { 'd',	M_DEAF,			false,	false,	true,
 	User::toggleModeDEAF
      },
-     { 'g',	MODE_IGNORING,		false,	false,	true,
+     { 'g',	M_IGNORING,		false,	false,	true,
 	User::toggleModeIGNORING
      },
-     { 'h',	MODE_HELPER,		false,	false,	true,
+     { 'h',	M_HELPER,		false,	false,	true,
 	User::toggleModeHELPER
      },
-     { 'k',	MODE_NONKICKABLE,	false,	false,	false,
+     { 'k',	M_NONKICKABLE,		false,	false,	false,
 	User::toggleModeNONKICKABLE
      },
-     { 'i',	MODE_INVISIBLE,		false,	false,	true,
+     { 'i',	M_INVISIBLE,		false,	false,	true,
 	User::toggleModeINVISIBLE
      },
-     { 'I',	MODE_IDENTIFIED,	false,	false,	false,
+     { 'I',	M_IDENTIFIED,		false,	false,	false,
 	User::toggleModeIDENTIFIED
      },
-     { 'n',	MODE_GOT_IDENTD,	false,	false,	false,
+     { 'n',	M_GOT_IDENTD,		false,	false,	false,
 	User::toggleModeGOT_IDENTD
      },
-     { 'o',	MODE_LOCALOPER,		false,	false,	true,
+     { 'o',	M_LOCALOPER,		false,	false,	true,
 	User::toggleModeOPER
      },
-     { 'O',	MODE_GLOBALOPER,	false,	false,	true,
+     { 'O',	M_GLOBALOPER,		false,	false,	true,
 	User::toggleModeOPER
      },
-     { 'r',	MODE_RESTRICTED,	false,	false,	false,
+     { 'r',	M_RESTRICTED,		false,	false,	false,
 	User::toggleModeRESTRICTED
      },
-     { 'R',	MODE_REGNICKSMSG,	false,	false,	true,
+     { 'R',	M_REGNICKSMSG,		false,	false,	true,
 	User::toggleModeREGNICKSMSG
      },
      { 's',	0,			true,	false,	true,
 	User::toggleModeSERVNOTICES
      },
-     { 'S',	MODE_SECURE,		false,	false,	false,
+     { 'S',	M_SECURE,		false,	false,	false,
 	User::toggleModeSECURE
      },
-     { 'v',	MODE_VWORLD,		false,	false,	true,
+     { 'v',	M_VWORLD,		false,	false,	true,
 	User::toggleModeVWORLD
      },
-     { 'w',	MODE_WALLOPS,		false,	false,	true,
+     { 'w',	M_WALLOPS,		false,	false,	true,
 	User::toggleModeWALLOPS
      },
-     { '\241',	MODE_ROUTINGSTAFF,	false,	false,	false,
+     { '\241',	M_ROUTINGSTAFF,		false,	false,	false,
 	User::toggleModeROUTINGSTAFF
      },
      { 0 }
@@ -204,13 +204,13 @@ String User::makeModes(User *user)
 /* User::toggleModeDEAF
  * Original 25/08/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeDEAF(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeDEAF(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_DEAF)) {
-      user->modes |= User::MODE_DEAF;
+   if (setting && !(user->modes & User::M_DEAF)) {
+      user->modes |= User::M_DEAF;
       return true;
-   } else if (!setting && (user->modes & User::MODE_DEAF)) {
-      user->modes &= ~User::MODE_DEAF;
+   } else if (!setting && (user->modes & User::M_DEAF)) {
+      user->modes &= ~User::M_DEAF;
       return true;
    }
    
@@ -221,13 +221,13 @@ bool User::toggleModeDEAF(bool setting, Handler *handler, Daemon *daemon, User *
 /* User::toggleModeGOT_IDENTD
  * Original 22/09/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeGOT_IDENTD(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeGOT_IDENTD(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_GOT_IDENTD)) {
-      user->modes |= User::MODE_GOT_IDENTD;
+   if (setting && !(user->modes & User::M_GOT_IDENTD)) {
+      user->modes |= User::M_GOT_IDENTD;
       return true;
-   } else if (!setting && (user->modes & User::MODE_GOT_IDENTD)) {
-      user->modes &= ~User::MODE_GOT_IDENTD;
+   } else if (!setting && (user->modes & User::M_GOT_IDENTD)) {
+      user->modes &= ~User::M_GOT_IDENTD;
       return true;
    }
    
@@ -238,39 +238,39 @@ bool User::toggleModeGOT_IDENTD(bool setting, Handler *handler, Daemon *daemon, 
 /* User::toggleModeHELPER
  * Original 22/09/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeHELPER(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeHELPER(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
    // Check if we are turning this on
    if (setting) {
       if (handler) {
 	 /* Tell the user they're an idiot :) */
-	 if (!(user->modes & User::MODE_HELPER)) {
-	    handler->sendNumeric(TO_DAEMON->myServer(),
+	 if (!(user->modes & User::M_HELPER)) {
+	    handler->sendNumeric(Daemon::myServer(),
 				 ERR_NOPRIVILEGES, 0,
 				 Language::L_ERR_NOPRIVILEGES_PLUS_HELPER);
 	 }
 	 return false;
       } else {
 	 // Turn it on
-	 user->modes |= User::MODE_HELPER;
+	 user->modes |= User::M_HELPER;
 	 
 	 // Modify the helper counter
-	 daemon->numHelpers++;
+	 Daemon::numHelpers++;
 	 
 	 return true;
       }
    }
    
    // If this user is not a helper, this does not have an effect at all
-   if (!(user->modes & User::MODE_HELPER)) {
+   if (!(user->modes & User::M_HELPER)) {
       return false;
    }
    
    // Turn off the flag and return true
-   user->modes &= ~User::MODE_HELPER;
+   user->modes &= ~User::M_HELPER;
 
    // Modify the helper counter
-   daemon->numHelpers--;
+   Daemon::numHelpers--;
 	 
    return true;
 }
@@ -279,13 +279,13 @@ bool User::toggleModeHELPER(bool setting, Handler *handler, Daemon *daemon, User
 /* User::toggleModeIDENTIFIED
  * Original 22/09/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeIDENTIFIED(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeIDENTIFIED(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_IDENTIFIED)) {
-      user->modes |= User::MODE_IDENTIFIED;
+   if (setting && !(user->modes & User::M_IDENTIFIED)) {
+      user->modes |= User::M_IDENTIFIED;
       return true;
-   } else if (!setting && (user->modes & User::MODE_IDENTIFIED)) {
-      user->modes &= ~User::MODE_IDENTIFIED;
+   } else if (!setting && (user->modes & User::M_IDENTIFIED)) {
+      user->modes &= ~User::M_IDENTIFIED;
       return true;
    }
    
@@ -296,13 +296,13 @@ bool User::toggleModeIDENTIFIED(bool setting, Handler *handler, Daemon *daemon, 
 /* User::toggleModeIGNORING
  * Original 22/09/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeIGNORING(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeIGNORING(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_IGNORING)) {
-      user->modes |= User::MODE_IGNORING;
+   if (setting && !(user->modes & User::M_IGNORING)) {
+      user->modes |= User::M_IGNORING;
       return true;
-   } else if (!setting && (user->modes & User::MODE_IGNORING)) {
-      user->modes &= ~User::MODE_IGNORING;
+   } else if (!setting && (user->modes & User::M_IGNORING)) {
+      user->modes &= ~User::M_IGNORING;
       return true;
    }
    
@@ -313,13 +313,13 @@ bool User::toggleModeIGNORING(bool setting, Handler *handler, Daemon *daemon, Us
 /* User::toggleModeINVISIBLE
  * Original 25/08/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeINVISIBLE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeINVISIBLE(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_INVISIBLE)) {
-      user->modes |= User::MODE_INVISIBLE;
+   if (setting && !(user->modes & User::M_INVISIBLE)) {
+      user->modes |= User::M_INVISIBLE;
       return true;
-   } else if (!setting && (user->modes & User::MODE_INVISIBLE)) {
-      user->modes &= ~User::MODE_INVISIBLE;
+   } else if (!setting && (user->modes & User::M_INVISIBLE)) {
+      user->modes &= ~User::M_INVISIBLE;
       return true;
    }
    
@@ -330,13 +330,13 @@ bool User::toggleModeINVISIBLE(bool setting, Handler *handler, Daemon *daemon, U
 /* User::toggleModeNONKICKABLE
  * Original 22/09/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeNONKICKABLE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeNONKICKABLE(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_NONKICKABLE)) {
-      user->modes |= User::MODE_NONKICKABLE;
+   if (setting && !(user->modes & User::M_NONKICKABLE)) {
+      user->modes |= User::M_NONKICKABLE;
       return true;
-   } else if (!setting && (user->modes & User::MODE_NONKICKABLE)) {
-      user->modes &= ~User::MODE_NONKICKABLE;
+   } else if (!setting && (user->modes & User::M_NONKICKABLE)) {
+      user->modes &= ~User::M_NONKICKABLE;
       return true;
    }
    
@@ -348,15 +348,15 @@ bool User::toggleModeNONKICKABLE(bool setting, Handler *handler, Daemon *daemon,
  * Original 25/08/01, Simon Butcher <pickle@austnet.org>
  * Note: This can only be toggled off, not on.
  */
-bool User::toggleModeOPER(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeOPER(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
    // Check if this user is trying to turn this mode on
    if (setting) {
       if (handler) {
-	 if (!(user->modes & User::MODE_GLOBALOPER) ||
-	     !(user->modes & User::MODE_LOCALOPER)) {
+	 if (!(user->modes & User::M_GLOBALOPER) ||
+	     !(user->modes & User::M_LOCALOPER)) {
 	    /* Tell the user they're an idiot :) */
-	    handler->sendNumeric(TO_DAEMON->myServer(),
+	    handler->sendNumeric(Daemon::myServer(),
 				 ERR_NOPRIVILEGES, 0,
 				 Language::L_ERR_NOPRIVILEGES_PLUS_IRCOPER);
 	 }
@@ -364,7 +364,7 @@ bool User::toggleModeOPER(bool setting, Handler *handler, Daemon *daemon, User *
       } else {
 	 // If this is setting someone as a global operator, then turn it on.
 	 if (*modeChr == 'O') {
-	    user->modes |= User::MODE_GLOBALOPER;
+	    user->modes |= User::M_GLOBALOPER;
 	    return true;
 	 }
 	 
@@ -374,15 +374,15 @@ bool User::toggleModeOPER(bool setting, Handler *handler, Daemon *daemon, User *
    }
    
    // If this user is not an oper, this does not have an effect at all
-   if (!(user->modes & User::MODE_GLOBALOPER) &&
-       !(user->modes & User::MODE_LOCALOPER)) {
+   if (!(user->modes & User::M_GLOBALOPER) &&
+       !(user->modes & User::M_LOCALOPER)) {
       return false;
    }
    
    // Fix up the character so that the client does not get confused.
-   if (user->modes & User::MODE_GLOBALOPER) {
+   if (user->modes & User::M_GLOBALOPER) {
       // While we are here, decrement the global operator counter
-      daemon->numOpers--;
+      Daemon::numOpers--;
       
       *modeChr = 'O';
    } else {
@@ -390,7 +390,7 @@ bool User::toggleModeOPER(bool setting, Handler *handler, Daemon *daemon, User *
    }
    
    // Turn off the oper flags and return true
-   user->modes &= ~User::MODE_GLOBALOPER & ~User::MODE_LOCALOPER;
+   user->modes &= ~User::M_GLOBALOPER & ~User::M_LOCALOPER;
 
    return true;
 }
@@ -399,21 +399,21 @@ bool User::toggleModeOPER(bool setting, Handler *handler, Daemon *daemon, User *
 /* User::toggleModeREGNICKSMSG
  * Original 30/08/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeREGNICKSMSG(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeREGNICKSMSG(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_REGNICKSMSG)) {
-      user->modes |= User::MODE_REGNICKSMSG;
+   if (setting && !(user->modes & User::M_REGNICKSMSG)) {
+      user->modes |= User::M_REGNICKSMSG;
 
       // If this user is an oper or a helper they really should not have this
       if (handler && User::isHelper(user)) {
-	 handler->sendNumeric(TO_DAEMON->myServer(),
+	 handler->sendNumeric(Daemon::myServer(),
 			      RPL_MODECHANGEWARN, 0,
 			      Language::L_RPL_MODECHANGEWARN_HELPER_PLUS_REGNICKSMSG);
       }
       
       return true;
-   } else if (!setting && (user->modes & User::MODE_REGNICKSMSG)) {
-      user->modes &= ~User::MODE_REGNICKSMSG;
+   } else if (!setting && (user->modes & User::M_REGNICKSMSG)) {
+      user->modes &= ~User::M_REGNICKSMSG;
       return true;
    }
    
@@ -424,13 +424,13 @@ bool User::toggleModeREGNICKSMSG(bool setting, Handler *handler, Daemon *daemon,
 /* User::toggleModeRESTRICTED
  * Original 22/09/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeRESTRICTED(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeRESTRICTED(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_RESTRICTED)) {
-      user->modes |= User::MODE_RESTRICTED;
+   if (setting && !(user->modes & User::M_RESTRICTED)) {
+      user->modes |= User::M_RESTRICTED;
       return true;
-   } else if (!setting && (user->modes & User::MODE_RESTRICTED)) {
-      user->modes &= ~User::MODE_RESTRICTED;
+   } else if (!setting && (user->modes & User::M_RESTRICTED)) {
+      user->modes &= ~User::M_RESTRICTED;
       return true;
    }
    
@@ -441,13 +441,13 @@ bool User::toggleModeRESTRICTED(bool setting, Handler *handler, Daemon *daemon, 
 /* User::toggleModeROUTINGSTAFF
  * Original 21/10/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeROUTINGSTAFF(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeROUTINGSTAFF(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_ROUTINGSTAFF)) {
-      user->modes |= User::MODE_ROUTINGSTAFF;
+   if (setting && !(user->modes & User::M_ROUTINGSTAFF)) {
+      user->modes |= User::M_ROUTINGSTAFF;
       return true;
-   } else if (!setting && (user->modes & User::MODE_ROUTINGSTAFF)) {
-      user->modes &= ~User::MODE_ROUTINGSTAFF;
+   } else if (!setting && (user->modes & User::M_ROUTINGSTAFF)) {
+      user->modes &= ~User::M_ROUTINGSTAFF;
       return true;
    }
    
@@ -458,13 +458,13 @@ bool User::toggleModeROUTINGSTAFF(bool setting, Handler *handler, Daemon *daemon
 /* User::toggleModeSECURE
  * Original 22/09/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeSECURE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeSECURE(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_SECURE)) {
-      user->modes |= User::MODE_SECURE;
+   if (setting && !(user->modes & User::M_SECURE)) {
+      user->modes |= User::M_SECURE;
       return true;
-   } else if (!setting && (user->modes & User::MODE_SECURE)) {
-      user->modes &= ~User::MODE_SECURE;
+   } else if (!setting && (user->modes & User::M_SECURE)) {
+      user->modes &= ~User::M_SECURE;
       return true;
    }
    
@@ -475,7 +475,7 @@ bool User::toggleModeSECURE(bool setting, Handler *handler, Daemon *daemon, User
 /* User::toggleModeSERVNOTICES
  * Original , Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeSERVNOTICES(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeSERVNOTICES(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
    // This should not be set remotely
    if (!user->local) {
@@ -499,17 +499,17 @@ bool User::toggleModeSERVNOTICES(bool setting, Handler *handler, Daemon *daemon,
 /* User::toggleModeVWORLD
  * Original 25/08/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeVWORLD(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeVWORLD(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_VWORLD)) {
-      user->modes |= User::MODE_VWORLD;
+   if (setting && !(user->modes & User::M_VWORLD)) {
+      user->modes |= User::M_VWORLD;
       return true;
-   } else if (!setting && (user->modes & User::MODE_VWORLD)) {
-      user->modes &= ~User::MODE_VWORLD;
+   } else if (!setting && (user->modes & User::M_VWORLD)) {
+      user->modes &= ~User::M_VWORLD;
       
       // Warn this user, if we can, about turning off virtual world
       if (handler) {
-	 handler->sendNumeric(TO_DAEMON->myServer(),
+	 handler->sendNumeric(Daemon::myServer(),
 			      RPL_MODECHANGEWARN, 0,
 			      Language::L_RPL_MODECHANGEWARN_MINUS_VWORLD);
       }
@@ -524,19 +524,19 @@ bool User::toggleModeVWORLD(bool setting, Handler *handler, Daemon *daemon, User
 /* User::toggleModeWALLOPS
  * Original 25/08/01, Simon Butcher <pickle@austnet.org>
  */
-bool User::toggleModeWALLOPS(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+bool User::toggleModeWALLOPS(bool setting, Handler *handler, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & User::MODE_WALLOPS)) {
-      user->modes |= User::MODE_WALLOPS;
+   if (setting && !(user->modes & User::M_WALLOPS)) {
+      user->modes |= User::M_WALLOPS;
       return true;
-   } else if (!setting && (user->modes & User::MODE_WALLOPS)) {
-      user->modes &= ~User::MODE_WALLOPS;
+   } else if (!setting && (user->modes & User::M_WALLOPS)) {
+      user->modes &= ~User::M_WALLOPS;
       
       // Check if we need to (and can) warn this user about this command
       if (handler &&
-	  ((user->modes & User::MODE_GLOBALOPER) ||
-	   (user->modes & User::MODE_LOCALOPER))) {
-	 handler->sendNumeric(TO_DAEMON->myServer(),
+	  ((user->modes & User::M_GLOBALOPER) ||
+	   (user->modes & User::M_LOCALOPER))) {
+	 handler->sendNumeric(Daemon::myServer(),
 			      RPL_MODECHANGEWARN, 0,
 			      Language::L_RPL_MODECHANGEWARN_IRCOPER_MINUS_WALLOPS);
       }
@@ -583,7 +583,7 @@ bool LocalUser::invitedTo(Channel *channel)
       // Check the timeout
       if (!invite->getTimeout() ||
 	  (invite->getTimeout() >
-	   handler->getConnection()->getDaemon()->getTime())) {
+	   Daemon::getTime())) {
 	 // Yes, we are invited to this channel
 	 return true;
       } else {
@@ -614,13 +614,12 @@ bool LocalUser::onReplyFloodlockMap(LocalUser::floodlock_reply_map_t &lockmap,
    // Check if that worked
    if (!timeout) {
       // Add them to the floodlock list
-      lockmap[target] = handler->getConnection()->getDaemon()->getTime();
+      lockmap[target] = Daemon::getTime();
       return false;
    }
    
    // If we got here, check that if the floodlock has timed out
-   if ((timeout + timelen) >
-       handler->getConnection()->getDaemon()->getTime()) {
+   if ((timeout + timelen) > Daemon::getTime()) {
       // Timeout is still in effect
       return true;
    }
