@@ -30,6 +30,8 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <cctype>
+#include <cstdlib>
 #include <aisutil/string/tokens.h>
 
 #include "kineircd/languagelist.h"
@@ -94,6 +96,94 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
       tag = st.nextToken('=').trim().toUpper();
       data = st.rest().trim();
 
+      // Clear the line variable.. We will reuse it soon..
+      line.clear();
+      
+      // Process the data: substitute escaped stuff
+      for (std::string::size_type i = 0; i < data.length(); i++) {
+	 // Escaped char?
+	 if (data[i] == '\\') {
+	    // Next char
+	    i++;
+	    
+	    // If this is a three-digit number, we can convert it flat..
+	    if ((data.length() > (i + 2)) &&
+		isdigit(data[i]) &&
+		isdigit(data[i + 1]) &&
+		isdigit(data[i + 2])) {
+	       // Convert the three digits found from octal to a long
+	       long escape = strtol(data.substr(i, 3).c_str(), NULL, 8);
+	       
+	       /* Skip over the next numbers.. (the last will be skipped
+		* automatically, so we only need to skip two of them)
+		*/
+	       i += 2;
+	       
+	       // Is this a naughty char?
+	       if ((escape > 0) &&
+		   (escape < 256) &&
+		   (escape != '\n') &&
+		   (escape != '\r') &&
+		   (escape != '\v') &&
+		   (escape != '\b') &&
+		   ((escape < '\021') || (escape > '\024'))) {
+		  line += char(escape);
+	       }
+	       
+	       // Next!!
+	       continue;
+	    } else {
+	       /* Something else, a single character tells us what to do then!
+		* If this gets larger, reconsider using 512 byte table..
+		*/
+	       switch (data[i]) {
+		case '\\': // A slash..
+		  break; // just skip to the bit where we copy the char flat
+
+		case 'b': // Bold
+		  line += '\002';
+		  continue;
+		  
+		case 'c': // Colour start sequence char
+		  line += '\003';
+		  continue;
+		  
+		case 'g': // Beep
+		  line += '\007';
+		  continue;
+		  
+		case 'r': // Reverse
+		  line += '\026';
+		  continue;
+		  
+		case 's': // Space (often used at the end of a line as a hack)
+		  line.push_back('\040');
+		  continue;
+		  
+		case 't': // Horizontal tab
+		  line += '\011'; // should we just use 8 spaces here??
+		  continue;
+		  
+		case 'u': // Underline
+		  line += '\037';
+		  continue;
+		  
+		default:
+		  // nfi, skip it..
+		  continue;
+	       }
+	    }
+	 }
+	    
+	 // If we got here, nothing special happened.. just copy the char over
+	 line.push_back(data[i]);
+      }
+
+#ifdef KINE_DEBUG_PSYCHO
+      debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
+	    " data: '" + line + '\'');
+#endif
+      
       // Check the first letter of the tag...
       if (tag[0] == '.') {
 	 // Strip away the first char
