@@ -80,11 +80,6 @@ OBJECTS=$(SOURCES:.cpp=.$(LIBTOOL_OBJ_EXT))
 LIBS+=$(SSL_LIB) -ldl # libdl included temporarily, I think..
 LDFLAGS+=$(SSL_LDFLAGS)
 
-LANGTAGS_IN_DEF=langtags.def
-LANGTAGS_IN_TPL=langtags.tpl
-LANGTAGS_OUT_CPP=langtags.cpp
-LANGTAGS_OUT_H=langtags.h
-
 ########################################################################
 
 include $(top_builddir)/make/rules
@@ -112,11 +107,6 @@ $(TARGET): subdirs $(OBJECTS) $(ROBJECTS)
 		-version-info $(LIB_VERSION):$(LIB_REVISION):$(LIB_AGE) \
 		$(LDFLAGS) $(LIBS) -o $@ \
 		$(VER_OBJ) $(OBJECTS) $(ROBJECTS)
-
-
-# We need to make langtags.h and langtags.cpp via GNU AutoGen...
-$(LANGTAGS_OUT_CPP): $(LANGTAGS_IN_DEF) $(LANGTAGS_IN_TPL)
-	autogen $(LANGTAGS_IN_DEF)
 
 
 install:
