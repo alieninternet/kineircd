@@ -186,7 +186,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/server.h \
 	include/kineircd/service.h \
 	include/kineircd/signals.h \
-	include/kineircd/str.h \
 	include/kineircd/user.h \
 	include/kineircd/utils.h \
 	include/kineircd/version.h \
@@ -228,6 +227,10 @@ libkineircd_la_LIBADD=\
 	$(LIBLTDL) \
 	-laisutil \
 	@ssl_lib@
+
+# Preprocessor flags (how can I target version.cpp alone??)
+libkineircd_la_CPPFLAGS=\
+	-DBUILD_STRING="\"`date -u +%Y%m%d%H%M`\""
 
 # Customised .tpl rules
 include/kineircd/config.h: include/kineircd/config.h.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
