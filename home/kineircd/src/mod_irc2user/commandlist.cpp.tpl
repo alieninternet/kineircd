@@ -37,6 +37,10 @@ using namespace Kine::mod_irc2user;
 
 // Pre-initialisation command table, commands we always support
 const Commands::preInitCommand_type Commands::preInitCommands[] = {[+FOR commands+]
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_[+
+   (string-upcase
+      (get "command"))
+ +]
      {
         "[+
  (string-upcase
@@ -52,6 +56,10 @@ const Commands::preInitCommand_type Commands::preInitCommands[] = {[+FOR command
 	  &Language::tagMap[Language::irc2user_HELP_CMD_[+command+]].tagID,
 	  Flags::NONE[+IF (exist? "changeIdleTime")+] |
 	    Flags::CHANGE_IDLE_TIME[+ENDIF+]
-     },[+ENDFOR+]
+     },
+#endif // KINE_MOD_IRC2USER_HAVE_CMD_[+
+   (string-upcase
+      (get "command"))
+ +][+ENDFOR+]
      { 0, 0, Access::ANYBODY, false, 0, 0, 0, 0, Flags::NONE }
 };
