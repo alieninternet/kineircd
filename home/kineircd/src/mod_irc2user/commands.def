@@ -160,11 +160,11 @@ commands = {
    minimumParams	= 0;
 };
 
-//commands = {
-//   command		= "NAMES";
-//   defaultPenalty	= 1;
-//   minimumParams	= 0;
-//};
+commands = {
+   command		= "NAMES";
+   defaultPenalty	= 1;
+   minimumParams	= 0;
+};
 
 commands = {
    command		= "NETWORKS";

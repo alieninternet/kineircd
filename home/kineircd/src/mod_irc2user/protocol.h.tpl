@@ -147,6 +147,9 @@ namespace Kine {
 	 // Send the list of languages to the user (tell them what is set)
 	 void sendLanguageList(void);
 
+         // Send a list of members on the given channel
+	 void sendNames(const Channel& channel);
+	 
 	 // Command handlers[+FOR commands+]
 	 handler_type handle[+command+];[+ENDFOR+]
       }; // class Protocol

@@ -308,3 +308,68 @@ void Protocol::sendLanguageList(void)
 	       GETLANG(irc2_RPL_YOURLANGUAGEIS,
 		       (user.getLanguageList()[0])->getLanguageName()));
 }
+
+
+/* sendNames - Send RPL_NAMREPLY's for the given channel
+ * Original 15/08/2001 simonb
+ */
+void Protocol::sendNames(const Channel& channel)
+{
+   // Work out the magic char for this channel..
+   const char visibilityChar =
+     (channel.isSecret() ? '@' : (channel.isPrivate() ? '*' : '='));
+   
+   // Determine the maximum number of octets we can send (the 15 is 'safe')
+   const unsigned int maxOutputLength = 
+     maxMessageSize - user.getNickname().length() -
+     config().getOptionsServerName().length() - 15;
+
+   // Our reply buffer..
+   std::string reply;
+   
+   // Iterate over the members list
+   for (Channel::members_type::const_iterator it =
+	channel.getMembers().begin();
+	it != channel.getMembers().end();
+	++it) {
+      // Can this user see this member?
+      if ((/*configuration value &&*/ user.isOperator()) ||
+	  (/*configuration value &&*/ user.isStaff()) ||
+	  channel.hasClient(user) ||
+	  (!channel.isHidden() &&
+	   !it->second->getClient().isHidden())) {
+	 // Is it necessary to purge the buffer and start a fresh?
+	 if ((reply.length() + 
+	      it->second->getClient().getNickname().length() + 2) >
+	     maxOutputLength) {
+	    // Output the names we have within this buffer
+	    sendNumeric(LibIRC2::Numerics::RPL_NAMREPLY,
+			visibilityChar,
+			channel.getName(),
+			reply);
+	    
+	    // Clear the output
+	    reply.clear();
+	 }
+	 
+	 // Do we need to prefix this with a space?
+	 if (!reply.empty()) {
+	    reply += ' ';
+	 }
+	 
+	 // Work out the membership status of this member here..
+	 // something.
+
+	 // Append the nickname of this member
+	 reply += it->second->getClient().getNickname();
+      }
+   }
+   
+   // If there is something left to output, output it
+   if (!reply.empty()) {
+      sendNumeric(LibIRC2::Numerics::RPL_NAMREPLY,
+		  visibilityChar,
+		  channel.getName(),
+		  reply);
+   }
+}

@@ -47,6 +47,7 @@ using AISutil::StringTokens;
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_ADMIN
 /* handleADMIN
  * Original 27/08/2001 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleADMIN)
 {
@@ -230,6 +231,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_INFO
 /* handleINFO
  * Original 14/08/2001 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleINFO)
 {
@@ -428,6 +430,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_LUSERS
 /* handleLUSERS
  * Original 27/08/2001 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 {
@@ -451,6 +454,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_MOTD
 /* handleMOTD
  * Original 13/08/2001 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 {
@@ -471,9 +475,44 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 #endif
 
 
-#ifdef KINE_MOD_IRC2USER_HAVE_CMD_NETWORKS
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_NAMES
+/* handleNAMES
+ * Original 15/08/2001 simonb
+ * Note: Incomplete
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleNAMES)
+{
+   // Tokenise the requests
+   StringTokens request((parameters.empty() ? "*" : parameters[0]));
+
+   // Stuff we need during the request loop
+   StringMask target;
+   const Channel* channel;
+   
+   // Iterate over the requests
+   while (request.hasMoreTokens()) {
+      target = request.nextToken(',');
+      
+      // Find this channel without doing the whole mask checking thingy..
+      if ((channel = registry().findChannel(target)) != 0) {
+	 // Output the names list for this channel..
+	 sendNames(*channel);
+	 continue;
+      }
+   }
+   
+   // Send end of names list
+   sendNumeric(LibIRC2::Numerics::RPL_ENDOFNAMES,
+	       request,
+	       GETLANG(irc2_RPL_ENDOFNAMES));
+}
+#endif
+
+
+# ifdef KINE_MOD_IRC2USER_HAVE_CMD_NETWORKS
 /* handleNETWORKS
  * Original 01/05/2003 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleNETWORKS)
 {
@@ -540,6 +579,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePRIVMSG)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_QUIT
 /* handleQUIT
  * Original 14/08/2001 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 {
@@ -678,6 +718,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSERVLIST)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_STATS
 /* handleSTATS
  * Original 14/08/2001 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleSTATS)
 {
@@ -732,6 +773,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSTATS)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_SUMMON
 /* handleSUMMON
  * Original 10/04/2003 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleSUMMON)
 {
@@ -755,6 +797,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSUMMON)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_TIME
 /* handleTIME
  * Original 27/08/2001 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
 {
@@ -778,6 +821,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_USERS
 /* handleUSERS
  * Original 10/04/2003 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleUSERS)
 {
@@ -801,6 +845,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERS)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_VERSION
 /* handleVERSION
  * Original 24/08/2001 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
 {
@@ -825,6 +870,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_WHO
 /* handleWHO
  * Original 22/08/2001 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleWHO)
 {
@@ -880,6 +926,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHO)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_WHOIS
 /* handleWHOIS
  * Original 23/08/2001 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleWHOIS)
 {
@@ -903,6 +950,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHOIS)
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_WHOWAS
 /* handleWHOWAS
  * Original 09/10/2001 simonb
+ * Note: Incomplete
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleWHOWAS)
 {
