@@ -99,8 +99,21 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
       // Clear the line variable.. We will reuse it soon..
       line.clear();
       
-      // Process the data: substitute escaped stuff
+      // Process the data: substitute anything we know now
       for (std::string::size_type i = 0; i < data.length(); i++) {
+	 if (data[i] == '%') {
+	    /* Check the next character. If it's another percentage sign, let
+	     * it get copied, otherwise convert it over to the super secret
+	     * hush hush magical mystical char... which is a null.. ;)
+	     */
+	    if (data[i + 1] == '%') {
+	       i++;
+	    } else {
+	       line += '\0';
+	       continue;
+	    }
+	 }
+	 
 	 // Escaped char?
 	 if (data[i] == '\\') {
 	    // Next char
