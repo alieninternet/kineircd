@@ -812,8 +812,7 @@ void irc2userHandler::sendKill(User *u, String const &caller,
 			       String const &reason) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s KILL %s :%s (%s)" 
-			    IRC2USER_EOL_CHARS,
+     sendRaw(String::printf(":%s KILL %s :%s (%s)" IRC2USER_EOL_CHARS,
 			    (char const *)caller,
 			    (char const *)user->nickname,
 			    (char const *)caller,
@@ -828,8 +827,7 @@ void irc2userHandler::sendKnock(User *u, Channel *c,
 				String const &reason) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s KNOCK %s :%s"
-			    IRC2USER_EOL_CHARS,
+     sendRaw(String::printf(":%s KNOCK %s :%s" IRC2USER_EOL_CHARS,
 			    (char const *)u->getAddress(user),
 			    (char const *)c->getName(),
 			    (char const *)reason));
@@ -843,8 +841,7 @@ void irc2userHandler::sendLanguage(User *u, String const &languages,
 				   String const &charset) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s LANGUAGE %s %s"
-			    IRC2USER_EOL_CHARS,
+     sendRaw(String::printf(":%s LANGUAGE %s %s" IRC2USER_EOL_CHARS,
 			    (char const *)u->getAddress(user),
 			    (char const *)languages,
 			    (char const *)charset));
@@ -1200,8 +1197,7 @@ void irc2userHandler::sendWallops(User *from, String const &message) const
 void irc2userHandler::sendWatchOff(Server *target) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s * * 0 %s"
-			    IRC2USER_EOL_CHARS,
+     sendRaw(String::printf(":%s %d %s %s * * 0 %s" IRC2USER_EOL_CHARS,
 			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGOFF,
 			    (char const *)user->nickname,
@@ -1212,8 +1208,7 @@ void irc2userHandler::sendWatchOff(Server *target) const
 void irc2userHandler::sendWatchOff(Channel *target) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s * * %lu %s"
-			    IRC2USER_EOL_CHARS,
+     sendRaw(String::printf(":%s %d %s %s * * %lu %s" IRC2USER_EOL_CHARS,
 			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGOFF,
 			    (char const *)user->nickname,
@@ -1225,8 +1220,7 @@ void irc2userHandler::sendWatchOff(Channel *target) const
 void irc2userHandler::sendWatchOff(User *target) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s %s %s %lu %s"
-			    IRC2USER_EOL_CHARS,
+     sendRaw(String::printf(":%s %d %s %s %s %s %lu %s" IRC2USER_EOL_CHARS,
 			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGOFF,
 			    (char const *)user->nickname,
@@ -1244,8 +1238,7 @@ void irc2userHandler::sendWatchOff(User *target) const
 void irc2userHandler::sendWatchOn(Server *target) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s * * 0 %s"
-			    IRC2USER_EOL_CHARS,
+     sendRaw(String::printf(":%s %d %s %s * * 0 %s" IRC2USER_EOL_CHARS,
 			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGON,
 			    (char const *)user->getNickname(),
@@ -1256,8 +1249,7 @@ void irc2userHandler::sendWatchOn(Server *target) const
 void irc2userHandler::sendWatchOn(Channel *target, String const &creator) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s %s * %lu %s"
-			    IRC2USER_EOL_CHARS,
+     sendRaw(String::printf(":%s %d %s %s %s * %lu %s" IRC2USER_EOL_CHARS,
 			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGON,
 			    (char const *)user->getNickname(),
@@ -1270,8 +1262,7 @@ void irc2userHandler::sendWatchOn(Channel *target, String const &creator) const
 void irc2userHandler::sendWatchOn(User *target, String const &newNick) const
 {
    getConnection()->
-     sendRaw(String::printf(":%s %d %s %s %s %s %lu %s"
-			    IRC2USER_EOL_CHARS,
+     sendRaw(String::printf(":%s %d %s %s %s %s %lu %s" IRC2USER_EOL_CHARS,
 			    (char const *)Daemon::myServer()->getHostname(),
 			    RPL_LOGON,
 			    (char const *)user->nickname,
@@ -2440,11 +2431,12 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
 #endif
 	 handler->
 	   sendNumeric(RPL_LANGUAGE,
-		       String::printf("%s %s %s %s * :%s",
+		       String::printf("%s %s %s %s %s * :%s",
 				      (char const *)(*it).first,
 				      (char const *)(*it).second->get(Language::REVISION),
 				      (char const *)(*it).second->get(Language::MAINTAINER),
 				      (char const *)(*it).second->get(Language::CHARSET),
+				      "*", // flags
 				      (char const *)(*it).second->get(Language::LANGNAME)));
       }
       
@@ -2465,10 +2457,15 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
    StringTokens st(tokens->nextToken());
    String languages = "";
    int langCount = 0;
+   LanguageData *ld = 0;
+   bool gotLocal = false;
    
    // Run through the given languages
-   for (String lang = st.nextToken(',').toLower(); lang.length();
-	lang = st.nextToken(',').toLower()) {
+   for (String lang = st.nextToken(','); lang.length();
+	lang = st.nextToken(',')) {
+      // Fix the language code up..
+      lang = lang.toLower().subString(0, MAXLEN_LANGCODE);
+      
       // Check if we have taken too many languages
       if (++langCount > DEFAULT_MAX_LANGS_PER_USER) {
 	 // Complain!
@@ -2476,19 +2473,65 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
 	   sendNumeric(ERR_NOMORELANGS,
 		       String::printf((char *)Language::L_ERR_NOMORELANGS,
 				      DEFAULT_MAX_LANGS_PER_USER));
-	 return;
+	 break;
+      }
+
+      if (lang != "none") {
+	 ld = Language::get(lang);
+      } else {
+	 ld = 0;
       }
       
-      // Unknown language, complain...
-      handler->sendNumeric(ERR_NOLANGUAGE,
-			   lang + Language::L_ERR_NOLANGUAGE);
+      // If we have not already got our 'local' langauge, look for it
+      if (!gotLocal) {
+	 // Look up this language
+	 LanguageData *ld = Language::get(lang);
+	 
+	 // Check that we got that
+	 if (ld) {
+	    // Set the language
+	    handler->user->getLocalInfo()->setLang(ld);
+	    gotLocal = true;
+
+	    // Tell the user about the new local server language setting
+	    if (lang == "none") {
+	       handler->sendNumeric(RPL_YOURLANGUAGEIS,
+				    "none * * :None");
+	    } else {
+	       handler->
+		 sendNumeric(RPL_YOURLANGUAGEIS,
+			     String::printf("%s %s * :%s%s",
+					    (char const *)lang,
+					    (char const *)ld->get(Language::CHARSET),
+					    (char const *)ld->get(Language::LANGNAME),
+					    (ld->has(Language::LANGNOTE) ?
+					     ((char const *)
+					      (String("(Note: ") +
+					       ld->get(Language::LANGNOTE) + 
+					       ")")) :
+					     "")));
+	    }
+	 }
+      }
       
       // Add the language to the languages list
-      if (languages.length()) {
-	 languages = languages + String(",") + lang;
-      } else {
-	 languages = languages + lang;
+#ifndef ACCEPT_UNKNOWN_LANGS
+      if (ld || (lang == "none")) {
+#endif
+	 if (languages.length()) {
+	    languages = languages + String(",") + lang;
+	 } else {
+	    languages = languages + lang;
+	 }
+#ifndef ACCEPT_UNKNOWN_LANGS
       }
+#endif
+   }
+   
+   // Throw a LANGUAGE confirmation line at the user, if we have any
+   if (languages.length()) {
+      handler->sendLanguage(handler->user, languages, 
+			    handler->user->getLangCharset());
    }
 }
 

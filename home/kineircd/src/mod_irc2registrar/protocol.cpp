@@ -203,7 +203,7 @@ void registerHandler::parseLine(String const &line)
 	    }
 	    
 	    // Create a new user
-	    User *user = new User(nickname, username, "", hostname, 
+	    User *user = new User(nickname, username, "", hostname,
 				  User::makeVWorld(hostname), realname,
 				  Daemon::getTime(),
 				  Daemon::myServer());

@@ -22,12 +22,13 @@ namespace Language {
     * WARNING!!! Make sure this list is in perfect sync with the enumeration 
     * list in the language header file!
     */
-   char const *languageTags[NUM_LANG_TAGS] =
+   Language::languageTagsStruct languageTags[NUM_LANG_TAGS] =
      {
-	"REVISION",
-	"MAINTAINER",
-	"LANGNAME",
-	"CHARSET"
+	{ "REVISION",			true,	true },
+	{ "MAINTAINER",			true,	true },
+	{ "LANGNAME",			true,	false },
+	{ "LANGNOTE",			false,	false },
+	{ "CHARSET",			true,	true }
      };
 
    // The map with the languages in it..
@@ -519,6 +520,9 @@ namespace Language {
 };
 
 
+/* loadLanguages - Seek and load language files in the given directory
+ * Original 28/10/01, Simon Butcher <pickle@austnet.org>
+ */
 bool Language::loadLanguages(String const &directory)
 {
 #ifdef DEBUG
@@ -602,7 +606,30 @@ bool Language::loadLanguages(String const &directory)
 	    // Grab the two tokens
 	    StringTokens st(line);
 	    tag = st.nextToken('=').trim().toUpper();
-	    data = st.rest().trim();
+	    
+	    // Look up the tag in the taglist (this is really inefficient)
+	    bool found = false;
+	    unsigned int tn = NUM_LANG_TAGS;
+	    for (; tn--;) {
+	       // Check for a match
+	       if (tag == languageTags[tn].name) {
+		  // Mark it as found and break out of the loop
+		  found = true;
+		  break;
+	       }
+	    }
+	    
+	    // If we did not find the tag, skip it
+	    if (!found) {
+	       continue;
+	    }
+	    
+	    // Look up what we should do with this - one word or the whole lot?
+	    if (languageTags[tn].oneword) {
+	       data = st.nextToken().trim();
+	    } else {
+	       data = st.rest().trim();
+	    }
 
 	    // Check the data for this line
 	    if (!tag.length() || !data.length()) {
@@ -633,18 +660,23 @@ bool Language::loadLanguages(String const &directory)
 	 // Close the file
 	 file.close();
 	 
-	 // Run through our language tags list and grab data from the map
+	 /* Run through our language tags list and grab data from the map and
+	  * shove it into the LanguageData:: vector in proper order
+	  */
 	 for (int i = 0; i < NUM_LANG_TAGS; i++) {
-	    if (langData[languageTags[i]]) {
-	       cout << "t: " << languageTags[i] << " d: " << 
-		 *langData[languageTags[i]] << endl;
-	       lang->dialogue.push_back(*langData[languageTags[i]]);
+	    // Check if this has been set
+	    if (langData[languageTags[i].name]) {
+	       lang->dialogue.push_back(*langData[languageTags[i].name]);
 	    } else {
-	       cout << "t: " << languageTags[i] << " null" << endl;
-	       lang->dialogue.push_back("");
+	       // Check if this is required
+//	       if (languageTags[i].required) {
+	          // fail this language...
+//	       } else {
+		  lang->dialogue.push_back("");
+//	       }
 	       
 	       // Erase that entry so the map can delete properly
-	       langData.erase(languageTags[i]);
+	       langData.erase(languageTags[i].name);
 	    }
 	 }
 
@@ -664,3 +696,25 @@ bool Language::loadLanguages(String const &directory)
    // OK!
    return 0;
 };
+
+
+/* get - Find language data on related to the given language code, if possible
+ * Original 30/10/01, Simon Butcher <pickle@austnet.org>
+ * Note: The given code will be presumed to be in the appropriate case (lower)
+ *       for searching, eg. 'en' not 'En' etc.
+ */
+LanguageData *Language::get(String const &code)
+{
+   // Find the language
+   LanguageData *ld = languages[code];
+   
+   // Check that we got it
+   if (ld) {
+      return ld;
+   };
+   
+   // Delete the empty record we just added and return null
+   languages.erase(code);
+
+   return NULL;
+}

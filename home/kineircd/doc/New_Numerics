@@ -276,9 +276,30 @@ _______________________________________________________________________________
       the same way.
 
 
+827 - RPL_YOURLANGUAGEIS
+      <code> <charset> * :<name> [(Note: <info>)]
+      Reply to a LANGUAGE command denoting the language selected by the
+      server. Along with a 'LANGUAGE' reply, this signifies to that client
+      that the server will be using the given language to display future
+      information, and confirms a change (if any). The code is the same as
+      the ISO-639-(1/2) or IANA assigned language code, the charset is the
+      character set the language dialogue data was written in (and the 
+      server will presume the client knows it). The next field, '*' should be
+      ignored by the client and may be used in the future. The name is the
+      name of the language, same as used in RPL_LANGUAGE. If a 'NOTE' tag is
+      given in the language dialogue data file, additionally the name will be
+      prefixed by '(Note: <info>)', where <info> is the data associated with
+      the 'NOTE' tag. This could be used to explain something about a certain
+      language type. Eg. "x-git" might be taken the wrong way by some people
+      and therefore it might be worth adding a note stating that the language
+      is intended to be humourous as to avoid complaints etc.
+      Note that when the language 'none' is being selected, the charset will
+      be "*" and the name will be "None".
+
+
 828 - RPL_LANGUAGE
-      <language code> <revision> <maintainer> <charset> <flags> :<name>
-      A list item for listing languages. The language code is the 
+      <code> <revision> <maintainer> <charset> <flags> * :<name>
+      A list item for listing languages. The code variable is the
       ISO-639-(1/2)/IANA assigned language code, the revision is the version of
       the language file being used, and the maintainer is an e-mail address 
       of the person who maintains that particular language file for contact 
@@ -291,6 +312,7 @@ _______________________________________________________________________________
       characters in a row with special meanings. If no flags are set on a
       language, '*' will be replaced instead (as with RPL_TIMEONSERVERIS).
       Currently the following flags are set:
+       'd' - Default language and is selected upon connection
        's' - Currently selected as the server language being outputted
 
 
@@ -317,17 +339,7 @@ _______________________________________________________________________________
       'you are on that channel' or 'you are already invited').
 
 
-991 - ERR_NOLANGUAGE
-      <langage code> :is an unknown language to me
-      This is returned for every language the server does not know until a 
-      known language has been reached. Futher unknown languages are ignored
-      from there on. This helps a client rule out languages that are not
-      available with one command issued to the server. The unknown languages
-      will still be available to other users/servers, however, and may be
-      selected for other servers' output.
-
-
-992 - ERR_NOMORELANGS
+991 - ERR_NOMORELANGS
       <max languages> :No more languages can be set
       Tell the client it cannot set any more languages, the maximum given.
       

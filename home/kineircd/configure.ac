@@ -491,6 +491,19 @@ AC_ARG_ENABLE(lower-memory,[  --enable-lower-memory          bias defaults to lo
 dnl
 dnl Misc feature settings
 dnl
+AC_MSG_CHECKING([accept-unknown-langs parameter])
+AC_ARG_ENABLE(accept-unknown-langs,[  --enable-accept-unknown-langs  allow unknown languages to be set],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(ACCEPT_UNKNOWN_LANGS)
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+ ])
+
 AC_MSG_CHECKING([allow-clients parameter])
 AC_ARG_ENABLE(allow-clients,[  --enable-allow-clients         allow connections from users (clients)],
  [
@@ -573,7 +586,7 @@ AC_ARG_ENABLE(drop-lame-servers,[  --enable-drop-lame-servers     drop out of sy
  ])
 
 AC_MSG_CHECKING([floodlock-accept-msg parameter])
-AC_ARG_ENABLE(floodlock-accept-msg,[  --enable-floodlock-accept-msg  set the accept request message floodlock timeout],
+AC_ARG_ENABLE(floodlock-accept-msg,[  --enable-floodlock-accept-msg  set the accept message floodlock timeout],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(off)
@@ -644,7 +657,7 @@ AC_ARG_ENABLE(floodlock-away-set,[  --enable-floodlock-away-set    set the away-
  ])
 
 AC_MSG_CHECKING([floodlock-knock-msg parameter])
-AC_ARG_ENABLE(floodlock-knock-msg,[  --enable-floodlock-knock-msg   set the knock channel message floodlock timeout],
+AC_ARG_ENABLE(floodlock-knock-msg,[  --enable-floodlock-knock-msg   set the knock message floodlock timeout],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(off)

@@ -95,6 +95,20 @@
 
     The following features can be toggled:
 
+     --enable-accept-unknown-langs
+     --disable-accept-unknown-langs (default)
+     
+       When enabled, this allowed languages that are unknown to this server
+       to be set by a user and become visible to other servers, users and
+       services on the network. This can be good in case other servers on the
+       network are aware of more languages (eg. the language(s) being 
+       requested), or other users can see languages that are unsupported
+       network-wide. This can be bad for the reason that it leaves the
+       language command open to abuse with users selecting stupid languages
+       that don't exist (the server does not check the language against
+       existing language codes).
+       
+
      --enable-allow-clients (default)
      --disable-allow-clients
       
@@ -227,10 +241,48 @@
 
        
      --enable-max-accepts-per-user (default = 100)
+
+       This cannot be disabled. This defines how many entries on a user's
+       ACCEPT list can be used. A reasonable number of ACCEPTS should be
+       given for users as this is used in conjunction with usermode +g which
+       blocks messages from everyone. Having said that, though, it is unlikly
+       that people will need to accept more than 100 people at one time, but
+       this feature uses less CPU-time than SILENCE lists.
+       
+     
      --enable-max-bans-per-channel (default = 50)
+     
+       This cannot be disabled. This defines how many bans (MODE +b) can be
+       set on a channel at any one time. This can be over-written by the
+       server configuration file. Currently this also restricts the number of
+       auto-invitations (MODE +I) and ban-excemptions (MODE +e), but this is
+       likely to change in the future.
+     
+     
      --enable-max-modes-per-command (default = 6)
+     
+       This cannot be disabled. This defines how many mode characters can
+       be used on a MODE command line. Until clients become aware of
+       this setting and the 'ISUPPORT' line upon connection, it may be
+       wise not to change this setting. This can be over-written by the
+       server configuration file.
+     
+     
      --enable-max-silences-per-user (default = 20)
+     
+       This cannot be disabled. This defines how many entries on a user's
+       SILENCE list can be used. Not many silences are usually needed because
+       clients are usually smart enough to utilise other methods to block
+       messages if things are that serious (eg. Usermode +g and ACCEPT).
+       This can be over-written by the server configuration file.
+
+     
      --enable-max-watches-per-user (default = 128)
+
+       This cannot be disabled. This defines how many entries on a user's
+       WATCH list can be used. Higher numbers will take up more CPU time,
+       while lower numbers will frustrate users! This can be over-written by
+       the server configuration file.
 
       
      --enable-oper-wallops (default)

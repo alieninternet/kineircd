@@ -15,10 +15,15 @@
 
 # include "str.h"
 
-# define NUM_LANG_TAGS	4
+
+// Number of language tags
+# define NUM_LANG_TAGS		5
+
 
 class LanguageData;
 
+
+// Main language class
 class Language {
  public:
 # ifdef STL_HAS_HASH
@@ -35,13 +40,19 @@ class Language {
       REVISION,
       MAINTAINER,
       LANGNAME,
+      LANGNOTE,
       CHARSET
    };
    
 // private:
  public:
    // List of language tags (for the parser)
-   static char const *languageTags[NUM_LANG_TAGS];
+   struct languageTagsStruct {
+      char const *name;
+      bool const required;
+      bool const oneword;
+   };
+   static languageTagsStruct languageTags[NUM_LANG_TAGS];
 
    // Languages installed! Lookup map for LanguageData:: pointers
    static languages_map_t languages;
@@ -52,10 +63,17 @@ class Language {
    Language(void) {};				// Constructor (cannot be run)
    virtual ~Language(void) {};			// Destructor
    
+//   static void clear(void);			// Wipe the language lists
+
  public:
-   static bool loadLanguages(String const &);
+   static bool loadLanguages(String const &);	// Load language files
    
-   virtual String get(tag_t n) {return "";};	// Return languag dialogue
+   static LanguageData *get(String const &);	// Find language dialogue data
+   
+   virtual String get(tag_t n) { return ""; };	// Return languag dialogue
+
+   
+   
    
    // Greeting lines sent when a user connects
    static char const *L_PINGPONG_NOTICE;
@@ -306,14 +324,13 @@ class Language {
 
 
 // Language data class
-class LanguageData : public Language {
+class LanguageData {
  private:
    vector <String> dialogue;
    
  public:
    // Constructor
    LanguageData(void)
-     : Language()
      {
 	dialogue.clear();
      };
@@ -325,13 +342,20 @@ class LanguageData : public Language {
      };
    
    // Grab a string from the language dialogue data
-   String get(tag_t n) 
+   String get(Language::tag_t n)
      { 
 	return dialogue[n]; 
+     };
+   
+   // Check if something exists in the dialogue
+   bool has(Language::tag_t n)
+     {
+	return (dialogue[n].length() > 0);
      };
 
    friend class Language;
 };
+
 
 #endif
 

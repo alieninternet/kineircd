@@ -390,7 +390,7 @@ class registerHandler : public Handler {
    String username;				// Username (server & client)
    String hostname;				// Host name (server & client)
    String realname;				// Client Real Name/Server description
-# ifdef ALLOW_CLIENT_CONNECTIONS
+# ifdef ALLOW_SERVICE_CONNECTIONS
    String distribution;				// Visibility range (service)
 # endif
 # ifdef USER_CONNECTION_PINGPONG

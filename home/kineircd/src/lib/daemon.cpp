@@ -803,7 +803,7 @@ User *Daemon::getUser(String const &nick)
    // Else we gotta delete this empty record we just made and return nothing
    users.erase(n);
 
-   return 0;
+   return NULL;
 }
 
 
@@ -1257,7 +1257,7 @@ Channel *Daemon::getChannel(String const &channel)
       channels.erase(chan);
    }
    
-   return 0;
+   return NULL;
 }
 
 
@@ -1481,7 +1481,7 @@ Operator *Daemon::getOperator(String const &nickname)
    // Else we gotta delete this empty record we just made and return nothing
    operators.erase(nick);
    
-   return 0;
+   return NULL;
 }
 
 
@@ -1549,7 +1549,7 @@ Server *Daemon::getServer(char magicChar)
 //      }
 //   }
    
-   return 0;
+   return NULL;
 }
 
 Server *Daemon::getServer(String const &hostname)
@@ -1569,7 +1569,7 @@ Server *Daemon::getServer(String const &hostname)
    // Else we gotta delete this empty record we just made and return nothing
    servers.erase(servname);
    
-   return 0;
+   return NULL;
 }
 
 Server *Daemon::getServer(StringMask const &hostmask)
@@ -1583,7 +1583,7 @@ Server *Daemon::getServer(StringMask const &hostmask)
       }
    }
    
-   return 0;
+   return NULL;
 }
 
 
@@ -1777,7 +1777,7 @@ Handler *Daemon::routeTo(Server *server)
    }
    
    // eek?!
-   return 0;
+   return NULL;
 }
 
 Handler *Daemon::routeTo(User *user)

@@ -191,6 +191,12 @@ class LocalUser {
 				   c->getName().IRCtoLower());
      };
 # endif
+
+   // Set the language setting
+   void setLang(LanguageData *ld) 
+     {
+	language = ld;
+     };
    
    // Grab a language string
    String getLang(Language::tag_t t) 

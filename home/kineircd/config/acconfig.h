@@ -101,6 +101,7 @@
 # define MAXLEN_SERVERDESC		80
 # define MAXLEN_TOPIC			300	/* Keep these under 350 */
 # define MAXLEN_KICK_REASON		300
+# define MAXLEN_LANGCODE		10	// Keep small..
 # define MINLEN_OP_BROADCAST		20
 # define MAX_CHANNELS_PER_USER		10
 # define MIN_INVITE_TIMEOUT		30	/* 30 second min timeout */
@@ -287,6 +288,13 @@
 /* Constant maximums for various things - see the INSTALL file for more info */
 # undef MAX_MODES_PER_COMMAND
 
+ 
+/* Define this if you want the LANGUAGE command to accept languages that are 
+ * not defined/loaded by this server. This is wise to cut down abuse..
+ * (eg. x-dickheads doesn't exist and probably never will :)
+ */
+# undef ACCEPT_UNKNOWN_LANGS
+  
   
 /* Define these depending on what connections you want to allow/disallow */
 # undef ALLOW_CLIENT_CONNECTIONS
