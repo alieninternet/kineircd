@@ -26,3 +26,20 @@
 #include "kineircd/listener.h"
 
 using namespace Kine;
+
+
+/* listen - Start listening on this listener socket
+ * Original 11/08/2002 simonb
+ */
+const bool Listener::listen(void)
+{
+   // Make sure we are not already listening, and that the socket exists
+   if (listening || (socket == 0)) {
+      return false;
+   }
+   
+   // Try and listen..
+   listening = (socket->bind() && socket->listen());
+   
+   return listening;
+};

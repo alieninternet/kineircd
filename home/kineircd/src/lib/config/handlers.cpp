@@ -64,7 +64,7 @@ namespace Config {
 #endif
 	{
 	   "LISTEN",
-	     0,
+	     (void *)&Config::defListenerList,
 	     0,
 	     0,
 	     &ListenerConfig::classHandler

@@ -28,16 +28,31 @@
 # include "kineircd/listenerlist.h"
 # include "kineircd/configparser.h"
 # include "kineircd/configdata.h"
+# include "kineircd/str.h"
 
 namespace Kine {
    class ListenerConfig : public ConfigData {
     private:
+      // The address to bind to (optional)
+      String varAddress;
+      
+      // Registration allowances
+      bool varAllowNetworks;
+      bool varAllowServers;
+      bool varAllowServices;
+      bool varAllowUsers;
+
+      // The port to bind to
+      String varPort;
+
+      // Should this port be configured as secure if possible? (SSL etc)
+      bool varSecure;
+      
       // The list of definitions for the configuration handler
       static const ConfigParser::defTable_type classDefs;
 
     public:
-      ListenerConfig(void)
-	{};
+      ListenerConfig(void);
 
       // The class handler for the configuration class
       static CONFIG_CLASS_HANDLER(classHandler);

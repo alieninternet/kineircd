@@ -53,6 +53,9 @@ namespace Kine {
 
       // Start all listeners listening
       void startAll(void);
+      
+      // Friends :)
+      friend class ListenerConfig;
    };
 };
 

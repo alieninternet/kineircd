@@ -31,16 +31,15 @@ namespace Kine {
    class Listener {
     public:
       enum {
-	 FLAG_SECURE		= 0x00000001,	// Secured? (SSL/TLS)
-	 FLAG_ALLOW_USERS	= 0x00000010,	// Users allowed?
-	 FLAG_ALLOW_SERVERS	= 0x00000020,	// Servers allowed?
-	 FLAG_ALLOW_SERVICES	= 0x00000040,	// Services allowed?
-	 FLAG_ALLOW_NETWORKS	= 0x00000080	// IIRC links allowed?
+	 FLAG_ALLOW_NETWORKS	= 0x00000001,	// IIRC links allowed?
+	 FLAG_ALLOW_SERVERS	= 0x00000002,	// Servers allowed?
+	 FLAG_ALLOW_SERVICES	= 0x00000004,	// Services allowed?
+	 FLAG_ALLOW_USERS	= 0x00000008	// Users allowed?
       };
       typedef unsigned int flags_type;
       
     private:
-      Socket* socket;					// The socket
+      Socket* const socket;				// The socket
       bool listening;					// Are we listening?
       flags_type flags;					// Flags (see above)
       
@@ -53,18 +52,18 @@ namespace Kine {
       
       // Destructor
       ~Listener(void)
-	{ delete socket; };
+	{
+	   if (socket != 0) {
+	      delete socket;
+	   }
+	};
       
       // Grab the socket
-      const Socket* const getSocket(void) const
-	{ return socket; };
+      const Socket& getSocket(void) const
+	{ return *socket; };
       
       // Make the socket listen
-      const bool listen(void)
-	{ 
-	   return (listening = 
-		   ((socket != 0) && (socket->bind() && socket->listen()))); 
-	};
+      const bool listen(void);
       
       // Are we listening?
       const bool isListening(void) const

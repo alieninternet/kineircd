@@ -23,6 +23,8 @@
 
 #include "kineircd/kineircdconf.h"
 
+#include <cstdlib>
+
 #include "listener/config.h"
 #include "socket/sockets.h"
 #include "debug.h"
@@ -33,37 +35,51 @@ using namespace Kine;
 // "LISTEN" class
 const ConfigParser::defTable_type ListenerConfig::classDefs = {
      {
+	"ADDRESS",
+	  (void *)&ListenerConfig::varAddress,
+	  &varHandleString,
+	  0,
+	  0
+     },
+     {
+	"ALLOWNETWORKS",
+	  (void *)&ListenerConfig::varAllowNetworks,
+	  &varHandleBoolean,
+	  0,
+	  0
+     },
+     {
 	"ALLOWSERVERS",
-	  0,
-	  0,
+	  (void *)&ListenerConfig::varAllowServers,
+	  &varHandleBoolean,
 	  0,
 	  0
      },
      {
 	"ALLOWSERVICES",
-	  0,
-	  0,
+	  (void *)&ListenerConfig::varAllowServices,
+	  &varHandleBoolean,
 	  0,
 	  0
      },
      {
 	"ALLOWUSERS",
-	  0,
-	  0,
+	  (void *)&ListenerConfig::varAllowUsers,
+	  &varHandleBoolean,
 	  0,
 	  0
      },
      {
 	"PORT",
-	  0,
-	  0,
+	  (void *)&ListenerConfig::varPort,
+	  &varHandleString,
 	  0,
 	  0
      },
      {
 	"SECURE",
-	  0,
-	  0,
+	  (void *)&ListenerConfig::varSecure,
+	  &varHandleBoolean,
 	  0,
 	  0
      },
@@ -77,77 +93,186 @@ const ConfigParser::defTable_type ListenerConfig::classDefs = {
 };
 
 
+/* ListenerConfig - Constructor (sets up default values)
+ * Original 14/08/2002 simonb
+ */
+ListenerConfig::ListenerConfig(void)
+  : varAllowNetworks(false),
+    varAllowServers(false),
+    varAllowServices(false),
+    varAllowUsers(false),
+    varSecure(false)
+{
+}
+
+
 /* classHandleListen
  * Original 11/08/2002 simonb
  */
 CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 {
-   // Check if the first value is empty (the listen type field)
-   if (values.empty() || values.front().empty()) {
-      // Get cranky
-      errString = "You must specify the domain/address type for listening";
-      return false;
-   }
-
-   // Upper-case the domain for easy checking
-   String domain = values.front().toUpper();
-
-   // The socket we will be listening on, it cannot be null
-   Socket *socket = 0;
-   
-   // Try and determine the domain
-#ifdef KINE_HAVE_SOCKET_IPV4_TCP
-   if ((domain == "IPV4") || (domain == "TCP/IPV4")) {
-# ifdef KINE_DEBUG_PSYCHO
-      debug("ListenerConfig::configClassHandler() - TCP/IPv4 domain chosen");
-# endif
-      socket = new SocketIPv4TCP();
-   } else 
-#endif
-#ifdef KINE_HAVE_SOCKET_IPV6_TCP
-   if ((domain == "IPV6") || (domain == "TCP/IPV6")) {
-# ifdef KINE_DEBUG_PSYCHO
-      debug("ListenerConfig::configClassHandler() - TCP/IPv6 domain chosen");
-# endif
-      socket = new SocketIPv6TCP();
-   } else
-#endif
-#ifdef KINE_HAVE_SOCKET_IPX_SPX
-   if ((domain == "IPX") || (domain == "SPX") || (domain == "IPX/SPX")) {
-# ifdef KINE_DEBUG_PSYCHO
-      debug("ListenerConfig::configClassHandler() - IPX/SPX domain chosen");
-# endif
-      socket = new SocketIPXSPX();
-   } else
-#endif
-#ifdef KINE_HAVE_SOCKET_UNIX
-   if (domain == "UNIX") {
-# ifdef KINE_DEBUG_PSYCHO
-      debug("ListenerConfig::configClassHandler() - UNIX domain chosen");
-# endif
-      socket = new SocketUNIX();
-   } else
-#endif
-   {
-      // No idea what they want, complain
-      errString = "Unknown or unsupported domain/address type: '" + 
-	values.front() + '\'';
-      return false;
-   }
-
-#ifdef KINE_DEBUG_ASSERT
-   // Make sure we are not going insane
-   assert(socket != 0);
-#endif
-
-   // Create our temporary config data class for the listener (for handlers)
+   // Create our temporary config data class for the listener
    ListenerConfig config;
    
-   // uhh something here, simon.
+      // Throw the listener stuff over to the configuration parser..
+   if (!ConfigParser::parse(configData, position, (void *)(classDefs),
+			    config)) {
+      return false;
+   }
+
+   // Work out the flags..
+   Listener::flags_type flags = 0;
+   if (config.varAllowNetworks) {
+      flags &= Listener::FLAG_ALLOW_NETWORKS;
+   }
+   if (config.varAllowServers) {
+      flags &= Listener::FLAG_ALLOW_SERVERS;
+   }
+   if (config.varAllowServices) {
+      flags &= Listener::FLAG_ALLOW_SERVICES;
+   }
+   if (config.varAllowUsers) {
+      flags &= Listener::FLAG_ALLOW_USERS;
+   }
    
-   // Throw the listener stuff over to the configuration parser..
-   return ConfigParser::parse(configData, position, (void *)(classDefs),
-			      config);
+   /* Since we may be creating multiple sockets here, we need to know what
+    * type of socket we are dealing with before we create it/them. We also
+    * need to know what type of socket we are dealing with as far as how to
+    * determine port numbers. If the port is in name form (i.e. a string) we
+    * will need to look it up somehow, which depends on the type of socket.
+    * Some socket types don't even have ports! This enumeration helps us out..
+    */
+   enum {
+      DOMAIN_UNKNOWN,
+#ifdef KINE_HAVE_SOCKET_IPV4_TCP
+      DOMAIN_IPV4,
+#endif
+#ifdef KINE_HAVE_SOCKET_IPV6_TCP
+      DOMAIN_IPV6,
+#endif
+#ifdef KINE_HAVE_SOCKET_IPX_SPX
+      DOMAIN_IPX,
+#endif
+#ifdef KINE_HAVE_SOCKET_UNIX
+      DOMAIN_UNIX
+#endif
+   } domainType = DOMAIN_UNKNOWN;
+   
+   // Check if the first value is empty (the listen type field)
+   if (!values.empty() && !values.front().empty()) {
+      // Upper-case the domain for easy checking
+      String domain = values.front().toUpper();
+      
+      // Try and determine the domain
+#ifdef KINE_HAVE_SOCKET_IPV4_TCP
+      if ((domain == "IPV4") || (domain == "TCP/IPV4")) {
+# ifdef KINE_DEBUG_PSYCHO
+	 debug("ListenerConfig::classHandler() - TCP/IPv4 socket chosen");
+# endif
+	 domainType = DOMAIN_IPV4;
+      } else 
+#endif
+#ifdef KINE_HAVE_SOCKET_IPV6_TCP
+      if ((domain == "IPV6") || (domain == "TCP/IPV6")) {
+# ifdef KINE_DEBUG_PSYCHO
+	 debug("ListenerConfig::classHandler() - TCP/IPv6 socket chosen");
+# endif
+	 domainType = DOMAIN_IPV6;
+      } else
+#endif
+#ifdef KINE_HAVE_SOCKET_IPX_SPX
+      if ((domain == "IPX") || (domain == "SPX") || (domain == "IPX/SPX")) {
+# ifdef KINE_DEBUG_PSYCHO
+	 debug("ListenerConfig::classHandler() - IPX/SPX socket chosen");
+# endif
+	 domainType = DOMAIN_IPX;
+      } else
+#endif
+#ifdef KINE_HAVE_SOCKET_UNIX
+      if (domain == "UNIX") {
+# ifdef KINE_DEBUG_PSYCHO
+	 debug("ListenerConfig::classHandler() - UNIX socket chosen");
+# endif
+	 domainType = DOMAIN_UNIX;
+      } else
+#endif
+      {
+	 // No idea what they want, complain
+	 errString = "Unknown or unsupported domain/address type: '" + 
+	   values.front() + '\'';
+	 return false;
+      }
+   }
+
+   // If we still do not have the socket created by now, try to make a guess..
+   if (domainType == DOMAIN_UNKNOWN) {
+#ifdef KINE_HAVE_SOCKET_IPV4_TCP
+      if (false) {
+# ifdef KINE_DEBUG_PSYCHO
+	 debug("ListenerConfig::classHandler() - "
+	       "TCP/IPv4 socket determined from address");
+# endif
+	 domainType = DOMAIN_IPV4;
+      } else
+#endif
+#ifdef KINE_HAVE_SOCKET_IPV6_TCP
+      if (false) {
+# ifdef KINE_DEBUG_PSYCHO
+	 debug("ListenerConfig::classHandler() - "
+	       "TCP/IPv6 socket determined from address");
+# endif
+	 domainType = DOMAIN_IPV6;
+      } else
+#endif
+      {
+	 // Cannot work out what type of socket is required, so we will give up
+	 errString = 
+	   "Unable to determine the domain/address type, please specify which "
+	   "address type the listener is for.";
+	 return false;
+      }
+   }
+   
+#ifdef KINE_DEBUG_ASSERT
+   // Make sure we are not going insane - we must have the domain sorted by now
+   assert(domainType != DOMAIN_UNKNOWN);
+#endif
+   
+#ifdef KINE_HAVE_SOCKET_UNIX
+   // If the socket type is unix - in that case we don't care about ports.
+   if (domainType == DOMAIN_UNIX) {
+      // Make sure the address exists!
+      if (config.varAddress.empty()) {
+	 // Complain
+	 errString = "UNIX sockets require a filename for an address";
+	 return false;
+      }
+      
+# ifdef KINE_DEBUG_PSYCHO
+      debug("ListenerConfig::classHandler() - Creating a UNIX socket...");
+# endif
+      // Create the socket, set its address, and add it to the listener list
+      Socket *socket = new SocketUNIX();
+      socket->setLocalAddress(config.varAddress);
+      (dataClass.*((ListenerList ConfigData::*)dataVariable)).listeners.
+	push_front(Listener(socket, flags));
+      return true;
+   }
+#endif
+   
+   // Try and convert the port number over (note the base variable on strtol())
+   char *portEndPtr = 0;
+   long int port = strtol(config.varPort.c_str(), &portEndPtr, 0);
+
+   return true; // temporary.
+   
+   // Check the port is greater than 0
+   if (port <= 0) {
+      errString = "Invalid port number '" + config.varPort + '\'';
+      return false;
+   }
+   
+
+   // All is well!
+   return true;
 }
-
-
