@@ -37,6 +37,23 @@ namespace Kine {
 	   findMessageTarget(const std::string& target,
 			     Receiver::Directivity& directivity,
 			     const bool includeServices = false);
+	 
+	 //! Make a user@host string
+	 inline static const std::string
+	   makeUserHostIdent(const Kine::Client& client)
+	   {
+	      return (client.getUsername() + '@' +
+		      client.getHostname());
+	   };
+	 
+	 //! Make a nick!user@host string
+	 inline static const std::string
+	   makeNickUserHostIdent(const Kine::Client& client)
+	   {
+	      return (client.getNickname() + '!' +
+		      client.getUsername() + '@' +
+		      client.getHostname());
+	   };
       }; // namespace Utility
    }; // namespace LibIRC2
 }; // namespace Kine

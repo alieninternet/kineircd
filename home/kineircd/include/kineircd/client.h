@@ -136,15 +136,6 @@ namespace Kine {
       //! Are we 'deaf' to normal (un-prefixed) channel messages?
       const bool hasSelectiveHearing(void) const
 	{ return (attentionGlyph != notDeafGlyph); };
-      
-      
-      //! Make a user@host string
-      const std::string makeUserHostIdent(void) const
-	{ return getUsername() + '@' + getHostname(); };
-      
-      //! Make a nick!user@host string
-      const std::string makeNickUserHostIdent(void) const
-	{ return getNickname() + '!' + getUsername() + '@' + getHostname(); };
    }; // class Client
 }; // namespace Kine
 

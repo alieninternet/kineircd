@@ -34,6 +34,7 @@
 # include <kineircd/user.h>
 # include <kineircd/myserver.h>
 # include <kineircd/libirc2/numerics.h>
+# include <kineircd/libirc2/utility.h>
 
 
 namespace Kine {
@@ -349,28 +350,28 @@ namespace Kine {
 	 template <class Tc>
 	   void sendMessageFrom(const Client& client, const Tc& command)
 	     {
-		sendMessageFrom(client.makeNickUserHostIdent(),
+		sendMessageFrom(Utility::makeNickUserHostIdent(client),
 				command);
 	     };
 	 template <class Tc, class Tpa>
 	   void sendMessageFrom(const Client& client, const Tc& command,
 				const Tpa& pa)
 	     {
-		sendMessageFrom(client.makeNickUserHostIdent(),
+		sendMessageFrom(Utility::makeNickUserHostIdent(client),
 				command, pa);
 	     };
 	 template <class Tc, class Tpa, class Tpb>
 	   void sendMessageFrom(const Client& client, const Tc& command,
 				const Tpa& pa, const Tpb& pb)
 	     {
-		sendMessageFrom(client.makeNickUserHostIdent(),
+		sendMessageFrom(Utility::makeNickUserHostIdent(client),
 				command, pa, pb);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc>
 	   void sendMessageFrom(const Client& client, const Tc& command,
 				const Tpa& pa, const Tpb& pb, const Tpc& pc)
 	     {
-		sendMessageFrom(client.makeNickUserHostIdent(),
+		sendMessageFrom(Utility::makeNickUserHostIdent(client),
 				command, pa, pb, pc);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd>
@@ -378,7 +379,7 @@ namespace Kine {
 				const Tpa& pa, const Tpb& pb, const Tpc& pc,
 				const Tpd& pd)
 	     {
-		sendMessageFrom(client.makeNickUserHostIdent(),
+		sendMessageFrom(Utility::makeNickUserHostIdent(client),
 				command, pa, pb, pc, pd);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
@@ -387,7 +388,7 @@ namespace Kine {
 				const Tpa& pa, const Tpb& pb, const Tpc& pc,
 				const Tpd& pd, const Tpe& pe)
 	     {
-		sendMessageFrom(client.makeNickUserHostIdent(),
+		sendMessageFrom(Utility::makeNickUserHostIdent(client),
 				command, pa, pb, pc, pd, pe);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
@@ -396,7 +397,7 @@ namespace Kine {
 				const Tpa& pa, const Tpb& pb, const Tpc& pc,
 				const Tpd& pd, const Tpe& pe, const Tpf& pf)
 	     {
-		sendMessageFrom(client.makeNickUserHostIdent(),
+		sendMessageFrom(Utility::makeNickUserHostIdent(client),
 				command, pa, pb, pc, pd, pe, pf);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
@@ -406,7 +407,7 @@ namespace Kine {
 				const Tpd& pd, const Tpe& pe, const Tpf& pf,
 				const Tpg& pg)
 	     {
-		sendMessageFrom(client.makeNickUserHostIdent(),
+		sendMessageFrom(Utility::makeNickUserHostIdent(client),
 				command, pa, pb, pc, pd, pe, pf, pg);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
@@ -416,7 +417,7 @@ namespace Kine {
 				const Tpd& pd, const Tpe& pe, const Tpf& pf,
 				const Tpg& pg, const Tph& ph)
 	     {
-		sendMessageFrom(client.makeNickUserHostIdent(),
+		sendMessageFrom(Utility::makeNickUserHostIdent(client),
 				command, pa, pb, pc, pd, pe, pf, pg, ph);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
@@ -426,7 +427,7 @@ namespace Kine {
 				const Tpd& pd, const Tpe& pe, const Tpf& pf,
 				const Tpg& pg, const Tph& ph, const Tpi& pi)
 	     {
-		sendMessageFrom(client.makeNickUserHostIdent(),
+		sendMessageFrom(Utility::makeNickUserHostIdent(client),
 				command, pa, pb, pc, pd, pe, pf, pg, ph, pi);
 	     };
 
