@@ -211,6 +211,61 @@ namespace Kine {
 				       const std::string& reason)
 	{ return Error::UNKNOWN_ERROR; };
       //@}
+      
+      
+      /*!
+       * \brief Send a WALLOPS message
+       * 
+       * A WALLOPS (<b>W</b>rite to <b>ALL</b> <b>OP</b>erator<b>S</b>)
+       * \p message is one intended for all online <em>IRC Operators</em>,
+       * which have their modes set accordingly. Depending on the server's
+       * configuration, normal users may also be able to receive WALLOPS
+       * messages.
+       * 
+       * WALLOPS is normally intended to be sent from Server entities only,
+       * however the server can be configured to allow Service and User
+       * entities on the network to be allowed to send them too. As such, any
+       * entity which can send messages (those which are Sender entities)
+       * can be passed as a \p sender of a WALLOPS \p message.
+       *
+       * \warning History has shown that the WALLOPS system can be very
+       *    easily abused. Quite a lot of IRC client software, or subsequently
+       *    loaded scripts, these days will attempt to allow the User to
+       *    receive WALLOPS messages. On large networks, this means the
+       *    outgoing traffic from WALLOPS can be large, as the message will
+       *    multiply enormously. Since this is the case, it's not recommended
+       *    to use WALLOPS quite often, such as a Service which broadcasts
+       *    statistical information. This is, of course, a matter of
+       *    invidivual network policy, so if you're writing such a Service,
+       *    it's recommended to include specific configuration to allow
+       *    network administrators to control the WALLOPS usage on their
+       *    network as needs be.
+       * \param sender The Sender of the WALLOPS \p message
+       * \param message The \p message to broadcast
+       * \return The status of the operation
+       * \retval Kine::Error::NO_ERROR
+       *    The \p message was accepted, and broadcast successfully
+       * \retval Kine::Error::PERMISSION_DENIED
+       *    The given \p sender is not allowed to send this message. This
+       *    is most likely because the \p sender is a Client of some sort,
+       *    and is not an <em>IRC Operator</em>, or at the very least, the
+       *    server will not allow this operator to send WALLOPS messages,
+       *    because they have not been given the appropriate rights in their
+       *    operator access configuration.
+       * \retval Kine::Error::TEXT_TOO_SHORT
+       *    The WALLOPS \p message was too short. This normally only happens
+       *    if the \p sender is a Client, they're allowed to send WALLOPS
+       *    messages, but the \p message is too short. The server may be
+       *    configured in this manner to avoid IRC operators abusing the
+       *    WALLOPS system with very short and meaningless messages.
+       * \retval Kine::Error::UNREGISTERED_ENTITY
+       *    The given \p sender is not registered on the network, and
+       *    therefore cannot participate in the network. The given \p sender
+       *    must be registered before it can send messages.
+       */
+      const Error::error_type sendWallops(const Sender& sender,
+					  const std::string& message)
+	{ return Error::UNKNOWN_ERROR; };
    }; // class MyServer
 
 

@@ -340,14 +340,14 @@ commands = {
 //   changeIdleTime;
 //};
 
-//commands = {
-//   command		= "WALLOPS";
-//   defaultPenalty	= 0;
-//   minimumParams	= 1;
-//   access		= "GLOBAL_OPERATOR";
-//   changeIdleTime;
-//   disabled;
-//};
+commands = {
+   command		= "WALLOPS";
+   defaultPenalty	= 0;
+   minimumParams	= 1;
+   access		= "GLOBAL_OPERATOR";
+   changeIdleTime;
+   disabled;
+};
 
 //commands = {
 //   command		= "WHO";

@@ -109,11 +109,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
 IRC2USER_COMMAND_HANDLER(Protocol::handleDIE)
 {
    static const char* const commandName = "DIE";
-   Error::error_type error;
-   
+
    // Try to shutdown the server - eek!
-   if ((error = myServer().shutdown(user, parameters[0])) !=
-       Error::NO_ERROR) {
+   const Error::error_type error = myServer().shutdown(user, parameters[0]);
+   
+   // Check the status of the operation
+   if (error != Error::NO_ERROR) {
       // What's the error?
       if (error == Error::PERMISSION_DENIED) {
 	 // Complain about not having access to this command
@@ -722,10 +723,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 IRC2USER_COMMAND_HANDLER(Protocol::handleREHASH)
 {
    static const char* const commandName = "REHASH";
-   Error::error_type error;
    
    // Try to rehash
-   if ((error = myServer().rehash(user)) == Error::NO_ERROR) {
+   const Error::error_type error = myServer().rehash(user);
+   
+   // Check the status of the operation
+   if (error == Error::NO_ERROR) {
       /* Tell the user we are rehashing.. Technically, we have rehashed! Even
        * if we told the user we were rehashing *before* we started rehashing,
        * the output would not normally not be sent to the user until after the
@@ -746,7 +749,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleREHASH)
    }
    
 # ifdef KINE_DEBUG_ASSERT
-      assert(error != Error::UNREGISTERED_ENTITY);
+   assert(error != Error::UNREGISTERED_ENTITY);
 # endif
 
    // No idea what the error is
@@ -764,10 +767,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleREHASH)
 IRC2USER_COMMAND_HANDLER(Protocol::handleRESTART)
 {
    static const char* const commandName = "RESTART";
-   Error::error_type error;
    
-   // Try to rehash
-   if ((error = myServer().restart(user, parameters[0])) != Error::NO_ERROR) {
+   // Try to restart the server
+   const Error::error_type error = myServer().restart(user, parameters[0]);
+   
+   // Check the status of the operation
+   if (error != Error::NO_ERROR) {
       // What's the error?
       if (error == Error::PERMISSION_DENIED) {
 	 // Complain about not having access to this command
@@ -1204,6 +1209,47 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
    sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
+}
+#endif
+
+
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_WALLOPS
+/* handleWALLOPS
+ * Original 18/09/2001 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleWALLOPS)
+{
+   static const char* const commandName = "WALLOPS";
+   
+   // Try and send the wallops message
+   const Error::error_type error = myServer().sendWallops(user, parameters[0]);
+   
+   // Check the status of the operation
+   if (error != Error::NO_ERROR) {
+      // What's the error?
+      if (error == Error::PERMISSION_DENIED) {
+	 // Complain about not having access to this command
+	 sendNumeric(LibIRC2::Numerics::ERR_NOPRIVILEGES,
+		     commandName,
+		     GETLANG(irc2_ERR_NOPRIVILEGES_SPECIFIC));
+	 return;
+      } else if (error == Error::TEXT_TOO_SHORT) {
+	 // Complain about the reason being too short..
+	 sendNumeric(LibIRC2::Numerics::ERR_TEXTTOOSHORT,
+		     commandName,
+		     GETLANG(irc2_ERR_TEXTTOOSHORT));
+	 return;
+      }
+	
+# ifdef KINE_DEBUG_ASSERT
+      assert(error != Error::UNREGISTERED_ENTITY);
+# endif
+
+      // Unknown error
+      sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
+		  commandName,
+		  GETLANG(irc2_ERR_UNKNOWNERROR));
+   }
 }
 #endif
 
