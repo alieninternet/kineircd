@@ -937,19 +937,20 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_GLIST";
    numeric	= "280";
-   origin	= "ircu";
+   origin	= "Undernet";
 };
 
 irc2numerics = {
    name		= "RPL_ENDOFGLIST";
    numeric	= "281";
-   origin	= "ircu";
+   origin	= "Undernet";
    conflict	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_ACCEPTLIST";
    numeric	= "281";
+   origin	= "Undernet";
    conflict	= "yes";
 };
 
@@ -962,7 +963,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_JUPELIST";
    numeric	= "282";
-   origin	= "ircu";
+   origin	= "Undernet";
    conflict	= "yes";
 };
 
@@ -975,7 +976,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_ENDOFJUPELIST";
    numeric	= "283";
-   origin	= "ircu";
+   origin	= "Undernet";
    conflict	= "yes";
 };
 
@@ -988,8 +989,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_FEATURE";
    numeric	= "284";
-   origin	= "ircu";
-   comment	= "Features?";
+   origin	= "QuakeNet";
    conflict	= "yes";
 };
 
@@ -1007,27 +1007,66 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "RPL_NEWHOSTIS";
+   numeric	= "285";
+   origin	= "QuakeNet";
+   conflict	= "yes";
+};
+
+irc2numerics = {
    name		= "RPL_CHANINFO_USERS";
    numeric	= "286";
    origin	= "aircd";
+   conflict	= "yes";
+};
+
+irc2numerics = {
+   name		= "RPL_CHKHEAD";
+   numeric	= "286";
+   origin	= "QuakeNet";
+   conflict	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_CHANINFO_CHOPS";
    numeric	= "287";
    origin	= "aircd";
+   conflict	= "yes";
+};
+
+irc2numerics = {
+   name		= "RPL_CHANUSER";
+   numeric	= "287";
+   origin	= "QuakeNet";
+   conflict	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_CHANINFO_VOICES";
    numeric	= "288";
    origin	= "aircd";
+   conflict	= "yes";
+};
+
+irc2numerics = {
+   name		= "RPL_PATCHHEAD";
+   numeric	= "288";
+   origin	= "QuakeNet";
+   conflict	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_CHANINFO_AWAY";
    numeric	= "289";
    origin	= "aircd";
+   conflict	= "yes";
+};
+
+irc2numerics = {
+   name		= "RPL_PATCHCON";
+   numeric	= "289";
+   origin	= "QuakeNet";
+   conflict	= "yes";
 };
 
 irc2numerics = {
@@ -1045,6 +1084,13 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "RPL_DATASTR";
+   numeric	= "290";
+   origin	= "QuakeNet";
+   conflict	= "yes";
+};
+
+irc2numerics = {
    name		= "RPL_CHANINFO_BANNED";
    numeric	= "291";
    origin	= "aircd";
@@ -1055,6 +1101,13 @@ irc2numerics = {
    name		= "RPL_HELPOP";
    numeric	= "291";
    origin	= "Unreal";
+   conflict	= "yes";
+};
+
+irc2numerics = {
+   name		= "RPL_ENDOFCHECK";
+   numeric	= "291";
+   origin	= "QuakeNet";
    conflict	= "yes";
 };
 
@@ -2703,7 +2756,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "ERR_ISCHANSERVICE";
    numeric	= "484";
-   origin	= "ircu";
+   origin	= "Undernet";
    conflict	= "yes";
 };
 
@@ -2735,12 +2788,21 @@ irc2numerics = {
    name		= "ERR_KILLDENY";
    numeric	= "485";
    origin	= "Unreal";
+   conflict	= "yes";
 };
 
 irc2numerics = {
    name		= "ERR_CANTKICKADMIN";
    numeric	= "485";
    origin	= "PTlink";
+   conflict	= "yes";
+};
+
+irc2numerics = {
+   name		= "ERR_ISREALSERVICE";
+   numeric	= "485";
+   origin	= "QuakeNet";
+   conflict	= "yes";
 };
 
 irc2numerics = {
@@ -2753,6 +2815,13 @@ irc2numerics = {
    name		= "ERR_HTMDISABLED";
    numeric	= "486";
    origin	= "Unreal";
+   conflict	= "yes";
+};
+
+irc2numerics = {
+   name		= "ERR_ACCOUNTONLY";
+   numeric	= "486";
+   origin	= "QuakeNet";
    conflict	= "yes";
 };
 
@@ -2779,7 +2848,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "ERR_VOICENEEDED";
    numeric	= "489";
-   origin	= "ircu";
+   origin	= "Undernet";
    conflict	= "yes";
 };
 
@@ -3052,6 +3121,31 @@ irc2numerics = {
    information	= "http://www.hades.skumler.net/~ejb/draft-brocklesby-irc-usercmdpfx-00.txt";
    format	= "<nickname> :<reason>";
    comment	= "Proposed.";
+};
+
+irc2numerics = {
+   name		= "ERR_BADHOSTMASK";
+   numeric	= "550";
+   origin	= "QuakeNet";
+};
+
+irc2numerics = {
+   name		= "ERR_HOSTUNAVAIL";
+   numeric	= "551";
+   origin	= "QuakeNet";
+};
+
+irc2numerics = {
+   name		= "ERR_USINGSLINE";
+   numeric	= "552";
+   origin	= "QuakeNet";
+};
+
+irc2numerics = {
+   name		= "ERR_STATSSLINE";
+   numeric	= "553";
+   origin	= "QuakeNet";
+   conflict	= "yes";
 };
 
 
