@@ -32,6 +32,7 @@
 #include <kineircd/config.h>
 #include <kineircd/daemon.h>
 #include <kineircd/registry.h>
+#include <kineircd/version.h>
 
 #include "kineircd/irc2/protocol.h"
 #include "libkineircd_irc2/language.h"
@@ -84,7 +85,7 @@ void Protocol::sendTimeOnServer(const User& user)
 }
 
 
-/* doADMIN - Handle the 'ADMIN' command
+/* doADMIN
  * Original 27/08/2001 simonb
  */
 void Protocol::doADMIN(const User& user)
@@ -125,7 +126,7 @@ void Protocol::doADMIN(const User& user)
 }
 
 
-/* doLUSERS - Handle the 'LUSERS' command
+/* doLUSERS
  * Original 13/08/2001 simonb
  */
 void Protocol::doLUSERS(const User& user)
@@ -162,7 +163,7 @@ void Protocol::doLUSERS(const User& user)
 }
 
 
-/* doMOTD - Handle the 'MOTD' command
+/* doMOTD
  * Original 13/08/2001 simonb
  */
 void Protocol::doMOTD(const User& user, const bool justConnected)
@@ -182,7 +183,7 @@ void Protocol::doMOTD(const User& user, const bool justConnected)
 }
 
 
-/* doTIME - Handle the 'TIME' command
+/* doTIME
  * Original 29/08/2001 simonb
  */
 void Protocol::doTIME(const User& user)
@@ -224,4 +225,20 @@ void Protocol::doTIME(const User& user)
    
    // Also send the RPL_TIMEONSERVERIS
    sendTimeOnServer(user);
+}
+
+
+/* doVERSION
+ * Original 24/08/2001 simonb
+ */
+void Protocol::doVERSION(const User& user)
+{
+   // Send the RPL_VERSION reply
+   sendNumeric(user, LibIRC2::Numerics::RPL_VERSION,
+	       config().getOptionsServerName(),
+	       Version::version,
+	       Version::versionChars);
+   
+   // Also send the RPL_ISUPPORT stuff
+//   sendISUPPORT();
 }

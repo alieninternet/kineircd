@@ -312,17 +312,12 @@ namespace Kine {
 	 // Send RPL_TIMEONSERVERIS to the given client
 	 void sendTimeOnServer(const User& user);
 	 
-	 // Handle the 'ADMIN' command
+	 // Handle the various commands which are quite common in IRC-2 modules
 	 void doADMIN(const User& user);
-	 
-	 // Handle the 'LUSERS' command
 	 void doLUSERS(const User& user);
-	 
-	 // Handle the 'MOTD' command
 	 void doMOTD(const User& user, const bool justConnected = false);
-	 
-	 // Handle the 'TIME' command
 	 void doTIME(const User& user);
+	 void doVERSION(const User& user);
       };
    }; // namespace LibIRC2
 }; // namespace Kine
