@@ -57,7 +57,8 @@ namespace Kine {
       
     public:
       // Constructor
-      Listener(AISutil::Socket& s, unsigned short lb, flags_type f = 0)
+      Listener(AISutil::Socket& s, const unsigned short lb, 
+	       const flags_type f = 0)
 	: socket(s),
           listenBacklog(lb),
           flags(f),
@@ -79,6 +80,10 @@ namespace Kine {
       // Return the flags
       const flags_type getFlags(void) const
 	{ return flags; };
+      
+      // Check if a specific flag is set
+      const bool isFlagSet(const Flags::type flag) const
+	{ return (flags & flag); };
       
       // Return the number of accepts we have done since we started
       const unsigned long int getAcceptCount(void) const

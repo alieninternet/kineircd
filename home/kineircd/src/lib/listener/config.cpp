@@ -186,16 +186,16 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
    // Work out the flags..
    Listener::flags_type flags = 0;
    if (config.varAllowNetworks) {
-      flags &= Listener::Flags::ALLOW_NETWORKS;
+      flags |= Listener::Flags::ALLOW_NETWORKS;
    }
    if (config.varAllowServers) {
-      flags &= Listener::Flags::ALLOW_SERVERS;
+      flags |= Listener::Flags::ALLOW_SERVERS;
    }
    if (config.varAllowServices) {
-      flags &= Listener::Flags::ALLOW_SERVICES;
-   }
+      flags |= Listener::Flags::ALLOW_SERVICES; 
+  }
    if (config.varAllowUsers) {
-      flags &= Listener::Flags::ALLOW_USERS;
+      flags |= Listener::Flags::ALLOW_USERS;
    }
    
    /* Since we may be creating multiple sockets here, we need to know what
@@ -270,7 +270,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
    // If we still do not have the socket created by now, try to make a guess..
    if (domainType == DOMAIN_UNKNOWN) {
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPV4_TCP
-      if (false) {
+      if (false) { // some check needs to go here..
 # ifdef KINE_DEBUG_PSYCHO
 	 debug("ListenerConfig::classHandler() - "
 	       "TCP/IPv4 socket determined from address");
@@ -279,7 +279,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
       } else
 #endif
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPV6_TCP
-      if (false) {
+      if (false) { // some check needs to go here..
 # ifdef KINE_DEBUG_PSYCHO
 	 debug("ListenerConfig::classHandler() - "
 	       "TCP/IPv6 socket determined from address");
@@ -456,7 +456,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
       
       // Add it to the list
       (dataClass.*((ListenerList ConfigData::*)dataVariable)).listeners.
-	push_front(new Listener(*socket, flags));
+	push_front(new Listener(*socket, config.varListenBacklog, flags));
       
       // If we are not looping through the names, break out now..
       if (!lookupNames) {
