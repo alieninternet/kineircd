@@ -384,27 +384,24 @@ dnl Check that the 'ssl_dir' environment variable is not still empty
 if test -n "$ssl_dir"; then
   dnl Check that the 'ssl_libs' environment is a directory
   if test -d "$ssl_libs"; then
-    dnl Check if they do not want SSL support
-    if test "$kineircd_test_openssl_not_wanted" = "yes"; then 
-      AC_MSG_RESULT([$ssl_dir (support turned off though)])
-    else
-      AC_MSG_RESULT($ssl_dir)
-      INCDIRS="$INCDIRS -I$ssl_dir/include"
-    fi
+    AC_MSG_RESULT($ssl_dir)
+    INCDIRS="$INCDIRS -I$ssl_dir/include"
     ssl_lib="-lssl -lcrypto"
     ssl_ldflags="-L$ssl_libs"
-    LDFLAGS="$LDFLAGS $ssl_ldflags"
-    AC_CHECK_LIB(ssl,SSL_accept,[
-      AC_MSG_RESULT(yes)
+    old_LDFLAGS="$LDFLAGS"
+    LDFLAGS="$LDFLAGS $ssl_ldflags -lcrypto"
+dnl    AC_CHECK_LIB(ssl,SSL_accept,[
       AC_DEFINE(HAVE_OPENSSL, 1,
 	        [Define if the OpenSSL library is available])
       AC_DEFINE(WITH_SSL, 1,
 	        [Define if SSL support is requested in the daemon])
-    ],[
-      AC_MSG_RESULT(no)
-      AC_MSG_WARN([Your OpenSSL installation seems incomplete!])
-      kineircd_test_openssl_broken=yes
-     ])
+      AC_SUBST(ssl_lib)
+      AC_SUBST(ssl_ldflags)
+dnl    ],[
+dnl      AC_MSG_WARN([Your OpenSSL installation seems incomplete!])
+dnl      kineircd_test_openssl_broken=yes
+dnl     ])
+    LDFLAGS="$old_ldflags"
   else
     AC_MSG_RESULT(unknown)
     AC_MSG_WARN([Only found half of an OpenSSL installation!])
@@ -420,14 +417,6 @@ else
   echo "  Without this library you will not be able to use secured SSL connections."
   kineircd_test_openssl_broken=yes
 fi
-dnl Make sure we got it OK if we desparately need it
-if test "$kineircd_test_need_openssl_required" = "yes"; then
-  if test "$kineircd_test_openssl_broken" = "yes"; then
-    AC_MSG_ERROR([Something you have included requires OpenSSL and I cannot find it.])
-  fi
-fi
-AC_SUBST(ssl_lib)
-AC_SUBST(ssl_ldflags)
 
 AC_CACHE_CHECK([for a working C++ Standard Template Library],
  kineircd_cv_lib_stl_ok,[
