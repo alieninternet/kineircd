@@ -53,10 +53,10 @@ void Input::handleInput(std::stringstream& data)
       // If the input queue is empty, we can skip throwing the string around
       if (inputQueue.empty()) {
 	 // Throw it to the line parser..
-	 parseLine(data.str().substr(pos, eolPos));
+	 parseLine(data.str().substr(pos, eolPos - pos));
       } else {
 	 // Throw the input queue *and* the broken apart data to the parser
-	 parseLine(inputQueue + data.str().substr(pos, eolPos));
+	 parseLine(inputQueue + data.str().substr(pos, eolPos - pos));
 	 
 	 // Clear the input queue
 	 inputQueue.clear();
