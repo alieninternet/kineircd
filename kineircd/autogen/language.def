@@ -58,6 +58,7 @@ languages = {
 
 tag = {
    name		= "irc2_ERR_ALREADYREGISTERED";
+   components	= "mod_irc2registrar";
    data_en	= "Unauthorised command (already registered)";
    data_tr	= "Bu komutu uygulamaya yetkiniz yok (önceden kaydedildi)";
 };
@@ -135,6 +136,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_ERRONEUSNICKNAME";
+   components	= "mod_irc2registrar";
    data_en	= "Erroneous nickname";
    data_tr	= "Yanlıž^_ nickname";
 };
@@ -160,7 +162,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NEEDMOREPARAMS";
-   components	= "mod_irc2user";
+   components	= "mod_irc2registrar mod_irc2user";
    data_en	= "Not enough parameters";
    data_tr	= "Yeterince bilgi verilmedi";
 };
@@ -225,6 +227,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NONICKNAMEGIVEN";
+   components	= "mod_irc2registrar";
    data_en	= "No nickname given";
    data_tr	= "Nickname belirtilmedi";
 };
