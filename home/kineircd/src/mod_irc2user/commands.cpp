@@ -48,9 +48,9 @@ Commands::Commands(void)
     */
    for (unsigned int i = 0; preInitCommands[i].commandName != 0; i++) {
       // Insert the data into the dynamic command table
-      commandsList.
-	insert(commandsList_type::value_type(preInitCommands[i].commandName,
-					     preInitCommands[i]));
+      commandList.
+	insert(commandList_type::value_type(preInitCommands[i].commandName,
+					    preInitCommands[i]));
    }
 }
 
@@ -75,10 +75,10 @@ const Commands::CommandInfo* const
   Commands::findCommand(const std::string& name)
 {
    // Look for the command..
-   commandsList_type::iterator it = commandsList.find(name);
+   commandList_type::iterator it = commandList.find(name);
    
    // Did we find it?
-   if (it != commandsList.end()) {
+   if (it != commandList.end()) {
       // We found it!! Since we did find it, increase the call count
       (*it).second.callCount++;
 

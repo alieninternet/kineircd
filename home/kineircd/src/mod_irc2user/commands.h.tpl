@@ -77,14 +77,16 @@ namespace Kine {
 	      {};
 	 };
 	 
+	 // Commands list type
+# ifdef KINE_STL_HAS_HASH
+	 typedef std::hash_map < std::string, CommandInfo > commandList_type;
+# else
+	 typedef std::map < std::string, CommandInfo > commandList_type;
+# endif
+	 
        private:
 	 // A list of commands
-# ifdef KINE_STL_HAS_HASH
-	 typedef std::hash_map < std::string, CommandInfo > commandsList_type;
-# else
-	 typedef std::map < std::string, CommandInfo > commandsList_type;
-# endif
-	 commandsList_type commandsList;
+	 commandList_type commandList;
 	 
 	 // Our single instance
 	 static Commands* instance;
@@ -106,6 +108,10 @@ namespace Kine {
 	 
 	 // Find a command in the command list
 	 const CommandInfo* const findCommand(const std::string& name);
+	 
+	 // Return the command list (read-only)
+	 const commandList_type& getCommandList(void) const
+	   { return commandList; };
       };
    }; // namespace mod_irc2user
 }; // namespace Kine
