@@ -3204,12 +3204,12 @@ irc2numerics = {
 };
 
 irc2numerics = {
-   name		= "RPL_LUSERHELPERS";
+   name		= "RPL_LUSERSTAFF";
    numeric	= "678";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   format	= "<helpers_online_count> :<info>";
-   comment	= "Reply to LUSERS command - Number of network staff or 'helpers' online (differs from Local/Global operators). Similar format to RPL_LUSEROP";
+   format	= "<staff_online_count> :<info>";
+   comment	= "Reply to LUSERS command - Number of network staff (or 'helpers') online (differs from Local/Global operators). Similar format to RPL_LUSEROP";
 };
 
 irc2numerics = {

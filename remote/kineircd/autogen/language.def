@@ -1386,9 +1386,9 @@ tags = {
 };
 
 tags = {
-   name		= "irc2_RPL_LUSERHELPERS";
+   name		= "irc2_RPL_LUSERSTAFF";
    component	= "mod_irc2user";
-   data_en	= "helper(s) online";
+   data_en	= "Staff member(s) online";
 };
 
 tags = {
