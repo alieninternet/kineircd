@@ -182,10 +182,16 @@ void Protocol::parseMessage(const std::string& origin,
 	 return;
       }
       
-      // No support yet...
-      sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVER,
-			registrantData.protocol));
-      return;
+      // .. umm.. but not all protocols say who they are.. this sucks..
+      if (registrantData.protocol.empty() ||
+	  ((protocolInfo = 
+	    daemon().findProtocol(ProtocolInfo::Type::SERVER,
+				  registrantData.protocol.toUpper())) == 0)) {
+	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVER,
+			   registrantData.protocol));
+	 return;
+      }
+      break;
       
       
     case RegistrationType::SERVICE:
@@ -444,13 +450,13 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parsePASS)
 #endif
    
    // Is there anything else on the line we should know about?
-   if (parameters.size() > 1) {
+//   if (parameters.size() > 1) {
 //      registrantData.passwordKludge = line.rest();
 //#ifdef KINE_DEBUG
 //      debug("mod_irc2registrar: -=>  PASS Kludge: " +
 //	    registrantData.passwordKludge);
 //#endif
-   }
+//   }
 }
 
 
