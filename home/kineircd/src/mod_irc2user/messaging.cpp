@@ -98,6 +98,8 @@ void Protocol::doMessage(const parameters_type& parameters,
 			   if ((foundUser != 0) && (foundUser->isAway())) {
 			      sendNumeric(LibIRC2::Numerics::RPL_AWAY,
 					  foundUser->getName(),
+					  (daemon().getTime() -
+					   foundUser->getAwaySince()).seconds,
 					  foundUser->getAwayMessage());
 			   }
 			   

@@ -495,6 +495,8 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	    if (foundUser->isAway()) {
 	       sendNumeric(user, LibIRC2::Numerics::RPL_AWAY,
 			   foundUser->getNickname(),
+			   (daemon().getTime() -
+			    foundUser->getAwaySince()).seconds,
 			   foundUser->getAwayMessage());
 	    }
 	 

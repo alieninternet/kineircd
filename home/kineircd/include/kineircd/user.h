@@ -46,6 +46,9 @@ namespace Kine {
       //! Away message. If this is empty, the user should be considered 'here'
       std::string awayMessage;
 
+      //! Away time - the time the user was last marked as being 'away'
+      AIS::Util::Time awaySince;
+      
       //! If the user is a helper, this is a single word defining their status
       std::string staffStatus;
       
@@ -145,6 +148,10 @@ namespace Kine {
       //! Return the away message for this user. If blank, there is none set
       const std::string& getAwayMessage(void) const
 	{ return awayMessage; };
+
+      //! Return the time the user was last set as being away
+      const AIS::Util::Time& getAwaySince(void) const
+	{ return awaySince; };
       
       //! Check if this user is away
       const bool isAway(void) const

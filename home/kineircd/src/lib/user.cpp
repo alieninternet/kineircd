@@ -87,6 +87,9 @@ const Error::error_type User::setAway(const Denizen& changer,
    // Copy the message across (check it??)
    awayMessage = static_cast<const String&>(reason).trim();
 
+   // Set the 'away since' time
+   awaySince = daemon().getTime();
+   
    // broadcast it.
 
    // Tell ourself about this, if we care
