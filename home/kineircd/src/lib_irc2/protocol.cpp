@@ -28,6 +28,7 @@
 
 #include <aisutil/string/tokens.h>
 #include <kineircd/config.h>
+#include <kineircd/version.h>
 
 #include "libkineircd_irc2/protocol.h"
 
@@ -175,61 +176,89 @@ std::string Protocol::withdrawOutput(AISutil::Socket::blockSize_type amount)
 }
 
 
-/* sendLUSERS - Send an LUSER to the given user..
+/* sendISUPPORT - Send ISUPPORT information to the given user..
+ * Original 24/08/2001 simonb
+ */
+void Protocol::sendISUPPORT(const Kine::User& user)
+{
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
+	       Numerics::RPL_ISUPPORT,
+	       "isupport");
+}
+
+
+/* sendLUSERS - Send an LUSERS reply to the given user..
  * Original 13/08/2001 simonb
  */
-void Protocol::sendLUSERS(const Kine::User& destination)
+void Protocol::sendLUSERS(const Kine::User& user)
 {
-   sendNumeric(config().getOptionsServerName(), destination.getNickname(),
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
 	       Numerics::RPL_LUSERCLIENT,
 	       "Stuff..");
-   sendNumeric(config().getOptionsServerName(), destination.getNickname(),
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
 	       Numerics::RPL_LUSEROP,
 	       0,
 	       "luserop");
-   sendNumeric(config().getOptionsServerName(), destination.getNickname(),
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
 	       Numerics::RPL_LUSERSTAFF,
 	       0,
 	       "luserstaff");
-   sendNumeric(config().getOptionsServerName(), destination.getNickname(),
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
 	       Numerics::RPL_LUSERUNKNOWN,
 	       0,
 	       "luserunknown");
-   sendNumeric(config().getOptionsServerName(), destination.getNickname(),
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
 	       Numerics::RPL_LUSERCHANNELS,
 	       0,
 	       0,
 	       "luserchannels");
-   sendNumeric(config().getOptionsServerName(), destination.getNickname(),
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
 	       Numerics::RPL_LUSERME,
 	       "luserme");
-   sendNumeric(config().getOptionsServerName(), destination.getNickname(),
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
 	       Numerics::RPL_LOCALUSERS,
 	       "localusers");
-   sendNumeric(config().getOptionsServerName(), destination.getNickname(),
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
 	       Numerics::RPL_GLOBALUSERS,
 	       "globalusers");
 }
 
 
-/* sendMOTD - Send an MOTD to the given user..
+/* sendMOTD - Send our MOTD to the given user..
  * Original 13/08/2001 simonb
  */
-void Protocol::sendMOTD(const Kine::User& destination,
+void Protocol::sendMOTD(const Kine::User& user,
 			const bool justConnected)
 {
    // Send the MOTD header
-   sendNumeric(config().getOptionsServerName(), destination.getNickname(),
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
 	       Numerics::RPL_MOTDSTART,
-	       "start");
-   
+	       "start motd");
+
    // Send this line
-   sendNumeric(config().getOptionsServerName(), destination.getNickname(),
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
 	       Numerics::RPL_MOTD,
 	       "- This is MOTD data");
    
    // Send the MOTD footer
-   sendNumeric(config().getOptionsServerName(), destination.getNickname(),
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
 	       Numerics::RPL_ENDOFMOTD,
-	       "end");
+	       "end motd");
+}
+
+
+/* sendVERSION - Send a VERSION reply to the given user..
+ * Original 24/08/2001 simonb
+ */
+void Protocol::sendVERSION(const Kine::User& user)
+{
+   // Send the RPL_VERSION reply
+   sendNumeric(config().getOptionsServerName(), user.getNickname(),
+	       Numerics::RPL_VERSION,
+	       config().getOptionsServerName(),
+	       Version::version,
+	       Version::versionChars);
+   
+   // Also send the RPL_ISUPPORT stuff
+   sendISUPPORT(user);
 }

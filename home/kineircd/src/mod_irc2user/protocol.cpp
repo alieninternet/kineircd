@@ -79,10 +79,8 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 	       "sparammodes");
    
    // Tell the user a about what we can do.. (005)
-   sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
-	       /* stuff */
-	       GETLANG(irc2_RPL_ISUPPORT));
-     
+   sendISUPPORT(user);
+   
    // Send the LUSERS output, for some reason some clients want this??
    sendLUSERS(user);
    
