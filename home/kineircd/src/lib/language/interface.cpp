@@ -347,7 +347,10 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	  * graphically, but not thrown around. These are worst-case naughty
 	  * chars from the C0 control set, and should be stomped on.
 	  */
-	 if (((*convertedData)[i] == 0x0000) || // NUL
+#ifdef KINE_DEBUG
+# warning "Cannot avoid NUL appearing in text because substititions are dealt with prior to conversion, and not after conversion (this must change)"
+#endif
+	 if (/* ((*convertedData)[i] == 0x0000) || // NUL */
 	     ((*convertedData)[i] == 0x0001) || // SOH
 	     ((*convertedData)[i] == 0x0008) || // BS
 	     (((*convertedData)[i] >= 0x000A) &&
