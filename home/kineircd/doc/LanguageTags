@@ -1,0 +1,58 @@
+
+'%' char specification notes:
+
+% can be escaped ("\%" - \ char can also have an octal value, eg. \002).
+The character after the % can be an upper or lower case letter (it is case
+sensitive, so %s and %S are different things), or a char of the following:
+%#
+
+Additional data can be placed between the % and the #, such as numbers, etc.
+They will control the way the data called is used.
+
+Sequences:
+
+%%
+	Return a single '%', same as "\%"
+
+%<n>#
+	Return the value in field number n, if it exists for that tag.
+	eg.  %4# would return the 4th field.
+	What is held in each of these fields depends on each specific tag.
+	If a requested field doesn't exist, this will return nothing.
+
+%b
+	Bold, same as '\002', however may in the future also represent bold 
+	for other protocols
+
+%<q>c
+	Return a variable from whatever is using this tag's configuration
+	data. This is specific to each module and the value for 'q' will need
+	to be discovered from that specific module's documentation. This may
+	not even be available, or may be used for other data other than the
+	field number such as global data all tags can use.. etc.. 
+
+%<q>C
+	Return a variable from the daemon configuration data referred to by its
+	"query number, q. The value for the query number is in the list below.
+	Some configuration variables are missing due to security reasons, or
+	their common use (such as the network name, etc). The query number
+	may be one of the following:
+		0	adminName
+		1	adminLocation
+		2	adminEmail
+		(more when I can be bothered writing the parser)
+
+%D
+	Return the server's description
+
+%N
+	Return the network name, or nothing if it has not been set
+     
+%r
+	Reverse/Inverse, same as '\026'; Same conditions as %b
+     
+%S
+	Return the server's hostname
+     
+%u
+	Underline, same as '\037'; Same conditions as %b
