@@ -343,6 +343,9 @@ void Protocol::doUSERS(const User& user)
 	 // Send the information about this user
 	 sendNumeric(user, LibIRC2::Numerics::RPL_USERS,
 		     output.str());
+	 
+	 // Tell ourself that we've outputted a user record
+	 haveUsers = true;
       }
    }
 
