@@ -85,6 +85,10 @@ bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
  */
 void ModuleList::startAll(void) const
 {
+#ifdef KINE_DEBUG_EXTENDED
+   debug("ModuleList::stopAll() - Starting modules");
+#endif
+   
    // Run through the list of modules and call their start functions
    for (modulesMap_type::const_iterator it = modules.begin(); 
 	it != modules.end(); it++) {
@@ -98,6 +102,10 @@ void ModuleList::startAll(void) const
  */
 void ModuleList::stopAll(void)
 {
+#ifdef KINE_DEBUG_EXTENDED
+   debug("ModuleList::stopAll() - Killing modules");
+#endif
+   
    // Run through the list of modules to stop and delete them all
    for (modulesMap_type::const_iterator it = modules.begin(); 
 	it != modules.end(); it++) {
