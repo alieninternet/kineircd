@@ -529,56 +529,36 @@ dnl Which modules shall we compile?
 dnl
 AC_MSG_CHECKING([which modules to compile])
 
-AC_ARG_ENABLE(mod-http,
-              AC_HELP_STRING([--disable-mod-http],
-                             [Disable the HTTP protocol module]),
- [
-   if test "$enableval" \!= "yes"; then
-     echo -n "mod_http "
-     kineircd_test_compile_mod_http=yes
-   fi
- ],[
-   echo -n "mod_http "
-   kineircd_test_compile_mod_http=yes
- ])
-AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_MOD_HTTP,
-	       [test x$kineircd_test_compile_mod_http = xyes])
-
-AC_ARG_ENABLE(mod-irc2user,
-              AC_HELP_STRING([--disable-mod-irc2user],
-                             [Disable the IRC/2 user protocol module]),
- [
-   if test "$enableval" \!= "yes"; then
-     echo -n "mod_irc2user "
-     kineircd_test_compile_mod_irc2user=yes
-     kineircd_test_compile_lib_irc2=yes
-   fi
- ],[
-   echo -n "mod_irc2user "
-   kineircd_test_compile_mod_irc2user=yes
-   kineircd_test_compile_lib_irc2=yes
- ])
-AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_MOD_IRC2USER,
-	       [test x$kineircd_test_compile_mod_irc2user = xyes])
-
-if test "$kineircd_test_netsnmp_broken" = "no"; then
-  AC_ARG_ENABLE(mod-snmp,
-                AC_HELP_STRING([--disable-mod-snmp],
-		               [Disable the SNMP extension module]),
+dnl This macro will help us reduce repeated code..
+dnl use: AC_KINE_MODULE_CHECK(mod_name, [the name of the module])
+AC_DEFUN([AC_KINE_MODULE_CHECK],[
+  AC_ARG_ENABLE($1,
+                AC_HELP_STRING([--disable-$1],
+                               [Disable $2]),
    [
-     if test "$enableval" \!= "yes"; then
-       echo -n "mod_snmp "
-       kineircd_test_compile_mod_snmp=yes
-     fi
+    if test "$enableval" \!= "yes"; then
+      echo -n "$1 "
+      AS_TR_SH(kineircd_test_compile_$1)=yes
+    fi
    ],[
-     echo -n "mod_snmp "
-     kineircd_test_compile_mod_snmp=yes
+    echo -n "$1 "
+    AS_TR_SH(kineircd_test_compile_$1)=yes
    ])
-else
-  kineircd_test_compile_mod_snmp=no
+  AM_CONDITIONAL(AS_TR_CPP(KINEIRCD_COMPILE_MODULES_$1),
+	         [test x$kineircd_test_compile_$1 = xyes])
+ ])
+
+AC_KINE_MODULE_CHECK(mod-bovini1, [the BOVINI/1 server protocol module])
+AC_KINE_MODULE_CHECK(mod-filelog, [the simple file based logging module])
+AC_KINE_MODULE_CHECK(mod-http, [the HTTP protocol module])
+AC_KINE_MODULE_CHECK(mod-iirc1, [the IIRC/1 inter-network protocol module])
+AC_KINE_MODULE_CHECK(mod-irc2user, [the IRC/2 user protocol module])
+if test "$kineircd_test_netsnmp_broken" = "no"; then
+  AC_KINE_MODULE_CHECK(mod-snmp, [the SNMP statistics module])
 fi
-AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_MOD_SNMP,
-	       [test x$kineircd_test_compile_mod_snmp = xyes])
+if test "$ac_cv_header_syslog_h" = "yes"; then
+  AC_KINE_MODULE_CHECK(mod-syslog, [the syslog logging module])
+fi
 
 dnl finish off the line
 echo
@@ -586,11 +566,23 @@ echo
 dnl Work out which module libraries we need
 AC_MSG_CHECKING([which module libraries to compile])
 
-if test "$kineircd_test_compile_lib_irc2" = "yes"; then
+if test \
+	"$kineircd_test_compile_mod_iirc1" = "yes" -o \
+	"$kineircd_test_compile_mod_irc2user" = "yes"; then
   echo -n "lib_irc2 "
+  kineircd_test_compile_lib_irc2=yes;
 fi
 AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_LIB_IRC2,
 	       [test x$kineircd_test_compile_lib_irc2 = xyes])
+
+if test \
+	"$kineircd_test_compile_mod_filelog" = "yes" -o \
+	"$kineircd_test_compile_mod_syslog" = "yes"; then
+  echo -n "lib_logger "
+  kineircd_test_compile_lib_logger=yes;
+fi
+AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_LIB_LOGGER,
+	       [test x$kineircd_test_compile_lib_logger = xyes])
 
 dnl finish off the line
 echo

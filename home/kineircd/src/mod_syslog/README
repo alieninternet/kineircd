@@ -1,0 +1,2 @@
+This is the syslog logging module, which allows logging to syslog (if
+available).

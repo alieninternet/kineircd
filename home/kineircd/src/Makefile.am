@@ -7,11 +7,17 @@ include $(top_builddir)/config/automake.inc
 
 
 
-# Work out which additional libraries/modules we need to compile...
+# Work out which additional libraries we need to compile...
 #if KINEIRCD_COMPILE_MODULES_LIB_IRC2
 # KINEIRCD_TARGET_LIB_IRC2=libkineircd_irc2.la
  KINEIRCD_TARGET_LIB_IRC2=
 #endif
+#if KINEIRCD_COMPILE_MODULES_LIB_LOGGER
+# KINEIRCD_TARGET_LIB_LOGGER=libkineircd_logger.la
+ KINEIRCD_TARGET_LIB_LOGGER=
+#endif
+
+# Work out which modules we need to compile...
 if KINEIRCD_COMPILE_MODULES_MOD_HTTP
  KINEIRCD_TARGET_MOD_HTTP=mod_http.la
 endif
@@ -34,6 +40,7 @@ SUBDIRS=\
 # Libraries and modules to build
 lib_LTLIBRARIES=\
 	$(KINEIRCD_TARGET_LIB_IRC2) \
+	$(KINEIRCD_TARGET_LIB_LOGGER) \
 	$(KINEIRCD_TARGET_MOD_HTTP) \
 	$(KINEIRCD_TARGET_MOD_IRC2USER) \
 	$(KINEIRCD_TARGET_MOD_SNMP)
