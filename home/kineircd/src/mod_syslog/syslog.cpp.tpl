@@ -31,6 +31,12 @@
 # include "autoconf.h"
 #endif
 
+extern "C" {
+#ifdef HAVE_SYSLOG_H
+# include <syslog.h>
+#endif
+};
+ 
 #include "mod_syslog/syslog.h"
 
 using namespace Kine::mod_syslog;
@@ -41,13 +47,38 @@ using namespace Kine::mod_syslog;
  * 04/04/2002 simonb - Added PID boolean option
  * 04/04/2002 simonb - Added debugging info
  */
-Syslog::Syslog(Kine::Logger::Mask::lazy_type mask, const char *processName, 
-	       const bool showPid)
- : Logger(mask)
+Syslog::Syslog(Config& c)
+  : Kine::Logger(c.getLogMask()),
+    config(c)
 {
-   int option = LOG_NDELAY;
+   /* The options we will use with syslog. We use NDELAY so that the socket
+    * is opened up immediately (in case we run out of file descriptors and
+    * cannot log it!), and we use NOWAIT so that logging to syslog doesn't
+    * slow the daemon down.
+    */
+   int options = LOG_NDELAY | LOG_NOWAIT;
 
-   openlog(processName, (showPid ? (option | LOG_PID) : option), LOG_DAEMON);
+   // LOG_CONS option?
+   if (config.getConsoleOutput()) {
+      options |= LOG_CONS;
+   }
+   
+   // LOG_PID option?
+   if (config.getShowPID()) {
+      options |= LOG_PID;
+   }
+ 
+   // Open a connection to the system logger
+   openlog(config.getIdentity().c_str(), options, LOG_DAEMON);
+}
+
+
+/* ~Syslog - Destructor (close the syslog connection)
+ * Original 16/02/2000 simonb
+ */
+Syslog::~Syslog(void)
+{
+   closelog();
 }
 
 
@@ -59,13 +90,23 @@ Syslog::Syslog(Kine::Logger::Mask::lazy_type mask, const char *processName,
 void Syslog::logLine(const std::string& str,
 		     const Kine::Logger::Mask::type mask)
 {
-   // Determine what the syslog-relative priority should be (this is shit)
-   int priority;
-   switch (mask) {[+ FOR logger_masks +]
+   // Determine what the syslog-relative priority should be
+   int priority = 0;
+   switch (mask) {[+FOR logger_masks+][+COMMENT 
+                                                It would be nice if this
+                                                went through the list a few
+						times, so it can generate an
+						output which has less jumps.
+						i.e. clustering the syslog
+						priorities together in a 
+						smart way.. but I don't care
+						for now.. 
+				       +]
     case Logger::Mask::[+name+]:
       priority = [+syslogpri+];
-      break;[+ ENDFOR logger_masks +]
+      break;[+ENDFOR logger_masks+]
    }
 
+   // Log the line
    syslog(priority, "%s", str.c_str());
 }

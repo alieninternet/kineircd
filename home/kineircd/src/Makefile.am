@@ -205,6 +205,8 @@ mod_snmp_la_LIBADD=\
 # 'mod_syslog' module
 ###############################################################################
 mod_syslog_la_SOURCES=\
+	mod_syslog/config.cpp \
+	mod_syslog/config.h \
 	mod_syslog/module.cpp \
 	mod_syslog/module.h \
 	mod_syslog/syslog.cpp \

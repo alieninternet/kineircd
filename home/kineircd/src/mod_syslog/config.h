@@ -1,8 +1,7 @@
 /* $Id$
- * Logging functions via the "syslog" interface
+ * Config data for mod_syslog
  * 
- * Copyright (c) 2000,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2000,2002 Alien Internet Services
+ * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
@@ -23,48 +22,46 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_LOGGER_SYSLOG_H_
-# define _SRC_LIB_LOGGER_SYSLOG_H_ 1
+#ifndef _SRC_MOD_SYSLOG_CONFIG_H_
+# define _SRC_MOD_SYSLOG_CONFIG_H_ 1
 
-# ifdef HAVE_CONFIG_H
-#  include "autoconf.h"
-# endif
-
-// Only continue if we actually have syslog support on this system
-# ifndef HAVE_SYSLOG_H
-#  error "Cannot compile syslog logging module without syslog support"
-# endif
-
-# include <kineircd/logger.h>
-   
-# include "mod_syslog/config.h"
-
+# include <kineircd/loggerconfig.h>
+# include <aisutil/string/string.h>
 
 namespace Kine {
    namespace mod_syslog {
-      // The syslog logging class
-      class Syslog : public Kine::Logger {
+      class Config : public Kine::LoggerConfig {
+       public:
+	 // The definition table, given to Kine's config parserr
+	 static const AISutil::ConfigParser::defTable_type definitionTable;
+
        private:
-	 // The configuration
-	 Config& config;
-	 
-	 // Log a string of text
-	 void logLine(const std::string& str,
-		      const Kine::Logger::Mask::type mask);
+	 // Variables..
+	 bool defConsoleOutput;
+	 AISutil::String defIdentity;
+	 bool defShowPID;
 	 
        public:
 	 // Constructor
-	 Syslog(Config& c);
+	 Config(void)
+	   : defConsoleOutput(false),
+	     defIdentity("kineircd"),
+	     defShowPID(true)
+	   {};
 	 
 	 // Destructor
-	 ~Syslog(void);
+	 ~Config(void)
+	   {};
 	 
-	 // Is the log ok? We presume so :)
-	 bool ok(void) const
-	   { return true; };
+	 // Return the variables
+	 const bool getConsoleOutput(void) const
+	   { return defConsoleOutput; };
+	 const AISutil::String& getIdentity(void) const
+	   { return defIdentity; };
+	 const bool getShowPID(void) const
+	   { return defShowPID; };
       };
    }; // namespace mod_syslog
 }; // namespace Kine
-
-#endif // _SRC_LIB_LOGGER_SYSLOG_H_
    
+#endif // _SRC_MOD_SYSLOG_CONFIG_H_

@@ -27,6 +27,7 @@
 #endif
 
 #include <kineircd/module.h>
+#include <kineircd/daemon.h>
 
 #include "mod_syslog/module.h"
 #include "mod_syslog/syslog.h"
@@ -49,29 +50,53 @@ namespace {
       Kine::Module::Flags::UNIQUE_INSTANCE,
 
       // Configuration stuff
-      0
+      &Kine::mod_syslog::Config::definitionTable
    };
 
 
    class mod_syslog : public Kine::Module {
+    private:
+      Kine::mod_syslog::Config config;
+      Kine::mod_syslog::Syslog* logger;
+      
     public:
       // Constructor
       mod_syslog(void)
+	: logger(0)
 	{};
       
       // Destructor
       ~mod_syslog(void)
-	{};
+	{
+	   // If the logger has been created, deregister/delete it
+	   if (logger != 0) {
+	      (void)Kine::daemon().deregisterLogger(*logger);
+	      delete logger;
+	   }
+	};
       
       // Return the information
       const Kine::Module::Info& getInfo(void) const
 	{ return info; };
 
+      // Return the configuration data class
+      AISutil::ConfigData* const getConfigData(void)
+	{ return &config; };
+      
       /* moduleStart - Fire up the module
-       * Original 15/10/2002 simonb
+       * Original 01/11/2002 simonb
        */
       bool start(void) {
-	 return true;
+	 // Make our logging class
+	 logger = new Kine::mod_syslog::Syslog(config);
+	 
+	 // Make sure that worked..
+	 if (logger == 0) {
+	    return false;
+	 }
+	 
+	 // Register the logger
+	 return Kine::daemon().registerLogger(*logger);
       };
    }; // class mod_syslog
 }; // namespace {anonymous}
