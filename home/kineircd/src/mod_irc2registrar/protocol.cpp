@@ -86,7 +86,6 @@ void Protocol::sendPing(void)
  * Original 12/08/2001 simonb
  */
 void Protocol::parseMessage(const std::string& origin,
-			    const std::string& destination,
 			    const std::string& command,
 			    const Kine::LibIRC2::Protocol::parameters_type&
 			    parameters)

@@ -59,7 +59,6 @@ namespace Kine {
 	 
 	 // Appropriately parse a protocol message
 	 virtual void parseMessage(const std::string& origin,
-				   const std::string& destination,
 				   const std::string& command,
 				   const parameters_type& parameters) = 0;
 

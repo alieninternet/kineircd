@@ -102,7 +102,6 @@ namespace Kine {
 	 
 	 // Appropriately parse a protocol message
 	 void parseMessage(const std::string& origin, 
-			   const std::string& destination,
 			   const std::string& command,
 			   const Kine::LibIRC2::Protocol::parameters_type&
 			   parameters);

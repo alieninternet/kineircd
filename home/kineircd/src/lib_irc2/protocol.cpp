@@ -43,14 +43,13 @@ const char Protocol::replacementCharacter =
 
 /* parseLine - Break up a protocol message into its components, and pass it on
  * Original 12/08/2001 simonb
- * Note: This could be more efficient :(
+ * Note: This is shockingly inefficient
  */
 void Protocol::parseLine(const std::string& line)
 {
    StringTokens message(line);
    std::string origin;
    std::string command;
-   std::string destination;
    parameters_type parameters;
 
    // Oh look! It's a message! Increase the received message counter
@@ -60,7 +59,6 @@ void Protocol::parseLine(const std::string& line)
    if (line[0] == ':') {
       origin = message.nextToken().substr(1);
       command = message.nextToken().toUpper();
-      destination = message.nextToken();
    } else {
       command = message.nextToken().toUpper();
    }
@@ -83,6 +81,6 @@ void Protocol::parseLine(const std::string& line)
    // Check - we must at least have a command to pass
    if (!command.empty()) {
       // Hand the line over to the message handler
-      parseMessage(origin, destination, command, parameters);
+      parseMessage(origin, command, parameters);
    }
 }
