@@ -3,37 +3,35 @@
       (sprintf "%s%s.lang" 
          (base-name)
 	 (get "langCode")))
- +]## $Id$
-## [+langName+] language file for exordium
-##
-##
-## Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
-## Copyright (c) 2003 KineIRCd Development Team
-## (See DEV-TEAM file for details)
-##
-## This file is a part of KineIRCd.
-##
-## KineIRCd is free software; you can redistribute it and/or modify
-## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 2 of the License, or
-## (at your option) any later version.
-##
-## KineIRCd is distributed in the hope that it will be useful,
-## but WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-## GNU General Public License for more details.
-##
-## You should have received a copy of the GNU General Public License
-## along with KineIRCd; if not, write to the Free Software
-## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-##
-## For contact details for the Exordium Development Team please see the
-## enclosed README file.
-##
-##
-[+(dne "## ")+]
-##
-##
+ +]# $Id$
+# Language file for the KineIRCd package [+langName+]
+#
+# Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
+# Copyright (c) 2003 KineIRCd Development Team
+# (See DEV-TEAM file for details)
+#
+# This file is a part of KineIRCd.
+#
+# KineIRCd is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# KineIRCd is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with KineIRCd; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# For contact details for the Exordium Development Team please see the
+# enclosed README file.
+#
+#
+[+(dne "# ")+]
+#
 [+
 
    ;;; Make the variable we are looking for, in the form of data_<langcode>
@@ -42,11 +40,11 @@
          (get "langCode")))
 
  +]
-.LangCode = [+langCode+]
-.LangName = [+langName+][+ IF (exist? "langNote") +]
-.LangNote = [+langNote+][+ ENDIF +][+ IF (exist? "langMaintainer") +]
-.Maintainer = [+langMaintainer+][+ ENDIF +]
-.Revision = [+
+.LangCode	= [+langCode+]
+.LangName	= [+langName+][+ IF (exist? "langNote") +]
+.LangNote	= [+langNote+][+ ENDIF +][+ IF (exist? "langMaintainer") +]
+.Maintainer	= [+langMaintainer+][+ ENDIF +]
+.Revision	= [+
    ;; Generate a revision based on the current time (cropped ISO 8601 style)
    (strftime "%Y%m%d%H"
       (gmtime 
