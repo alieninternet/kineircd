@@ -25,11 +25,16 @@ b - Ban (has parameter - identity mask to ban)
 Ban a mask from the channel, we all know this one.
 
 d - Deny (has parameter - 'real name' mask)
-Quickly becoming a 'standard' to complete bans - this is a mask to ban via
-'real names'. Eg. if you had a bunch of clones joining a channel all with
-different nicknames, usernames and host names, what can you do? Oh wait,
-their realnames are all "I h/\V3 aN 3l|+3 scR|pt0Rzzz" - then you can ban
-that with /mode #channel +d *3l|+3* would do the job. 
+Quickly becoming a 'standard' to complete bans - on efnet at least.. This is 
+a mask to ban via 'real names', and IMHO truely completes the ban mask
+scheme. Eg. if you had a bunch of clones joining a channel all with
+different nicknames, usernames and host names, what can you do? Well you have
+one last resort - sometimes the 'elite script kiddiez' who, uhh, 'coded' the
+clone bot put in a name in the 'real name' field, which is uniform over all
+the clones. Now you can ban then easily -- Say their realnames are all 
+"clone bot foo bah" - then you can ban them with /mode #channel +d clone* 
+Note: this only accepts ONE WORD - this means /mode #channel +d clone bot* is
+invalid. Unfortunately this is yet another flaw with the irc2user protocol :(
 
 e - Ban Exception (has parameter - identity mask to make exempt ban)
 New to austnet, this is a ban exception identity mask. Say you did /mode
