@@ -18,8 +18,7 @@ all: _top_
 
 # How to make object files from .cpp files rule
 %.@OBJEXT@: %.cpp
-	$(CXX) $(CXXFLAGS) $(DEFS) $(INCDIRS) \
-		-c $<
+	$(CXX) $(CXXFLAGS) $(DEFS) $(INCDIRS) -c $<
 
 
 # Our generic clean function (cleans sub-directories as an added bonus)
