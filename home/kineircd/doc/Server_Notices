@@ -73,6 +73,9 @@ Char | Description/Format
      |     
   K  | Kill notice (remote)
      | <killer> <nick> <reason...>
+     |
+  l  | Logging notice (exactly as sent to whatever logging output, if any)
+     | <priority_#> <text...>
      |     
   L  | LOCOPS messages
      | <from> <message...>
@@ -88,7 +91,6 @@ Char | Description/Format
      |
   O  | Global operators getting their +O notices
      | <nick>
-     |
      |
   P  | Possible port scan
      | <to_ip> <port> <from_ip> <from_dns>
