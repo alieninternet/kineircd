@@ -592,6 +592,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSTATS)
 	 sendNumeric(LibIRC2::Numerics::RPL_ENDOFSTATS,
 		     parameters[0],
 		     GETLANG(irc2_RPL_ENDOFSTATS));
+	 return;
       }
 
       // We don't know about it, maybe the library knows it (a generic query)
