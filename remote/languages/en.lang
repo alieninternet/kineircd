@@ -260,3 +260,42 @@ irc2_ERR_UMODEUNKNOWNFLAG = Unknown MODE flag (%p0)
 
 # Numeric 502 - ERR_USERSDONTMATCH
 irc2_ERR_USERSDONTMATCH = Cannot change mode for other users
+
+# Quit message - Normal quit message (0 = the user's quit message)
+irc2_QUIT_NORMAL = Quit: %p0
+
+# Quit message - Normal quit, however the user did not provide a reason
+irc2_QUIT_NO_REASON = Client quit IRC
+
+# Quit message - Unknown and likely buggy error.. should be looked into
+irc2_QUIT_BUGGY = Bug? Error: %p0
+
+# Quit message - The connection was unexpectedly closed by the remote end
+irc2_QUIT_EPIPE = Broken pipe
+
+# Quit message - The client was found to be unreachable
+irc2_QUIT_EHOSTUNREACH = No route to host
+
+# Quit message - The client's network was found to be unreachable
+irc2_QUIT_ENETUNREACH = Network is unreachable
+
+# Quit message - The client's connection timed out, via TCP
+irc2_QUIT_ETIMEDOUT = Connection timed out
+
+# Quit message - The client's connection timed out, via IRC2's PING function
+irc2_QUIT_PINGED_OUT = Ping timeout
+
+# Quit message - The client's connection was closed by outside means (eg crash)
+irc2_QUIT_ECONNRESET = Connection reset by peer
+
+# Quit message - Could not write data to the client's socket
+irc2_QUIT_WRITE_FAIL = Write error
+
+# Quit message - Could not read data from the client's socket
+irc2_QUIT_READ_FAIL = Read error
+
+# Quit message - Client was dropped because it overstepped its input penalty
+irc2_QUIT_FLOODING = Excess flood
+
+# Quit message - Client was dropped because we had too much data for it
+irc2_QUIT_SENDQ_OVERFLOW = Send queue overflow
