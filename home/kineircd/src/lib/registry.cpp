@@ -109,14 +109,6 @@ void Registry::initInstance(void)
 const Error::error_type 
   Registry::changeUserNickname(User& user, const ClientName& newNickname)
 {
-#ifdef KINE_DEBUG
-   std::ostringstream debugOut;
-   debugOut << "Registry::changeUserNickname() - Trying to modify user @ " <<
-     &user << " nickname '" << user.getName() << "' -> '" << newNickname <<
-     '\'';
-   debug(debugOut.str());
-#endif
-   
    // Are the new nickname and the old nickname are pretty much the same thing?
    if (newNickname.IRCtoLower() == user.getNickname().IRCtoLower()) {
       // Bah, we don't care. Go away.
@@ -204,13 +196,6 @@ const Error::error_type Registry::addUser(User& entity)
  */
 const Error::error_type Registry::removeUser(const User& entity)
 {
-#ifdef KINE_DEBUG
-   std::ostringstream debugOut;
-   debugOut << "Registry::removeUser() - Trying to remove user @ " <<
-     &entity << " (" << entity.getName() << ')';
-   debug(debugOut.str());
-#endif
-
    // Find the user
    users_type::iterator it = users.find(entity.getNickname().IRCtoLower());
    
@@ -316,13 +301,6 @@ const Error::error_type Registry::addService(Service& entity)
  */
 const Error::error_type Registry::removeService(const Service& entity)
 {
-#ifdef KINE_DEBUG
-   std::ostringstream debugOut;
-   debugOut << "Registry::addService() - Trying to remove service @ " <<
-     &entity << " (" << entity.getName() << ')';
-   debug(debugOut.str());
-#endif
-
    // Find the local user
    services_type::iterator it = 
      services.find(entity.getNickname().IRCtoLower());

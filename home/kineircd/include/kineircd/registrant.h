@@ -33,30 +33,30 @@ namespace Kine {
    //! Registration data structure, passed to protocol modules after registration
    struct Registrant {
       // The password given during registration ('PASS' command)
-      AIS::Util::String password;
+      std::wstring password;
       
       // Any additional data given on the PASS command after the password
-      AIS::Util::String passwordKludge;
+      std::wstring passwordKludge;
       
       /* The nickname, given via NICK or SERVICE. This is the network name
        * if given by IIRCN for an IIRC connection.
        */
-      AIS::Util::String name;
+      std::wstring name;
       
       // The username, given via NICK
-      AIS::Util::String username;
+      std::wstring username;
       
       // The hostname, given by USER, SERVER and IIRCN
-      AIS::Util::String hostname;
+      std::wstring hostname;
       
       // The 'real name' or description, via USER, SERVER, SERVICE, and IIRCN
-      AIS::Util::String description;
+      std::wstring description;
       
       // The distribution field, given via SERVICE
-      AIS::Util::String distribution;
+      std::wstring distribution;
       
       // The modes field, given by USER
-      AIS::Util::String modes;
+      std::string modes;
       
       // The protocol field, given by SERVER (or 'PROTOCOL', if implemented)
       AIS::Util::String protocol;

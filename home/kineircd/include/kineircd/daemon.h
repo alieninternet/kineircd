@@ -57,7 +57,7 @@ namespace Kine {
       };
       
       // The 'INFO' data type, which is dynamically generated
-      typedef std::vector < std::string > info_type;
+      typedef std::vector < std::wstring > info_type;
       
 # ifdef KINE_STL_HAS_SLIST
       typedef std::slist <Connection*> connections_type;

@@ -41,7 +41,7 @@ using AIS::Util::String;
 /* irctolower - Tiny procedure to assist in transforming IRC aliases
  * Original 12/08/2001 pickle
  */
-inline static char irctolower(char c)
+inline static wchar_t irctolower(wchar_t c)
 {
    switch (c) {
     case '[':
@@ -80,9 +80,9 @@ inline static const bool isSpecialChar(const char chr)
  * Original 12/08/2001 pickle
  * 26/02/2002 pickle - Converted for use with std::string / AIS::Util::String
  */
-const AIS::Util::String Name::IRCtoLower(void) const
+const std::wstring Name::IRCtoLower(void) const
 {
-   String result(length(), 0);
+   std::wstring result(length(), 0);
    (void)std::transform(begin(), end(), result.begin(), irctolower);
    return result;
 }
@@ -151,21 +151,24 @@ const Error::error_type ChannelName::checkValidity(void) const
    /* Well okay, look for invalid chars :) This is what RFC2812 says, however
     * we may also disallow masks depending on what the configuration says
     */
-   if (config().getLimitsChannelsAllowMaskLikeNames()) {
-      size_type where;
-      if ((where = find_first_of("\0\a\r\n ,:*?", 1)) != (size_type)-1) {
-	 if (((*this)[where] == '*') ||
-	     ((*this)[where] == '?')) {
-	    return Error::NAME_IS_A_MASK;
-	 }
-	 
-	 return Error::NAME_HAS_BAD_CHARS;
-      }
-   } else {
-      if (find_first_of("\0\a\r\n ,:", 1) != (size_type)-1) {
-	 return Error::NAME_HAS_BAD_CHARS;
-      }
-   }
+#ifdef KINE_DEBUG
+# warning "Not properly checking channel names..."
+#endif
+//   if (config().getLimitsChannelsAllowMaskLikeNames()) {
+//      size_type where;
+//      if ((where = find_first_of("\0\a\r\n ,:*?", 1)) != (size_type)-1) {
+//	 if (((*this)[where] == '*') ||
+//	     ((*this)[where] == '?')) {
+//	    return Error::NAME_IS_A_MASK;
+//	 }
+//	 
+//	 return Error::NAME_HAS_BAD_CHARS;
+//      }
+//   } else {
+//      if (find_first_of("\0\a\r\n ,:", 1) != (size_type)-1) {
+//	 return Error::NAME_HAS_BAD_CHARS;
+//      }
+//   }
    
    // Looks good, chief
    return Error::NO_ERROR;

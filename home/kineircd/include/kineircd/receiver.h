@@ -24,6 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_RECEIVER_H_
 # define _INCLUDE_KINEIRCD_RECEIVER_H_ 1
 
+# include <string>
 # include <kineircd/errors.h>
 
 namespace Kine {

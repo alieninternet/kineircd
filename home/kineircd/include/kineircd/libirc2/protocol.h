@@ -356,28 +356,28 @@ namespace Kine {
 	 template <class Tc>
 	   void sendMessageFrom(const Client& client, const Tc& command)
 	     {
-		sendMessageFrom(Utility::makeNickUserHostIdent(client),
+		sendMessageFrom(delocaliseStr(Utility::makeNickUserHostIdent(client)),
 				command);
 	     };
 	 template <class Tc, class Tpa>
 	   void sendMessageFrom(const Client& client, const Tc& command,
 				const Tpa& pa)
 	     {
-		sendMessageFrom(Utility::makeNickUserHostIdent(client),
+		sendMessageFrom(delocaliseStr(Utility::makeNickUserHostIdent(client)),
 				command, pa);
 	     };
 	 template <class Tc, class Tpa, class Tpb>
 	   void sendMessageFrom(const Client& client, const Tc& command,
 				const Tpa& pa, const Tpb& pb)
 	     {
-		sendMessageFrom(Utility::makeNickUserHostIdent(client),
+		sendMessageFrom(delocaliseStr(Utility::makeNickUserHostIdent(client)),
 				command, pa, pb);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc>
 	   void sendMessageFrom(const Client& client, const Tc& command,
 				const Tpa& pa, const Tpb& pb, const Tpc& pc)
 	     {
-		sendMessageFrom(Utility::makeNickUserHostIdent(client),
+		sendMessageFrom(delocaliseStr(Utility::makeNickUserHostIdent(client)),
 				command, pa, pb, pc);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd>
@@ -385,7 +385,7 @@ namespace Kine {
 				const Tpa& pa, const Tpb& pb, const Tpc& pc,
 				const Tpd& pd)
 	     {
-		sendMessageFrom(Utility::makeNickUserHostIdent(client),
+		sendMessageFrom(delocaliseStr(Utility::makeNickUserHostIdent(client)),
 				command, pa, pb, pc, pd);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
@@ -394,7 +394,7 @@ namespace Kine {
 				const Tpa& pa, const Tpb& pb, const Tpc& pc,
 				const Tpd& pd, const Tpe& pe)
 	     {
-		sendMessageFrom(Utility::makeNickUserHostIdent(client),
+		sendMessageFrom(delocaliseStr(Utility::makeNickUserHostIdent(client)),
 				command, pa, pb, pc, pd, pe);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
@@ -403,7 +403,7 @@ namespace Kine {
 				const Tpa& pa, const Tpb& pb, const Tpc& pc,
 				const Tpd& pd, const Tpe& pe, const Tpf& pf)
 	     {
-		sendMessageFrom(Utility::makeNickUserHostIdent(client),
+		sendMessageFrom(delocaliseStr(Utility::makeNickUserHostIdent(client)),
 				command, pa, pb, pc, pd, pe, pf);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
@@ -413,7 +413,7 @@ namespace Kine {
 				const Tpd& pd, const Tpe& pe, const Tpf& pf,
 				const Tpg& pg)
 	     {
-		sendMessageFrom(Utility::makeNickUserHostIdent(client),
+		sendMessageFrom(delocaliseStr(Utility::makeNickUserHostIdent(client)),
 				command, pa, pb, pc, pd, pe, pf, pg);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
@@ -423,7 +423,7 @@ namespace Kine {
 				const Tpd& pd, const Tpe& pe, const Tpf& pf,
 				const Tpg& pg, const Tph& ph)
 	     {
-		sendMessageFrom(Utility::makeNickUserHostIdent(client),
+		sendMessageFrom(delocaliseStr(Utility::makeNickUserHostIdent(client)),
 				command, pa, pb, pc, pd, pe, pf, pg, ph);
 	     };
 	 template <class Tc, class Tpa, class Tpb, class Tpc, class Tpd,
@@ -433,7 +433,7 @@ namespace Kine {
 				const Tpd& pd, const Tpe& pe, const Tpf& pf,
 				const Tpg& pg, const Tph& ph, const Tpi& pi)
 	     {
-		sendMessageFrom(Utility::makeNickUserHostIdent(client),
+		sendMessageFrom(delocaliseStr(Utility::makeNickUserHostIdent(client)),
 				command, pa, pb, pc, pd, pe, pf, pg, ph, pi);
 	     };
 
@@ -443,9 +443,9 @@ namespace Kine {
 			  const Numerics::numeric_type numeric)
 	   {
 	      std::ostringstream output;
-	      output << ':' << myServer().getName() << 
+	      output << ':' << delocaliseStr(myServer().getName()) << 
 		' ' << std::setfill('0') << std::setw(3) << numeric << 
-		' ' << destination.getNickname();
+		' ' << delocaliseStr(destination.getNickname());
 	      sendRawLine(output.str());
 	   };
 	 template <class Ta>
@@ -454,9 +454,9 @@ namespace Kine {
 			    const Ta& pa)
 	     {
 		std::ostringstream output;
-		output << ':' << myServer().getName() << 
+		output << ':' << delocaliseStr(myServer().getName()) << 
 		  ' ' << std::setfill('0') << std::setw(3) << numeric << 
-		  ' ' << destination.getNickname() << 
+		  ' ' << delocaliseStr(destination.getNickname()) << 
 		  " :" << pa;
 		sendRawLine(output.str());
 	     };
@@ -466,10 +466,10 @@ namespace Kine {
 			    const Ta& pa, const Tb& pb)
 	     {
 		std::ostringstream output;
-		output << ':' << myServer().getName() << 
+		output << ':' << delocaliseStr(myServer().getName()) << 
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
-		  ' ' << destination.getNickname() << ' ' << pa <<
-		  " :" << pb;
+		  ' ' << delocaliseStr(destination.getNickname()) <<
+		  ' ' << pa << " :" << pb;
 		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc>
@@ -478,10 +478,10 @@ namespace Kine {
 			    const Ta& pa, const Tb& pb, const Tc& pc)
 	     {
 		std::ostringstream output;
-		output << ':' << myServer().getName() <<
+		output << ':' << delocaliseStr(myServer().getName()) <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
-		  ' ' << destination.getNickname() << ' ' << pa <<
-		  ' ' << pb << " :" << pc;
+		  ' ' << delocaliseStr(destination.getNickname()) <<
+		  ' ' << pa << ' ' << pb << " :" << pc;
 		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td>
@@ -491,10 +491,10 @@ namespace Kine {
 			    const Td& pd)
 	     {
 		std::ostringstream output;
-		output << ':' << myServer().getName() <<
+		output << ':' << delocaliseStr(myServer().getName()) <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
-		  ' ' << destination.getNickname() << ' ' << pa <<
-		  ' ' << pb << ' ' << pc << " :" << pd;
+		  ' ' << delocaliseStr(destination.getNickname()) <<
+		  ' ' << pa << ' ' << pb << ' ' << pc << " :" << pd;
 		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te>
@@ -504,10 +504,11 @@ namespace Kine {
 			    const Td& pd, const Te& pe)
 	     {
 		std::ostringstream output;
-		output << ':' << myServer().getName() <<
+		output << ':' << delocaliseStr(myServer().getName()) <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
-		  ' ' << destination.getNickname() << ' ' << pa <<
-		  ' ' << pb << ' ' << pc << ' ' << pd << " :" << pe;
+		  ' ' << delocaliseStr(destination.getNickname()) <<
+		  ' ' << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  " :" << pe;
 		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf>
@@ -517,11 +518,11 @@ namespace Kine {
 			    const Td& pd, const Te& pe, const Tf& pf)
 	     {
 		std::ostringstream output;
-		output << ':' << myServer().getName() <<
+		output << ':' << delocaliseStr(myServer().getName()) <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
-		  ' ' << destination.getNickname() << ' ' << pa <<
-		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
-		  " :" << pf;
+		  ' ' << delocaliseStr(destination.getNickname()) <<
+		  ' ' << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  ' ' << pe << " :" << pf;
 		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
@@ -533,11 +534,11 @@ namespace Kine {
 			    const Tg& pg)
 	     {
 		std::ostringstream output;
-		output << ':' << myServer().getName() << 
+		output << ':' << delocaliseStr(myServer().getName()) << 
 		  ' ' << std::setfill('0') << std::setw(3) << numeric << 
-		  ' ' << destination.getNickname() << ' ' << pa <<
-		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
-		  ' ' << pf << " :" << pg;
+		  ' ' << delocaliseStr(destination.getNickname()) <<
+		  ' ' << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  ' ' << pe << ' ' << pf << " :" << pg;
 		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
@@ -549,11 +550,11 @@ namespace Kine {
 			    const Tg& pg, const Th& ph)
 	     {
 		std::ostringstream output;
-		output << ':' << myServer().getName() <<
+		output << ':' << delocaliseStr(myServer().getName()) <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
-		  ' ' << destination.getNickname() << ' ' << pa <<
-		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
-		  ' ' << pf << ' ' << pg << " :" << ph;
+		  ' ' << delocaliseStr(destination.getNickname()) <<
+		  ' ' << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  ' ' << pe << ' ' << pf << ' ' << pg << " :" << ph;
 		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
@@ -565,11 +566,12 @@ namespace Kine {
 			    const Tg& pg, const Th& ph, const Ti& pi)
 	     {
 		std::ostringstream output;
-		output << ':' << myServer().getName() <<
+		output << ':' << delocaliseStr(myServer().getName()) <<
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
-		  ' ' << destination.getNickname() << ' ' << pa <<
-		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
-		  ' ' << pf << ' ' << pg << ' ' << ph << " :" << pi;
+		  ' ' << delocaliseStr(destination.getNickname()) <<
+		  ' ' << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  ' ' << pe << ' ' << pf << ' ' << pg << ' ' << ph <<
+		  " :" << pi;
 		sendRawLine(output.str());
 	     };
 

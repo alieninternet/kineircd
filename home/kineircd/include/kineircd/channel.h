@@ -99,8 +99,8 @@ namespace Kine {
     private:
       const ChannelName name;			//!< The channel name
       const scope_type scope;			//!< Channel's 'scope'
-      std::string topic;			//!< Channel topic
-      std::string topicChanger;			//!< Who changed the topic
+      std::wstring topic;			//!< Channel topic
+      std::wstring topicChanger;		//!< Who changed the topic
       AIS::Util::Time topicChangeTime;		//!< Time the topic changed
 
       // Channel members list
@@ -131,11 +131,11 @@ namespace Kine {
 	{ return name; };
 
       // Return the 'name' (generic form)
-      const std::string& getName(void) const
+      const std::wstring& getName(void) const
 	{ return getChannelName(); };
 
       //! Return the name of the channel, without the prefix character
-      const std::string getNameWithoutPrefix(void) const
+      const std::wstring getNameWithoutPrefix(void) const
 	{ return name.substr(1); };
       
       //! Return the channel prefix char
@@ -154,11 +154,11 @@ namespace Kine {
       
       
       //! Return the topic on the channel (empty string for no topic)
-      const std::string& getTopic(void) const
+      const std::wstring& getTopic(void) const
 	{ return topic; };
       
       //! Return the identify of the person who changed the topic last
-      const std::string& getTopicChanger(void) const
+      const std::wstring& getTopicChanger(void) const
 	{ return topicChanger; };
 
       //! Return the time the topic was changed
@@ -171,7 +171,7 @@ namespace Kine {
       
       //! Change the topic on the channel
       const Error::error_type changeTopic(const Denizen& who,
-					  const std::string& newTopic)
+					  const std::wstring& newTopic)
 	{ return Error::UNKNOWN_ERROR; };
       
       //! Remove the topic on the channel (same as setting an empty topic)
@@ -180,7 +180,7 @@ namespace Kine {
 
       
       //! Return the channel's URL, if it has one
-      virtual const std::string* const getURL(void) const
+      virtual const std::wstring* const getURL(void) const
 	{ return 0; };
 
       //! Does this channel have a URL?

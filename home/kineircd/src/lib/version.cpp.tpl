@@ -27,7 +27,7 @@
 DEFINE read-file-as-array+][+
   (shellf "exec 4< %s; export IFS=`echo -e '\n'`" (get "file")) +][+
   WHILE `read -sr line <&4 && echo 'true'` +][+
-    (sprintf "\t %s,\n"
+    (sprintf "\t L%s,\n"
       (c-string (shell "echo -En $line"))) +][+
   ENDWHILE +][+
   `exec 4<&-` +][+
@@ -91,7 +91,7 @@ namespace Kine {
        *       development team list (as it is an integral part of the primary
        *       copyright).
        */
-      const char* const versionInfo[] = {
+      const wchar_t* const versionInfo[] = {
 [+read-file-as-array file='src/lib/version.txt'+]	 0
       };
       

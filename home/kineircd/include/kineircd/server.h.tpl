@@ -56,12 +56,12 @@ namespace Kine {
       };
       
     private:
-      const std::string hostname;		// The server's hostname
+      const std::wstring hostname;		// The server's hostname
       modes_type modes;				// Server modes set
       
     protected:
       //! Constructor
-      explicit Server(const std::string& _hostname,
+      explicit Server(const std::wstring& _hostname,
 		      const AIS::Util::Time& _signonTime)
 	: Entity(_signonTime),
           hostname(_hostname),
@@ -75,11 +75,11 @@ namespace Kine {
 
 
       // Return the hostname of the server
-      const std::string& getHostname(void) const
+      const std::wstring& getHostname(void) const
         { return hostname; };
 	
       // Return the 'name' (a server's hostname is normally its name)
-      const std::string& getName(void) const
+      const std::wstring& getName(void) const
 	{ return getHostname(); };
 
 

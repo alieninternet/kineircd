@@ -105,14 +105,14 @@ void Protocol::doADMIN(const User& user)
        Kine::config().getAdministratorLocation().empty() &&
        Kine::config().getAdministratorContact().empty()) {
       sendNumeric(user, LibIRC2::Numerics::ERR_NOADMININFO,
-		  Kine::myServer().getName(),
+		  delocaliseStr(Kine::myServer().getName()),
 		  GETLANG(irc2_ERR_NOADMININFO));
       return;
    }
    
    // Send the admin header
    sendNumeric(user, LibIRC2::Numerics::RPL_ADMINME,
-	       Kine::myServer().getName(),
+	       delocaliseStr(Kine::myServer().getName()),
 	       GETLANG(irc2_RPL_ADMINME,
 		       Kine::myServer().getName()));
    
@@ -146,7 +146,7 @@ void Protocol::doINFO(const User& user)
 	it != daemon().getInfo().end();
 	++it) {
       sendNumeric(user, Numerics::RPL_INFO,
-		  *it);
+		  delocaliseStr(*it));
    }
 
    // End of the list..
@@ -162,9 +162,9 @@ void Protocol::doLUSERS(const User& user)
 {
    sendNumeric(user, Numerics::RPL_LUSERCLIENT,
 	       GETLANG(irc2_RPL_LUSERCLIENT,
-		       String::convert(registry().getUserCount()),
-		       String::convert(registry().getServiceCount()),
-		       String::convert(registry().getServerCount())));
+		       Languages::toWideStr(String::convert(registry().getUserCount())),
+		       Languages::toWideStr(String::convert(registry().getServiceCount())),
+		       Languages::toWideStr(String::convert(registry().getServerCount()))));
    sendNumeric(user, Numerics::RPL_LUSEROP,
 	       0,
 	       GETLANG(irc2_RPL_LUSEROP));
@@ -179,16 +179,16 @@ void Protocol::doLUSERS(const User& user)
 	       GETLANG(irc2_RPL_LUSERCHANNELS));
    sendNumeric(user, Numerics::RPL_LUSERME,
 	       GETLANG(irc2_RPL_LUSERME,
-		       String::convert(registry().getLocalClientCount()),
-		       String::convert(registry().getLocalServerCount())));
+		       Languages::toWideStr(String::convert(registry().getLocalClientCount())),
+		       Languages::toWideStr(String::convert(registry().getLocalServerCount()))));
    sendNumeric(user, Numerics::RPL_LOCALUSERS,
 	       GETLANG(irc2_RPL_LOCALUSERS,
-		       String::convert(registry().getLocalUserCount()),
-		       String::convert(registry().getLocalUserCountPeak())));
+		       Languages::toWideStr(String::convert(registry().getLocalUserCount())),
+		       Languages::toWideStr(String::convert(registry().getLocalUserCountPeak()))));
    sendNumeric(user, Numerics::RPL_GLOBALUSERS,
 	       GETLANG(irc2_RPL_GLOBALUSERS,
-		       String::convert(registry().getUserCount()),
-		       String::convert(registry().getUserCountPeak())));
+		       Languages::toWideStr(String::convert(registry().getUserCount())),
+		       Languages::toWideStr(String::convert(registry().getUserCountPeak()))));
 }
 
 
@@ -296,7 +296,7 @@ void Protocol::doTIME(const User& user)
    
    // Send the RPL_TIME reply
    sendNumeric(user, LibIRC2::Numerics::RPL_TIME,
-	       myServer().getName(),
+	       delocaliseStr(myServer().getName()),
 	       text.str());
 }
 
@@ -372,7 +372,7 @@ void Protocol::doVERSION(const User& user)
    // Send the RPL_VERSION reply
    sendNumeric(user, LibIRC2::Numerics::RPL_VERSION,
 	       Version::version,
-	       myServer().getName(),
+	       delocaliseStr(myServer().getName()),
 	       Version::versionChars);
 }
 
@@ -391,11 +391,11 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
       std::string target = st.nextToken(',');
 
       // Find this target.. First look to see if it is a user
-      User* const foundUser = registry().findUser(target);
+      User* const foundUser = registry().findUser(localiseStr(target));
       
       // If we did not find a user, look for this as a service
       Service* const foundService = 
-	((foundUser == 0) ? registry().findService(target) : 0);
+	((foundUser == 0) ? registry().findService(localiseStr(target)) : 0);
       
       // Whatever it is, it's a client, and we want to keep the code simple :)
       Client* const foundClient =
@@ -415,27 +415,27 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	 if (hideHost) {
 	    // Send the user details with the virtual hostname
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
-			foundClient->getNickname(),
-			foundClient->getUsername(),
+			delocaliseStr(foundClient->getNickname()),
+			delocaliseStr(foundClient->getUsername()),
 			((foundUser != 0) ?
-			 foundUser->getVirtualHostname() :
+			 delocaliseStr(foundUser->getVirtualHostname()) :
 			 replacementParameter), // <=- simply mask the host
 			replacementCharacter,
-			foundClient->getDescription());
+			delocaliseStr(foundClient->getDescription()));
 	 } else {
 	    // Send the user entry as normal
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
-			foundClient->getNickname(),
-			foundClient->getUsername(),
-			foundClient->getHostname(),
+			delocaliseStr(foundClient->getNickname()),
+			delocaliseStr(foundClient->getUsername()),
+			delocaliseStr(foundClient->getHostname()),
 			replacementCharacter,
-			foundClient->getDescription());
+			delocaliseStr(foundClient->getDescription()));
 	    
 	    // If this is a user, also send the virtual host details
 	    if (foundUser != 0) {
 	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOIS_HIDDEN,
-			   foundUser->getNickname(),
-			   foundUser->getVirtualHostname(),
+			   delocaliseStr(foundUser->getNickname()),
+			   delocaliseStr(foundUser->getVirtualHostname()),
 			   GETLANG(irc2_RPL_WHOIS_HIDDEN));
 	    }
 	 }
@@ -447,7 +447,7 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	 if (((foundService == 0) || user.isStaff()) &&
 	     (false /*!foundService->getChannelList().empty()*/)) {
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISCHANNELS,
-			foundClient->getNickname(),
+			delocaliseStr(foundClient->getNickname()),
 			"#foo +!bah12345 @&baz %.qux");
 	 }
 	 
@@ -456,9 +456,9 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	      (foundService == 0)) ||
 	     user.isStaff()) {
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSERVER,
-			foundClient->getNickname(),
-			foundClient->getServer().getName(),
-			foundClient->getServer().getDescription());
+			delocaliseStr(foundClient->getNickname()),
+			delocaliseStr(foundClient->getServer().getName()),
+			delocaliseStr(foundClient->getServer().getDescription()));
 	 }
 	 
 	 // If this is a user, we have lots more we can say
@@ -486,7 +486,7 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	       
 	       // Send the language info
 	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOISLANGUAGE,
-			   foundUser->getNickname(),
+			   delocaliseStr(foundUser->getNickname()),
 			   langs.str(),
 			   GETLANG(irc2_RPL_WHOISLANGUAGE));
 	    }
@@ -494,20 +494,20 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	    // If the user is marked away, send their away information
 	    if (foundUser->isAway()) {
 	       sendNumeric(user, LibIRC2::Numerics::RPL_AWAY,
-			   foundUser->getNickname(),
+			   delocaliseStr(foundUser->getNickname()),
 			   (daemon().getTime() -
 			    foundUser->getAwaySince()).seconds,
-			   foundUser->getAwayMessage());
+			   delocaliseStr(foundUser->getAwayMessage()));
 	    }
 	 
 	    // If the user is an IRC operator, tell the world about it
 	    if (foundUser->isGlobalOperator()) {
 	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOISOPERATOR,
-			   foundUser->getNickname(),
+			   delocaliseStr(foundUser->getNickname()),
 			   GETLANG(irc2_RPL_WHOISOPERATOR));
 	    } else if (foundUser->isLocalOperator()) {
 	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOISOPERATOR,
-			   foundUser->getNickname(),
+			   delocaliseStr(foundUser->getNickname()),
 			   GETLANG(irc2_RPL_WHOISOPERATOR_LOCAL));
 	    }
 	 
@@ -539,7 +539,7 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	       
 	       // Send it, with whatever language text we could find..
 	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSTAFF,
-			   foundUser->getNickname(),
+			   delocaliseStr(foundUser->getNickname()),
 			   text);
 	    }
 	    
@@ -549,7 +549,7 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	    if (foundLocalUser != 0) {
 	       // Output the idle time, and the time this user connected
 	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOISIDLE,
-			   foundUser->getNickname(),
+			   delocaliseStr(foundUser->getNickname()),
 			   (daemon().getTime() - 
 			    foundLocalUser->getLastAwake()).seconds,
 			   foundUser->getSignonTime().seconds,
@@ -560,7 +560,7 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	 // If the client is connected via a secure connection, say what type
 	 if (false) {
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSECURE,
-			foundClient->getNickname(),
+			delocaliseStr(foundClient->getNickname()),
 			"SSL",
 			GETLANG(irc2_RPL_WHOISSECURE));
 	 }

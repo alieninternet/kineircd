@@ -34,8 +34,8 @@ namespace Kine {
     protected:
       //! Constructor
       explicit LocalUser(const ClientName& _nickname,
-			 const std::string& _username,
-			 const std::string& _hostname,
+			 const std::wstring& _username,
+			 const std::wstring& _hostname,
 			 const AIS::Util::Time& _signonTime =
 			 daemon().getTime())
 	: User(_nickname, _username, _hostname, _signonTime)
@@ -56,7 +56,7 @@ namespace Kine {
 
 
       //! Send a server notice to this user
-      const Error::error_type sendServerNotice(const std::string& message)
+      const Error::error_type sendServerNotice(const std::wstring& message)
 	{ return sendNotice(myServer(), message); };
    }; // class LocalUser
 }; // namespace Kine

@@ -41,10 +41,10 @@ namespace Kine {
       ClientName nickname;
       
       //! The User's username
-      std::string username;
+      std::wstring username;
       
       //! Away message. If this is empty, the user should be considered 'here'
-      std::string awayMessage;
+      std::wstring awayMessage;
 
       //! Away time - the time the user was last marked as being 'away'
       AIS::Util::Time awaySince;
@@ -58,8 +58,8 @@ namespace Kine {
     protected:
       //! Constructor
       explicit User(const ClientName& _nickname,
-		    const std::string& _username,
-		    const std::string& _hostname,
+		    const std::wstring& _username,
+		    const std::wstring& _hostname,
 		    const AIS::Util::Time& _signonTime)
 	: Client(_hostname, _signonTime),
           nickname(_nickname),
@@ -82,12 +82,12 @@ namespace Kine {
       
       //! An event called when a message was successfully sent to us
       virtual void doEventReceivePrivateMessage(Sender& from,
-						const std::string& message)
+						const std::wstring& message)
 	{};
 
       //! An event called when a notice was successfully sent to us
       virtual void doEventReceivePrivateNotice(Sender& from,
-					       const std::string& message)
+					       const std::wstring& message)
 	{};
 
       //! An event called whenever the staff status is changed/turned on or off
@@ -106,12 +106,12 @@ namespace Kine {
 
       
       // Return the user's username / identd reply
-      const std::string& getUsername(void) const
+      const std::wstring& getUsername(void) const
 	{ return username; };
 
       
       //! Return the virtual hostname of this user
-      virtual const std::string& getVirtualHostname(void) const
+      virtual const std::wstring& getVirtualHostname(void) const
 	{ return getHostname(); };
 
       //! Return true if the hostname or IP should be hidden from the given user
@@ -146,7 +146,7 @@ namespace Kine {
       
 
       //! Return the away message for this user. If blank, there is none set
-      const std::string& getAwayMessage(void) const
+      const std::wstring& getAwayMessage(void) const
 	{ return awayMessage; };
 
       //! Return the time the user was last set as being away
@@ -159,7 +159,7 @@ namespace Kine {
 
       //! Set this user 'away' (with the given string as the reason)
       const Error::error_type setAway(const Denizen& changer,
-				      const std::string& reason);
+				      const std::wstring& reason);
 
       //! Set this user as 'here' (or in IRC terminology, 'UNAWAY' ;)
       const Error::error_type setHere(const Denizen& changer); 
@@ -194,13 +194,13 @@ namespace Kine {
 
       // Handle the reception of a message
       const Error::error_type
-	sendMessage(Sender& from, const std::string& message,
+	sendMessage(Sender& from, const std::wstring& message,
 		    const Receiver::Directivity directivity =
 		    Receiver::Directivity());
       
       // Handle the reception of a notice
       const Error::error_type
-	sendNotice(Sender& from, const std::string& message,
+	sendNotice(Sender& from, const std::wstring& message,
 		   const Receiver::Directivity directivity =
 		   Receiver::Directivity());
 

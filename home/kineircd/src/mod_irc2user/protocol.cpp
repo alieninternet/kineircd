@@ -57,7 +57,8 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 		   const std::string& inputQueue,
 		   const std::string& outputQueue)
  : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue),
-   user(*this, registrant, connection.getSocket().getRemoteAddress()),
+   user(*this, registrant,
+	Languages::toWideStr(connection.getSocket().getRemoteAddress())),
    maxMessageSize(512) // <=- should really be configurable
 {
    // Attempt to register the user to the registry..
@@ -89,16 +90,16 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    sendNumeric(LibIRC2::Numerics::RPL_YOURHOST,
 	       GETLANG(irc2_RPL_YOURHOST,
 		       myServer().getName(),
-		       Kine::Version::version));
+		       Languages::toWideStr(Kine::Version::version)));
    
    // Tell the user when the server was created, not that they'd care (003)
    sendNumeric(LibIRC2::Numerics::RPL_CREATED,
 	       GETLANG(irc2_RPL_CREATED,
-		       Kine::Version::buildTimeFull));
+		       Languages::toWideStr(Kine::Version::buildTimeFull)));
    
    // Tell the user a little bit about what we know.. (004)
    sendNumeric(LibIRC2::Numerics::RPL_MYINFO,
-	       myServer().getName(),
+	       delocaliseStr(myServer().getName()),
 	       Kine::Version::version,
 	       "umodes",
 	       "cmodes",
@@ -354,7 +355,7 @@ void Protocol::sendNames(const Channel& channel)
 	    // Output the names we have within this buffer
 	    sendNumeric(LibIRC2::Numerics::RPL_NAMREPLY,
 			visibilityChar,
-			channel.getName(),
+			delocaliseStr(channel.getName()),
 			reply);
 	    
 	    // Clear the output
@@ -370,7 +371,7 @@ void Protocol::sendNames(const Channel& channel)
 	 // something.
 
 	 // Append the nickname of this member
-	 reply += it->second->getClient().getNickname();
+	 reply += delocaliseStr(it->second->getClient().getNickname());
       }
    }
    
@@ -378,7 +379,7 @@ void Protocol::sendNames(const Channel& channel)
    if (!reply.empty()) {
       sendNumeric(LibIRC2::Numerics::RPL_NAMREPLY,
 		  visibilityChar,
-		  channel.getName(),
+		  delocaliseStr(channel.getName()),
 		  reply);
    }
 }

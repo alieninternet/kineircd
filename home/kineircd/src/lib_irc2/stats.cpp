@@ -56,12 +56,17 @@ using AIS::Util::String;
 using AIS::Util::Time;
 
 
+#warning "This whole file is one kludge after the other.. it should be removed"
+
+
 // List of statistics requests we can handle
 const Stats::statsCommand_type Stats::statsCommands[] = {
      { "languages",		2,	handleLanguages },
      { "listconnections",	1,	handleListConnections },
      { "operators",		1,	handleOperators },
+#ifdef AKHFKAEFHKFAEAEF
      { "resources",		1,	handleResources },
+#endif
      { "uptime",		1,	handleUptime },
      { 0, 0, 0 }
 };
@@ -89,14 +94,16 @@ KINE_IRC2_STATS_HANDLER(Stats::handleLanguages)
 			   it->second->getLanguageCode(),
 			   (it->second->getMaintainer().empty() ?
 			    Protocol::replacementParameter :
-			    it->second->getMaintainer()),
+			    protocol.delocaliseStr(it->second->getMaintainer())),
 			   it->second->getFileRevision(),
 			   it->second->getTagCount(),
 			   percentComplete.str(),
-			   (it->second->getLanguageNote().empty() ?
-			    it->second->getLanguageName() :
-			    (it->second->getLanguageName() + " (" +
-			     it->second->getLanguageNote() + ")")));
+			   protocol.delocaliseStr(it->second->getLanguageNote().empty() ?
+						  it->second->getLanguageName() :
+						  (it->second->getLanguageName()) +
+						  L" (" +
+						  it->second->getLanguageNote() +
+						  L")"));
    }
 }
 
@@ -115,7 +122,7 @@ KINE_IRC2_STATS_HANDLER(Stats::handleListConnections)
 			   ((((*it)->getProtocol() != 0) &&
 			     ((*it)->getProtocol()->getIdentifyingName() !=
 			      0)) ?
-			    *(*it)->getProtocol()->getIdentifyingName() :
+			    protocol.delocaliseStr(*(*it)->getProtocol()->getIdentifyingName()) :
 			    "!"),
 			   0, // <=- sendq..
 			   (((*it)->getProtocol() != 0) ?
@@ -152,6 +159,7 @@ KINE_IRC2_STATS_HANDLER(Stats::handleOperators)
 }
 
 
+#ifdef AKHFKAEFHKFAEAEF
 /* handleResources - List a bunch of resource info about us and the system
  * Original 19/05/2003 simonb
  */
@@ -163,7 +171,7 @@ KINE_IRC2_STATS_HANDLER(Stats::handleResources)
    if (uname(&unameinfo) == 0) {
       // Send cpu/kernel information
       protocol.sendNumeric(user, Numerics::RPL_NONE,
-			   GETLANG(irc2_STATS_RESOURCES_UNAME,
+			   protocol.GETLANG(irc2_STATS_RESOURCES_UNAME,
 				   unameinfo.machine,
 				   unameinfo.sysname,
 				   unameinfo.release,
@@ -177,7 +185,7 @@ KINE_IRC2_STATS_HANDLER(Stats::handleResources)
    if (sysinfo(&systeminfo) == 0) {
       // Memory info
       protocol.sendNumeric(user, Numerics::RPL_NONE,
-			   GETLANG(irc2_STATS_RESOURCES_SYSINFO_MEMORY,
+			   protocol.GETLANG(irc2_STATS_RESOURCES_SYSINFO_MEMORY,
 				   String::convert((float)
 						   (systeminfo.totalram /
 						    1048576)),
@@ -199,18 +207,18 @@ KINE_IRC2_STATS_HANDLER(Stats::handleResources)
       
       // Process information
       protocol.sendNumeric(user, Numerics::RPL_NONE,
-			   GETLANG(irc2_STATS_RESOURCES_SYSINFO_PROCESSES,
-				   String::convert(systeminfo.procs)));
+			   protocol.GETLANG(irc2_STATS_RESOURCES_SYSINFO_PROCESSES,
+					    Language::toWideStr(String::convert(systeminfo.procs))));
       
       // Uptime info is probably important for testlink applications..
       protocol.sendNumeric(user, Numerics::RPL_NONE,
-			   GETLANG(irc2_STATS_RESOURCES_SYSINFO_UPTIME,
-				   String::convert(systeminfo.uptime / 86400),
-				   String::convert((systeminfo.uptime % 
-						    86400) / 3600),
-				   String::convert((systeminfo.uptime % 
-						    3600) / 60),
-				   String::convert(systeminfo.uptime % 60)));
+			   protocol.GETLANG(irc2_STATS_RESOURCES_SYSINFO_UPTIME,
+					    Language::toWideStr(String::convert(systeminfo.uptime / 86400)),
+					    Language::toWideStr(String::convert((systeminfo.uptime % 
+										 86400) / 3600)),
+					    Language::toWideStr(String::convert((systeminfo.uptime % 
+										 3600) / 60)),
+					    Language::toWideStr(String::convert(systeminfo.uptime % 60))));
    }
 #endif
 
@@ -220,20 +228,21 @@ KINE_IRC2_STATS_HANDLER(Stats::handleResources)
    if (getrusage(RUSAGE_SELF, &rusageinfo) == 0) {
       // Send faults info + number of swaps
       protocol.sendNumeric(user, Numerics::RPL_NONE,
-			   GETLANG(irc2_STATS_RESOURCES_RUSAGE_FAULTS_SWAP,
-				   String::convert(rusageinfo.ru_majflt),
-				   String::convert(rusageinfo.ru_minflt),
-				   String::convert(rusageinfo.ru_nswap)));
+			   protocol.GETLANG(irc2_STATS_RESOURCES_RUSAGE_FAULTS_SWAP,
+					    Language::toWideStr(String::convert(rusageinfo.ru_majflt)),
+					    Language::toWideStr(String::convert(rusageinfo.ru_minflt)),
+					    Language::toWideStr(String::convert(rusageinfo.ru_nswap))));
       
       // Send context switch info
       protocol.sendNumeric(user, Numerics::RPL_NONE,
-			   GETLANG(irc2_STATS_RESOURCES_RUSAGE_CONTEXT,
-				   String::convert(rusageinfo.ru_nvcsw),
-				   String::convert(rusageinfo.ru_nivcsw)));
+			   protocol.GETLANG(irc2_STATS_RESOURCES_RUSAGE_CONTEXT,
+					    Language::toWideStr(String::convert(rusageinfo.ru_nvcsw)),
+					    Language::toWideStr(String::convert(rusageinfo.ru_nivcsw))));
       
    }
 #endif
 }
+#endif
 
 
 /* handleUptime - Server uptime information (RFC1459)
@@ -253,7 +262,8 @@ KINE_IRC2_STATS_HANDLER(Stats::handleUptime)
    
    // Send the uptime
    protocol.sendNumeric(user, Numerics::RPL_STATSUPTIME,
-			GETLANG(irc2_RPL_STATSUPTIME,
-				String::convert(uptime.seconds / 86400),
-				timestr.str()));
+			protocol.GETLANG(irc2_RPL_STATSUPTIME,
+					 Languages::toWideStr(String::convert(uptime.seconds /
+									      86400)),
+					 Languages::toWideStr(timestr.str())));
 }

@@ -158,7 +158,7 @@ const std::wstring
 	    continue;
 	    
 	  case 'd': // The description of the server
-	    output += toWideStr(myServer().getDescription());
+	    output += myServer().getDescription();
 	    continue;
 	    
 	  case 'L': // The location of the server
@@ -166,7 +166,7 @@ const std::wstring
 	    continue;
 	    
 	  case 'n': // The name of the server (its hostname)
-	    output += toWideStr(myServer().getName());
+	    output += myServer().getName();
 	    continue;
 	    
 	  case 'N': // The name of the network (if there is one)

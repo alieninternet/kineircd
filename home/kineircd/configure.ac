@@ -253,6 +253,7 @@ AC_CHECK_HEADERS( \
 	unistd.h \
 	utmp.h \
 	utmpx.h \
+	wchar.h \
 	arpa/inet.h \
 	netinet/in.h \
 	sys/resource.h \

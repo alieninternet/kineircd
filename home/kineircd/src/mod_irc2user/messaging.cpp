@@ -75,7 +75,8 @@ void Protocol::doMessage(const parameters_type& parameters,
 	    
 		  // Find something of this name
 		  Receiver* const receiver =
-		    LibIRC2::Utility::findMessageTarget(target, directivity, 
+		    LibIRC2::Utility::findMessageTarget(localiseStr(target),
+							directivity, 
 							true
 							/* config ^^^ ? */);
 		  
@@ -87,7 +88,8 @@ void Protocol::doMessage(const parameters_type& parameters,
 		     if (!isNotice) {
 			// Send the message, remembering the error
 			const Error::error_type error =
-			  receiver->sendMessage(user, parameters[1],
+			  receiver->sendMessage(user, 
+						localiseStr(parameters[1]),
 						directivity);
 
 			// Was there no error (most likely)?
@@ -97,10 +99,10 @@ void Protocol::doMessage(const parameters_type& parameters,
 			     dynamic_cast<const User* const>(receiver);
 			   if ((foundUser != 0) && (foundUser->isAway())) {
 			      sendNumeric(LibIRC2::Numerics::RPL_AWAY,
-					  foundUser->getName(),
+					  delocaliseStr(foundUser->getName()),
 					  (daemon().getTime() -
 					   foundUser->getAwaySince()).seconds,
-					  foundUser->getAwayMessage());
+					  delocaliseStr(foundUser->getAwayMessage()));
 			   }
 			   
 			   // Skip to the next target..
@@ -148,7 +150,8 @@ void Protocol::doMessage(const parameters_type& parameters,
 			}
 		     } else {
 			// Send a notice, and we do not care if it worked
-			(void)receiver->sendNotice(user, parameters[1],
+			(void)receiver->sendNotice(user,
+						   localiseStr(parameters[1]),
 						   directivity);
 		     }
 		     continue;
@@ -190,8 +193,8 @@ void Protocol::doMessage(const parameters_type& parameters,
 	    if (!isNotice) {
 	       sendNumeric(LibIRC2::Numerics::ERR_TOOMANYTARGETS,
 			   GETLANG(irc2_ERR_TOOMANYTARGETS,
-				   String::convert(config().
-						   getLimitsMaxTargets())));
+				   Languages::toWideStr(String::convert(config().
+									getLimitsMaxTargets()))));
 	    }
 	    return;
 	 }
@@ -215,7 +218,7 @@ void Protocol::doMessage(const parameters_type& parameters,
 	 // The recipient was missing, complain about that
 	 sendNumeric(LibIRC2::Numerics::ERR_NORECIPIENT,
 		     GETLANG(irc2_ERR_NORECIPIENT,
-			     "PRIVMSG"));
+			     L"PRIVMSG"));
       } else {
 	 // Okay, the text was missing, complain about that then
 	 sendNumeric(LibIRC2::Numerics::ERR_NOTEXTTOSEND,

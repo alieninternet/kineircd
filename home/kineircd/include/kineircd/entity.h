@@ -104,7 +104,7 @@ namespace Kine {
        * 
        * \return The \e unique name for this entity
        */
-      virtual const std::string& getName(void) const = 0;
+      virtual const std::wstring& getName(void) const = 0;
 
 
       /*!

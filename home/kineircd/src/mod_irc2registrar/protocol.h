@@ -74,20 +74,20 @@ namespace Kine {
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa)
 	     {
-		sendMessageFrom(myServer().getName(), numeric,
+		sendMessageFrom(delocaliseStr(myServer().getName()), numeric,
 				(registrantData.name.empty() ?
 				 replacementParameter :
-				 registrantData.name),
+				 delocaliseStr(registrantData.name)),
 				pa);
 	     };
 	 template <class Ta, class Tb>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa, const Tb& pb)
 	     {
-		sendMessageFrom(myServer().getName(), numeric,
+		sendMessageFrom(delocaliseStr(myServer().getName()), numeric,
 				(registrantData.name.empty() ?
 				 replacementParameter :
-				 registrantData.name),
+				 delocaliseStr(registrantData.name)),
 				pa, pb);
 	     };
 	 
@@ -130,7 +130,7 @@ namespace Kine {
 	   { return protocolName; };
 	 
 	 // Return some sort of identifying name for this instance
-	 const std::string* const getIdentifyingName(void) const
+	 const std::wstring* const getIdentifyingName(void) const
 	   {
 	      return (registrantData.name.empty() ?
 		      0 : &registrantData.name);
@@ -142,9 +142,9 @@ namespace Kine {
 
 // Language related macros
 # define GETLANG(n,...) \
-   Kine::languages().get("en", \
-			 Language::tagMap[Language::n].tagID, \
-			 ##__VA_ARGS__)
+   delocaliseStr(Kine::languages().get("en" /* fix this */, \
+			               Language::tagMap[Language::n].tagID, \
+			               ##__VA_ARGS__))
 
 
 #endif // _SRC_MOD_PROTOCOL_REGISTRAR_H_

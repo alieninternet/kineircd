@@ -38,24 +38,24 @@ namespace Kine {
       namespace Utility {
 	 //! Find a message's destination target based on the given string
 	 extern Receiver* const
-	   findMessageTarget(const std::string& target,
+	   findMessageTarget(const std::wstring& target,
 			     Receiver::Directivity& directivity,
 			     const bool includeServices = false);
 	 
 	 //! Make a user\@host string
-	 inline static const std::string
+	 inline static const std::wstring
 	   makeUserHostIdent(const Kine::Client& client)
 	   {
-	      return (client.getUsername() + '@' +
+	      return (client.getUsername() + L'@' +
 		      client.getHostname());
 	   };
 	 
 	 //! Make a nick!user\@host string
-	 inline static const std::string
+	 inline static const std::wstring
 	   makeNickUserHostIdent(const Kine::Client& client)
 	   {
-	      return (client.getNickname() + '!' +
-		      client.getUsername() + '@' +
+	      return (client.getNickname() + L'!' +
+		      client.getUsername() + L'@' +
 		      client.getHostname());
 	   };
       }; // namespace Utility

@@ -33,12 +33,12 @@ namespace Kine {
    class Password : public AIS::Util::SHA1_Digest {
     private:
       // DO NOT CHANGE THIS, unless you want to be hurt very painfully :(
-      static const char dataDelimiter = '\0';
+      static const wchar_t dataDelimiter = 0xFFFF;
 
     public:
       // Constructor   
       explicit Password(const ClientName& _nickname,
-			const std::string& _password)
+			const std::wstring& _password)
 	: AIS::Util::SHA1_Digest(_nickname.IRCtoLower() +
 				 dataDelimiter +
 				 _password)

@@ -41,7 +41,7 @@ MyServer* MyServer::instance = 0;
  * Original 20/03/2003 simonb
  */
 MyServer::MyServer(void)
-  : Server(config().getServerName(), daemon().getTime())
+  : Server(Languages::toWideStr(config().getServerName()), daemon().getTime())
 {
    // Register ourself to the registry?
 }

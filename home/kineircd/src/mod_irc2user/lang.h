@@ -30,14 +30,21 @@
 
 
 // Language related macros to make the code neater (hopefully)
-# define GETLANG_BY_ID(id,...) \
+# define L_GETLANG_BY_ID(id,...) \
    Kine::languages().get(user.getLanguageList(), \
                          id, \
                          ##__VA_ARGS__)
 
+# define GETLANG_BY_ID(id,...) \
+   delocaliseStr(L_GETLANG_BY_ID(id, ##__VA_ARGS__))
+
+
+# define L_GETLANG(n,...) \
+   L_GETLANG_BY_ID(Language::tagMap[Language::n].tagID, \
+                   ##__VA_ARGS__)
+
 # define GETLANG(n,...) \
-   GETLANG_BY_ID(Language::tagMap[Language::n].tagID, \
-                 ##__VA_ARGS__)
+   delocaliseStr(L_GETLANG(n, ##__VA_ARGS__))	     
 
 
 #endif // _SRC_MOD_IRC2USER_LANG_H_

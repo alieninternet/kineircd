@@ -59,7 +59,7 @@ using namespace Kine::LibIRC2;
  *   .. Try to stay with me :)
  */
 Kine::Receiver* const
-  Utility::findMessageTarget(const std::string& target,
+  Utility::findMessageTarget(const std::wstring& target,
 			     Kine::Receiver::Directivity& directivity,
 			     const bool includeServices)
 {

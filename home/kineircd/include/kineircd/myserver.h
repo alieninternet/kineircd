@@ -26,6 +26,7 @@
 
 # include <kineircd/server.h>
 # include <kineircd/config.h>
+# include <kineircd/languages.h>
 
 namespace Kine {
    class LocalUser;
@@ -63,8 +64,8 @@ namespace Kine {
       
       
       // Return the server's description
-      const std::string& getDescription(void) const
-	{ return config().getServerDescription(); };
+      const std::wstring& getDescription(void) const
+	{ return Languages::toWideStr(config().getServerDescription()); };
       
       // Return the server we're "connected to" (technically, that's us)
       Server& getServer(void) const
@@ -139,13 +140,13 @@ namespace Kine {
        *    The given reason is too short to be considered a reasonable
        *    explaination as to why the server should be restarted
        */
-      const Error::error_type restart(const std::string& reason)
+      const Error::error_type restart(const std::wstring& reason)
 	{ return Error::UNKNOWN_ERROR; };
 
       /*!
        * \brief Restart the server (requested by a user)
        * 
-       * \copydoc restart(const std::string& reason)
+       * \copydoc restart(const std::wstring& reason)
        * 
        * If the restart is being requested by a User, you should use this
        * method, since the permissions of the \p user will be checked
@@ -161,7 +162,7 @@ namespace Kine {
        *    request operations
        */
       const Error::error_type restart(const User& user,
-				      const std::string& reason)
+				      const std::wstring& reason)
 	{ return Error::UNKNOWN_ERROR; };
       //@}
 
@@ -188,18 +189,18 @@ namespace Kine {
        *    a minimum message length may be required to stop people from
        *    shutting the server down with useless reasons.
        */
-      const Error::error_type shutdown(const std::string& reason)
+      const Error::error_type shutdown(const std::wstring& reason)
 	{ return Error::UNKNOWN_ERROR; };
 
       /*!
        * \brief Shut down the server (requested by a user)
        *  
-       * \copydoc shutdown(const std::string& reason)
+       * \copydoc shutdown(const std::wstring& reason)
        * 
        * You need to use this form when a User is requesting the server to
        * shutdown in order to evaluate the correct permissions. If you
        * need to shut the server down from a module, you may use
-       * form shutdown(const std::string& reason)
+       * form shutdown(const std::wstring& reason)
        * 
        * \param user The user who is trying to shut down the server
        * \retval Kine::Error::UNREGISTERED_ENTITY
@@ -210,7 +211,7 @@ namespace Kine {
        *    their permissions do not allow them to shut the server down.
        */
       const Error::error_type shutdown(const User& user,
-				       const std::string& reason)
+				       const std::wstring& reason)
 	{ return Error::UNKNOWN_ERROR; };
       //@}
       
@@ -266,7 +267,7 @@ namespace Kine {
        *    must be registered before it can send messages.
        */
       const Error::error_type sendWallops(const Sender& sender,
-					  const std::string& message)
+					  const std::wstring& message)
 	{ return Error::UNKNOWN_ERROR; };
       
       

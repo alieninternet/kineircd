@@ -70,7 +70,7 @@ namespace Kine {
       extern const char* const bugsEmail;
       
       //! Built in version information used by the 'INFO' user command
-      extern const char* const versionInfo[];
+      extern const wchar_t* const versionInfo[];
       
       //! Version 'chars', used to show which compile-time flags were set
       extern const char* const versionChars;

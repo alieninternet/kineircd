@@ -55,7 +55,7 @@ namespace Kine {
     */
    class Client : public Denizen, public Sender, public Receiver {
     private:
-      std::string hostname;			//!< Client's hostname
+      std::wstring hostname;			//!< Client's hostname
 
       static const wchar_t notDeafGlyph = 0;	//!< Glyph for not being deaf
       wchar_t attentionGlyph;			//!< Listen prefix while deaf
@@ -72,7 +72,7 @@ namespace Kine {
        * \param _signonTime The time the client connected to the network. For
        *    more information, see Kine::Entity::signonTime
        */
-      explicit Client(const std::string& _hostname,
+      explicit Client(const std::wstring& _hostname,
 		      const AIS::Util::Time& _signonTime)
 	: Entity(_signonTime),
           hostname(_hostname),
@@ -87,7 +87,7 @@ namespace Kine {
       //! An event called when someone (maybe us) has parted a channel
       virtual void doEventChannelPart(const Channel& channel,
 				      const Client& client,
-				      const std::string* const reason)
+				      const std::wstring* const reason)
 	{};
 
       //! An event called whenever a channel's topic has changed
@@ -98,13 +98,13 @@ namespace Kine {
       //! An event called when a message was successfully sent to a channel
       virtual void doEventReceiveChannelMessage(Sender& from,
 						const Channel& to,
-						const std::string& message)
+						const std::wstring& message)
 	{};
       
       //! An event called when a notice was successfully sent to a channel
       virtual void doEventReceiveChannelNotice(Sender& from,
 					       const Channel& to,
-					       const std::string& message)
+					       const std::wstring& message)
 	{};
 
     public:
@@ -116,16 +116,16 @@ namespace Kine {
       virtual const ClientName& getNickname(void) const = 0;
 
       // Return the client's nickname (which is also its unique 'name')
-      const std::string& getName(void) const
+      const std::wstring& getName(void) const
 	{ return getNickname(); };
 
 
       //! Return the client's user name
-      virtual const std::string& getUsername(void) const = 0;
+      virtual const std::wstring& getUsername(void) const = 0;
 
 
       // Return the client's hostname
-      const std::string& getHostname(void) const
+      const std::wstring& getHostname(void) const
 	{ return hostname; };
 
       
@@ -170,7 +170,7 @@ namespace Kine {
        *    client is expecting the quit to continue, you should crop the
        *    \p reason text prior to calling this.
        */
-      const Error::error_type quit(const std::string reason);
+      const Error::error_type quit(const std::wstring reason);
 
 
       /*!
@@ -218,7 +218,7 @@ namespace Kine {
        *    registered to the network, and therefore cannot kill clients, or
        *    this client itself is not registered, and cannot be killed!
        */
-      const Error::error_type kill(Denizen& killer, const std::string& reason)
+      const Error::error_type kill(Denizen& killer, const std::wstring& reason)
 	{ return Kine::Error::UNKNOWN_ERROR; };
       //@}
    }; // class Client

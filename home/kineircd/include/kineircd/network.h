@@ -59,10 +59,10 @@ namespace Kine {
        * 
        * \return The short network name
        */
-      virtual const std::string& getNetworkName(void) const = 0;
+      virtual const std::wstring& getNetworkName(void) const = 0;
       
       // Return the 'name'
-      const std::string& getName(void) const
+      const std::wstring& getName(void) const
 	{ return getNetworkName(); };
    }; // class Network
 }; // namespace Kine

@@ -60,7 +60,7 @@ namespace Kine {
        * \param _signonTime The time the service connected to the network
        */
       explicit Service(const ClientName& _nickname,
-		       const std::string& _hostname,
+		       const std::wstring& _hostname,
 		       const AIS::Util::Time& _signonTime)
 	: Client(_hostname, _signonTime),
           nickname(_nickname),
@@ -79,7 +79,7 @@ namespace Kine {
 
       
       // Return the user name (default to the service nickname)
-      virtual const std::string& getUsername(void) const
+      virtual const std::wstring& getUsername(void) const
 	{ return getName(); };
       
       

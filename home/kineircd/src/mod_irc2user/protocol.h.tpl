@@ -78,7 +78,7 @@ namespace Kine {
 	   { return protocolName; };
 	 
 	 // Return some sort of identifying name for this instance
-	 const std::string* const getIdentifyingName(void) const
+	 const std::wstring* const getIdentifyingName(void) const
 	   { return &user.getName(); };
 	 
 	 
@@ -88,7 +88,7 @@ namespace Kine {
 			       const T& parameters)
 	   {
 	      std::ostringstream output;
-	      output << ':' << myServer().getName() <<
+	      output << ':' << delocalise(myServer().getName()) <<
 		' ' << std::setfill('0') << std::setw(3) << numeric <<
 		' ' << user.getNickname() << ' ' << parameters;
 	      sendRawLine(output.str());

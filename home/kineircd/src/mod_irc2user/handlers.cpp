@@ -84,7 +84,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
    // If there is a parameter, the user is going away
    if (!parameters.empty()) {
       // Set the user 'away'
-      if (user.setAway(user, parameters[0]) == Error::NO_ERROR) {
+      if (user.setAway(user, localiseStr(parameters[0])) == Error::NO_ERROR) {
 	 return;
       }
    } else {
@@ -111,7 +111,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleDIE)
    static const char* const commandName = "DIE";
 
    // Try to shutdown the server - eek!
-   const Error::error_type error = myServer().shutdown(user, parameters[0]);
+   const Error::error_type error =
+     myServer().shutdown(user, localiseStr(parameters[0]));
    
    // Check the status of the operation
    if (error != Error::NO_ERROR) {
@@ -180,66 +181,31 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
        */
       if (mask.matches(it->first) && it->second.hasAccess(user)) {
 	 // Create a prefix for this command's output
-	 std::ostringstream prefix;
-	 prefix << '\002' << it->first << "\002: ";
+	 const std::wstring prefix(L'\002' + 
+				   Languages::toWideStr(it->first) + 
+				   L"\002: ");
 	 
 	 // Send the user the usage help for this function, if we can
 	 if (it->second.helpUsage == 0) {
-	    user.sendServerNotice(prefix.str() +
-				  GETLANG(irc2user_HELP_NO_PARAMETERS));
+	    user.sendServerNotice(prefix +
+				  L_GETLANG(irc2user_HELP_NO_PARAMETERS));
 	 } else {
-	    user.sendServerNotice(prefix.str() +
-				  GETLANG_BY_ID(*(it->second.helpUsage)));
+	    user.sendServerNotice(prefix +
+				  L_GETLANG_BY_ID(*(it->second.helpUsage)));
 	 }
 	 
 	 // If we are doing extended help, send the extended lines
 	 if (extended && (it->second.helpInfo != 0)) {
-	    // Grab the extended help string..
-	    const std::string help = GETLANG_BY_ID(*(it->second.helpInfo));
-	    
-	    // Our starting and ending positions..
-	    std::string::size_type startPosition = 0;
-	    std::string::size_type endPosition;
-	    
-	    // The max number of chars we can send..
-	    const std::string::size_type maxChars =
-	      maxMessageSize -
-	      15 - /* "NOTICE :" plus a bit of room */
-	      user.getNickname().length();
-	    
-	    // Loop until we have no more text left..
-	    for (;;) {
-	       // How much do we need to break this line up?
-	       if ((help.length() - startPosition) > maxChars) {
-		  // Work out where we can break this line (at a space)
-		  endPosition = help.rfind(' ',
-					   (startPosition + maxChars));
-	       } else {
-		  // Set the end position to the end of the line!
-		  endPosition = help.length();
-	       }
-	       
-	       // Send this bit..
-	       user.sendServerNotice(prefix.str() +
-				     help.substr(startPosition,
-						 (endPosition -
-						  startPosition)));
-
-	       // If we're now at the end of the line, break out of this loop
-	       if (endPosition == help.length()) {
-		  break;
-	       }
-	       
-	       // If we're still going, remember where we last broke..
-	       startPosition = endPosition + 1;
-	    }
+	    // Send the extended help stuff
+	    user.sendServerNotice(prefix +
+				  L_GETLANG_BY_ID(*(it->second.helpInfo)));
 	 }
       }
    }
 
    // Tell the user the HELP command has completed its run
-   user.sendServerNotice(GETLANG(irc2user_HELP_END,
-				 mask));
+   user.sendServerNotice(L_GETLANG(irc2user_HELP_END,
+				   localiseStr(mask)));
 }
 #endif
 
@@ -285,14 +251,14 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleISON)
    for (parameters_type::const_iterator it = parameters.begin(); 
 	it != parameters.end(); ++it) {
       // Check if we have that nick in our user or service lists
-      if ((client = registry().findClient(*it)) != 0) {
+      if ((client = registry().findClient(localiseStr(*it))) != 0) {
 	 // If the reply is not empty, prefix this nickname with a space
 	 if (!reply.empty()) {
 	    reply += ' ';
 	 }
 	 
 	 // Append the nickname
-	 reply += client->getNickname();
+	 reply += delocaliseStr(client->getNickname());
       }
    }
    
@@ -326,12 +292,13 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleKILL)
    static const char* const commandName = "KILL";
    
    // Find the client to kill
-   Client* const victim = registry().findClient(parameters[0]);
+   Client* const victim = registry().findClient(localiseStr(parameters[0]));
    
    // Check
    if (victim != 0) {
       // Attempt to commit the homicide
-      const Error::error_type error = victim->kill(user, parameters[1]);
+      const Error::error_type error =
+	victim->kill(user, localiseStr(parameters[1]));
       
       // Check the error
       if (error == Error::NO_ERROR) {
@@ -424,12 +391,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 		     it->second->getFileRevision(),
 		     (it->second->getMaintainer().empty() ?
 		      replacementParameter :
-		      it->second->getMaintainer()),
+		      delocaliseStr(it->second->getMaintainer())),
 		     modes,
-		     (it->second->getLanguageNote().empty() ?
-		      it->second->getLanguageName() :
-		      (it->second->getLanguageName() + " (" +
-		       it->second->getLanguageNote() + ")")));
+		     delocaliseStr(it->second->getLanguageNote().empty() ?
+				   it->second->getLanguageName() :
+				   it->second->getLanguageName() + L" (" +
+				   it->second->getLanguageNote() + L")"));
       }
       
       // Send the end of list tag
@@ -570,7 +537,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleNAMES)
       target = request.nextToken(',');
       
       // Find this channel without doing the whole mask checking thingy..
-      if ((channel = registry().findChannel(target)) != 0) {
+      if ((channel = registry().findChannel(localiseStr(target))) != 0) {
 	 // Output the names list for this channel..
 	 sendNames(*channel);
 	 continue;
@@ -639,14 +606,14 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleNICK)
       if (false) {
 	 sendNumeric(LibIRC2::Numerics::ERR_ERRONEUSNICKNAME,
 		     parameters[0],
-		     GETLANG(irc2_ERR_ERRONEUSNICKNAME_PROHIBITED,
-			     /* reason */ "reason"));
+		     GETLANG(irc2_ERR_ERRONEUSNICKNAME_PROHIBITED//,
+			     /* reason */));
 	 return;
       }
    }
 
    // Try to do the nick change, working out the errors returned
-   switch (user.changeNickname(user, parameters[0])) {
+   switch (user.changeNickname(user, localiseStr(parameters[0]))) {
     // All went well, nothing left to do
     case Error::NO_ERROR:
       return;
@@ -670,8 +637,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleNICK)
       sendNumeric(LibIRC2::Numerics::ERR_ERRONEUSNICKNAME,
 		  parameters[0],
 		  GETLANG(irc2_ERR_ERRONEUSNICKNAME_TOO_LONG,
-			  String::convert((unsigned int)config().
-					  getLimitsUsersMaxNickNameLength())));
+			  Languages::toWideStr(String::convert((unsigned int)config().
+							       getLimitsUsersMaxNickNameLength()))));
       return;
 
     // The nickname was erroneous (started with a digit)
@@ -737,8 +704,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
    // If we were given a parameter, send it back (simple as that!)
    if (!parameters.empty()) {
       // Send the reply (pong) in full form
-      sendMessageFrom(myServer().getName(), "PONG",
-		      myServer().getName(), 
+      sendMessageFrom(delocaliseStr(myServer().getName()), "PONG",
+		      delocaliseStr(myServer().getName()),
 		      parameters[0]);
       return;
    }
@@ -780,7 +747,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 			   user.getHostname()));
       }
    } else {
-      (void)user.quit(parameters[0]);
+      (void)user.quit(localiseStr(parameters[0]));
       if (true) {
 	 /* Say goodbye to the client. RFC1459 makes us send an ERROR, despite
 	  * it being somewhat of a misnomer!
@@ -789,7 +756,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 			   user.getNickname(),
 			   user.getUsername(),
 			   user.getHostname(),
-			   parameters[0]));
+			   localiseStr(parameters[0])));
       }
    }
    
@@ -853,7 +820,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleRESTART)
    static const char* const commandName = "RESTART";
    
    // Try to restart the server
-   const Error::error_type error = myServer().restart(user, parameters[0]);
+   const Error::error_type error =
+     myServer().restart(user, localiseStr(parameters[0]));
    
    // Check the status of the operation
    if (error != Error::NO_ERROR) {
@@ -968,18 +936,21 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSQUERY)
 	    
 	    // Find something of this name
 	    Receiver* const receiver =
-	      LibIRC2::Utility::findMessageTarget(target, directivity, true);
+	      LibIRC2::Utility::findMessageTarget(localiseStr(target),
+						  directivity, true);
 	    
 	    // Did we find something?
 	    if (receiver != 0) {
 	       // Try to down-cast this to a service
-	       Service* const service = dynamic_cast<Service* const>(receiver);
+	       Service* const service =
+		 dynamic_cast<Service* const>(receiver);
 	       
 	       // Is this really a service?
 	       if (service != 0) {
 		  // Pass the query onto the service
 		  Error::error_type error;
-		  if ((error = service->sendQuery(user, parameters[1],
+		  if ((error = service->sendQuery(user,
+						  localiseStr(parameters[1]),
 						  directivity)) ==
 		      Error::NO_ERROR) {
 		     // All is well, next target
@@ -991,7 +962,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSQUERY)
 		   * message was obviously not sent..
 		   */
 		  sendNumeric(LibIRC2::Numerics::ERR_CANNOTSENDTONICK,
-			      service->getName(),
+			      delocaliseStr(service->getName()),
 			      GETLANG(irc2_ERR_CANNOTSENDTONICK_UNRECEPTIVE));
 		  continue;
 	       }
@@ -1013,8 +984,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSQUERY)
 	 // Too many targets - break the loop
 	 sendNumeric(LibIRC2::Numerics::ERR_TOOMANYTARGETS,
 		     GETLANG(irc2_ERR_TOOMANYTARGETS,
-			     String::convert(config().
-					     getLimitsMaxTargets())));
+			     Languages::toWideStr(String::convert(config().
+								  getLimitsMaxTargets()))));
 	 return;
       }
       
@@ -1027,7 +998,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSQUERY)
       // The recipient was missing, complain about that
       sendNumeric(LibIRC2::Numerics::ERR_NORECIPIENT,
 		  GETLANG(irc2_ERR_NORECIPIENT,
-			  commandName));
+			  Languages::toWideStr(commandName)));
    } else {
       // Okay, the text was missing, complain about that then
       sendNumeric(LibIRC2::Numerics::ERR_NOTEXTTOSEND,
@@ -1186,7 +1157,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERHOST)
       }
       
       // Try to find this user
-      const Kine::User* const foundUser = registry().findUser(*it);
+      const Kine::User* const foundUser =
+	registry().findUser(localiseStr(*it));
       
       // Did we find this user?
       if (foundUser != 0) {
@@ -1196,7 +1168,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERHOST)
 	 }
 	 
 	 // Output the nickname..
-	 output << foundUser->getName();
+	 output << delocaliseStr(foundUser->getName());
 	 
 	 // If the user is an operator, add a '*' to the end of their nickname
 	 if (foundUser->isOperator()) {
@@ -1206,10 +1178,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERHOST)
 	 // Output the rest
 	 output << '=' <<
 	   (foundUser->isAway() ? '-' : '?') <<
-	   foundUser->getUsername() << '@' <<
-	   (foundUser->hideHostFrom(user) ? 
-	    foundUser->getVirtualHostname() :
-	    foundUser->getHostname());
+	   delocaliseStr(foundUser->getUsername()) << '@' <<
+	   delocaliseStr(foundUser->hideHostFrom(user) ? 
+			 foundUser->getVirtualHostname() :
+			 foundUser->getHostname());
       }
    }
    
@@ -1307,7 +1279,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWALLOPS)
    static const char* const commandName = "WALLOPS";
    
    // Try and send the wallops message
-   const Error::error_type error = myServer().sendWallops(user, parameters[0]);
+   const Error::error_type error =
+     myServer().sendWallops(user, localiseStr(parameters[0]));
    
    // Check the status of the operation
    if (error != Error::NO_ERROR) {

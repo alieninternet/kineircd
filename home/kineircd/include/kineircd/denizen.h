@@ -96,7 +96,7 @@ namespace Kine {
        * 
        * \return The hostname representing the host of the denizen
        */
-      virtual const std::string& getHostname(void) const = 0;
+      virtual const std::wstring& getHostname(void) const = 0;
 
 
       /*!
@@ -112,7 +112,7 @@ namespace Kine {
        * 
        * \return The \e description of the denizen
        */
-      virtual const std::string& getDescription(void) const = 0;
+      virtual const std::wstring& getDescription(void) const = 0;
 
 
       /*!

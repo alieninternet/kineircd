@@ -52,10 +52,10 @@ namespace Kine {
       typedef KINE_HASH_MAP_TYPE < ClientName, Service* const > services_type;
       
       //! Connected servers list type
-      typedef KINE_HASH_MAP_TYPE < std::string, Server* const > servers_type;
+      typedef KINE_HASH_MAP_TYPE < std::wstring, Server* const > servers_type;
       
       //! Connected networks list type
-      typedef KINE_HASH_MAP_TYPE < std::string, Network* const > networks_type;
+      typedef KINE_HASH_MAP_TYPE < std::wstring, Network* const > networks_type;
       
       //! Known channel list type
       typedef KINE_HASH_MAP_TYPE < ChannelName, Channel* const > channels_type;
@@ -137,11 +137,11 @@ namespace Kine {
 	};
       
       //! Find the given server, by its name
-      Server* const findServer(const std::string& name) const
+      Server* const findServer(const std::wstring& name) const
 	{ return 0; /* temporary */ };
       
       //! Find the given network, by its name
-      Network* const findNetwork(const std::string& name) const
+      Network* const findNetwork(const std::wstring& name) const
 	{ return 0; /* temporary */ };
       
       //! Find the given channel, by its name

@@ -141,7 +141,7 @@ void Protocol::parseMessage(const std::string& origin,
       if (protocolInfo == 0) {
 	 // Complain
 	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_USER,
-			   registrantData.protocol));
+			   Languages::toWideStr(registrantData.protocol)));
 	 return;
       }
 
@@ -167,7 +167,7 @@ void Protocol::parseMessage(const std::string& origin,
 				 registrantData.protocol.toUpper())) == 0) {
 	 // Complain
 	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_IIRC,
-			   registrantData.protocol));
+			   Languages::toWideStr(registrantData.protocol)));
 	 return;
       }
 
@@ -187,7 +187,7 @@ void Protocol::parseMessage(const std::string& origin,
 	    daemon().findProtocol(ProtocolInfo::Type::SERVER,
 				  registrantData.protocol.toUpper())) == 0)) {
 	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVER,
-			   registrantData.protocol));
+			   Languages::toWideStr(registrantData.protocol)));
 	 return;
       }
       break;
@@ -203,7 +203,7 @@ void Protocol::parseMessage(const std::string& origin,
        
       // No support yet...
       sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVICE,
-			registrantData.protocol));
+			Languages::toWideStr(registrantData.protocol)));
       return;
    }
    
@@ -311,21 +311,17 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseIIRCN)
    }
    
    // Rip out the data, then..
-   registrantData.name = parameters[0];
-   registrantData.hostname = parameters[2];
+   registrantData.name = localiseStr(parameters[0]);
+   registrantData.hostname = localiseStr(parameters[2]);
    registrantData.protocol = parameters[3].toUpper();
    registrantData.linkStamp = parameters[4].toLong();
    
 #ifdef KINE_DEBUG
    // Output debugging info
-   debug("mod_irc2registrar: -=>      Network: " +
-	 registrantData.name);
-   debug("mod_irc2registrar: -=> Gateway Host: " +
-	 registrantData.hostname);
-   debug("mod_irc2registrar: -=>   IIRC Proto: " +
-	 registrantData.protocol);
-   debug("mod_irc2registrar: -->   Time stamp: " +
-	 String::convert(registrantData.linkStamp));
+   debug("mod_irc2registrar: -=>      Network: " + parameters[0]);
+   debug("mod_irc2registrar: -=> Gateway Host: " + parameters[2]);
+   debug("mod_irc2registrar: -=>   IIRC Proto: " + parameters[3]);
+   debug("mod_irc2registrar: -->   Time stamp: " + parameters[4]);
 #endif
    
    // Check the linkstamp, it must be greater than 0..
@@ -340,10 +336,10 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseIIRCN)
    }
    
    if (parameters.size() > 5) {
-      registrantData.description = parameters[5];
+      registrantData.description = localiseStr(parameters[5]);
 #ifdef KINE_DEBUG
       debug("mod_irc2registrar: -=>  Description: " +
-	    registrantData.description);
+	    parameters[5]);
 #endif
    }
    
@@ -365,7 +361,7 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
    }
    
    // Grab the nickname..
-   ClientName nick(parameters[0]);
+   ClientName nick(localiseStr(parameters[0]));
    
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
    if (nick.checkValidity() != Error::NO_ERROR) {
@@ -402,8 +398,7 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
    // If we got here, the nick was ok - allow it
    registrantData.name = nick;
 #ifdef KINE_DEBUG
-   debug("mod_irc2registrar: -=>         Nick: " +
-	 registrantData.name);
+   debug("mod_irc2registrar: -=>         Nick: " + parameters[0]);
 #endif
    
    // Do we need to send a ping out?
@@ -414,10 +409,10 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
       // Send out a notice to the client?
       if (true) { /* <=- configure ! :( */
 	 sendMessage("NOTICE",
-		     registrantData.name,
+		     delocaliseStr(registrantData.name),
 		     GETLANG(irc2registrar_NOTICE_ANTI_SPOOF_PING_HELP,
-			     pongMatch,
-			     "email@somewhere.org")); /* <=- configure !! */
+			     Languages::toWideStr(pongMatch),
+			     Languages::toWideStr("email@somewhere.org"))); /* <=- configure !! */
       }
    }
 }
@@ -445,11 +440,10 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parsePASS)
    }
    
    // Grab the password from the line (we do not care if it is blank)
-   registrantData.password = parameters[0];
+   registrantData.password = localiseStr(parameters[0]);
    
 #ifdef KINE_DEBUG
-   debug("mod_irc2registrar: -=>     Password: " +
-	 registrantData.password);
+   debug("mod_irc2registrar: -=>     Password: " + parameters[0]);
 #endif
    
    // Is there anything else on the line we should know about?
@@ -477,8 +471,8 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parsePONG)
    }
 
 #ifdef KINE_DEBUG
-   debug("mod_irc2registrar: -=>         Pong: '" +
-	 parameters[0] + "' (wanting '" + pongMatch + "')");
+   debug("mod_irc2registrar: -=>         Pong: '" + parameters[0] +
+	 "' (wanting '" + pongMatch + "')");
 #endif
    
    // Make sure this pong is valid
@@ -549,17 +543,15 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVER)
    }
 
    // Grab the first required value, the server name..
-   registrantData.hostname = parameters[0];
+   registrantData.hostname = localiseStr(parameters[0]);
 #ifdef KINE_DEBUG
-   debug("mod_irc2registrar: -=>       Server: " +
-	 registrantData.hostname);
+   debug("mod_irc2registrar: -=>       Server: " + parameters[0]);
 #endif
    
    // Grab the second required value - hop count
    int hops = parameters[1].toInt();
 #ifdef KINE_DEBUG
-   debug("mod_irc2registrar: -=>         Hops: " +
-	 parameters[1]);
+   debug("mod_irc2registrar: -=>         Hops: " + parameters[1]);
 #endif
    
    // Check the hop count, it must be 1, any other value is incorrect
@@ -579,27 +571,27 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVER)
       
 #ifdef KINE_DEBUG
       // Send what we got to the debugging output
-      debug("mod_irc2registrar: -=>   startStamp: " +
-	    String::convert(registrantData.startStamp));
-      debug("mod_irc2registrar: -=>    linkStamp: " +
-	    String::convert(registrantData.linkStamp));
-      debug("mod_irc2registrar: -=>     Protocol: " +
-	    registrantData.protocol);
+      debug("mod_irc2registrar: -=>   startStamp: " + parameters[2]);
+      debug("mod_irc2registrar: -=>    linkStamp: " + parameters[3]);
+      debug("mod_irc2registrar: -=>     Protocol: " + parameters[4]);
 #endif
       
       registrantData.description =
-	parameters[5].substr(0,
-			     config().getLimitsServersMaxDescriptionLength());
+	localiseStr(parameters[5].substr(0,
+					 config().getLimitsServersMaxDescriptionLength()));
+
+#ifdef KINE_DEBUG
+      debug("mod_irc2registrar: -=>  Description: " + parameters[5]);
+#endif
    } else {
       registrantData.description =
-	parameters[2].substr(0, 
-			     config().getLimitsServersMaxDescriptionLength());
-   }
-   
+	localiseStr(parameters[2].substr(0, 
+					 config().getLimitsServersMaxDescriptionLength()));
+
 #ifdef KINE_DEBUG
-   debug("mod_irc2registrar: -=>         Name: " +
-	 registrantData.description);
+      debug("mod_irc2registrar: -=>  Description: " + parameters[2]);
 #endif
+   }
    
    // Set the registration mode
    registrationType = RegistrationType::SERVER;
@@ -652,23 +644,21 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVICE)
    ///////////////////////////////////////////////////////////////////////
    
    // Ok, rip out the variables...
-   registrantData.username = parameters[0];
-   registrantData.distribution = parameters[2];
+   registrantData.username = localiseStr(parameters[0]);
+   registrantData.distribution = localiseStr(parameters[2]);
    
    // If there's a real-name field, we should grab that one too
    if (parameters.size() > 5) {
       registrantData.description = 
-	parameters[5].substr(0, config().getLimitsUsersMaxRealNameLength());
+	localiseStr(parameters[5].substr(0,
+					 config().getLimitsUsersMaxRealNameLength()));
    }
    
 #ifdef KINE_DEBUG
    // Send what we got to the debugging output
-   debug("mod_irc2registrar: -=>      Service: " +
-	 registrantData.username);
-   debug("mod_irc2registrar: -=> Distribution: " +
-	 registrantData.distribution);
-   debug("mod_irc2registrar: -=>  Description: " +
-	 registrantData.description);
+   debug("mod_irc2registrar: -=>      Service: " + parameters[0]);
+   debug("mod_irc2registrar: -=> Distribution: " + parameters[2]);
+   debug("mod_irc2registrar: -=>  Description: " + parameters[5]);
 #endif
    
    // Set the registration mode
@@ -706,26 +696,23 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseUSER)
    }
    
    // Rip the command apart
-   registrantData.username = parameters[0];
+   registrantData.username = localiseStr(parameters[0]);
    registrantData.modes = parameters[1];
-   registrantData.hostname = parameters[2];
+   registrantData.hostname = localiseStr(parameters[2]);
    
    // If there's a real-name field, grab it too
    if (parameters.size() > 3) {
       registrantData.description =
-	parameters[3].substr(0, config().getLimitsUsersMaxRealNameLength());
+	localiseStr(parameters[3].substr(0,
+					 config().getLimitsUsersMaxRealNameLength()));
    }
 
 #ifdef KINE_DEBUG
    // Output what we got for debugging purposes
-   debug("mod_irc2registrar: -=>         User: " +
-	 registrantData.username);
-   debug("mod_irc2registrar: -=>        Modes: " +
-	 registrantData.modes);
-   debug("mod_irc2registrar: -=>     Hostname: " +
-	 registrantData.hostname);
-   debug("mod_irc2registrar: -=>  Description: " +
-	 registrantData.description);
+   debug("mod_irc2registrar: -=>         User: " + parameters[0]);
+   debug("mod_irc2registrar: -=>        Modes: " + parameters[1]);
+   debug("mod_irc2registrar: -=>     Hostname: " + parameters[2]);
+   debug("mod_irc2registrar: -=>  Description: " + parameters[3]);
 #endif
    
    // Set the registration mode

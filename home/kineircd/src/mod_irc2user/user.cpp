@@ -33,9 +33,9 @@ using namespace Kine::mod_irc2user;
 
 // Alternative GETLANG() macro (since the getLanguageList() call is local)
 # define GETLANG(n,...) \
-   Kine::languages().get(getLanguageList(), \
-			 Language::tagMap[Language::n].tagID, \
-                         ##__VA_ARGS__)
+   protocol.delocaliseStr(Kine::languages().get(getLanguageList(), \
+			       Language::tagMap[Language::n].tagID, \
+                               ##__VA_ARGS__))
 
 
 
@@ -75,7 +75,7 @@ void User::doEventChannelJoin(const Channel& channel,
    static const char* const commandName = "JOIN";
    
    protocol.sendMessageFrom(client, commandName,
-			    channel.getName());
+			    protocol.delocaliseStr(channel.getName()));
    
    // If this is us, then we need to send information about the channel
    if (&client == this) {
@@ -84,39 +84,39 @@ void User::doEventChannelJoin(const Channel& channel,
       
       // Send the end of names numeric (most important as sendNAMES does not!)
       protocol.sendNumeric(LibIRC2::Numerics::RPL_ENDOFNAMES,
-			   channel.getName(),
+			   protocol.delocaliseStr(channel.getName()),
 			   GETLANG(irc2_RPL_ENDOFNAMES));
 
       // Send the channel mode information
       protocol.sendNumeric(LibIRC2::Numerics::RPL_CHANNELMODEIS,
-			   channel.getName(),
+			   protocol.delocaliseStr(channel.getName()),
 			   "+" /* <=- evil; needs to be fixed */);
 
       // Does this channel have a topic set?
       if (channel.hasTopic()) {
 	 // Send the channel topic
 	 protocol.sendNumeric(LibIRC2::Numerics::RPL_TOPIC,
-			      channel.getName(),
-			      channel.getTopic());
+			      protocol.delocaliseStr(channel.getName()),
+			      protocol.delocaliseStr(channel.getTopic()));
 	 
 	 // Send the person who set the topic, and the time it was set
 	 protocol.sendNumeric(LibIRC2::Numerics::RPL_TOPICWHOTIME,
-			      channel.getName(),
-			      channel.getTopicChanger(),
+			      protocol.delocaliseStr(channel.getName()),
+			      protocol.delocaliseStr(channel.getTopicChanger()),
 			      channel.getTopicChangeTime().seconds);
       }
       
       // Send the channel creation time
       protocol.sendNumeric(LibIRC2::Numerics::RPL_CREATIONTIME,
-			   channel.getName(),
+			   protocol.delocaliseStr(channel.getName()),
 			   channel.getCreationTime().seconds);
       
       // Does this channel have a URL?
       if (channel.hasURL()) {
 	 // Send the channel's URL
 	 protocol.sendNumeric(LibIRC2::Numerics::RPL_CHANNEL_URL,
-			      channel.getName(),
-			      *channel.getURL());
+			      protocol.delocaliseStr(channel.getName()),
+			      protocol.delocaliseStr(*channel.getURL()));
       }
    }
 }
@@ -127,18 +127,18 @@ void User::doEventChannelJoin(const Channel& channel,
  */
 void User::doEventChannelPart(const Channel& channel,
 			      const Client& client,
-			      const std::string* const reason)
+			      const std::wstring* const reason)
 {
    static const char* const commandName = "PART";
    
    // Send the a part message, depending on whether or not a reason was given
    if (reason == 0) {
       protocol.sendMessageFrom(client, commandName,
-			       channel.getName());
+			       protocol.delocaliseStr(channel.getName()));
    } else {
       protocol.sendMessageFrom(client, commandName,
-			       channel.getName(),
-			       *reason);
+			       protocol.delocaliseStr(channel.getName()),
+			       protocol.delocaliseStr(*reason));
    }
 }
 
@@ -151,9 +151,10 @@ void User::doEventChannelTopicChange(const Channel& channel,
 {
    static const char* const commandName = "TOPIC";
 
-   protocol.sendMessageFrom(entity.getName(), commandName,
-			    channel.getName(),
-			    channel.getTopic());
+   protocol.sendMessageFrom(protocol.delocaliseStr(entity.getName()),
+			    commandName,
+			    protocol.delocaliseStr(channel.getName()),
+			    protocol.delocaliseStr(channel.getTopic()));
 }
 
 
@@ -177,7 +178,7 @@ void User::doEventNicknameChange(const Denizen& changer,
    
    // Tell the user their nickname has changed
    protocol.sendMessageFrom(static_cast<const Client&>(user), commandName,
-			    newNickname);
+			    protocol.delocaliseStr(newNickname));
 }
 
 
@@ -185,7 +186,7 @@ void User::doEventNicknameChange(const Denizen& changer,
  * Original 01/08/2001 simonb
  */
 void User::doEventReceiveChannelMessage(Sender& from, const Channel& to,
-					const std::string& message)
+					const std::wstring& message)
 {
    static const char* const commandName = "PRIVMSG";
    
@@ -195,15 +196,16 @@ void User::doEventReceiveChannelMessage(Sender& from, const Channel& to,
    // Is it a client?
    if (client != 0) {
       protocol.sendMessageFrom(*client, commandName,
-			       to.getName(),
-			       message);
+			       protocol.delocaliseStr(to.getName()),
+			       protocol.delocaliseStr(message));
       return;
    }
    
    // It was not a client, use the entity's generic name
-   protocol.sendMessageFrom(from.getName(), commandName,
-			    to.getName(),
-			    message);
+   protocol.sendMessageFrom(protocol.delocaliseStr(from.getName()),
+			    commandName,
+			    protocol.delocaliseStr(to.getName()),
+			    protocol.delocaliseStr(message));
 }
 
 
@@ -211,7 +213,7 @@ void User::doEventReceiveChannelMessage(Sender& from, const Channel& to,
  * Original 01/08/2001 simonb
  */
 void User::doEventReceiveChannelNotice(Sender& from, const Channel& to,
-				       const std::string& message)
+				       const std::wstring& message)
 {
    static const char* const commandName = "NOTICE";
    
@@ -221,15 +223,16 @@ void User::doEventReceiveChannelNotice(Sender& from, const Channel& to,
    // Is it a client?
    if (client != 0) {
       protocol.sendMessageFrom(*client, commandName,
-			       to.getName(),
-			       message);
+			       protocol.delocaliseStr(to.getName()),
+			       protocol.delocaliseStr(message));
       return;
    }
    
    // It was not a client, use the entity's generic name
-   protocol.sendMessageFrom(from.getName(), commandName,
-			    to.getName(),
-			    message);
+   protocol.sendMessageFrom(protocol.delocaliseStr(from.getName()),
+			    commandName,
+			    protocol.delocaliseStr(to.getName()),
+			    protocol.delocaliseStr(message));
 }
 
 
@@ -237,7 +240,7 @@ void User::doEventReceiveChannelNotice(Sender& from, const Channel& to,
  * Original 01/08/2001 simonb
  */
 void User::doEventReceivePrivateMessage(Sender& from,
-					const std::string& message)
+					const std::wstring& message)
 {
    static const char* const commandName = "PRIVMSG";
    
@@ -247,15 +250,16 @@ void User::doEventReceivePrivateMessage(Sender& from,
    // Is it a client?
    if (client != 0) {
       protocol.sendMessageFrom(*client, commandName,
-			       getName(),
-			       message);
+			       protocol.delocaliseStr(getName()),
+			       protocol.delocaliseStr(message));
       return;
    }
    
    // It was not a client, use the entity's generic name
-   protocol.sendMessageFrom(from.getName(), commandName,
-			    getName(),
-			    message);
+   protocol.sendMessageFrom(protocol.delocaliseStr(from.getName()),
+			    commandName,
+			    protocol.delocaliseStr(getName()),
+			    protocol.delocaliseStr(message));
 }
 
 
@@ -263,7 +267,7 @@ void User::doEventReceivePrivateMessage(Sender& from,
  * Original 01/08/2001 simonb
  */
 void User::doEventReceivePrivateNotice(Sender& from,
-				       const std::string& message)
+				       const std::wstring& message)
 {
    static const char* const commandName = "NOTICE";
    
@@ -273,13 +277,14 @@ void User::doEventReceivePrivateNotice(Sender& from,
    // Is it a client?
    if (client != 0) {
       protocol.sendMessageFrom(*client, commandName,
-			       getName(),
-			       message);
+			       protocol.delocaliseStr(getName()),
+			       protocol.delocaliseStr(message));
       return;
    }
    
    // It was not a client, use the entity's generic name
-   protocol.sendMessageFrom(from.getName(), commandName,
-			    getName(),
-			    message);
+   protocol.sendMessageFrom(protocol.delocaliseStr(from.getName()),
+			    commandName,
+			    protocol.delocaliseStr(getName()),
+			    protocol.delocaliseStr(message));
 }

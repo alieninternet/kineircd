@@ -27,7 +27,7 @@
 #include "kineircd/kineircdconf.h"
 
 #include <algorithm>
-#include <aisutil/string.h>
+#include <aisutil/string/string.h>
 
 #include "kineircd/user.h"
 #include "kineircd/localuser.h"
@@ -86,10 +86,10 @@ const Error::error_type User::changeNickname(const Denizen& changer,
  * Original 13/08/2001 simonb
  */
 const Error::error_type User::setAway(const Denizen& changer,
-				      const std::string& reason)
+				      const std::wstring& reason)
 {
    // Copy the message across (check it??)
-   awayMessage = static_cast<const String&>(reason).trim();
+   awayMessage = reason;
 
    // Set the 'away since' time
    awaySince = daemon().getTime();
@@ -199,7 +199,7 @@ const Error::error_type User::setStaffOff(const Denizen& changer)
  * Original 12/05/2003 simonb
  */
 const Error::error_type
-  User::sendMessage(Sender& from, const std::string& message,
+  User::sendMessage(Sender& from, const std::wstring& message,
 		    const Receiver::Directivity directivity)
 {
    // Lazy for now, just accept the message
@@ -213,7 +213,7 @@ const Error::error_type
  * Original 12/05/2003 simonb
  */
 const Error::error_type
-  User::sendNotice(Sender& from, const std::string& message,
+  User::sendNotice(Sender& from, const std::wstring& message,
 		   const Receiver::Directivity directivity)
 {
    // Lazy for now, just accept the notice

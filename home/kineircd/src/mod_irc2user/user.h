@@ -38,7 +38,7 @@ namespace Kine {
        private:
 	 Protocol& protocol;			// Connection we are bound to
 	 
-	 std::string description;		// Description/real name field
+	 std::wstring description;		// Description/real name field
 	 AIS::Util::Time lastAwake;		// Time user was last awake
 
 	 // Events we want to know about
@@ -47,7 +47,7 @@ namespace Kine {
 				 const Client& client);
 	 void doEventChannelPart(const Channel& channel,
 				 const Client& client,
-				 const std::string* const reason);
+				 const std::wstring* const reason);
 	 void doEventChannelTopicChange(const Channel& channel,
 					const Denizen& entity);
 	 void doEventLanguageChange(const Denizen& changer);
@@ -55,19 +55,19 @@ namespace Kine {
 				    const Kine::User& user,
 				    const ClientName& newNickname);
 	 void doEventReceiveChannelMessage(Sender& from, const Channel& to,
-					   const std::string& message);
+					   const std::wstring& message);
 	 void doEventReceiveChannelNotice(Sender& from, const Channel& to,
-					  const std::string& message);
+					  const std::wstring& message);
 	 void doEventReceivePrivateMessage(Sender& from,
-					   const std::string& message);
+					   const std::wstring& message);
 	 void doEventReceivePrivateNotice(Sender& from,
-					  const std::string& message);
+					  const std::wstring& message);
 	 
        public:
 	 // Constructor
 	 explicit User(Protocol& _protocol,
 		       const Kine::Registrant& _registrant,
-		       const std::string& _hostname)
+		       const std::wstring& _hostname)
 	   : LocalUser(_registrant.name,
 		       _registrant.username,
 		       _hostname),
@@ -81,7 +81,7 @@ namespace Kine {
 	   {};
 	 
 	 // Return the description string
-	 const std::string& getDescription(void) const
+	 const std::wstring& getDescription(void) const
 	   { return description; };
 	 
 	 // Return the time the user was last 'awake'
