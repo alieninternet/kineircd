@@ -169,7 +169,7 @@ irc2_ERR_NOMOTD = MOTD File is missing
 irc2_ERR_NOADMININFO = No administrative info available
 
 # Numeric 431 - ERR_NONICKNAMEGIVEN
-irc2_ERR_NONICKNAMEGIVE = No nickname given
+irc2_ERR_NONICKNAMEGIVEN = No nickname given
 
 # Numeric 432 - ERR_ERRONEUSNICKNAME
 irc2_ERR_ERRONEUSNICKNAME = Erroneous nickname

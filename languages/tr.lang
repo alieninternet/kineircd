@@ -156,7 +156,7 @@ irc2_ERR_NOMOTD = MOTD bulunamadı
 irc2_ERR_NOADMININFO = İdari bilgi bulunamadı
 
 # Numeric 431 - ERR_NONICKNAMEGIVEN
-irc2_ERR_NONICKNAMEGIVE = Nickname belirtilmedi
+irc2_ERR_NONICKNAMEGIVEN = Nickname belirtilmedi
 
 # Numeric 432 - ERR_ERRONEUSNICKNAME
 irc2_ERR_ERRONEUSNICKNAME = Yanlış nickname
