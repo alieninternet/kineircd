@@ -27,7 +27,7 @@ endif
 
 # Sub-directories to recurse into first..
 SUBDIRS=\
-	libkineircd
+	lib
 
 
 
@@ -49,7 +49,8 @@ bin_PROGRAMS=\
 
 # Include dirs
 INCLUDES=\
-	-I$(top_builddir)/include
+	-I$(top_builddir)/include \
+	-I$(top_builddir)/src
 
 
 
@@ -57,11 +58,11 @@ INCLUDES=\
 # 'libkineircd_irc2' library
 ###############################################################################
 libkineircd_irc2_la_SOURCES=\
-	libkineircd_irc2/parser.cpp
+	lib_irc2/parser.cpp
 libkineircd_irc2_la_LDFLAGS=\
 	-avoid-version
 libkineircd_irc2_la_LIBADD=\
-	libkineircd/libkineircd.la
+	lib/libkineircd.la
 
 
 
@@ -74,7 +75,7 @@ mod_http_la_LDFLAGS=\
 	-avoid-version \
 	-module
 mod_http_la_LIBADD=\
-	libkineircd/libkineircd.la
+	lib/libkineircd.la
 
 
 
@@ -87,7 +88,7 @@ mod_irc2user_la_LDFLAGS=\
 	-avoid-version \
 	-module
 mod_irc2user_la_LIBADD=\
-	libkineircd/libkineircd.la \
+	lib/libkineircd.la \
 	#libkineircd_irc2.la
 
 
@@ -102,7 +103,7 @@ mod_snmp_la_LDFLAGS=\
 	-avoid-version \
 	-module
 mod_snmp_la_LIBADD=\
-	libkineircd/libkineircd.la
+	lib/libkineircd.la
 
 
 
@@ -112,7 +113,7 @@ mod_snmp_la_LIBADD=\
 ircd_SOURCES=\
 	ircd.cpp
 ircd_LDADD=\
-	libkineircd/libkineircd.la
+	lib/libkineircd.la
 
 
 
@@ -122,4 +123,4 @@ ircd_LDADD=\
 ircpasswd_SOURCES=\
 	ircpasswd.cpp
 ircpasswd_LDADD=\
-	libkineircd/libkineircd.la
+	lib/libkineircd.la

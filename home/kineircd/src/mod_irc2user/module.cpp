@@ -24,7 +24,7 @@
 #include <kineircd/module.h>
 #include <iostream>
 
-#include "module.h"
+#include "mod_irc2user/module.h"
 
 
 namespace {

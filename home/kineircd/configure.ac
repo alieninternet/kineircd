@@ -651,5 +651,5 @@ AC_OUTPUT([
 	Makefile
 	install/Makefile
 	src/Makefile
-	src/libkineircd/Makefile
+	src/lib/Makefile
 	])
