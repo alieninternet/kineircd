@@ -404,7 +404,7 @@ AC_SUBST(snmp_lib)
 AC_SUBST(snmp_ldflags)
 
 AC_MSG_CHECKING([for OpenSSL library/include path])
-AC_ARG_WITH(ssl,[  --with-ssl=DIRECTORY      location of SSL library/include files],
+AC_ARG_WITH(ssl,[  --with-openssl=DIRECTORY      location of OpenSSL library/include files],
  [
    dnl Just run with the given path.. we will check it soon
    ssl_dir="$enableval"
@@ -479,14 +479,14 @@ if test "$kineircd_test_need_openssl" = "yes"; then
       AC_MSG_RESULT(unknown)
       AC_MSG_WARN([Only found half of an OpenSSL installation!])
       echo "  It appears your OpenSSL installation does not contain a library directory!"
-      echo "  Use --with-ssl=DIRECTORY to corret this if you beleive this is wrong."
+      echo "  Use --with-openssl=DIRECTORY to corret this if you beleive this is wrong."
       echo "  Without this library you will not be able to use secured SSL connections."
       kineircd_test_openssl_broken=yes
     fi
   else
     AC_MSG_RESULT(unknown)
     AC_MSG_WARN([Could not find your OpenSSL installation])
-    echo "  Use --with-ssl=DIRECTORY to correct this if you beleive this is wrong."
+    echo "  Use --with-openssl=DIRECTORY to correct this if you beleive this is wrong."
     echo "  Without this library you will not be able to use secured SSL connections."
     kineircd_test_openssl_broken=yes
   fi
