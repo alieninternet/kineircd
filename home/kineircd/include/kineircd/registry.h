@@ -117,20 +117,20 @@ namespace Kine {
       
       
       //! Add the given user
-      Error::error_type addUser(User& entity);
+      const Error::error_type addUser(User& entity);
       
       //! Remove the given user
-      Error::error_type removeUser(const User& entity);
+      const Error::error_type removeUser(const User& entity);
 
       //! Find the given user, by its name
       User* const findUser(const Name& name) const;
       
 
       //! Add the given service
-      Error::error_type addService(Service& entity);
+      const Error::error_type addService(Service& entity);
       
       //! Remove the given service
-      Error::error_type removeService(const Service& entity);
+      const Error::error_type removeService(const Service& entity);
 
       //! Find the given service, by its name
       Service* const findService(const Name& name) const;
@@ -145,11 +145,11 @@ namespace Kine {
       
       
       //! Add the given server
-      Error::error_type addServer(Server& entity)
+      const Error::error_type addServer(Server& entity)
 	{ return Error::UNKNOWN_ERROR; /* temporary */ };
       
       //! Remove the given server
-      Error::error_type removeServer(const Server& entity)
+      const Error::error_type removeServer(const Server& entity)
 	{ return Error::UNKNOWN_ERROR; /* temporary */ };
 
       //! Find the given server, by its name
@@ -158,11 +158,11 @@ namespace Kine {
       
       
       //! Add the given network
-      Error::error_type addNetwork(Network& entity)
+      const Error::error_type addNetwork(Network& entity)
 	{ return Error::UNKNOWN_ERROR; /* temporary */ };
       
       //! Remove the given network
-      Error::error_type removeNetwork(const Network& entity)
+      const Error::error_type removeNetwork(const Network& entity)
 	{ return Error::UNKNOWN_ERROR; /* temporary */ };
 
       //! Find the given network, by its name
@@ -171,11 +171,11 @@ namespace Kine {
       
       
       //! Add the given channel
-      Error::error_type addChannel(Channel& entity)
+      const Error::error_type addChannel(Channel& entity)
 	{ return Error::UNKNOWN_ERROR; /* temporary */ };
       
       //! Remove the given channel
-      Error::error_type removeChannel(const Channel& entity)
+      const Error::error_type removeChannel(const Channel& entity)
 	{ return Error::UNKNOWN_ERROR; /* temporary */ };
 
       //! Find the given channel, by its name

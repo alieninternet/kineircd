@@ -141,7 +141,7 @@ const Error::error_type
 /* addUser - Add the given user
  * Original 08/04/2003
  */
-Error::error_type Registry::addUser(User& entity)
+const Error::error_type Registry::addUser(User& entity)
 {
 #ifdef KINE_DEBUG
    std::ostringstream debugOut;
@@ -189,7 +189,7 @@ Error::error_type Registry::addUser(User& entity)
 /* removeUser - Remove the given user
  * Original 08/04/2003
  */
-Error::error_type Registry::removeUser(const User& entity)
+const Error::error_type Registry::removeUser(const User& entity)
 {
 #ifdef KINE_DEBUG
    std::ostringstream debugOut;
@@ -245,7 +245,7 @@ User* const Registry::findUser(const Name& name) const
 /* addService - Add the given service
  * Original 08/04/2003
  */
-Error::error_type Registry::addService(Service& entity)
+const Error::error_type Registry::addService(Service& entity)
 {
 #ifdef KINE_DEBUG
    std::ostringstream debugOut;
@@ -293,7 +293,7 @@ Error::error_type Registry::addService(Service& entity)
 /* removeService - Remove the given user
  * Original 08/04/2003
  */
-Error::error_type Registry::removeService(const Service& entity)
+const Error::error_type Registry::removeService(const Service& entity)
 {
 #ifdef KINE_DEBUG
    std::ostringstream debugOut;
