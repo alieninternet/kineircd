@@ -209,7 +209,10 @@ See wallop messages.
 
 ­ - Routing staff (character 0xA1, 241 octal)
 Allowed to use additional commands such as pings and traceroutes, and can
-connect and disconnect any server across the network
+connect and disconnect any server across the network. Commands like
+TRACEROUTE, CONNECT and SQUIT *WILL NOT RUNN* without this flag set as to
+restrict the access of routing to a certain set of people. At the time of
+writing, however, all opers receive +­ upon their /oper identification.
 
 ____________________________________________________________________________
 Server modes

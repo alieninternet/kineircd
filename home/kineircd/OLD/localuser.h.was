@@ -198,6 +198,18 @@ class LocalUser {
 	language = ld;
      };
    
+   // Return the language setting
+   LanguageData *getLang(void)
+     {
+	return language;
+     };
+   
+   // Return true if there is no language
+   bool noLang(void)
+     {
+	return (language == NULL);
+     };
+   
    // Grab a language string
    String getLang(Language::tag_t t) 
      {

@@ -129,7 +129,8 @@ class User {
    // Constructor
    User(String const &nick, String const &user, String ip, String host, 
 	String vwhost, String real, time_t signon, Server *serv,
-	modes_t mode = 0, unsigned char stat = 0)
+	String const &langl, String const &langc, modes_t mode = 0,
+	unsigned char stat = 0)
      : nickname(nick),
        username(user),
        hostname(host),
@@ -140,8 +141,8 @@ class User {
        lastNickChange(signonTime),
        awayMessage(""),
        status(stat),
-       langCharset("*"),
-       langList(""),
+       langCharset(langc),
+       langList(langl),
        server(serv),
        local(0)
      {
@@ -268,17 +269,20 @@ class User {
 	return langCharset;
      };
    
-   // Non-default language setting?
-   bool nonDefaultLang(void) const
+   // Grab the language charset
+   bool hasLangInfo(void) const
      {
 	return (langList.length() > 0);
      };
-   
+
    // Grab language list, formatted nicely for WHOIS (comma delimetered etc)
    String getLangList(void) const
      {
 	return langList;
      };
+   
+   void setLangInfo(String const &, 
+		    String const &);		// Set the language information
    
    bool isSilencing(User *u);			// Silencing a user?
 

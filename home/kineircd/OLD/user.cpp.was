@@ -109,6 +109,22 @@ void User::markAway(String const &message)
 }
 
 
+/* setLangInfo - Set up new language information (dumb)
+ * Original 31/10/01, Simon Butcher <pickle@austnet.org>
+ */
+void User::setLangInfo(String const &langl, String const &langc)
+{
+   // Set the variables
+   langList = langl;
+   langCharset = langc;
+   
+   // Send it to the user if they are local
+   if (local) {
+      local->handler->sendLanguage(this, langl, langc);
+   }
+};
+
+
 /* isSilencing - Check if the given user matches a mask a particular mask list
  * Original 24/09/01, Simon Butcher <pickle@austnet.org>
  */

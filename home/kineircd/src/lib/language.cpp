@@ -502,7 +502,7 @@ namespace Language {
      " :You must be identified to send to this person";
 
    char const *L_DEFAULT_QUIT_MESSAGE =
-     "Austnet Chat Network";
+     "Exit: Austnet Chat Network";
 
    char const *L_ERR_NOOPERHOST =
      ":Access Denied: No operator details configured for your host";
@@ -579,7 +579,7 @@ bool Language::loadLanguages(String const &directory)
 #endif
 	 
 	 // Reset some variables
-	 LanguageData *lang = new LanguageData();
+	 LanguageData *lang = new LanguageData(code);
 	 langData.clear();
 	 line = "";
 	 tag = "";

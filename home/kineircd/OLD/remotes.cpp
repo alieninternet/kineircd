@@ -487,16 +487,20 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 			      u->nickname + " :" + channels);
       }
       
-      // Send the server information, if the server is not hidden
-      if (!(u->server->isModeSet(Server::M_HIDDEN)) ||
+      /* Send the server information, if the server is not hidden and the
+       * user is visible or if the user looking at the information is an
+       * operator
+       */
+      if ((!(u->server->isModeSet(Server::M_HIDDEN)) &&
+	   !(u->isModeSet(User::M_INVISIBLE))) ||
 	  User::isOper(from)) {
 	 handler->sendNumeric(Daemon::myServer(), RPL_WHOISSERVER, from,
 			      u->nickname + " " + u->server->getHostname() + 
 			      " :" + u->server->getDescription());
       }
      
-      // Send language specification, if it is set
-      if (u->nonDefaultLang()) {
+      // Send language specification
+      if (u->hasLangInfo()) {
 	 handler->sendNumeric(Daemon::myServer(), RPL_WHOIS_LANGUAGE, from,
 			      u->getNickname() + " " + u->getLangList() + " " +
 			      u->getLangCharset());

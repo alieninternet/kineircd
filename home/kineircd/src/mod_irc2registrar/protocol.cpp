@@ -205,8 +205,8 @@ void registerHandler::parseLine(String const &line)
 	    // Create a new user
 	    User *user = new User(nickname, username, "", hostname,
 				  User::makeVWorld(hostname), realname,
-				  Daemon::getTime(),
-				  Daemon::myServer());
+				  Daemon::getTime(), Daemon::myServer(),
+				  "foo", "bah");
 	    
 	    // Set up the connection name
 	    getConnection()->name = &user->nickname;

@@ -494,6 +494,17 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			      (char const *)Daemon::getTimeZone(),
 			      (char const *)Daemon::getTimeFlags()));
 
+   // Set up the user language stuff
+   if (!user->local->noLang()) {
+      sendNumeric(RPL_YOURLANGUAGEIS,
+		  String::printf("%s %s * :%s",
+				 (char const *)user->local->getLang()->getCode(),
+				 (char const *)user->local->getLang()->get(Language::CHARSET),
+				 (char const *)user->local->getLang()->get(Language::LANGNAME)));
+   } else {
+      sendNumeric(RPL_YOURLANGUAGEIS, "none * * :None");
+   }
+   
    // Send some stuff that clients seem to rely on being sent... (urgh)
    doLUSERS(this, user, 0);
    
@@ -2530,8 +2541,7 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
    
    // Throw a LANGUAGE confirmation line at the user, if we have any
    if (languages.length()) {
-      handler->sendLanguage(handler->user, languages, 
-			    handler->user->getLangCharset());
+      handler->user->setLangInfo(languages, "fix-me");
    }
 }
 
@@ -3760,6 +3770,7 @@ void irc2userHandler::parseTIME(irc2userHandler *handler, StringTokens *tokens)
       // Is this US??
       if (s == Daemon::myServer()) {
 	 doTIME(handler, handler->user);
+	 return;
       }
    
       // Poll the remote server
@@ -3938,11 +3949,12 @@ void irc2userHandler::parseVERSION(irc2userHandler *handler, StringTokens *token
    
       // Is this US??
       if (s == Daemon::myServer()) {
-	 doTIME(handler, handler->user);
+	 doVERSION(handler, handler->user);
+	 return;
       }
    
       // Poll the remote server
-      Daemon::routeTo(s)->callTIME(s, handler->user);
+      Daemon::routeTo(s)->callVERSION(s, handler->user);
    }
 }
 
@@ -4409,6 +4421,7 @@ void irc2userHandler::parseWHOIS(irc2userHandler *handler, StringTokens *tokens)
       // Is this US??
       if (s == Daemon::myServer()) {
 	 doWHOIS(handler, handler->user, param2);
+	 return;
       }
    
       // Poll the remote server

@@ -326,11 +326,13 @@ class Language {
 // Language data class
 class LanguageData {
  private:
+   String const code;
    vector <String> dialogue;
    
  public:
    // Constructor
-   LanguageData(void)
+   LanguageData(String const &c)
+     : code(c)
      {
 	dialogue.clear();
      };
@@ -340,17 +342,23 @@ class LanguageData {
      {
 	dialogue.clear();
      };
-   
+
    // Grab a string from the language dialogue data
    String get(Language::tag_t n)
      { 
 	return dialogue[n]; 
      };
-   
+
    // Check if something exists in the dialogue
    bool has(Language::tag_t n)
      {
 	return (dialogue[n].length() > 0);
+     };
+   
+   // Return the code for this particular language
+   String getCode(void)
+     {
+	return code;
      };
 
    friend class Language;
