@@ -55,13 +55,15 @@ namespace Kine {
       
     private:
       const std::string hostname;		// The server's hostname
+      modes_type modes;				// Server modes set
       
     protected:
       //! Constructor
       Server(const std::string& _hostname,
 	     const AISutil::Time& _signonTime)
 	: Entity(_signonTime),
-          hostname(_hostname)
+          hostname(_hostname),
+	  modes(0)
 	{};
 
     public:
@@ -80,7 +82,8 @@ namespace Kine {
 
 
       //! Return the server modes
-      virtual const modes_type getModes(void) const = 0;
+      const modes_type getModes(void) const
+	{ return modes; };
       
       //! Check if the given mode is set
       const bool isModeSet(const Mode::mode_type mode) const
