@@ -101,6 +101,10 @@ void ModuleList::startAll(Daemon &daemon) const
    // Run through the list of modules and call their start functions
    for (modulesMap_type::const_iterator it = modules.begin(); 
 	it != modules.end(); it++) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("ModuleList::startAll() - Starting: " +
+	    (*it).second->getModule()->getVersionString());
+#endif
       (*it).second->start(daemon);
    }
 }
@@ -118,6 +122,10 @@ void ModuleList::stopAll(void)
    // Run through the list of modules to stop and delete them all
    for (modulesMap_type::const_iterator it = modules.begin(); 
 	it != modules.end(); it++) {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("ModuleList::stopAll() - Stopping: " +
+	    (*it).second->getModule()->getVersionString());
+#endif
       (*it).second->stop();
       delete (*it).second;
    }
