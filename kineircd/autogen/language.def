@@ -1944,14 +1944,6 @@ tag = {
    data_en	= "<nickname> ( ',' <nickname> )  [ <count> ]";
 };
 
-tag = {
-   name		= "irc2user_SCRIPT_EXAMPLE_TAG";
-   components	= "mod_irc2user";
-   data_en	= "This is example language data, available within 'scheme' "
-                  "extension scripts, to aid in a tutorial of the language "
-		  "system usage within their own 'scheme' scripts.";
-};
-
 
 
 /*****************************************************************************
@@ -2060,4 +2052,19 @@ tag = {
    components	= "libkineircd";
    data_en	= "Cannot complete action as it is not supported by the "
                   "entity";
+};
+
+
+
+/*****************************************************************************
+ **                                                                         **
+ **                         Miscellaneous tag data                          **
+ **                                                                         **
+ *****************************************************************************/
+
+tag = {
+   name		= "irc2user_SCRIPT_EXAMPLE_TAG";
+   data_en	= "This is example language data, available within 'scheme' "
+                  "extension scripts, to aid in a tutorial of the language "
+		  "system usage within their own 'scheme' scripts.";
 };
