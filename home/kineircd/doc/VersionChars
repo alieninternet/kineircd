@@ -16,9 +16,9 @@ a recompilation to change. It also shows which modules are active.
 
 Configuration (first section):
  D = DEBUG
- H = STL_HAS_HASH
+ H = KINE_STL_HAS_HASH
  N = KINE_STRICT_CHANNEL_NAMES
- S = HAVE_OPENSSL
+ S = KINE_WITH_SSL
 
 Transport Phrases (second section)
  IPv4 = HAVE_TRANSPORT_TCP_IPV4

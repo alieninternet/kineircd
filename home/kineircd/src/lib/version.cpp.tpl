@@ -90,13 +90,13 @@ namespace Kine {
 #ifdef DEBUG
 				"D"
 #endif
-#ifdef STL_HAS_HASH
+#ifdef KINE_STL_HAS_HASH
 				"H"
 #endif
 #ifdef KINE_STRICT_CHANNEL_NAMES
 				"N"
 #endif
-#ifdef HAVE_OPENSSL
+#ifdef KINE_WITH_SSL
 				"S"
 #endif
      

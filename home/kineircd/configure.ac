@@ -111,55 +111,6 @@ AC_SYS_LONG_FILE_NAMES
 AC_SYS_RESTARTABLE_SYSCALLS
 AC_EXEEXT
 AC_OBJEXT
-
-AC_CACHE_CHECK([whether signal SIGCHLD is brain-damaged],
- kineircd_cv_sys_sigchld_braindamaged,[
-  AC_LANG_C
-  AC_TRY_RUN([
-	#include <signal.h>
-
-	#ifndef SIGCHLD
-	# define SIGCHLD SIGCLD
-	#endif
-	
-	int level = 0;
-	
-	/* Note - void input because it varies and we don't need it anyway */
-	void *handler(void)
-	{
-	   int status;
-	   
-	   if (level++ > 2) {
-	      exit(1);
-	   }
-	   
-	   signal(SIGCHLD, handler);
-	   wait(&status);
-	}
-	
-	int main(void)
-	{
-	   signal(SIGCHLD, handler);
-	   if (fork()) {
-	      sleep(10); 
-	   } else {
-	      sleep(2);
-	      exit(1); 
-	   }
-	   
-	   exit(0);
-	}
-   ],[
-     kineircd_cv_sys_sigchld_braindamaged=no
-   ],[
-     kineircd_cv_sys_sigchld_braindamaged=yes
-   ])
- ])
-if test "$kineircd_cv_sys_sigchld_braindamaged" = "yes"; then
-  AC_DEFINE(SIGCHLD_BRAIN_DAMAGE, 1,
-            [Define if the signal SIGCHLD is dodgey])
-fi
-
 AC_C_BIGENDIAN
 AC_C_CONST
 AC_C_INLINE
@@ -327,8 +278,8 @@ AC_CHECK_FUNCS(
 
 AC_MSG_CHECKING([for Net-SNMP library/include path])
 AC_ARG_WITH(net-snmp,
-                AC_HELP_STRING([--with-net-snmp=DIR],
-		               [location of Net-SNMP library/include files]),
+            AC_HELP_STRING([--with-net-snmp=DIR],
+	                   [location of Net-SNMP library/include files]),
  [
    dnl Just run with the given path.. we will check it soon
    snmp_dir="$withval"
@@ -392,9 +343,9 @@ if test -n "$ssl_dir"; then
     old_LDFLAGS="$LDFLAGS"
     LDFLAGS="$LDFLAGS $ssl_ldflags -lcrypto"
 dnl    AC_CHECK_LIB(ssl,SSL_accept,[
-      AC_DEFINE(HAVE_OPENSSL, 1,
+      AC_DEFINE(KINE_HAVE_OPENSSL, 1,
 	        [Define if the OpenSSL library is available])
-      AC_DEFINE(WITH_SSL, 1,
+      AC_DEFINE(KINE_WITH_SSL, 1,
 	        [Define if SSL support is requested in the daemon])
       AC_SUBST(ssl_lib)
       AC_SUBST(ssl_ldflags)
@@ -462,7 +413,7 @@ AC_CACHE_CHECK([for an SGI compliant hash capability in your STL],
    ])
  ])
 if test "$kineircd_cv_lib_stl_sgi_hash" = "yes"; then
-  AC_DEFINE(STL_HAS_HASH, 1,
+  AC_DEFINE(KINE_STL_HAS_HASH, 1,
             [Define if your C++ STL has the SGI-compatible hashing extensions])
 fi
 
@@ -486,7 +437,7 @@ AC_CACHE_CHECK([for an SGI compliant slist<> in your STL],
    ])
  ])
 if test "$kineircd_cv_lib_stl_sgi_slist" = "yes"; then
-  AC_DEFINE(STL_HAS_SLIST, 1,
+  AC_DEFINE(KINE_STL_HAS_SLIST, 1,
             [Define if your C++ STL has an SGI-compatible slist<> template])
 fi
 
@@ -517,7 +468,8 @@ AC_ARG_ENABLE(default-config-file,[
    AC_MSG_RESULT([ircd.conf (default)])
    kineircd_test_default_config_file="ircd.conf"
  ])
-AC_DEFINE_UNQUOTED(DEFAULT_CONFIG_FILE, "$kineircd_test_default_config_file",
+AC_DEFINE_UNQUOTED(KINE_DEFAULT_CONFIG_FILE, 
+                   "$kineircd_test_default_config_file",
                    [The default file to use when loading the config file])
 
 dnl
@@ -550,7 +502,7 @@ dnl    AC_MSG_RESULT([no (default)])
 dnl  ])
 AC_SUBST(kineircd_test_old_config_subparser)
 dnl if test "$kineircd_test_old_config_subparser" = "yes"; then
-dnl   AC_DEFINE(OLD_CONFIG_SUBPARSER, 1,
+dnl   AC_DEFINE(KINE_OLD_CONFIG_SUBPARSER, 1,
 dnl             [Define if you also want to use old-style configuration files])
 dnl fi
 
@@ -568,7 +520,7 @@ AC_ARG_ENABLE(pid-file,[
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT($enableval)
-     AC_DEFINE_UNQUOTED(PID_FILE, "$enableval",
+     AC_DEFINE_UNQUOTED(KINE_PID_FILE, "$enableval",
                [If defined, the daemon will write its PID to this file])
    fi
  ],[
@@ -597,7 +549,7 @@ AC_ARG_ENABLE(transport-tcp-ipv4,[
 AC_SUBST(kineircd_test_compile_socket_ipv4_tcp)
 AC_SUBST(kineircd_test_compile_socket_domain_ipv4)
 if test "$kineircd_test_compile_socket_ipv4_tcp" = "yes"; then
-  AC_DEFINE(HAVE_SOCKET_IPV4_TCP, 1,
+  AC_DEFINE(KINE_HAVE_SOCKET_IPV4_TCP, 1,
             [Define if you want TCP/IPv4 transport])
 fi
 
@@ -620,7 +572,7 @@ AC_ARG_ENABLE(transport-tcp-ipv6,[
 AC_SUBST(kineircd_test_compile_socket_ipv6_tcp)
 AC_SUBST(kineircd_test_compile_socket_domain_ipv6)
 if test "$kineircd_test_compile_socket_ipv6_tcp" = "yes"; then
-  AC_DEFINE(HAVE_SOCKET_IPV6_TCP, 1,
+  AC_DEFINE(KINE_HAVE_SOCKET_IPV6_TCP, 1,
             [Define if you want TCP/IPv6 transport])
 fi
 
@@ -643,7 +595,7 @@ AC_ARG_ENABLE(transport-ipx-spx,[
 AC_SUBST(kineircd_test_compile_socket_ipx_spx)
 AC_SUBST(kineircd_test_compile_socket_domain_ipx)
 if test "$kineircd_test_compile_socket_ipx_spx" = "yes"; then
-  AC_DEFINE(HAVE_SOCKET_IPX_SPX, 1,
+  AC_DEFINE(KINE_HAVE_SOCKET_IPX_SPX, 1,
             [Define if you want IPX/SPX transport])
 fi
 
@@ -666,20 +618,8 @@ AC_ARG_ENABLE(transport-unix,[
 AC_SUBST(kineircd_test_compile_socket_unix)
 AC_SUBST(kineircd_test_compile_socket_domain_unix)
 if test "$kineircd_test_compile_socket_unix" = "yes"; then
-  AC_DEFINE(HAVE_SOCKET_UNIX, 1,
+  AC_DEFINE(KINE_HAVE_SOCKET_UNIX, 1,
             [Define if you want UNIX sockets transport])
-fi
-
-dnl Now fix up the socket types...
-AC_SUBST(kineircd_test_compile_socket_type_stream)
-if test "$kineircd_test_compile_socket_type_stream" = "yes"; then
-  AC_DEFINE(HAVE_SOCKET_TYPE_STREAM, 1,
-            [Define if you want streaming sockets like TCP])
-fi
-AC_SUBST(kineircd_test_compile_socket_type_seqpacket)
-if test "$kineircd_test_compile_socket_type_seqpacket" = "yes"; then
-  AC_DEFINE(HAVE_SOCKET_TYPE_SEQPACKET, 1,
-            [Define if you want sequential datagram sockets like SPX])
 fi
 
 dnl

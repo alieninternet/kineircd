@@ -30,7 +30,7 @@
 #include <ctime>
 
 extern "C" {
-#ifdef HAVE_OPENSSL
+#ifdef KINE_HAVE_OPENSSL
 # include <openssl/ssl.h>
 #endif
 }

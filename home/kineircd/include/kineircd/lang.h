@@ -26,7 +26,7 @@
 
 # include "kineircd/kineircdconf.h"
 
-# ifdef STL_HAS_HASH
+# ifdef KINE_STL_HAS_HASH
 #  include <hash_map>
 # else
 #  include <map>
@@ -46,7 +46,7 @@ namespace Kine {
    // Main language class
    class Lang {
     public:
-# ifdef STL_HAS_HASH
+# ifdef KINE_STL_HAS_HASH
       typedef std::hash_map <String, LangData *> languages_map_t;
 # else
       typedef std::map <String, LangData *> languages_map_t;

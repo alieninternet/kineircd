@@ -26,7 +26,7 @@
 
 # include "kineircd/kineircdconf.h"
 
-# ifdef STL_HAS_SLIST
+# ifdef KINE_STL_HAS_SLIST
 #  include <slist>
 # else
 #  include <list>
@@ -67,7 +67,7 @@ namespace Kine {
 
     private:
       // Our list of signal handlers
-# ifdef STL_HAS_SLIST
+# ifdef KINE_STL_HAS_SLIST
       typedef std::slist <const handlerInfo_type *> handlerList_type;
 # else
       typedef std::list <const handlerInfo_type *> handlerList_type;

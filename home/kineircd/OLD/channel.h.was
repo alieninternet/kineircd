@@ -28,13 +28,13 @@
 
 # include <ctime>
 
-# ifdef STL_HAS_HASH
+# ifdef KINE_STL_HAS_HASH
 #  include <hash_map>
 # else
 #  include <map>
 # endif
 
-# ifdef STL_HAS_SLIST
+# ifdef KINE_STL_HAS_SLIST
 #  include <slist>
 # else
 #  include <list>
@@ -155,13 +155,13 @@ namespace Kine {
    // THE channel class
    class Channel {
     public:
-# ifdef STL_HAS_HASH
+# ifdef KINE_STL_HAS_HASH
       typedef std::hash_map <String, ChannelMember *> member_map_t;
 # else
       typedef std::map <String, ChannelMember *> member_map_t;
 # endif
       
-# ifdef STL_HAS_SLIST
+# ifdef KINE_STL_HAS_SLIST
       typedef std::slist <ChannelMask *> mask_list_t;
 # else
       typedef std::list <ChannelMask *> mask_list_t;

@@ -31,7 +31,7 @@
 #include "kineircd/debug.h"
 
 // Are we compiled properly?
-#ifndef OLD_CONFIG_SUBPARSER
+#ifndef KINE_OLD_CONFIG_SUBPARSER
 # warning "Compiling the old-style configuration sub-parser without support"
 #endif
 

@@ -26,11 +26,11 @@
 
 # include "kineircd/kineircdconf.h"
 
-# ifdef STL_HAS_HASH
+# ifdef KINE_STL_HAS_HASH
 #  include <hash_map>
 # endif
 
-# ifdef STL_HAS_SLIST
+# ifdef KINE_STL_HAS_SLIST
 #  include <slist>
 # endif
 
@@ -48,7 +48,7 @@ namespace Kine {
 
    class Server {
     public:
-# ifdef STL_HAS_HASH
+# ifdef KINE_STL_HAS_HASH
       typedef std::hash_map <String, Server *> server_map_t;
       typedef std::hash_map <String, User *> user_map_t;
 # else

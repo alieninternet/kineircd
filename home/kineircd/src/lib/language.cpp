@@ -105,7 +105,7 @@ bool Kine::Lang::loadLanguages(String const &directory,
    }
    
    // Stuff we need
-#ifdef STL_HAS_HASH
+#ifdef KINE_STL_HAS_HASH
    std::hash_map <String, String *> langData;
 #else
    std::map <String, String *> langData;

@@ -16,7 +16,7 @@
 #include <cstdlib>
 
 extern "C" {
-#ifdef HAVE_OPENSSL
+#ifdef KINE_HAVE_OPENSSL
 # include <openssl/sha.h>
 #endif
 }
@@ -27,7 +27,7 @@ extern "C" {
 using namespace Kine;
 
 // If we have OpenSSL, we can just use their SHA1 function -- YAY!
-#ifndef HAVE_OPENSSL
+#ifndef KINE_HAVE_OPENSSL
 
 # define SHA_DIGEST_LENGTH	20	// 160 bits.
 
@@ -286,7 +286,7 @@ void SHA1final(unsigned char digest[20], context_type &context)
    memset(&finalcount, 0, 8);
 }
 
-#endif // HAVE_OPENSSL
+#endif // KINE_HAVE_OPENSSL
 
 // A null/empty digest
 const Utils::SHA1::digest_type Utils::SHA1::nullDigest = {
@@ -314,7 +314,7 @@ Utils::SHA1::digest_type Utils::SHA1::generate(const String &line)
       assert(sizeof(digest) == SHA_DIGEST_LENGTH);
 #endif
 
-#ifdef HAVE_OPENSSL
+#ifdef KINE_HAVE_OPENSSL
       ::SHA1((unsigned char *)line.c_str(), line.length(), 
 	     (unsigned char *)&digest);
 #else

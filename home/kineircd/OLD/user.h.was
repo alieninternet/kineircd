@@ -29,7 +29,7 @@
 # include <ctime>
 # include <map>
 
-# ifdef STL_HAS_SLIST
+# ifdef KINE_STL_HAS_SLIST
 #  include <slist>
 # else
 #  include <list>
@@ -53,12 +53,12 @@ namespace Kine {
    class User {
     public:
       typedef std::map <String, Channel *> channel_map_t;
-# ifdef STL_HAS_SLIST
+# ifdef KINE_STL_HAS_SLIST
       typedef std::slist <StringMask> silence_list_t;
 # else
       typedef std::list <StringMask> silence_list_t;
 # endif
-# ifdef STL_HAS_HASH
+# ifdef KINE_STL_HAS_HASH
       typedef std::hash_set <String> accept_set_t;
 # else
       typedef std::set <String> accept_set_t;

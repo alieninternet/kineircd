@@ -26,7 +26,7 @@
 
 # include "kineircd/kineircdconf.h"
 
-# ifdef STL_HAS_HASH
+# ifdef KINE_STL_HAS_HASH
 #  include <hash_set>
 # else
 #  include <set>
@@ -72,7 +72,7 @@ namespace Kine {
    // Locally connected user class
    class LocalUser {
     public:
-# ifdef STL_HAS_HASH
+# ifdef KINE_STL_HAS_HASH
       typedef std::hash_set <String> watch_set_t;
 # else
       typedef std::set <String> watch_set_t;

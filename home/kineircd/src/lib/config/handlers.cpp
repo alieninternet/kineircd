@@ -50,7 +50,7 @@ namespace Config {
 	     &defClassArbiters,
 	     0
 	},
-#ifdef OLD_CONFIG_SUBPARSER
+#ifdef KINE_OLD_CONFIG_SUBPARSER
 	{
 	   "INCLUDEOLDCONFIG",
 	     0, // Intentionally null
@@ -101,7 +101,7 @@ namespace Config {
 	     &defClassRedirection,
 	     0
 	},
-#ifdef WITH_SSL
+#ifdef KINE_WITH_SSL
 	{
 	   "SSL",
 	     0,
@@ -595,7 +595,7 @@ namespace Config {
    };
 
 
-#ifdef WITH_SSL
+#ifdef KINE_WITH_SSL
    // "SSL" class
    const Kine::ConfigParser::defTable_type
      Kine::Config::defClassSSL = {
@@ -661,7 +661,7 @@ Kine::Config::Config(const String &f)
     defOptionsLimitsUsersMaxSilences(DEFAULT_OPTIONS_LIMITS_USERS_MAX_SILENCES),
     defOptionsLimitsUsersMaxWatches(DEFAULT_OPTIONS_LIMITS_USERS_MAX_WATCHES)
   
-#ifdef WITH_SSL
+#ifdef KINE_WITH_SSL
   , // <=- here to continue the list properly
     // "SSL" class
     defSSLContext(0)
@@ -669,7 +669,7 @@ Kine::Config::Config(const String &f)
 {
    defLoggingLog = new Log();  // temporary
    
-#ifdef WITH_SSL
+#ifdef KINE_WITH_SSL
    // Fire up the SSL component
    SSL_load_error_strings();
    
@@ -694,7 +694,7 @@ Kine::Config::Config(const String &f)
  */
 Kine::Config::~Config(void)
 {
-#ifdef WITH_SSL
+#ifdef KINE_WITH_SSL
    // Clean up the SSL component
    if (defSSLContext != 0) {
       SSL_CTX_free(defSSLContext);
