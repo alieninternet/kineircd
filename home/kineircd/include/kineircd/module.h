@@ -24,6 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_MODULE_H_
 # define _INCLUDE_KINEIRCD_MODULE_H_ 1
 
+# include "kineircd/str.h"
+
 // Template for the function which initialises the module and returns the info
 # define KINE_MODULE_INIT_PROTOTYPE(x) \
    const Kine::Module *x(void)
@@ -106,6 +108,9 @@ namespace Kine {
       // Return the basic information about the module
       const basicInfo_type &getBasicInfo(void) const
 	{ return basicInfo; };
+      
+      // Return the name (from the basic information) in full version format
+      String getVersionString(void) const;
    };
 };
    
