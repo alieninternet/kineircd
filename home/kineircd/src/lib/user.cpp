@@ -155,6 +155,8 @@ const Error::error_type
 {
    // Lazy for now, just accept the message
    doEventReceivePrivateMessage(from, message);
+   
+   return Error::NO_ERROR;
 }
 
 
@@ -166,4 +168,6 @@ const Error::error_type
 {
    // Lazy for now, just accept the notice
    doEventReceivePrivateNotice(from, message);
+
+   return Error::NO_ERROR;
 }
