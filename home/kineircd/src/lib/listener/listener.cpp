@@ -37,7 +37,7 @@ const bool Listener::listen(void)
    if (listening || (socket == 0)) {
       return false;
    }
-   
+
    // Try and listen..
    listening = (socket->bind() && socket->listen());
    

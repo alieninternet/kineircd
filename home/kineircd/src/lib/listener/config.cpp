@@ -253,7 +253,12 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 # endif
       // Create the socket, set its address, and add it to the listener list
       Socket *socket = new SocketUNIX();
-      socket->setLocalAddress(config.varAddress);
+      if (!socket->setLocalAddress(config.varAddress)) {
+	 // Delete the socket and complain
+	 delete socket;
+	 errString = "Invalid socket address '" + config.varAddress + '\'';
+	 return false;
+      }
       (dataClass.*((ListenerList ConfigData::*)dataVariable)).listeners.
 	push_front(Listener(socket, flags));
       return true;

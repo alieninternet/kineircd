@@ -40,14 +40,15 @@ namespace Kine {
       
     private:
       Socket* const socket;				// The socket
-      bool listening;					// Are we listening?
       flags_type flags;					// Flags (see above)
+      bool listening;					// Are we listening?
       
     public:
       // Constructor
       Listener(Socket* const s = 0, flags_type f = 0)
 	: socket(s),
-          flags(f)
+          flags(f),
+          listening(false)
 	{};
       
       // Destructor
