@@ -29,13 +29,14 @@
 # include <kineircd/receiver.h>
 
 namespace Kine {
-   class Channel : public Entity, public Receiver {
+   class Channel : public Receiver {
     private:
       const std::string name;			//!< Non-prefixed channel name
       
     protected:
       //! Constructor
-      Channel(void)
+      Channel(const std::string& n)
+	: name(n)
 	{};
       
     public:
