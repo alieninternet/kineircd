@@ -108,28 +108,28 @@ namespace Kine {
       friend class User;
       
     public:
-      //! Destructor
+      // Destructor
       ~Registry(void)
 	{};
       
-      //! Create the single instance of this class
+      // Create the single instance of this class
       static void initInstance(void);
       
-      //! Get the single instance of this class
+      // Get the single instance of this class
       static Registry& getInstance(void)
 	{ return *instance; };
       
       
-      //! Add the given user
+      // Add the given user
       const Error::error_type addUser(User& entity);
       
-      //! Remove the given user
+      // Remove the given user
       const Error::error_type removeUser(const User& entity);
       
-      //! Add the given service
+      // Add the given service
       const Error::error_type addService(Service& entity);
       
-      //! Remove the given service
+      // Remove the given service
       const Error::error_type removeService(const Service& entity);
 
 
