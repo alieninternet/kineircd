@@ -4,8 +4,8 @@
 
 #include "autoconf.h"
 
-#include <errno.h>
-#include <string.h>
+#include <cerrno>
+#include <cstring>
 
 #include "connection.h"
 #include "register.h"

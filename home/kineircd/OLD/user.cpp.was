@@ -4,7 +4,7 @@
 
 #include "autoconf.h"
 
-#include <ctype.h>
+#include <cctype>
 
 #include "user.h"
 #include "daemon.h"

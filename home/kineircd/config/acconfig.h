@@ -523,6 +523,14 @@
 # undef MUST_INIT_PRNG
 
   
+/* Define if we are going to do debugging. 
+ * Note: DEBUG must be define if the others are also wanted 
+ */
+# undef DEBUG
+# undef DEBUG_EXTENDED
+# undef DEBUG_PSYCHO
+  
+  
 @BOTTOM@
 
 /******************************************************************************
@@ -533,7 +541,7 @@
 *                                                                             *
 ******************************************************************************/
 
-/* Force autoconf before compilation (else stuff might be left out) */
+/* Force autoconf before compilation (else stuff might be left out/wrong) */
 # ifndef HAVE_CONFIG_H
 #  error "You must run the configure script before compiling this software!!"
 # endif

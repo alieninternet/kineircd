@@ -1,4 +1,4 @@
-(last edited 20/08/01)
+(last edited 200203111602)
 
 List of chars after the /version information, since they are laborious and
 annoying. Many of these follow original irc standards, but most don't.
@@ -12,10 +12,9 @@ Most if not all letters are set by defines in config.h; As you can tell
 these are NOT to determine the current settings in the ircd.conf file, since
 there are other ways of looking at them (the STATS command for example).
 These are used to see what options this IRCd has compiled in, and what needs
-a recompilation to change
+a recompilation to change. It also shows which modules are active.
 
-On to the letters!
-
+Configuration (first section):
  0 =
  1 =
  2 =
@@ -80,10 +79,12 @@ On to the letters!
  Z = ALLOW_SERVICE_CONNECTIONS
 
 
-Additional phrases (comma separated)
+Transport Phrases (second section)
  IPv4 = HAVE_TRANSPORT_TCP_IPV4
  IPv6 = HAVE_TRANSPORT_TCP_IPV6
- 
+ IPX = HAVE_TRANSPORT_SPX_IPX
+
+Protocol Phrases (third section)
  IRC2 = HAVE_IRC2USER_PROTOCOL
   +i = HAVE_IRC2USER_IRCII_KLUGE
   +m = HAVE_IRC2USER_MATCH_COUNTING

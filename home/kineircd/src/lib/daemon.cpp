@@ -5,10 +5,10 @@
 #include "autoconf.h"
 
 #include <unistd.h>
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <time.h>
+#include <cstdio>
+#include <cerrno>
+#include <cstring>
+#include <ctime>
 
 #ifdef HAVE_OPENSSL
 # include <openssl/ssl.h>
@@ -706,11 +706,12 @@ void Daemon::newConnection(Listen *l)
    }
    
 #ifdef DEBUG
-   debug("Accepting from: fd " + String(l->socket->getFD()) + " (" +
+   debug("Accepting from: fd " + String::convert(l->socket->getFD()) + " (" +
 	 newsock->getLocalAddressStr() + ':' + 
-	 String(newsock->getLocalPort()) + ") New: fd " + 
-	 String(newsock->getFD()) + " (" + newsock->getRemoteAddressStr() + 
-	 ':' + String(newsock->getRemotePort()) + ')');
+	 String::convert(newsock->getLocalPort()) + ") New: fd " + 
+	 String::convert(newsock->getFD()) + " (" + 
+	 newsock->getRemoteAddressStr() + ':' + 
+	 String::convert(newsock->getRemotePort()) + ')');
 #endif
 
    // Force this socket to be non blocking, dammit
@@ -1049,7 +1050,8 @@ void Daemon::quitUser(User *user, String const &reason, bool broadcast)
 		* with are in other non-anonymous channels too since they
 		* are capable of seeing a REAL quit message in some situations
 		*/
-	       (*it).second->getUser()->local->handler->sendPart(chan, user, 0);
+	       (*it).second->getUser()->local->handler->sendPart(chan, user,
+								 "");
 	    }
 	    continue;
 	 }

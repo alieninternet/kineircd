@@ -1582,6 +1582,41 @@ else
 fi
 AC_SUBST(austhex_test_have_p14server_compress)
 
+AC_MSG_CHECKING([debugging parameter])
+AC_ARG_ENABLE(debugging,[
+  --enable-debugging[=level]                 (Default is disabled)
+    Enable debugging/profile/sanity checking. This should NEVER be turned
+    on for a production IRC server, EVER! It is designed for developers.
+    If a level is specified, it increases the level of debugging, and
+    can either be 'extended' or 'psycho', both giving obvious results.
+ ],[
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+     austhex_test_have_debugging=no
+   else
+     if test "$enableval" = "psycho"; then
+       AC_MSG_RESULT([yes (psycho)])
+       AC_DEFINE(DEBUG_PSYCHO)
+       AC_DEFINE(DEBUG_EXTENDED)
+       AC_DEFINE(DEBUG)
+       austhex_test_debugging=yes
+     elif test "$enableval" = "extended"; then
+       AC_MSG_RESULT([yes (extended)])
+       AC_DEFINE(DEBUG_EXTENDED)
+       AC_DEFINE(DEBUG)
+       austhex_test_debugging=yes
+     else
+       AC_MSG_RESULT(yes)
+       AC_DEFINE(DEBUG)
+       austhex_test_debugging=yes
+     fi
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+   austhex_test_debugging=no
+ ]) 
+AC_SUBST(austhex_test_debugging)
+
 
 dnl  -------------------------------------------------------------------------
 echo " -=> Determining installation information"
@@ -1601,11 +1636,11 @@ AC_OUTPUT([
 	src/generator/Makefile
 	src/protocols/Makefile
 	src/protocols/server/Makefile
-	src/protocols/server/an-p13
-	src/protocols/server/an1
+	src/protocols/server/an-p13/Makefile
+	src/protocols/server/an1/Makefile
 	src/protocols/user/Makefile
-	src/protocols/user/irc2
-	src/protocols/user/irc3
+	src/protocols/user/irc2/Makefile
+	src/protocols/user/irc3/Makefile
 	src/socket/Makefile
 	])
 

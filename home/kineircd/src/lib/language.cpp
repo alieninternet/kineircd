@@ -7,14 +7,13 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <dirent.h>
-#include <string.h>
-#include <iostream.h>
-#include <fstream.h>
-#include <errno.h>
+#include <cstring>
+#include <iostream>
+#include <fstream>
+#include <cerrno>
 
 #include "lang.h"
 #include "debug.h"
-
 
 namespace Lang {
    // The map with the languages in it..
@@ -73,7 +72,7 @@ bool Lang::loadLanguages(String const &directory,
    // Make sure we opened that directory
    if (!dir) {
 #ifdef DEBUG
-      debug(String("Error opening language file directory: ") +
+      debug("Error opening language file directory " + directory + ": " +
 	    strerror(errno));
 #endif
       return false;
@@ -123,14 +122,15 @@ bool Lang::loadLanguages(String const &directory,
 	    data = "";
 	    
 	    // Read the line
-	    file >> line;
+//	    file >> line;
+	    std::getline(file, line);
 	    lineNum++;
 	    
 	    // Trim the line
 	    line = line.trim();
 	    
 	    // Is the line a comment or a blank line?
-	    if (!line.length() || (line[0] == '#')) {
+	    if (line.empty() || (line[0] == '#')) {
 	       continue;
 	    }
 	    
@@ -165,7 +165,8 @@ bool Lang::loadLanguages(String const &directory,
 	    // Check the data for this line
 	    if (!tag.length() || !data.length()) {
 #ifdef DEBUG
-	       debug("Bad language line " + String(lineNum) + ": " + line);
+	       debug("Bad language line " + String::convert(lineNum) + 
+		     ": " + line);
 #endif
 	       continue;
 	    }
@@ -247,7 +248,7 @@ bool Lang::loadLanguages(String const &directory,
 	 ISUPPORTcodes += (*it).first;
       }
    }
-   
+
    // OK!
    return true;
 };

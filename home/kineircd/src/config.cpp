@@ -4,7 +4,7 @@
 
 #include "autoconf.h"
 
-#include <fstream.h>
+#include <fstream>
 
 #ifdef HAVE_OPENSSL
 # include <openssl/ssl.h>
@@ -16,7 +16,6 @@
 #include "utils.h"
 #include "lang.h"
 #include "servernotice.h"
-
 
 // Classes table. Many many duplicates to make config file writing easier..
 struct {
@@ -213,7 +212,13 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
 	 // Run through the file
 	 while (!file.eof()) {
 	    // Read a line
-	    file >> temp;
+//	    file >> temp;
+	    std::getline(file, temp);
+	    
+	    // gay std::string.
+	    if (!file.good() || file.eof()) {
+	       break;
+	    }
 	    
 #ifdef CONVERT_MOTD_TABS
 	    String newLine = "";
@@ -222,10 +227,10 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
 	    for (String::size_type i = 0; i < temp.length(); i++) {
 	       switch (temp[i]) {
 		case '\t':
-		  newLine = newLine + "        "; // 8 chars
+		  newLine += "        "; // 8 chars
 		  continue;
 		default:
-		  newLine = newLine + String(temp[i]);
+		  newLine += temp[i];
 	       }
 	    }
 
@@ -258,8 +263,7 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
 #endif
       } else {
 	 configWarning(firstRun,
-		       String("Could not open MOTD file (") + conf->confMOTD +
-		       ")");
+		       "Could not open MOTD file (" + conf->confMOTD + ")");
       }
    }
 
@@ -380,8 +384,13 @@ bool Daemon::configure(bool firstRun)
     * wasteful data such as tabs, spaces, new lines, comments etc.
     */
    while (!file.eof()) {
-      file >> temp;
+//      file >> temp;
+      std::getline(file, temp);
       
+      if (!file.good() || file.eof()) {
+	 break;
+      }
+
       // Trim away leading/trailing whitespace
       temp = temp.trim();
       
@@ -396,7 +405,7 @@ bool Daemon::configure(bool firstRun)
       for (String::size_type i = 0; i < temp.length(); i++) {
 	 // If we are in a quote, we have to copy this string over literally
 	 if (inQuote) {
-	    configData = configData + String(temp[i]);
+	    configData += temp[i];
 	    
 	    // Check if we are leaving a quote..
 	    if (temp[i] == quoteChar) {
@@ -414,6 +423,7 @@ bool Daemon::configure(bool firstRun)
 	     * programming language so SHUSH! :)
 	     */
 	    if ((temp[i] == '*') && 
+		(temp.length() > (i + 1)) &&
 		(temp[i + 1] == '/')) {
 	       i++;
 	       inComment = false;
@@ -437,7 +447,7 @@ bool Daemon::configure(bool firstRun)
 		  i = temp.length();
 	       } else {
 		  // Oh well, pass it through normally...
-		  configData = configData + String(temp[i]);
+		  configData += temp[i];
 	       }
 	       continue;
 	     case '\'':
@@ -446,7 +456,7 @@ bool Daemon::configure(bool firstRun)
 	       quoteChar = temp[i];
 	       inQuote = true;
 	     default:
-	       configData = configData + String(temp[i]);
+	       configData += temp[i];
 	    }
 	 }
       }
@@ -489,7 +499,7 @@ bool Daemon::configure(bool firstRun)
 	       
 	       // Check if there is a handler for this class..
 	       if (configurationClassTable[ii].classHandler) {
-#ifdef DEBUG_PSYCHO
+#ifdef DEBUG_PSYCHO_
 		  debug(String(" +-> Class: ") + className);
 #endif
 		  
@@ -531,7 +541,7 @@ bool Daemon::configure(bool firstRun)
 	 break;
        default:
 	 // Copy the character into the class name...
-	 className = className + String(configData[i]);
+	 className += configData[i];
       }
    }
 
@@ -576,7 +586,7 @@ void Daemon::configADMIN(ConfigData *conf, String *line, String::size_type *pos,
 	 command = command.toUpper().trimQuotes();
 	 parameter = parameter.trimQuotes();
 	 
-#ifdef DEBUG_PSYCHO
+#ifdef DEBUG_PSYCHO_
 	 debug(String::printf(" | +-> Variable: %s, Param: %s",
 			      (char const *)command,
 			      (char const *)parameter));
@@ -616,9 +626,9 @@ void Daemon::configADMIN(ConfigData *conf, String *line, String::size_type *pos,
        default:
 	 // Where do we append this char to?
 	 if (doingCommand) {
-	    command = command + String((*line)[*pos]);
+	    command += (*line)[*pos];
 	 } else {
-	    parameter = parameter + String((*line)[*pos]);
+	    parameter += (*line)[*pos];
 	 }
       }
    }
@@ -684,7 +694,7 @@ void Daemon::configCONF(ConfigData *conf, String *line, String::size_type *pos, 
 	 command = command.toUpper().trimQuotes();
 	 parameter = parameter.trimQuotes();
 	 
-#ifdef DEBUG_PSYCHO
+#ifdef DEBUG_PSYCHO_
 	 debug(String::printf(" | +-> Variable: %s, Param: %s",
 			      (char const *)command,
 			      (char const *)parameter));
@@ -701,7 +711,7 @@ void Daemon::configCONF(ConfigData *conf, String *line, String::size_type *pos, 
 	 } else if (command == "LANGDIR") {
 	    // Check the parameter, the directory needs a trailing '/'
 	    if (parameter[parameter.length()] != '/') {
-	       parameter = parameter + String('/');
+	       parameter += '/';
 	    }
 	    
 	    conf->confLanguageDir = parameter;
@@ -744,9 +754,9 @@ void Daemon::configCONF(ConfigData *conf, String *line, String::size_type *pos, 
        default:
 	 // Where do we append this char to?
 	 if (doingCommand) {
-	    command = command + String((*line)[*pos]);
+	    command += (*line)[*pos];
 	 } else {
-	    parameter = parameter + String((*line)[*pos]);
+	    parameter += (*line)[*pos];
 	 }
       }
    }
@@ -779,7 +789,7 @@ void Daemon::configFAIL(ConfigData *conf, String *line, String::size_type *pos, 
 	 // We will be assigning this soon, so save some stress!
 	 Daemon::relationmask_list_t *failList;
 
-#ifdef DEBUG_PSYCHO
+#ifdef DEBUG_PSYCHO_
 	 debug(String(" | +-> Sub-Class: ") + subclassName);
 #endif
 	 
@@ -826,7 +836,7 @@ void Daemon::configFAIL(ConfigData *conf, String *line, String::size_type *pos, 
 	       mask = mask.toLower().trimQuotes();
 	       reason = reason.trimQuotes();
 	       
-#ifdef DEBUG_PSYCHO
+#ifdef DEBUG_PSYCHO_
 	       debug(String::printf(" | | +-> Mask: %s (%s)",
 				    (char const *)mask,
 				    (char const *)reason));
@@ -856,9 +866,9 @@ void Daemon::configFAIL(ConfigData *conf, String *line, String::size_type *pos, 
 	     default:
 	       // Work out where to append this char
 	       if (doingMask) {
-		  mask = mask + String((*line)[*pos]);
+		  mask += (*line)[*pos];
 	       } else {
-		  reason = reason + String((*line)[*pos]);
+		  reason += (*line)[*pos];
 	       }
 	    }
 	 }
@@ -868,13 +878,13 @@ void Daemon::configFAIL(ConfigData *conf, String *line, String::size_type *pos, 
 	 break;
        default:
 	 // Copy the character into the class name...
-	 subclassName = subclassName + String((*line)[*pos]);
+	 subclassName += (*line)[*pos];
       }
    }
 
    // If we hit the end, we failed. Damn.
    Daemon::configComplain(firstRun,
-			"Unterminated FAIL class in configuration");
+			  "Unterminated FAIL class in configuration");
    return;
 }
 
@@ -918,7 +928,7 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::size_type *pos,
 	 command = parameter = password = "";
 	 isGlobal = false;
 	 
-#ifdef DEBUG_PSYCHO
+#ifdef DEBUG_PSYCHO_
 	 debug(String(" | +-> Operator: ") + nickname);
 #endif
  
@@ -949,7 +959,7 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::size_type *pos,
 	       command = command.toUpper().trimQuotes();
 	       parameter = parameter.trimQuotes();
 	       
-#ifdef DEBUG_PSYCHO
+#ifdef DEBUG_PSYCHO_
 	       debug(String::printf(" | | +-> Variable: %s, Param: %s",
 				    (char const *)command,
 				    (char const *)parameter));
@@ -1006,7 +1016,7 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::size_type *pos,
 	       // Fix up the command (subclass name) variable
 	       command = command.toUpper().trimQuotes();
 	       
-#ifdef DEBUG_PSYCHO
+#ifdef DEBUG_PSYCHO_
 	       debug(String(" | | +-> Sub-Class: ") + command);
 #endif
 
@@ -1053,7 +1063,7 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::size_type *pos,
 		     user = user.toLower().trimQuotes();
 		     host = host.toLower().trimQuotes();
 		     
-#ifdef DEBUG_PSYCHO
+#ifdef DEBUG_PSYCHO_
 		     debug(String::printf(" | | | +-> Access Identify: %s@%s",
 					  (char const *)user,
 					  (char const *)host));
@@ -1083,9 +1093,9 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::size_type *pos,
 		     continue;
 		   default: // Read a char into a string
 		     if (doingUser) {
-			user = user + String((*line)[*pos]);
+			user += (*line)[*pos];
 		     } else {
-			host = host + String((*line)[*pos]);
+			host += (*line)[*pos];
 		     }
 		  }
 		  
@@ -1103,9 +1113,9 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::size_type *pos,
 	     default: // Reading a char to somewhere
 	       // Where to?
 	       if (doingCommand) {
-		  command = command + String((*line)[*pos]);
+		  command += (*line)[*pos];
 	       } else {
-		  parameter = parameter + String((*line)[*pos]);
+		  parameter += (*line)[*pos];
 	       }
 	    }
 	 }
@@ -1123,7 +1133,7 @@ void Daemon::configOPERS(ConfigData *conf, String *line, String::size_type *pos,
 	 continue;
        default:
 	 // Copy the character into the nickname string...
-	 nickname = nickname + String((*line)[*pos]);
+	 nickname += (*line)[*pos];
       }
    }
 
@@ -1160,7 +1170,7 @@ void Daemon::configREDIRECT(ConfigData *conf, String *line, String::size_type *p
 	 // We will be assigning this soon, so save some stress!
 	 Daemon::relationmask_list_t *redirectList;
 
-#ifdef DEBUG_PSYCHO
+#ifdef DEBUG_PSYCHO_
 	 debug(String(" | +-> Sub-Class: ") + subclassName);
 #endif
 	 
@@ -1206,7 +1216,7 @@ void Daemon::configREDIRECT(ConfigData *conf, String *line, String::size_type *p
 	       mask = mask.toLower().trimQuotes();
 	       dest = dest.trimQuotes();
 	       
-#ifdef DEBUG_PSYCHO
+#ifdef DEBUG_PSYCHO_
 	       debug(String::printf(" | | +-> Redirect: %s, To: %s",
 				    (char const *)mask,
 				    (char const *)dest));
@@ -1236,9 +1246,9 @@ void Daemon::configREDIRECT(ConfigData *conf, String *line, String::size_type *p
 	     default:
 	       // Work out where to append this char
 	       if (doingMask) {
-		  mask = mask + String((*line)[*pos]);
+		  mask += (*line)[*pos];
 	       } else {
-		  dest = dest + String((*line)[*pos]);
+		  dest += (*line)[*pos];
 	       }
 	    }
 	 }
@@ -1248,7 +1258,7 @@ void Daemon::configREDIRECT(ConfigData *conf, String *line, String::size_type *p
 	 break;
        default:
 	 // Copy the character into the class name...
-	 subclassName = subclassName + String((*line)[*pos]);
+	 subclassName += (*line)[*pos];
       }
    }
 
@@ -1301,7 +1311,7 @@ void Daemon::configSSL(ConfigData *conf, String *line, String::size_type *pos, b
 	    command = command.toUpper().trimQuotes();
 	    parameter = parameter.trimQuotes();
 	    
-# ifdef DEBUG_PSYCHO
+# ifdef DEBUG_PSYCHO_
 	    debug(String::printf(" | +-> Variable: %s, Param: %s",
 				 (char const *)command,
 				 (char const *)parameter));
@@ -1338,9 +1348,9 @@ void Daemon::configSSL(ConfigData *conf, String *line, String::size_type *pos, b
 	  default:
 	    // Where do we append this char to?
 	    if (doingCommand) {
-	       command = command + String((*line)[*pos]);
+	       command += (*line)[*pos];
 	    } else {
-	       parameter = parameter + String((*line)[*pos]);
+	       parameter += (*line)[*pos];
 	    }
 	 }
       }

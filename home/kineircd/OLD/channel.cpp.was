@@ -509,7 +509,7 @@ String Channel::makeModes(Channel *channel)
    }
    if (channel->limit > 0) {
       reply = reply + "l";
-      params = params + " " + String(channel->limit);
+      params = params + " " + String::convert(channel->limit);
    }
    
    return reply + params;
@@ -576,7 +576,7 @@ bool Channel::toggleModeBAN(bool setting, Handler *handler, Channel *channel, Ch
 				 channel->name + ' ' +
 				 (*it)->mask.getMask() + ' ' +
 				 (*it)->whoset + ' ' +
-				 String((*it)->whenset));
+				 String::convert((*it)->whenset));
 	 }
 
 	 handler->
@@ -655,7 +655,7 @@ bool Channel::toggleModeBANEXCEPT(bool setting, Handler *handler, Channel *chann
 				 channel->name + ' ' +
 				 (*it)->mask.getMask() + ' ' +
 				 (*it)->whoset + ' ' +
-				 String((*it)->whenset));
+				 String::convert((*it)->whenset));
 	 }
 
 	 handler->
@@ -1002,13 +1002,13 @@ bool Channel::toggleModeINVITEALLOW(bool setting, Handler *handler, Channel *cha
       if (handler) {
 	 for (Channel::mask_list_t::iterator it = channel->invites.begin();
 	      it != channel->invites.end(); it++) {
-	    handler->
+	    handler->	      
 	      sendNumeric(Daemon::myServer(),
 			  Numerics::RPL_INVITELIST, 0,
 			  channel->name + ' ' +
 			  (*it)->mask.getMask() + ' ' +
 			  (*it)->whoset + ' ' +
-			  String((long)(*it)->whenset));
+			  String::convert((*it)->whenset));
 	 }
 
 	 handler->
@@ -1149,7 +1149,7 @@ bool Channel::toggleModeLIMIT(bool setting, Handler *handler, Channel *channel, 
       }
 
       channel->limit = param->toLong();
-      *param = String(channel->limit);
+      *param = String::convert(channel->limit);
       return true;
    } else if (!setting && (channel->limit > 0)) {
       channel->limit = 0;

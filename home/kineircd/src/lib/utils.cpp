@@ -4,8 +4,8 @@
 
 #include "autoconf.h"
 
-#include <ctype.h>
-#include <stdlib.h>
+#include <cctype>
+#include <cstdlib>
 
 #include "utils.h"
 

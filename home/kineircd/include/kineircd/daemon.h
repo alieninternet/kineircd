@@ -5,7 +5,7 @@
 #ifndef __DAEMON_H_
 # define __DAEMON_H_
 
-# include <time.h>
+# include <ctime>
 # include <sys/time.h>
 # include <unistd.h>
 

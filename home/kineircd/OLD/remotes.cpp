@@ -8,13 +8,13 @@
 
 #include "autoconf.h"
 
-#include <ctype.h>
-#include <time.h>
+#include <cctype>
+#include <ctime>
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <unistd.h>
-#include <errno.h>
-#include <string.h>
+#include <cerrno>
+#include <cstring>
 
 #include "handler.h"
 #include "daemon.h"
@@ -57,57 +57,49 @@ void Handler::doLUSERS(Handler *handler, User *from, String const &request)
 {
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSERCLIENT, from,
-		 String::printf(":%s %u %s %u %s %u %s",
-				(char const *)from->lang(LangTags::B_RPL_LUSERCLIENT),
-				Daemon::numTotalUsers,
-				(char const *)from->lang(LangTags::M_RPL_LUSERCLIENT_A),
-				Daemon::numServices,
-				(char const *)from->lang(LangTags::M_RPL_LUSERCLIENT_B),
-				Daemon::numServers,
-				(char const *)from->lang(LangTags::E_RPL_LUSERCLIENT)));
+		 ':' + from->lang(LangTags::B_RPL_LUSERCLIENT) + ' ' +
+		 String::convert(Daemon::numTotalUsers) + ' ' +
+		 from->lang(LangTags::M_RPL_LUSERCLIENT_A) + ' ' +
+		 String::convert(Daemon::numServices) + ' ' +
+		 from->lang(LangTags::M_RPL_LUSERCLIENT_B) + ' ' +
+		 String::convert(Daemon::numServers) + ' ' +
+		 from->lang(LangTags::E_RPL_LUSERCLIENT));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSEROP, from,
-		 String::printf("%u :%s",
-				Daemon::numOpers,
-				(char const *)from->lang(LangTags::E_RPL_LUSEROP)));
+		 String::convert(Daemon::numOpers) + " :" +
+		 from->lang(LangTags::E_RPL_LUSEROP));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSERHELPERS, from,
-		 String::printf("%u :%s",
-				Daemon::numHelpers,
-				(char const *)from->lang(LangTags::E_RPL_LUSERHELPERS)));
+		 String::convert(Daemon::numHelpers) + " :" +
+		 from->lang(LangTags::E_RPL_LUSERHELPERS));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSERUNKNOWN, from,
-		 String::printf("%u :%s",
-				Daemon::numUnknown,
-				(char const *)from->lang(LangTags::E_RPL_LUSERUNKNOWN)));
+		 String::convert(Daemon::numUnknown) + " :" +
+		 from->lang(LangTags::E_RPL_LUSERUNKNOWN));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSERCHANNELS, from,
-		 String::printf("%u :%s",
-				(Daemon::channels.size() +
-				 Daemon::localChannels.size()),
-				(char const *)from->lang(LangTags::E_RPL_LUSERCHANNELS)));
+		 String::convert(Daemon::channels.size() + 
+				 Daemon::localChannels.size()) + " :" +
+		 from->lang(LangTags::E_RPL_LUSERCHANNELS));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSERME, from,
-		 String::printf(":%s %u %s %u %s",
-				(char const *)from->lang(LangTags::B_RPL_LUSERME),
-				Daemon::numClientConns,
-				(char const *)from->lang(LangTags::M_RPL_LUSERME),
-				Daemon::numServerConns,
-				(char const *)from->lang(LangTags::E_RPL_LUSERME)));
+		 ':' + from->lang(LangTags::B_RPL_LUSERME) + ' ' +
+		 String::convert(Daemon::numClientConns) + ' ' +
+		 from->lang(LangTags::M_RPL_LUSERME) + ' ' +
+		 String::convert(Daemon::numServerConns) + ' ' +
+		 from->lang(LangTags::E_RPL_LUSERME));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LOCALUSERS, from,
-		 String::printf(":%s: %u %s: %u",
-				(char const *)from->lang(LangTags::B_RPL_LOCALUSERS),
-				Daemon::numClientConns,
-				(char const *)from->lang(LangTags::W_PEAK),
-				Daemon::numClientConnsPeak));
+		 ':' + from->lang(LangTags::B_RPL_LOCALUSERS) + ": " +
+		 String::convert(Daemon::numClientConns) + ' ' +
+		 from->lang(LangTags::W_PEAK) + ": " +
+		 String::convert(Daemon::numClientConnsPeak));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_GLOBALUSERS, from,
-		 String::printf(":%s: %u %s: %u",
-				(char const *)from->lang(LangTags::B_RPL_GLOBALUSERS),
-				Daemon::numTotalUsers,
-				(char const *)from->lang(LangTags::W_PEAK),
-				Daemon::numTotalUsersPeak));
+		 ':' + from->lang(LangTags::B_RPL_GLOBALUSERS) + ": " +
+		 String::convert(Daemon::numTotalUsers) + ' ' +
+		 from->lang(LangTags::W_PEAK) + ": " +
+		 String::convert(Daemon::numTotalUsersPeak));
 }
 
 
@@ -128,8 +120,8 @@ void Handler::doMAP(Handler *handler, User *from)
 				   (*it).second->getNumUsers(),
 				   (((float)(*it).second->getNumUsers() / 
 				     Daemon::numTotalUsers) * 100),
-				   (char const *)Server::makeModes((*it).second),
-				   (char const *)(*it).second->getHostname()));
+				   Server::makeModes((*it).second).c_str(),
+				   (*it).second->getHostname().c_str()));
    }
    
    handler->sendNumeric(Daemon::myServer(), Numerics::RPL_MAPEND, from,
@@ -153,7 +145,7 @@ void Handler::doMOTD(Handler *handler, User *from)
       // Not allowed to send the motd over the network
       handler->
 	sendNumeric(Daemon::myServer(), Numerics::ERR_NOMOTD, from,
-		    String(':') + from->lang(LangTags::L_ERR_NOMOTD_NOREMOTE));
+		    ':' + from->lang(LangTags::L_ERR_NOMOTD_NOREMOTE));
       return;
    }
    
@@ -162,27 +154,26 @@ void Handler::doMOTD(Handler *handler, User *from)
       // Send the header
       handler->
 	sendNumeric(Daemon::myServer(), Numerics::RPL_MOTDSTART, from,
-		    String::printf(":- %s %s -",
-				   (char const *)Daemon::myServer()->getHostname(),
-				   (char const *)from->lang(LangTags::L_RPL_MOTDSTART)));
+		    ":- " + Daemon::myServer()->getHostname() + ' ' +
+		    from->lang(LangTags::L_RPL_MOTDSTART) + " -");
 
       // Run through the MOTD and send each line in the list
       for (Daemon::motd_t::iterator it = Daemon::motd.begin();
 	   it != Daemon::motd.end(); 
 	   it++) {
 	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_MOTD, from, 
-			      String(":- ") + *it);
+			      ":- " + *it);
       }
 	 
       // Send the footer
       handler->
 	sendNumeric(Daemon::myServer(), Numerics::RPL_ENDOFMOTD, from, 
-		    String(':') + from->lang(LangTags::L_RPL_ENDOFMOTD));
+		    ':' + from->lang(LangTags::L_RPL_ENDOFMOTD));
    } else {
       // No MOTD to send
       handler->
 	sendNumeric(Daemon::myServer(), Numerics::ERR_NOMOTD, from,
-		    String(':') + from->lang(LangTags::L_ERR_NOMOTD));
+		    ':' + from->lang(LangTags::L_ERR_NOMOTD));
    }
 }
 
@@ -200,24 +191,18 @@ class statsFunctions {
 	// Run through the connection list...
 	for (Daemon::connection_list_t::iterator it = Daemon::connections.begin();
 	     it != Daemon::connections.end(); it++) {
-	   handler->sendNumeric(Daemon::myServer(),
-				Numerics::RPL_STATSLINKINFO, from,
-				String::printf("%s %d %lu %llu %lu %llu %lu :%s",
-					       ((*it)->name ?
-						(char const *)(*(*it)->name) :
-						"!"),
-					       (*it)->outQueue.size(),
-					       (*it)->sentMessages,
-					       ((*it)->sentBytes / 
-						1024),
-					       (*it)->receivedMessages,
-					       ((*it)->receivedBytes /
-						1024),
-					       ((unsigned long)
-						(Daemon::getTime() -
-						 (*it)->connectedTime)),
-					       ((char const *)
-						(*it)->socket->io->getInfo())));
+	   handler->
+	     sendNumeric(Daemon::myServer(),
+			 Numerics::RPL_STATSLINKINFO, from,
+			 ((*it)->name ? *(*it)->name : "!") + ' ' +
+			 String::convert((*it)->outQueue.size()) + ' ' +
+			 String::convert((*it)->sentMessages) + ' ' +
+			 String::convert((*it)->sentBytes / 1024) + ' ' +
+			 String::convert((*it)->receivedMessages) + ' ' +
+			 String::convert((*it)->receivedBytes / 1024) + ' ' +
+			 String::convert(Daemon::getTime() - 
+					 (*it)->connectedTime) + " :" +
+			 (*it)->socket->io->getInfo());
 	}
      }
    
@@ -233,12 +218,11 @@ class statsFunctions {
 	     it != Daemon::operators.end(); it++) {
 	   handler->sendNumeric(Daemon::myServer(),
 				Numerics::RPL_STATSOLINE, from,
-				String::printf("%c %s * %s :%s",
-					       ((*it).second->isGlobal() ?
-						'O' : 'o'),
-					       "*@*",
-					       (char const *)(*it).first,
-					       (char const *)(*it).second->getName()));
+				String((*it).second->isGlobal() ? 
+				       'O' : 'o') + ' ' +
+				"*@*" + ' ' + // Fix this
+				(*it).first + " :" +
+				(*it).second->getName());
 	}
      }
 
@@ -254,37 +238,38 @@ class statsFunctions {
 	if (!getrusage(RUSAGE_SELF, &usage)) { // RUSAGE_SELF = 0?!
 	   handler->sendNumeric(Daemon::myServer(),
 				Numerics::RPL_DUMMY_NUMERIC, from,
-				String::printf(":Memory: Shared %ld, Data %ld, Stack %ld",
-					       usage.ru_ixrss,
-					       usage.ru_idrss,
-					       usage.ru_isrss));
+				":Memory: Shared " +
+				String::convert(usage.ru_ixrss) + ", Data " +
+				String::convert(usage.ru_idrss) + ", Stack " +
+				String::convert(usage.ru_isrss));
 	   handler->sendNumeric(Daemon::myServer(),
 				Numerics::RPL_DUMMY_NUMERIC, from,
-				String::printf(":Page faults: Major %ld, Minor %ld (%ld swaps)",
-					       usage.ru_majflt,
-					       usage.ru_minflt,
-					       usage.ru_nswap));
+				":Page faults: Major " +
+				String::convert(usage.ru_majflt) + ", Minor " +
+				String::convert(usage.ru_minflt) + " (" +
+				String::convert(usage.ru_nswap) + " swaps)");
 	   handler->sendNumeric(Daemon::myServer(),
 				Numerics::RPL_DUMMY_NUMERIC, from,
-				String::printf(":Blocks: In %ld, Out %ld",
-					       usage.ru_inblock,
-					       usage.ru_oublock));
+				":Blocks: In " +
+				String::convert(usage.ru_inblock) + ", Out " +
+				String::convert(usage.ru_oublock));
 	   handler->sendNumeric(Daemon::myServer(),
 				Numerics::RPL_DUMMY_NUMERIC, from,
-				String::printf(":Messages: Received %ld, Sent %ld",
-					       usage.ru_msgrcv,
-					       usage.ru_msgsnd));
+				":Messages: Received " +
+				String::convert(usage.ru_msgrcv) + ", Sent " +
+				String::convert(usage.ru_msgsnd));
 	   handler->sendNumeric(Daemon::myServer(),
 				Numerics::RPL_DUMMY_NUMERIC, from,
-				String::printf(":Context Switches: Voluntary %ld, Involuntary %ld (%ld signals)",
-					       usage.ru_nvcsw,
-					       usage.ru_nivcsw,
-					       usage.ru_nsignals));
+				":Context Switches: Voluntary " +
+				String::convert(usage.ru_nvcsw) + 
+				", Involuntary " +
+				String::convert(usage.ru_nivcsw) + " (" +
+				String::convert(usage.ru_nsignals) + " signals)");
 	} else {
 	   handler->sendNumeric(Daemon::myServer(),
 				Numerics::RPL_DUMMY_NUMERIC, from,
-				String::printf(":getrusage() failed (%s)",
-					       strerror(errno)));
+				":getrusage() failed (" + 
+				String(strerror(errno)) + ')');
 	}
      }
    
@@ -299,21 +284,21 @@ class statsFunctions {
 	handler->
 	  sendNumeric(Daemon::myServer(),
 		      Numerics::RPL_STATSUPTIME, from,
-		      String::printf(":%s %d %s %d:%02d:%02d",
-				     (char const *)from->lang(LangTags::B_RPL_STATSUPTIME),
-				     (int)(uptime / 86400),
-				     (char const *)from->lang(LangTags::W_DAY_PL),
+		      ':' + 
+		      from->lang(LangTags::B_RPL_STATSUPTIME) + ' ' +
+		      String::convert(uptime / 86400) + ' ' +
+		      from->lang(LangTags::W_DAY_PL) + ' ' +
+		      String::printf("%d:%02d:%02d",
 				     ((int)(uptime % 86400) / 3600),
 				     ((int)(uptime % 3600) / 60),
 				     (int)(uptime % 60)));
 	handler->
 	  sendNumeric(Daemon::myServer(),
 		      Numerics::RPL_STATSCONN, from,
-		      String::printf(":%s: %u (%u %s)",
-				     (char *)LangTags::B_RPL_STATSCONN,
-				     Daemon::numConnsPeak,
-				     Daemon::numClientConnsPeak,
-				     (char const *)from->lang(LangTags::W_CLIENT_PL)));
+		      ':' + from->lang(LangTags::B_RPL_STATSCONN) + ": " +
+		      String::convert(Daemon::numConnsPeak) + " (" +
+		      String::convert(Daemon::numClientConnsPeak) + ' ' +
+		      from->lang(LangTags::W_CLIENT_PL) + ')');
      }
 };
    
@@ -373,20 +358,21 @@ void Handler::doTIME(Handler *handler, User *from)
    // Send time on server data (more accurate)
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_TIMEONSERVERIS, from,
-		 String(Daemon::getTime()) + ' ' + 
-		 String(Daemon::getTimeUsecs()) + ' ' +
+		 String::convert(Daemon::getTime()) + ' ' + 
+		 String::convert(Daemon::getTimeUsecs()) + ' ' +
 		 Daemon::getTimeZone() + ' ' + Daemon::getTimeFlags() + 
 		 " :" + from->lang(LangTags::B_RPL_TIMEONSERVERIS));
    
    // Compile the time string (human readable)
    char timestr[TIMESTR_BUF_LEN];
-   time_t timenow = time(NULL); // Should we use the Daemon::getTime() instead?
+//   time_t timenow = time(NULL); // Should we use the Daemon::getTime() instead?
+   time_t timenow = Daemon::getTime();
    struct tm *ltime = localtime(&timenow);
    strftime(timestr, TIMESTR_BUF_LEN, "%a, %_d %b %Y %H:%M:%S %Z", ltime);
      
    // Send the time string
    handler->sendNumeric(Daemon::myServer(), Numerics::RPL_TIME, from,
-			String::printf(":%s", timestr));
+			':' + timestr);
 }
 
 
@@ -456,16 +442,16 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 	    
 	    // Sanity check, this should work..
 	    if (cm) {
-	       channels = channels + (String(((u->modes & User::M_DEAF) ?
-					      "-" : "")) +
+	       channels = channels + ((u->modes & User::M_DEAF) ?
+				      "-" : "") +
 				      (cm->isModeSet(ChannelMember::M_OPPED) ?
 				       "@" : 
 				       (cm->isModeSet(ChannelMember::M_HALFOPPED) ?
 					"%" :
 					(cm->isModeSet(ChannelMember::M_VOICED) ?
-					 "+" : ""))) +
+					 "+" : "")) +
 				      // channel op/voice here?!
-				      (*it).second->name + " ");
+				      (*it).second->name + ' ');
 	       
 	       // Check if the string needs to be sent
 	       if (channels.length() > 400) {
@@ -490,7 +476,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       if (u->hasLangInfo()) {
 	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOIS_LANGUAGE, 
 			      from,
-			      u->getNickname() + " " + u->getLangList() + " " +
+			      u->getNickname() + ' ' + u->getLangList() + ' ' +
 			      u->getLangCharset());
       }
       
@@ -540,9 +526,9 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 	 handler->
 	   sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISIDLE, from,
 		       u->nickname + ' ' +
-		       String(Daemon::getTime() -
-			      u->local->handler->getConnection()->getLastSpoke()) +
-		       ' ' + String(u->signonTime) + " :" +
+		       String::convert(Daemon::getTime() -
+				       u->local->handler->getConnection()->getLastSpoke()) +
+		       ' ' + String::convert(u->signonTime) + " :" +
 		       from->lang(LangTags::E_RPL_WHOISIDLE));
       }
 
@@ -553,15 +539,16 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       if ((!(u->server->isModeSet(Server::M_HIDDEN)) &&
 	   !(u->isModeSet(User::M_INVISIBLE))) ||
 	  User::isOper(from)) {
-	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISSERVER, from,
-			      u->nickname + " " + u->server->getHostname() + 
+	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISSERVER, 
+			      from,
+			      u->nickname + ' ' + u->server->getHostname() + 
 			      " :" + u->server->getDescription());
       }
    }
    
    // Send the footer
    handler->sendNumeric(Daemon::myServer(), Numerics::RPL_ENDOFWHOIS, from,
-			request + " :" +
+			request + " :" + 
 			from->lang(LangTags::L_RPL_ENDOFWHOIS));
 }
 

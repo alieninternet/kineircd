@@ -74,11 +74,9 @@ p14serverHandler::p14serverHandler(Connection *c, Server *s)
 #endif
 
    // Send a nice server notice out (fix this for bone/tendril distinction)
-   Daemon::
-   serverNotice(ServerNotice::SN_NETJOIN_MAJOR,
-		String::printf("%s %s P14",
-			       (char const *)Daemon::myServer()->getHostname(),
-			       (char const *)server->getHostname()));
+   Daemon::serverNotice(ServerNotice::SN_NETJOIN_MAJOR,
+			Daemon::myServer()->getHostname() + ' ' +
+			server->getHostname() + " P14");
    
    // Increase the server connection count
    Daemon::numServerConns++;

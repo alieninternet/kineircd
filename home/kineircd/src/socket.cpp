@@ -10,11 +10,11 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <errno.h>
-#include <string.h>
+#include <cerrno>
+#include <cstring>
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#include <stdio.h>
+#include <cstdio>
 
 #ifdef HAVE_OPENSSL
 # include <openssl/ssl.h>

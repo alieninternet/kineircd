@@ -87,8 +87,12 @@ void registerHandler::sendGeneric(char const *command,
 				  String const &line) const
 {
    getConnection()->sendRaw(':' + Daemon::myServer()->getHostname() + ' ' +
-			    command + ' ' +
-			    (nickname.empty() ? '*' : nickname) + ' ' +
+			    command +
+#ifdef ALLOW_CLIENT_CONNECTIONS
+			    ' ' + (nickname.empty() ? '*' : nickname) + ' ' +
+#else
+			    " * " +
+#endif
 			    line + REGISTRATION_EOL_CHARS);
 }
 
@@ -102,8 +106,12 @@ void registerHandler::sendNumeric(Numerics::numeric_t numeric, User *to,
 				  String const &line) const
 {
    getConnection()->sendRaw(':' + Daemon::myServer()->getHostname() + ' ' +
-			    String(numeric) + ' ' +
-			    (nickname.empty() ? '*' : nickname) + ' ' +
+			    String::convert(numeric) +
+#ifdef ALLOW_CLIENT_CONNECTIONS
+			    ' ' + (nickname.empty() ? '*' : nickname) + ' ' +
+#else
+			    " * " +
+#endif
 			    line + REGISTRATION_EOL_CHARS);
 }
 
@@ -239,7 +247,7 @@ void registerHandler::parseLine(String const &line)
 # endif
 	     default: // Unknown protocol, terminate connection
 # ifdef DEBUG
-	       debug("Unsupported protocol (" + String(protocol) + 
+	       debug("Unsupported protocol (" + String::convert(protocol) + 
 		     "), terminating!");
 # endif
 	       getConnection()->goodbye();
@@ -399,35 +407,34 @@ void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
  */
 void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 {
+#ifdef ALLOW_CLIENT_CONNECTIONS
    // Rip the nick out, ignoring anything after a space
    String nick = tokens->nextToken();
-
+   
    // Check we got a nickname from that..
    if (!nick.length()) {
-#ifdef PASSIVE_REGISTRATION      	 
+# ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
-#else
+# else
       handler->sendNumeric(Numerics::ERR_NONICKNAMEGIVEN, 0, ':' +
 			   Lang::lang(LangTags::L_ERR_NONICKNAMEGIVEN));
-#endif
+# endif
       return;
    }
    
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
    if (!User::okName(nick)) {
-#ifdef PASSIVE_REGISTRATION      	 
+# ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
-#else
+# else
       handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
 			   nick + " :" +
 			   Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME));
-#endif
+# endif
       return;
    }
- 
+   
    // Check that the nickname is not used by a service (from service list)
-   ///////////////////////////////////////////////////////////////////////
-   ///////////////////////////////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////
@@ -437,54 +444,59 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    // Check for nicks that are not allowed here (from config)
    String reason = Daemon::failedNickname(nick);
    if (reason.length()) {
-#ifdef PASSIVE_REGISTRATION      	 
+# ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
-#else
+# else
       handler->
 	sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
 		    nick + " :" + 
 		    Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME) + " (" +
 		    reason + ')');
       return;
-#endif
+# endif
    }
    
    // Check that the nickname is not already in use
    if (Daemon::getUser(nick)) {
-#ifdef PASSIVE_REGISTRATION      	 
+# ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
-#else
+# else
       handler->sendNumeric(Numerics::ERR_NICKNAMEINUSE, 0,
 			   nick + " :" +
 			   Lang::lang(LangTags::L_ERR_NICKNAMEINUSE));
-#endif
+# endif
       return;
    }
    
    // If we got here, the nick was ok - allow it
    handler->nickname = nick;
-#ifdef DEBUG_EXTENDED
+# ifdef DEBUG_EXTENDED
    debug(" -=>         Nick: " + nick);
-#endif
+# endif
    
-#ifdef USER_CONNECTION_PINGPONG
+# ifdef USER_CONNECTION_PINGPONG
    // Make up some dodgey random stuff with xor!
    handler->pingpong = 
      String::printf("%08lX",
 		    ((unsigned long)Daemon::getTime() ^
 		     (unsigned long)(((0xFFFFFFFE + 1.0) * rand()) / 
 				     RAND_MAX)));
-
+   
    // Send a PING out to make sure we are dealing with a 'real' client
-# ifndef PASSIVE_REGISTRATION      	 
+#  ifndef PASSIVE_REGISTRATION      	 
    handler->
      sendGeneric("NOTICE",
 		 String::printf((char *)Lang::L_PINGPONG_NOTICE,
 				handler->pingpong.c_str(), 
 				handler->pingpong.c_str(),
 				Daemon::myServer()->getHostname().c_str()));
-# endif
+#  endif
    handler->getConnection()->sendRaw("PING :" + handler->pingpong + "\r\n");
+# endif
+#else
+   // We are not allowed to accept client connections, so bye bye!
+   handler->getConnection()->goodbye();
+   // ... maybe we should have been a little friendlier?
 #endif
 }
 
@@ -582,10 +594,10 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
 # ifdef DEBUG_EXTENDED
    // Send what we got to the debugging output
    debug(" -=>       Server: " + handler->username);
-   debug(" -=>         Hops: " + hops);
-   debug(" -=>   startStamp: " + handler->startStamp);
-   debug(" -=>    linkStamp: " + String(handler->linkStamp) +
-	 " (My time is " + String(Daemon::getTime()) + ')');
+   debug(" -=>         Hops: " + String::convert(hops));
+   debug(" -=>   startStamp: " + String::convert(handler->startStamp));
+   debug(" -=>    linkStamp: " + String::convert(handler->linkStamp) +
+	 " (My time is " + String::convert(Daemon::getTime()) + ')');
    debug(" -=>     Protocol: " + handler->protocol);
    debug(" -=>         Name: " + handler->realname);
 # endif

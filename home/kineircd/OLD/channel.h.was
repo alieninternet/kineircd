@@ -5,18 +5,18 @@
 #ifndef __CHANNEL_H_
 # define __CHANNEL_H_
 
-# include <time.h>
+# include <ctime>
 
 # ifdef STL_HAS_HASH
 #  include <hash_map>
 # else
-#  include <map.h>
+#  include <map>
 # endif
 
 # ifdef STL_HAS_SLIST
 #  include <slist>
 # else
-#  include <list.h>
+#  include <list>
 # endif
 
 // Channel types we support for the ISUPPORT line.

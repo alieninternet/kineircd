@@ -51,7 +51,8 @@ namespace Version {
     * so far. Yes!!!! That's right, that means I don't want your comments on
     * how #ifdef's are considered obsolete in C++! :)
     */
-   char const *versionChars = 
+   char const *versionChars =
+// Section 1 - Configuration characters     
 #ifdef ALLOW_LOCALOP_CONNECT
 				"c"
 #endif
@@ -145,12 +146,16 @@ namespace Version {
 #ifdef ALLOW_SERVICE_CONNECTIONS
      				"Z"
 #endif
+     
+// Section 2 - Transport protocol phrases
 #ifdef HAVE_TRANSPORT_TCP_IPV4
      				",IPv4"
 #endif
 #ifdef HAVE_TRANSPORT_TCP_IPV6
      				",IPv6"
 #endif
+     
+// Section 3 - IRC protocol phrases
 #ifdef HAVE_IRC2USER_PROTOCOL
      				",IRC2"
 #endif

@@ -5,7 +5,7 @@
 #ifndef __UTILS_H_
 # define __UTILS_H_
 
-# include <stdlib.h>
+# include <cstdlib>
 # include <netinet/in.h>
 
 # include "str.h"

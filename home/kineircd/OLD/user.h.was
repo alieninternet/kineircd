@@ -5,7 +5,7 @@
 #ifndef __USER_H_
 # define __USER_H_
 
-# include <time.h>
+# include <ctime>
 # include <map>
 
 # ifdef STL_HAS_SLIST

@@ -4,8 +4,8 @@
 
 #include "autoconf.h"
 
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 
 #include "utils.h"
 #include "str.h"
