@@ -234,7 +234,8 @@ mod_iirc1_la_LIBADD=\
 ###############################################################################
 mod_irc2user_la_SOURCES=\
 	mod_irc2user/module.cpp \
-	mod_irc2user/module.h
+	mod_irc2user/module.h \
+	mod_irc2user/protocol.h
 mod_irc2user_la_LDFLAGS=\
 	-avoid-version \
 	-module
