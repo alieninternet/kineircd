@@ -81,6 +81,9 @@ namespace Kine {
        */
       static const char* const replacementObjectGlyph;
       static const char* const replacementCharacterGlyph;
+
+      // The ID of the 'unknown tag'
+      static const tagID_type unknownTagID = 0;
       
     private:
       // A set full of language tag name to tag ID mapping arrays
@@ -119,6 +122,9 @@ namespace Kine {
 	: highestTagID(0),
 	  defaultLanguage(0)
 	{};
+
+      // Process a given tag name -> tag id map table using the tag dictionary
+      void processTagMap(tagMap_type map) const;
       
     public:
       // Destructor
@@ -132,41 +138,42 @@ namespace Kine {
       static Languages& getInstance(void)
 	{ return *instance; };
       
-      // Add/remove tag name/ID correlation maps
+      // Add/remove/process tag name/ID correlation maps
       bool registerMap(tagMap_type map);
       void deregisterMap(const tagMap_type map);
       
       // Return the given language data, from the given language
-      const std::string get(const std::string& languageCode,
-			    const tagID_type tagID,
-			    const parameterList_type* const parameters = 0);
+      const std::string
+	get(const std::string& languageCode,
+	    const tagID_type tagID,
+	    const parameterList_type* const parameters = 0) const;
       
       // Lazy functions for use when you have one to five parameters..
       const std::string get(const std::string& languageCode,
 			    const tagID_type tagID,
-			    const parameter_type& p0);
+			    const parameter_type& p0) const;
       const std::string get(const std::string& languageCode,
 			    const tagID_type tagID,
 			    const parameter_type& p0,
-			    const parameter_type& p1);
+			    const parameter_type& p1) const;
       const std::string get(const std::string& languageCode,
 			    const tagID_type tagID,
 			    const parameter_type& p0,
 			    const parameter_type& p1,
-			    const parameter_type& p2);
+			    const parameter_type& p2) const;
       const std::string get(const std::string& languageCode,
 			    const tagID_type tagID,
 			    const parameter_type& p0,
 			    const parameter_type& p1,
 			    const parameter_type& p2,
-			    const parameter_type& p3);
+			    const parameter_type& p3) const;
       const std::string get(const std::string& languageCode,
 			    const tagID_type tagID,
 			    const parameter_type& p0,
 			    const parameter_type& p1,
 			    const parameter_type& p2,
 			    const parameter_type& p3,
-			    const parameter_type& p4);
+			    const parameter_type& p4) const;
       
       /* Friends -- LanguageConfig:: needs to fiddle with our private bits..
        * *giggles* ;)

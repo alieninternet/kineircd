@@ -28,6 +28,7 @@
 #include "kineircd/kineircdconf.h"
 
 #include <cctype>
+#include <algorithm>
 
 #include "kineircd/languages.h"
 #include "kineircd/config.h"
@@ -77,6 +78,42 @@ void Languages::initInstance(void)
 }
 
 
+/* processTagMap - Process a given tag name -> tag id map
+ * Original 18/03/2003 simonb
+ */
+void Languages::processTagMap(tagMap_type map) const
+{
+   int i = -1;
+   
+   // Iterate through the given map, until we find a null tag name
+   while (map[++i].tagName != 0) {
+      // Try to find this tag in the tag dictionary
+      tagDictionary_type::const_iterator it =
+	tagDictionary.find(String(map[i].tagName).toUpper());
+      
+      // Did we find it?
+      if (it == tagDictionary.end()) {
+#ifdef KINE_DEBUG_PSYCHO
+	 debug(String("Languages::processTagMap() - Did not find ") +
+	       map[i].tagName);
+#endif
+	 
+	 // We didn't find it
+	 map[i].tagID = unknownTagID;
+	 continue;
+      } 
+      
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Languages::processTagMap() - Found tag " + (*it).first + 
+	    " with TID of " + String::convert((*it).second));
+#endif
+
+      // We must have found it - put the tag ID we found in the map
+      map[i].tagID = (*it).second;
+   }
+}
+
+
 /* registerMap - Register a tag name to tag ID correlation array
  * Original 19/03/2003 simonb
  */
@@ -111,6 +148,9 @@ bool Languages::registerMap(tagMap_type map)
    debug("Languages::registerMap() - Map array added to the set (" +
 	 String::convert(tagMaps.size()) + " maps in the set)");
 #endif
+
+   // Process this map now..
+   processTagMap(map);
    
    return true;
 }
@@ -138,9 +178,10 @@ void Languages::deregisterMap(const tagMap_type map)
 /* get - Return the given language data, from the given language
  * Original 15/03/2003 simonb
  */
-const std::string Languages::get(const std::string& languageCode,
-				 const tagID_type tagID,
-				 const parameterList_type* const parameters)
+const std::string
+  Languages::get(const std::string& languageCode,
+		 const tagID_type tagID,
+		 const parameterList_type* const parameters) const
 {
 #ifdef KINE_DEBUG_PSYCHO
    debug("Languages::get() - Requested TID #" + String::convert(tagID) + 
@@ -160,7 +201,7 @@ const std::string Languages::get(const std::string& languageCode,
    const std::string* tagData = 0;
    
    // Find the given language..
-   const languageDataList_type::iterator it =
+   const languageDataList_type::const_iterator it =
      languageDataList.find(languageCode);
    
    // Did we find the language?
@@ -316,8 +357,8 @@ const std::string Languages::get(const std::string& languageCode,
  */
 const std::string Languages::get(const std::string& languageCode,
 				 const tagID_type tagID,
-				 const parameter_type& p0)
-{
+				 const parameter_type& p0) const
+{ 
    parameterList_type parameters;
    parameters.push_back(&p0);
    return get(languageCode, tagID, &parameters);
@@ -326,7 +367,7 @@ const std::string Languages::get(const std::string& languageCode,
 const std::string Languages::get(const std::string& languageCode,
 				 const tagID_type tagID,
 				 const parameter_type& p0,
-				 const parameter_type& p1)
+				 const parameter_type& p1) const
 {
    parameterList_type parameters;
    parameters.push_back(&p0);
@@ -338,7 +379,7 @@ const std::string Languages::get(const std::string& languageCode,
 				 const tagID_type tagID,
 				 const parameter_type& p0,
 				 const parameter_type& p1,
-				 const parameter_type& p2)
+				 const parameter_type& p2) const
 {
    parameterList_type parameters;
    parameters.push_back(&p0);
@@ -352,7 +393,7 @@ const std::string Languages::get(const std::string& languageCode,
 				 const parameter_type& p0,
 				 const parameter_type& p1,
 				 const parameter_type& p2,
-				 const parameter_type& p3)
+				 const parameter_type& p3) const
 {
    parameterList_type parameters;
    parameters.push_back(&p0);
@@ -368,7 +409,7 @@ const std::string Languages::get(const std::string& languageCode,
 				 const parameter_type& p1,
 				 const parameter_type& p2,
 				 const parameter_type& p3,
-				 const parameter_type& p4)
+				 const parameter_type& p4) const
 {
    parameterList_type parameters;
    parameters.push_back(&p0);

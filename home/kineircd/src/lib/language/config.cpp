@@ -242,7 +242,7 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(LanguageConfig::varHandler)
       // Check the first letter of the tag...
       if (tag[0] == '.') {
 	 // Strip away the first char and convert it to upper-case
-	 tag = tag.toUpper().substr(1);
+	 tag = tag.substr(1);
 	 
 #ifdef KINE_DEBUG_PSYCHO
 	 debug("LanguageConfig::varHandler() - Line " + 

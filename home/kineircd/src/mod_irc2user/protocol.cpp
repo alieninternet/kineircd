@@ -44,9 +44,28 @@ Protocol::Protocol(const Kine::Registrant& registrant,
   : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue)
 {
    // vv temporary :)
-   std::cout << "irc2user is pushing stuff to the output queue" << std::endl;
+   static Languages::tagMap_type tags = {
+        { "test_naughty_chars_flat" },
+	{ "test_naughty_chars_escaped" },
+	{ "test_pretty_chars" },
+	{ "test_slash" },
+	{ "test_percent" },
+	{ "Test_BOLD" },
+	{ "test_underline" },
+	{ "test_beep" },
+	{ "test_reversed" },
+	{ "test_space" },
+	{ "test_tab" },
+	{ "test_colour" },
+	{ "test_params" },
+	{ "test_subs" },
+	{ 0 }
+   };
+   
    std::ostringstream output;
    std::ostringstream output2;
+   
+   langs().registerMap(tags);
    
    output <<
      ':' << config().getOptionsServerName() << " 001 " << registrant.name <<
@@ -79,40 +98,12 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    params.push_back(&bah);
    std::string baz("baz");
    params.push_back(&baz);
-   
+
+   for (int i = 0; i <= 15; i++) {
    output2 << ':' <<
      config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag  0: " << langs().get("en", 0, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag  1: " << langs().get("en", 1, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag  2: " << langs().get("en", 2, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag  3: " << langs().get("en", 3, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag  4: " << langs().get("en", 4, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag  5: " << langs().get("en", 5, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag  6: " << langs().get("en", 6, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag  7: " << langs().get("en", 7, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag  8: " << langs().get("en", 8, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag  9: " << langs().get("en", 9, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag 10: " << langs().get("en", 10, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag 11: " << langs().get("en", 11, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag 12: " << langs().get("en", 12, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag 13: " << langs().get("en", 13, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag 14: " << langs().get("en", 14, &params) << "\r\n:" <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag 15: " << langs().get("en", 15, &params) << "\r\n";
+     " :Tag  " << i << ": " << langs().get("en", i, &params) << "\r\n";
+   }
    
    Protocol::outputQueue.push(output.str());
    Protocol::outputQueue.push(output2.str());
