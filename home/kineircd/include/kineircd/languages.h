@@ -51,8 +51,10 @@ namespace Kine {
    class Languages {
     public:
       //@{
-      /* The tag identifier type (also referred to as a 'TID').
-       * Note that TID #0 has a special purpose -- "unknown".
+      /*!
+       * \brief The tag identifier type (also referred to as a 'TID').
+       * 
+       * \note TID #0 has a special purpose, as it represents unknownTagID.
        */
       typedef unsigned int tagID_type;
       
