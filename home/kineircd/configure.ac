@@ -1574,6 +1574,8 @@ AC_OUTPUT([
 	src/lib/logger/Makefile
 	src/lib/socket/Makefile
 	src/protocols/Makefile
+	src/protocols/common/Makefile
+	src/protocols/common/irc2/Makefile
 	src/protocols/server/Makefile
 	src/protocols/server/an-p13/Makefile
 	src/protocols/server/an1/Makefile
