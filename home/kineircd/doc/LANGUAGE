@@ -111,7 +111,7 @@ Numerics
 
 
 688 - RPL_LANGUAGE
-      <code> <revision> <maintainer> <flags> * :<name>
+      <code> <revision> <maintainer> <flags> :<name>
       
        A list item for listing languages. The code variable is the
       language code as described in BCP-0047 assigned language code. The 
@@ -161,11 +161,13 @@ server, and lines prefixed with '>' mean lines from the server.
 
  eg.
   < LANGUAGE
-  > :server.foo.org 688 pickle en 20010710 sl7@austnet.org d * :English
-  > :server.foo.org 688 pickle tr 20011201 sl7@austnet.org * * :Turkish
-  > :server.foo.org 688 pickle fr 20010807 sl7@austnet.org * * :French
-  > :server.foo.org 688 pickle de 20010528 sl7@austnet.org s * :German
-  > :server.foo.org 689 pickle :Ende der SPRACHLISTE
+  > :server.foo.org 688 pickle en 20010710 sl7@austnet.org d :English
+  > :server.foo.org 688 pickle tr 20011201 sl7@austnet.org * :Turkish
+  > :server.foo.org 688 pickle fr 20010807 sl7@austnet.org * :French
+  > :server.foo.org 688 pickle de 20010528 sl7@austnet.org s :German
+  > :server.foo.org 666 pickle LANGUAGE :Ende der SPRACHLISTE
+  
+  (note that #666 = RPL_ENDOF_GENERIC)
   
  From this reply you can see (using the numerics listed above) that English
 is the default language, but German is currently selected (hense the end of
