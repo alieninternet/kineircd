@@ -557,6 +557,7 @@ src/mod_irc2user/schemesubs.cpp src/mod_irc2user/schemesubs.h: src/mod_irc2user/
 # 'mod_palladium' module
 ###############################################################################
 mod_palladium_la_SOURCES=\
+	src/mod_palladium/ctcp.cpp \
 	src/mod_palladium/module.cpp \
 	src/mod_palladium/module.h \
 	src/mod_palladium/service.cpp \
