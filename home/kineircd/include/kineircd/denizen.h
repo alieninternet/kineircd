@@ -71,14 +71,14 @@ namespace Kine {
        * string, then the address is dependant on the network protocol being
        * used:
        *
-       *  - \e IPv4 addresses will look like <em>123.4.567.89</em>, or
-       *    <em>::ffff:123.4.567.89</em>, depending on the socket type used.
+       *  - \e IPv4 addresses will look like <em>10.4.567.89</em>, or
+       *    <em>::ffff:10.4.567.89</em>, depending on the socket type used.
        *    The latter form is an \e IPv4 connection to an \e IPv6 socket.
        * 
        *  - \e IPv6 addresses will look something like
-       *    <em>3ffe:124::4c01:53a1</em>, although it's more probable for
+       *    <em>2001:0db8::4c01:53a1</em>, although it's more probable for
        *    something longer, such as
-       *    <em>2001:470:1f00:193:1091:20:f3d9:ba8f</em>.
+       *    <em>2001:0db8:1f00:193:1091:20:f3d9:ba8f</em>.
        * 
        *  - \e IPX addresses will look like <em>00ABC123:004F4C91BA6C</em>.
        * 
