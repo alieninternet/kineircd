@@ -53,8 +53,8 @@ namespace Kine {
 	{ return config().getServerDescription(); };
       
       // Return the server we're connected to (technically, that's us)
-      Server& getServer(void)
-	{ return *this; };
+      Server& getServer(void) const
+	{ return const_cast<MyServer&>(*this); };
    }; // class MyServer
 }; // namespace Kine
    
