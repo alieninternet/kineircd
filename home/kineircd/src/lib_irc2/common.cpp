@@ -409,6 +409,14 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 		     u->getNickname(),
 		     "%#foo +#bah @#baz");
 	 
+	 // If the server the user is on is not hidden, send that too
+	 if (false) {
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSERVER,
+			u->getNickname(),
+			"server.host.name",
+			"server description here");
+	 }
+	 
 	 // If this user has language info, we should send it too
 	 if (!u->getLanguageList().empty()) {
 	    std::ostringstream langs;
@@ -435,6 +443,13 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 			u->getNickname(),
 			langs.str(),
 			GETLANG(irc2_RPL_WHOISLANGUAGE));
+	 }
+	 
+	 // If the user is marked away, send their away information
+	 if (u->isAway()) {
+	    sendNumeric(user, LibIRC2::Numerics::RPL_AWAY,
+			u->getNickname(),
+			u->getAwayMessage());
 	 }
 	 
 	 // If the user is an IRC operator, tell the world about it
@@ -496,14 +511,6 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 			(daemon().getTime() - lu->getLastAwake()).seconds,
 			u->getSignonTime().seconds,
 			GETLANG(irc2_RPL_WHOISIDLE));
-	 }
-	 
-	 // If the server the user is on is not hidden, send that too
-	 if (false) {
-	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSERVER,
-			u->getNickname(),
-			"server.host.name",
-			"server description here");
 	 }
 	 
 	 // Continue to the next target
