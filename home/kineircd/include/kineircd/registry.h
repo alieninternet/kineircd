@@ -43,7 +43,8 @@ namespace Kine {
     public:
       //! The 'counter' type, used for various statistical replies
       typedef unsigned int counter_type;
-      
+
+    private:
       //! Connected users list type
       typedef KINE_HASH_MAP_TYPE < ClientName, User* const > users_type;
       
@@ -184,27 +185,6 @@ namespace Kine {
       //! Find the given channel, by its name
       Channel* const findChannel(const ChannelName& name) const
 	{ return 0; /* temporary */ };
-      
-      
-      //! Return the user list (read only)
-      const users_type& getUsers(void) const
-	{ return users; };
-
-      //! Return the service list (read only)
-      const services_type& getServices(void) const
-	{ return services; };
-      
-      //! Return the server list (read only)
-      const servers_type& getServers(void) const
-	{ return servers; };
-      
-      //! Return the network list (read only)
-      const networks_type& getNetworks(void) const
-        { return networks; };
-      
-      //! Return the channel list (read only)
-      const channels_type& getChannels(void) const
-	{ return channels; };
       
       
       //! Return the number of clients on the network

@@ -237,11 +237,11 @@ commands = {
    disabled;
 };
 
-commands = {
-   command		= "SERVLIST";
-   defaultPenalty	= 1;
-   minimumParams	= 0;
-};
+//commands = {
+//   command		= "SERVLIST";
+//   defaultPenalty	= 1;
+//   minimumParams	= 0;
+//};
 
 //commands = {
 //   command		= "SILENCE";
@@ -349,11 +349,11 @@ commands = {
 //   disabled;
 //};
 
-commands = {
-   command		= "WHO";
-   defaultPenalty	= 2;
-   minimumParams	= 0;
-};
+//commands = {
+//   command		= "WHO";
+//   defaultPenalty	= 2;
+//   minimumParams	= 0;
+//};
 
 commands = {
    command		= "WHOIS";
