@@ -544,6 +544,19 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleNOTICE)
 #endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_OPER
+/* handleOPER
+ * Original ? simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleOPER)
+{
+   // fix me when there's actually IRC operator code :)
+   sendNumeric(LibIRC2::Numerics::ERR_NOOPERHOST,
+	       GETLANG(irc2_ERR_NOOPERHOST));
+}
+#endif
+
+
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_PING
 /* handlePING
  * Original 25/08/2001 simonb

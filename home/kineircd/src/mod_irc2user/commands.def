@@ -184,11 +184,11 @@ commands = {
    minimumParams	= 0;
 };
 
-//commands = {
-//   command		= "OPER";
-//   defaultPenalty	= 5;
-//   minimumParams	= 2;
-//};
+commands = {
+   command		= "OPER";
+   defaultPenalty	= 5;
+   minimumParams	= 2;
+};
 
 //commands = {
 //   command		= "PART";
