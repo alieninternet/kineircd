@@ -46,9 +46,17 @@ void User::doEventAwayToggle(void)
 {
    // Have we gone away or are we returning?
    if (isAway()) {
-      // Tell the user they are now known to be away
-      protocol.sendNumeric(LibIRC2::Numerics::RPL_NOWAWAY,
-			   GETLANG(irc2_RPL_NOWAWAY));
+      // Should we return the away message back to the user?
+      if (true /* configurable */) {
+	 // Tell the user they are away, and the message they gave us
+	 protocol.sendNumeric(LibIRC2::Numerics::RPL_NOWAWAY,
+			      GETLANG(irc2_RPL_NOWAWAY_WITH_MESSAGE,
+				      getAwayMessage()));
+      } else {
+	 // Tell the user they are now known to be away
+	 protocol.sendNumeric(LibIRC2::Numerics::RPL_NOWAWAY,
+			      GETLANG(irc2_RPL_NOWAWAY));
+      }
       return;
    }
    
