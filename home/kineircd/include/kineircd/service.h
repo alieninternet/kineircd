@@ -64,7 +64,7 @@ namespace Kine {
       
       
       //! Send a query to this service from a client
-      virtual const Error::error_type sendQuery(const Client& from,
+      virtual const Error::error_type sendQuery(Client& from,
 						const std::string& message)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
    }; // class Service

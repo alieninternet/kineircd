@@ -41,13 +41,13 @@ namespace Kine {
 	{};
       
       //! Send a message from a generic entity
-      virtual const Error::error_type sendMessage(const Entity& from,
+      virtual const Error::error_type sendMessage(Entity& from,
 						  const std::string& message)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
 
    
       //! Send a notice from a generic entity
-      virtual const Error::error_type sendNotice(const Entity& from,
+      virtual const Error::error_type sendNotice(Entity& from,
 						 const std::string& message)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
    }; // class Receiver
