@@ -44,3 +44,4 @@ core
 test
 .libs
 *.lock
+.deps
