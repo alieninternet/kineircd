@@ -62,7 +62,12 @@ namespace Version {
 "          \026                                                  \026",
 "",
 "Copyright \251 1996,1998,1999,2000,2001,2002 Alien Internet Services",
-"Copyright \251 2001,2002 AustHex Development Team:",       
+"Copyright \251 2001,2002 AustHex Development Team",
+"This is free software; see the source for copying conditions. There",
+"is NO WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A",
+"PARTICULAR PURPOSE.",
+"",	
+" AustHex Development Team:",
 "  to be done.. hehe shh, it will come before release :)",
       0
    };
