@@ -51,14 +51,18 @@
 ##[+
 
    ;;; getIndentLevel - Work out the identation depth (# of chars)
+   ;;; Note: Yes, we cheat. We use the size of the table used to generate
+   ;;;       internal variable names (for the software itself) as our basis,
+   ;;;       even if those internal variable names are not visible in the
+   ;;;       example conf (or indeed to the user).
    (define (getIndentLevel)
       (- (* (length tablePrefixStack) 3) 3))
 
 
 
    ;;; lineIndent - Create an indentation appropriate for our nesting level.
-   ;;; Note: this should really use modulus to make-string a string of tabs
-   ;;;       instead of recursion :(
+   ;;; Note: This should really use modulus to make-string a string of tabs
+   ;;;       instead of recursion -- My scheming skills are very poor :(
    (define (lineIndent)
       (letrec ((output "")
                (indenter
@@ -153,7 +157,7 @@
 	 ;; Return the output
          output))
 
- +][+DEFINE make-def-name+][+IF .variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+][+ENDDEF+]
+ +][+DEFINE make-def-name+][+IF .variable+][+variable+][+ELSE+][+name+][+ENDIF+][+ENDDEF+]
 [+DEFINE output-config-stuff+][+FOR .definition+][+IF (not (exist? "hidden"))+][+IF .definition+][+IF (not (first-for?))+]
 [+ENDIF+][+IF .comment+][+IF (not (first-for?))+]
 [+ENDIF+][+(formatComment (get "comment"))+][+ENDIF+]
