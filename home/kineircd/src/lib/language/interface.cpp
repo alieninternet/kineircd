@@ -261,6 +261,10 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 		  line += newLineMarkerChar;
 		  continue;
 		  
+		case 'o': // Turn off all attributes (back to 'default')
+		  line += '\017';
+		  continue;
+		  
 		case 'r': // Reverse
 		  line += '\026';
 		  continue;
