@@ -3757,6 +3757,19 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "ERR_TEXTTOOSHORT";
+   numeric	= "983";
+   origin	= "KineIRCd";
+   contact	= "kineircd@alien.net.au";
+   format	= "<command> :<info>";
+   comment	= "Returned by any command requiring text (such as a message "
+    		  "or a reason), which was not long enough to be considered "
+		  "valid. This was created initially to combat '/wallops foo' "
+		  "abuse, but is also used by DIE and RESTART commands to "
+		  "attempt to encourage meaningful reasons.";
+};
+
+irc2numerics = {
    name		= "ERR_NUMERIC_ERR";
    numeric	= "999";
    origin	= "Bahamut";

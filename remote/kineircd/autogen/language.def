@@ -356,6 +356,13 @@ tag = {
 };
 
 tag = {
+   name		= "irc2_ERR_TEXTTOOSHORT";
+   components	= "mod_irc2user";
+   data_en	= "The given text is too short; Please try the command again "
+                  "with a longer message or reason";
+};
+
+tag = {
    name		= "irc2_ERR_TOOMANYLANGUAGES";
    components	= "mod_irc2user";
    data_en	= "Too many language codes specified";
