@@ -75,7 +75,7 @@
 			(set! output
 		           (string-append
 			      output
-		              (make-string level #\ ))))
+		              (make-string level #\space))))
 
 			;; More?
 			(if (> level 8)
