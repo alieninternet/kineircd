@@ -27,9 +27,5 @@ clean:
 	$(RM) $(TARGETS) \
 		`$(FIND) . \( \
 			-name \*~ -o \
-			-name \*.bb -o \
-			-name \*.bbg -o \
-			-name \*.da -o \
-			-name \*.gcov -o \
 			-name \*.o \
 				\) -type f`
