@@ -33,9 +33,9 @@
 
 #include "kineircd/protocolinfo.h"
 #include "kineircd/daemon.h"
-#include "lib/registrar.h"
-#include "lib/regnumerics.h"
-#include "lib/debug.h"
+#include "libkineircd/registrar.h"
+#include "libkineircd/regnumerics.h"
+#include "libkineircd/debug.h"
 
 using namespace Kine;
 using AISutil::String;

@@ -30,8 +30,8 @@
 # include "kineircd/listener.h"
 # include "kineircd/registrant.h"
 # include "kineircd/config.h"
-# include "lib_irc2/protocol.h"
-# include "regnumerics.h"
+# include "libkineircd_irc2/protocol.h"
+# include "libkineircd/regnumerics.h"
 
 # define KINE_LIB_REGISTRAR_FUNCTION(x) \
      void x(AISutil::StringTokens& line)

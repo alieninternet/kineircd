@@ -46,8 +46,8 @@ extern "C" {
 #include "kineircd/daemon.h"
 #include "kineircd/config.h"
 #include "kineircd/version.h"
-#include "lib/debug.h"
-#include "lib/registrar.h"
+#include "libkineircd/registrar.h"
+#include "libkineircd/debug.h"
 
 using namespace Kine;
 using AISutil::String;

@@ -29,7 +29,7 @@
 
 #include <iostream>
 
-#include "lib/debug.h"
+#include "libkineircd/debug.h"
 //#include "kineircd/daemon.h"
 
 // Little check to make sure we are being compiled sanely

@@ -25,7 +25,7 @@
 #ifndef _SRC_MOD_IRC2USER_PROTOCOL_H_
 # define _SRC_MOD_IRC2USER_PROTOCOL_H_ 1
 
-# include "lib_irc2/protocol.h"
+# include "libkineircd_irc2/protocol.h"
 
 namespace Kine {
    namespace mod_irc2user {

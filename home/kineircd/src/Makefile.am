@@ -67,9 +67,9 @@ INCLUDES=\
 
 # Stuff that needs to go into the distribution but isn't implied
 EXTRA_DIST=\
-	lib/loggerconfig.cpp.tpl \
-	lib/regnumerics.h.tpl \
-	lib/version.cpp.tpl
+	libkineircd/loggerconfig.cpp.tpl \
+	libkineircd/regnumerics.h.tpl \
+	libkineircd/version.cpp.tpl
 
 
 
@@ -77,44 +77,44 @@ EXTRA_DIST=\
 # 'libkineircd' library
 ###############################################################################
 if KINEIRCD_COMPILE_LIB_CONFIG_OLDCONFIG
- KINEIRCD_SOURCE_LIB_CONFIG_OLDCONFIG_CPP=lib/config/oldconfig.cpp
+ KINEIRCD_SOURCE_LIB_CONFIG_OLDCONFIG_CPP=libkineircd/config/oldconfig.cpp
 endif
 if KINEIRCD_COMPILE_LIB_DEBUG
- KINEIRCD_SOURCE_LIB_DEBUG_CPP=lib/debug.cpp
- KINEIRCD_SOURCE_LIB_DEBUG_H=lib/debug.h
+ KINEIRCD_SOURCE_LIB_DEBUG_CPP=libkineircd/debug.cpp
+ KINEIRCD_SOURCE_LIB_DEBUG_H=libkineircd/debug.h
 endif
 
 # Stuff we really need :(
 BUILT_SOURCES=\
-	lib/regnumerics.h
+	libkineircd/regnumerics.h
 
 libkineircd_la_SOURCES=\
-	lib/config/config.cpp \
-	lib/config/defaults.h \
+	libkineircd/config/config.cpp \
+	libkineircd/config/defaults.h \
 	$(KINEIRCD_SOURCE_LIB_CONFIG_OLDCONFIG_CPP) \
-	lib/language/config.cpp \
-	lib/language/config.h \
-	lib/language/data.cpp \
-	lib/language/list.cpp \
-	lib/listener/listener.cpp \
-	lib/listener/config.cpp \
-	lib/listener/config.h \
-	lib/listener/list.cpp \
-	lib/modules/modules.cpp \
-	lib/modules/descriptor.cpp \
-	lib/modules/list.cpp \
-	lib/connection.cpp \
-	lib/daemon.cpp \
+	libkineircd/language/config.cpp \
+	libkineircd/language/config.h \
+	libkineircd/language/data.cpp \
+	libkineircd/language/list.cpp \
+	libkineircd/listener/listener.cpp \
+	libkineircd/listener/config.cpp \
+	libkineircd/listener/config.h \
+	libkineircd/listener/list.cpp \
+	libkineircd/modules/modules.cpp \
+	libkineircd/modules/descriptor.cpp \
+	libkineircd/modules/list.cpp \
+	libkineircd/connection.cpp \
+	libkineircd/daemon.cpp \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_CPP) \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_H) \
-	lib/logger.cpp \
-	lib/loggerconfig.cpp \
-	lib/registrar.cpp \
-	lib/registrar.h \
-	lib/sha1.cpp \
-	lib/signals.cpp \
-	lib/utils.cpp \
-	lib/version.cpp
+	libkineircd/logger.cpp \
+	libkineircd/loggerconfig.cpp \
+	libkineircd/registrar.cpp \
+	libkineircd/registrar.h \
+	libkineircd/sha1.cpp \
+	libkineircd/signals.cpp \
+	libkineircd/utils.cpp \
+	libkineircd/version.cpp
 libkineircd_la_LDFLAGS=\
 	@LDFLAGS@ \
 	@ssl_ldflags@
@@ -125,10 +125,10 @@ libkineircd_la_LIBADD=\
 	@ssl_lib@
 
 # Customised .tpl to .cpp rules, since the template and the defs do not match
-lib/regnumerics.h: lib/regnumerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
+libkineircd/regnumerics.h: libkineircd/regnumerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
 	$(AUTOGEN) -b $(basename $@) -T $< $(AUTOGEN_DEF_DIR)/irc2numerics.def
 
-lib/loggerconfig.cpp: lib/loggerconfig.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
+libkineircd/loggerconfig.cpp: libkineircd/loggerconfig.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
 	$(AUTOGEN) -b $(basename $@) -T $< $(AUTOGEN_DEF_DIR)/logger.def
 		
 
@@ -137,10 +137,10 @@ lib/loggerconfig.cpp: lib/loggerconfig.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
 # 'libkineircd_irc2' library
 ###############################################################################
 libkineircd_irc2_la_SOURCES=\
-	lib_irc2/modes.h \
-	lib_irc2/protocol.cpp \
-	lib_irc2/protocol.h \
-	lib_irc2/servermodes.cpp
+	libkineircd_irc2/modes.h \
+	libkineircd_irc2/protocol.cpp \
+	libkineircd_irc2/protocol.h \
+	libkineircd_irc2/servermodes.cpp
 
 libkineircd_irc2_la_LDFLAGS=\
 	-avoid-version

@@ -31,7 +31,7 @@
 #include <aisutil/socket/sockets.h>
 
 #include "kineircd/listener.h"
-#include "lib/debug.h"
+#include "libkineircd/debug.h"
 
 using namespace Kine;
 

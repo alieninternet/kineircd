@@ -32,7 +32,7 @@
 #include <stack>
 
 #include "kineircd/config.h"
-#include "lib/debug.h"
+#include "libkineircd/debug.h"
 
 
 // Are we compiled properly?

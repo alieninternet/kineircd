@@ -32,7 +32,7 @@
 #include <aisutil/string/tokens.h>
 
 #include "kineircd/languagelist.h"
-#include "lib/debug.h"
+#include "libkineircd/debug.h"
 
 using namespace Kine;
 using AISutil::String;
