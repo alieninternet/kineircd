@@ -950,7 +950,6 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_ACCEPTLIST";
    numeric	= "281";
-   origin	= "Undernet";
    conflict	= "yes";
 };
 
