@@ -101,3 +101,23 @@ Example server connection:
   > EOB
    (we have nothing to send, our burst is over)
   < EOB
+
+
+
+005 Numeric (RPL_ISUPPORT) addition:
+------------------------------------
+
+      IIRC
+
+  This shows that the NETWORKS command is available (for listing and/or
+ changing inter-network connections), and that the extension to the PRIVMSG
+ and NOTICE commands of placing the '#<network>' suffix is available on this
+ server.
+
+
+
+New Numerics
+------------
+
+682 - RPL_NETWORKS
+      <name> <through_name> <hops> :<info>
