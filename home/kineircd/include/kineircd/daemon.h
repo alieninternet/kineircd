@@ -32,6 +32,8 @@
 #  include <list>
 # endif
 
+# include <string>
+# include <vector>
 # include <map>
 # include <ctime>
 # include <aisutil/string/string.h>
@@ -53,6 +55,7 @@ namespace Kine {
 # include <kineircd/exit.h>
 # include <kineircd/listener.h>
 # include <kineircd/protocolname.h>
+# include <kineircd/logger.h>
 
 namespace Kine {
    // The Daemon class
@@ -78,7 +81,11 @@ namespace Kine {
       unsigned long long sentBytes;		// Total bytes sent
       unsigned long long receivedBytes;		// Total bytes received
       
-      // The list of connections
+      // The list of loggers (this should be hidden)
+      typedef std::vector <Logger*> loggerList_type;
+      loggerList_type loggers;
+
+      // The list of connections (this should be hidden)
 # ifdef KINE_STL_HAS_SLIST
       typedef std::slist <Connection*> connections_type;
 # else
@@ -89,7 +96,7 @@ namespace Kine {
       // The protocol list
       protocols_type protocols;
       
-    public: // <=- temporary      
+    public: // <=- temporary, pre-poller class code
       // For select()
       fd_set inFDSET, outFDSET;			// Input/Output descriptor sets
     private: // <=- temporary
@@ -101,7 +108,7 @@ namespace Kine {
 
       // Process a new connection
       void newConnection(Listener& listener);
-      
+
     public:
       // Constructor
       Daemon(Config& conf, Signals& sigs);
@@ -120,7 +127,7 @@ namespace Kine {
       // Grab the signal handler
       Signals& getSignals(void)
 	{ return signals; };
-      
+
       // Grab our 'uptime'
       unsigned long getUptime(void) const
 	{ return (unsigned long)(currentTime.tv_sec - startTime); };
@@ -142,6 +149,10 @@ namespace Kine {
       bool deregisterProtocol(const ProtocolName& name);
       ProtocolInfo* const findProtocol(const ProtocolName::Type::type type,
 				       const std::string& name) const;
+
+      // Log a line of text
+      void log(const std::string& str,
+	       const Logger::Mask::type mask = Logger::Mask::Housekeeping);
       
       // Main loop
       Exit::status_type run(void);

@@ -206,6 +206,31 @@ ProtocolInfo* const Daemon::findProtocol(const ProtocolName::Type::type type,
 };
 
 
+/* log - Send a log message to all the loggers in our loggers list
+ * Original 09/04/2002 simonb
+ */
+void Daemon::log(const std::string& str, const Logger::Mask::type mask)
+{
+#ifdef KINE_DEBUG_EXTENDED
+   debug("Log::sendLoggers(\"" + str + "\", " + String::convert(mask) + ");");
+#endif
+   
+   // Only iterate through the list if it is not empty, else what is the point?
+   if (!loggers.empty()) {
+#ifdef KINE_DEBUG_ASSERT
+      assert((mask != Logger::Mask::Nothing) &&
+	     (mask != Logger::Mask::Everything));
+#endif
+      
+//      // Run through the loggers to give them all the line
+//      for (loggerList_type::iterator it = loggers.begin();
+//	   it != loggers.end(); it++) {
+//	 (*it)->log(line, mask);
+//      }
+   }
+}
+
+
 /* run - The main loop
  * Original 11/08/2001 simonb
  * Note: Unfortuantely not a very nice looking routine.. Much of this code is

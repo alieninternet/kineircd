@@ -81,13 +81,6 @@ namespace Config {
 	     &ListenerConfig::classHandler
 	},
 	{
-	   "LOGGING", 3,
-	     0,
-	     0,
-	     &defClassLogging,
-	     0
-	},
-	{
 	   "MODULE", 3,
 	     (void *)&Config::defModuleList,
 	     &varHandleModule,
@@ -214,19 +207,6 @@ namespace Config {
 	   0, 0,
 	     (void *)&Config::defLanguageList,
 	     &LanguageConfig::varHandler,
-	     0,
-	     0
-	}
-   };
-
-
-   // "LOGGING" class
-   const AISutil::ConfigParser::defTable_type
-     Kine::Config::defClassLogging = {
-	{
-	   0, 0,
-	     0,
-	     0,
 	     0,
 	     0
 	}
@@ -641,9 +621,6 @@ Kine::Config::Config(const String &f)
     defAdminLocation(DEFAULT_ADMIN_LOCATION),
     defAdminName(DEFAULT_ADMIN_NAME),
 
-    // "LOGGING" class
-    defLoggingLog(0),
-
     // "NETWORK" class
     defNetworkName(DEFAULT_NETWORK_NAME),
 
@@ -684,8 +661,6 @@ Kine::Config::Config(const String &f)
     defSSLContext(0)
 #endif
 {
-   defLoggingLog = new Log();  // temporary
-
 #ifdef KINE_WITH_SSL
    // Fire up the SSL component
    SSL_load_error_strings();
