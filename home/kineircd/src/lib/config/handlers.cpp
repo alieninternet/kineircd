@@ -755,6 +755,9 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(Kine::Config::classHandleModule)
 				      (moduleDesc->getModule()->getBasicInfo().
 				       configDefinitions)),
 				     *moduleDesc->getModule()->getConfigData());
+   } else {
+      errString = "Module requires no additional configuration";
+      return false;
    }
    
    // Just be happy, the module loaded!
