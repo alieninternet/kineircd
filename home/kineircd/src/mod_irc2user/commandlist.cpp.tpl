@@ -39,7 +39,10 @@ using namespace Kine::mod_irc2user;
 // Pre-initialisation command table, commands we always support
 const Commands::preInitCommand_type Commands::preInitCommands[] = {[+FOR commands+]
      {
-        "[+command+]",
+        "[+
+ (string-upcase
+    (get "command"))
+ +]",
           [+defaultPenalty+],
 	  &Language::tagMap[Language::irc2_HELP_CMD_[+command+]_USAGE].tagID,
 	  &Language::tagMap[Language::irc2_HELP_CMD_[+command+]].tagID
