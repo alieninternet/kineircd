@@ -30,6 +30,7 @@
 #include <iomanip>
 #include <cstring>
 #include <algorithm>
+#include <utmpx.h>
 #include <aisutil/string/string.h>
 #include <aisutil/string/tokens.h>
 #include <kineircd/config.h>
@@ -294,9 +295,57 @@ void Protocol::doTIME(const User& user)
  */
 void Protocol::doUSERS(const User& user)
 {
-   // Reply to conform to specs..
-   sendNumeric(user, LibIRC2::Numerics::ERR_USERSDISABLED,
-	       GETLANG(irc2_ERR_USERSDISABLED));
+   if (!config().getOptionsEnableUsersCommand()) {
+      // Tell the user that users has been disabled (to conform to specs
+      sendNumeric(user, LibIRC2::Numerics::ERR_USERSDISABLED,
+		  GETLANG(irc2_ERR_USERSDISABLED));
+      return;
+   }
+   
+   // Open the UTMP file, and reset it to the top
+   setutxent();
+   
+   // This is the users structure
+   const utmpx* utmpEntry;
+ 
+   // Send the header
+   sendNumeric(user, LibIRC2::Numerics::RPL_USERSSTART,
+	       GETLANG(irc2_RPL_USERSSTART));
+
+   // We'll use this to know if we've told the user about any users
+   bool haveUsers = false;
+   
+   // Iterate over the UTMP file
+   while ((utmpEntry = getutxent()) != 0) {
+      // If this is a logged in user, then we can do something with it
+      if (utmpEntry->ut_type == USER_PROCESS) {
+	 // Assemble the user information
+	 std::ostringstream output;
+	 output << std::setiosflags(std::ios::left) <<
+	   std::setw(8) << utmpEntry->ut_user << ' ' <<
+	   std::setw(9) << utmpEntry->ut_line << ' ' <<
+	   utmpEntry->ut_host;
+	 
+	 // Send the information about this user
+	 sendNumeric(user, LibIRC2::Numerics::RPL_USERS,
+		     output.str());
+      }
+   }
+
+   /* If we didn't have any useful user information, tell the user there are
+    * no users logged in...
+    */
+   if (!haveUsers) {
+      sendNumeric(user, LibIRC2::Numerics::RPL_NOUSERS,
+		  GETLANG(irc2_RPL_NOUSERS));
+   }
+   
+   // Send the footer
+   sendNumeric(user, LibIRC2::Numerics::RPL_ENDOFUSERS,
+	       GETLANG(irc2_RPL_ENDOFUSERS));
+   
+   // Close the UTMP file
+   endutxent();
 }
 
 
