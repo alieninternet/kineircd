@@ -102,13 +102,28 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_CANNOTSENDTOCHAN";
+   components	= "mod_irc2user";
    data_en	= "Cannot send to channel";
    data_tr	= "Kanala gonderilemedi";
 };
 
 tag = {
+   name		= "irc2_ERR_CANNOTSENDTOCHAN_UNRECEPTIVE";
+   components	= "mod_irc2user";
+   data_en	= "The channel specified is unable to accept your message";
+};
+
+tag = {
    name		= "irc2_ERR_CANNOTSENDTONICK";
+   components	= "mod_irc2user";
    data_en	= "You cannot send to this nickname";
+};
+
+tag = {
+   name		= "irc2_ERR_CANNOTSENDTONICK_UNRECEPTIVE";
+   components	= "mod_irc2user";
+   data_en	= "The client specified is unable to properly accept your "
+                  "message";
 };
 
 tag = {
@@ -282,14 +297,14 @@ tag = {
 tag = {
    name		= "irc2_ERR_NORECIPIENT";
    fields	= "0 = command";
-   components	= "libkineircd_irc2";
+   components	= "mod_irc2user";
    data_en	= "No recipient given (%p0)";
    data_tr	= "Alicı belirtilmedi (%p0)";
 };
 
 tag = {
    name		= "irc2_ERR_NOSUCHCHANNEL";
-   components	= "libkineircd_irc2";
+   components	= "mod_irc2user";
    data_en	= "No such channel";
    data_tr	= "Böyle bir kanal bulunamadı";
 };
@@ -303,7 +318,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOSUCHNICK_OR_CHANNEL";
-   components	= "libkineircd_irc2";
+   components	= "mod_irc2user";
    data_en	= "No such nick/channel";
 };
 
@@ -316,13 +331,20 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOSUCHSERVICE";
+   components	= "mod_irc2user";
    data_en	= "No such service";
    data_tr	= "Böyle bir servis yok";
 };
 
 tag = {
+   name		= "irc2_ERR_NOSUCHSERVICE_NOT_SERVICE";
+   components	= "mod_irc2user";
+   data_en	= "Given target was found, but is not a service";
+};
+
+tag = {
    name		= "irc2_ERR_NOTEXTTOSEND";
-   components	= "libkineircd_irc2";
+   components	= "mod_irc2user";
    data_en	= "No text to send";
    data_tr	= "Gönderilecek text yok";
 };
@@ -335,7 +357,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOTOPLEVEL";
-   components	= "libkineircd_irc2";
+   components	= "mod_irc2user";
    data_en	= "No toplevel domain specified";
    data_tr	= "Toplevel domain belirtilmedi";
 };
@@ -376,9 +398,9 @@ tag = {
 };
 
 tag = {
-   name		= "irc2_ERR_TOOMANYTARGETS_TARGET_OVERFLOW";
+   name		= "irc2_ERR_TOOMANYTARGETS";
    fields	= "0 = maximum number of allowed targets";
-   components	= "libkineircd_irc2";
+   components	= "mod_irc2user";
    data_en	= "Too many recipients given (maximum of %p0 allowed). One or "
                   "more recipients may not have received your message.";
 };
@@ -462,7 +484,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_WILDTOPLEVEL";
-   components	= "libkineircd_irc2";
+   components	= "mod_irc2user";
    data_en	= "Wildcard in toplevel domain";
    data_tr	= "Yanlıž^_ gTLD belirtildi";
 };
@@ -1534,6 +1556,21 @@ tag = {
    name		= "irc2user_HELP_CMD_SILENCE_USAGE";
    components	= "mod_irc2user";
    data_en	= "{ { '+' | '-' } { <mask> | <nickname> } } | [ <nickname> ]";
+};
+
+tag = {
+   name		= "irc2user_HELP_CMD_SQUERY";
+   components	= "mod_irc2user";
+   data_en	= "Send the given query message to the given service. This "
+                  "cannot be used to send messages to anything other than "
+		  "services, however you may specify multiple services by "
+		  "listing the services, using a comma as a delimiter.";
+};
+
+tag = {
+   name		= "irc2user_HELP_CMD_SQUERY_USAGE";
+   components	= "mod_irc2user";
+   data_en	= "<service> ( ',' <service> )  ':' <message>";
 };
 
 tag = {
