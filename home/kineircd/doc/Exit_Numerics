@@ -12,3 +12,4 @@ hunting down potential issues).
   3  | Could not initialise the IRC Daemon
   4  | Could not execute fork() request
   5  | Caught an ugly signal and had to die (only applies if not dumping core)
+  6  | Could not load the given configuration file
