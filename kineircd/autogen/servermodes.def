@@ -95,6 +95,16 @@ servermodes = {
 
 servermodes = {
    irc2char	= "h";
+   name		= "HUB";
+   origin	= "ircu";
+   when		= "ircu2.10.11.04";
+   comment	= "Indicates the server is a hub. In ircu, this also hides "
+   		  "the server from users.";
+   broadcast	= "yes";
+};
+
+servermodes = {
+   irc2char	= "H";
    name		= "HIDDEN";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
@@ -156,7 +166,8 @@ servermodes = {
    origin	= "ircu";
    when		= "ircu2.10.11.04";
    comment	= "When set, the server is a 'service' (as in, it only "
-   		  "provides services).";
+   		  "provides services). In ircu, this also hides the server "
+		  "from users.";
    server_only	= "yes";
    broadcast	= "yes";
 };
