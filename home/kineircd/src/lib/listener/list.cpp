@@ -24,6 +24,8 @@
 #include "autoconf.h"
 #include "kineircd/kineircdconf.h"
 
+#include <aisutil/string/string.h>
+
 #include "kineircd/listenerlist.h"
 #include "debug.h"
 
