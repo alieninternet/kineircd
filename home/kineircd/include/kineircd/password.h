@@ -51,8 +51,8 @@ namespace Kine {
       };
       
       // Transform the nickname and password pair into SHA1 output
-      static digest_type makePassword(LibAIS::String& nickname,
-				      LibAIS::String& password) {
+      static digest_type makePassword(const LibAIS::String& nickname,
+				      const LibAIS::String& password) {
 	 return Utils::SHA1::generate(nickname.IRCtoLower() + delim + 
 				      password);
       };
