@@ -234,7 +234,8 @@ Exit::status_type Daemon::run(void)
 		     FD_CLR((*it)->getSocket().getFD(), &outFDSET);
 		     delete *it;
 		     connections.erase(it++);
-		     continue;
+//		     continue;
+		     break;
 		  }
 	       }
 	       
