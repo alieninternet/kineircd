@@ -183,6 +183,17 @@ void Protocol::doMOTD(const User& user, const bool justConnected)
 }
 
 
+/* handleSUMMON
+ * Original 10/04/2003 simonb
+ */
+void Protocol::doSUMMON(const User& user, const std::string& who)
+{
+   // We only reply to conform to specs..
+   sendNumeric(user, LibIRC2::Numerics::ERR_SUMMONDISABLED,
+	       GETLANG(irc2_ERR_SUMMONDISABLED));
+}
+
+
 /* doTIME
  * Original 29/08/2001 simonb
  */
@@ -225,6 +236,17 @@ void Protocol::doTIME(const User& user)
    
    // Also send the RPL_TIMEONSERVERIS
    sendTimeOnServer(user);
+}
+
+
+/* handleUSERS
+ * Original 10/04/2003 simonb
+ */
+void Protocol::doUSERS(const User& user)
+{
+   // Reply to conform to specs..
+   sendNumeric(user, LibIRC2::Numerics::ERR_USERSDISABLED,
+	       GETLANG(irc2_ERR_USERSDISABLED));
 }
 
 

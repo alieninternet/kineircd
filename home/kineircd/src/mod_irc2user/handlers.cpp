@@ -302,10 +302,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSUMMON)
 {
    // If there is no server parameter, we have to reply
    if (parameters.size() < 2) {
-      // .. and we only reply to conform to specs..
-      sendNumeric(LibIRC2::Numerics::ERR_SUMMONDISABLED,
-		  GETLANG(irc2_ERR_SUMMONDISABLED));
-      
+      doSUMMON(user, parameters[0]);
       return;
    }
    
@@ -336,10 +333,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERS)
 {
    // If there is no server parameter (no params at all), we have to reply
    if (parameters.empty()) {
-      // .. and we only reply to conform to specs..
-      sendNumeric(LibIRC2::Numerics::ERR_USERSDISABLED,
-		  GETLANG(irc2_ERR_USERSDISABLED));
-      
+      doUSERS(user);
       return;
    }
    
