@@ -27,8 +27,7 @@
 #include "module.h"
 
 
-// Anonymous namespace intentionally
-namespace mod_irc2user {
+namespace {
    /* moduleStart - Fire up the module
     * Original 05/10/2002 simonb
     */
@@ -71,9 +70,8 @@ namespace mod_irc2user {
       &moduleStart,
       &moduleStop
    };
-}; // namespace mod_irc2user
+}; // namespace {anonymous}
 
-using namespace mod_irc2user;
 
 KINE_MODULE_INIT {
    return new Kine::Module(moduleInfo);
