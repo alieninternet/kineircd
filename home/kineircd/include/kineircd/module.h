@@ -100,7 +100,8 @@ namespace Kine {
       // Destructor
       ~Module(void)
 	{};
-      
+
+    public:
       // Return the basic information about the module
       const basicInfo_type &getBasicInfo(void) const
 	{ return basicInfo; };
