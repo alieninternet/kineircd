@@ -79,7 +79,7 @@ namespace Version {
     * how #ifdef's are considered obsolete in C++! :)
     */
    char const *versionChars =
-// Section 1 - Configuration characters     
+// Configuration characters     
 #ifdef ALLOW_LOCALOP_CONNECT
 				"c"
 #endif
@@ -174,41 +174,12 @@ namespace Version {
      				"Z"
 #endif
      
-// Section 2 - Transport protocol phrases
+// Transport protocol phrases
 #ifdef HAVE_TRANSPORT_TCP_IPV4
      				",IPv4"
 #endif
 #ifdef HAVE_TRANSPORT_TCP_IPV6
      				",IPv6"
-#endif
-     
-// Section 3 - IRC protocol phrases
-#ifdef HAVE_IRC2USER_PROTOCOL
-     				",IRC2"
-#endif
-#ifdef HAVE_IRC2USER_IRCII_KLUGE
-					"i"
-#endif
-#ifdef HAVE_IRC2USER_MATCH_COUNTING
-					"m"
-#endif
-#ifdef HAVE_IRC3USER_PROTOCOL
-     				",IRC3"
-#endif
-#ifdef HAVE_P13SERVER_PROTOCOL
-     				",P13"
-#endif
-#ifdef HAVE_P13SERVER_COMPRESS
-     					"c"
-#endif
-#ifdef HAVE_P13SERVER_EXTENDED
-     					"e"
-#endif
-#ifdef HAVE_P14SERVER_PROTOCOL
-     				",P14"
-#endif
-#ifdef HAVE_P14SERVER_COMPRESS
-     					"c"
 #endif
 					; // The end, phew!
 }
