@@ -29,10 +29,6 @@
 
 # include "kineircd/kineircdconf.h"
 
-# ifdef HAVE_SYSLOG_H
-#  include <syslog.h>
-# endif
-
 # include "kineircd/str.h"
 
 namespace Kine {
