@@ -834,10 +834,13 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSTATS)
 	      commands().getCommandList().begin();
 	      it != commands().getCommandList().end();
 	      ++it) {
-	    // Send information about this command
-	    sendNumeric(LibIRC2::Numerics::RPL_STATSCOMMANDS,
-			it->first,
-			it->second.callCount);
+	    // Make sure this command has been used (as per RFC1459)
+	    if (it->second.callCount > 0) {
+	       // Send information about this command
+	       sendNumeric(LibIRC2::Numerics::RPL_STATSCOMMANDS,
+			   it->first,
+			   it->second.callCount);
+	    }
 	 }
 	 
 	 // Send the footer
