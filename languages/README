@@ -1,0 +1,116 @@
+
+Notes on the format of these files
+----------------------------------
+
+  Each line beginning with a '#' is considered a comment. The '#' character
+ is allowed to have white-space preceeding it and still be considered a
+ comment. Each line of data for the language engine is in the following
+ simple format:
+ 
+     tag = data
+
+ eg.
+
+     WORD = word
+     WORD_PLURAL = words
+     PHRASE = This is a phrase
+
+  Each tag must be on a separate line, as text cannot span multiple lines. Tags
+ are labeled in such a way to show their origin depending on their prefix. For
+ example, KINE_FOO relates to KineIRCd in general, and IRC2USER_BAH relates to
+ the irc2user protocol module.
+
+  Tags not in the language engine's database are simply ignored to allow for
+ backwards compatibility of the language data files. Tags that are present
+ in the language engine but are not defined in this file will be resolved as
+ a string containing a question mark ("?").
+
+  Tags with the '.' prefix have a special purpose, such as an internal
+ variable or instructions for the parser. Examples of these are '.REVISION',
+ '.LANGNAME', '.PREFIX' etc.
+ 
+  All tags are not case-sensitive, therefore 'foo', 'FOO', 'FoO' all are
+ identified to the langtags engine as the same tag.
+ 
+  Tags which get redefined will simply replace the previous definition, and as
+ such multiple definitions are not possible.
+
+  If multiple language files are loaded using the same language code, the data
+ is merged. Any redefined tags will be overwritten, and previously undefined
+ tags will be appended to the language data.
+
+
+
+Control tags
+------------
+
+  Various 'control tags' are defined. These control how the language file is
+ parsed.
+
+
+ .REVISION	(required)
+
+    This is the 'version' of the language file. It must be a number, 
+   without spaces or any special symbols. There is no specific format 
+   defined for the number, however KineIRCd developers should remember that
+   the number becomes a 32-bit integer. It's recommended to use the same
+   format commonly used for DNS zone records - that is YYYYMMDDPP where
+   YYYY = year, MM = month, DD = day, HH = hour, P = patch/modification level.
+   
+    eg. 20020823110
+
+
+ .MAINTAINER	(optional)
+
+    This is an e-mail address of who to contact regarding the language file.
+
+
+ .LANGCODE	(required)
+ 
+    This must be a registered language code defined by ISO-639-1, ISO-639-2 or
+   by the IANA. Please see RFC-3066 for more information, including
+   information on how to register a new languages/dialects. 
+   
+    See http://www.loc.gov/standards/iso639-2/bibcodes.html for more
+   information on the ISO-639-1 and ISO-639-2 standards. For information
+   on the IANA registrations (dialects and 'i-*' names), please see
+   http://www.iana.org/assignments/language-tags for details.
+
+
+ .LANGNAME	(required)
+
+    This is the name of the language in use, it should be the same as the
+   name associated with the ISO-639-(1/2) or IANA Language Tags. The name of
+   the language should be in it's own language, eg. 'English' in English,
+   'Deutsch' in German etc.
+
+
+ .LANGNOTE	(optional)
+
+    Any additional notes you need. Keep this brief. This is intended to
+   be used to supplement the language name (above). Eg. 'x-git' might be
+   taken the wrong way and it might be worth stating in a note that the
+   language is intended to be humourous.
+
+
+
+Substitutions within tag data
+-----------------------------
+
+    %p0 -> %p9	- Parameters, depending on the tag. (params 1..10)
+    %P0 -> %p9	- More parameters, rarely used (params 11..20)
+  
+	%%	- A percentage sign
+	%a	- The name of the server's administrator
+	%A	- The contact point of the server's administrator (e-mail)
+	%d	- The description of the server
+	%L	- The location of the server
+	%n	- The name of the server (its hostname)
+	%N	- The name of the network
+
+	\\	- A slash
+       \nnn	- An escaped character. All characters, except #0, are valid.
+        \b	- Toggle bold (same as \002)
+	\r	- Toggle reversed (same as \026)
+	\u	- Toggle underline (same as \037)
+	\g	- Beep (only supported on some IRC clients; same as \007)
