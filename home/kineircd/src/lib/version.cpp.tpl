@@ -24,7 +24,15 @@
  *
  *
 [+(dne " * ")+]
- */
+ */[+
+DEFINE read-file-as-array+][+
+  (shellf "exec 4< %s; export IFS=`echo -e '\n'`" (get "file")) +][+
+  WHILE `read -sr line <&4 && echo 'true'` +][+
+    (sprintf "\t %s,\n"
+      (c-string (shell "echo -En $line"))) +][+
+  ENDWHILE +][+
+  `exec 4<&-` +][+
+ENDDEF+]
 
 #ifdef HAVE_CONFIG_H
 # include "autoconf.h"
@@ -80,24 +88,7 @@ namespace Kine {
        *       copyright).
        */
       const char* const versionInfo[] = {
-"            (__)     _  __              ___ ____   ____    _",
-"            {oo}    | |/ /_ _ __   ___ |   |  _ \\ / ___|__| |",
-"      ,------\\/     | ' /| | '_ \\ / . \\ | || |_) | |   / _` |",
-"     /|     ||      | . \\| | | | |  __/ | ||  _ <| |__| (_| |",
-"      |.w---||      |_|\\_\\_|_| |_|\\___||___|_| \\_\\\\____\\__._|",
-"      ^^    ^^",
-"",
-"Copyright \302\251 1996,1998,1999,2000,2001,2002 Alien Internet Services",
-"Copyright \302\251 2001,2002 KineIRCd Development Team",
-"This is free software; see the source for copying conditions. There",
-"is NO WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A",
-"PARTICULAR PURPOSE.",
-"",	
-" KineIRCd Development Team:",
-"    Simon Butcher           Scott Mackenzie",
-"",
-"Bugs? Questions? Comments? E-mail: kineircd@alien.net.au",	   
-	 0
+[+read-file-as-array file='lib/version.txt'+]	 0
       };
       
       /* Special version mark thingy whatsit string doohickey.. thingamejig...
