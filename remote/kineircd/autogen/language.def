@@ -212,8 +212,8 @@ tag = {
 tag = {
    name		= "irc2_ERR_TOOMANYMATCHES";
    components	= "mod_irc2user";
-   data_en	= "There were many matches in your query, the output has been "
-                  "truncated. Consider restricting your query.";
+   data_en	= "There were too many matches in your query, and the output "
+                  "has been truncated. Consider restricting your query.";
 };
 
 tag = {
