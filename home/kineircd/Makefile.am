@@ -226,7 +226,6 @@ libkineircd_la_SOURCES=\
 	src/libkineircd/listener/config.cpp \
 	src/libkineircd/listener/config.h \
 	src/libkineircd/listener/list.cpp \
-	src/libkineircd/modules/modules.cpp \
 	src/libkineircd/modules/descriptor.cpp \
 	src/libkineircd/modules/list.cpp \
 	src/libkineircd/chantypes.cpp \

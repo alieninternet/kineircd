@@ -48,11 +48,8 @@ namespace {
       // Firstly, we list the version/copyright information for this module
       MOD_IRC2USER_NAME_SHORT,
       MOD_IRC2USER_NAME_LONG,
-      MOD_IRC2USER_COPYRIGHT,
       MOD_IRC2USER_VERSION_MAJOR, 
       MOD_IRC2USER_VERSION_MINOR,
-      MOD_IRC2USER_VERSION_PATCHLEVEL,
-      MOD_IRC2USER_VERSION_EXTRA,
       0,
 
       // Flags to define how we need to be run

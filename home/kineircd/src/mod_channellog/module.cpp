@@ -39,11 +39,8 @@ namespace {
       // Firstly, we list the version/copyright information for this module
       MOD_CHANNELLOG_NAME_SHORT,
       MOD_CHANNELLOG_NAME_LONG,
-      MOD_CHANNELLOG_COPYRIGHT,
       MOD_CHANNELLOG_VERSION_MAJOR, 
       MOD_CHANNELLOG_VERSION_MINOR,
-      MOD_CHANNELLOG_VERSION_PATCHLEVEL,
-      MOD_CHANNELLOG_VERSION_EXTRA,
       0,
 
       // Flags to define how we need to be run

@@ -86,7 +86,7 @@ ModuleDescriptor* const ModuleList::loadModule(const String& filename,
       if (std::find_if(modules.begin(), modules.end(),
 		       checkKey(descriptor->getModule().getKeyName())) !=
 	  modules.end()) {
-	 errString = descriptor->getModule().getVersionString() + 
+	 errString = descriptor->getModule().getInfo().makeVersionString() + 
 	   " can only be loaded once";
 	 delete descriptor;
 	 return 0;
@@ -98,7 +98,7 @@ ModuleDescriptor* const ModuleList::loadModule(const String& filename,
    
 #ifdef KINE_DEBUG
    debug("ModuleList::loadModule() - Added " +
-	 descriptor->getModule().getVersionString() + 
+	 descriptor->getModule().getInfo().makeVersionString() + 
 	 " to the module list (" + String::convert(modules.size()) +
 	 " modules currently loaded)");
    
@@ -134,15 +134,15 @@ void ModuleList::startAll(void) const
 	it != modules.end(); ++it) {
 #ifdef KINE_DEBUG
       debug("ModuleList::startAll() - Starting: " +
-	    (*it)->getModule().getVersionString());
+	    (*it)->getModule().getInfo().makeVersionString());
 #endif
       if ((*it)->start()) {
 	 daemon().log("Started module " +
-		      (*it)->getModule().getVersionString(),
+		      (*it)->getModule().getInfo().makeVersionString(),
 		      Logger::Mask::Housekeeping);
       } else {
 	 daemon().log("Unable to start module " +
-		      (*it)->getModule().getVersionString(),
+		      (*it)->getModule().getInfo().makeVersionString(),
 		      Logger::Mask::Warning);
       }
    }
@@ -164,7 +164,7 @@ void ModuleList::stopAll(void)
 	it != modules.end(); ++it) {
 #ifdef KINE_DEBUG
       debug("ModuleList::stopAll() - Stopping: " +
-	    (*it)->getModule().getVersionString());
+	    (*it)->getModule().getInfo().makeVersionString());
 #endif
       
       // Delete the module..

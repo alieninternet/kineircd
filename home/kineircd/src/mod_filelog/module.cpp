@@ -39,11 +39,8 @@ namespace {
       // Firstly, we list the version/copyright information for this module
       MOD_FILELOG_NAME_SHORT,
       MOD_FILELOG_NAME_LONG,
-      MOD_FILELOG_COPYRIGHT,
       MOD_FILELOG_VERSION_MAJOR, 
       MOD_FILELOG_VERSION_MINOR,
-      MOD_FILELOG_VERSION_PATCHLEVEL,
-      MOD_FILELOG_VERSION_EXTRA,
       0,
 
       // Flags to define how we need to be run

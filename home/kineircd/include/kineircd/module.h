@@ -24,8 +24,9 @@
 #ifndef _INCLUDE_KINEIRCD_MODULE_H_
 # define _INCLUDE_KINEIRCD_MODULE_H_ 1
 
+# include <string>
+# include <sstream>
 # include <aisutil/config/parser.h>
-# include <aisutil/string/string.h>
 
 // Template for the function which initialises the module and returns the info
 # define KINE_MODULE_INIT_PROTOTYPE(x) \
@@ -59,24 +60,20 @@ namespace Kine {
       struct Info {
 	 /* Name and version information of the module.
 	  * Note that the full module version will be seen as follows:
-	  * <nameShort>-<versionMajor>.<versionMinor>.<versionPatchLevel>
-	  *  <versionExtra>
-	  * Eg. FooMod-1.2.3b
+	  * <nameShort>-<versionMajor>.<versionMinor>
+	  * Eg. FooMod-1.2
 	  */
 	 const char* const nameShort;
 	 const char* const nameLong;
-	 const char* const copyright;
 	 const unsigned char versionMajor;
 	 const unsigned char versionMinor;
-	 const unsigned short versionPatchLevel;
-	 const char* const versionExtra;
 
 	 /* This is a zero-terminated array of lines to be appended to the
 	  * list for /INFO. Lines must be 60 visible characters or shorter.
 	  * That also means formatting characters (\002 etc) do not count in
 	  * that total :) Do not use \a, \b, \t, \n, \v, \f, or \r, and make
 	  * sure characters are in UTF-8. If there is no information you want
-	  * listed, simply set this pointer to 0.
+	  * listed, simply set this to a null pointer (0).
 	  */
 	 const char* const* versionInfo;
 
@@ -88,8 +85,18 @@ namespace Kine {
 	 
 	 // This little function checks if the stuff above is valid
 	 const bool isOkay(void) const {
-	    return ((nameShort != 0) && (nameLong != 0) && (copyright != 0));
+	    return ((nameShort != 0) && (nameLong != 0));
 	 };
+
+	 // Return the name (from the information) in full version format
+	 const std::string makeVersionString(void) const
+	   {
+	      std::ostringstream output;
+	      output << nameShort << '-' <<
+		(unsigned int)versionMajor << '.' <<
+		(unsigned int)versionMinor;
+	      return output.str();
+	   };
       };
 
     protected:
@@ -112,9 +119,6 @@ namespace Kine {
       // Start the module
       virtual bool start(void) = 0;
 
-      // Return the name (from the information) in full version format
-      const AISutil::String getVersionString(void) const;
-      
       // Return a name worthy enough to be used as a key in a map
       const char* const getKeyName(void) const
 	{ return getInfo().nameShort; };
