@@ -54,10 +54,10 @@ namespace Kine {
       struct RegistrationType { // <=- Should be namespace?
 	 enum type {
 	    NONE = 0,				// No type, yet
-	    CLIENT,				// A client or user connection
 	    IIRCN,				// An IIRC network connection
 	    SERVER,				// A server connection
-	    SERVICE				// A service connection
+	    SERVICE,				// A service connection
+	    USER				// A client or user connection
 	 };
       };
       RegistrationType::type registrationType;	// Type of registration
@@ -105,7 +105,7 @@ namespace Kine {
 	: Protocol(c),
           listener(l),
           registrationType(RegistrationType::NONE),
-          pongsLeft(config().getOptionsRegistrarClientPingProbeCount())
+          pongsLeft(config().getOptionsRegistrarUserPingProbeCount())
 	{};
       
       // Destructor

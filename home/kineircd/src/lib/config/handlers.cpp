@@ -542,9 +542,16 @@ namespace Config {
    const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassOptionsRegistrar = {
 	{
-	   "CLIENTPINGPROBECOUNT", 10,
-	     (void *)&Config::defOptionsRegistrarClientPingProbeCount,
+	   "USERPINGPROBECOUNT", 10,
+	     (void *)&Config::defOptionsRegistrarUserPingProbeCount,
 	     &varHandleUnsignedChar,
+	     0,
+	     0
+	},
+	{
+	   "USERPROTOCOLDEFAULT", 9,
+	     (void *)&Config::defOptionsRegistrarUserProtocolDefault,
+	     &varHandleStringOneWord,
 	     0,
 	     0
 	},
@@ -776,7 +783,8 @@ Kine::Config::Config(void)
     defOptionsLimitsUsersMaxWatches(DEFAULT_OPTIONS_LIMITS_USERS_MAX_WATCHES),
 
     // "OPTIONS.REGISTRAR" class
-    defOptionsRegistrarClientPingProbeCount(DEFAULT_OPTIONS_REGISTRAR_CLIENT_PING_PROBE_COUNT)
+    defOptionsRegistrarUserPingProbeCount(DEFAULT_OPTIONS_REGISTRAR_USER_PING_PROBE_COUNT),
+    defOptionsRegistrarUserProtocolDefault(DEFAULT_OPTIONS_REGISTRAR_USER_PROTOCOL_DEFAULT)
   
 #ifdef KINE_WITH_SSL
   , // <=- here to continue the list properly

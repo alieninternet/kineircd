@@ -39,7 +39,7 @@ namespace Kine {
 	    UNKNOWN = 0,		// Unset, or unknown
 	    REGISTRAR_EXTENSION,	// Something that extends the registrar
 	    STANDALONE_EXTENSION,	// Something that has its own registrar
-	    CLIENT,			// A server<->user protocol
+	    USER,			// A server<->user protocol
 	    NETWORK,			// A network<->network protocol
 	    SERVER,			// A server<->server protocol
 	    SERVICE			// A server<->service protocol

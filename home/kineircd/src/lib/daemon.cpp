@@ -222,6 +222,11 @@ bool Daemon::deregisterProtocol(const ProtocolName& name)
 ProtocolInfo* const Daemon::findProtocol(const ProtocolName::Type::type type,
 					 const std::string& name) const
 {
+#ifdef KINE_DEBUG_PSYCHO
+   debug("Daemon::findProtocol() - Looking for protocol '" +
+	 name + "'; type #" + String::convert(type));
+#endif
+
    // Find the protocol, maybe (this is ugly IMHO)
    protocols_type::const_iterator proto =
      protocols.find(ProtocolName(name.c_str(), type));

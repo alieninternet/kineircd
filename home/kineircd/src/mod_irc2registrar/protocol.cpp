@@ -181,8 +181,9 @@ void Registrar::parseLine(const String& line)
     case RegistrationType::NONE:
       // There is nothing to do - registration has not been completed yet.
       return;
-       
-    case RegistrationType::CLIENT:
+      
+      
+    case RegistrationType::USER:
       // Make sure all required fields have been given..
       if (registrantData.nickname.empty() ||
 	  registrantData.username.empty() ||
@@ -191,9 +192,31 @@ void Registrar::parseLine(const String& line)
 	 return;
       }
       
-      // No support yet...
-      sendError("Requested client protocol unavailable");
-      return;
+      /* If the protocol field is empty, we must make a presumption on what
+       * protocol to use - that is not a good thing, but unfortunately nobody
+       * considered multiple user protocols until recently..
+       */
+      if (registrantData.protocol.empty()) {
+	 protocolInfo =
+	   daemon().findProtocol(ProtocolName::Type::USER,
+				 config().
+				 getOptionsRegistrarUserProtocolDefault());
+      } else {
+	 protocolInfo = 
+	   daemon().findProtocol(ProtocolName::Type::USER,
+				 registrantData.protocol.toUpper());
+      }
+
+      // Check if we found something..
+      if (protocolInfo == 0) {
+	 // Complain
+	 sendError("Requested user protocol unavailable");
+	 return;
+      }
+
+      // Go onto the next stage (fire the protocol up)
+      break;
+      
       
     case RegistrationType::IIRCN:
       // Make sure all required fields have been given..
@@ -217,6 +240,7 @@ void Registrar::parseLine(const String& line)
       }
 
       break;
+
       
     case RegistrationType::SERVER:
       // Make sure all required fields have been given..
@@ -228,6 +252,7 @@ void Registrar::parseLine(const String& line)
       // No support yet...
       sendError("Requested server protocol unavailable");
       return;
+      
       
     case RegistrationType::SERVICE:
       // Make sure all required fields have been given..
@@ -690,7 +715,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
 #endif
    
    // Set the registration mode
-   registrationType = RegistrationType::CLIENT;
+   registrationType = RegistrationType::USER;
 }
 
 
