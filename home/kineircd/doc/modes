@@ -220,6 +220,28 @@ Phew.
 h - Hidden
 Hide the server from the network. Opers can still see it, though
 
+l - 'Lazy Link' / Leaf
+An idea from efnet (I beleive) - servers that are lazy linked are generally
+servers that are on the 'outskirts' of the network -- servers that are only
+used by a (very) small population of the network and therefore do not need
+to receive the amount of traffic normally received. A non-lazy link to the
+network receives every server/user/service connection, channel joins, parts,
+mode changes, topic changes etc. Most of this information will not be sent
+to a 'lazy' server, since in most cases the information is simply redundant
+data. The lazy server will ask its uplink for information on whatever it
+needs *WHEN* it needs it, rather than just being fed the data. This makes
+the server slightly less zippy, but for a server with small numbers this
+should not be of any consequence. Lazy links are only available in P14
+server protocol and above.
+This mode ALSO has the effect of a traditional style 'leaf' server
+connection, which means the server cannot have any downstream servers on the
+network, only an upstream server (in english: it can only connect out, nothing
+can connect in to it). With server protocol P14, the leaf server can have
+many upstream connections, but the limit of no down-stream connections still
+exists. The definition of a leaf is somewhat blurred with P14's bone and
+tendril connections, something (hopefully) explained more-so in the protocol
+specifications.
+
 L - Server Modes Lock
 Locks the server modes so nobody can change them. This can only be toggled by
 servers or in the configuration file. Once set, operators (local and remote)
