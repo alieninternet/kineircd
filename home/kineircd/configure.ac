@@ -952,7 +952,7 @@ dnl Protocol toggles
 dnl
 AC_MSG_CHECKING([protocol-irc2user parameter])
 if test "$austhex_test_enable_user_protocols" = "yes"; then
-  AC_ARG_ENABLE(protocol-irc2user,[  --enable-protocol-irc2user     allow the irc2 user/client protocol],
+  AC_ARG_ENABLE(protocol-irc2user,[  --enable-protocol-irc2user     allow the IRC-2 user/client protocol],
    [
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)
@@ -973,6 +973,50 @@ else
 fi
 AC_SUBST(austhex_test_have_protocol_irc2user)
 
+AC_MSG_CHECKING([protocol-irc3user parameter])
+if test "$austhex_test_enable_user_protocols" = "yes"; then
+  AC_ARG_ENABLE(protocol-irc2user,[  --enable-protocol-irc3user     allow the IRC-3 user/client protocol],
+   [
+     if test "$enableval" = "no"; then
+       AC_MSG_RESULT(no)
+       austhex_test_have_protocol_irc3user=no
+     else
+       AC_MSG_RESULT(yes)
+       AC_DEFINE(HAVE_PROTOCOL_IRC3USER)
+       austhex_test_have_protocol_irc3user=yes
+     fi
+   ],[
+     AC_MSG_RESULT([no (default)])
+     austhex_test_have_protocol_irc3user=no
+   ])
+else
+  AC_MSG_RESULT([no (clients disallowed)])
+  austhex_test_have_protocol_irc3user=no
+fi
+AC_SUBST(austhex_test_have_protocol_irc3user)
+
+if test "$austhex_test_have_protocol_irc3user" = "yes"; then
+AC_MSG_CHECKING([compress-irc3user parameter])
+  AC_ARG_ENABLE(compress-irc3user,[  --enable-compress-irc3user     allow compression of the IRC-3 user protocol],
+   [
+     if test "$enableval" = "no"; then
+       AC_MSG_RESULT(no)
+       austhex_test_compress_protocol_irc3user=no
+     else
+       AC_MSG_RESULT(yes)
+       AC_DEFINE(COMPRESS_PROTOCOL_IRC3USER)
+       austhex_test_compress_protocol_irc3user=yes
+     fi
+   ],[
+     AC_MSG_RESULT([yes (default)])
+     AC_DEFINE(COMPRESS_PROTOCOL_IRC3USER)
+     austhex_test_compress_protocol_irc3user=yes
+   ])
+else
+  austhex_test_compress_protocol_irc3user=no
+fi
+AC_SUBST(austhex_test_compress_protocol_irc3user)
+ 
 AC_MSG_CHECKING([protocol-p13server parameter])
 AC_ARG_ENABLE(protocol-p13server,[  --enable-protocol-p13server    allow the P13 server protocol],
  [
@@ -992,7 +1036,7 @@ AC_ARG_ENABLE(protocol-p13server,[  --enable-protocol-p13server    allow the P13
 AC_SUBST(austhex_test_have_protocol_p13server)
 
 if test "$austhex_test_have_protocol_p13server" = "yes"; then
-AC_MSG_CHECKING([protocol-p13server parameter])
+AC_MSG_CHECKING([compress-p13server parameter])
   AC_ARG_ENABLE(compress-p13server,[  --enable-compress-p13server    allow compression of the P13 server protocol],
    [
      if test "$enableval" = "no"; then
@@ -1031,7 +1075,7 @@ AC_ARG_ENABLE(protocol-p14server,[  --enable-protocol-p14server    allow the P14
 AC_SUBST(austhex_test_have_protocol_p14server)
 
 if test "$austhex_test_have_protocol_p14server" = "yes"; then
-AC_MSG_CHECKING([protocol-p14server parameter])
+AC_MSG_CHECKING([compress-p14server parameter])
   AC_ARG_ENABLE(compress-p14server,[  --enable-compress-p14server    allow compression of the P14 server protocol],
    [
      if test "$enableval" = "no"; then

@@ -459,9 +459,10 @@ void Daemon::rehash(Handler *handler, User *user)
    if (user) {
       // Tell the user, if there is a handler we are rehashing
       if (handler) {
-	 handler->sendNumeric(server, RPL_REHASHING, user,
-			      configFile +
-			      Language::L_RPL_REHASHING);
+	 handler->
+	   sendNumeric(server, RPL_REHASHING, user,
+		       configFile + String(" :") +
+		       user->getLocalInfo()->lang(Language::L_RPL_REHASHING));
       }
       
       // Send out a server broadcast notifying of the rehash

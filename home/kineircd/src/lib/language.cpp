@@ -22,15 +22,47 @@ namespace Language {
     * WARNING!!! Make sure this list is in perfect sync with the enumeration 
     * list in the language header file!
     */
-   Language::languageTagsStruct languageTags[NUM_LANG_TAGS] =
+   Language::languageTagsStruct languageTags[Language::_END_] =
      {
-	{ "REVISION",			true,	true },
-	{ "MAINTAINER",			true,	true },
-	{ "LANGCODE",			true,	true },
-	{ "LANGNAME",			true,	false },
-	{ "LANGNOTE",			false,	false },
-	{ "CHARSET",			true,	true },
-	{ "E_RPL_ISUPPORT",		false,	false }
+	  { "CHARSET",				true,	true },
+	  { "E_RPL_ISUPPORT",			false,	false },
+	  { "E_RPL_LOGOFF_CHANNEL",		false,	false },
+	  { "E_RPL_LOGOFF_SERVER",		false,	false },
+	  { "E_RPL_LOGOFF_USER",		false,	false },
+	  { "E_RPL_LOGON_CHANNEL",		false,	false },
+	  { "E_RPL_LOGON_SERVER",		false,	false },
+	  { "E_RPL_LOGON_USER",			false,	false },
+	  { "E_RPL_NOWOFF",			false,	false },
+	  { "E_RPL_NOWON_CHANNEL",		false,	false },
+	  { "E_RPL_NOWON_SERVER",		false,	false },
+	  { "E_RPL_NOWON_USER",			false,	false },
+	  { "E_RPL_WATCHOFF",			false,	false },
+	  { "L_DEFAULT_KNOCK_REASON",		false,	false },
+	  { "L_ERR_NOOPERHOST",			false,	false },
+	  { "L_ERR_NOOPERHOST_NOOP",		false,	false },
+	  { "L_ERR_PASSWDMISMATCH",		false,	false },
+	  { "L_RPL_REHASHING",			false,	false },
+	  { "L_RPL_SPAM_A",			false,	false },
+	  { "L_RPL_SPAM_B",			false,	false },
+	  { "L_RPL_SPAM_C",			false,	false },
+	  { "L_RPL_SPAM_D",			false,	false },
+	  { "L_RPL_YOUREOPER",			false,	false },
+	  { "L_RPL_YOUREOPER_ALREADY",		false,	false },
+	  { "LANGCODE",				true,	true },
+	  { "LANGNAME",				true,	false },
+	  { "LANGNOTE",				false,	false },
+	  { "MAINTAINER",			true,	true },
+	  { "P_ERR_WHOTRUNC",			false,	false },
+	  { "P_NO_MATCH",			false,	false },
+	  { "P_RPL_ENDOFHELP",			false,	false },
+	  { "P_RPL_ENDOFNAMES",			false,	false },
+	  { "P_RPL_ENDOFWHOWAS",		false,	false },
+	  { "P_RPL_NOTOPIC",			false,	false },
+	  { "P_RPL_NOWAWAY",			false,	false },
+	  { "P_RPL_UNAWAY",			false,	false },
+	  { "REVISION",				true,	true },
+	  { "W_MATCH",				false,	false },
+	  { "W_MATCH_PL",			false,	false }
      };
 
    // The map with the languages in it..
@@ -65,30 +97,12 @@ namespace Language {
      "NOTICE %s :*** Your host is %s, running version %s%s";
    char const *L_RPL_CREATED =
      ":This server was created %s";
-//   char const *L_RPL_ISUPPORT_TAG =
-//     " :are supported by this server";
    char const *L_RPL_TIMEONSERVERIS =
      "%lu %ld %s %s :time according to server";
-
-   // 'Spam' notification, rather server policy that demands to be read
-   char const *L_RPL_SPAM_LINE1 =
-     ": ";
-   char const *L_RPL_SPAM_LINE2 =
-     ": Please be advised that use of this service constitutes consent to";
-   char const *L_RPL_SPAM_LINE3 =
-     ":  all network policies and server conditions of use, which can be";
-   char const *L_RPL_SPAM_LINE4 =
-     ": sighted at http://www.austnet.org/agreement/ and is in accordance";
-   char const *L_RPL_SPAM_LINE5 =
-     ": with the Electronic Communications Privacy Act,  18 USC 2701-2711";
-   char const *L_RPL_SPAM_LINE6 =
-     ": ";
 
    // Generic responces
    char const *L_ERR_UNKNOWNCOMMAND =
      " :Unknown command";
-   char const *L_ERR_PASSWDMISMATCH =
-     ":Password incorrect";
    char const *L_ERR_SERVERTOOFULL =
      ":This server cannot accept any more user connections";
    char const *L_ERR_NEEDMOREPARAMS =
@@ -162,8 +176,6 @@ namespace Language {
 
    char const *L_RPL_CHANREDIR =
      "%s %s :You are being redirected";
-   char const *L_RPL_NOTOPIC =
-     " :No topic is set";
 
    // Mode related messages
    char const *L_RPL_ENDOFBANLIST =
@@ -228,16 +240,8 @@ namespace Language {
      ":MOTD on %s cannot be viewed remotely";
 
    // WHO messages
-   char const *L_ERR_WHOTRUNC =
-     ":Who list too long - Truncated.";
    char const *L_RPL_ENDOFWHO =
      "%s :End of WHO list";
-#ifdef DO_MATCH_COUNTING
-   char const *L_RPL_ENDOFWHO_NOMATCH =
-     "%s :End of WHO list (no match)";
-   char const *L_RPL_ENDOFWHO_MATCHES =
-     "%s :End of WHO list (%d matches)";
-#endif
 
    // WHOIS messages
    char const *L_RPL_WHOISVIRT =
@@ -251,51 +255,18 @@ namespace Language {
    char const *L_RPL_ENDOFWHOIS =
      " :End of WHOIS list";
 
-   // WHOWAS messages
-   char const *L_RPL_ENDOFWHOWAS =
-     "%s :End of WHOWAS";
-#ifdef DO_MATCH_COUNTING
-   char const *L_RPL_ENDOFWHOWAS_NOMATCH =
-     "%s :End of WHOWAS (no match, or matches have expired)";
-   char const *L_RPL_ENDOFWHOWAS_MATCHES =
-     "%s :End of WHOWAS (%d matches)";
-#endif
-
    // HELP command replies
-   char const *L_RPL_ENDOFHELP =
-     "%s :End of HELP";
-#ifdef DO_MATCH_COUNTING
-   char const *L_RPL_ENDOFHELP_NOMATCH =
-     "%s :End of HELP (no match)";
-   char const *L_RPL_ENDOFHELP_MATCHES =
-     "%s :End of HELP (%d matches)";
-#endif
    char const *L_RPL_ENDOFHELP_SIMPLE =
      "%s :End of HELP; Try 'HELP -%s' for more information";
-#ifdef DO_MATCH_COUNTING
-   char const *L_RPL_ENDOFHELP_SIMPLE_MATCHES =
-     "%s :End of HELP (%d matches); Try 'HELP -%s' for more information";
-#endif
 
    // LANGUAGE command messages
-#ifdef DO_MATCH_COUNTING
-   char const *L_RPL_ENDOFLANGUAGES =
-     ":End of LANGUAGES list (%d language(s))";
-#else
    char const *L_RPL_ENDOFLANGUAGES =
      ":End of LANGUAGES list";
-#endif
    char const *L_ERR_NOLANGUAGE =
      " :is an unknown language to me";
    char const *L_ERR_NOMORELANGS =
      "%u :No more languages can be set";
    
-   // AWAY command messages
-   char const *L_RPL_NOWAWAY =
-     ":You have been marked as being away";
-   char const *L_RPL_UNAWAY =
-     ":You are no longer marked as being away";
-
    // WATCH command messages
    char const *L_ERR_TOOMANYWATCH =
      "%s :Maximum size for WATCH-list is %d entries";
@@ -303,32 +274,6 @@ namespace Language {
      ":You have %d and are on %d WATCH entries";
    char const *L_RPL_ENDOFWATCHLIST =
      ":End of WATCH %c";
-
-   char const *L_RPL_LOGOFF_SERVER =
-     ":has net-split";
-   char const *L_RPL_LOGOFF_CHANNEL =
-     ":has disappeared";
-   char const *L_RPL_LOGOFF_USER =
-     ":has logged off";
-
-   char const *L_RPL_LOGON_SERVER =
-     ":has net-joined";
-   char const *L_RPL_LOGON_CHANNEL =
-     ":has been created";
-   char const *L_RPL_LOGON_USER =
-     ":has logged on";
-
-   char const *L_RPL_NOWON_SERVER =
-     ":is connected";
-   char const *L_RPL_NOWON_CHANNEL =
-     ":exists";
-   char const *L_RPL_NOWON_USER =
-     ":is online";
-
-   char const *L_RPL_NOWOFF =
-     ":is offline";
-   char const *L_RPL_WATCHOFF =
-     ":stopped watching";
 
    // ACCEPT command replies
    char const *L_RPL_ENDOFACCEPT =
@@ -370,8 +315,6 @@ namespace Language {
      "users only (+R)";
    char const *L_RPL_KNOCKING =
      " :has received your KNOCKing";
-   char const *L_DEFAULT_KNOCK_REASON =
-     "This user is requesting to be invited to the channel";
    
    // LUSERS command replies
    char const *L_RPL_LUSERCLIENT =
@@ -467,14 +410,6 @@ namespace Language {
      ":End of INFO";
    char const *L_RPL_LISTEND =
      ":End of LIST";
-   char const *L_RPL_ENDOFNAMES =
-     "%s :End of NAMES list";
-#ifdef DO_MATCH_COUNTING
-   char const *L_RPL_ENDOFNAMES_NOMATCH =
-     "%s :End of NAMES list (no match)";
-   char const *L_RPL_ENDOFNAMES_MATCHES =
-     "%s :End of NAMES list (%d matches)";
-#endif
    char const *L_RPL_ENDOFSTATS =
      " :End of STATS report";
 
@@ -508,17 +443,6 @@ namespace Language {
 
    char const *L_DEFAULT_QUIT_MESSAGE =
      "Exit: Austnet Chat Network";
-
-   char const *L_ERR_NOOPERHOST =
-     ":Access Denied: No operator details configured for your host";
-   char const *L_ERR_NOOPERHOST_NOOP =
-     ":Access Denied: This server is in NOOP mode.";
-   char const *L_RPL_YOUREOPER =
-     ":You are now an unpaid network babysitter";
-   char const *L_RPL_YOUREOPER_ALREADY =
-     ":You're ALREADY an IRC Operator!";
-   char const *L_RPL_REHASHING =
-     " :Rehashing";
 
    char const *L_RPL_ENDOFLINKS =
      " :End of LINKS list";
@@ -588,7 +512,7 @@ bool Language::loadLanguages(String const &directory,
 	 lineNum = 0;
 	 
 	 while (!file.eof()) {
-	    // Reset some more variables
+	    // Clean-up
 	    tag = "";
 	    data = "";
 	    
@@ -610,7 +534,7 @@ bool Language::loadLanguages(String const &directory,
 	    
 	    // Look up the tag in the taglist (this is really inefficient)
 	    bool found = false;
-	    unsigned int tn = NUM_LANG_TAGS;
+	    unsigned int tn = Language::_END_;
 	    for (; tn--;) {
 	       // Check for a match
 	       if (tag == languageTags[tn].name) {
@@ -664,7 +588,7 @@ bool Language::loadLanguages(String const &directory,
 	 /* Run through our language tags list and grab data from the map and
 	  * shove it into the LanguageData:: vector in proper order
 	  */
-	 for (int i = 0; i < NUM_LANG_TAGS; i++) {
+	 for (int i = 0; i < Language::_END_; i++) {
 	    // Check if this has been set
 	    if (langData[languageTags[i].name]) {
 	       lang->dialogue.push_back(*langData[languageTags[i].name]);
@@ -750,3 +674,13 @@ LanguageData *Language::get(String const &code)
 }
 
 
+/* lang - Grab language dialogue from the default language if selected
+ * Original 03/11/01, Simon Butcher <pickle@austnet.org>
+ * Notes: This should be inline...
+ */
+String Language::lang(Language::tag_t const &t)
+{
+   return (defaultLanguage ? 
+	   defaultLanguage->get(t) : 
+	   String("*"));
+};

@@ -153,6 +153,8 @@ class irc2userHandler : public Handler {
 
    // Helpers
    void doNAMES(String const &);		// Do a NAMES request
+   String lang(Language::tag_t const &t) const;	// Pull out a language string
+
    
    // Protocol input
    static void parseACCEPT(irc2userHandler *handler, StringTokens *tokens);
@@ -263,6 +265,19 @@ class irc2userHandler : public Handler {
 # endif
 
 
+# ifdef HAVE_PROTOCOL_IRC3USER
+// IRC-3 User-handler sub-class
+class irc3userHandler : public Handler {
+ private:
+   User *user;					// Link to the user data
+
+ public:
+   irc3userHandler(Connection *, User *, String);	// Constructor
+   ~irc3userHandler(void);				// Destructor
+};
+# endif
+
+
 # ifdef HAVE_PROTOCOL_P13SERVER
 // P13-handler sub-class
 class p13serverHandler : public Handler {
@@ -369,7 +384,6 @@ class p14serverHandler : public Handler {
    Server *server;				// Server data
 
    struct functionTableStruct {
-      char const command;			// Command name
       void (*function)(p14serverHandler *handler, String const &origin, 
 		       StringTokens *tokens);	// Parsing handler function
    }; 

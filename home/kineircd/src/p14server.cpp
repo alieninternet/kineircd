@@ -10,51 +10,51 @@
 // Functions table (from P14_Notes)
 struct p14serverHandler::functionTableStruct const 
   p14serverHandler::functionsTable[] = {
-       { '0',	0 },			// SERVICE (broadcast)
-       { 'a',	0 },			// ADMIN (remote)
-       { 'A',	0 },			// AWAY
-       { 'b',	0 },			// NOTICE (to broadcast mask)
-       { 'B',	0 },			// PRIVMSG (to broadcast mask)
-       { 'c',	0 },			// CONNECT (remote)
-       { 'e',	0 },			// EOB_REPLY
-       { 'E',	0 },			// END_OF_BURST
-       { 'f',	0 },			// MODE (user)
-       { 'F',	0 },			// MODE (channel)
-       { 'g',	0 },			// MODE (server)
-       { 'G',	0 },			// GNOTICE (broadcast)
-       { 'i',	0 },			// INFO (remote)
-       { 'I',	0 },			// INVITE
-       { 'J',	0 },			// JOIN
-       { 'k',	0 },			// KICK
-       { 'K',	0 },			// KILL (broadcast)
-       { 'l',	0 },			// LINKS (remote)
-       { 'L',	0 },			// PART
-       { 'm',	0 },			// NOTICE (to user)
-       { 'M',	0 },			// PRIVMSG (to user)
-       { 'n',	0 },			// NICK (change)
-       { 'N',	0 },			// NICK (assignment)
-       { 'O',	0 },			// MOTD (remote)
-       { 'p',	0 },			// PONG
-       { 'P',	0 },			// PING
-       { 'q',	0 },			// QUIT (user quit)
-       { 'Q',	0 },			// SQUIT (server quit)
-       { 'r',	0 },			// TRACEROUTE (remote)
-       { 'R',	0 },			// TRACE
-       { 's',	0 },			// STATS (remote)
-       { 'S',	0 },			// SERVER (broadcast)
-       { 't',	0 },			// TIME (remote)
-       { 'T',	0 },			// TOPIC (broadcast)
-       { 'v',	0 },			// VERSION (remote)
-       { 'V',	0 },			// LANGUAGE (broadcast)
-       { 'w',	0 },			// WHOIS (remote)
-       { 'W',	0 },			// WALLOPS (broadcast)
-       { 'x',	0 },			// NOTICE (to channel)
-       { 'X',	0 },			// PRIVMSG (to channel)
-       { 'y',	0 },			// ACCEPT (broadcast)
-       { 'Y',	0 },			// SILENCE (broadcast)
-       { 'z',	0 },			// RPONG
-       { 'Z',	0 },			// RPING
-       { 0 }
+       { 0 },			// 0x00 = NICK (change)
+       { 0 },			// 0x01 = NICK (assignment)
+       { 0 },			// 0x02 = MODE (user)
+       { 0 },			// 0x03 = MODE (channel)
+       { 0 },			// 0x04 = MODE (server)
+       { 0 },			// 0x05 = PRIVMSG (to channel)
+       { 0 },			// 0x06 = PRIVMSG (to user)
+       { 0 },			// 0x07 = PRIVMSG (to broadcast mask)
+       { 0 },			// 0x08 = NOTICE (to channel)
+       { 0 },			// 0x09 = NOTICE (to user)
+       { 0 },			// 0x0A = NOTICE (to broadcast mask)
+       { 0 },			// 0x0B = JOIN
+       { 0 },			// 0x0C = PART
+       { 0 },			// 0x0D = GNOTICE (broadcast)
+       { 0 },			// 0x0E = TOPIC (broadcast)
+       { 0 },			// 0x0F = KICK (broadcast)
+       { 0 },			// 0x10 = PING
+       { 0 },			// 0x11 = PONG
+       { 0 },			// 0x12 = KILL (broadcast)
+       { 0 },			// 0x13 = AWAY (broadcast)
+       { 0 },			// 0x14 = WALLOPS (broadcast)
+       { 0 },			// 0x15 = ACCEPT (broadcast)
+       { 0 },			// 0x16 = SILENCE (broadcast)
+       { 0 },			// 0x17 = QUIT (user quit)
+       { 0 },			// 0x18 = SQUIT (server quit)
+       { 0 },			// 0x19 = LANGUAGE (broadcast)
+       { 0 },			// 0x1A = WHOIS (remote)
+       { 0 },			// 0x1B = SERVER (broadcast)
+       { 0 },			// 0x1C = SERVICE (broadcast)
+       { 0 },			// 0x1D = INVITE
+       { 0 },			// 0x1E = ADMIN (remote)
+       { 0 },			// 0x1F = CONNECT (remote)
+       { 0 },			// 0x20 = MOTD (remote)
+       { 0 },			// 0x21 = TIME (remote)
+       { 0 },			// 0x22 = VERSION (remote)
+       { 0 },			// 0x23 = TRACEROUTE (remote)
+       { 0 },			// 0x24 = TRACE
+       { 0 },			// 0x25 = STATS (remote)
+       { 0 },			// 0x26 = RPING
+       { 0 },			// 0x27 = RPONG
+       { 0 },			// 0x28 = UPING
+       { 0 },			// 0x29 = UPONG
+       { 0 },			// 0x30 = NUMERIC
+       { 0 },			// 0x31 = EOB_REPLY
+       { 0 }			// 0x32 = END_OF_BURST
   };
 
 

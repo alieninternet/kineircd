@@ -177,8 +177,8 @@ void registerHandler::parseLine(String const &line)
 	    if (password.length()) {
 	       // something here.
 # ifndef PASSIVE_REGISTRATION      	 
-	       sendNumeric(ERR_PASSWDMISMATCH, 0, 
-			   Language::L_ERR_PASSWDMISMATCH);
+	       sendNumeric(ERR_PASSWDMISMATCH, 0,
+			   Language::lang(Language::L_ERR_PASSWDMISMATCH));
 # endif
 # ifdef DEBUG_EXTENDED
 	       debug("Invalid password, terminating!");

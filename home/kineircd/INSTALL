@@ -385,10 +385,18 @@
      --enable-protocol-irc2user (default)
      --disable-protocol-irc2user
      
-       The irc2 protocol is used with every irc client these days. Unless
+       The IRC-2 protocol is used with every irc client these days. Unless
        the server is being set up for something specific (such as hubbing)
        it would be wise to have this enabled.
-       
+
+     
+     --enable-protocol-irc3user
+     --disable-protocol-irc3user (default)
+
+       The IRC-3 protocol is currently experimental and is not used in any
+       available clients. This protocol is still on the drawing boards, and
+       as such should not be compiled into the server until it is finalised.
+
      
      --enable-protocol-p13server (default)
      --disable-protocol-p13server

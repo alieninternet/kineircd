@@ -205,7 +205,7 @@ class LocalUser {
      };
    
    // Grab a language string
-   String lang(Language::tag_t t) 
+   String lang(Language::tag_t const &t)
      {
 	// Return it from the language dialogue data if we can
 	if (language) { 

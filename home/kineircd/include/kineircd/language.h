@@ -16,10 +16,6 @@
 # include "str.h"
 
 
-// Number of language tags
-# define NUM_LANG_TAGS		7
-
-
 class LanguageData;
 
 
@@ -37,14 +33,55 @@ class Language {
     * list in language.cpp!!
     */
    enum tag_t {
-      REVISION,
-      MAINTAINER,
-      LANGCODE,
-      LANGNAME,
-      LANGNOTE,
-      CHARSET,
-      E_RPL_ISUPPORT
+	CHARSET,
+	E_RPL_ISUPPORT,
+	E_RPL_LOGOFF_CHANNEL,
+	E_RPL_LOGOFF_SERVER,
+	E_RPL_LOGOFF_USER,
+	E_RPL_LOGON_CHANNEL,
+	E_RPL_LOGON_SERVER,
+	E_RPL_LOGON_USER,
+	E_RPL_NOWOFF,
+	E_RPL_NOWON_CHANNEL,
+	E_RPL_NOWON_SERVER,
+	E_RPL_NOWON_USER,
+	E_RPL_WATCHOFF,
+	L_DEFAULT_KNOCK_REASON,
+	L_ERR_NOOPERHOST,
+	L_ERR_NOOPERHOST_NOOP,
+	L_ERR_PASSWDMISMATCH,
+	L_RPL_REHASHING,
+	L_RPL_SPAM_A,
+	L_RPL_SPAM_B,
+	L_RPL_SPAM_C,
+	L_RPL_SPAM_D,
+	L_RPL_YOUREOPER,
+	L_RPL_YOUREOPER_ALREADY,
+	LANGCODE,
+	LANGNAME,
+	LANGNOTE,
+	MAINTAINER,
+	P_ERR_WHOTRUNC,
+	P_NO_MATCH,
+	P_RPL_ENDOFHELP,
+	P_RPL_ENDOFNAMES,
+	P_RPL_ENDOFWHOWAS,
+	P_RPL_NOTOPIC,
+	P_RPL_NOWAWAY,
+	P_RPL_UNAWAY,
+        REVISION,
+	W_MATCH,
+	W_MATCH_PL,
+	_END_
    };
+   // 'Spam' notification, rather server policy that demands to be read
+   static char const *L_RPL_SPAM_LINE1;
+   static char const *L_RPL_SPAM_LINE2;
+   static char const *L_RPL_SPAM_LINE3;
+   static char const *L_RPL_SPAM_LINE4;
+   static char const *L_RPL_SPAM_LINE5;
+   static char const *L_RPL_SPAM_LINE6;
+   
    
 // private:
  public:
@@ -54,7 +91,7 @@ class Language {
       bool const required;
       bool const oneword;
    };
-   static languageTagsStruct languageTags[NUM_LANG_TAGS];
+   static languageTagsStruct languageTags[Language::_END_];
    static languages_map_t languages;		// Installed languages
    static LanguageData *defaultLanguage;	// Default language
    static String ISUPPORTcodes;			// ISUPPORT LANGUAGE= data
@@ -70,11 +107,14 @@ class Language {
    
    static LanguageData *get(String const &);	// Find language dialogue data
    
-   // Grab the ISUPPORT data for the LANGUAGE= tag
+   // Grab the data for the LANGUAGE= 'ISUPPORT' tag
    static String getISUPPORTcodes(void)
      {
 	return ISUPPORTcodes;
      };
+   
+   // Return language dialogue from the default language, if set
+   static String lang(Language::tag_t const &);
    
    // Greeting lines sent when a user connects
    static char const *L_PINGPONG_NOTICE;
@@ -82,20 +122,10 @@ class Language {
    static char const *L_RPL_YOURHOST;
    static char const *L_RPL_YOURHOST_IRCII_KLUGE_NOTICE;
    static char const *L_RPL_CREATED;
-//   static char const *L_RPL_ISUPPORT_TAG;
    static char const *L_RPL_TIMEONSERVERIS;
 
-   // 'Spam' notification, rather server policy that demands to be read
-   static char const *L_RPL_SPAM_LINE1;
-   static char const *L_RPL_SPAM_LINE2;
-   static char const *L_RPL_SPAM_LINE3;
-   static char const *L_RPL_SPAM_LINE4;
-   static char const *L_RPL_SPAM_LINE5;
-   static char const *L_RPL_SPAM_LINE6;
-   
    // Generic responces
    static char const *L_ERR_UNKNOWNCOMMAND;
-   static char const *L_ERR_PASSWDMISMATCH;
    static char const *L_ERR_SERVERTOOFULL;
    static char const *L_ERR_NEEDMOREPARAMS;
    static char const *L_ERR_ALREADYREGISTERED;
@@ -133,7 +163,6 @@ class Language {
    static char const *L_ERR_CANNOTSENDTOCHAN_MODERATED;
    static char const *L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY;
    static char const *L_RPL_CHANREDIR;
-   static char const *L_RPL_NOTOPIC;
    
    // Mode related messages
    static char const *L_RPL_ENDOFBANLIST;
@@ -167,12 +196,7 @@ class Language {
    static char const *L_ERR_NOMOTD_NOREMOTE;
    
    // WHO messages
-   static char const *L_ERR_WHOTRUNC;
    static char const *L_RPL_ENDOFWHO;
-# ifdef DO_MATCH_COUNTING
-   static char const *L_RPL_ENDOFWHO_NOMATCH;
-   static char const *L_RPL_ENDOFWHO_MATCHES;
-# endif
    
    // WHOIS messages
    static char const *L_RPL_WHOISVIRT;
@@ -181,48 +205,18 @@ class Language {
    static char const *L_RPL_WHOISSECURE;
    static char const *L_RPL_ENDOFWHOIS;
    
-   // WHOWAS messages
-   static char const *L_RPL_ENDOFWHOWAS;
-# ifdef DO_MATCH_COUNTING
-   static char const *L_RPL_ENDOFWHOWAS_NOMATCH;
-   static char const *L_RPL_ENDOFWHOWAS_MATCHES;
-# endif
-   
    // HELP command replies
-   static char const *L_RPL_ENDOFHELP;
-# ifdef DO_MATCH_COUNTING
-   static char const *L_RPL_ENDOFHELP_NOMATCH;
-   static char const *L_RPL_ENDOFHELP_MATCHES;
-# endif
    static char const *L_RPL_ENDOFHELP_SIMPLE;
-# ifdef DO_MATCH_COUNTING
-   static char const *L_RPL_ENDOFHELP_SIMPLE_MATCHES;
-# endif
 
    // LANGUAGE command messages
    static char const *L_RPL_ENDOFLANGUAGES;
    static char const *L_ERR_NOLANGUAGE;
    static char const *L_ERR_NOMORELANGS;
    
-   // AWAY command messages
-   static char const *L_RPL_NOWAWAY;
-   static char const *L_RPL_UNAWAY;
-
    // WATCH command messages
    static char const *L_ERR_TOOMANYWATCH;
    static char const *L_RPL_WATCHSTAT;
    static char const *L_RPL_ENDOFWATCHLIST;
-   static char const *L_RPL_LOGOFF_SERVER;
-   static char const *L_RPL_LOGOFF_CHANNEL;
-   static char const *L_RPL_LOGOFF_USER;
-   static char const *L_RPL_LOGON_SERVER;
-   static char const *L_RPL_LOGON_CHANNEL;
-   static char const *L_RPL_LOGON_USER;
-   static char const *L_RPL_NOWON_SERVER;
-   static char const *L_RPL_NOWON_CHANNEL;
-   static char const *L_RPL_NOWON_USER;
-   static char const *L_RPL_NOWOFF;
-   static char const *L_RPL_WATCHOFF;
 
    // ACCEPT command replies
    static char const *L_RPL_ENDOFACCEPT;
@@ -246,7 +240,6 @@ class Language {
    static char const *L_ERR_NOKNOCK_INVITED;
    static char const *L_ERR_NOKNOCK_REGONLY;
    static char const *L_RPL_KNOCKING; 
-   static char const *L_DEFAULT_KNOCK_REASON;
    
    // LUSERS command replies
    static char const *L_RPL_LUSERCLIENT;
@@ -295,11 +288,6 @@ class Language {
    static char const *L_ERROR_CLOSING_LINK_DEFAULT_REASON;
    static char const *L_RPL_ENDOFINFO;
    static char const *L_RPL_LISTEND;
-   static char const *L_RPL_ENDOFNAMES;
-# ifdef DO_MATCH_COUNTING
-   static char const *L_RPL_ENDOFNAMES_NOMATCH;
-   static char const *L_RPL_ENDOFNAMES_MATCHES;
-# endif
    static char const *L_RPL_ENDOFSTATS;
    static char const *L_RPL_VERSION;
    static char const *L_RPL_ADMINME;
@@ -313,11 +301,6 @@ class Language {
    static char const *L_ERR_NOSUCHNICK_OR_SERVER;
    static char const *L_ERR_CANNOTSENDTONICK_MUSTID;
    static char const *L_DEFAULT_QUIT_MESSAGE;
-   static char const *L_ERR_NOOPERHOST;
-   static char const *L_ERR_NOOPERHOST_NOOP;
-   static char const *L_RPL_YOUREOPER;
-   static char const *L_RPL_YOUREOPER_ALREADY;
-   static char const *L_RPL_REHASHING;
    static char const *L_RPL_ENDOFLINKS;
    
    friend class LanguageData;
@@ -343,20 +326,19 @@ class LanguageData {
      };
 
    // Grab a string from the language dialogue data
-   String get(Language::tag_t n)
+   String get(Language::tag_t const &n) const
      { 
 	return dialogue[n]; 
      };
 
    // Check if something exists in the dialogue
-   bool has(Language::tag_t n)
+   bool has(Language::tag_t const &n) const
      {
 	return (dialogue[n].length() > 0);
      };
    
    friend class Language;
 };
-
 
 #endif
 
