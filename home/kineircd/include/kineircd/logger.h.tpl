@@ -36,11 +36,10 @@ namespace Kine {
       // Bitmask list for a mask (type of log message)
       struct Mask { // <=- should be namespace!
          // The masks
-         enum type {[+ (define bitvalue 1) +][+ FOR logger_masks "," +]
-	    [+
-	       (define newbitvalue (* bitvalue 2))
-	       (define bitvalue newbitvalue)
-               (sprintf "%-25s = 0x%08X" (get "name") (/ newbitvalue 2))
+         enum type {[+ FOR logger_masks "," +]
+	    [+ (sprintf "%-25s = 0x%08X"
+	          (get "name")
+		  (expt 2 (for-index)))
              +][+ ENDFOR logger_masks +]
          };
 	 
