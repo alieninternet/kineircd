@@ -80,14 +80,23 @@ void Protocol::doMessage(const parameters_type& parameters,
 		     // Check if we can send to this target
 		     
 		     // Okay, send the message finally
-		     
 		     if (!isNotice) {
 			// Send the message, remembering the error
 			const Error::error_type error =
 			  receiver->sendMessage(user, parameters[1]);
 
-			// If there was no error (most likely), jump!
+			// Was there no error (most likely)?
 			if (error == Error::NO_ERROR) {
+			   // If this was a user, check if they were away
+			   const User* const foundUser =
+			     dynamic_cast<const User* const>(receiver);
+			   if ((foundUser != 0) && (foundUser->isAway())) {
+			      sendNumeric(LibIRC2::Numerics::RPL_AWAY,
+					  foundUser->getName(),
+					  foundUser->getAwayMessage());
+			   }
+			   
+			   // Skip to the next target..
 			   continue;
 			}
 
