@@ -1,3 +1,4 @@
+config.h
 errors.h
 kineircdconf.h
 logger.h
