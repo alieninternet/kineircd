@@ -1,7 +1,7 @@
 /* $Id$
- * Language configuration handler thing
+ * Include the real string class, and extend it a smidge
  * 
- * Copyright (c) 2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -21,19 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_LANGUAGE_CONFIG_H_
-# define _SRC_LIB_LANGUAGE_CONFIG_H_ 1
+#ifndef _INCLUDE_KINEIRCD_STR_H_
+# define _INCLUDE_KINEIRCD_STR_H_ 1
 
-# include <libais/config/parser.h>
+// For now, just include the string classes, close to what used to be ..
+# include <libais/string/string.h>
 
-# include "kineircd/languagelist.h"
+# include <libais/string/mask.h>
+# include <libais/string/tokens.h>
 
-namespace Kine {
-   namespace LanguageConfig {
-      // The variable handler
-      extern LIBAIS_CONFIG_VARIABLE_HANDLER(varHandler);
-   };
-};
-   
-#endif // _SRC_LIB_LANGUAGE_CONFIG_H_
-   
+#endif // _INCLUDE_KINEIRCD_STR_H_

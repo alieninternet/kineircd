@@ -25,11 +25,14 @@
 
 #include <iostream>
 #include <fstream>
+#include <libais/string/tokens.h>
 
 #include "kineircd/languagelist.h"
 #include "debug.h"
 
 using namespace Kine;
+using LibAIS::String;
+using LibAIS::StringTokens;
 
 
 /* loadFile - Load a language file

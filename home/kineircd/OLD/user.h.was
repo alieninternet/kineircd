@@ -35,12 +35,13 @@
 #  include <list>
 # endif
 
+# include <libais/string/string.h>
+
 namespace Kine {
    class User;
 };
 
 # include "kineircd/localuser.h"
-# include "kineircd/str.h"
 # include "kineircd/server.h"
 # include "kineircd/channel.h"
 # include "kineircd/handler.h"

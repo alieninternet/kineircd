@@ -40,7 +40,7 @@ namespace Kine {
    // The syslog logging class
    class LoggerSyslog : public Logger {
     private:
-      void logLine(const String &, 
+      void logLine(const LibAIS::String &,
 		   const mask_type = MASK_HOUSEKEEPING);// Log a string of text
       
     public:

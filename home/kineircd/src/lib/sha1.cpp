@@ -12,6 +12,7 @@
 
 #include "kineircd/kineircdconf.h"
 
+#include <string>
 #include <cstring>
 #include <cstdlib>
 
@@ -22,7 +23,6 @@ extern "C" {
 }
 
 #include "kineircd/utils.h"
-#include "kineircd/str.h"
 
 using namespace Kine;
 
@@ -302,7 +302,7 @@ const Utils::SHA1::digest_type Utils::SHA1::nullDigest = {
  * 06/04/2002 simonb - Outputting digest (string generation migrated out)
  * 07/04/2002 simonb - Removed string output, now returns the digest itself.
  */
-Utils::SHA1::digest_type Utils::SHA1::generate(const String &line)
+Utils::SHA1::digest_type Utils::SHA1::generate(const std::string &line)
 {
    /* Make sure we got something. The SHA1 generator doesn't like to be fed
     * nothings
@@ -336,11 +336,11 @@ Utils::SHA1::digest_type Utils::SHA1::generate(const String &line)
  * Original 22/01/2001 scottm
  * 07/04/2002 simonb - Separated from generate() function
  */
-String Utils::SHA1::digestToStr(const digest_type &digest,
-				const base_type base,
-				const String::size_type pad)
+std::string Utils::SHA1::digestToStr(const digest_type &digest,
+				     const base_type base,
+				     const std::string::size_type pad)
 {
-   String output;
+   std::string output;
    
    for (unsigned char i = 5; i--;) {
       output += Utils::baseXStr(digest.u_long[i], base).prepad(pad, '0');

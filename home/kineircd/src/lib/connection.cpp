@@ -27,12 +27,13 @@
 #include "debug.h"
 
 using namespace Kine;
+using LibAIS::String;
 
 
 /* Connection - Initialise new connection
  * Original 12/08/2001 simonb
  */
-Connection::Connection(Daemon& d, Socket& s)
+Connection::Connection(Daemon& d, LibAIS::Socket& s)
 : daemon(d),
   socket(s),
   protocol(0),

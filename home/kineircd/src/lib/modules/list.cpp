@@ -27,6 +27,7 @@
 #include "debug.h"
 
 using namespace Kine;
+using LibAIS::String;
 
 
 /* loadModule - Load a module, check it and add it to our list if it is okay

@@ -28,15 +28,17 @@
 #include <cerrno> // temporary
 
 extern "C" {
-#include "netdb.h"
-#include "netinet/in.h"
+#include <netdb.h>
+#include <netinet/in.h>
 };
 
+#include <libais/socket/sockets.h>
+
 #include "listener/config.h"
-#include "socket/sockets.h"
 #include "debug.h"
 
 using namespace Kine;
+using LibAIS::String;
 
 
 // Protocol names used when getting information via getservent()
@@ -44,7 +46,7 @@ const char* ListenerConfig::tcpProtocolName = "TCP";
 
 
 // "LISTEN" class
-const ConfigParser::defTable_type ListenerConfig::classDefs = {
+const LibAIS::ConfigParser::defTable_type ListenerConfig::classDefs = {
      {
 	"ADDRESS",
 	  (void *)&ListenerConfig::varAddress,
@@ -119,7 +121,7 @@ ListenerConfig::ListenerConfig(void)
     varAllowServers(false),
     varAllowServices(false),
     varAllowUsers(false),
-    varListenBacklog(KINE_SOCKET_DEFAULT_LISTEN_BACKLOG),
+    varListenBacklog(LIBAIS_SOCKET_DEFAULT_LISTEN_BACKLOG),
     varSecure(false)
 {
 }
@@ -128,7 +130,8 @@ ListenerConfig::ListenerConfig(void)
 /* classHandleListen
  * Original 18/08/2002 simonb
  */
-bool ListenerConfig::setupSocket(Socket& socket, String& errString, int port)
+bool ListenerConfig::setupSocket(LibAIS::Socket& socket, 
+				 LibAIS::String& errString, int port)
 {
    // Set its address
    if (!varAddress.empty()) {
@@ -168,14 +171,14 @@ bool ListenerConfig::setupSocket(Socket& socket, String& errString, int port)
 /* classHandleListen
  * Original 11/08/2002 simonb
  */
-CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
+LIBAIS_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 {
    // Create our temporary config data class for the listener
    ListenerConfig config;
    
       // Throw the listener stuff over to the configuration parser..
-   if (!ConfigParser::parse(configData, position, (void *)(classDefs),
-			    config)) {
+   if (!LibAIS::ConfigParser::parse(configData, position, 
+				    (void *)(classDefs), config)) {
       return false;
    }
 
@@ -203,16 +206,16 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
     */
    enum {
       DOMAIN_UNKNOWN,
-#ifdef KINE_HAVE_SOCKET_IPV4_TCP
+#ifdef LIBAIS_HAVE_SOCKET_IPV4_TCP
       DOMAIN_IPV4,
 #endif
-#ifdef KINE_HAVE_SOCKET_IPV6_TCP
+#ifdef LIBAIS_HAVE_SOCKET_IPV6_TCP
       DOMAIN_IPV6,
 #endif
-#ifdef KINE_HAVE_SOCKET_IPX_SPX
+#ifdef LIBAIS_HAVE_SOCKET_IPX_SPX
       DOMAIN_IPX,
 #endif
-#ifdef KINE_HAVE_SOCKET_UNIX
+#ifdef LIBAIS_HAVE_SOCKET_UNIX
       DOMAIN_UNIX
 #endif
    } domainType = DOMAIN_UNKNOWN;
@@ -223,7 +226,7 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
       String domain = values.front().toUpper();
       
       // Try and determine the domain
-#ifdef KINE_HAVE_SOCKET_IPV4_TCP
+#ifdef LIBAIS_HAVE_SOCKET_IPV4_TCP
       if ((domain == "IPV4") || (domain == "TCP/IPV4")) {
 # ifdef KINE_DEBUG_PSYCHO
 	 debug("ListenerConfig::classHandler() - TCP/IPv4 socket chosen");
@@ -231,7 +234,7 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 	 domainType = DOMAIN_IPV4;
       } else 
 #endif
-#ifdef KINE_HAVE_SOCKET_IPV6_TCP
+#ifdef LIBAIS_HAVE_SOCKET_IPV6_TCP
       if ((domain == "IPV6") || (domain == "TCP/IPV6")) {
 # ifdef KINE_DEBUG_PSYCHO
 	 debug("ListenerConfig::classHandler() - TCP/IPv6 socket chosen");
@@ -239,7 +242,7 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 	 domainType = DOMAIN_IPV6;
       } else
 #endif
-#ifdef KINE_HAVE_SOCKET_IPX_SPX
+#ifdef LIBAIS_HAVE_SOCKET_IPX_SPX
       if ((domain == "IPX") || (domain == "SPX") || (domain == "IPX/SPX")) {
 # ifdef KINE_DEBUG_PSYCHO
 	 debug("ListenerConfig::classHandler() - IPX/SPX socket chosen");
@@ -247,7 +250,7 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 	 domainType = DOMAIN_IPX;
       } else
 #endif
-#ifdef KINE_HAVE_SOCKET_UNIX
+#ifdef LIBAIS_HAVE_SOCKET_UNIX
       if (domain == "UNIX") {
 # ifdef KINE_DEBUG_PSYCHO
 	 debug("ListenerConfig::classHandler() - UNIX socket chosen");
@@ -265,7 +268,7 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 
    // If we still do not have the socket created by now, try to make a guess..
    if (domainType == DOMAIN_UNKNOWN) {
-#ifdef KINE_HAVE_SOCKET_IPV4_TCP
+#ifdef LIBAIS_HAVE_SOCKET_IPV4_TCP
       if (false) {
 # ifdef KINE_DEBUG_PSYCHO
 	 debug("ListenerConfig::classHandler() - "
@@ -274,7 +277,7 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 	 domainType = DOMAIN_IPV4;
       } else
 #endif
-#ifdef KINE_HAVE_SOCKET_IPV6_TCP
+#ifdef LIBAIS_HAVE_SOCKET_IPV6_TCP
       if (false) {
 # ifdef KINE_DEBUG_PSYCHO
 	 debug("ListenerConfig::classHandler() - "
@@ -297,7 +300,7 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
    assert(domainType != DOMAIN_UNKNOWN);
 #endif
    
-#ifdef KINE_HAVE_SOCKET_UNIX
+#ifdef LIBAIS_HAVE_SOCKET_UNIX
    // If the socket type is unix - in that case we don't care about ports.
    if (domainType == DOMAIN_UNIX) {
       // Make sure the address exists!
@@ -311,13 +314,13 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
       debug("ListenerConfig::classHandler() - Creating a UNIX socket...");
 # endif
       // Create the socket and set it up
-      SocketUNIX *socket = new SocketUNIX();
+      LibAIS::SocketUNIX *socket = new LibAIS::SocketUNIX();
       if (!config.setupSocket(*socket, errString)) {
 	 return false;
       }
       
       // Add it to the list
-      (dataClass.*((ListenerList ConfigData::*)dataVariable)).listeners.
+      (dataClass.*((ListenerList LibAIS::ConfigData::*)dataVariable)).listeners.
 	push_front(new Listener(*socket, config.varListenBacklog, flags));
       return true;
    }
@@ -345,7 +348,7 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 
    // If we are looking up names, make the protocols file stay open
    if (lookupNames) {
-#ifdef KINE_HAVE_SOCKET_IPX_SPX
+#ifdef LIBAIS_HAVE_SOCKET_IPX_SPX
       // If the socket domain type is IPX, we cannot accept this.
       if (domainType == DOMAIN_IPX) {
 	 errString = 
@@ -411,20 +414,20 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
        * will only need to create ONE instance of this listener, rather than
        * look up the port(s) and potentially create multiple instances.
        */
-      Socket *socket = 0;
-#ifdef KINE_HAVE_SOCKET_IPV4_TCP
+      LibAIS::Socket *socket = 0;
+#ifdef LIBAIS_HAVE_SOCKET_IPV4_TCP
       if (domainType == DOMAIN_IPV4) {
-	 socket = new SocketIPv4TCP();
+	 socket = new LibAIS::SocketIPv4TCP();
       } else
 #endif   
-#ifdef KINE_HAVE_SOCKET_IPV6_TCP
+#ifdef LIBAIS_HAVE_SOCKET_IPV6_TCP
       if (domainType == DOMAIN_IPV6) {
-         socket = new SocketIPv6TCP();
+         socket = new LibAIS::SocketIPv6TCP();
       } else
 #endif
-#ifdef KINE_HAVE_SOCKET_IPX_SPX
+#ifdef LIBAIS_HAVE_SOCKET_IPX_SPX
       if (domainType == DOMAIN_IPX) {
-         socket = new SocketIPXSPX();
+         socket = new LibAIS::SocketIPXSPX();
       } else
 #endif
       { 

@@ -40,6 +40,8 @@
 #  include <list>
 # endif
 
+# include <libais/string/string.h>
+
 // Channel types we support for the ISUPPORT line.
 //# define CHANNEL_TYPES			"&#+!"
 
@@ -48,7 +50,6 @@ namespace Kine {
    class ChannelMember;
 };
 
-# include "kineircd/str.h"
 # include "kineircd/user.h"
 # include "kineircd/handler.h"
 

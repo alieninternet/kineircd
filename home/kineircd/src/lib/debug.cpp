@@ -33,12 +33,11 @@
 # warning "Compiling without DEBUG defined?!"
 #endif
 
-using namespace Kine;
 
 /* debug - Output a line of debugging information (and broadcast)
  * Original 25/09/01 simonb
  */
-void debug(String const &line)
+void debug(LibAIS::String const &line)
 {
    // Output it to stderr
    std::cerr << line << std::endl;

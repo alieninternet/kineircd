@@ -32,17 +32,18 @@
 #  include <map>
 # endif
 
+# include <libais/string/string.h>
+
 # include "kineircd/languagedata.h"
-# include "kineircd/str.h"
 
 namespace Kine {
    class LanguageList {
     private:
 # ifdef KINE_STL_HAS_HASH
-      typedef std::hash_map <String, LanguageData::tagID_type>
+      typedef std::hash_map <LibAIS::String, LanguageData::tagID_type>
 	tagDictionary_type;
 # else
-      typedef std::map <String, LanguageData::tagID_type>
+      typedef std::map <LibAIS::String, LanguageData::tagID_type>
 	tagDictionary_type;
 # endif
 
@@ -69,7 +70,7 @@ namespace Kine {
 	{};
       
       // Load a new language data file
-      bool loadFile(const String& filename, String& errString);
+      bool loadFile(const LibAIS::String& filename, LibAIS::String& errString);
    };
 };
 

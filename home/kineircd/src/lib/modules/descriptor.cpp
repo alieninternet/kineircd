@@ -31,6 +31,7 @@ extern "C" {
 #include "debug.h"
 
 using namespace Kine;
+using LibAIS::String;
 
 
 /* ~ModuleDescriptor - Descriptor destructor, hehe

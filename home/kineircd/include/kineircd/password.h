@@ -24,12 +24,11 @@
 #ifndef _INCLUDE_KINEIRCD_PASSWORD_H_
 # define _INCLUDE_KINEIRCD_PASSWORD_H_ 1
 
-# include "kineircd/str.h"
+# include <libais/string/string.h>
+
 # include "kineircd/utils.h"
 
-
 namespace Kine {
-   
    class Password {
     public:
       typedef Utils::SHA1::digest_type digest_type;
@@ -42,23 +41,22 @@ namespace Kine {
       
     public:
       // Constructor   
-      Password(const digest_type &p)
+      Password(const digest_type& p)
 	: password(p)
 	  {};
       
       // Return the password digest
-      const digest_type &getPassword(void) const {
+      const digest_type& getPassword(void) const {
 	 return password;
       };
       
       // Transform the nickname and password pair into SHA1 output
-      static digest_type makePassword(String const &nickname,
-				      String const &password) {
+      static digest_type makePassword(LibAIS::String& nickname,
+				      LibAIS::String& password) {
 	 return Utils::SHA1::generate(nickname.IRCtoLower() + delim + 
 				      password);
       };
    };
-   
 };
    
 #endif // _INCLUDE_KINEIRCD_PASSWORD_H_

@@ -32,10 +32,10 @@
 #   include <cassert>
 #  endif
 
-#  include "kineircd/str.h"
+#  include <libais/string/string.h>
 
 // Output/Broadcast debug line
-extern void debug(Kine::String const &);
+extern void debug(LibAIS::String const &);
    
 # endif // DEBUG
 #endif // _SRC_LIB_DEBUG_H_

@@ -33,6 +33,7 @@
 #include "debug.h"
 
 using namespace Kine;
+using LibAIS::String;
 
 
 // This is here so we can remember where we are!

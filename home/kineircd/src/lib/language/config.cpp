@@ -34,7 +34,7 @@ using namespace Kine;
 /* varHandler - Read configuration parameters and load a given language file
  * Original 22/08/2002 simonb
  */
-CONFIG_VARIABLE_HANDLER(LanguageConfig::varHandler)
+LIBAIS_CONFIG_VARIABLE_HANDLER(LanguageConfig::varHandler)
 {
 #ifdef KINE_DEBUG_ASSERT
    // If we were called in error, get cranky
@@ -46,6 +46,6 @@ CONFIG_VARIABLE_HANDLER(LanguageConfig::varHandler)
 #endif
    
    // Do the loading..
-   return ((dataClass.*((LanguageList ConfigData::*)dataVariable)).
+   return ((dataClass.*((LanguageList LibAIS::ConfigData::*)dataVariable)).
 	   loadFile(defName, errString));
 }

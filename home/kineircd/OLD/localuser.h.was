@@ -32,6 +32,8 @@
 #  include <set>
 # endif
 
+# include <libais/string/string.h>
+
 namespace Kine {
    class LocalUser;
 };
@@ -40,7 +42,6 @@ namespace Kine {
 # include "kineircd/channel.h"
 # include "kineircd/handler.h"
 # include "kineircd/lang.h"
-# include "kineircd/str.h"
 # include "kineircd/utils.h"
 # include "kineircd/logger.h"
 

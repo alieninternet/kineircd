@@ -16,6 +16,10 @@ LIB_AGE=@LIB_AGE@
 INCDIRS=@INCDIRS@ -I$(top_builddir)/include -I$(srcdir)
 DEFS=@DEFS@
 
+#LIBAIS_LIB=@libais_lib@
+#LIBAIS_LDFLAGS=@libais_ldflags@
+LIBAIS_LIB=-lais
+
 SSL_LIB=@ssl_lib@
 SSL_LDFLAGS=@ssl_ldflags@
 
@@ -29,11 +33,10 @@ SUB_DIRS=\
 	language \
 	listener \
 	logger \
-	modules \
-	socket
+	modules
 
 # This should be automatic.. I forgot how to do that tho.. I'll fix it soon!!
-ROBJECTS=config/config.lo language/language.lo listener/listener.lo logger/logger.lo modules/modules.lo socket/socket.lo
+ROBJECTS=config/config.lo language/language.lo listener/listener.lo logger/logger.lo modules/modules.lo
 
 VER_MAJOR=@VERSION_MAJOR@
 VER_MINOR=@VERSION_MINOR@
@@ -60,7 +63,6 @@ SOURCES=\
 	registrar.cpp \
 	sha1.cpp \
 	signals.cpp \
-	str.cpp \
 	utils.cpp
 
 SOURCES_NOT_YET=\
@@ -78,8 +80,8 @@ endif
 
 #OBJECTS=$(SOURCES:.cpp=.@OBJEXT@)
 OBJECTS=$(SOURCES:.cpp=.$(LIBTOOL_OBJ_EXT))
-LIBS+=$(SSL_LIB) -ldl # libdl included temporarily, I think..
-LDFLAGS+=$(SSL_LDFLAGS)
+LIBS+=$(LIBAIS_LIB) $(SSL_LIB) -ldl # libdl included temporarily, I think..
+LDFLAGS+=$(LIBAIS_LDFLAGS) $(SSL_LDFLAGS)
 
 AUTOGEN_TPL=\
 	regnumerics.h.tpl

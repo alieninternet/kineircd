@@ -762,7 +762,6 @@ AC_OUTPUT([
 	src/lib/listener/Makefile
 	src/lib/logger/Makefile
 	src/lib/modules/Makefile
-	src/lib/socket/Makefile
 	src/modules/Makefile
 	src/modules/mod_http/Makefile
 	src/modules/mod_snmp/Makefile

@@ -29,7 +29,7 @@
 
 # include "kineircd/kineircdconf.h"
 
-# include "kineircd/str.h"
+# include <libais/string/string.h>
 
 namespace Kine {
 
@@ -73,7 +73,8 @@ namespace Kine {
       const mask_type logMask;				// OK log message types
       
       // Log a string of text
-      virtual void logLine(const String &, const mask_type = MASK_HOUSEKEEPING)
+      virtual void logLine(const LibAIS::String &,
+      	                   const mask_type = MASK_HOUSEKEEPING)
 	{};
       
     public:
@@ -100,7 +101,8 @@ namespace Kine {
 	{ return true; };
 
       // Pass a line of text to the logging function if it matches our mask
-      void log(const String &line, const mask_type mask = MASK_HOUSEKEEPING)
+      void log(const LibAIS::String &line,
+               const mask_type mask = MASK_HOUSEKEEPING)
 	{
 	   if (logMask & mask) {
 	      logLine(line, mask);

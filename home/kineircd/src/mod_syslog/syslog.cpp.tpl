@@ -35,6 +35,7 @@
 #include "debug.h"
 
 using namespace Kine;
+using LibAIS::String;
 
 
 /* LoggerSyslog - Syslog logger component constructor

@@ -26,14 +26,12 @@
 
 # include "kineircd/kineircdconf.h"
 
+# include <string>
 # include <cstdlib>
-
-# include "kineircd/str.h"
-
+# include <libais/string/string.h>
+# include <libais/string/mask.h>
 
 namespace Kine {
-   
-   // Utility class
    class Utils {
     public:
       // Type of a "base"
@@ -43,15 +41,14 @@ namespace Kine {
       Utils(void) {};				// Constructor (cannot be run)
       
     public:
-      // utils.cpp
-      static String baseXStr(unsigned long, 
-			     const base_type);	// Convert to another base
+      // Convert to another base
+      static LibAIS::String baseXStr(unsigned long, const base_type);
       
-      static bool toBool(const String &,
-			 const bool);		// Convert a string to boolean
+      // Convert a string to boolean
+      static bool toBool(const LibAIS::String &, const bool);
       
-      static StringMask 
-	fixToIdentityMask(const String &);	// Fix a mask into an id mask
+      // Fix a mask into an id mask
+      static LibAIS::StringMask fixToIdentityMask(const LibAIS::String &);
       
       // sha1.cpp
       class SHA1 {
@@ -77,14 +74,14 @@ namespace Kine {
 	 static const digest_type nullDigest;
 	 
 	 // SHA1 digest from a string
-	 static digest_type generate(const String &);
+	 static digest_type generate(const std::string &);
 	 
 	 // Convert an SHA1 digest output to particular base
-	 static String digestToStr(const digest_type &, const base_type,
-				   const String::size_type);
+	 static std::string digestToStr(const digest_type &, 
+					const base_type,
+					const std::string::size_type);
       };
    };
-   
 };
    
 #endif // _INCLUDE_KINEIRCD_UTILS_H_

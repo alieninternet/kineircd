@@ -24,7 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_OPERATOR_H_
 # define _INCLUDE_KINEIRCD_OPERATOR_H_ 1
 
-# include "kineircd/str.h"
+# include <libais/string/string.h>
+
 # include "kineircd/password.h"
 
 /* Note that the nickname of the operator is stored as the key of the map
@@ -32,15 +33,14 @@
  */
 
 namespace Kine {
-   
    class Operator : public Password {
     private:
-      String const name;			// Name of this operator
+      const LibAIS::String name;		// Name of this operator
       const bool global;			// Global?
       
     public:
       // Constructor   
-      Operator(const String &n, const Utils::SHA1::digest_type &p, 
+      Operator(const LibAIS::String& n, const Utils::SHA1::digest_type& p,
 	       const bool g)
 	: Password(p),
           name(n),
@@ -48,7 +48,7 @@ namespace Kine {
 	{};
       
       // Return the operator name (description)
-      const String &getName(void) const {
+      const LibAIS::String& getName(void) const {
 	 return name;
       };
       
@@ -57,7 +57,6 @@ namespace Kine {
 	 return global;
       };
    };
-   
 };
    
 #endif // _INCLUDE_KINEIRCD_OPERATOR_H_

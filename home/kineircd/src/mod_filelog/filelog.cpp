@@ -28,6 +28,7 @@
 #include "debug.h"
 
 using namespace Kine;
+using LibAIS::String;
 
 
 /* LoggerFile - Generic file logger component constructor
@@ -64,7 +65,7 @@ LoggerFile::~LoggerFile(void)
  * 04/04/2002 simonb - Added debugging info
  * Note: This logging output sucks.
  */
-void LoggerFile::logLine(const String &line, const mask_type mask)
+void LoggerFile::logLine(const LibAIS::String &line, const mask_type mask)
 {
    if (ok()) {
 #ifdef KINE_DEBUG_PSYCHO

@@ -29,8 +29,8 @@ namespace Kine {
    class Daemon;
 };
 
-# include "kineircd/configparser.h"
-# include "kineircd/str.h"
+# include <libais/config/parser.h>
+# include <libais/string/string.h>
 
 // Template for the function which initialises the module and returns the info
 # define KINE_MODULE_INIT_PROTOTYPE(x) \
@@ -88,7 +88,7 @@ namespace Kine {
 	 const int flags;
 	 
 	 // Configuration info (optional, set to 0 if you don't want it)
-	 const ConfigParser::defTable_type* configDefinitions;
+	 const LibAIS::ConfigParser::defTable_type* configDefinitions;
 	 
 	 // The two required functions - start and stop
 	 const startFunction_type* const startFunction;
@@ -109,11 +109,11 @@ namespace Kine {
       const basicInfo_type& basicInfo;
 
       // The configuration data class (optional)
-      ConfigData* const configData;
+      LibAIS::ConfigData* const configData;
 
     public:
       // Constructor
-      Module(const basicInfo_type& bi, ConfigData* const cd = 0)
+      Module(const basicInfo_type& bi, LibAIS::ConfigData* const cd = 0)
 	: basicInfo(bi),
           configData(cd)
         {};
@@ -127,11 +127,11 @@ namespace Kine {
 	{ return basicInfo; };
 
       // Return the configuration data class pointer
-      ConfigData* const getConfigData(void) const
+      LibAIS::ConfigData* const getConfigData(void) const
 	{ return configData; };
       
       // Return the name (from the basic information) in full version format
-      String getVersionString(void) const;
+      LibAIS::String getVersionString(void) const;
       
       // Return a name worthy enough to be used as a key in a map
       const char* getKeyName(void) const

@@ -30,6 +30,8 @@
 #include "kineircd/utils.h"
 
 using namespace Kine;
+using LibAIS::String;
+using LibAIS::StringMask;
 
 
 /* baseXStr - Convert a number to another base (output a string) up to base 85

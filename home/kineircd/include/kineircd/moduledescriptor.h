@@ -29,8 +29,9 @@ namespace Kine {
    class Daemon;
 };
 
+# include <libais/string/string.h>
+
 # include "kineircd/module.h"
-# include "kineircd/str.h"
 
 namespace Kine {
    class ModuleDescriptor {
@@ -53,8 +54,8 @@ namespace Kine {
 	{ return module; };
 
       // Load a module, hopefully. Returns 0 (null) if we failed
-      static ModuleDescriptor *loadModule(const String &moduleFile,
-					  String &errorReturn);
+      static ModuleDescriptor *loadModule(const LibAIS::String &moduleFile,
+					  LibAIS::String &errorReturn);
       
       // Start a module
       bool start(Daemon &daemon) {

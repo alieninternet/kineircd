@@ -24,23 +24,23 @@
 #ifndef _SRC_LIB_LISTENER_CONFIG_H_
 # define _SRC_LIB_LISTENER_CONFIG_H_ 1
 
+# include <libais/config/data.h>
+# include <libais/string/string.h>
+
 # include "kineircd/listener.h"
 # include "kineircd/listenerlist.h"
-# include "kineircd/configparser.h"
-# include "kineircd/configdata.h"
-# include "kineircd/str.h"
 
 namespace Kine {
-   class ListenerConfig : public ConfigData {
+   class ListenerConfig : public LibAIS::ConfigData {
     private:
       // The protocol used to locate any service's name in getservbyname()
       static const char* tcpProtocolName;
       
       // The list of definitions for the configuration handler
-      static const ConfigParser::defTable_type classDefs;
+      static const LibAIS::ConfigParser::defTable_type classDefs;
 
       // The address to bind to (optional)
-      String varAddress;
+      LibAIS::String varAddress;
       
       // Registration allowances
       bool varAllowNetworks;
@@ -52,19 +52,20 @@ namespace Kine {
       unsigned short varListenBacklog;
       
       // The port to bind to
-      String varPort;
+      LibAIS::String varPort;
 
       // Should this port be configured as secure if possible? (SSL etc)
       bool varSecure;
 
       // A helper to set the socket up
-      bool setupSocket(Socket& socket, String& errString, int port = 0);
+      bool setupSocket(LibAIS::Socket& socket, LibAIS::String& errString,
+		       int port = 0);
       
     public:
       ListenerConfig(void);
 
       // The class handler for the configuration class
-      static CONFIG_CLASS_HANDLER(classHandler);
+      static LIBAIS_CONFIG_CLASS_HANDLER(classHandler);
    };
 };
    

@@ -33,6 +33,7 @@
 # endif
 
 # include <ctime>
+# include <libais/string/string.h>
 
 extern "C" {
 # include <sys/time.h>
@@ -48,7 +49,6 @@ namespace Kine {
 };
 
 # include "kineircd/exit.h"
-# include "kineircd/str.h"
 # include "kineircd/listener.h"
 
 namespace Kine {
