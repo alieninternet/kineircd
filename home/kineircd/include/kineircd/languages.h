@@ -109,6 +109,11 @@ namespace Kine {
 	 //! Merge the given language data "over" this language data
 	 void mergeWith(const LanguageData& newData);
 	 
+	 //! Look for a given TID's data, and return it if possible
+	 const std::string
+	   get(const tagID_type tagID,
+	       const parameterList_type* const parameters = 0) const;
+
        public:
 	 //! Constructor
 	 LanguageData(void)
@@ -118,10 +123,6 @@ namespace Kine {
 	 
 	 //! Destructor
 	 ~LanguageData(void);
-	 
-	 //! Look for a given TID's data, and return it if possible
-	 const std::string* const 
-	   findTag(const Languages::tagID_type tagID) const;
 	 
 	 //! Return the language code (BCP-0047) related to the data
 	 const std::string& getLanguageCode(void) const
@@ -225,41 +226,97 @@ namespace Kine {
       const languageDataList_type& getLanguageDataList(void) const
 	{ return languageDataList; };
       
+      //! Return the pointer to the default language's data
+      const LanguageData* const getDefaultLanguage(void) const
+	{ return defaultLanguage; };
+      
       //! Find the given language, by its code..
       LanguageData* const findByCode(const std::string& code) const;
       
-      //! Return the given language data, from the given language
+      //! Return the given language data, from the given language data
       const std::string
-	get(const std::string& languageCode,
+	get(const LanguageData* const languageData,
 	    const tagID_type tagID,
 	    const parameterList_type* const parameters = 0) const;
 
+      //! Return the given language data, from the given language (by code)
+      const std::string
+	get(const std::string& languageCode,
+	    const tagID_type tagID,
+	    const parameterList_type* const parameters = 0) const
+	{ return get(findByCode(languageCode), tagID, parameters); };
+
       //! Lazy functions for use when you have one to five parameters..
-      const std::string get(const std::string& languageCode,
-			    const tagID_type tagID,
-			    const parameter_type& p0) const;
-      const std::string get(const std::string& languageCode,
-			    const tagID_type tagID,
-			    const parameter_type& p0,
-			    const parameter_type& p1) const;
-      const std::string get(const std::string& languageCode,
-			    const tagID_type tagID,
-			    const parameter_type& p0,
-			    const parameter_type& p1,
-			    const parameter_type& p2) const;
-      const std::string get(const std::string& languageCode,
-			    const tagID_type tagID,
-			    const parameter_type& p0,
-			    const parameter_type& p1,
-			    const parameter_type& p2,
-			    const parameter_type& p3) const;
-      const std::string get(const std::string& languageCode,
-			    const tagID_type tagID,
-			    const parameter_type& p0,
-			    const parameter_type& p1,
-			    const parameter_type& p2,
-			    const parameter_type& p3,
-			    const parameter_type& p4) const;
+      template <class T>
+	const std::string get(const T& languageCode,
+			      const tagID_type tagID,
+			      const parameter_type& p0) const
+	{
+	   parameterList_type parameters;
+	   parameters.push_back(&p0);
+	   std::string output(get(languageCode, tagID, &parameters));
+	   return output;
+	};
+      template <class T>
+	const std::string get(const T& languageCode,
+			      const tagID_type tagID,
+			      const parameter_type& p0,
+			      const parameter_type& p1) const
+	{
+	   parameterList_type parameters;
+	   parameters.push_back(&p0);
+	   parameters.push_back(&p1);
+	   std::string output(get(languageCode, tagID, &parameters));
+	   return output;
+	};
+      template <class T>
+	const std::string get(const T& languageCode,
+			      const tagID_type tagID,
+			      const parameter_type& p0,
+			      const parameter_type& p1,
+			      const parameter_type& p2) const
+	{
+	   parameterList_type parameters;
+	   parameters.push_back(&p0);
+	   parameters.push_back(&p1);
+	   parameters.push_back(&p2);
+	   std::string output(get(languageCode, tagID, &parameters));
+	   return output;
+	};
+      template <class T>
+	const std::string get(const T& languageCode,
+			      const tagID_type tagID,
+			      const parameter_type& p0,
+			      const parameter_type& p1,
+			      const parameter_type& p2,
+			      const parameter_type& p3) const
+	{
+	   parameterList_type parameters;
+	   parameters.push_back(&p0);
+	   parameters.push_back(&p1);
+	   parameters.push_back(&p2);
+	   parameters.push_back(&p3);
+	   std::string output(get(languageCode, tagID, &parameters));
+	   return output;
+	};
+      template <class T>
+	const std::string get(const T& languageCode,
+			      const tagID_type tagID,
+			      const parameter_type& p0,
+			      const parameter_type& p1,
+			      const parameter_type& p2,
+			      const parameter_type& p3,
+			      const parameter_type& p4) const
+	{
+	   parameterList_type parameters;
+	   parameters.push_back(&p0);
+	   parameters.push_back(&p1);
+	   parameters.push_back(&p2);
+	   parameters.push_back(&p3);
+	   parameters.push_back(&p4);
+	   std::string output(get(languageCode, tagID, &parameters));
+	   return output;
+	};
    }; // class Languages
 
    
