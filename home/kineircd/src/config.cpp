@@ -14,7 +14,7 @@
 #include "debug.h"
 #include "operator.h"
 #include "utils.h"
-#include "language.h"
+#include "lang.h"
 
 
 // Classes table. Many many duplicates to make config file writing easier..
@@ -263,7 +263,7 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
    }
 
    // Fire up the languages now that we know the directory
-   return Language::loadLanguages(conf->confLanguageDir, "");
+   return Lang::loadLanguages(conf->confLanguageDir, "");
 }
 
 

@@ -17,7 +17,7 @@
 #include "daemon.h"
 #include "debug.h"
 #include "version.h"
-#include "language.h"
+#include "lang.h"
 #include "numerics.h"
 
 
@@ -410,11 +410,11 @@ check_connections:
    if (called) {
 #ifdef MAX_GARBO_RUN_ITEMS
       serverNotice(LocalUser::SN_HOUSEKEEPING,
-		   String::printf((char *)Language::L_SERVNOTICE_GARBO_ITEMS,
+		   String::printf((char *)Lang::L_SERVNOTICE_GARBO_ITEMS,
 				  items));
 #else
       serverNotice(LocalUser::SN_HOUSEKEEPING, 
-		   Language::L_SERVNOTICE_GARBO);
+		   LangTags::L_SERVNOTICE_GARBO);
 #endif
    }
 }
@@ -463,18 +463,18 @@ void Daemon::rehash(Handler *handler, User *user)
 	 handler->
 	   sendNumeric(server, Numerics::RPL_REHASHING, user,
 		       configFile + String(" :") +
-		       user->getLocalInfo()->lang(Language::L_RPL_REHASHING));
+		       user->getLocalInfo()->lang(LangTags::L_RPL_REHASHING));
       }
       
       // Send out a server broadcast notifying of the rehash
       serverNotice(LocalUser::SN_HOUSEKEEPING,
-		   String::printf((char *)Language::L_SERVNOTICE_CMD_REHASH,
+		   String::printf((char *)Lang::L_SERVNOTICE_CMD_REHASH,
 				  ((char const *)
 				   user->nickname)));
    } else {
       // Send out a server broadcast notifying of the rehash
       serverNotice(LocalUser::SN_HOUSEKEEPING,
-		   String::printf((char *)Language::L_SERVNOTICE_CMD_REHASH,
+		   String::printf((char *)Lang::L_SERVNOTICE_CMD_REHASH,
 				  "Signal SIGHUP"));
    }
 
@@ -529,7 +529,7 @@ String Daemon::makeISUPPORT(void)
 			   (String(" NETWORK=") + getNetworkName())) :
 			  ""),
 			 confMaxLangsPerUser,
-			 (char const *)Language::getISUPPORTcodes(),
+			 (char const *)Lang::getISUPPORTcodes(),
 			 confMaxWatchesPerUser,
 			 confMaxSilencesPerUser,
 			 confMaxAcceptsPerUser,
@@ -1077,7 +1077,7 @@ void Daemon::killUser(User *user, String const &caller,
    messages.clear();
    
    // Fix up the reason
-   String newReason = String::printf((char *)Language::L_QUIT_KILLED,
+   String newReason = String::printf((char *)Lang::L_QUIT_KILLED,
 				     (char const *)caller,
 				     (char const *)reason);
    
@@ -1676,7 +1676,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 		  if (handler) {
 		     handler->
 		       sendNumeric(server, Numerics::ERR_CANNOTCHANGESERVERMODE, 0,
-				   String::printf((char *)Language::L_ERR_CANNOTCHANGESERVERMODE,
+				   String::printf((char *)LangTags::L_ERR_CANNOTCHANGESERVERMODE,
 						  modes[i]));
 		  }
 	       }
@@ -1691,7 +1691,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 	      sendNumeric(server, Numerics::ERR_UNKNOWNSERVERMODE, 0,
 			  String::printf("%c :%s",
 					 modes[i],
-					 (char const *)user->lang(Language::E_ERR_UNKNOWNSERVERMODE)));
+					 (char const *)user->lang(LangTags::E_ERR_UNKNOWNSERVERMODE)));
 	 }
       }
    }

@@ -7,6 +7,7 @@
 #  define __IRC2USER_H_
 
 #  include "handler.h"
+#  include "lang.h"
 
 // IRC-2 User-handler sub-class
 class irc2userHandler : public Handler {
@@ -41,7 +42,7 @@ class irc2userHandler : public Handler {
 
    // Helpers
    void doNAMES(String const &);		// Do a NAMES request
-   String lang(Language::tag_t const &t) const;	// Pull out a language string
+   String lang(LangTags::tag_t const &t) const;	// Pull out a language string
 
    
    // Protocol input

@@ -7,7 +7,9 @@
 #include "p14server.h"
 #include "daemon.h"
 #include "debug.h"
-#include "language.h"
+#include "lang.h"
+
+#warning "The P14 server protocol is incomplete. Only developers should compile it."
 
 // Functions table (from P14_Notes)
 struct p14serverHandler::functionTableStruct const 
@@ -73,7 +75,7 @@ p14serverHandler::p14serverHandler(Connection *c, Server *s)
 
    // Send a nice server notice out
    Daemon::serverNotice(LocalUser::SN_NETWORK,
-			String::printf((char *)Language::L_SERVNOTICE_LINK,
+			String::printf((char *)Lang::L_SERVNOTICE_LINK,
 				       (char const *)server->getHostname(),
 				       "P14"));
    

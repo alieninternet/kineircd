@@ -13,7 +13,6 @@ class Handler;
 # include "server.h"
 # include "user.h"
 # include "channel.h"
-# include "language.h"
 
 
 class Handler {

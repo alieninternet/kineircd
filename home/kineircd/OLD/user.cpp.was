@@ -9,7 +9,7 @@
 #include "user.h"
 #include "daemon.h"
 #include "numerics.h"
-#include "language.h"
+#include "lang.h"
 #include "utils.h"
 
 
@@ -262,7 +262,7 @@ bool User::toggleModeHELPER(bool setting, Handler *handler, User *user, char *mo
 	    handler->
 	      sendNumeric(Daemon::myServer(),
 			  Numerics::ERR_NOPRIVILEGES, 0, String(':') +
-			  user->lang(Language::L_ERR_NOPRIVILEGES_PLUS_HELPER));
+			  user->lang(LangTags::L_ERR_NOPRIVILEGES_PLUS_HELPER));
 	 }
 	 return false;
       } else {
@@ -374,7 +374,7 @@ bool User::toggleModeOPER(bool setting, Handler *handler, User *user, char *mode
 	    handler->
 	      sendNumeric(Daemon::myServer(),
 			  Numerics::ERR_NOPRIVILEGES, 0, String(':') +
-			  user->lang(Language::L_ERR_NOPRIVILEGES_PLUS_IRCOPER));
+			  user->lang(LangTags::L_ERR_NOPRIVILEGES_PLUS_IRCOPER));
 	 }
 	 return false;
       } else {
@@ -424,7 +424,7 @@ bool User::toggleModeREGNICKSMSG(bool setting, Handler *handler, User *user, cha
       if (handler && User::isHelper(user)) {
 	 handler->sendNumeric(Daemon::myServer(),
 			      Numerics::RPL_MODECHANGEWARN, 0, String("+R :") +
-			      user->lang(Language::L_RPL_MODECHANGEWARN_HELPER_PLUS_REGONLY));
+			      user->lang(LangTags::L_RPL_MODECHANGEWARN_HELPER_PLUS_REGONLY));
       }
       
       return true;
@@ -510,7 +510,7 @@ bool User::toggleModeSERVNOTICES(bool setting, Handler *handler, User *user, cha
 	    handler->
 	      sendNumeric(Daemon::myServer(),
 			  Numerics::ERR_NOPRIVILEGES, 0, String(':') +
-			  user->lang(Language::L_ERR_NOPRIVILEGES_PLUS_SERVNOTICES));
+			  user->lang(LangTags::L_ERR_NOPRIVILEGES_PLUS_SERVNOTICES));
 	 }
 	 return false;
       }
@@ -539,7 +539,7 @@ bool User::toggleModeVWORLD(bool setting, Handler *handler, User *user, char *mo
       if (handler) {
 	 handler->sendNumeric(Daemon::myServer(),
 			      Numerics::RPL_MODECHANGEWARN, 0, String("-v ") +
-			      user->lang(Language::L_RPL_MODECHANGEWARN_MINUS_VWORLD));
+			      user->lang(LangTags::L_RPL_MODECHANGEWARN_MINUS_VWORLD));
       }
       
       return true;
@@ -566,7 +566,7 @@ bool User::toggleModeWALLOPS(bool setting, Handler *handler, User *user, char *m
 	   (user->modes & User::M_LOCALOPER))) {
 	 handler->sendNumeric(Daemon::myServer(),
 			      Numerics::RPL_MODECHANGEWARN, 0, String("-w :") +
-			      user->lang(Language::L_RPL_MODECHANGEWARN_OPER_MINUS_WALLOPS));
+			      user->lang(LangTags::L_RPL_MODECHANGEWARN_OPER_MINUS_WALLOPS));
       }
       
       return true;

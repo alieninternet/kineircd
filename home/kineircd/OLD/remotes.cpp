@@ -19,7 +19,7 @@
 #include "handler.h"
 #include "daemon.h"
 #include "numerics.h"
-#include "language.h"
+#include "lang.h"
 #include "version.h"
 
 
@@ -35,7 +35,7 @@ void Handler::doADMIN(Handler *handler, User *from)
 {
    handler->sendNumeric(Daemon::myServer(), Numerics::RPL_ADMINME, from, 
 			Daemon::myServer()->getHostname() + " :" +
-			from->lang(Language::L_RPL_ADMINME));
+			from->lang(LangTags::L_RPL_ADMINME));
    handler->sendNumeric(Daemon::myServer(), Numerics::RPL_ADMINLOC1, from,
 			Daemon::adminName);
    
@@ -58,55 +58,55 @@ void Handler::doLUSERS(Handler *handler, User *from, String const &request)
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSERCLIENT, from,
 		 String::printf(":%s %u %s %u %s %u %s",
-				(char const *)from->lang(Language::B_RPL_LUSERCLIENT),
+				(char const *)from->lang(LangTags::B_RPL_LUSERCLIENT),
 				Daemon::numTotalUsers,
-				(char const *)from->lang(Language::M_RPL_LUSERCLIENT_A),
+				(char const *)from->lang(LangTags::M_RPL_LUSERCLIENT_A),
 				Daemon::numServices,
-				(char const *)from->lang(Language::M_RPL_LUSERCLIENT_B),
+				(char const *)from->lang(LangTags::M_RPL_LUSERCLIENT_B),
 				Daemon::numServers,
-				(char const *)from->lang(Language::E_RPL_LUSERCLIENT)));
+				(char const *)from->lang(LangTags::E_RPL_LUSERCLIENT)));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSEROP, from,
 		 String::printf("%u :%s",
 				Daemon::numOpers,
-				(char const *)from->lang(Language::E_RPL_LUSEROP)));
+				(char const *)from->lang(LangTags::E_RPL_LUSEROP)));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSERHELPERS, from,
 		 String::printf("%u :%s",
 				Daemon::numHelpers,
-				(char const *)from->lang(Language::E_RPL_LUSERHELPERS)));
+				(char const *)from->lang(LangTags::E_RPL_LUSERHELPERS)));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSERUNKNOWN, from,
 		 String::printf("%u :%s",
 				Daemon::numUnknown,
-				(char const *)from->lang(Language::E_RPL_LUSERUNKNOWN)));
+				(char const *)from->lang(LangTags::E_RPL_LUSERUNKNOWN)));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSERCHANNELS, from,
 		 String::printf("%u :%s",
 				(Daemon::channels.size() +
 				 Daemon::localChannels.size()),
-				(char const *)from->lang(Language::E_RPL_LUSERCHANNELS)));
+				(char const *)from->lang(LangTags::E_RPL_LUSERCHANNELS)));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LUSERME, from,
 		 String::printf(":%s %u %s %u %s",
-				(char const *)from->lang(Language::B_RPL_LUSERME),
+				(char const *)from->lang(LangTags::B_RPL_LUSERME),
 				Daemon::numClientConns,
-				(char const *)from->lang(Language::M_RPL_LUSERME),
+				(char const *)from->lang(LangTags::M_RPL_LUSERME),
 				Daemon::numServerConns,
-				(char const *)from->lang(Language::E_RPL_LUSERME)));
+				(char const *)from->lang(LangTags::E_RPL_LUSERME)));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_LOCALUSERS, from,
 		 String::printf(":%s: %u %s: %u",
-				(char const *)from->lang(Language::B_RPL_LOCALUSERS),
+				(char const *)from->lang(LangTags::B_RPL_LOCALUSERS),
 				Daemon::numClientConns,
-				(char const *)from->lang(Language::W_PEAK),
+				(char const *)from->lang(LangTags::W_PEAK),
 				Daemon::numClientConnsPeak));
    handler->
      sendNumeric(Daemon::myServer(), Numerics::RPL_GLOBALUSERS, from,
 		 String::printf(":%s: %u %s: %u",
-				(char const *)from->lang(Language::B_RPL_GLOBALUSERS),
+				(char const *)from->lang(LangTags::B_RPL_GLOBALUSERS),
 				Daemon::numTotalUsers,
-				(char const *)from->lang(Language::W_PEAK),
+				(char const *)from->lang(LangTags::W_PEAK),
 				Daemon::numTotalUsersPeak));
 }
 
@@ -152,7 +152,7 @@ void Handler::doMOTD(Handler *handler, User *from)
       // Not allowed to send the motd over the network
       handler->
 	sendNumeric(Daemon::myServer(), Numerics::ERR_NOMOTD, from,
-		    String(':') + from->lang(Language::L_ERR_NOMOTD_NOREMOTE));
+		    String(':') + from->lang(LangTags::L_ERR_NOMOTD_NOREMOTE));
       return;
    }
    
@@ -163,7 +163,7 @@ void Handler::doMOTD(Handler *handler, User *from)
 	sendNumeric(Daemon::myServer(), Numerics::RPL_MOTDSTART, from,
 		    String::printf(":- %s %s -",
 				   (char const *)Daemon::myServer()->getHostname(),
-				   (char const *)from->lang(Language::L_RPL_MOTDSTART)));
+				   (char const *)from->lang(LangTags::L_RPL_MOTDSTART)));
 
       // Run through the MOTD and send each line in the list
       for (Daemon::motd_t::iterator it = Daemon::motd.begin();
@@ -176,12 +176,12 @@ void Handler::doMOTD(Handler *handler, User *from)
       // Send the footer
       handler->
 	sendNumeric(Daemon::myServer(), Numerics::RPL_ENDOFMOTD, from, 
-		    String(':') + from->lang(Language::L_RPL_ENDOFMOTD));
+		    String(':') + from->lang(LangTags::L_RPL_ENDOFMOTD));
    } else {
       // No MOTD to send
       handler->
 	sendNumeric(Daemon::myServer(), Numerics::ERR_NOMOTD, from,
-		    String(':') + from->lang(Language::L_ERR_NOMOTD));
+		    String(':') + from->lang(LangTags::L_ERR_NOMOTD));
    }
 }
 
@@ -299,9 +299,9 @@ class statsFunctions {
 	  sendNumeric(Daemon::myServer(),
 		      Numerics::RPL_STATSUPTIME, from,
 		      String::printf(":%s %d %s %d:%02d:%02d",
-				     (char const *)from->lang(Language::B_RPL_STATSUPTIME),
+				     (char const *)from->lang(LangTags::B_RPL_STATSUPTIME),
 				     (int)(uptime / 86400),
-				     (char const *)from->lang(Language::W_DAY_PL),
+				     (char const *)from->lang(LangTags::W_DAY_PL),
 				     ((int)(uptime % 86400) / 3600),
 				     ((int)(uptime % 3600) / 60),
 				     (int)(uptime % 60)));
@@ -309,10 +309,10 @@ class statsFunctions {
 	  sendNumeric(Daemon::myServer(),
 		      Numerics::RPL_STATSCONN, from,
 		      String::printf(":%s: %u (%u %s)",
-				     (char *)Language::B_RPL_STATSCONN,
+				     (char *)LangTags::B_RPL_STATSCONN,
 				     Daemon::numConnsPeak,
 				     Daemon::numClientConnsPeak,
-				     (char const *)from->lang(Language::W_CLIENT_PL)));
+				     (char const *)from->lang(LangTags::W_CLIENT_PL)));
      }
 };
    
@@ -341,7 +341,7 @@ void Handler::doSTATS(Handler *handler, User *from, String const &request)
 #ifdef NOTIFY_ON_CMD_STATS
    // Send a server notice out regarding this stats request
    Daemon::
-     serverNotice(String::printf((char *)Language::L_SERVNOTICE_NOTIFY_ON_CMD_STATS,
+     serverNotice(String::printf((char *)LangTags::L_SERVNOTICE_NOTIFY_ON_CMD_STATS,
 				 (char const *)request,
 				 (char const *)from->nickname,
 				 (char const *)from->getAddress()));
@@ -359,7 +359,7 @@ void Handler::doSTATS(Handler *handler, User *from, String const &request)
    // Send the footer
    handler->sendNumeric(Daemon::myServer(), Numerics::RPL_ENDOFSTATS, from, 
 			request + " :" +
-			from->lang(Language::L_RPL_ENDOFSTATS));
+			from->lang(LangTags::L_RPL_ENDOFSTATS));
 }
 
 
@@ -377,7 +377,7 @@ void Handler::doTIME(Handler *handler, User *from)
 				Daemon::getTimeUsecs(),
 				(char const *)Daemon::getTimeZone(),
 				(char const *)Daemon::getTimeFlags(),
-				(char const *)from->lang(Language::B_RPL_TIMEONSERVERIS)));
+				(char const *)from->lang(LangTags::B_RPL_TIMEONSERVERIS)));
    
    // Compile the time string (human readable)
    char timestr[TIMESTR_BUF_LEN];
@@ -403,17 +403,15 @@ void Handler::doVERSION(Handler *handler, User *from)
 				Version::version,
 				(char const *)Daemon::myServer()->getHostname(),
 				Version::versionChars,
-				(char const *)from->lang(Language::L_RPL_VERSION)));
+				(char const *)from->lang(LangTags::L_RPL_VERSION)));
    handler->sendNumeric(Daemon::myServer(), Numerics::RPL_ISUPPORT, from,
 			Daemon::makeISUPPORT() + " :" + 
-			from->lang(Language::E_RPL_ISUPPORT));
+			from->lang(LangTags::E_RPL_ISUPPORT));
 }
 
 
 /* doWHOIS
  * Original 23/08/01, Simon Butcher <pickle@austnet.org>
- * Note: Needs 'is an ircop', 'is an austnet service' etc etc added
- *       Also needs channel display code to be fixed!!
  */
 void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 {
@@ -429,7 +427,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       if (!u) {
 	 handler->sendNumeric(Daemon::myServer(), Numerics::ERR_NOSUCHNICK, from,
 			      user + " :" +
-			      from->lang(Language::L_ERR_NOSUCHNICK_NICK));
+			      from->lang(LangTags::L_ERR_NOSUCHNICK_NICK));
 	 continue; 
       }
       
@@ -450,7 +448,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 	   sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISVIRT, from,
 		       String::printf("%s :%s %s",
 				      (char const *)u->nickname,
-				      (char const *)from->lang(Language::P_RPL_WHOISVIRT),
+				      (char const *)from->lang(LangTags::P_RPL_WHOISVIRT),
 				      (char const *)u->vwhostname));
       }
       
@@ -506,7 +504,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 //      if (User::isHelper(u)/* && u->getStatus()*/) {
 //	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISHELPER,
 //			      from, u->getNickname() + " :" +
-//			      from->lang((Language::E_HELPER_01 - 1) +
+//			      from->lang((LangTags::E_HELPER_01 - 1) +
 //					 u->getStatus()));
 //      }
       
@@ -516,13 +514,13 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 	 // Send a notice to a paranoid operator, sheesh
 	 Daemon::routeTo(u)->
 	   sendNotice(Daemon::myServer(), from,
-		      String::printf((char *)Language::L_NOTIFY_PARANOID_OPERS_ON_WHOIS,
+		      String::printf((char *)Lang::L_NOTIFY_PARANOID_OPERS_ON_WHOIS,
 				     (char const *)from->nickname,
 				     (char const *)from->getAddress()));
 #endif
 	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISOPERATOR, from,
 			      u->nickname + " :" +
-			      from->lang(Language::E_RPL_WHOISOPERATOR));
+			      from->lang(LangTags::E_RPL_WHOISOPERATOR));
       }
       
       // Check if this user is connected via an SSL enabled port
@@ -531,7 +529,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 	   sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISSECURE, from,
 		       String::printf("%s * :%s",
 				      (char const *)u->nickname,
-				      (char const *)from->lang(Language::E_RPL_WHOISSECURE)));
+				      (char const *)from->lang(LangTags::E_RPL_WHOISSECURE)));
       }
 
       // If the user is away, send the away message
@@ -556,7 +554,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 				       difftime(Daemon::getTime(),
 						u->local->handler->getConnection()->getLastSpoke())),
 				      u->signonTime,
-				      (char const *)from->lang(Language::E_RPL_WHOISIDLE)));
+				      (char const *)from->lang(LangTags::E_RPL_WHOISIDLE)));
       }
 
       /* Send the server information, if the server is not hidden and the
@@ -575,6 +573,6 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
    // Send the footer
    handler->sendNumeric(Daemon::myServer(), Numerics::RPL_ENDOFWHOIS, from,
 			request + " :" +
-			from->lang(Language::L_RPL_ENDOFWHOIS));
+			from->lang(LangTags::L_RPL_ENDOFWHOIS));
 }
 

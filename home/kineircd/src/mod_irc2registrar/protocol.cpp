@@ -12,7 +12,7 @@
 #include "daemon.h"
 #include "debug.h"
 #include "numerics.h"
-#include "language.h"
+#include "lang.h"
 #include "utils.h"
 
 
@@ -155,7 +155,7 @@ void registerHandler::parseLine(String const &line)
       handler->getConnection()->goodbye();
 # else
       sendNumeric(Numerics::ERR_UNKNOWNCOMMAND, 0, 
-		  command + Language::L_ERR_UNKNOWNCOMMAND);
+		  command + LangTags::L_ERR_UNKNOWNCOMMAND);
 # endif
       return;
    }
@@ -184,7 +184,7 @@ void registerHandler::parseLine(String const &line)
 	       // something here.
 # ifndef PASSIVE_REGISTRATION      	 
 	       sendNumeric(Numerics::ERR_PASSWDMISMATCH, 0,
-			   Language::lang(Language::L_ERR_PASSWDMISMATCH));
+			   Lang::lang(LangTags::L_ERR_PASSWDMISMATCH));
 # endif
 # ifdef DEBUG_EXTENDED
 	       debug("Invalid password, terminating!");
@@ -199,7 +199,7 @@ void registerHandler::parseLine(String const &line)
 	    if (getConnection()->socket->getFD() > MAX_FD_NO_MORE_USERS) {
 # ifndef PASSIVE_REGISTRATION      	 
 	       sendNumeric(Numerics::ERR_SERVERTOOFULL, 0, String(":") +
-			   Language::lang(Language::L_ERR_SERVERTOOFULL));
+			   Lang::lang(LangTags::L_ERR_SERVERTOOFULL));
 # endif
 # ifdef DEBUG
 	       debug("Server is too full, no more clients!");
@@ -385,7 +385,7 @@ void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
 #else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   String("CAPAB :") + 
-			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
+			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
 #endif
       return;
    }
@@ -417,7 +417,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 #else
       handler->sendNumeric(Numerics::ERR_NONICKNAMEGIVEN, 0, String(':') +
-			   Language::lang(Language::L_ERR_NONICKNAMEGIVEN));
+			   Lang::lang(LangTags::L_ERR_NONICKNAMEGIVEN));
 #endif
       return;
    }
@@ -429,7 +429,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 #else
       handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
 			   nick + " :" +
-			   Language::lang(Language::L_ERR_ERRONEUSNICKNAME));
+			   Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME));
 #endif
       return;
    }
@@ -453,7 +453,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 	sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
 		    String::printf("%s :%s (%s)",
 				   (char const *)nick,
-				   (char const *)Language::lang(Language::L_ERR_ERRONEUSNICKNAME),
+				   (char const *)Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME),
 				   (char const *)reason));
       return;
 #endif
@@ -466,7 +466,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 #else
       handler->sendNumeric(Numerics::ERR_NICKNAMEINUSE, 0,
 			   nick + " :" +
-			   Language::lang(Language::L_ERR_NICKNAMEINUSE));
+			   Lang::lang(LangTags::L_ERR_NICKNAMEINUSE));
 #endif
       return;
    }
@@ -489,7 +489,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    // Send a PING out to make sure we are dealing with a 'real' client
 # ifndef PASSIVE_REGISTRATION      	 
    handler->sendGeneric("NOTICE",
-			String::printf((char *)Language::L_PINGPONG_NOTICE,
+			String::printf((char *)Lang::L_PINGPONG_NOTICE,
 				       (char const *)handler->pingpong, 
 				       (char const *)handler->pingpong,
 				       (char const *)Daemon::myServer()->getHostname()));
@@ -563,7 +563,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
       handler->getConnection()->goodbye();
 #  else
       handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, String(':') +
-			   Language::lang(Language::L_ERR_ALREADYREGISTERED));
+			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
       return;
@@ -577,7 +577,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
 # else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   String("SERVER :") +
-			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
+			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
 # endif
       return;
    }
@@ -638,7 +638,7 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
       handler->getConnection()->goodbye();
 #  else
       handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, String(':') +
-			   Language::lang(Language::L_ERR_ALREADYREGISTERED));
+			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
       return;
@@ -652,7 +652,7 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
 # else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   String("SERVICE :") + 
-			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
+			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
 # endif
       return;
    }
@@ -667,7 +667,7 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
 #else
       handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
 			   name + " :" +
-			   Language::lang(Language::L_ERR_ERRONEUSNICKNAME));
+			   Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME));
 #endif
       return;
    }
@@ -725,7 +725,7 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 #  else
       handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, String(':') +
-			   Language::lang(Language::L_ERR_ALREADYREGISTERED));
+			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
       return;
@@ -739,7 +739,7 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
 # else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   String("USER :") + 
-			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
+			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
 # endif
       return;
    }

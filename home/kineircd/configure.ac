@@ -1368,6 +1368,7 @@ AC_OUTPUT([
 	Makefile
 	install/Makefile
 	src/Makefile
+	src/generator/Makefile
 	])
 
 

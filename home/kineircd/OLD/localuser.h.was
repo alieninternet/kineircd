@@ -16,7 +16,7 @@ class LocalUser;
 # include "user.h"
 # include "channel.h"
 # include "handler.h"
-# include "language.h"
+# include "lang.h"
 # include "str.h"
 
 
@@ -65,7 +65,7 @@ class LocalUser {
  public:
    User *user;					// Link into main user class
    Handler *handler;				// Link into user handler
-   LanguageData *language;			// Language dialogue data
+   LangData *language;				// Language dialogue data
    
    servnotice_t serverNotices;			// Server notices to receive
    
@@ -102,7 +102,7 @@ class LocalUser {
    static servnotice_t const SN_SIGNONOFF	= 0x00001000; // +s
 
    // Constructor
-   LocalUser(User *u, Handler *h, LanguageData *l)
+   LocalUser(User *u, Handler *h, LangData *l)
      : user(u),
        handler(h),
        language(l),
@@ -193,7 +193,7 @@ class LocalUser {
 # endif
 
    // Set the language setting
-   void setLang(LanguageData *ld) 
+   void setLang(LangData *ld) 
      {
 	language = ld;
      };
@@ -205,7 +205,7 @@ class LocalUser {
      };
    
    // Grab a language string
-   String lang(Language::tag_t const &t)
+   String lang(LangTags::tag_t const &t)
      {
 	// Return it from the language dialogue data if we can
 	if (language) { 

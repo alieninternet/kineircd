@@ -137,7 +137,7 @@ namespace Version {
      				",IRC2"
 #endif
 #ifdef HAVE_IRC2USER_IRCII_KLUGE
-					"k"
+					"i"
 #endif
 #ifdef HAVE_IRC2USER_MATCH_COUNTING
 					"m"
