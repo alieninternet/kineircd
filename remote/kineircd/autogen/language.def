@@ -23,14 +23,63 @@
  */
 autogen definitions language;
 
-/* Note to translators:
+/* Notes for translators:
+ * ----------------------
  *
- * Don't forget to use whatever is considered the formal, international form of
- * your language (ie. International English over American English), and
+ * It is of vital importance that you open this file in a UTF-8 editor. The
+ * format of this file must remain UTF-8, when therefore opening and saving
+ * the file, make sure your editor is set in UTF-8 mode. A good Unicode editor
+ * with UTF-8 support is UniRed, found at http://sf.net/projects/unired - You
+ * can even configure it to automatically open the file in UTF-8 format.
+ *
+ * Unicode is a VERY big character set, and as such may contain characters, or
+ * 'glyphs', which look identical in most fonts. If you're unsure of a glyph's
+ * meaning, check the Unicode charts at http://www.unicode.org/. Make sure you
+ * use the most appropriate glyphs to suit your language's alphabet. This is
+ * strictly required to maintain compatibility smaller character sets with
+ * only represent a specific language.
+ *
+ * An example of differences which may not be apparent is the Latin capital
+ * letter 'X'. It normally looks identical to Greek letter chi ('Χ'), the
+ * Cyrillic letter ha ('Х'), or even the Roman numeral for ten ('Ⅹ'). A
+ * specific difference between the Latin letter 'ǳ' and the letters 'dz', or
+ * the Latin letter 'æ' and the letters 'ae' should also be noted, since the
+ * distinction is also important.
+ *
+ * A word-for-word translation is not neccessary, and isn't always useful.
+ * When translating, only refer to the English data (data_en), and just make
+ * sure the meaning of the English data is conveyed in your translation,
+ * simple as that. It'd be naïve to expect the network jargon "broken pipe"
+ * to hold the same meaning, if literally translated.
+ *
+ * Don't forget to use whatever is considered the formal, international form
+ * of your language (ie. International English over American English), and
  * include the correct glyphs to represent the words (ie. '你好', 'שלום' and
  * 'здравствулте', instead of their latin equivalents, 'ni hao', 'shalom', and
  * 'zdravstvuite' respectively). Proper use of language you're translating,
- * and its alphabet is paramount to the quality of the translation.
+ * including both spelling, and usage of your language's alphabet, is
+ * paramount to the quality of the translation.
+ *
+ * Keep in mind that this file is not the one used by KineIRCd - it simply
+ * contains data to generate the files used by Kine in a convenient location.
+ * This is designed to reduce the headache of maintaining tag data scattered
+ * through-out Kine's source code, and to make it much easier to identify
+ * which tags are missing language data for certain languages.
+ *
+ * Because this file is pre-processed by AutoGen, backslashes ('\') need to be
+ * "escaped" -- If you want a backslash to appear in the language file, such
+ * as to use "\b" (toggle bold), you will need to write it as "\\b". Since
+ * this is also true of Kine's language files, if you want a backslash to
+ * appear in the text shown to users, you will have to "double-escape", and
+ * write it as "\\\\".
+ *
+ * When translating, please keep language data tags in alphabetical order, and
+ * use tabs to keep the tags and their respective data neatly aligned. Please
+ * keep all text within 80-columns - there are many examples of long lines
+ * which have been continued using multiple quotes in this file. For example:
+ *     data_foo  = "this is a long "
+ *                 "line which has been "
+ *                 "continued many times";
  */
 
 /*****************************************************************************
