@@ -1309,6 +1309,23 @@ tag = {
 };
 
 tag = {
+   name		= "irc2user_HELP_CMD_NETWORKS";
+   components	= "mod_irc2user";
+   data_en	= "Without parameters, this returns a list of networks "
+                  "connected to this one via IIRC. Users on other networks "
+		  "can be spoken to using PRIVMSG or NOTICE. With parameters, "
+		  "an IRC operator may use this command to link/delink a "
+		  "network to/from a server on this local network. Changing "
+		  "the IIRC topology is restricted to IRC operators only.";
+};
+
+tag = {
+   name		= "irc2user_HELP_CMD_NETWORKS_USAGE";
+   components	= "mod_irc2user";
+   data_en	= "[ <target network>  [ <port>  [ <remote server> ] ] ]";
+};
+
+tag = {
    name		= "irc2user_HELP_CMD_NICK";
    components	= "mod_irc2user";
    data_en	= "Change your current nickname to the given nickname. This "
