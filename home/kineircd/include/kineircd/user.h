@@ -99,7 +99,11 @@ namespace Kine {
       virtual const std::string& getVirtualHostname(void) const
 	{ return getHostname(); };
 
-      
+      //! Return true if the hostname or IP should be hidden from the given user
+      const bool hideHostFrom(const User& user) const
+	{ return false; /* fix me */ };
+
+
       //! Return the modes/flags bitmask
 //      const ? getModes(void) const
 //	{ return modes; };

@@ -393,30 +393,36 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
       
       // Make sure we found that client
       if (foundClient != 0) {
+	 // Is the host hidden?
+	 const bool hideHost =
+	   ((foundService == 0) ?
+	    foundUser->hideHostFrom(user) :
+	    (user.isStaff() || user.isOperator()));
+	 
 	 // Check if this user is allowed to see the real hostname of this user
-//	 if (&user == foundUser) {
+	 if (hideHost) {
+	    // Send the user details with the virtual hostname
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
+			foundUser->getNickname(),
+			foundUser->getUsername(),
+			foundUser->getVirtualHostname(),
+			'*',
+			foundUser->getDescription());
+	 } else {
 	    // Send the user entry as normal
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
-			foundClient->getNickname(),
-			foundClient->getUsername(),
-			foundClient->getHostname(),
+			foundUser->getNickname(),
+			foundUser->getUsername(),
+			foundUser->getHostname(),
 			'*',
-			foundClient->getDescription());
+			foundUser->getDescription());
 	    
 	    // Also send the virtual host details
-//	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOIS_HIDDEN,
-//			foundClient->getNickname(),
-//			foundClient->getVirtualHostname(),
-//			GETLANG(irc2_RPL_WHOIS_HIDDEN));
-//	 } else {
-	    // Send the user details with the virtual hostname
-//	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
-//			foundClient->getNickname(),
-//			foundClient->getUsername(),
-//			foundClient->getVirtualHostname(),
-//			'*',
-//			foundClient->getDescription());
-//	 }
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOIS_HIDDEN,
+			foundUser->getNickname(),
+			foundUser->getVirtualHostname(),
+			GETLANG(irc2_RPL_WHOIS_HIDDEN));
+	 }
 
 	 /* If the client is a normal user (or the caller is an operator),
 	  * potentially compile a list of channels the user is on. Also check
