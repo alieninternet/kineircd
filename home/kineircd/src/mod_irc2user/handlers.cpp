@@ -114,7 +114,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleDIE)
 	 // Complain about not having access to this command
 	 sendNumeric(LibIRC2::Numerics::ERR_NOPRIVILEGES,
 		     commandName,
-		     GETLANG(irc2_ERR_NOPRIVILEGES_DIE));
+		     GETLANG(irc2_ERR_NOPRIVILEGES_SPECIFIC));
 	 return;
       } 
       
@@ -728,7 +728,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleREHASH)
       // Complain about not having access to this command
       sendNumeric(LibIRC2::Numerics::ERR_NOPRIVILEGES,
 		  commandName,
-		  GETLANG(irc2_ERR_NOPRIVILEGES_REHASH));
+		  GETLANG(irc2_ERR_NOPRIVILEGES_SPECIFIC));
       return;
    }
    
@@ -756,7 +756,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleRESTART)
 	 // Complain about not having access to this command
 	 sendNumeric(LibIRC2::Numerics::ERR_NOPRIVILEGES,
 		     commandName,
-		     GETLANG(irc2_ERR_NOPRIVILEGES_RESTART));
+		     GETLANG(irc2_ERR_NOPRIVILEGES_SPECIFIC));
 	 return;
       } 
 	
