@@ -250,25 +250,26 @@ const std::string
 #endif
 
    // Make sure the tag is valid..
-   if ((tagID == 0) || (tagID > tagData.size())) {
+   if ((tagID != 0) && (tagID <= tagData.size())) {
 #ifdef KINE_DEBUG
-      debug("Languages::LanguageData::get() - Invalid TID given");
+      std::ostringstream out;
+      out << "Languages::LanguageData::get() - Data @ " << 
+	(void *)tagData[tagID - 1];
+      debug(out.str());
 #endif
-      return "";
+      
+      // Remember what is found at this TID..
+      const std::string* const tag = tagData[tagID - 1];
+      
+      // Make sure the tag is not null
+      if (tag != 0) {
+	 // Process the data and return it
+	 return process(*tag, parameters);
+      }
    }
-   
-#ifdef KINE_DEBUG
-   std::ostringstream out;
-   out << "Languages::LanguageData::get() - Returning data @ " << 
-     (void *)tagData[tagID - 1];
-   debug(out.str());
-#endif
-   
-   // Remember what is found at this TID..
-//   const std::string* const tag = tagData[tagID - 1];
-
-   // Process the data and return it
-   return process(*(tagData[tagID - 1]), parameters);
+      
+   // Return nothing special
+   return "";
 }
 
 

@@ -281,7 +281,8 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	 }
 	    
 	 // Make sure this character isn't going to cause problems..
-	 if ((data[i] <= 1) ||
+	 if ((data[i] == '\0') ||
+	     (data[i] == '\001') ||
 	     (data[i] == '\b') ||
 	     (data[i] == '\n') ||
 	     (data[i] == '\v') ||
@@ -321,7 +322,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
       // Make sure the data contains valid UTF-8 sequences..
       if (!AISutil::Utils::validateUTF8(line)) {
 	 // Wuss out - this is not a nice file to have loaded
-	 errString = 
+	 errString =
 	   "File contains invalid UTF-8 sequence(s) and poses a potential "
 	   "security problem";
 	 return false;
@@ -674,7 +675,8 @@ const std::string
    /* If there is no language info, or the first item on the list is null,
     * return a replacement object character..
     */
-   if (languageDataList.empty()) {
+   if (languageDataList.empty() ||
+       (languageDataList[0] == 0)) {
       return replacementObjectGlyph;
    }
    
@@ -694,10 +696,22 @@ const std::string
       
       // If we got some data, return it
       if (!tagData.empty()) {
-	 break;
+	 return tagData;
+      }
+   }
+   
+   // If we still have nothing, try the default language (if possible)
+   if (tagData.empty() && 
+       (defaultLanguage != 0)) {
+      // Grab the data..
+      tagData = defaultLanguage->get(tagID, parameters);
+      
+      // Got something?
+      if (!tagData.empty()) {
+	 return tagData;
       }
    }
    
    // Return whatever we got..
-   return tagData;
+   return replacementObjectGlyph;
 }
