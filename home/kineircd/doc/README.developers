@@ -67,7 +67,7 @@ and code formatting information. Last updated 200203252022
 
 
 * Top of the .h/.cpp files should be in this format:
-     /* <filename>
+     /* <cvs id thing>
       * <description>
       * [<optional warnings>]
       *
@@ -75,7 +75,7 @@ and code formatting information. Last updated 200203252022
       */
       
    eg.
-     /* foo.h
+     /* $Id$
       * Foo routines for the bar-baz engine
       */
   
@@ -104,7 +104,7 @@ and code formatting information. Last updated 200203252022
 
 * Following the head of the .cpp files, included files should be
   included in this order:
-    1. autoconf.h
+    1. kineircdconf.h
     2. system wide header files (C++ STYLE!!)
     3. Header file relating to the content of this file
     4. Other local header files.
