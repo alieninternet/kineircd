@@ -46,12 +46,12 @@ version_chars = {
 // these are after the chars themselves on purpose..
 version_chars = {
    char		= ",IPv4";
-   ifdef	= "LIBAISUTIL_HAVE_SOCKET_IPv4_TCP";
+   ifdef	= "LIBAISUTIL_HAVE_SOCKET_IPV4_TCP";
 };
 
 version_chars = {
    char		= ",IPv6";
-   ifdef	= "LIBAISUTIL_HAVE_SOCKET_IPv6_TCP";
+   ifdef	= "LIBAISUTIL_HAVE_SOCKET_IPV6_TCP";
 };
 
 version_chars = {
