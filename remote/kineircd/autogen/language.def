@@ -824,6 +824,36 @@ tags = {
 };
 
 tags = {
+   name		= "irc2registrar_ERROR_BROKEN_REGISTRATION_DATA";
+   component	= "mod_irc2registrar";
+   data_en	= "Invalid registration data";
+};
+
+tags = {
+   name		= "irc2registrar_ERROR_CONN_DISALLOWED_IIRC";
+   component	= "mod_irc2registrar";
+   data_en	= "Network connections are not allowed on this port";
+};
+
+tags = {
+   name		= "irc2registrar_ERROR_CONN_DISALLOWED_SERVER";
+   component	= "mod_irc2registrar";
+   data_en	= "Server connections are not allowed on this port";
+};
+
+tags = {
+   name		= "irc2registrar_ERROR_CONN_DISALLOWED_SERVICE";
+   component	= "mod_irc2registrar";
+   data_en	= "Client connections are not allowed on this port";
+};
+
+tags = {
+   name		= "irc2registrar_ERROR_CONN_DISALLOWED_USER";
+   component	= "mod_irc2registrar";
+   data_en	= "User connections are not allowed on this port";
+};
+
+tags = {
    name		= "irc2registrar_ERROR_PROTOCOL_INIT_FAIL";
    component	= "mod_irc2registrar";
    data_en	= "Requested protocol did not initialise";
