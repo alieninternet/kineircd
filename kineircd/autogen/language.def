@@ -584,6 +584,14 @@ tag = {
 };
 
 tag = {
+   name		= "irc2_ERR_UNKNOWNERROR_WITH_REASON";
+   fields	= "0 = reason";
+   components	= "mod_irc2user";
+   data_en	= "Unknown error: %p0";
+   data_fr	= "Erreur inconnue: %p0";
+};
+
+tag = {
    name		= "irc2_ERR_UNKNOWNMODE";
    fields	= "0 = channel";
    data_en	= "is unknown mode char to me (%p0)";
@@ -2292,7 +2300,20 @@ tag = {
 tag = {
    name		= "Kine_Error_NICKNAME_BEGINS_WITH_DIGIT";
    components	= "libkineircd";
-   data_en	= "The nickname given begins with a digit";
+   data_en	= "The given nickname begins with a digit, and is therefore "
+		  "invalid";
+};
+
+tag = {
+   name		= "Kine_Error_NO_ERROR";
+   components	= "libkineircd";
+   data_en	= "The operation was successful";
+};
+
+tag = {
+   name		= "Kine_Error_NO_ERROR_OR_DATA";
+   components	= "libkineircd";
+   data_en	= "The operation was successful but no data was returned";
 };
 
 tag = {
@@ -2337,6 +2358,12 @@ tag = {
    name		= "Kine_Error_TEXT_TOO_SHORT";
    components	= "libkineircd";
    data_en	= "The given message is unacceptably short";
+};
+
+tag = {
+   name		= "Kine_Error_UNKNOWN_ERROR";
+   components	= "libkineircd";
+   data_en	= "An unknown or unexpected error occurred";
 };
 
 tag = {
