@@ -121,7 +121,7 @@ void Protocol::parseMessage(const std::string& origin,
 			    parameters)
 {
    // Try and find the command..
-   Commands::CommandInfo* const commandInfo =
+   const Commands::CommandInfo* const commandInfo =
      Commands::getInstance().findCommand(command);
    
    // Did we find it? (most of the time we will find it
@@ -132,11 +132,9 @@ void Protocol::parseMessage(const std::string& origin,
 	 if (commandInfo->hasAccess(user)) {
 	    // Do we have enough parameters?
 	    if (parameters.size() >= commandInfo->minimumParams) {
-	       // Okay, I guess we can run it. Increase its call count first
-	       ++commandInfo->callCount;
-	       
 	       // Is it a built-in command?
 	       if (commandInfo->handler != 0) {
+		  // Call it..
 		  (this->*(commandInfo->handler))(parameters);
 	       }
 	       
