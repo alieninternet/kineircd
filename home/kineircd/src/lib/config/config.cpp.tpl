@@ -95,3 +95,64 @@ using namespace Kine;
  +][+ENDIF+][+ENDFOR+][+ENDDEF+]
 // Top definitions
 [+output-class-definition-table tableClass=topDefs+]
+
+// Configuration class constructor (mainly to load defaults, if any)[+
+   ; This is a variable to help us determine what iteration we are at
+   (define currentIteration 0)
+ +]
+Config::Config(void)
+[+DEFINE output-variable-defaults+][+FOR definition+][+IF hasVariable+][+IF defaultValue+][+
+   ; Is this is the first iteration?
+   (if (= currentIteration 0)
+      ; Output the start..
+      "  : "
+
+      ; Output a comma, a new line, and the indentation
+      ",\n    ")
+ +][+  
+   ; Increase the iteration counter
+   (set! currentIteration
+      (+ currentIteration 1))
+ +]def[+(getPrefix)+][+name+]([+defaultValue+])[+ENDIF+][+ENDIF+][+IF .definition+][+
+   ; Push this prefix to the start of our prefix stack
+   (set! tablePrefixStack
+      (append
+         (list (get "name"))
+         tablePrefixStack))
+ +][+output-variable-defaults+][+
+   ; Pop our definition from the end of the list
+   (set! tablePrefixStack
+      (cdr tablePrefixStack))
+ +][+ENDIF+][+ENDFOR+][+ENDDEF+][+output-variable-defaults+]
+{
+#ifdef KINE_WITH_SSL
+   // Fire up the SSL component
+   SSL_load_error_strings();
+   
+   if (SSL_library_init()) {
+      //
+      // SEED PRNG HERE IF THE OPENSSL LIBRARY WONT!!! :( :( :(
+      // 
+      
+      /* Fire up the context using SSLv2 and SSLv3 methods.
+       * I think this should be configurable, but at this point I don't care!
+       * :(
+       */
+      defSSLContext = SSL_CTX_new(SSLv23_method());
+   }
+#endif
+}
+ 
+
+// Destructor
+Config::~Config(void)
+{
+#ifdef KINE_WITH_SSL
+   // Clean up the SSL component
+   if (defSSLContext != 0) {
+      SSL_CTX_free(defSSLContext);
+   }
+   
+   EVP_cleanup();
+#endif
+}
