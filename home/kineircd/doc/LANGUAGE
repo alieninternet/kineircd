@@ -93,11 +93,8 @@ Numerics
         'd' - Default language and is selected upon connection
         's' - Currently selected as the server language being outputted
 
+      The list is terminated with numeric 666 (command = 'LANGUAGE')
 
-689 - RPL_ENDOFLANGUAGES
-      :End of LANGUAGE list
-      
-      Mark the end of a language list.
 
 
 690 - RPL_WHOIS_LANGUAGE

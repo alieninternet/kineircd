@@ -10,15 +10,23 @@ Format of this list:
 _______________________________________________________________________________
 
 660 - RPL_TRACEROUTE	
-      <hop #> <ip> <hostname> <ping min> <ping avg> <ping max>
+      <target> <hop #> <address> <hostname> <ping min> <ping avg> <ping max>
+      
+      Terminated with 666.
 
 
-661 - RPL_ENDTRACEROUTE	
-      <destination> :End of traceroute
+661 - RPL_TRACEROUTE_START
+      <target> <target FQDN> <target address> <max hops>
+      
+      This is for the /traceroute command, it is the start of a traceroute.
+      Target is the given target to traceroute to, the target FQDN is the
+      name found for that target, the target IP is the IP found for that
+      target, the max hops is the maximum number of hops allowed before
+      terminating the traceroute attempt.
 
 
 662 - RPL_MODECHANGEWARN
-      <mode char> :<Warning message>
+      ['+' | '-']<mode char> :<Warning message>
       
       This is a replacement of ERR_VWORLDWARN, which can be used for a
       variety of things such as warning operators about turning off wallops
@@ -58,45 +66,11 @@ _______________________________________________________________________________
       the general public to view some modes.
 
 
-666 - RPL_TRACEROUTE_START
-      <target> <target FQDN> <target IP> <max hops>
+666 - RPL_ENDOF_GENERIC
+      <command> <parameter(s)> :End of <command>
       
-      This is for the /traceroute command, it is the start of a traceroute.
-      Target is the given target to traceroute to, the target FQDN is the
-      name found for that target, the target IP is the IP found for that
-      target, the max hops is the maximum number of hops allowed before
-      terminating the traceroute attempt.
-
-
-667 - RPL_TRACEROUTE_HOP      
-      <target> <hop number> <hop back number> <hop FQDN> <hop IP> 
-       <ping1> <ping2> <ping3> [:<information>]
-      
-      Continuation of /traceroute output. Target is the same as above, hop
-      number if the number of the hop, while hop back number is the number of
-      hops as the reply came back (this can be different). Hop FQDN and 
-      hop ip are relevant to the hop being processed, three pings are shown, 
-      and an optional 'information' is given in plaintext (no route to host, 
-      unauthorised etc etc). If a ping failed it may be replaced with a '*'.
-
-
-668 - RPL_TRACEROUTE_NOHOP
-      <target> <hop number> :<information>
-      
-      Similar to RPL_TRACEROUTE_HOP except no information was obtained from
-      this hop. Information is always given why, even if it is just something
-      like "timed out". Information strings are the same as with
-      RPL_TRACEROUTE_HOP.
-
-
-669 - RPL_TRACEROUTE_END
-      <target> <hops to> <hops from> <min ping> <avg ping> <max ping> 
-       :<information>
-      
-      End of the traceroute information. Hops to/Hops from are the number of
-      hops to/from the target respectively. Min/Avg/Max ping are minimum,
-      average and maximum ping times over the course of the traceroute.
-      Information is always given.
+      Specifies the end of a bunch of numerics in a neat generic way to save 
+      numerics.
 
 
 670 - RPL_WHOWAS_DETAILS
@@ -123,24 +97,8 @@ _______________________________________________________________________________
           error: No route to host" etc)
 
 
-673 - RPL_WHOISSECURE			
-      <nick> <mode> :is connected via a secure connection
-
-
-674 - RPL_YOURHELPER
-      :You are now a network helper
-      
-      (From original aust hex prior to version 8, this was #380. Moved to
-       avoid possible conflict)
-      Similar function to YOUREOPER, except for the 'helper' status.
-
-
-675 - RPL_YOURVREMOVER
-      :You are not a network virus remover
-      
-      (From original aust hex prior to version 8, this was #386. Moved to
-       avoid possible conflict)
-      Same as above -- Virus Remover status.
+673 - RPL_WHOISSECURE
+      <nick> <type> [:is connected via a secure connection]
 
 
 678 - RPL_LUSERHELPERS
@@ -155,7 +113,7 @@ _______________________________________________________________________________
 
 
 679 - RPL_TIMEONSERVERIS
-      <seconds> <microseconds> <timezone> <flags> :time according to server
+      <seconds> [<microseconds> | '*'] <timezone> <flags> :time according to server
       
       This is the time on the server, used to allow clients to receive a more
       precise time from the server and is sent upon client connection. This
@@ -190,62 +148,19 @@ _______________________________________________________________________________
 
 
 680 - RPL_HELP
-      <command> :<parameter string>
+      [<command> | '*'] :<parameter string>
       
       This is a reply to a help request. The parameter string is a string
-      giving help to the command specified.
-      
+      giving help to the command specified. Terminated with 666.
+
 
 681 - RPL_MOREHELP
-      <command> :<string>
+      [<command> | '*'] :<string>
       
       This is an addition to RPL_HELP, if requested, and builds on any
       information given above, usually in the form of an explanation of the
-      command.
+      command. Terminated with 666.
 
-
-682 - RPL_ENDOFHELP
-      <mask> :End of HELP
-      
-      Reply to help; mainly to assist when help search masks do not match etc
-      This matches RPL_HELP (#820) and RPL_MOREHELP (#821)
-
-
-683 - RPL_NOTACCEPTED
-      <nickname> :is in server side ignore mode (+g) but has been notified
-       you wish to talk to them
-      
-      Different spin on using a notice like hybrid does -- this is designed so
-      that smarter clients can tell the user exactly why the message was not
-      sent in whatever interface they require. The nickname is the target
-      the user tried to send the message to.
-
-
-684 - RPL_ACCEPTNOTICE
-      <nick> <user> <host> :is messaging you. You are in server side ignore 
-       mode (+g). Use the ACCEPT command if you wish to talk to them.
-      
-      Like above, this is a replacement for hybrid's notice version of someone
-      trying to message you. More-so than the above numeric, this is designed
-      for clients that are smart enough so that they can either set up
-      automatic accepts for certain people from certain hosts (friends), or
-      to show a pop-up box etc etc. Same as hybrid, this message is not
-      repeated constantly (see their mode +g docs). The sender will give more
-      information such as username/hostname etc.
-
-
-685 - RPL_KNOCKING
-      <channel> :has received your knocking
-      
-      Confirmation that a /KNOCK is being sent
-
-
-686 - RPL_ACCEPTED
-      <nick> <user> <host> :has added you to their ACCEPT list
-      
-      Indicate that a user has added you to their accept list. See
-      RPL_ACCEPTNOTICE for information on the fields, as this works in 
-      the same way.
 
 
 687 - RPL_YOURLANGUAGEIS
@@ -262,52 +177,6 @@ _______________________________________________________________________________
 
 690 - RPL_WHOIS_LANGUAGE
       (See 'LANGUAGE' file)
-
-
-691 - RPL_SUSERHOST
-      (Was 307, moved to avoid conflict)
-
-
-692 - RPL_WHOISHELPER
-      (Was 309, moved to avoid conflict)
-
-
-693 - RPL_WHOISSERVICE
-      (Was 310, moved to avoid conflict)
-
-
-694 - RPL_WHOISVREMOVER
-      (Was 330, moved to avoid conflict)
-
-
-695 - RPL_DUMMY_NUMERIC
-      Anything here!
-      
-      This is a dummy numeric, put here to be something a client is always to
-      ignore. It is to be used when numerics have not been decided on, or are
-      conflicting, or any situtation really where a real concrete numeric
-      simply cannot be used. Just ignore it! :)
-
-
-699 - RPL_MOTD (only during forced MOTD)
-      The client MUST display the MOTD when this numeric is specified
-      instead of the normal RPL_MOTD. This is an ugly workaround :(
-
-
-970 - ERR_SERVERTOOFULL		
-      :This server cannot accept anymore user connections
-
-      May follow an RPL_REDIR (#010)
-
-
-971 - ERR_TOOMANYFROMYOURCLASS	
-      <num_now> <max_allowed> :Too many connections from your class
-
-
-972 - ERR_SERVERTEMPCLOSED	
-      :This server is temporarily unavailable
-      
-      May follow an RPL_REDIR (#010)
 
 
 973 - ERR_CANNOTCHANGEUMODE	
@@ -342,24 +211,12 @@ _______________________________________________________________________________
       Extension to ERR_UNKNOWNMODE, same deal except for server modes :)
 
 
-978 - ERR_CANTKILLSERVICES
-      (Was 485, moved to avoid conflict)
-
-
 979 - ERR_SERVERMODELOCK
       <target> :Cannot change server modes (+L)
       
       This is returned when the given server cannot accept mode changes by
       any object except its own configuration file or other servers due to
       server mode +L (mode-lock) being set.
-
-
-980 - ERR_NOKNOCK
-      <channel> :<reason>
-      Indicate to a client that a knock to the given channel was not
-      performed. The channel is the channel the user tried to 'knock' on,
-      and the reason is the reason for it failing (eg. 'channel is open',
-      'you are on that channel' or 'you are already invited').
 
 
 981 - ERR_NOMORELANGS
