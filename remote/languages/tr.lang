@@ -1,6 +1,8 @@
 # $Id$
 # Basic KineIRCd language file for Turkish (ISO-639-1 code 'tr')
 #
+# Copyright © 2003 Idil Jans <idil@sf.net>
+#
 .LANGCODE = tr
 .LANGNAME = Türkçe
 .REVISION = 2003030700
