@@ -36,7 +36,7 @@
  * WARNING!! If the signal is called when the daemon has not been initialised
  * then the daemon pointer will be null.
  */
-# define KINEIRCD_SIGNAL_HANDLER_FUNC(x)	\
+# define KINE_SIGNAL_HANDLER_FUNC(x)	\
      void x(const int signal, const Kine::Signals::mask_type signalMask)
 
 namespace Kine {
@@ -57,7 +57,7 @@ namespace Kine {
       
       // This defines your signal handler (must be static) and what to receive
       struct handlerInfo_type {
-	 const KINEIRCD_SIGNAL_HANDLER_FUNC((*handler));
+	 const KINE_SIGNAL_HANDLER_FUNC((*handler));
 	 const mask_type mask;
 	 
 	 // Is the structure OKAY?
