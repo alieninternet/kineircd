@@ -69,11 +69,11 @@ commands = {
    minimumParams	= 0;
 };
 
-//commands = {
-//   command		= "INFO";
-//   defaultPenalty	= 2;
-//   minimumParams	= 0;
-//};
+commands = {
+   command		= "INFO";
+   defaultPenalty	= 4;
+   minimumParams	= 0;
+};
 
 //commands = {
 //   command		= "INVITE";

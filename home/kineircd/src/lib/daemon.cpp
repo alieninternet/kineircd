@@ -62,8 +62,11 @@ Daemon::Daemon(void)
     receivedBytes(0)
 {
 #ifdef KINE_DEBUG_ASSERT
-   // Check the STL stuff are really empty
+   // Check the containers are really empty
+   assert(info.empty());
+   assert(loggers.empty());
    assert(connections.empty());
+   assert(protocols.empty());
 #endif
    
    // Set up the current time variable for the first time
@@ -71,6 +74,9 @@ Daemon::Daemon(void)
 
    // Seed the random thingy for rand() - this is kinda dodgey
    srand(getTime().seconds);
+
+   // Initialise the 'INFO' stuff (for the first time)
+   createInfo();
    
    // We are ready to go, go into normal running runlevel
    runlevel = RUNLEVEL_NORMAL;
@@ -122,6 +128,25 @@ void Daemon::initInstance(void)
    debugOut << "Daemon::initInstance() - Created new instance @ " << instance;
    debug(debugOut.str());
 #endif
+}
+
+
+/* createInfo - Create the INFO data (replacing it, if needs be)
+ * Original 22/04/2003 simonb
+ */
+void Daemon::createInfo(void)
+{
+   // Clear whatever is there (if anything)
+   info.clear();
+   
+   // Insert the hard-coded core version info (should we check if we should?)
+   for (unsigned int i = 0; Version::versionInfo[i] != 0; ++i) {
+      info.push_back(Version::versionInfo[i]);
+   }
+   
+   // Copy in module info sections, if they have them.. etc etc..
+
+   // Add in info about modules that are loaded?
 }
 
 

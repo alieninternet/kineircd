@@ -332,6 +332,7 @@ namespace Kine {
 	 
 	 // Handle the various commands which are quite common in IRC-2 modules
 	 void doADMIN(const User& user);
+	 void doINFO(const User& user);
 	 void doLUSERS(const User& user);
 	 void doMOTD(const User& user, const bool justConnected = false);
 	 void doSUMMON(const User& user, const std::string& username);

@@ -55,6 +55,9 @@ namespace Kine {
          RUNLEVEL_SHUTDOWN		//!< The daemon is shutting down
       };
       
+      // The 'INFO' data type, which is dynamically generated
+      typedef std::vector < std::string > info_type;
+      
     private:
       runlevel_type runlevel;			//!< What stage is the daemon in
       
@@ -64,6 +67,9 @@ namespace Kine {
       unsigned long long sentBytes;		//!< Total bytes sent
       unsigned long long receivedBytes;		//!< Total bytes received
       
+      // Our 'info' - dynamically generated for the INFO command
+      info_type info;
+
       // The list of loggers (this should be hidden)
       typedef std::set <Logger*> loggerList_type;
       loggerList_type loggers;
@@ -90,6 +96,9 @@ namespace Kine {
       void setTime(void) 
 	{ currentTime.setTime(); };
 
+      //! Create the INFO data (replace it, if necessary)
+      void createInfo(void);
+      
       //! Process a new connection
       void newConnection(Listener& listener);
 
@@ -141,6 +150,10 @@ namespace Kine {
       bool deregisterLogger(Logger& logger);
       void log(const std::string& str,
 	       const Logger::Mask::type mask = Logger::Mask::Housekeeping);
+      
+      //! Return the data for the INFO command
+      const info_type& getInfo(void) const
+	{ return info; };
       
       //! Main loop
       bool run(void);

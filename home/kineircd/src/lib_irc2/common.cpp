@@ -128,6 +128,25 @@ void Protocol::doADMIN(const User& user)
 }
 
 
+/* doINFO
+ * Original 14/08/2001 simonb
+ */
+void Protocol::doINFO(const User& user)
+{
+   // Send info lines...
+   for (Daemon::info_type::const_iterator it = daemon().getInfo().begin();
+	it != daemon().getInfo().end();
+	++it) {
+      sendNumeric(user, Numerics::RPL_INFO,
+		  *it);
+   }
+
+   // End of the list..
+   sendNumeric(user, Numerics::RPL_ENDOFINFO,
+	       GETLANG(irc2_RPL_ENDOFINFO));
+}
+
+
 /* doLUSERS
  * Original 13/08/2001 simonb
  */

@@ -194,6 +194,28 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 }
 
 
+/* handleINFO
+ * Original 14/08/2001 simonb
+ * 21/04/2003 simonb - Imported from old code (incompleted)
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleINFO)
+{
+   // If there are no parameters, the user was wants us to reply..
+   if (parameters.empty()) {
+      doINFO(user);
+      return;
+   }
+   
+   // Look up the server?
+   const std::string& serverName = parameters[0];
+   
+   // We didn't find the server..
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
+	       serverName,
+	       GETLANG(irc2_ERR_NOSUCHSERVER));
+}
+
+
 /* handleLANGUAGE
  * Original 26/10/2001 simonb
  * 03/04/2003 simonb - Imported from old code
