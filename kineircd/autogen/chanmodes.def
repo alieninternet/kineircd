@@ -196,6 +196,16 @@ chanmodes = {
 };
 
 chanmodes = {
+   irc2char	= "J";
+   name		= "JOIN_THROTTLE";
+   origin	= "Dancer";
+   parameter	= "<frequency>,<limit>";
+   comment	= "When set, users may join this channel once every "
+                  "'frequency' seconds with an initial burst and limit value "
+		  "of 'limit' users";
+};
+
+chanmodes = {
    irc2char	= "k";
    name		= "KEYLOCK";
    origin	= "RFC1459";
