@@ -97,7 +97,7 @@ namespace Kine {
       //! Accept a new connection from the socket
       AISutil::Socket* const accept(void)
 	{
-	   acceptCount++;
+	   ++acceptCount;
 	   return socket.accept();
 	};
    };

@@ -211,7 +211,7 @@ void Protocol::sendISUPPORT(void)
    for (Languages::languageDataMap_type::const_iterator it = 
 	languages().getLanguageDataMap().begin();
 	it != languages().getLanguageDataMap().end();
-	it++) {
+	++it) {
       output << ',';
       
       // Is this language the default one?

@@ -86,7 +86,7 @@ void Protocol::parseMessage(const std::string& origin,
    bool found = false;
 
    // Run through the list and find a function..
-   for (int i = 0; commandTable[i].command != 0; i++) {
+   for (int i = 0; commandTable[i].command != 0; ++i) {
       if (command == commandTable[i].command) {
 	 found = true;
 	 (this->*(commandTable[i].handler))(parameters);
@@ -458,7 +458,7 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parsePONG)
    }
 
    // Lower the pong count
-   pongsLeft--;
+   --pongsLeft;
    
 # ifdef KINE_DEBUG
    debug("mod_irc2registrar: -=>   Pong match: " +

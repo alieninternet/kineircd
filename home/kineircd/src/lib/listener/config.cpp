@@ -385,7 +385,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 	       } else {
 		  // Loop to check the aliases (if any) for a match
 		  for (unsigned int i = 0; serviceEntry->s_aliases[i] != 0;
-		       i++) {
+		       ++i) {
 		     // Check for a match..
 		     if (!strcasecmp(serviceEntry->s_aliases[i],
 				     config.varPort.c_str())) {
@@ -452,7 +452,7 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 	 if (!lookupNames) {
 	    return false;
 	 } else {
-	    manyErrors++;
+	    ++manyErrors;
 	 }
       }
       

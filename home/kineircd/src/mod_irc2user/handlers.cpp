@@ -67,7 +67,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
    for (Commands::commandList_type::const_iterator it =
 	Commands::getInstance().getCommandList().begin();
 	it != Commands::getInstance().getCommandList().end();
-	it++)
+	++it)
      {
 	/* Check if this is the command our user was looking for, whether the
 	 * command has help, and whether the user even has access to this
@@ -150,7 +150,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
       for (Languages::languageDataMap_type::const_iterator it =
 	   languages().getLanguageDataMap().begin();
 	   it != languages().getLanguageDataMap().end();
-	   it++) {
+	   ++it) {
 	 // Make the maintainer string
 	 std::string maintainer(it->second->getMaintainer());
 	 

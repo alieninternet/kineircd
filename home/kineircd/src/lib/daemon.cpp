@@ -356,7 +356,7 @@ bool Daemon::run(void)
    // Add the listeners to the file descriptor lists
    for (ListenerList::listeners_type::const_iterator it = 
 	config().getListenerList().getList().begin(); 
-	it != config().getListenerList().getList().end(); it++) {
+	it != config().getListenerList().getList().end(); ++it) {
       FD_SET((*it)->getFD(), &inFDSET);
       if ((*it)->getFD() >= maxDescriptors) {
 	 maxDescriptors = (*it)->getFD() + 1;
@@ -393,7 +393,7 @@ bool Daemon::run(void)
 	    // Check for a new connection: Run through the listeners
 	    for (ListenerList::listeners_type::const_iterator it = 
 		 config().getListenerList().getList().begin(); 
-		 it != config().getListenerList().getList().end(); it++) {
+		 it != config().getListenerList().getList().end(); ++it) {
 	       // Check if there is a new connection we should be aware of
 	       if (FD_ISSET((*it)->getFD(), &inFDtemp)) {
 		  newConnection(*(*it));
@@ -402,7 +402,7 @@ bool Daemon::run(void)
 	    
 	    // Check for activity on connections
 	    for (connections_type::iterator it = connections.begin();
-		 it != connections.end(); it++) {
+		 it != connections.end(); ++it) {
 #ifdef KINE_DEBUG_ASSERT
 	       // Make sure the connection is sane. It should always be!
 	       assert(*it != 0);

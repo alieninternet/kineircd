@@ -165,7 +165,7 @@ std::string Protocol::withdrawOutput(AISutil::Socket::blockSize_type amount)
    
    // Is there anything left we might also be able to send?
    if (!outputQueue.empty() && (amount > 0)) {
-      amount--;
+      --amount;
       output += outputQueue.front().substr(0, amount);
       outputQueue.front().erase(0, amount);
    }

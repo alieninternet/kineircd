@@ -119,7 +119,7 @@ CONFIG_VARIABLE_HANDLER(Config::varHandleOldConfig)
       }
 
       // Increase the line counter
-      lineNum++;
+      ++lineNum;
 
       // Trim away leading/trailing whitespace
       line = line.trim();

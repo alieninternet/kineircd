@@ -55,7 +55,7 @@ const Logger::MaskMapper Logger::maskTable[Logger::maskTableSize] = {[+FOR logge
 const Logger::MaskMapper& Logger::getMaskMapper(const Logger::Mask::type m)
 {
    // Run through the table to find what we are looking for
-   for (unsigned int i = maskTableSize; i--;) {
+   for (unsigned int i = maskTableSize; i != 0; --i) {
       // Is this the one?
       if (maskTable[i].mask == m) {
 	 return maskTable[i];
@@ -73,7 +73,7 @@ const Logger::MaskMapper& Logger::getMaskMapper(const Logger::Mask::type m)
 const Logger::MaskMapper& Logger::getMaskMapper(const char c)
 {
    // Run through the table to find what we are looking for
-   for (unsigned int i = Logger::maskTableSize; i--;) {
+   for (unsigned int i = Logger::maskTableSize; i != 0; --i) {
       // Is this the one?
       if (maskTable[i].character == c) {
 	 return maskTable[i];
@@ -91,7 +91,7 @@ const Logger::MaskMapper& Logger::getMaskMapper(const char c)
 const Logger::MaskMapper& Logger::getMaskMapper(const char* const n)
 {
    // Run through the table to find what we are looking for
-   for (unsigned int i = maskTableSize; i--;) {
+   for (unsigned int i = maskTableSize; i != 0; --i) {
       // Is this the one?
       if (strcasecmp(maskTable[i].name, n) == 0) {
 	 return maskTable[i];
@@ -124,7 +124,7 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(Logger::Config::varHandleLogMask)
    bool toggleOn;
    
    // Run through the parameters..
-   for (unsigned int i = 0; i < values.size(); i++) {
+   for (unsigned int i = 0; i < values.size(); ++i) {
       // Check the prefix char, and work out how we need to copy the word over
       switch (values[i][0]) {
        case '-':
@@ -165,7 +165,7 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(Logger::Config::varHandleLogMask)
       }
       
       // Look for the word in the list..
-      for (unsigned int j = 0; j < [+(count "logger_masks")+]; j++) {
+      for (unsigned int j = 0; j < [+(count "logger_masks")+]; ++j) {
 	 // Does this match?
 	 if (maskWord == maskTable[j].nameUpper) {
 	    // Okay, do whatever was asked with this mask..

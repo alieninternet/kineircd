@@ -125,7 +125,7 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleNetworkName)
    
    const char *name = values.front().c_str();
    
-   for (; *name != '\0'; name++) {
+   for (; *name != '\0'; ++name) {
       /* Check the network name - basically only look for nasties which will
        * break the ISUPPORT numeric for IRC2 clients *sigh*
        */

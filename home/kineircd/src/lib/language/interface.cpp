@@ -184,7 +184,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
       }
       
       // Increase the line counter
-      lineNum++;
+      ++lineNum;
       
       // Trim the line
       line = line.trim();
@@ -204,14 +204,14 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
       line.clear();
       
       // Process the data: substitute anything we know now
-      for (std::string::size_type i = 0; i < data.length(); i++) {
+      for (std::string::size_type i = 0; i < data.length(); ++i) {
 	 if (data[i] == '%') {
 	    /* Check the next character. If it's another percentage sign, let
 	     * it get copied, otherwise convert it over to the super secret
 	     * hush hush magical mystical char... which is a null.. ;)
 	     */
 	    if (data[i + 1] == '%') {
-	       i++;
+	       ++i;
 	    } else {
 	       line += parameterMarkerChar;
 	       continue;
@@ -221,7 +221,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	 // Escaped char?
 	 if (data[i] == '\\') {
 	    // Next char
-	    i++;
+	    ++i;
 	    
 	    // If this is a three-digit number, we can convert it flat..
 	    if ((data.length() > (i + 2)) &&
@@ -401,7 +401,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	 languageData->tagData[tagID - 1] = new std::string(line);
 
 	 // Increase the tag counter..
-	 languageData->tagCount++;
+	 ++languageData->tagCount;
       }
    }
 
@@ -527,7 +527,7 @@ void Languages::processMaps(void) const
 {
    for (tagMaps_type::const_iterator it = tagMaps.begin();
 	it != tagMaps.end();
-	it++) {
+	++it) {
       processTagMap(*(*it));
    }
 }
@@ -655,7 +655,8 @@ const std::string
    
    // Okay.. run through the list of languages and see what happens..
    for (languageDataList_type::const_iterator it = languageDataList.begin();
-	it != languageDataList.end(); it++) {
+	it != languageDataList.end(); 
+	++it) {
       // If it's null, break
       if ((*it) == 0) {
 	 return replacementObjectGlyph;

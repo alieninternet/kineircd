@@ -251,7 +251,7 @@ Signals::Signals(void)
 #endif
    
    // Run through our signal instruction list...
-   for (unsigned int i = 0; signalHandlerInstructions[i].signal != 0; i++) {
+   for (unsigned int i = 0; signalHandlerInstructions[i].signal != 0; ++i) {
       if (signalHandlerInstructions[i].handle) {
 	 (void)signal(signalHandlerInstructions[i].signal, signalHandler);
       } else {
@@ -271,7 +271,7 @@ Signals::~Signals(void)
 #endif
    
    // Be neat and restore the signals. At least we are friendly!
-   for (register unsigned int i = NSIG; i--;) {
+   for (register unsigned int i = NSIG; i != 0; --i) {
       (void)signal(i, SIG_DFL);
    }
 }

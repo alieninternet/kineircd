@@ -45,7 +45,7 @@ Commands::Commands(void)
     * table, ready to be modified possibly by configuration, or added to by
     * aliases and so forth
     */
-   for (unsigned int i = 0; preInitCommands[i].commandName != 0; i++) {
+   for (unsigned int i = 0; preInitCommands[i].commandName != 0; ++i) {
       // Insert the data into the dynamic command table
       commandList.
 	insert(commandList_type::value_type(preInitCommands[i].commandName,
@@ -79,7 +79,7 @@ const Commands::CommandInfo* const
    // Did we find it?
    if (it != commandList.end()) {
       // We found it!! Since we did find it, increase the call count
-      (*it).second.callCount++;
+      ++(*it).second.callCount;
 
       // Return a pointer to this command's information
       return &((*it).second);

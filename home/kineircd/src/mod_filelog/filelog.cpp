@@ -76,7 +76,7 @@ void FileLog::logLine(const std::string& str,
 
       // Process the format and output the line
       for (std::string::size_type i = 0; 
-	   i != config.getFormat().length(); i++) {
+	   i != config.getFormat().length(); ++i) {
 	 // Is this the start of a conversion specifier?
 	 if (config.getFormat()[i] == '%') {
 	    // Make sure the next char is not at the end of the line..

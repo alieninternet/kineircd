@@ -40,7 +40,7 @@ const AISutil::String Name::IRCtoLower(void) const
 {
    char *temp = new char[length() + 1];
    
-   for (register size_type i = (length() + 1); i--;) {
+   for (register size_type i = (length() + 1); i != 0; --i) {
       char ch = (*this)[i];
       
       switch (ch) {

@@ -107,7 +107,7 @@ ModuleDescriptor* const ModuleList::loadModule(const String& filename,
       debug("ModuleList::loadModule() - Module has versionInfo list:");
       for (int i = 0;
 	   descriptor->getModule().getInfo().versionInfo[i] != 0;
-	   i++) {
+	   ++i) {
 	 debug(String("     -=> ") + 
 	       descriptor->getModule().getInfo().versionInfo[i]);
       }
@@ -131,7 +131,7 @@ void ModuleList::startAll(void) const
    
    // Run through the list of modules and call their start functions
    for (modulesList_type::const_iterator it = modules.begin(); 
-	it != modules.end(); it++) {
+	it != modules.end(); ++it) {
 #ifdef KINE_DEBUG
       debug("ModuleList::startAll() - Starting: " +
 	    (*it)->getModule().getVersionString());
@@ -161,7 +161,7 @@ void ModuleList::stopAll(void)
    
    // Run through the list of modules to stop and delete them all
    for (modulesList_type::const_iterator it = modules.begin(); 
-	it != modules.end(); it++) {
+	it != modules.end(); ++it) {
 #ifdef KINE_DEBUG
       debug("ModuleList::stopAll() - Stopping: " +
 	    (*it)->getModule().getVersionString());

@@ -72,7 +72,7 @@ void Languages::LanguageData::mergeWith(const Languages::LanguageData& newData)
    }
    
    // Iterate over both data sets to see what needs replacing/inserting
-   for (unsigned int i = 0; i < newData.tagData.size(); i++) {
+   for (unsigned int i = 0; i < newData.tagData.size(); ++i) {
       // Does data exist at this point
       if (newData.tagData[i] != 0) {
 #ifdef KINE_DEBUG
@@ -129,7 +129,7 @@ const std::string
    std::string output;
    
    // Run through the tag data string and substitute anything we can
-   for (std::string::size_type i = 0; i < data.length(); i++) {
+   for (std::string::size_type i = 0; i < data.length(); ++i) {
       // Is this a substitution?
       if (data[i] == parameterMarkerChar) {
 	 // Make sure there is more on the line..
@@ -169,7 +169,7 @@ const std::string
 	  case 'q':
 	  case 'Q': // A parameter substitution, from the given parameters list
 	    // Next char..
-	    i++;
+	    ++i;
 	    
 	    /* The next char must be a numeric digit, and we must have been
 	     * given parameters to work with! Otherwise, there's no point
