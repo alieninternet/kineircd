@@ -54,6 +54,13 @@ const char* const Languages::replacementCharacterGlyph =
   "\357\277\275"; // <=- Unicode U+0FFFD; UTF-8 0xEF 0xBF 0xBD
 
 
+// Marker chars
+const char Languages::parameterMarkerChar =
+  '\000'; // NUL
+const char Languages::newLineMarkerChar =
+  '\001'; // SOH
+
+
 /* initInstance - Create the single instance of this class
  * Original 13/03/2003 simonb
  * Note: This is separated from the getInstance() since doing the if for every
@@ -205,7 +212,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	    if (data[i + 1] == '%') {
 	       i++;
 	    } else {
-	       line += '\0';
+	       line += parameterMarkerChar;
 	       continue;
 	    }
 	 }
@@ -255,6 +262,10 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 		case 'g': // Beep
 		  line += '\007';
 		  continue;
+
+		case 'n': // New line (actually, it's a secret char, SOH)
+		  line += newLineMarkerChar;
+		  continue;
 		  
 		case 'r': // Reverse
 		  line += '\026';
@@ -280,7 +291,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	 }
 	    
 	 // Make sure this character isn't going to cause problems..
-	 if ((data[i] == 0) ||
+	 if ((data[i] <= 1) ||
 	     (data[i] == '\b') ||
 	     (data[i] == '\n') ||
 	     (data[i] == '\v') ||

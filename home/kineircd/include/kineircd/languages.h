@@ -78,15 +78,6 @@ namespace Kine {
        */
       typedef std::vector < const parameter_type* > parameterList_type;
       
-      /* Replacement glyphs, both used to substitute missing or erroneous
-       * values of some description. These are UTF-8 Encoded.
-       */
-      static const char* const replacementObjectGlyph;
-      static const char* const replacementCharacterGlyph;
-
-      //! The ID of the 'unknown tag'
-      static const tagID_type unknownTagID = 0;
-
       /* Language data class, this holds information about the language, along
        * with the tag data. It also provides basic look-up functions per
        * language
@@ -163,6 +154,20 @@ namespace Kine {
       
       //! The language data list type (as used for preferential language lists)
       typedef std::vector < LanguageData* > languageDataList_type;
+      
+      //! The ID of the 'unknown tag'
+      static const tagID_type unknownTagID = 0;
+
+    protected:
+      /* Replacement glyphs, both used to substitute missing or erroneous
+       * values of some description. These are UTF-8 Encoded.
+       */
+      static const char* const replacementObjectGlyph;
+      static const char* const replacementCharacterGlyph;
+
+      // Marker chars, used internally
+      static const char parameterMarkerChar;
+      static const char newLineMarkerChar;
       
     private:
       // A set full of language tag name to tag ID mapping arrays

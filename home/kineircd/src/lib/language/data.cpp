@@ -154,7 +154,7 @@ const std::string
    // Run through the tag data string and substitute anything we can
    for (std::string::size_type i = 0; i < tag->length(); i++) {
       // Is this a substitution?
-      if ((*tag)[i] == '\0') {
+      if ((*tag)[i] == parameterMarkerChar) {
 	 // Make sure there is more on the line..
 	 if ((i + 1) >= tag->length()) {
 	    // Just skip it - eek!
@@ -244,6 +244,10 @@ const std::string
 	    output += replacementCharacterGlyph;
 	    continue;
 	 }
+      } else if ((*tag)[i] == newLineMarkerChar) {
+	 // We are not supposed to see this..
+	 output += replacementCharacterGlyph;
+	 continue;
       }
       
       // Copy this char flat
