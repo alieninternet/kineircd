@@ -67,7 +67,8 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 
    // Cheat. Add language info which doesn't yet get fed from the registrar
    if (user.
-       setLanguageList(Languages::languageDataList_type(1,
+       setLanguageList(user,
+		       Languages::languageDataList_type(1,
 							langs().
 							getDefaultLanguage()),
 		       true) !=

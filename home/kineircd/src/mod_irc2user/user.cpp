@@ -42,7 +42,7 @@ using namespace Kine::mod_irc2user;
 /* doEventAwayToggle - Called when we are going away/returning away
  * Original 16/04/2003 simonb
  */
-void User::doEventAwayToggle(void)
+void User::doEventAwayToggle(const Entity& changer)
 {
    // Have we gone away or are we returning?
    if (isAway()) {
@@ -160,9 +160,24 @@ void User::doEventChannelTopicChange(const Channel& channel,
 /* doEventLanguageChange - Called when the language list has been modified
  * Original 16/04/2003 simonb
  */
-void User::doEventLanguageChange(void)
+void User::doEventLanguageChange(const Entity& changer)
 {
    protocol.sendLanguageList();
+}
+
+
+/* doEventNicknameChange - Called when a nickname has been changed
+ * Original 16/05/2003 simonb
+ */
+void User::doEventNicknameChange(const Entity& changer,
+				 const Kine::User& user,
+				 const Name& newNickname)
+{
+   static const char* const commandName = "NICK";
+   
+   // Tell the user their nickname has changed
+   protocol.sendMessageFrom(static_cast<const Client&>(user), commandName,
+			    newNickname);
 }
 
 

@@ -172,11 +172,11 @@ commands = {
    minimumParams	= 0;
 };
 
-//commands = {
-//   command		= "NICK";
-//   defaultPenalty	= 3;
-//   minimumParams	= 1;
-//};
+commands = {
+   command		= "NICK";
+   defaultPenalty	= 3;
+   minimumParams	= 0;
+};
 
 commands = {
    command		= "NOTICE";

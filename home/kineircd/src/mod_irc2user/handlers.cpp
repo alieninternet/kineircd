@@ -80,12 +80,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
    // If there is a parameter, the user is going away
    if (!parameters.empty()) {
       // Set the user 'away'
-      if (user.setAway(parameters[0]) == Error::NO_ERROR) {
+      if (user.setAway(user, parameters[0]) == Error::NO_ERROR) {
 	 return;
       }
    } else {
       // No parameters were given, so the user is now here..
-      if (user.setHere() == Error::NO_ERROR) {
+      if (user.setHere(user) == Error::NO_ERROR) {
 	 return;
       }
    }
@@ -429,7 +429,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
    }
    
    // Set the new language list
-   if (user.setLanguageList(languageList) == Error::NO_ERROR) {
+   if (user.setLanguageList(user, languageList) == Error::NO_ERROR) {
       return;
    }
    
@@ -542,6 +542,84 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleNETWORKS)
    }
    
    // Check permissions!   
+}
+#endif
+
+
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_NICK
+/* handleNICK
+ * Original 24/08/2001 simonb
+ * Note: Incomplete
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleNICK)
+{
+   static const char* const commandName = "NICK";
+   
+   // Make sure we got a nickname..
+   if (parameters.empty()) {
+      sendNumeric(LibIRC2::Numerics::ERR_NONICKNAMEGIVEN,
+		  GETLANG(irc2_ERR_NONICKNAMEGIVEN));
+      return;
+   }
+   
+   
+   // If the user is an IRC operator, they can get around the next checks..
+   if (!user.isOperator()) {
+      /* Make sure this user is not on a channel marked with the event flag.
+       * This only effects users that are not opped or voiced in that channel
+       */
+      if (false) {
+	 sendNumeric(LibIRC2::Numerics::ERR_EVENTNICKCHANGE,
+		     "#channel",
+		     GETLANG(irc2_ERR_EVENTNICKCHANGE));
+	 return;
+      }
+      
+      // Check if the nickname is on a fail list somewher
+      if (false) {
+	 sendNumeric(LibIRC2::Numerics::ERR_ERRONEUSNICKNAME,
+		     parameters[0],
+		     GETLANG(irc2_ERR_ERRONEUSNICKNAME_PROHIBITED,
+			     /* reason */ "reason"));
+	 return;
+      }
+   }
+
+   // Try to do the nick change, working out the errors returned
+   switch (user.changeNickname(user, parameters[0])) {
+    // All went well, nothing left to do
+    case Error::NO_ERROR:
+      return;
+      
+    // The nickname was erroneous (bad chars)
+    case Error::NICKNAME_HAS_BAD_CHARS:
+      sendNumeric(LibIRC2::Numerics::ERR_ERRONEUSNICKNAME,
+		  parameters[0],
+		  GETLANG(irc2_ERR_ERRONEUSNICKNAME_BAD_CHARS));
+      return;
+      
+    // The nickname is already in use by someone else
+    case Error::NICKNAME_IS_IN_USE:
+      sendNumeric(LibIRC2::Numerics::ERR_NICKNAMEINUSE,
+		  parameters[0],
+		  GETLANG(irc2_ERR_NICKNAMEINUSE));
+      return;
+      
+    // The nickname was erroneous (too long)
+    case Error::NICKNAME_TOO_LONG:
+      sendNumeric(LibIRC2::Numerics::ERR_ERRONEUSNICKNAME,
+		  parameters[0],
+		  GETLANG(irc2_ERR_ERRONEUSNICKNAME_TOO_LONG,
+			  String::convert(config().
+					  getLimitsUsersMaxNickNameLength())));
+      return;
+
+    // NFI what happened - oops.
+    default:
+      sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
+		  commandName,
+		  GETLANG(irc2_ERR_UNKNOWNERROR));
+   }
 }
 #endif
 
