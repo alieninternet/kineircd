@@ -248,6 +248,10 @@ namespace Kine {
       //! Load a given language file
       bool loadFile(const std::string& fileName, std::string& errString,
 		    const bool makeDefault = false);
+
+      //! Return highest known tag ID (the total number of tags known)
+      const tagID_type getHighestTagID(void) const
+	{ return highestTagID; };
       
       //! Find a tag by its name (It's recommended to use a tag map, below)
       const tagID_type getTagID(const AISutil::String& name) const;
