@@ -61,6 +61,7 @@ class Handler {
    virtual void sendKick(Channel *, User *, User *, String const &) const {};
    virtual void sendKill(User *, String const &, String const &) const {};
    virtual void sendKnock(User *, Channel *, String const &) const {};
+   virtual void sendLanguage(User *, String const &, String const &) const {};
    virtual void sendNewNick(User *) const {};
    virtual void sendNickChange(User *, String const &) const {};
    virtual void sendNotice(Server *, User *, String const &) const {};
@@ -227,6 +228,7 @@ class irc2userHandler : public Handler {
    void sendKick(Channel *, User *, User *, String const &) const;
    void sendKill(User *, String const &, String const &) const;
    void sendKnock(User *, Channel *, String const &) const;
+   void sendLanguage(User *, String const &, String const &) const;
    void sendNickChange(User *, String const &) const;
    void sendNotice(Server *, User *, String const &) const;
    void sendNotice(User *, Channel *, String const &) const;
@@ -300,6 +302,7 @@ class p13serverHandler : public Handler {
    static void parseJOIN(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseKICK(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseKILL(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseLANGUAGE(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseLINKS(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseMODE(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseMOTD(p13serverHandler *handler, String const &origin, StringTokens *tokens);

@@ -27,9 +27,11 @@ Daemon::Daemon(String const &conf)
   adminName(DEFAULT_CONFIG_ADMIN_NAME),
   adminEmail(DEFAULT_CONFIG_ADMIN_EMAIL),
   adminLocation(DEFAULT_CONFIG_ADMIN_LOCATION),
-  confMaxWatchesPerUser(DEFAULT_MAX_WATCHES_PER_USER),
-  confMaxSilencesPerUser(DEFAULT_MAX_SILENCES_PER_USER),
+  confMaxAcceptsPerUser(DEFAULT_MAX_ACCEPTS_PER_USER),
   confMaxBansPerChannel(DEFAULT_MAX_BANS_PER_CHANNEL),
+  confMaxLangsPerUser(DEFAULT_MAX_LANGS_PER_USER),
+  confMaxSilencesPerUser(DEFAULT_MAX_SILENCES_PER_USER),
+  confMaxWatchesPerUser(DEFAULT_MAX_WATCHES_PER_USER),
   maxDescriptors(0),
   lastGarboRun(0),
   sentBytes(0),
@@ -392,6 +394,8 @@ void Daemon::checkClock(void)
    
    // Update the TOSI flags
 //   timeFlags = tosiFlags;
+
+   
 }
 
 
@@ -439,7 +443,7 @@ String Daemon::makeISUPPORT(void)
 //			 " WHOX"				// (5chrs)
 //			 " WALLCHOPS"				// (10chrs)
 //			 " USERIP"				// (7chrs)
-			 " LANGUAGE=(en)"			// (12chrs)
+			 " LANGUAGE=%u,(en)"			// (12chrs)
 			 " KNOCK"				// (6chrs)
 			 " WATCH=%u"				// (~10chrs)
 			 " SILENCE=%u"				// (~11chrs)
@@ -458,6 +462,7 @@ String Daemon::makeISUPPORT(void)
 			  ((char const *)
 			   (String(" NETWORK=") + getNetworkName())) :
 			  ""),
+			 confMaxLangsPerUser,
 			 confMaxWatchesPerUser,
 			 confMaxSilencesPerUser,
 			 confMaxAcceptsPerUser,

@@ -146,8 +146,14 @@ struct irc2userHandler::functionTableStruct const
      },
      { "LANGUAGE",	parseLANGUAGE,		0,
 	  ANYONE,
-	  "[ <language name> | <language code> ]",
-	  "Select session language. TBA."
+	  "[ <language code> ( ',' <language code> ) ]",
+	  "Select your preferred languages, in order from most preferred to "
+	  "least preferred. When no parameters are specified, a list of "
+	  "languages available on the local server are given. If languages "
+	  "are unavailable to the server, the server will continue through "
+	  "the list of languages for a language it does support, otherwise "
+	  "the server language will not be changed, only the WHOIS language "
+	  "information."
      },
      { "LINKS",		parseLINKS,		2,
 	  ANYONE,
@@ -816,6 +822,21 @@ void irc2userHandler::sendKnock(User *u, Channel *c,
 }
 
 
+/* sendLanguage - Send a channel knocking message
+ * Original 24/10/01, Simon Butcher <pickle@austnet.org>
+ */
+void irc2userHandler::sendLanguage(User *u, String const &languages,
+				   String const &charset) const
+{
+   getConnection()->
+     sendRaw(String::printf(":%s LANGUAGE %s %s"
+			    IRC2USER_EOL_CHARS,
+			    (char const *)u->getAddress(user),
+			    (char const *)languages,
+			    (char const *)charset));
+}
+
+
 /* sendNickChange - Send a nickname change event
  * Original 24/08/01, Simon Butcher <pickle@austnet.org>
  */
@@ -1384,7 +1405,6 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
       
       for (User::accept_set_t::iterator it = handler->user->accepts.begin();
 	   it != handler->user->accepts.end(); it++) {
-	 
 	 reply = reply + " " + *it;
 	 
 	 // Check if we are close to breaking a limit here
@@ -1412,7 +1432,7 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
    
    // Run through the parameters
    for (String nick = st.nextToken(',').IRCtoLower(); nick.length();
-	nick= st.nextToken(',').IRCtoLower()) {
+	nick = st.nextToken(',').IRCtoLower()) {
       // Are we removing a mask?
       if (nick[0] == '-') {
 	 // Fix the string appropriately
@@ -2384,10 +2404,61 @@ void irc2userHandler::parseKNOCK(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseLANGUAGE
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original 26/10/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *tokens)
 {
+   // Check we have at least one parameter
+   if (tokens->countTokens() < 2) {
+#ifdef DO_MATCH_COUNTING
+      int numLanguages = 0;
+#endif
+      
+      // Run through known languages and list them to the client
+      
+      
+      // Send the end of list tag
+#ifdef DO_MATCH_COUNTING
+      handler->
+	sendNumeric(RPL_ENDOFLANGUAGES,
+		    String::printf((char *)Language::L_RPL_ENDOFLANGUAGES,
+				   numLanguages));
+#else
+      handler->sendNumeric(RPL_ENDOFLANGUAGES,
+			   Language::L_RPL_ENDOFLANGUAGES);
+#endif
+      return;
+   }
+   
+   // Grab the languages list
+   StringTokens st(tokens->nextToken());
+   String languages = "";
+   int langCount = 0;
+   
+   // Run through the given languages
+   for (String lang = st.nextToken(',').toLower(); lang.length();
+	lang = st.nextToken(',').toLower()) {
+      // Check if we have taken too many languages
+      if (++langCount > DEFAULT_MAX_LANGS_PER_USER) {
+	 // Complain!
+	 handler->
+	   sendNumeric(ERR_NOMORELANGS,
+		       String::printf((char *)Language::L_ERR_NOMORELANGS,
+				      DEFAULT_MAX_LANGS_PER_USER));
+	 return;
+      }
+      
+      // Unknown language, complain...
+      handler->sendNumeric(ERR_NOLANGUAGE,
+			   lang + Language::L_ERR_NOLANGUAGE);
+      
+      // Add the language to the languages list
+      if (languages.length()) {
+	 languages = languages + String(",") + lang;
+      } else {
+	 languages = languages + lang;
+      }
+   }
 }
 
 

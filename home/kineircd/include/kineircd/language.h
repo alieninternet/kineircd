@@ -179,6 +179,11 @@ class Language {
 # ifdef DO_MATCH_COUNTING
    static char const *L_RPL_ENDOFHELP_SIMPLE_MATCHES;
 # endif
+
+   // LANGUAGE command messages
+   static char const *L_RPL_ENDOFLANGUAGES;
+   static char const *L_ERR_NOLANGUAGE;
+   static char const *L_ERR_NOMORELANGS;
    
    // AWAY command messages
    static char const *L_RPL_NOWAWAY;

@@ -11,22 +11,28 @@ Added ISUPPORT things
    Up to 100 nicknames on the ACCEPT list are allowed
 
 
-  LANGUAGE=<entry>,<entry>...
+  LANGUAGE=<max langs>,<entry>,<entry>...
  -------------------
   This shows that the LANGUAGE command is available for changing the
  language of the replies, and details the languages available. One language
  entry should be surrounded by brackets to show it is the 'default', otherwise
  the first language on the list should be presumed the default. Language names
- are those identical to those defined by the ISO 639-1, and associated
- changed by the IANA. See http://www.loc.gov/standards/iso639-2/langhome.html
+ are those identical to those defined by the ISO-639-(1/2), and associated
+ additions by the IANA. Note that ISO-639-1 is more preferred as it followed
+ other internet standards set out by the IANA. 
+ See http://www.loc.gov/standards/iso639-2/bibcodes.html for a list of codes.
+  The 'max langs' field shows how many langauges may be selected at once. The
+ LANGUAGE command supports more than one language being specified, both to
+ find the best language available but for WHOIS information to show what
+ languages a person can speak.
   The language 'i-default' should always be assumed and the server is to
  read 'i-default' as the specified default language. This can aid in more
  simplistic clients, or those who do not read ISUPPORT.
  
- eg. LANGUAGE=ger,(eng),fra,i-klingon
+ eg. LANGUAGE=6,de,(en),fr,i-klingon
    Show that german, english, french and for the star-trek fans 'klingon' are
   available. English is the default, and therefore i-default is the same as 
-  'eng'.
+  'eng'. Six languages may be selected at once for the WHOIS output.
  
  
  
@@ -306,6 +312,56 @@ _______________________________________________________________________________
       the same way.
 
 
+827 - RPL_YOURLANGUAGEIS 
+      <language code> <charset> :<language/variation name>
+      When listing languages (LANGUAGE command with no parameters) this 
+      starts off the list showing the user their current language setting.
+      The language code follows ISO-639-(1/2)/IANA assigned language codes, 
+      and the charset is an IANA/MIME style compliant character which is used 
+      to view the language selected (the client should change to this for 
+      proper viewing). The charset field is used to show which character set 
+      should be used when viewing this language correctly, and follows 
+      IANA/MIME style specifications 
+      (see http://www.iana.org/assignments/character-sets; eg. ISO-8859-1,
+      ISO-10646-UCS-4 etc). The language/variation name is the name of the 
+      language IN that language. Eg. not 'German' but 'Deutsch', not 'Spanish' 
+      but 'Espa¤ol' (hopefully that's an n with a tilde), not 'French' but
+      'Francais' (I cannot do a cedilla on the c on this terminal) etc etc.
+      Note that this ONLY refers to the server specific language selection and
+      does not show other languages. The WHOIS language information serves
+      that purpose, but the client should already know what other languages
+      it has set.
+
+
+828 - RPL_LANGUAGE
+      <language code> <version> <maintainer> <charset> * 
+       :<language/variation name>
+      A list item for listing languages. The language code is the 
+      ISO-639-(1/2)/IANA assigned language name, the version is the version of 
+      the language file being used, and the maintainer is an e-mail address 
+      of the person who maintains that particular language file for contact 
+      with regards to updates/corrections etc. The character set is the same
+      as above, an IANA/MIME compliant character set name. The '*' is a 
+      field for possible future use and should be ignored for now. The 
+      language/variation name is given to show the name of the language, and 
+      is the name of the language IN that language, as with RPL_YOURLANGUAGEIS.
+
+
+829 - RPL_ENDOFLANGUAGES
+      :End of LANGUAGE list
+      Mark the end of a language list.
+
+
+830 - RPL_WHOIS_LANGUAGE
+      <language codes> <charset>
+      This is an optional extra to the WHOIS output, showing what language
+      a user is using. The 'language codes' field is a comma-delimetered list
+      of languages a person can speak (in order of preference, highest
+      first, lowest last). The charset is the user's currently presumed
+      charset (relative to their server language setting, which may not be
+      true network-wide. Additional fields may be added to this in the future.
+
+
 880 - ERR_NOKNOCK
       <channel> :<reason>
       Indicate to a client that a knock to the given channel was not
@@ -314,6 +370,20 @@ _______________________________________________________________________________
       'you are on that channel' or 'you are already invited').
 
 
+881 - ERR_NOLANGUAGE
+      <langage code> :is an unknown language to me
+      This is returned for every language the server does not know until a 
+      known language has been reached. Futher unknown languages are ignored
+      from there on. This helps a client rule out languages that are not
+      available with one command issued to the server. The unknown languages
+      will still be available to other users/servers, however, and may be
+      selected for other servers' output.
+
+
+882 - ERR_NOMORELANGS
+      <max languages> :No more languages can be set
+      Tell the client it cannot set any more languages, the maximum given.
+      
 
 Extensions:
 004 - RPL_MYINFO

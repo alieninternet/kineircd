@@ -240,6 +240,19 @@ namespace Language {
      "%s :End of HELP (%d matches); Try 'HELP -%s' for more information";
 #endif
 
+   // LANGUAGE command messages
+#ifdef DO_MATCH_COUNTING
+   char const *L_RPL_ENDOFLANGUAGES =
+     ":End of LANGUAGES list (%d languages)";
+#else
+   char const *L_RPL_ENDOFLANGUAGES =
+     ":End of LANGUAGES list";
+#endif
+   char const *L_ERR_NOLANGUAGE =
+     " :is an unknown language to me";
+   char const *L_ERR_NOMORELANGS =
+     "%u :No more languages can be set";
+   
    // AWAY command messages
    char const *L_RPL_NOWAWAY =
      ":You have been marked as being away";

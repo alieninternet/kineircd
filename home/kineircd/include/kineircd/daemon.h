@@ -132,10 +132,11 @@ class Daemon {
    String adminEmail;				// Administrator e-mail
    String adminLocation;			// Admin location (optional)
 
-   unsigned short confMaxWatchesPerUser;	// Max watches per user
-   unsigned short confMaxSilencesPerUser;	// Max silences per user
    unsigned short confMaxAcceptsPerUser;	// Max accepts per user
    unsigned short confMaxBansPerChannel;	// Max +b/+e/+I per channel
+   unsigned char confMaxLangsPerUser;		// Max languages per user
+   unsigned short confMaxSilencesPerUser;	// Max silences per user
+   unsigned short confMaxWatchesPerUser;	// Max watches per user
    
    relationmask_list_t failNicknames;		// Invalid nicks
    relationmask_list_t failChannels;		// Invalid channels

@@ -272,6 +272,7 @@
 /* Default maximums for various things - see the INSTALL file for more info */
 # undef DEFAULT_MAX_ACCEPTS_PER_USER
 # undef DEFAULT_MAX_BANS_PER_CHANNEL
+# undef DEFAULT_MAX_LANGS_PER_USER
 # undef DEFAULT_MAX_SILENCES_PER_USER
 # undef DEFAULT_MAX_WATCHES_PER_USER
 
