@@ -87,7 +87,7 @@ ModuleDescriptor *ModuleDescriptor::loadModule(const String &moduleFile,
    }
    
 #ifdef KINE_DEBUG_PSYCHO
-   debug("ModuleDescriptor::loadModule() - Running the init file in " +
+   debug("ModuleDescriptor::loadModule() - Running the init function in " +
 	 moduleFile);
 #endif
 
