@@ -80,9 +80,12 @@ int Kine::Daemon::run(void)
    if (stage != STAGE_NORMAL) {
       return Exit::ERR_DAEMON_INIT;
    }
+
+   // Fire-up the modules we have loaded!
+   config.getModuleList().startAll();
    
 #ifdef KINE_DEBUG
-   debug("Entering main loop");
+   debug("Daemon::run() - Entering main loop");
 #endif
 
    for (;;) {
