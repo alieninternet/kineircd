@@ -36,11 +36,11 @@ languages = {
    langMaintainer	= "pickle@alien.net.au";
 };
 
-#languages = {
-#   langCode		= "fr";
-#   langName		= "Français";
-#   langMaintainer	= "idil@users.sf.net";
-#};
+//languages = {
+//   langCode		= "fr";
+//   langName		= "Français";
+//   langMaintainer	= "idil@users.sf.net";
+//};
 
 languages = {
    langCode		= "tr";
@@ -308,7 +308,7 @@ tags = {
 
 tags = {
    name		= "irc2_ERR_UNKNOWNMODE";
-   fields	= "0 = channel"
+   fields	= "0 = channel";
    component	= "mod_irc2user";
    data_en	= "is unknown mode char to me (%p0)";
    data_tr	= "%p0 için bilinmeyen MODE CHAR";
