@@ -46,7 +46,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 		   Kine::Connection& connection, std::string& inputQueue,
 		   std::string& outputQueue)
   : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue),
-    user(registrant)
+    user(registrant, connection.getSocket().getRemoteAddress())
 {
    // vv temporary :)
    std::ostringstream output;

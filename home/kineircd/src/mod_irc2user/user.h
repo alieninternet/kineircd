@@ -38,10 +38,11 @@ namespace Kine {
 	 
        public:
 	 // Constructor
-	 User(const Kine::Registrant& _registrant)
+	 User(const Kine::Registrant& _registrant,
+	      const std::string& _hostname)
 	   : LocalUser(_registrant.name,
 		       _registrant.username,
-		       _registrant.hostname),
+		       _hostname),
 	     description(_registrant.description),
 	     lastAwake(Kine::daemon().getTime())
 	   {};
