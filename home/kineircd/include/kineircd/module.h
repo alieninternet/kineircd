@@ -63,7 +63,7 @@ namespace Kine {
 	 TYPE_PROTOCOL,			// Protocol module (pmod)
 	 TYPE_SERVICE,			// Service module (smod)
 	 TYPE_EXTENSION			// Core extension module (emod)
-      } const type;
+      };
       
       /* This structure defines information about the module itself. Each 
        * module must have one of these present to define parameters about the 
@@ -96,8 +96,15 @@ namespace Kine {
 	 // The two required functions - start and stop
 	 const startFunction_type *startFunction;
 	 const stopFunction_type *stopFunction;
-      } const &basicInfo;
+      };
 
+    private:
+      // Type of the module
+      const type_type type;
+      
+      // Basic information about this module
+      const basicInfo_type &basicInfo;
+      
     protected:
       // Constructor
       Module(const type_type t, const basicInfo_type &mi)
@@ -110,6 +117,10 @@ namespace Kine {
       virtual ~Module(void)
 	{};
 
+      // Return the type of the module
+      const type_type &getType(void) const
+	{ return type; };
+      
       // Return the basic information about the module
       const basicInfo_type &getBasicInfo(void) const
 	{ return basicInfo; };
