@@ -28,7 +28,6 @@
 # include <kineircd/connection.h>
 
 namespace Kine {
-   //! Protocol base classes
    namespace Protocol {
       //! Generic protocol output base
       class Output : virtual public Base {

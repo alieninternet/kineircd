@@ -27,7 +27,6 @@
 # include <kineircd/protocol/base.h>
 
 namespace Kine {
-   //! Protocol base classes
    namespace Protocol {
       //! Generic protocol input base
       class Input : virtual public Base {

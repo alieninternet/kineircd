@@ -28,7 +28,6 @@
 # include <kineircd/protocol/output.h>
 
 namespace Kine {
-   //! Protocol base classes
    namespace Protocol {
       //! Generic protocol including both input and output components
       class Protocol : public Input, public Output {
