@@ -145,3 +145,25 @@ const Error::error_type User::setStaffOff(void)
    // Happy chappy..
    return Error::NO_ERROR;
 }
+
+
+/* sendMessage - Handle the reception of a message sent to us
+ * Original 12/05/2003 simonb
+ */
+const Error::error_type
+  User::sendMessage(Entity& from, const std::string& message)
+{
+   // Lazy for now, just accept the message
+   doEventReceivePrivateMessage(from, message);
+}
+
+
+/* sendNotice - Handle the reception of a notice sent to us
+ * Original 12/05/2003 simonb
+ */
+const Error::error_type
+  User::sendNotice(Entity& from, const std::string& message)
+{
+   // Lazy for now, just accept the notice
+   doEventReceivePrivateNotice(from, message);
+}

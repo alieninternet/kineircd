@@ -72,6 +72,18 @@ namespace Kine {
 					     const Entity& entity)
 	{};
       
+      //! An event called when a message was successfully sent to a channel
+      virtual void doEventReceiveChannelMessage(Entity& from,
+						const Channel& to,
+						const std::string& message)
+	{};
+      
+      //! An event called when a notice was successfully sent to a channel
+      virtual void doEventReceiveChannelNotice(Entity& from,
+					       const Channel& to,
+					       const std::string& message)
+	{};
+
     public:
       //! Destructor
       virtual ~Client(void)

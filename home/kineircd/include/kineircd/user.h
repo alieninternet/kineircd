@@ -69,6 +69,16 @@ namespace Kine {
       //! An event called whenever the language list is modified
       virtual void doEventLanguageChange(void)
 	{};
+      
+      //! An event called when a message was successfully sent to us
+      virtual void doEventReceivePrivateMessage(Entity& from,
+						const std::string& message)
+	{};
+      
+      //! An event called when a notice was successfully sent to us
+      virtual void doEventReceivePrivateNotice(Entity& from,
+					       const std::string& message)
+	{};
 
       //! An event called whenever the staff status is changed/turned on or off
       virtual void doEventStaffStatusChange(void)
@@ -161,6 +171,15 @@ namespace Kine {
       // Check if this user is a local user
       const bool isLocalUser(void) const
 	{ return (getLocalSelf() != 0); };
+      
+      
+      // Handle the reception of a message
+      const Error::error_type
+	sendMessage(Entity& from, const std::string& message);
+      
+      // Handle the reception of a notice
+      const Error::error_type
+	sendNotice(Entity& from, const std::string& message);
    }; // class User
 }; // namespace Kine
 

@@ -51,6 +51,14 @@ namespace Kine {
 	 void doEventChannelTopicChange(const Channel& channel,
 					const Entity& entity);
 	 void doEventLanguageChange(void);
+	 void doEventReceiveChannelMessage(Entity& from, const Channel& to,
+					   const std::string& message);
+	 void doEventReceiveChannelNotice(Entity& from, const Channel& to,
+					  const std::string& message);
+	 void doEventReceivePrivateMessage(Entity& from,
+					   const std::string& message);
+	 void doEventReceivePrivateNotice(Entity& from,
+					  const std::string& message);
 	 
        public:
 	 // Constructor

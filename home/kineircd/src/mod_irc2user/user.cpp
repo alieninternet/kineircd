@@ -156,3 +156,107 @@ void User::doEventLanguageChange(void)
 {
    protocol.sendLanguageList();
 }
+
+
+/* doEventReceiveChannelMessage - Called when a channel has received a message
+ * Original 01/08/2001 simonb
+ */
+void User::doEventReceiveChannelMessage(Entity& from, const Channel& to,
+					const std::string& message)
+{
+   static const char* const commandName = "PRIVMSG";
+   
+   // Try to cast this as a client..
+   Client* const client = dynamic_cast<Client* const>(&from);
+   
+   // Is it a client?
+   if (client != 0) {
+      protocol.sendMessageFrom(*client, commandName,
+			       to.getName(),
+			       message);
+      return;
+   }
+   
+   // It was not a client, use the entity's generic name
+   protocol.sendMessageFrom(from.getName(), commandName,
+			    to.getName(),
+			    message);
+}
+
+
+/* doEventReceiveChannelNotice - Called when a channel has received a notice
+ * Original 01/08/2001 simonb
+ */
+void User::doEventReceiveChannelNotice(Entity& from, const Channel& to,
+				       const std::string& message)
+{
+   static const char* const commandName = "NOTICE";
+   
+   // Try to cast this as a client..
+   Client* const client = dynamic_cast<Client* const>(&from);
+   
+   // Is it a client?
+   if (client != 0) {
+      protocol.sendMessageFrom(*client, commandName,
+			       to.getName(),
+			       message);
+      return;
+   }
+   
+   // It was not a client, use the entity's generic name
+   protocol.sendMessageFrom(from.getName(), commandName,
+			    to.getName(),
+			    message);
+}
+
+
+/* doEventReceivePrivateMessage - Called when we have received a message
+ * Original 01/08/2001 simonb
+ */
+void User::doEventReceivePrivateMessage(Entity& from,
+					const std::string& message)
+{
+   static const char* const commandName = "PRIVMSG";
+   
+   // Try to cast this as a client..
+   Client* const client = dynamic_cast<Client* const>(&from);
+   
+   // Is it a client?
+   if (client != 0) {
+      protocol.sendMessageFrom(*client, commandName,
+			       getName(),
+			       message);
+      return;
+   }
+   
+   // It was not a client, use the entity's generic name
+   protocol.sendMessageFrom(from.getName(), commandName,
+			    getName(),
+			    message);
+}
+
+
+/* doEventReceivePrivateNotice - Called when we have received a notice
+ * Original 01/08/2001 simonb
+ */
+void User::doEventReceivePrivateNotice(Entity& from,
+				       const std::string& message)
+{
+   static const char* const commandName = "NOTICE";
+   
+   // Try to cast this as a client..
+   Client* const client = dynamic_cast<Client* const>(&from);
+   
+   // Is it a client?
+   if (client != 0) {
+      protocol.sendMessageFrom(*client, commandName,
+			       getName(),
+			       message);
+      return;
+   }
+   
+   // It was not a client, use the entity's generic name
+   protocol.sendMessageFrom(from.getName(), commandName,
+			    getName(),
+			    message);
+}
