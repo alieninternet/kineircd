@@ -1942,7 +1942,7 @@ irc2numerics = {
 };
 
 irc2numerics = {
-   name		= "ERR_UNKNOWN_ERROR";
+   name		= "ERR_UNKNOWNERROR";
    numeric	= "400";
    format	= "<command> [<?>] :<info>";
    comment	= "Sent when an error occured executing a command, but it is "
