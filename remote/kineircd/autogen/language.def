@@ -2369,7 +2369,6 @@ tag = {
 		  "currently unsupported";
 };
 
-
 tag = {
    name		= "Kine_Error_UNKNOWN_ERROR";
    components	= "libkineircd";
