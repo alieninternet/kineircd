@@ -37,7 +37,7 @@ using namespace Kine::LibIRC2::Modes;
 const serverModeMap_type serverModeMap[] = {[+FOR servermodes+]
      { 
         '[+irc2char+]',
-          ::Kine::Modes::ServerModes::[+name+]
+          ::Kine::Server::Mode::[+name+]
      },[+ENDFOR servermodes+]
-     { 0, (::Kine::Modes::ServerModes::type)0 }
+     { 0, (::Kine::Server::Mode::mode_type)0 }
 };

@@ -25,14 +25,14 @@
 #ifndef _SRC_LIBKINEIRCD_IRC2_MODES_H_
 # define _SRC_LIBKINEIRCD_IRC2_MODES_H_ 1
 
-# include <kineircd/servermodes.h>
+# include <kineircd/server.h>
 
 namespace Kine {
    namespace LibIRC2 {
       namespace Modes {
 	 struct serverModeMap_type {
 	    const char letter;				// Char for this mode
-	    const Kine::Modes::ServerModes::type mode;	// The mode itself
+	    const Kine::Server::Mode::mode_type mode;	// The mode itself
 	 } extern const serverModeMap[];
       }; // namespace Modes
    }; // namespace LibIRC2

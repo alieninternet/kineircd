@@ -39,7 +39,7 @@ namespace Kine {
       typedef unsigned long modes_type;
       
       // Server modes...
-      namespace Mode {
+      struct Mode { // <=- should be namespace?
 	 enum mode_type {[+ FOR servermodes +]
 	    [+ (sprintf "%-25s = 0x%08X%s //!< (+%s)"
 	          (get "name")
@@ -63,7 +63,7 @@ namespace Kine {
 	{};
       
       //! Return the server modes
-      const modes getModes(void) const
+      const modes_type getModes(void) const
 	{ return modes; };
       
       //! Check if the given mode is set
