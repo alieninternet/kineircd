@@ -1509,6 +1509,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_WHOISACCOUNT";
    numeric	= "330";
+   origin	= "ircu";
    conflict	= "yes";
 };
 
