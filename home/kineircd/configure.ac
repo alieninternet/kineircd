@@ -409,31 +409,6 @@ if test "$kineircd_cv_lib_stl_ok" = "no"; then
   AC_MSG_ERROR([Sorry, you need a working Standard Template Library])
 fi
 
-AC_CACHE_CHECK([for std::string::clear()],
- kineircd_cv_lib_stl_string_clear,[
-  AC_LANG_CPLUSPLUS
-  AC_TRY_RUN([
-	#include <string>
-	
-	int main(void)
-	{
-	   std::string foo("test");
-	   foo.clear();
-	   if (!foo.empty()) {
-	      exit(1); // eek
-	   }
-	}
-   ],[
-     kineircd_cv_lib_stl_string_clear=yes
-   ],[
-     kineircd_cv_lib_stl_string_clear=no
-   ])
- ])
-if test "$kineircd_cv_lib_stl_string_clear" = "yes"; then
-  AC_DEFINE(KINE_STL_STRING_CLEAR, 1,
-            [Define if your C++ STL 'string' has the clear() function])
-fi
-
 AC_CACHE_CHECK([for an SGI compliant hash capability in your STL],
  kineircd_cv_lib_stl_sgi_hash,[
   AC_LANG_CPLUSPLUS
