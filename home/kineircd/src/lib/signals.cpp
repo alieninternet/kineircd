@@ -292,7 +292,7 @@ bool Signals::addHandler(const handlerPtr_type handler,
 #endif
    
    // Make sure the given data is okay
-   if ((handler) && (mask != 0)) {
+   if ((handler == 0) || (mask == 0)) {
       return false;
    }
 
