@@ -95,7 +95,8 @@ bool ModuleList::loadModule(const String &moduleFile, String &errorReturn,
 void ModuleList::startAll(Daemon &daemon) const
 {
 #ifdef KINE_DEBUG_EXTENDED
-   debug("ModuleList::startAll() - Starting modules");
+   debug("ModuleList::startAll() - Starting " + 
+	 String::convert(modules.size()) + " modules");
 #endif
    
    // Run through the list of modules and call their start functions
@@ -116,7 +117,8 @@ void ModuleList::startAll(Daemon &daemon) const
 void ModuleList::stopAll(void)
 {
 #ifdef KINE_DEBUG_EXTENDED
-   debug("ModuleList::stopAll() - Killing modules");
+   debug("ModuleList::stopAll() - Stopping " + 
+	 String::convert(modules.size()) + " modules");
 #endif
    
    // Run through the list of modules to stop and delete them all
