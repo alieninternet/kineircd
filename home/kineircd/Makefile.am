@@ -281,8 +281,13 @@ src/libkineircd/chantypes.cpp: src/libkineircd/chantypes.cpp.tpl $(AUTOGEN_DIR)/
 		-T src/libkineircd/chantypes.cpp.tpl \
 		$(AUTOGEN_DIR)/chantypes.def
 
-# This is intentionally *not* in the sources list or it will fudge the checksum
+# Stop having to relink every module per build in maintainer mode..
+# Is this wise, though?
+if !MAINTAINER_MODE
 .PHONY: src/libkineircd/version.h
+endif
+
+# This is intentionally *not* in the sources list or it will fudge the checksum
 src/libkineircd/version.h:
 	$(ECHO) \
 		"#define SOURCE_CODE_HASH \"` \
