@@ -44,6 +44,12 @@ errors = {
 };
 
 errors = {
+   name		= "UNREGISTERED_ENTITY";
+   reason	= "Operation could not be completed - the given entity is not "
+                  "registered";
+};
+
+errors = {
    name		= "UNSUPPORTED_BY_ENTITY";
    reason	= "Cannot complete action, it is not supported by the entity";
 };
