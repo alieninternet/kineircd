@@ -71,6 +71,6 @@ void LoggerFile::logLine(const String &line, const mask_type mask)
       debug("LoggerFile::log(" + line + ')');
 #endif
 
-      logFile << '[' << time(NULL) << ':' << mask << "] " << line << endl;
+      logFile << '[' << time(NULL) << ':' << mask << "] " << line << std::endl;
    }
 }
