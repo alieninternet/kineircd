@@ -1,0 +1,111 @@
+# $Id$
+# Basic KineIRCd language file for English ('Elite Hacker' style - 'x-hacker')
+#
+#
+# This file is only available to test the langtags system. As such, its future
+# availability is tentative, and really only depends on Steve's willingness to
+# maintain this file. This file is here to be humourous only.
+#
+# Again: This file only exists while real languages do not, for testing
+# purposes. To maintain user sanity, it shouldn't be used on production IRC
+# servers.
+#
+# This file was translated automatically by http://www.psyclops.com/translator/
+# and then further edited. It's actually a really crappy job, I know, but it's
+# enough for testing purposes. The use of the 'hacker' language is mainly a
+# private joke - it has no reflection on Kine's heritage, honest! :)
+#
+# For information on tag purposes and substitution use, please see the 
+# "README" and "en.lang" files.
+#
+#
+.LANGCODE = x-hacker
+.LANGNAME = 3|it3 Ha<K0r
+.LANGNOTE = Intended to be humourous :)
+.REVISION = 2002121700
+.MAINTAINER = sl7@arach.net.au
+
+
+#
+# mod_irc2user
+#
+irc2_RPL_WELCOME		= W3|c0m3 t0 th3 %N 1nt3rn3t R3|ay N3tw0rk %p0!%p1@%p2
+irc2_RPL_YOURHOST		= Y0ur h0Zt 1Z %p0, run1n v3rZ10n %p1
+irc2_RPL_CREATED		= Th1Z Z3rv3r waZ cr3at3d %p0
+irc2_RPL_ISUPPORT		= ar3 Zupp0rt3d by th1Z Z3rv3r
+irc2_RPL_ENDOFSTATS		= 3nd 0f STATS r3p0rt
+irc2_RPL_SERVLISTEND		= 3nd 0f Z3rv1c3 |1Zt1ng
+irc2_RPL_LUSERCLIENT		= Th3r3 ar3 %p0 uZ3rZ n %p1 Z3rv1c3Z 0n %p2 Z3rv3rZ
+irc2_RPL_LUSEROP		= 0p3rat0r(Z) 0n|1n3
+irc2_RPL_LUSERUNKNOWN		= unkn0wn c0nn3ct10n(Z)
+irc2_RPL_LUSERCHANNELS		= chann3|Z f0rm3d
+irc2_RPL_LUSERME		= 1 hav3 %p0 c|13ntZ n %p1 Z3rv3rZ
+irc2_RPL_ADMINME		= Adm1n1Ztrat1v3 1nf0
+irc2_RPL_TRACEEND		= 3nd 0f TRACE
+irc2_RPL_UNAWAY			= u r n0 |0ng3r mark3d aZ b31ng away
+irc2_RPL_NOWAWAY		= u hav3 b33n mark3d aZ b31ng away
+irc2_RPL_WHOISOPERATOR		= 1Z an 1RC 0p3rat0r
+irc2_RPL_ENDOFWHO		= 3nd 0f WHO |1Zt
+irc2_RPL_WHOISIDLE		= Z3c0ndZ 1d|3, Z1gn0n t1m3
+irc2_RPL_ENDOFWHOIS		= 3nd 0f WHOIS |1Zt
+irc2_RPL_LISTEND		= 3nd 0f LIST
+irc2_RPL_NOTOPIC		= N0 t0p1c 1Z Z3t
+irc2_RPL_ENDOFINVITELIST	= 3nd 0f chann3| 1nv1t3 |1Zt
+irc2_RPL_ENDOFEXCEPTLIST	= 3nd 0f chann3| 3xc3pt10n |1Zt
+irc2_RPL_ENDOFLINKS		= 3nd 0f LINKS |1Zt
+irc2_RPL_ENDOFNAMES		= 3nd 0f NAMES |1Zt
+irc2_RPL_ENDOFBANLIST		= 3nd 0f chann3| ban |1Zt
+irc2_RPL_ENDOFWHOWAS		= 3nd 0f WH0WA$
+irc2_RPL_ENDOFINFO		= 3nd 0f INFO
+irc2_RPL_MOTDSTART		= %p0 M3ZZag3 0f th3 day
+irc2_RPL_ENDOFMOTD		= 3nd 0f MOTD c0mmand
+irc2_RPL_YOUREOPER		= ur n0w an 1RC 0paHat0r
+irc2_RPL_REHASHING		= R3haZh1ng
+irc2_RPL_YOURESERVICE		= ur a Z3rv1c3 %p0
+irc2_ERR_NOSUCHNICK		= N0 Zuch n1ck
+irc2_ERR_NOSUCHSERVER		= N0 Zuch Z3rv3r
+irc2_ERR_NOSUCHCHANNEL		= N0 Zuch chann3|
+irc2_ERR_CANNOTSENDTOCHAN	= Cann0t Z3nd 2 chann3|
+irc2_ERR_TOOMANYCHANNELS	= uv j01n3d 2 many chann3|Z (%p0 1Z th3 |1m1t)
+irc2_ERR_WASNOSUCHNICK		= Th3r3 waZ n0 Zuch n1cknam3, 0r th3y Z1gn3d 0ff t00 |0ng ag0
+irc2_ERR_NOSUCHSERVICE		= N0 Zuch Z3rv1c3
+irc2_ERR_NOORIGIN		= N0 0r1g1n Zp3c1f13d
+irc2_ERR_NORECIPIENT		= N0 r3c1p13nt g1v3n (%p0)
+irc2_ERR_NOTEXTTOSEND		= N0 t3xt 2 Z3nd
+irc2_ERR_NOTOPLEVEL		= N0 t0p|3v3| d0ma1n Zp3c1f13d
+irc2_ERR_WILDTOPLEVEL		= W1|dcard 1n t0p|3v3| d0ma1n
+irc2_ERR_BADMASK		= Bad Z3rv3r/h0Zt maZk
+irc2_ERR_UNKNOWNCOMMAND		= Unkn0wn c0mmand
+irc2_ERR_NOMOTD			= M0TD F1|3 1Z m1ZZ1ng
+irc2_ERR_NOADMININFO		= N0 adm1n 1nf0
+irc2_ERR_NONICKNAMEGIVE		= N0 n1cknam3 g1v3n
+irc2_ERR_ERRONEUSNICKNAME	= 3rr0n30uZ n1cknam3
+irc2_ERR_NICKNAMEINUSE		= N1cknam3 1Z a|r3ady 1n uZ3
+irc2_ERR_NICKCOLLISION		= N1cknam3 c0||1Z10n fr0m %p0@%p1
+irc2_ERR_UNAVAILRESOURCE	= R3Z0urc3 1Z t3mp0rar1|y unava1|ab|3
+irc2_ERR_USERNOTINCHANNEL	= Th3y ar3n't 0n that chann3|
+irc2_ERR_NOTONCHANNEL		= ur n0t 0n that chann3|
+irc2_ERR_USERONCHANNEL		= 1Z a|r3ady 0n chann3|
+irc2_ERR_SUMMONDISABLED		= $UMM0N haZ b33n d1Zab|3d
+irc2_ERR_USERSDISABLED		= U$3R$ haZ b33n d1Zab|3d
+irc2_ERR_NEEDMOREPARAMS		= N0t 3n0ugh param3t3rZ
+irc2_ERR_ALREADYREGISTERED	= Unauth0r1Z3d c0mmand (a|r3ady r3g1Zt3r3d)
+irc2_ERR_NOPERMFORHOST		= Y0ur h0Zt 1Zn't am0ng th3 pr1v1|3g3d
+irc2_ERR_PASSWDMISMATCH		= PaZZw0rd 1nc0rr3ct
+irc2_ERR_YOUREBANNEDCREEP	= Y0u ar3 bann3d fr0m th1Z Z3rv3r
+irc2_ERR_KEYSET			= Chann3| k3y a|r3ady Z3t (t0 chang3 1t, unZ3t 1t f1rZt)
+irc2_ERR_CHANNELISFULL		= Cann0t j01n chann3| (+l)
+irc2_ERR_UNKNOWNMODE		= 1Z unkn0wn m0d3 char 2 m3 4 %p0
+irc2_ERR_INVITEONLYCHAN		= Cammpt kp0m chann3| (+i)
+irc2_ERR_BANNEDFROMCHAN		= Cann0t j01n chann3| (+b)
+irc2_ERR_BADCHANNELKEY		= Cann0t j01n chann3| (+k)
+irc2_ERR_BADCHANMASK		= Bad chann3| maZk
+irc2_ERR_NOCHANMODES		= Chann3| d03Zn't Zupp0rt m0d3Z 0r m0d3 chang3Z
+irc2_ERR_BANLISTFULL		= Chann3| |1Zt 1Z fu|| (%p0)
+irc2_ERR_NOPRIVILEGES		= P3rm1ZZ10n D3n13d - UR n0t an 1RC 0p3rat0r
+irc2_ERR_CHANOPRIVSNEEDED	= ur n0t a chann3| 0p3rat0r
+irc2_ERR_RESTRICTED		= Ur c0nn3ct10n 1Z r3Ztr1ct3d
+irc2_ERR_UNIQOPPRIVSNEEDED	= ur n0t th3 0r1g1na| chann3| 0p3rat0r
+irc2_ERR_NOOPERHOST		= Y0ur h0Zt 1Z n0t c0nf1gur3d 2 a||0w th3 OPER c0mmand
+irc2_ERR_UMODEUNKNOWNFLAG	= Unkn0wn M0D3 f|ag (%p0)
+irc2_ERR_USERSDONTMATCH		= Cann0t chang3 m0d3 4 0th3r uZ3rZ
