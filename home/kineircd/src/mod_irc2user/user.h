@@ -53,7 +53,7 @@ namespace Kine {
 	 void doEventLanguageChange(const Entity& changer);
 	 void doEventNicknameChange(const Entity& changer,
 				    const Kine::User& user,
-				    const Name& newNickname);
+				    const ClientName& newNickname);
 	 void doEventReceiveChannelMessage(Entity& from, const Channel& to,
 					   const std::string& message);
 	 void doEventReceiveChannelNotice(Entity& from, const Channel& to,

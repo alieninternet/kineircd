@@ -42,10 +42,10 @@ namespace Kine {
    class Registry {
     public:
       //! Connected users list type
-      typedef KINE_HASH_MAP_TYPE < Name, User* const > users_type;
+      typedef KINE_HASH_MAP_TYPE < ClientName, User* const > users_type;
       
       //! Connected services list type
-      typedef KINE_HASH_MAP_TYPE < Name, Service* const > services_type;
+      typedef KINE_HASH_MAP_TYPE < ClientName, Service* const > services_type;
       
       //! Connected servers list type
       typedef KINE_HASH_MAP_TYPE < std::string, Server* const > servers_type;
@@ -97,8 +97,8 @@ namespace Kine {
 
       
       //! Change a user's nickname
-      const Error::error_type changeUserNickname(User& user,
-						 const Name& newNickname);
+      const Error::error_type 
+	changeUserNickname(User& user, const ClientName& newNickname);
 
       // Our friends
       friend class User;
@@ -123,7 +123,7 @@ namespace Kine {
       const Error::error_type removeUser(const User& entity);
 
       //! Find the given user, by its name
-      User* const findUser(const Name& name) const;
+      User* const findUser(const ClientName& name) const;
       
 
       //! Add the given service
@@ -133,11 +133,11 @@ namespace Kine {
       const Error::error_type removeService(const Service& entity);
 
       //! Find the given service, by its name
-      Service* const findService(const Name& name) const;
+      Service* const findService(const ClientName& name) const;
       
       
-      //! Find the given client, by its name
-      Client* const findClient(const Name& name) const
+      //! Find the given client, by its name (check both user and service lists)
+      Client* const findClient(const ClientName& name) const
 	{
 	   Client* const client = findUser(name);
 	   return ((client != 0) ? client : findService(name));
@@ -153,7 +153,7 @@ namespace Kine {
 	{ return Error::UNKNOWN_ERROR; /* temporary */ };
 
       //! Find the given server, by its name
-      Server* const findServer(const Name& name) const
+      Server* const findServer(const std::string& name) const
 	{ return 0; /* temporary */ };
       
       
@@ -166,7 +166,7 @@ namespace Kine {
 	{ return Error::UNKNOWN_ERROR; /* temporary */ };
 
       //! Find the given network, by its name
-      Network* const findNetwork(const Name& name) const
+      Network* const findNetwork(const std::string& name) const
 	{ return 0; /* temporary */ };
       
       
@@ -179,7 +179,7 @@ namespace Kine {
 	{ return Error::UNKNOWN_ERROR; /* temporary */ };
 
       //! Find the given channel, by its name
-      Channel* const findChannel(const Name& name) const
+      Channel* const findChannel(const std::string& name) const
 	{ return 0; /* temporary */ };
       
       

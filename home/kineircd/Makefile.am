@@ -184,6 +184,7 @@ libkineircd_la_INCLUDES=\
 libkineircd_la_SOURCES=\
 	include/kineircd/channel.h \
 	include/kineircd/client.h \
+	include/kineircd/clientname.h \
 	include/kineircd/config.h \
 	include/kineircd/connection.h \
 	include/kineircd/daemon.h \

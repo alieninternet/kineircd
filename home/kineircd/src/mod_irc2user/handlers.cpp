@@ -553,8 +553,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleNETWORKS)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleNICK)
 {
-   static const char* const commandName = "NICK";
-   
    // Make sure we got a nickname..
    if (parameters.empty()) {
       sendNumeric(LibIRC2::Numerics::ERR_NONICKNAMEGIVEN,
@@ -592,33 +590,40 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleNICK)
       return;
       
     // The nickname was erroneous (bad chars)
-    case Error::NICKNAME_HAS_BAD_CHARS:
+    case Error::NAME_HAS_BAD_CHARS:
       sendNumeric(LibIRC2::Numerics::ERR_ERRONEUSNICKNAME,
 		  parameters[0],
 		  GETLANG(irc2_ERR_ERRONEUSNICKNAME_BAD_CHARS));
       return;
       
     // The nickname is already in use by someone else
-    case Error::NICKNAME_IS_IN_USE:
+    case Error::NAME_IS_IN_USE:
       sendNumeric(LibIRC2::Numerics::ERR_NICKNAMEINUSE,
 		  parameters[0],
 		  GETLANG(irc2_ERR_NICKNAMEINUSE));
       return;
       
     // The nickname was erroneous (too long)
-    case Error::NICKNAME_TOO_LONG:
+    case Error::NAME_TOO_LONG:
       sendNumeric(LibIRC2::Numerics::ERR_ERRONEUSNICKNAME,
 		  parameters[0],
 		  GETLANG(irc2_ERR_ERRONEUSNICKNAME_TOO_LONG,
-			  String::convert(config().
+			  String::convert((unsigned int)config().
 					  getLimitsUsersMaxNickNameLength())));
       return;
 
-    // NFI what happened - oops.
+    // The nickname was erroneous (started with a digit)
+    case Error::NICKNAME_BEGINS_WITH_DIGIT:
+      sendNumeric(LibIRC2::Numerics::ERR_ERRONEUSNICKNAME,
+		  parameters[0],
+		  GETLANG(irc2_ERR_ERRONEUSNICKNAME_BEGINS_WITH_DIGIT));
+      return;
+      
+    // NFI what happened, but the nickname was invalid anyway
     default:
-      sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
-		  commandName,
-		  GETLANG(irc2_ERR_UNKNOWNERROR));
+      sendNumeric(LibIRC2::Numerics::ERR_ERRONEUSNICKNAME,
+		  parameters[0],
+		  GETLANG(irc2_ERR_ERRONEUSNICKNAME));
    }
 }
 #endif

@@ -21,36 +21,31 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_NAME_H_
-# define _INCLUDE_KINEIRCD_NAME_H_ 1
+#ifndef _INCLUDE_KINEIRCD_CLIENTNAME_H_
+# define _INCLUDE_KINEIRCD_CLIENTNAME_H_ 1
 
-# include <aisutil/string/string.h>
-# include <kineircd/errors.h>
+# include <kineircd/name.h>
 
 namespace Kine {
    //! A name, conforming to IRC rules (a specially modified form of a string)
-   class Name : public AISutil::String {
-    protected:
+   class ClientName : public Name {
+    public:
       // Constructor
-      Name(void)
+      ClientName(void)
 	{};
       
       // Constructor (a magic one)
-      template <class Ta> Name(const Ta& a)
-	: AISutil::String(a)
+      template <class Ta> ClientName(const Ta& a)
+	: Name(a)
         {};
       
-    public:
       // Destructor
-      ~Name(void)
+      ~ClientName(void)
 	{};
       
-      //! Lower-case the nickname based on compiled in case-mapping rules
-      const AISutil::String IRCtoLower(void) const;
-      
-      //! Check if the name is valid, according to whatever rules neccessary
-      virtual const Error::error_type checkValidity(void) const = 0;
-   }; // class Name
+      //! Check if the name is valid, according to client nickname rules
+      const Error::error_type checkValidity(void) const;
+   }; // class ClientName
 }; // namespace Kine
 
-#endif // _INCLUDE_KINEIRCD_NAME_H_
+#endif // _INCLUDE_KINEIRCD_CLIENTNAME_H_

@@ -31,7 +31,7 @@
 # include <kineircd/denizen.h>
 # include <kineircd/sender.h>
 # include <kineircd/receiver.h>
-# include <kineircd/name.h>
+# include <kineircd/clientname.h>
 
 namespace Kine {
    class Channel;
@@ -87,7 +87,7 @@ namespace Kine {
 	{};
       
       //! Return the client's nickname
-      virtual const Name& getNickname(void) const = 0;
+      virtual const ClientName& getNickname(void) const = 0;
 
       //! Return the client's nickname (which is also its unique 'name')
       const std::string& getName(void) const

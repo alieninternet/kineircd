@@ -97,11 +97,11 @@ void Registry::initInstance(void)
 }
 
 
-/* addUser - Add the given user
+/* changeUserNickname - Change a user's nickname (may involve a key change)
  * Original 16/05/2003
  */
 const Error::error_type 
-  Registry::changeUserNickname(User& user, const Name& newNickname)
+  Registry::changeUserNickname(User& user, const ClientName& newNickname)
 {
 #ifdef KINE_DEBUG
    std::ostringstream debugOut;
@@ -150,6 +150,13 @@ const Error::error_type Registry::addUser(User& entity)
    debug(debugOut.str());
 #endif
 
+   // Check to make sure the nickname is valid
+   Error::error_type validityError;
+   if ((validityError = entity.getNickname().checkValidity()) !=
+       Error::NO_ERROR) {
+      return validityError;
+   }
+   
    // Make sure the client doesn't already exist..
    if (findClient(entity.getName()) == 0) {
       // Add the user to the list
@@ -227,7 +234,7 @@ const Error::error_type Registry::removeUser(const User& entity)
 /* findUser - Find the a user by its name
  * Original 08/04/2003
  */
-User* const Registry::findUser(const Name& name) const
+User* const Registry::findUser(const ClientName& name) const
 {
    // Look up the given user from the user list
    users_type::const_iterator it = users.find(name.IRCtoLower());
@@ -254,6 +261,13 @@ const Error::error_type Registry::addService(Service& entity)
    debug(debugOut.str());
 #endif
 
+   // Check to make sure the nickname is valid
+   Error::error_type validityError;
+   if ((validityError = entity.getNickname().checkValidity()) !=
+       Error::NO_ERROR) {
+      return validityError;
+   }
+   
    // Make sure the client doesn't already exist..
    if (findClient(entity.getName()) == 0) {
       // Add the service to the list
@@ -333,7 +347,7 @@ const Error::error_type Registry::removeService(const Service& entity)
 /* findService - Find the a service by its name
  * Original 08/04/2003
  */
-Service* const Registry::findService(const Name& name) const
+Service* const Registry::findService(const ClientName& name) const
 {
    // Look up the given service from the service list
    services_type::const_iterator it = services.find(name.IRCtoLower());

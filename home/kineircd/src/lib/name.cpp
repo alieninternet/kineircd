@@ -29,7 +29,8 @@
 #include <algorithm>
 #include <cctype>
 
-#include "kineircd/name.h"
+#include "kineircd/clientname.h"
+#include "kineircd/config.h"
 
 using namespace Kine;
 using AISutil::String;
@@ -67,4 +68,43 @@ const AISutil::String Name::IRCtoLower(void) const
    String result(length(), 0);
    (void)std::transform(begin(), end(), result.begin(), irctolower);
    return result;
+}
+
+
+/* checkValidity - Check to see if the name is valid as per nickname rules
+ * Original 12/08/2001 pickle
+ */
+const Error::error_type ClientName::checkValidity(void) const
+{
+   // Check the nickname's length first
+   if (length() > config().getLimitsUsersMaxNickNameLength()) {
+      return Error::NAME_TOO_LONG;
+   }
+   
+   // Check if the first character is a digit (bad)
+   if (std::isdigit((*this)[0])) {
+      return Error::NICKNAME_BEGINS_WITH_DIGIT;
+   }
+
+   // Run over the name and check each char..
+   for (size_type i = 0; i < length(); ++i) {
+      /* If the char is greater than 7-bits, it's okay (to allow for UTF-8)..
+       * If the char is alphanumeric, it's okay. It's also okay if it's between
+       * the range of 0x5B-0x60 ('[', '\', ']', '^', '_', '`'), or within the
+       * range of 0x7B-0x7D ('{', '|', '}'). These two weird looking ranges are
+       * acceptable due to the scandinavian origin of IRC, back a long long
+       * time ago in a universe far, far away.
+       */
+      if (((*this)[i] & 0x80) ||
+	  isalnum((*this)[i]) ||
+	  (((*this)[i] >= 0x5B) && ((*this)[i] <= 0x60)) ||
+	  (((*this)[i] >= 0x7B) && ((*this)[i] <= 0x7D))) {
+	 continue;
+      }
+      
+      // If we got here, it's a bad char. Vewwy vewwy BAD char!!
+      return Error::NAME_HAS_BAD_CHARS;
+   }
+      
+   return Error::NO_ERROR;
 }

@@ -362,15 +362,14 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
    }
    
    // Grab the nickname..
-   Name nick = parameters[0];
+   ClientName nick(parameters[0]);
    
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
-//   if (!User::okName(nick)) {
-//      handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
-//			   nick + " :" +
-//			   Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME));
-//      return;
-//   }
+   if (nick.checkValidity() != Error::NO_ERROR) {
+      sendNumeric(LibIRC2::Numerics::ERR_ERRONEUSNICKNAME,
+		  GETLANG(irc2_ERR_ERRONEUSNICKNAME));
+      return;
+   }
    
    // Check that the nickname is not used by a service (from service list)
    ///////////////////////////////////////////////////////////////////////

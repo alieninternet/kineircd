@@ -25,7 +25,6 @@
 # define _INCLUDE_KINEIRCD_USER_H_ 1
 
 # include <string>
-# include <kineircd/name.h>
 # include <kineircd/client.h>
 # include <kineircd/errors.h>
 # include <kineircd/languages.h>
@@ -41,7 +40,7 @@ namespace Kine {
       
     private:
       //!< User's nickname
-      Name nickname;
+      ClientName nickname;
       
       //! The User's username
       std::string username;
@@ -57,7 +56,7 @@ namespace Kine {
 
     protected:
       //! Constructor
-      User(const Name& _nickname,
+      User(const ClientName& _nickname,
 	   const std::string& _username,
 	   const std::string& _hostname,
 	   const AISutil::Time& _signonTime)
@@ -77,7 +76,7 @@ namespace Kine {
       //! An event called whenever a user's nickname has been changed (maybe us)
       virtual void doEventNicknameChange(const Entity& changer,
 					 const User& user,
-					 const Name& newNickname)
+					 const ClientName& newNickname)
 	{};
       
       //! An event called when a message was successfully sent to us
@@ -101,7 +100,7 @@ namespace Kine {
       
       
       //! Return the user's nickname
-      const Name& getNickname(void) const
+      const ClientName& getNickname(void) const
 	{ return nickname; };
 
       
@@ -121,7 +120,7 @@ namespace Kine {
       
       //! Change this user's nickname
       const Error::error_type changeNickname(const Entity& changer,
-					     const Name& newNickname);
+					     const ClientName& newNickname);
       
 
       //! Return the modes/flags bitmask

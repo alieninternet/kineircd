@@ -171,7 +171,7 @@ void User::doEventLanguageChange(const Entity& changer)
  */
 void User::doEventNicknameChange(const Entity& changer,
 				 const Kine::User& user,
-				 const Name& newNickname)
+				 const ClientName& newNickname)
 {
    static const char* const commandName = "NICK";
    

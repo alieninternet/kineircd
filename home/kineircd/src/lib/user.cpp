@@ -45,16 +45,18 @@ const std::string::size_type User::maxStaffStatusLength = 32;
  * Original 16/05/2003 simonb
  */
 const Error::error_type User::changeNickname(const Entity& changer,
-					     const Name& newNickname)
+					     const ClientName& newNickname)
 {
-   // Check the nickname is valid (this should be elsewhere)
-//   return Error::NICKNAME_TOO_LONG;
-//   return Error::NICKNAME_HAS_BAD_CHARS;
+   // Check the nickname is valid
+   Error::error_type validityError;
+   if ((validityError = newNickname.checkValidity()) != Error::NO_ERROR) {
+      return validityError;
+   }
    
    // Make sure the nickname is not already in use
    const Client* const foundClient = registry().findClient(newNickname);
    if ((foundClient != 0) && (foundClient != this)) {
-      return Error::NICKNAME_IS_IN_USE;
+      return Error::NAME_IS_IN_USE;
    }
    
    // Tell ourself about the change
