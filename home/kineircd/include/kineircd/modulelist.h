@@ -45,6 +45,12 @@ namespace Kine {
       
       // Load a module, return false if we failed (reason in 'errorReturn')
       bool loadModule(const String &moduleFile, String &errorReturn);
+      
+      // Start all modules
+      void startAll(void) const;
+      
+      // Stop and unload all modules
+      void stopAll(void);
    };
 };
    

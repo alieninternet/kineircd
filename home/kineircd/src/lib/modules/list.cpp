@@ -78,3 +78,33 @@ bool ModuleList::loadModule(const String &moduleFile, String &errorReturn)
    // Smile, it all worked out okay
    return true;
 }
+
+
+/* startAllModules - Start all modules
+ * Original 22/07/2002 simonb
+ */
+void ModuleList::startAll(void) const
+{
+   // Run through the list of modules and call their start functions
+   for (modulesMap_type::const_iterator it = modules.begin(); 
+	it != modules.end(); it++) {
+      (*it).second->start();
+   }
+}
+
+
+/* stopAll - Stop and unload all modules
+ * Original 22/07/2002 simonb
+ */
+void ModuleList::stopAll(void)
+{
+   // Run through the list of modules to stop and delete them all
+   for (modulesMap_type::const_iterator it = modules.begin(); 
+	it != modules.end(); it++) {
+      (*it).second->stop();
+      delete (*it).second;
+   }
+   
+   // Wipe out the now defunct modules list
+   modules.clear();
+}
