@@ -143,6 +143,9 @@ namespace Kine {
 	 // Common stuff to send :)
 	 void sendISUPPORT(void);
 
+	 // Send the list of languages to the user (tell them what is set)
+	 void sendLanguageList(void);
+
 	 // Command handlers[+FOR commands+]
 	 handler_type handle[+command+];[+ENDFOR+]
       }; // class Protocol

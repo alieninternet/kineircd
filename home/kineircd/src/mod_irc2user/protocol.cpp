@@ -94,6 +94,9 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    // Tell the user a about what we can do.. (005 numeric)
    sendISUPPORT();
 
+   // Tell the client what their language is set to..
+   sendLanguageList();
+   
    // Tell the user the time on server
    sendTimeOnServer(user);
    
@@ -249,4 +252,43 @@ void Protocol::sendISUPPORT(void)
    sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
 	       output.str(),
 	       suffix);
+}
+
+
+/* sendLanguageList - Send the list of languages a user has set to the user
+ * Original 26/10/2001 simonb
+ */
+void Protocol::sendLanguageList(void)
+{
+   std::ostringstream langs;
+   
+   // If the user's language list is empty, they have nothing set..
+   if (user.getLanguageList().empty()) {
+      langs << Languages::nullLanguageCode;
+   } else {
+      // Iterate over the language list, and copy out the language codes
+      for (Languages::languageDataList_type::const_iterator it = 
+	   user.getLanguageList().begin();
+	   it != user.getLanguageList().end();
+	   ++it) {
+	 // Prefix this with a comma?
+	 if (!langs.str().empty()) {
+	    langs << ',';
+	 }
+	 
+	 // If this is a null language, return that name..
+	 if (*it == 0) {
+	    langs << Languages::nullLanguageCode;
+	    continue;
+	 }
+	 
+	 // Output the code
+	 langs << (*it)->getLanguageCode();
+      }
+   }
+
+   // Send the language list to the client
+   sendNumeric(LibIRC2::Numerics::RPL_YOURLANGUAGEIS,
+	       langs.str(),
+	       (user.getLanguageList()[0])->getLanguageName());
 }
