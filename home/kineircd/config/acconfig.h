@@ -507,6 +507,10 @@
   
 /* Define if OpenSSL is installed */
 # undef HAVE_OPENSSL
+  
+  
+/* Define if SSL support is allowed */
+# undef WITH_SSL
 
   
 /* Define if we are going to incorporate SNMP stuff */
