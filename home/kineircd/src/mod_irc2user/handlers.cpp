@@ -280,6 +280,24 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 }
 
 
+/* handleSUMMON
+ * Original 10/04/2003 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleSUMMON)
+{
+   // If there is no server parameter, we have to reply
+   if (parameters.size() < 2) {
+      // .. and we only reply to conform to specs..
+      sendNumeric(LibIRC2::Numerics::ERR_SUMMONDISABLED,
+		  GETLANG(irc2_ERR_SUMMONDISABLED));
+      
+      return;
+   }
+   
+   // Look up the server?
+}
+
+
 /* handleTIME
  * Original 27/08/2001 simonb
  * 14/04/2003 simonb - Imported from old code (incompleted; needs config stuff)
@@ -330,6 +348,24 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
       sendTimeOnServer();
       
       // We're done..
+      return;
+   }
+   
+   // Look up the server?
+}
+
+
+/* handleUSERS
+ * Original 10/04/2003 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleUSERS)
+{
+   // If there is no server parameter (no params at all), we have to reply
+   if (parameters.empty()) {
+      // .. and we only reply to conform to specs..
+      sendNumeric(LibIRC2::Numerics::ERR_USERSDISABLED,
+		  GETLANG(irc2_ERR_USERSDISABLED));
+      
       return;
    }
    
