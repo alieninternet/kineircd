@@ -152,14 +152,17 @@ namespace Kine {
 	 friend struct Languages;
       };
 
-      // The language data list type
+      //! The language data list type (as used internally)
 # ifdef KINE_STL_HAS_HASH
       typedef std::hash_map < std::string, LanguageData* >
-	languageDataList_type;
+	languageDataMap_type;
 # else
       typedef std::map < std::string, LanguageData* >
-	languageDataList_type;
+	languageDataMap_type;
 # endif
+      
+      //! The language data list type (as used for preferential language lists)
+      typedef std::vector < LanguageData* > languageDataList_type;
       
     private:
       // A set full of language tag name to tag ID mapping arrays
@@ -184,7 +187,7 @@ namespace Kine {
       tagID_type highestTagID;
 
       //! The language data itself
-      languageDataList_type languageDataList;
+      languageDataMap_type languageDataMap;
       
       //! Our default language, to use if all else fails..
       const LanguageData* defaultLanguage;
@@ -223,8 +226,8 @@ namespace Kine {
       void processMaps(void) const;
 
       //! Return the language data list itself (read-only access)
-      const languageDataList_type& getLanguageDataList(void) const
-	{ return languageDataList; };
+      const languageDataMap_type& getLanguageDataMap(void) const
+	{ return languageDataMap; };
       
       //! Return the pointer to the default language's data
       const LanguageData* const getDefaultLanguage(void) const
@@ -236,6 +239,12 @@ namespace Kine {
       //! Return the given language data, from the given language data
       const std::string
 	get(const LanguageData* const languageData,
+	    const tagID_type tagID,
+	    const parameterList_type* const parameters = 0) const;
+
+      //! Return the given language data, from a language in the given list
+      const std::string
+	get(const languageDataList_type& languageDataList,
 	    const tagID_type tagID,
 	    const parameterList_type* const parameters = 0) const;
 

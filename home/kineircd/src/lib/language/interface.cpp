@@ -402,8 +402,8 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 #endif
       
       // This is a new language, add this language to the list..
-      languageDataList.insert(languageDataList_type::value_type
-			      (languageData->languageCode, languageData));
+      languageDataMap.insert(languageDataMap_type::value_type
+			     (languageData->languageCode, languageData));
    } else {
 #ifdef KINE_DEBUG_PSYCHO
       debug("Languages::loadFile() - Merging with existing data");
@@ -528,11 +528,11 @@ Languages::LanguageData* const
   Languages::findByCode(const std::string& code) const
 {
    // Find the given language..
-   const languageDataList_type::const_iterator it =
-     languageDataList.find(String(code).toLower());
+   const languageDataMap_type::const_iterator it =
+     languageDataMap.find(String(code).toLower());
    
    // Did we find the language?
-   if (it != languageDataList.end()) {
+   if (it != languageDataMap.end()) {
       return (*it).second;
    }
    
@@ -583,4 +583,43 @@ const std::string
 
    // Give up! Return a replacement object character..
    return replacementObjectGlyph;
+}
+
+
+/* get - Return the given language data, from a language in the given list
+ * Original 04/04/2003 simonb
+ */
+const std::string
+  Languages::get(const languageDataList_type& languageDataList,
+		 const tagID_type tagID,
+		 const parameterList_type* const parameters) const
+{
+   /* If there is no language info, or the first item on the list is null,
+    * return a replacement object character..
+    */
+   if (languageDataList.empty()) {
+      return replacementObjectGlyph;
+   }
+   
+   std::string tagData;
+   
+   // Okay.. run through the list of languages and see what happens..
+   for (languageDataList_type::const_iterator it = languageDataList.begin();
+	it != languageDataList.end(); it++) {
+      // If it's null, break
+      if ((*it) == 0) {
+	 return replacementObjectGlyph;
+      }
+      
+      // Try to grab the data from this language
+      tagData = (*it)->get(tagID, parameters);
+      
+      // If we got some data, return it
+      if (!tagData.empty()) {
+	 break;
+      }
+   }
+   
+   // Return whatever we got..
+   return tagData;
 }
