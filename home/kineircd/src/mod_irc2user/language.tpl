@@ -92,7 +92,7 @@ namespace Kine {
 
 // Macros to make the code neater (hopefully)
 # define GETLANG_BY_ID(id,...) \
-   Kine::langs().get("en", \
+   Kine::languages().get(Kine::languages().getDefaultLanguage(), \
                      id, \
                      ##__VA_ARGS__)
 
