@@ -80,7 +80,7 @@ namespace Kine {
 	    const Kine::Languages::tagID_type* const
 	      helpInfo;					// Detailed help tag
 	    Flags::lazy_type flags;			// Flags
-	    unsigned long long callCount;		// # times used
+	    mutable unsigned long long callCount;	// # times used
 	    
 	    // Copy constructor to aid in initialisation
 	    CommandInfo(const preInitCommand_type& info)
@@ -135,7 +135,7 @@ namespace Kine {
 	   { return *instance; };
 	 
 	 // Find a command in the command list
-	 const CommandInfo* const findCommand(const std::string& name);
+	 const CommandInfo* const findCommand(const std::string& name) const;
 	 
 	 // Return the command list (read-only)
 	 const commandList_type& getCommandList(void) const

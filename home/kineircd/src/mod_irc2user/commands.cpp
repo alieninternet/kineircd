@@ -71,10 +71,10 @@ void Commands::initInstance(void)
  * Original 01/04/2003 simonb
  */
 const Commands::CommandInfo* const
-  Commands::findCommand(const std::string& name)
+  Commands::findCommand(const std::string& name) const
 {
    // Look for the command..
-   commandList_type::iterator it = commandList.find(name);
+   commandList_type::const_iterator it = commandList.find(name);
    
    // Did we find it?
    if (it != commandList.end()) {
