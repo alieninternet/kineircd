@@ -30,7 +30,8 @@
 # include <sstream>
 # include <iomanip>
 # include <aisutil/string/string.h>
-# include <kineircd/libclbp/protocol.h>
+# include <kineircd/libirc2/input.h>
+# include <kineircd/libirc2/output.h>
 # include <kineircd/user.h>
 # include <kineircd/myserver.h>
 # include <kineircd/libirc2/numerics.h>
@@ -44,7 +45,7 @@ namespace Kine {
        * 
        * \ingroup LibIRC2
        */
-      class Protocol : public Kine::LibCLBP::Protocol {
+      class Protocol : public Input, public Output {
        public:
 	 typedef unsigned int messageSize_type;
 
@@ -75,7 +76,7 @@ namespace Kine {
        protected:
 	 // Constructor
 	 explicit Protocol(Kine::Connection& c)
-	   : Kine::LibCLBP::Protocol(c),
+	   : Output(c),
 	     sentMessageCount(0),
 	     receivedMessageCount(0)
 	   {};
@@ -84,7 +85,8 @@ namespace Kine {
 	 explicit Protocol(Kine::Connection& c,
 			   const std::string& iq,
 			   const std::string& oq)
-	   : Kine::LibCLBP::Protocol(c, iq, oq),
+	   : Input(iq),
+	     Output(c, oq),
 	     sentMessageCount(0),
 	     receivedMessageCount(0)
 	   {};

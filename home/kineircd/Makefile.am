@@ -359,8 +359,10 @@ libkineircd_clbp_la_LIBADD=\
 # 'libkineircd_irc2' library
 ###############################################################################
 libkineircd_irc2_la_SOURCES=\
+	include/kineircd/libirc2/input.h \
 	include/kineircd/libirc2/library.h \
 	include/kineircd/libirc2/numerics.h \
+	include/kineircd/libirc2/output.h \
 	include/kineircd/libirc2/protocol.h \
 	include/kineircd/libirc2/utility.h \
 	src/lib_irc2/common.cpp \
