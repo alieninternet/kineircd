@@ -121,7 +121,7 @@ irc2_RPL_REHASHING = Rehashing
 irc2_RPL_YOURESERVICE = You are service %p0
 
 # Numeric 401 - ERR_NOSUCHNICK
-irc2_ERR_NOSUCHNICK = No such nick/channel
+irc2_ERR_NOSUCHNICK = No such nick
 
 # Numeric 402 - ERR_NOSUCHSERVER
 irc2_ERR_NOSUCHSERVER = No such server
