@@ -129,6 +129,11 @@ void Connection::sendOutput(void)
  */
 void Connection::goodbye(void)
 {
+#ifdef KINE_DEBUG_EXTENDED
+   debug("Connection::goodbye() - Shutting down fd " +
+	 String::convert(socket.getFD()));
+#endif
+   
    // This is temporary..
    connected = false;
 //   socket.close();

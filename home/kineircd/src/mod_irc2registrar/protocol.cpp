@@ -575,7 +575,7 @@ void Registrar::handleInput(std::stringstream& data)
 	  * should they break this limit.
 	  */
 	 if (buffer.length() > 510) {
-#ifdef KINE_DEBUG_EXTENDED
+#ifdef KINE_DEBUG_PSYCHO
 	    debug("Registrar::handleInput() - "
 		  "Inordinate amount of incoming data");
 #endif
