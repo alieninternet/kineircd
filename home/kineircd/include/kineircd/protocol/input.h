@@ -21,50 +21,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_CLBP_INPUT_H_
-# define _INCLUDE_KINEIRCD_CLBP_INPUT_H_ 1
+#ifndef _INCLUDE_KINEIRCD_PROTOCOL_INPUT_H_
+# define _INCLUDE_KINEIRCD_PROTOCOL_INPUT_H_ 1
 
-# include <string>
-# include <sstream>
-# include <kineircd/protocol/input.h>
+# include <kineircd/protocol/base.h>
 
 namespace Kine {
-   namespace LibCLBP {
-      //! The command line based protocol (CLBP) input handling class
-      class Input : public Kine::Protocol::Input {
-       private:
-	 // Our input queue
-	 std::string inputQueue;
-	 
+   //! Protocol base classes
+   namespace Protocol {
+      //! Generic protocol input base
+      class Input : virtual public Base {
        protected:
 	 //! Constructor
-	 Input(void)
-	   {};
-
-	 //! Constructor (for migrating I/O queues)
-	 explicit Input(const std::string& _inputQueue)
-	   : inputQueue(_inputQueue)
+	 explicit Input(void)
 	   {};
 	 
        public:
 	 //! Destructor
 	 virtual ~Input(void)
 	   {};
-
-       private:
-	 //! Parse a line (you must replace this)
-	 virtual void parseLine(const std::string& line) = 0;
-
-       public:
-	 //! Handle incoming data
-	 void handleInput(std::stringstream& data);
-	 
-       protected:
-	 //! Grab a read-only version of the input queue
-	 const std::string& getInputQueue(void) const
-	   { return inputQueue; };
       }; // class Input
-   }; // namespace LibCLBP
+   }; // namespace Protocol
 }; // namespace Kine
-   
-#endif // _INCLUDE_KINEIRCD_CLBP_INPUT_H_
+
+#endif // _INCLUDE_KINEIRCD_PROTOCOL_INPUT_H_
+

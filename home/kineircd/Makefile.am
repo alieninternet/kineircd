@@ -164,6 +164,10 @@ libkineircd_la_INCLUDES=\
 
 # Source/header files
 libkineircd_la_SOURCES=\
+	include/kineircd/protocol/base.h \
+	include/kineircd/protocol/input.h \
+	include/kineircd/protocol/output.h \
+	include/kineircd/protocol/protocol.h \
 	include/kineircd/channel.h \
 	include/kineircd/channelname.h \
 	include/kineircd/client.h \
@@ -188,7 +192,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/network.h \
 	include/kineircd/name.h \
 	include/kineircd/password.h \
-	include/kineircd/protocol.h \
 	include/kineircd/protocolinfo.h \
 	include/kineircd/receiver.h \
 	include/kineircd/registrant.h \

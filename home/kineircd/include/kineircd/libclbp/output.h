@@ -25,8 +25,7 @@
 # define _INCLUDE_KINEIRCD_CLBP_OUTPUT_H_ 1
 
 # include <string>
-# include <kineircd/protocol.h>
-
+# include <kineircd/protocol/output.h>
 
 namespace Kine {
    namespace LibCLBP {

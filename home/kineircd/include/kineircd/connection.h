@@ -26,12 +26,9 @@
 
 # include <aisutil/socket/socket.h>
 # include <aisutil/time.h>
+# include <kineircd/protocol/base.h>
 
 namespace Kine {
-   namespace Protocol {
-      class Base;
-   };
-   
    //! Connection class
    class Connection {
     public:
@@ -96,10 +93,7 @@ namespace Kine {
       
       //! Close the connection
       void goodbye(void);
-   };
-};
-
-// Complete forwarded declarations
-# include <kineircd/protocol.h>
+   }; // class Connection
+}; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_CONNECTION_H_

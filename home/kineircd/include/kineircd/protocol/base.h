@@ -21,17 +21,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_PROTOCOL_H_
-# define _INCLUDE_KINEIRCD_PROTOCOL_H_ 1
+#ifndef _INCLUDE_KINEIRCD_PROTOCOL_BASE_H_
+# define _INCLUDE_KINEIRCD_PROTOCOL_BASE_H_ 1
 
 # include <string>
 # include <sstream>
-# include <cstdlib>
 # include <aisutil/socket/socket.h>
-# include <kineircd/connection.h>
 
 namespace Kine {
-   //! Protocol base classes
    namespace Protocol {
       //! The protocol base class
       class Base {
@@ -80,56 +77,8 @@ namespace Kine {
 	 virtual const std::string* const getIdentifyingName(void) const
 	   { return 0; };
       }; // class Base
-      
-      
-      //! Generic protocol input base
-      class Input : virtual public Base {
-       protected:
-	 //! Constructor
-	 explicit Input(void)
-	   {};
-	 
-       public:
-	 //! Destructor
-	 virtual ~Input(void)
-	   {};
-      }; // class Input
-      
-      
-      //! Generic protocol output base
-      class Output : virtual public Base {
-       protected:
-	 //! The specific connection running this instance of the protocol
-	 Connection& connection;
-	 
-	 
-	 //! Constructor
-	 explicit Output(Connection& _connection)
-	   : connection(_connection)
-	   {};
-	 
-       public:
-	 //! Destructor
-	 virtual ~Output(void)
-	   {};
-      }; // class Output
-      
-      
-      //! Generic protocol including both input and output components
-      class Protocol : public Input, public Output {
-       protected:
-	 //! Constructor
-	 explicit Protocol(Connection& _connection)
-	   : Output(_connection)
-	   {};
-	 
-       public:
-	 //! Destructor
-	 virtual ~Protocol(void)
-	   {};
-      }; // class Protocol
    }; // namespace Protocol
 }; // namespace Kine
 
-#endif // _INCLUDE_KINEIRCD_PROTOCOL_H_
+#endif // _INCLUDE_KINEIRCD_PROTOCOL_BASE_H_
 

@@ -25,7 +25,8 @@
 # define _INCLUDE_KINEIRCD_PROTOCOLINFO_H_ 1
 
 # include <cstring>
-# include <kineircd/protocol.h>
+# include <kineircd/protocol/base.h>
+# include <kineircd/connection.h>
 # include <kineircd/listener.h>
 # include <kineircd/registrant.h>
 
