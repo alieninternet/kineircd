@@ -1298,7 +1298,7 @@ tag = {
                   "command is specified, it is assumed that you mean all "
 		  "commands (commands matching '*'). When the '-' prefix is "
 		  "added to the command given, additional help will be "
-		  "returned, such as what you are reading right now. :-)";
+		  "returned, such as what you are reading right now! ☺";
 };
 
 tag = {
