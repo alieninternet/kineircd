@@ -85,8 +85,7 @@ namespace Kine {
 	 
        public:
 	 // Constructor
-	 Commands(void)
-	   {};
+	 Commands(void);
 	 
 	 // Destructor
 	 ~Commands(void)

@@ -29,3 +29,21 @@
 #include "mod_irc2user/commands.h"
 
 using namespace Kine::mod_irc2user;
+
+
+/* Commands - Constructor for the command list managing singleton
+ * Original 01/04/2003 simonb
+ */
+Commands::Commands(void)
+{
+   /* Migrate the data held in our pre-initialisation table into the dynamic
+    * table, ready to be modified possibly by configuration, or added to by
+    * aliases and so forth
+    */
+   for (unsigned int i = 0; preInitCommands[i].commandName != 0; i++) {
+      // Insert the data into the dynamic command table
+      commandsList.
+	insert(commandsList_type::value_type(preInitCommands[i].commandName,
+					     preInitCommands[i]));
+   }
+}
