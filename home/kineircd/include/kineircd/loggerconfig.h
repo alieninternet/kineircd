@@ -48,7 +48,7 @@ namespace Kine {
     public:
       // Constructor
       LoggerConfig(void)
-	: defLogMask(Logger::Mask::Everything)
+	: defLogMask(Logger::Mask::Nothing)
 	{};
       
       // Destructor

@@ -36,8 +36,73 @@
 using namespace Kine;
 
 
+struct {
+   const char* const name;
+   const Logger::Mask::lazy_type mask;
+} static const logMasks[[+(+ 2 (count "logger_masks"))+]] = {
+     { "EVERYTHING",			Logger::Mask::Everything },
+     { "NOTHING",			Logger::Mask::Nothing },[+FOR logger_masks ","+]
+     [+(sprintf "{ %-33sLogger::Mask::%s }"
+	  (sprintf "\"%s\","
+	     (string-upcase (get "name")))
+          (get "name"))
+      +][+ENDFOR logger_masks+]
+};
+ 
+
 LIBAISUTIL_CONFIG_VARIABLE_HANDLER(LoggerConfig::varHandleLogMask)
 {
-   errString = "not done yet.. :)";
-   return false;
+   // If the parameters list is empty, log everything..
+   if (values.empty()) {
+      dataClass.*((Logger::Mask::lazy_type ConfigData::*)dataVariable) = 
+	Logger::Mask::Everything;
+      return true;
+   }
+
+   Logger::Mask::lazy_type logMask = Logger::Mask::Nothing;
+   std::string maskWord;
+   bool toggleOn;
+   
+   // Run through the parameters..
+   for (unsigned int i = 0; i < values.size(); i++) {
+      // Check the prefix char, and work out how we need to copy the word over
+      switch (values[i][0]) {
+       case '-':
+	 toggleOn = false;
+	 maskWord = values[i].toUpper().substr(1);
+	 break;
+	 
+       case '+':
+	 toggleOn = true;	
+	 maskWord = values[i].toUpper().substr(1);
+	 break;
+	 
+       default:
+	 toggleOn = true;
+	 maskWord = values[i].toUpper();
+      }
+      
+      // Look for the word in the list..
+      for (unsigned int j = 0; j < [+(+ 2 (count "logger_masks"))+]; j++) {
+	 // Does this match?
+	 if (maskWord == logMasks[j].name) {
+	    // Okay, do whatever was asked with this mask..
+	    if (toggleOn) {
+	       logMask |= logMasks[j].mask;
+	    } else {
+	       logMask &= ~logMasks[j].mask;
+	    }
+	    
+	    // Break out of this loop, since we got a match..
+	    break;
+	 }
+      }
+   }
+
+   // Assign the new value
+   dataClass.*((Logger::Mask::lazy_type ConfigData::*)dataVariable) =
+     logMask;
+   
+   // All done - smile :)
+   return true;
 }
