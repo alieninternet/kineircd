@@ -29,7 +29,7 @@
 #include <aisutil/string/string.h>
 
 #include "kineircd/listenerlist.h"
-#include "debug.h"
+#include "lib/debug.h"
 
 using namespace Kine;
 using AISutil::String;

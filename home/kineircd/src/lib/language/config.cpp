@@ -26,10 +26,10 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
-#include "language/config.h"
+#include "lib/language/config.h"
 #include "kineircd/languagelist.h"
 #include "kineircd/config.h"
-#include "debug.h"
+#include "lib/debug.h"
 
 using namespace Kine;
 

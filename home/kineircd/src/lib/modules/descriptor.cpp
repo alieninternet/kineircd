@@ -33,7 +33,7 @@ extern "C" {
 };
 
 #include "kineircd/moduledescriptor.h"
-#include "debug.h"
+#include "lib/debug.h"
 
 using namespace Kine;
 using AISutil::String;

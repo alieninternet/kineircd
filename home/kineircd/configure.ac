@@ -641,5 +641,4 @@ AC_OUTPUT([
 	Makefile
 	install/Makefile
 	src/Makefile
-	src/lib/Makefile
 	])

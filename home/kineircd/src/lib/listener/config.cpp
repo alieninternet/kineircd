@@ -41,8 +41,8 @@ extern "C" {
 
 #include <aisutil/socket/sockets.h>
 
-#include "listener/config.h"
-#include "debug.h"
+#include "lib/listener/config.h"
+#include "lib/debug.h"
 
 using namespace Kine;
 using AISutil::String;

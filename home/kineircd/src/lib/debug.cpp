@@ -28,7 +28,7 @@
 
 #include <iostream>
 
-#include "debug.h"
+#include "lib/debug.h"
 //#include "kineircd/daemon.h"
 
 // Little check to make sure we are being compiled sanely

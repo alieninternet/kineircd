@@ -30,10 +30,10 @@
 
 #include "kineircd/config.h"
 #include "kineircd/moduledescriptor.h"
-#include "config/defaults.h"
-#include "language/config.h"
-#include "listener/config.h"
-#include "debug.h"
+#include "lib/config/defaults.h"
+#include "lib/language/config.h"
+#include "lib/listener/config.h"
+#include "lib/debug.h"
 
 
 using AISutil::String;

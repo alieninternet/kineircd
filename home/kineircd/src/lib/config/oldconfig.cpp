@@ -31,7 +31,7 @@
 #include <stack>
 
 #include "kineircd/config.h"
-#include "debug.h"
+#include "lib/debug.h"
 
 
 // Are we compiled properly?
