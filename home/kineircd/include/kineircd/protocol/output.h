@@ -45,6 +45,23 @@ namespace Kine {
 	 //! Destructor
 	 virtual ~Output(void)
 	   {};
+
+      
+	 //! Delocalise the given text into the external character set
+	 /*!
+	  * \brief Delocalise the given string
+	  * 
+	  * This will convert the given string (internally encoded) into the
+	  * encoding previously configured for the remote connection.
+	  * 
+	  * Any internationalised internal strings which must be properly
+	  * encoded should be converted using this function.
+	  * 
+	  * \param string The internally encoded wide-string
+	  * \return The string, encoded appropriately for the remote connection
+	  */
+	 virtual const std::string
+	   delocaliseStr(const std::wstring& string) const;
       }; // class Output
    }; // namespace Protocol
 }; // namespace Kine

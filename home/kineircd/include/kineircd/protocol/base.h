@@ -77,13 +77,6 @@ namespace Kine {
 	 //! Return some sort of identifying name for this instance
 	 virtual const std::wstring* const getIdentifyingName(void) const
 	   { return 0; };
-
-
-	 //! Delocalise the given text into the external character set
-	 const std::string delocaliseStr(const std::wstring& string) const;
-
-	 //! Localise the given string into the internal character set
-	 const std::wstring localiseStr(const std::string& string) const;
       }; // class Base
    }; // namespace Protocol
 }; // namespace Kine

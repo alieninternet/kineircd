@@ -240,6 +240,7 @@ libkineircd_la_SOURCES=\
 	src/lib/mynetwork.cpp \
 	src/lib/myserver.cpp \
 	src/lib/name.cpp \
+	src/lib/protocol.cpp \
 	src/lib/registry.cpp \
 	src/lib/server.cpp \
 	src/lib/todo.cpp \

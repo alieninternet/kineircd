@@ -39,6 +39,23 @@ namespace Kine {
 	 //! Destructor
 	 virtual ~Input(void)
 	   {};
+
+
+	 /*!
+	  * \brief Localise the given string
+	  * 
+	  * This will convert the given string (encoded in the previously
+	  * configured character set) into a wide-string using the internal
+	  * encoding.
+	  * 
+	  * Any data which is encoded and must be handled internally should
+	  * be converted using this.
+	  * 
+	  * \param string The string (in the remote character set) to localise
+	  * \return The string, in the internal character set
+	  */
+	 virtual const std::wstring
+	   localiseStr(const std::string& string) const;
       }; // class Input
    }; // namespace Protocol
 }; // namespace Kine
