@@ -217,9 +217,10 @@ Substitutions within tag data
        \nnn	- An escaped character. See above for valid characters.
         \b	- Toggle bold (same as \002)
 	\c	- Beginning of colour sequence (not recommended; Same as \003)
-	\g	- Beep (only supported on some IRC clients; same as \007)
+	\f	- Flash (only supported by some clients; same as \006)
+	\g	- Beep (only supported by some clients; same as \007)
 	\n	- New section (only useful on tags used for multi-call output)
 	\r	- Toggle reversed (same as \026)
-	\s	- A space (same as \040 or ' ')
+	\s	- A space (same as \040 or ' ', used to force a space)
 	\t	- A horizontal tab (not supported on all clients; same as \011)
 	\u	- Toggle underline (same as \037)
