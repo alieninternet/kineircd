@@ -54,6 +54,7 @@ SOURCES=\
 	daemon.cpp \
 	modules.cpp \
 	sha1.cpp \
+	signals.cpp \
 	str.cpp \
 	utils.cpp
 

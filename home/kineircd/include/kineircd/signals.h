@@ -1,5 +1,5 @@
 /* $Id$
- * The main class
+ * Signal handlers
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
@@ -21,40 +21,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_DAEMON_H_
-# define _INCLUDE_KINEIRCD_DAEMON_H_ 1
+#ifndef _INCLUDE_KINEIRCD_SIGNALS_H_
+# define _INCLUDE_KINEIRCD_SIGNALS_H_ 1
 
 namespace Kine {
-   class Daemon;
-};
-
-# include "kineircd/str.h"
-# include "kineircd/config.h"
-# include "kineircd/signals.h"
-
-namespace Kine {
-   // The Daemon class
-   class Daemon {
-    private:
-      enum stage_type {
-	 STAGE_INIT,				// Initialising the daemon
-	 STAGE_NORMAL,				// Running normally
-         STAGE_SHUTDOWN				// The daemon is shutting down
-      } stage;
-      
-      Config &config;					// Configuration data
-      Signals &signals;					// Signal handlers
-      
+   class Signals {
     public:
       // Constructor
-      Daemon(Config &conf, Signals &sigs);
-
-      // Destructor
-      ~Daemon(void);
+      Signals(void);
       
-      // Main loop
-      int run(void);
+      // Destructor
+      ~Signals(void);
    };
 };
 
-#endif // _INCLUDE_KINEIRCD_DAEMON_H_ 
+#endif // _INCLUDE_KINEIRCD_SIGNALS_H_

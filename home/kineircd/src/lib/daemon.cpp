@@ -46,9 +46,10 @@ using namespace Kine;
 /* Daemon - Init the server
  * Original 11/08/01 simonb
  */
-Daemon::Daemon(Config &conf)
+Daemon::Daemon(Config &conf, Signals &sigs)
   : stage(STAGE_INIT),
-    config(conf)
+    config(conf),
+    signals(sigs)
 {
    // We are ready to go, go into normal running stage
    stage = STAGE_NORMAL;
