@@ -80,7 +80,7 @@ namespace Config {
 	     (void *)&Config::defModuleList,
 	     &varHandleModule,
 	     0,
-	     0
+	     &classHandleModule
 	},
 	{
 	   "NETWORK",
@@ -714,7 +714,16 @@ Kine::Config::~Config(void)
 }
 
 
-/* varHandleModule - Read in a module's filename and attempt to load it
+/* classHandleModule - Get a module's filename and attempt to load & configure
+ * Original 21/07/2002 simonb
+ */
+CONFIG_CLASS_HANDLER(Kine::Config::classHandleModule)
+{
+   return false;
+}
+
+
+/* varHandleModule - Get a module's filename and attempt to load
  * Original 21/07/2002 simonb
  */
 CONFIG_VARIABLE_HANDLER(Kine::Config::varHandleModule)
