@@ -268,7 +268,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 {
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
-      sendLUSERS();
+      sendLUSERS(user);
       return;
    }
    
@@ -284,7 +284,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 {
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
-      sendMOTD();
+      sendMOTD(user);
       return;
    }
    
@@ -393,7 +393,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
 		  text.str());
       
       // Also send the RPL_TIMEONSERVERIS
-      sendTimeOnServer();
+      sendTimeOnServer(user);
       
       // We're done..
       return;
