@@ -95,7 +95,7 @@ bool ModuleList::loadModule(const String &moduleFile, String &errorReturn,
 void ModuleList::startAll(Daemon &daemon) const
 {
 #ifdef KINE_DEBUG_EXTENDED
-   debug("ModuleList::stopAll() - Starting modules");
+   debug("ModuleList::startAll() - Starting modules");
 #endif
    
    // Run through the list of modules and call their start functions
