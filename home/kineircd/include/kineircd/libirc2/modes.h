@@ -22,8 +22,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_IRC2_MODES_H_
-# define _SRC_LIB_IRC2_MODES_H_ 1
+#ifndef _SRC_LIBKINEIRCD_IRC2_MODES_H_
+# define _SRC_LIBKINEIRCD_IRC2_MODES_H_ 1
 
 # include <kineircd/servermodes.h>
 
@@ -38,5 +38,5 @@ namespace Kine {
    }; // namespace LibIRC2
 }; // namespace Kine
    
-#endif // _SRC_LIB_IRC2_MODES_H_
+#endif // _SRC_LIBKINEIRCD_IRC2_MODES_H_
    

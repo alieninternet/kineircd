@@ -25,8 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_CONFIG_DEFAULTS_H_
-# define _SRC_LIB_CONFIG_DEFAULTS_H_ 1
+#ifndef _SRC_LIBKINEIRCD_CONFIG_DEFAULTS_H_
+# define _SRC_LIBKINEIRCD_CONFIG_DEFAULTS_H_ 1
 
 # ifdef HAVE_CONFIG_H
 #  include "autoconf.h"
@@ -99,5 +99,5 @@
 # define DEFAULT_OPTIONS_REGISTRAR_USER_PROTOCOL_DEFAULT \
    "IRC/2"
 
-#endif // _SRC_LIB_CONFIG_CONFIGDEFAULT_H_
+#endif // _SRC_LIBKINEIRCD_CONFIG_CONFIGDEFAULT_H_
 

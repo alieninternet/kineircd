@@ -26,8 +26,8 @@
 [+(dne " * ")+]
  */
 
-#ifndef _SRC_LIB_REGNUMERICS_H_
-# define _SRC_LIB_REGNUMERICS_H_ 1
+#ifndef _SRC_LIBKINEIRCD_REGNUMERICS_H_
+# define _SRC_LIBKINEIRCD_REGNUMERICS_H_ 1
 
 namespace Kine {
    namespace RegistrationNumerics {
@@ -38,5 +38,5 @@ namespace Kine {
    };
 };
 
-#endif // _SRC_LIB_REGNUMERICS_H_
+#endif // _SRC_LIBKINEIRCD_REGNUMERICS_H_
 

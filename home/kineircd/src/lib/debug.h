@@ -22,8 +22,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_DEBUG_H_
-# define _SRC_LIB_DEBUG_H_ 1
+#ifndef _SRC_LIBKINEIRCD_DEBUG_H_
+# define _SRC_LIBKINEIRCD_DEBUG_H_ 1
 
 # ifdef HAVE_CONFIG_H
 #  include "autoconf.h"
@@ -42,4 +42,4 @@
 extern void debug(AISutil::String const &);
    
 # endif // DEBUG
-#endif // _SRC_LIB_DEBUG_H_
+#endif // _SRC_LIBKINEIRCD_DEBUG_H_

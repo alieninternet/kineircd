@@ -22,8 +22,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_LISTENER_CONFIG_H_
-# define _SRC_LIB_LISTENER_CONFIG_H_ 1
+#ifndef _SRC_LIBKINEIRCD_LISTENER_CONFIG_H_
+# define _SRC_LIBKINEIRCD_LISTENER_CONFIG_H_ 1
 
 # include <aisutil/config/data.h>
 # include <aisutil/string/string.h>
@@ -75,5 +75,5 @@ namespace Kine {
    };
 };
    
-#endif // _SRC_LIB_LISTENER_CONFIG_H_
-   
+#endif // _SRC_LIBKINEIRCD_LISTENER_CONFIG_H_
+
