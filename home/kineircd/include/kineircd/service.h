@@ -30,23 +30,15 @@
 
 namespace Kine {
    class Service : public Client {
-    private:
-      const std::string nickname;		//!< Nickname of this service
-      
     public:
       //! Constructor 
-      Service(const std::string _nickname,
-	      const timeval& _signonTime = daemon().getTime())
+      Service(const timeval& _signonTime = daemon().getTime())
 	: Client(_signonTime)
 	{};
       
       //! Destructor
       virtual ~Service(void)
 	{};
-      
-      //! Return the service's nickname
-      const std::string& getNickname(void) const
-	{ return nickname; };
    }; // class Service
 }; // namespace Kine
 
