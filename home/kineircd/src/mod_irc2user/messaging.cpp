@@ -70,9 +70,13 @@ void Protocol::doMessage(const parameters_type& parameters,
 	    if (!target.empty()) {
 	       // Make sure this is not a mask
 	       if (!/* ?? */false) {
+		  // The directivity (how acutely the target was specified)
+		  Receiver::Directivity directivity;
+	    
 		  // Find something of this name
 		  Receiver* const receiver =
-		    LibIRC2::Utility::findMessageTarget(target, true 
+		    LibIRC2::Utility::findMessageTarget(target, directivity, 
+							true
 							/* config ^^^ ? */);
 		  
 		  // Did we find something?
@@ -83,7 +87,8 @@ void Protocol::doMessage(const parameters_type& parameters,
 		     if (!isNotice) {
 			// Send the message, remembering the error
 			const Error::error_type error =
-			  receiver->sendMessage(user, parameters[1]);
+			  receiver->sendMessage(user, parameters[1],
+						directivity);
 
 			// Was there no error (most likely)?
 			if (error == Error::NO_ERROR) {
@@ -141,7 +146,8 @@ void Protocol::doMessage(const parameters_type& parameters,
 			}
 		     } else {
 			// Send a notice, and we do not care if it worked
-			(void)receiver->sendNotice(user, parameters[1]);
+			(void)receiver->sendNotice(user, parameters[1],
+						   directivity);
 		     }
 		     continue;
 		  }

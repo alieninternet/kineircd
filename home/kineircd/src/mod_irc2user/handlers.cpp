@@ -846,9 +846,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSQUERY)
 	 
 	 // Make sure this won't be too many targets for this user
 	 if ((--targets > 0) || user.isOperator()) {
+	    // The directivity (how acutely the target was specified)
+	    Receiver::Directivity directivity;
+	    
 	    // Find something of this name
 	    Receiver* const receiver =
-	      LibIRC2::Utility::findMessageTarget(target, true);
+	      LibIRC2::Utility::findMessageTarget(target, directivity, true);
 	    
 	    // Did we find something?
 	    if (receiver != 0) {
@@ -859,7 +862,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSQUERY)
 	       if (service != 0) {
 		  // Pass the query onto the service
 		  Error::error_type error;
-		  if ((error = service->sendQuery(user, parameters[1])) ==
+		  if ((error = service->sendQuery(user, parameters[1],
+						  directivity)) ==
 		      Error::NO_ERROR) {
 		     // All is well, next target
 		     continue;

@@ -72,13 +72,13 @@ namespace Kine {
 	{};
       
       //! An event called when a message was successfully sent to a channel
-      virtual void doEventReceiveChannelMessage(Denizen& from,
+      virtual void doEventReceiveChannelMessage(Sender& from,
 						const Channel& to,
 						const std::string& message)
 	{};
       
       //! An event called when a notice was successfully sent to a channel
-      virtual void doEventReceiveChannelNotice(Denizen& from,
+      virtual void doEventReceiveChannelNotice(Sender& from,
 					       const Channel& to,
 					       const std::string& message)
 	{};

@@ -27,10 +27,30 @@
 # include <kineircd/errors.h>
 
 namespace Kine {
-   class Denizen;
+   class Sender;
    
    //! Abstract base class for objects which can receive messages
    class Receiver {
+    public:
+      //! The 'directivity' of a recipient (acuteness of target specification)
+      union Directivity {
+	 struct {
+	    bool address:1;		//!< The IP address was specified
+	    bool hostname:1;		//!< The hostname was specified
+	    bool name:1;		//!< The unique name was specified
+	    bool network:1;		//!< The network was specified
+	    bool server:1;		//!< The server was specified
+	    bool username:1;		//!< The username was specified
+	 };
+	 
+	 unsigned char conflux;
+	 
+	 //! Default constructor (sets us up into the 'unknown' state)
+	 Directivity(void)
+	   : conflux(0)
+	   {};
+      };
+      
     protected:
       //! Constructor
       Receiver(void)
@@ -41,19 +61,23 @@ namespace Kine {
       virtual ~Receiver(void)
 	{};
       
-      //! Send a message from a generic entity
-      virtual const Error::error_type sendMessage(Denizen& from,
-						  const std::string& message)
+      //! Send a message to this recipient
+      virtual const Error::error_type
+	sendMessage(Sender& from,
+		    const std::string& message,
+		    const Directivity directivity = Directivity())
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
 
    
-      //! Send a notice from a generic entity
-      virtual const Error::error_type sendNotice(Denizen& from,
-						 const std::string& message)
+      //! Send a notice to this recipient
+      virtual const Error::error_type
+	sendNotice(Sender& from,
+		   const std::string& message,
+		   const Directivity directivity = Directivity())
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
    }; // class Receiver
 }; // namespace Kine
 
-# include <kineircd/denizen.h>
+# include <kineircd/sender.h>
 
 #endif // _INCLUDE_KINEIRCD_RECEIVER_H_

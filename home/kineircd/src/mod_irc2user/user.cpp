@@ -184,7 +184,7 @@ void User::doEventNicknameChange(const Denizen& changer,
 /* doEventReceiveChannelMessage - Called when a channel has received a message
  * Original 01/08/2001 simonb
  */
-void User::doEventReceiveChannelMessage(Denizen& from, const Channel& to,
+void User::doEventReceiveChannelMessage(Sender& from, const Channel& to,
 					const std::string& message)
 {
    static const char* const commandName = "PRIVMSG";
@@ -210,7 +210,7 @@ void User::doEventReceiveChannelMessage(Denizen& from, const Channel& to,
 /* doEventReceiveChannelNotice - Called when a channel has received a notice
  * Original 01/08/2001 simonb
  */
-void User::doEventReceiveChannelNotice(Denizen& from, const Channel& to,
+void User::doEventReceiveChannelNotice(Sender& from, const Channel& to,
 				       const std::string& message)
 {
    static const char* const commandName = "NOTICE";
@@ -236,7 +236,7 @@ void User::doEventReceiveChannelNotice(Denizen& from, const Channel& to,
 /* doEventReceivePrivateMessage - Called when we have received a message
  * Original 01/08/2001 simonb
  */
-void User::doEventReceivePrivateMessage(Denizen& from,
+void User::doEventReceivePrivateMessage(Sender& from,
 					const std::string& message)
 {
    static const char* const commandName = "PRIVMSG";
@@ -262,7 +262,7 @@ void User::doEventReceivePrivateMessage(Denizen& from,
 /* doEventReceivePrivateNotice - Called when we have received a notice
  * Original 01/08/2001 simonb
  */
-void User::doEventReceivePrivateNotice(Denizen& from,
+void User::doEventReceivePrivateNotice(Sender& from,
 				       const std::string& message)
 {
    static const char* const commandName = "NOTICE";

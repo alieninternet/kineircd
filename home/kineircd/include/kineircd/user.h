@@ -80,12 +80,12 @@ namespace Kine {
 	{};
       
       //! An event called when a message was successfully sent to us
-      virtual void doEventReceivePrivateMessage(Denizen& from,
+      virtual void doEventReceivePrivateMessage(Sender& from,
 						const std::string& message)
 	{};
 
       //! An event called when a notice was successfully sent to us
-      virtual void doEventReceivePrivateNotice(Denizen& from,
+      virtual void doEventReceivePrivateNotice(Sender& from,
 					       const std::string& message)
 	{};
 
@@ -198,11 +198,15 @@ namespace Kine {
       
       // Handle the reception of a message
       const Error::error_type
-	sendMessage(Denizen& from, const std::string& message);
+	sendMessage(Sender& from, const std::string& message,
+		    const Receiver::Directivity directivity =
+		    Receiver::Directivity());
       
       // Handle the reception of a notice
       const Error::error_type
-	sendNotice(Denizen& from, const std::string& message);
+	sendNotice(Sender& from, const std::string& message,
+		   const Receiver::Directivity directivity =
+		   Receiver::Directivity());
    }; // class User
 }; // namespace Kine
 

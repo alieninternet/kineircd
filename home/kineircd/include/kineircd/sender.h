@@ -24,6 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_SENDER_H_
 # define _INCLUDE_KINEIRCD_SENDER_H_ 1
 
+# include <string>
+
 namespace Kine {
    //! Abstract base class for objects which can send messages
    class Sender {
@@ -36,6 +38,10 @@ namespace Kine {
       //! Destructor
       virtual ~Sender(void)
 	{};
+
+      
+      //! Return whatever is an acceptable name for this sender
+      virtual const std::string& getName(void) const = 0;
    }; // class Sender
 }; // namespace Kine
 

@@ -190,7 +190,8 @@ const Error::error_type User::setStaffOff(const Denizen& changer)
  * Original 12/05/2003 simonb
  */
 const Error::error_type
-  User::sendMessage(Denizen& from, const std::string& message)
+  User::sendMessage(Sender& from, const std::string& message,
+		    const Receiver::Directivity directivity)
 {
    // Lazy for now, just accept the message
    doEventReceivePrivateMessage(from, message);
@@ -203,7 +204,8 @@ const Error::error_type
  * Original 12/05/2003 simonb
  */
 const Error::error_type
-  User::sendNotice(Denizen& from, const std::string& message)
+  User::sendNotice(Sender& from, const std::string& message,
+		   const Receiver::Directivity directivity)
 {
    // Lazy for now, just accept the notice
    doEventReceivePrivateNotice(from, message);

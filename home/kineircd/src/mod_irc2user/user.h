@@ -54,13 +54,13 @@ namespace Kine {
 	 void doEventNicknameChange(const Denizen& changer,
 				    const Kine::User& user,
 				    const ClientName& newNickname);
-	 void doEventReceiveChannelMessage(Denizen& from, const Channel& to,
+	 void doEventReceiveChannelMessage(Sender& from, const Channel& to,
 					   const std::string& message);
-	 void doEventReceiveChannelNotice(Denizen& from, const Channel& to,
+	 void doEventReceiveChannelNotice(Sender& from, const Channel& to,
 					  const std::string& message);
-	 void doEventReceivePrivateMessage(Denizen& from,
+	 void doEventReceivePrivateMessage(Sender& from,
 					   const std::string& message);
-	 void doEventReceivePrivateNotice(Denizen& from,
+	 void doEventReceivePrivateNotice(Sender& from,
 					  const std::string& message);
 	 
        public:
