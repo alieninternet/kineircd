@@ -333,7 +333,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOADMININFO";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "No administrative info available";
    data_tr	= "İdari bilgi bulunamadı";
 };
@@ -370,7 +370,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOMOTD";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "MOTD File is missing";
    data_tr	= "MOTD bulunamadı";
 };
@@ -452,7 +452,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOSUCHNICK";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "No such nick";
    data_tr	= "Böyle bir nick bulunamadi";
 };
@@ -529,7 +529,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_SUMMONDISABLED";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "SUMMON has been disabled";
    data_tr	= "SUMMON komutu kapatıldı";
 };
@@ -608,7 +608,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_USERSDISABLED";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "USERS has been disabled";
    data_tr	= "USERS komutu kapatıldı";
 };
@@ -621,7 +621,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_WASNOSUCHNICK";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "There was no such nickname, or they disconnected too long "
                   "ago";
    data_tr	= "Böyle bir nick bulunamadı";
@@ -712,7 +712,7 @@ tag = {
 tag = {
    name		= "irc2_RPL_ADMINME";
    fields	= "0 = server hostname";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "Administrative info about %p0";
    data_tr	= "Administratif bilgi";
 };
@@ -760,7 +760,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFINFO";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "End of INFO list";
    data_ja	= "INFO リストの終了";
    data_tr	= "INFO listensinin sonu";
@@ -781,7 +781,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFMOTD";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "End of MOTD command";
    data_ja	= "MOTD 命令の終了";
    data_tr	= "MOTDnin sonu";
@@ -797,7 +797,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFSTATS";
-   components	= "libkineircd_irc2 mod_irc2user";
+   components	= "lib_irc2 mod_irc2user";
    data_en	= "End of STATS report";
    data_ja	= "STATS レポートの終了";
    data_tr	= "STATS raporunun sonu";
@@ -805,7 +805,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFUSERS";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "End of USERS";
    data_ja	= "USERS リストの終了";
 };
@@ -820,7 +820,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFWHOIS";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "End of WHOIS list";
    data_ja	= "WHOIS リストの終了";
    data_tr	= "WHOIS listesinin sonu";
@@ -828,7 +828,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFWHOWAS";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "End of WHOWAS list";
    data_ja	= "WHOWAS リストの終了";
    data_tr	= "WHOWAS komutunun sonu";
@@ -837,7 +837,7 @@ tag = {
 tag = {
    name		= "irc2_RPL_GLOBALUSERS";
    fields	= "0 = # of global users, 1 = peak global user count";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "Current global users: %p0 Max: %p1";
    data_ja	= "ユーザーの全体の数: %p0 最高: %p1";
 };
@@ -860,14 +860,14 @@ tag = {
 tag = {
    name		= "irc2_RPL_LOCALUSERS";
    fields	= "0 = # of local users, 1 = peak local user count";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "Current local users: %p0 Max: %p1";
    data_ja	= "ローカルユーザーの数: %p0 最高: %p1";
 };
 
 tag = {
    name		= "irc2_RPL_LUSERCHANNELS";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "channels formed";
    data_ja	= "チャネルの数";
    data_tr	= "Kullanici kanalı";
@@ -876,7 +876,7 @@ tag = {
 tag = {
    name		= "irc2_RPL_LUSERCLIENT";
    fields	= "0 = # of users, 1 = # of services, 2 = # of servers";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "There are %p0 users and %p1 services on %p2 servers";
    data_tr	= "Şu an serverin üstünde %p0 kullanıcı var ve %p2 "
                   "server üzerinde %p1 servis var";
@@ -884,7 +884,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_LUSERSTAFF";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "Staff member(s) online";
    data_ja	= "オンラインスタッフの数";
 };
@@ -892,14 +892,14 @@ tag = {
 tag = {
    name		= "irc2_RPL_LUSERME";
    fields	= "0 = clients, 1 = servers";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "I have %p0 clients and %p1 servers";
    data_tr	= "%p0 kullanıcım ve %p1 serverım var";
 };
 
 tag = {
    name		= "irc2_RPL_LUSEROP";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "operator(s) online";
    data_ja	= "オンラインオペレータの数";
    data_tr	= "online operator";
@@ -907,7 +907,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_LUSERUNKNOWN";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "unknown connection(s)";
    data_ja	= "未知のリンクの数";
    data_tr	= "bilinmeyen bağlantı";
@@ -916,7 +916,7 @@ tag = {
 tag = {
    name		= "irc2_RPL_MOTDSTART";
    fields	= "0 = server name";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "%p0 Message of the day";
    data_ja	= "日のメッセージ";
    data_tr	= "%p0 Günün mesajı";
@@ -930,7 +930,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_NOUSERS";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "Nobody logged in";
 };
 
@@ -966,7 +966,7 @@ tag = {
 tag = {
    name		= "irc2_RPL_STATSUPTIME";
    fields	= "0 = days up, 1 = hours/mins/secs up (HH:MM:SS)";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "Server up %p0 days, %p1";
 };
 
@@ -977,7 +977,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_TIMEONSERVERIS";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "time according to server";
 };
 
@@ -1001,7 +1001,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_USERSSTART";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "UserID   Terminal  Host";
 };
 
@@ -1016,45 +1016,45 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_WHOISIDLE";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "seconds idle, signon time";
    data_tr	= "saniye idle, bağlanma zamanı";
 };
 
 tag = {
    name		= "irc2_RPL_WHOISLANGUAGE";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "speaks these language(s)";
 };
 
 tag = {
    name		= "irc2_RPL_WHOISOPERATOR";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "is an IRC operator";
    data_tr	= "bir IRC Operator";
 };
 
 tag = {
    name		= "irc2_RPL_WHOISOPERATOR_LOCAL";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "is a local IRC operator";
 };
 
 tag = {
    name		= "irc2_RPL_WHOISSECURE";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "is connected via a secure connection";
 };
 
 tag = {
    name		= "irc2_RPL_WHOISSTAFF";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "is a staff member";
 };
 
 tag = {
    name		= "irc2_RPL_WHOIS_HIDDEN";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "is hidden behind a fake hostname";
 };
 
@@ -1091,7 +1091,7 @@ tag = {
 tag = {
    name		= "irc2_STATS_RESOURCES_RUSAGE_CONTEXT";
    fields	= "0 = voluntary context switches, 1 = involuntary ones";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "I've had %p0 voluntary and %p1 involuntary context "
                   "switches";
 };
@@ -1099,7 +1099,7 @@ tag = {
 tag = {
    name		= "irc2_STATS_RESOURCES_RUSAGE_FAULTS_SWAP";
    fields	= "0 = major faults, 1 = minor faults, 2 = swaps";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "I've had %p0 page faults, %p1 page reclamations, and have "
                   "swapped %p2 times";
 };
@@ -1108,7 +1108,7 @@ tag = {
    name		= "irc2_STATS_RESOURCES_SYSINFO_MEMORY";
    fields	= "0 = totalram, 1 = freeram, 2 = totalswap, 3 = freeswap, "
                   "4 = sharedram, 5 = bufferedram";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "Free RAM: %p1 MiB / %p0 MiB; Free swap: %p3 MiB/%p2 MiB); "
                   "Shared RAM: %p4 MiB; Buffered RAM: %p5 MiB";
 };
@@ -1116,14 +1116,14 @@ tag = {
 tag = {
    name		= "irc2_STATS_RESOURCES_SYSINFO_PROCESSES";
    fields	= "0 = number of processes";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "This system is running %p0 processes";
 };
 
 tag = {
    name		= "irc2_STATS_RESOURCES_SYSINFO_UPTIME";
    fields	= "0 = days, 1 = hours, 2 = minutes, 3 = seconds";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "This system has been running for %p0 days, %p1 hours, "
                   "%p2 minutes and %p3 seconds";
 };
@@ -1131,7 +1131,7 @@ tag = {
 tag = {
    name		= "irc2_STATS_RESOURCES_UNAME";
    fields	= "0 = machine, 1 = sysname, 2 = release, 3 = version";
-   components	= "libkineircd_irc2";
+   components	= "lib_irc2";
    data_en	= "I'm on a %p0 running %p1 %p2 (%p3)";
 };
 
