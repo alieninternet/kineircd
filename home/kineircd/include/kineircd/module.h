@@ -111,7 +111,7 @@ namespace Kine {
       virtual const Info& getInfo(void) const = 0;
       
       // Return the configuration data class pointer
-      virtual AISutil::ConfigData* const getConfigData(void) const
+      virtual AISutil::ConfigData* const getConfigData(void)
 	{ return 0; };
       
       // Start the module
