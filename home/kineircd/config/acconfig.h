@@ -213,13 +213,13 @@
 
 
 /* Defaults :) Change at will, but be careful. */
+# define DEFAULT_CONFIG_ADMIN_EMAIL		"nobody@nowhere"
+# define DEFAULT_CONFIG_ADMIN_LOCATION		"I need to configure my server"
+# define DEFAULT_CONFIG_ADMIN_NAME		"Mr. Nobody"
 # define DEFAULT_CONFIG_SERVER_DESCRIPTION	"Mystery unconfigured server"
 # define DEFAULT_CONFIG_SERVER_MAX_TTL		64 /* 64 is the maximum */
 # define DEFAULT_CONFIG_WHOWAS_DECAY		3600 /* 10 minutes */
 # define DEFAULT_CONFIG_WHOWAS_MAX_ENTRIES	50
-# define DEFAULT_CONFIG_ADMIN_NAME		""
-# define DEFAULT_CONFIG_ADMIN_EMAIL		""
-# define DEFAULT_CONFIG_ADMIN_LOCATION		""
 # define DEFAULT_CONFIG_MOTD_FILE		"@MOTD_FILE@"
 
 
