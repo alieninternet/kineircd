@@ -284,7 +284,7 @@ Signals::~Signals(void)
  * Original 09/07/2002 simonb
  */
 bool Signals::addHandler(const handlerPtr_type handler,
-			 const mask_type mask, void* foo = 0)
+			 const mask_type mask, void* foo)
 {
    // Make sure the given data is okay
    if ((handler) && (mask != 0)) {
