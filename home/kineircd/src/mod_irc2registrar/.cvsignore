@@ -1,2 +1,4 @@
+config.cpp
+config.h
 language.cpp
 language.h

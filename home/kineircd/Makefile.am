@@ -60,15 +60,8 @@ INCLUDES=\
 
 
 
-# Man pages to build
-man_MANS=\
-	install/ircd.1
-
-
-
 # Stuff that needs to go into the distribution but isn't implied
 EXTRA_DIST=\
-	$(man_MANS) \
 	DEV-TEAM \
 	autogen/attributes.def \
 	autogen/chanmembers.def \
@@ -76,6 +69,7 @@ EXTRA_DIST=\
 	autogen/chantypes.def \
 	autogen/config.def \
 	autogen/config.scm \
+	autogen/config.tpl \
 	autogen/errors.def \
 	autogen/events.def \
 	autogen/irc2numerics.def \
@@ -156,6 +150,7 @@ BUILT_SOURCES=\
 	src/lib/language.h \
 	src/lib/version.h \
 	src/lib_irc2/language.h \
+	src/mod_irc2registrar/config.h \
 	src/mod_irc2registrar/language.h \
 	src/mod_irc2user/commands.h \
 	src/mod_irc2user/language.h \
@@ -457,6 +452,8 @@ mod_filelog_la_LIBADD=\
 # 'mod_irc2registrar' module
 ###############################################################################
 mod_irc2registrar_la_SOURCES=\
+	src/mod_irc2registrar/config.cpp \
+	src/mod_irc2registrar/config.h \
 	src/mod_irc2registrar/debug.h \
 	src/mod_irc2registrar/language.cpp \
 	src/mod_irc2registrar/language.h \
@@ -473,6 +470,14 @@ mod_irc2registrar_la_LDFLAGS=\
 mod_irc2registrar_la_LIBADD=\
 	libkineircd.la \
 	libkineircd_irc2.la
+
+src/mod_irc2registrar/config.cpp src/mod_irc2registrar/config.h: $(AUTOGEN_DIR)/config.tpl $(AUTOGEN_DIR)/config.def $(AUTOGEN_DIR)/config.scm
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T $(AUTOGEN_DIR)/config.tpl \
+		-S $(AUTOGEN_DIR)/config.scm \
+		-DCOMPONENT=mod_irc2registrar \
+		$(AUTOGEN_DIR)/config.def
 
 src/mod_irc2registrar/language.cpp src/mod_irc2registrar/language.h: $(AUTOGEN_DIR)/language.tpl $(AUTOGEN_DIR)/language.def
 	$(AUTOGEN) \
@@ -615,12 +620,6 @@ ircd_LDADD=\
 	
 ircd_CFLAGS=\
 	$(LIBOPTS_CFLAGS)
-
-install/ircd.1: src/ircd/options.def
-	$(AUTOGEN) \
-		-T agman1.tpl \
-		-b $(basename $@) \
-		src/ircd/options.def
 
 src/ircd/options.c src/ircd/options.h: src/ircd/options.def
 	$(AUTOGEN) \
