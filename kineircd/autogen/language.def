@@ -52,6 +52,12 @@ languages = {
 };
 
 languages = {
+   langCode		= "ja";
+   langName		= "日本語";
+//   langMaintainer	= ""; // There is currently no maintainer for this language
+};
+
+languages = {
    langCode		= "tr";
    langName		= "Türkçe";
    langMaintainer	= "idil@users.sf.net";
@@ -70,6 +76,7 @@ tag = {
    components	= "mod_irc2registrar";
    data_en	= "Unauthorised command (already registered)";
    data_fr	= "Commande non autorisée (déjà enregistré)";
+   data_ja	= "あなたは既に登録される";
    data_tr	= "Bu komutu uygulamaya yetkiniz yok (önceden kaydedildi)";
 };
 
@@ -672,6 +679,7 @@ tag = {
    fields	= "0 = date";
    components	= "mod_irc2user";
    data_en	= "This server was created %p0";
+   data_ja	= "このサーバーは %p0 編集された";
    data_tr	= "Bu server %p0 tarihinde yaratılmıştır";
 };
 
@@ -691,18 +699,21 @@ tag = {
    name		= "irc2_RPL_ENDOF_GENERIC_LANGUAGE";
    components	= "mod_irc2user";
    data_en	= "End of LANGUAGE list";
+   data_ja	= "LANGUAGE リストの終了";
 };
 
 tag = {
    name		= "irc2_RPL_ENDOF_GENERIC_NETWORKS";
    components	= "mod_irc2user";
    data_en	= "End of NETWORKS list";
+   data_ja	= "NETWORKS リストの終了";
 };
 
 tag = {
    name		= "irc2_RPL_ENDOFINFO";
    components	= "libkineircd_irc2";
    data_en	= "End of INFO list";
+   data_ja	= "INFO リストの終了";
    data_tr	= "INFO listensinin sonu";
 };
 
@@ -715,6 +726,7 @@ tag = {
 tag = {
    name		= "irc2_RPL_ENDOFLINKS";
    data_en	= "End of LINKS list";
+   data_ja	= "LINKS リストの終了";
    data_tr	= "LINKler listensinin sonu";
 };
 
@@ -722,6 +734,7 @@ tag = {
    name		= "irc2_RPL_ENDOFMOTD";
    components	= "libkineircd_irc2";
    data_en	= "End of MOTD command";
+   data_ja	= "MOTD 命令の終了";
    data_tr	= "MOTDnin sonu";
 };
 
@@ -729,6 +742,7 @@ tag = {
    name		= "irc2_RPL_ENDOFNAMES";
    components	= "mod_irc2user";
    data_en	= "End of NAMES list";
+   data_ja	= "NAMES リストの終了";
    data_tr	= "NAMES (isimler) listesinin sonu";
 };
 
@@ -736,6 +750,7 @@ tag = {
    name		= "irc2_RPL_ENDOFSTATS";
    components	= "libkineircd_irc2 mod_irc2user";
    data_en	= "End of STATS report";
+   data_ja	= "STATS レポートの終了";
    data_tr	= "STATS raporunun sonu";
 };
 
@@ -743,12 +758,14 @@ tag = {
    name		= "irc2_RPL_ENDOFUSERS";
    components	= "libkineircd_irc2";
    data_en	= "End of USERS";
+   data_ja	= "USERS リストの終了";
 };
 
 tag = {
    name		= "irc2_RPL_ENDOFWHO";
    components	= "mod_irc2user";
    data_en	= "End of WHO list";
+   data_ja	= "WHO リストの終了";
    data_tr	= "WHO listesinin sonu";
 };
 
@@ -756,6 +773,7 @@ tag = {
    name		= "irc2_RPL_ENDOFWHOIS";
    components	= "libkineircd_irc2";
    data_en	= "End of WHOIS list";
+   data_ja	= "WHOIS リストの終了";
    data_tr	= "WHOIS listesinin sonu";
 };
 
@@ -763,6 +781,7 @@ tag = {
    name		= "irc2_RPL_ENDOFWHOWAS";
    components	= "libkineircd_irc2";
    data_en	= "End of WHOWAS list";
+   data_ja	= "WHOWAS リストの終了";
    data_tr	= "WHOWAS komutunun sonu";
 };
 
@@ -771,18 +790,21 @@ tag = {
    fields	= "0 = # of global users, 1 = peak global user count";
    components	= "libkineircd_irc2";
    data_en	= "Current global users: %p0 Max: %p1";
+   data_ja	= "ユーザーの全体の数: %p0 最高: %p1";
 };
 
 tag = {
    name		= "irc2_RPL_ISUPPORT";
    components	= "mod_irc2user";
    data_en	= "are supported by this server";
+   data_ja	= "はここに支えられる";
    data_tr	= "bu server tarafından destekleniyor";
 };
 
 tag = {
    name		= "irc2_RPL_LISTEND";
    data_en	= "End of LIST";
+   data_ja	= "LIST の終了";
    data_tr	= "LIST komutunun sonu";
 };
 
@@ -791,12 +813,14 @@ tag = {
    fields	= "0 = # of local users, 1 = peak local user count";
    components	= "libkineircd_irc2";
    data_en	= "Current local users: %p0 Max: %p1";
+   data_ja	= "ローカルユーザーの数: %p0 最高: %p1";
 };
 
 tag = {
    name		= "irc2_RPL_LUSERCHANNELS";
    components	= "libkineircd_irc2";
    data_en	= "channels formed";
+   data_ja	= "チャネルの数";
    data_tr	= "Kullanici kanalı";
 };
 
@@ -813,6 +837,7 @@ tag = {
    name		= "irc2_RPL_LUSERSTAFF";
    components	= "libkineircd_irc2";
    data_en	= "Staff member(s) online";
+   data_ja	= "オンラインスタッフの数";
 };
 
 tag = {
@@ -827,6 +852,7 @@ tag = {
    name		= "irc2_RPL_LUSEROP";
    components	= "libkineircd_irc2";
    data_en	= "operator(s) online";
+   data_ja	= "オンラインオペレータの数";
    data_tr	= "online operator";
 };
 
@@ -834,6 +860,7 @@ tag = {
    name		= "irc2_RPL_LUSERUNKNOWN";
    components	= "libkineircd_irc2";
    data_en	= "unknown connection(s)";
+   data_ja	= "未知のリンクの数";
    data_tr	= "bilinmeyen bağlantı";
 };
 
@@ -842,6 +869,7 @@ tag = {
    fields	= "0 = server name";
    components	= "libkineircd_irc2";
    data_en	= "%p0 Message of the day";
+   data_ja	= "日のメッセージ";
    data_tr	= "%p0 Günün mesajı";
 };
 
@@ -882,6 +910,7 @@ tag = {
    name		= "irc2_RPL_SERVLISTEND";
    components	= "mod_irc2user";
    data_en	= "End of service listing";
+   data_ja	= "SERVLIST リストの終了";
    data_tr	= "Servis listesinin sonu";
 };
 
@@ -932,6 +961,7 @@ tag = {
    fields	= "0 = nick, 1 = user, 2 = host";
    components	= "mod_irc2user";
    data_en	= "Welcome to the %N Internet Relay Network %p0!%p1@%p2";
+   data_ja	= "%N への歓迎 %p0!%p1@%p2";
    data_tr	= "%N Internet Relay Networkune Hoşgeldiniz %p0!%p1@%p2";
 };
 
@@ -997,6 +1027,7 @@ tag = {
    fields	= "0 = server name, 1 = version";
    components	= "mod_irc2user";
    data_en	= "Your host is %p0, running version %p1";
+   data_ja	= "あなたのホストは %p0 の版 %p1 である ";
    data_tr	= "Host addressiniz %p0, %p1 versiyonu kullaniyorsunuz";
 };
 
@@ -1005,6 +1036,7 @@ tag = {
    fields	= "0 = primary language name";
    components	= "mod_irc2user";
    data_en	= "Your primary language is '%p0'";
+   data_ja	= "あなたの主要な言語はである '%p0'";
 };
 
 tag = {
