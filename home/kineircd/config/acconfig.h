@@ -5,8 +5,8 @@
  * 
  */
 
-#ifndef __CONFIG_H_
-# define __CONFIG_H_
+#ifndef __AUTOCONF_H_
+# define __AUTOCONF_H_
 
 
 /******************************************************************************
