@@ -40,8 +40,9 @@
  * 04/04/2002 simonb - Added PID boolean option
  * 04/04/2002 simonb - Added debugging info
  */
-LoggerSyslog::LoggerSyslog(const char *processName, const bool showPid)
-  : Logger(Logger::TYPE_SYSLOG)
+LoggerSyslog::LoggerSyslog(mask_type mask, const char *processName, 
+			   const bool showPid)
+  : Logger(Logger::TYPE_SYSLOG, mask)
 {
    int option = LOG_NDELAY;
 

@@ -40,7 +40,7 @@ class LoggerSyslog : public Logger {
 		const mask_type = MASK_HOUSEKEEPING);	// Log a string of text
 
  public:
-   LoggerSyslog(const char *, const bool);		// Constructor
+   LoggerSyslog(mask_type, const char *, const bool);	// Constructor
    ~LoggerSyslog(void);					// Destructor
    
    // Is the log ok?

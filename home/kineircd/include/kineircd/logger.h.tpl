@@ -51,7 +51,7 @@ class Logger {
    };
    
    // Logger types (each logger class must set itself to one of these)
-   enum logType_type {
+   enum type_type {
       TYPE_OTHER,				// Other; eg. module extension
 # ifdef HAVE_SYSLOG_H
       TYPE_SYSLOG,				// Syslog interface
@@ -72,16 +72,16 @@ class Logger {
    } static const maskTable[maskTableSize];
 
  private:
-   const logType logType;				// Type of log this is
+   const type_type logType;				// Type of log this is
    const mask_type logMask;				// OK log message types
  
    // Log a string of text
-   virtual void log(const String &, const mask_type = MASK_HOUSEKEEPING)
+   virtual void logLine(const String &, const mask_type = MASK_HOUSEKEEPING)
      {};
 
  public:
    // Constructor
-   Logger(logType_type t, logMask_type m)
+   Logger(type_type t, mask_type m)
      : logType(t),
        logMask(m)
      {};
@@ -91,11 +91,11 @@ class Logger {
      {};
    
    // Grab logging type
-   const logType_type getType(void) const
+   const type_type getType(void) const
      { return logType; };
 
    // Grab logging mask
-   const logMask_type getMask(void) const
+   const mask_type getMask(void) const
      { return logMask; };
 
    // Is the log ok?

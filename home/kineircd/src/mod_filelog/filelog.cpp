@@ -32,8 +32,8 @@
  * Original 18/02/2000 simonb
  * 04/04/2002 simonb - Added debugging info
  */
-LoggerFile::LoggerFile(const char *fileName)
-  : Logger(Logger::TYPE_FILE)
+LoggerFile::LoggerFile(mask_type mask, const char *fileName)
+  : Logger(Logger::TYPE_FILE, mask)
 {
 #ifdef DEBUG_EXTENDED
    debug(String("LoggerFile::LoggerFile(): logFile.open(") + fileName + ')');

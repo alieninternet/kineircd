@@ -37,7 +37,7 @@ class LoggerFile : public Logger {
 		const mask_type = MASK_HOUSEKEEPING);	// Log a string of text
    
  public:
-   LoggerFile(const char *);				// Constructor
+   LoggerFile(mask_type, const char *);			// Constructor
    ~LoggerFile(void);					// Destructor
 
    // Is the log ok?
