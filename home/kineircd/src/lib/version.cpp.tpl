@@ -39,6 +39,8 @@ ENDDEF+]
 #endif
 #include "kineircd/kineircdconf.h"
 
+#include <aisutil/aisutilconf.h>
+
 #include "kineircd/version.h"
 
 namespace Kine {
@@ -59,7 +61,7 @@ namespace Kine {
       
       // Full version identity (includes build time)
       const char* const versionFull = 
-	PACKAGE KINEIRCD_VERSION_STRING "#" BUILD_TIME;
+	PACKAGE KINEIRCD_VERSION_STRING "-" BUILD_TIME;
       
       // Library version information (raw)
       const unsigned char libVersion = KINEIRCD_LIB_VERSION;
@@ -95,26 +97,23 @@ namespace Kine {
        * comments on how #ifdef's are considered obsolete in C++! :)
        */
       const char* const versionChars =
-	// Configuration characters     
-#ifdef KINE_DEBUG
-				"D"
-#endif
-#ifdef KINE_STL_HAS_HASH
-				"H"
-#endif
-#ifdef KINE_STRICT_CHANNEL_NAMES
-				"N"
-#endif
-#ifdef KINE_WITH_SSL
-				"S"
-#endif
+	// Configuration characters[+FOR version_chars+]
+#ifdef [+ifdef+]
+				"[+char+]"
+#endif[+ENDFOR+]
      
 // Transport protocol phrases
-#ifdef HAVE_TRANSPORT_TCP_IPV4
+#ifdef LIBAISUTIL_HAVE_SOCKET_IPV4_TCP
      				",IPv4"
 #endif
-#ifdef HAVE_TRANSPORT_TCP_IPV6
+#ifdef LIBAISUTIL_HAVE_SOCKET_IPV6_TCP
      				",IPv6"
+#endif
+#ifdef LIBAISUTIL_HAVE_SOCKET_UNIX
+     				",Unix"
+#endif
+#ifdef LIBAISUTIL_HAVE_SOCKET_IPX_SPX
+     				",IPX"
 #endif
 					; // The end, phew!
    }; // namespace Version
