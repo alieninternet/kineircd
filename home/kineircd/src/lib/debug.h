@@ -21,9 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef DEBUG
-# ifndef _INCLUDE_KINEIRCD_DEBUG_H_
-#  define _INCLUDE_KINEIRCD_DEBUG_H_
+#ifndef _INCLUDE_KINEIRCD_DEBUG_H_
+# define _INCLUDE_KINEIRCD_DEBUG_H_ 1
+# ifdef DEBUG
 
 #  ifdef DEBUG_ASSERT
 #   include <cassert>
@@ -34,5 +34,5 @@
 // Output/Broadcast debug line
 extern void debug(Kine::String const &);
    
-# endif
-#endif
+# endif // DEBUG
+#endif // _INCLUDE_KINEIRCD_DEBUG_H_

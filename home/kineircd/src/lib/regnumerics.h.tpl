@@ -25,11 +25,11 @@
  */
 
 #ifndef _SRC_LIB_REGNUMERICS_H_
-# define _SRC_LIB_REGNUMERICS_H_
+# define _SRC_LIB_REGNUMERICS_H_ 1
 
 enum {
 #error "we must loop here in the template file and rip out appropriate numerics"
 };
 
-#endif
+#endif // _SRC_LIB_REGNUMERICS_H_
 

@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_REGISTER_H_
-# define _INCLUDE_KINEIRCD_REGISTER_H_
+# define _INCLUDE_KINEIRCD_REGISTER_H_ 1
 
 # include "kineircd/handler.h"
 
@@ -98,5 +98,5 @@ class registerHandler : public Handler {
 
 };
    
-#endif
+#endif // _INCLUDE_KINEIRCD_REGISTER_H_
 

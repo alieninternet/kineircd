@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_LOGGERSYSLOG_H_
-# define _INCLUDE_KINEIRCD_LOGGERSYSLOG_H_
+#ifndef _SRC_LIB_LOGGER_SYSLOG_H_
+# define _SRC_LIB_LOGGER_SYSLOG_H_ 1
 
 # include "kineircd/kineircdconf.h"
 
@@ -54,6 +54,6 @@ namespace Kine {
 
 };
    
-# endif
-#endif
+# endif // HAVE_SYSLOG_H
+#endif // _SRC_LIB_LOGGER_SYSLOG_H_
    

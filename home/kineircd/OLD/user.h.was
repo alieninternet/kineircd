@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_USER_H_
-# define _INCLUDE_KINEIRCD_USER_H_
+# define _INCLUDE_KINEIRCD_USER_H_ 1
 
 # include <ctime>
 # include <map>
@@ -345,6 +345,6 @@ namespace Kine {
    };
    
 };
-   
-#endif
+
+#endif // _INCLUDE_KINEIRCD_USER_H_
    

@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_HANDLER_H_
-# define _INCLUDE_KINEIRCD_HANDLER_H_
+# define _INCLUDE_KINEIRCD_HANDLER_H_ 1
 
 namespace Kine {
    class Handler;
@@ -141,5 +141,5 @@ namespace Kine {
    
 };
    
-#endif
+#endif // _INCLUDE_KINEIRCD_HANDLER_H_
    

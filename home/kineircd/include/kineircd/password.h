@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_PASSWORD_H_
-# define _INCLUDE_KINEIRCD_PASSWORD_H_
+# define _INCLUDE_KINEIRCD_PASSWORD_H_ 1
 
 # include "kineircd/str.h"
 # include "kineircd/utils.h"
@@ -61,5 +61,5 @@ namespace Kine {
    
 };
    
-#endif
-   
+#endif // _INCLUDE_KINEIRCD_PASSWORD_H_
+

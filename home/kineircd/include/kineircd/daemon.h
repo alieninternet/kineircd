@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_DAEMON_H_
-# define _INCLUDE_KINEIRCD_DAEMON_H_
+# define _INCLUDE_KINEIRCD_DAEMON_H_ 1
 
 namespace Kine {
    class Daemon;
@@ -57,4 +57,4 @@ namespace Kine {
    
 };
 
-#endif
+#endif // _INCLUDE_KINEIRCD_DAEMON_H_ 

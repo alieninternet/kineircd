@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_MODULE_H_
-# define _INCLUDE_KINEIRCD_MODULE_H_
+# define _INCLUDE_KINEIRCD_MODULE_H_ 1
 
 namespace Kine {
    
@@ -64,5 +64,5 @@ namespace Kine {
    
 };
    
-#endif
+#endif // _INCLUDE_KINEIRCD_MODULE_H_
    

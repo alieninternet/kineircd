@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_VERSION_H_
-# define _INCLUDE_KINEIRCD_VERSION_H_
+# define _INCLUDE_KINEIRCD_VERSION_H_ 1
 
 namespace Kine {
    namespace Version {
@@ -41,5 +41,5 @@ namespace Kine {
    };
 };
    
-#endif
+#endif // _INCLUDE_KINEIRCD_VERSION_H_
    

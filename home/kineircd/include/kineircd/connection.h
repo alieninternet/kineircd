@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_CONNECTION_H_
-# define _INCLUDE_KINEIRCD_CONNECTION_H_
+# define _INCLUDE_KINEIRCD_CONNECTION_H_ 1
 
 # include <queue>
 
@@ -102,5 +102,5 @@ namespace Kine {
    
 };
    
-#endif
+#endif // _INCLUDE_KINEIRCD_CONNECTION_H_ 
 

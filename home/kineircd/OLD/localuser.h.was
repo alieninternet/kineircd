@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_LOCALUSER_H_
-# define _INCLUDE_KINEIRCD_LOCALUSER_H_
+# define _INCLUDE_KINEIRCD_LOCALUSER_H_ 1
 
 # ifdef STL_HAS_HASH
 #  include <hash_set>
@@ -213,5 +213,5 @@ namespace Kine {
    
 };
    
-#endif
+#endif // _INCLUDE_KINEIRCD_LOCALUSER_H_
    

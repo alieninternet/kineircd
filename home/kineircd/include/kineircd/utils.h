@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_UTILS_H_
-# define _INCLUDE_KINEIRCD_UTILS_H_
+# define _INCLUDE_KINEIRCD_UTILS_H_ 1
 
 # include <cstdlib>
 
@@ -86,5 +86,5 @@ namespace Kine {
    
 };
    
-#endif
+#endif // _INCLUDE_KINEIRCD_UTILS_H_
    

@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_OPERATOR_H_
-# define _INCLUDE_KINEIRCD_OPERATOR_H_
+# define _INCLUDE_KINEIRCD_OPERATOR_H_ 1
 
 # include "kineircd/str.h"
 # include "kineircd/password.h"
@@ -60,5 +60,5 @@ namespace Kine {
    
 };
    
-#endif
+#endif // _INCLUDE_KINEIRCD_OPERATOR_H_
    

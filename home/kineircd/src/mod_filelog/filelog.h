@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_LOGGERFILE_H_
-# define _INCLUDE_KINEIRCD_LOGGERFILE_H_
+#ifndef _SRC_LIB_LOGGER_FILE_H_
+# define _SRC_LIB_LOGGER_FILE_H_ 1
 
 # include <fstream>
 
@@ -48,5 +48,5 @@ namespace Kine {
 
 };
    
-#endif
+#endif // _SRC_LIB_LOGGER_FILE_H_
    

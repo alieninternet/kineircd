@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_CHANNEL_H_
-# define _INCLUDE_KINEIRCD_CHANNEL_H_
+# define _INCLUDE_KINEIRCD_CHANNEL_H_ 1
 
 # include <ctime>
 
@@ -315,5 +315,5 @@ namespace Kine {
    
 };
    
-#endif
+#endif // _INCLUDE_KINEIRCD_CHANNEL_H_
    

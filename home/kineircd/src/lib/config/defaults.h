@@ -24,8 +24,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIB_CONFIG_CONFIGDEFAULT_H_
-# define _SRC_LIB_CONFIG_CONFIGDEFAULT_H_
+#ifndef _SRC_LIB_CONFIG_DEFAULTS_H_
+# define _SRC_LIB_CONFIG_DEFAULTS_H_ 1
 
 # include "kineircd/kineircdconf.h"
 
@@ -85,5 +85,5 @@
 # define DEFAULT_OPTIONS_LIMITS_USERS_MAX_WATCHES \
    128
   
-#endif
+#endif // _SRC_LIB_CONFIG_CONFIGDEFAULT_H_
 

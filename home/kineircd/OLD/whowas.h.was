@@ -22,7 +22,7 @@
  */
 
 #ifndef _INCLUDE_KINEIRCD_WHOWAS_H_
-# define _INCLUDE_KINEIRCD_WHOWAS_H_
+# define _INCLUDE_KINEIRCD_WHOWAS_H_ 1
 
 # include <ctime>
 
@@ -158,5 +158,5 @@ namespace Kine {
    
 };
    
-#endif
+#endif // _INCLUDE_KINEIRCD_WHOWAS_H_
 
