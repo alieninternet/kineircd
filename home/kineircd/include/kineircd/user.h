@@ -97,6 +97,23 @@ namespace Kine {
       //! Return the virtual hostname of this user
       virtual const std::string& getVirtualHostname(void) const
 	{ return getHostname(); };
+
+      
+      //! Return the modes/flags bitmask
+//      const ? getModes(void) const
+//	{ return modes; };
+      
+      //! Check to see if a particular mode/flag is set on this user
+//      const bool isSet( ? ) const
+//	{ return (modes & ?); };
+	
+      //! Handy function to see if the user is a global operator
+      const bool isGlobalOperator(void) const
+	{ return false; };
+      
+      //! Handy function to see if the user is a local operator
+      const bool isLocalOperator(void) const
+	{ return false; };
       
       
       //! Return the away message for this user. If blank, there is none set
