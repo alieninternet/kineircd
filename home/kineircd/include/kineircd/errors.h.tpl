@@ -30,14 +30,17 @@ namespace Kine {
    namespace Error {
       //! Error returns from functions
       enum error_type {
+      	 //! No error, but no data returned either
+	 NO_ERROR_OR_DATA = 1,
+      
          //! No error
-	 NO_ERROR = 0,[+ FOR errors +]
-	 
-	 //! [+reason+]
-	 [+name+],[+ ENDFOR errors +]
+	 NO_ERROR = 0,
 	 
 	 //! Unknown error
-	 UNKNOWN_ERROR = 0xFFFFFFFF
+	 UNKNOWN_ERROR = -1,[+FOR errors ","+]
+	 
+	 //! [+reason+]
+	 [+name+] = -[+(+ (for-index) 2)+][+ENDFOR errors+]
       }; // enum error_type
    }; // namespace Error
 }; // namespace Kine

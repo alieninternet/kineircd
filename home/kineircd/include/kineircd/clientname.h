@@ -30,20 +30,21 @@ namespace Kine {
    //! A client's nickname, conforming to IRC rules
    class ClientName : public Name {
     public:
-      // Constructor
+      //! Constructor
       ClientName(void)
 	{};
       
-      // Constructor (a magic one)
-      template <class Ta> ClientName(const Ta& a)
-	: Name(a)
-        {};
+      //! Constructor (a magic one)
+      template <class T>
+	ClientName(const T& string)
+	  : Name(string)
+	  {};
       
-      // Destructor
+      //! Destructor
       ~ClientName(void)
 	{};
       
-      //! Check if the name is valid, according to client nickname rules
+      // Check if the name is valid, according to client nickname rules
       const Error::error_type checkValidity(void) const;
    }; // class ClientName
 }; // namespace Kine

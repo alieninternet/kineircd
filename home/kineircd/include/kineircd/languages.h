@@ -38,38 +38,64 @@
 
 
 namespace Kine {
-   //! Languages interface (langtags)
+   /*!
+    * \brief %Languages interface (\e langtags)
+    * 
+    * This is the language interface, used to retrieve language data in a
+    * given language (or normally more specifically, a given User's language).
+    * 
+    * Each \e string is given a unique identifier, or a
+    * \link Kine::Languages::tagID_type tag ID \endlink, which is used to
+    * reference the particular string you wish to retrieve.
+    */
    class Languages {
     public:
+      //@{
       /* The tag identifier type (also referred to as a 'TID').
        * Note that TID #0 has a special purpose -- "unknown".
        */
       typedef unsigned int tagID_type;
       
-      /* This is the 'tag map' structure. In order for your module to know
-       * the correlation of tag name to tag ID upon run-time, you need to
-       * define this structure within your module and register it with the
-       * registerMap() function (defined below). Once registered, and after
-       * languages have been loaded (or reloaded), we will attempt to form
-       * the link between a tag name and its run-time ID (a number) using
-       * this map. Using the number set within this structure, you can then
-       * look up your tags. If the tag name cannot be found (i.e. it does
-       * not exist within any loaded language files) the tag ID will be set
-       * to 0, and an empty string will be returned whenever you try to
-       * reference that tag's data.
+      //! The ID of the 'unknown tag'
+      static const tagID_type unknownTagID = 0;
+      //@}
+
+      
+      //@{
+      /*!
+       * \brief This is the <em>tag map</em> structure.
        * 
-       * You do not need to fill in the tag ID field, only the tag name. Both
-       * upper and lower case is acceptable within the tag name, since the
-       * lookup performed uses case-insensitive checks.
+       * In order for your module to know the correlation of <em>tag name</em>
+       * to <em>tag ID</em> upon run-time, you need to define this structure
+       * within your module and register it, using the registerMap() function.
        * 
-       * Terminate the map array with a null tagName (0).
+       * Once registered, and anytime language files are loaded/reloaded while
+       * your map is registered, the language system will attempt to form the
+       * link between tag names and their respective run-time ID's, filling
+       * the map with the correct values.
+       * 
+       * Using the ID's set within this structure, you can then look up your
+       * tags correctly using the array as a reference.
+       *
+       * If the tag name cannot be found (i.e. it does not exist within any
+       * currently loaded language files) the tag ID will be set to
+       * \link unknownTagID an unknown identifier \endlink, and an empty
+       * string will be returned whenever you try to reference that tag's
+       * data.
+       *
+       * Terminate the map array with a null-pointer \a tagName (a value of
+       * \e 0).
        */
       struct TagMapEntry {
 	 const char* const tagName;
 	 tagID_type tagID;
       };
+      
       typedef TagMapEntry tagMap_type[];
+      //@}
 
+      
+      //@{
       //! The type of a 'parameter' (used in substitutions)
       typedef std::string parameter_type;
       
@@ -79,7 +105,9 @@ namespace Kine {
        * prior to being returned back to the software.
        */
       typedef std::vector < const parameter_type* > parameterList_type;
-
+      //@}
+      
+      
       /* The call-out function used for multi-call get's.
        * Inherit from this, and use the operator() to do whatever you need
        * with each call. Each call is given a string, and must return a true
@@ -91,6 +119,7 @@ namespace Kine {
 	 virtual ~callFunction_type(void) {};
 	 virtual bool operator()(const std::string& data) = 0;
       };
+      
       
       /* Language data class, this holds information about the language, along
        * with the tag data. It also provides basic look-up functions per
@@ -178,10 +207,8 @@ namespace Kine {
       
       //! The language data list type (as used for preferential language lists)
       typedef std::vector < const LanguageData* > languageDataList_type;
-      
-      //! The ID of the 'unknown tag'
-      static const tagID_type unknownTagID = 0;
 
+      
       //! The code associated with a 'null' language (null pointer, no output)
       static const char* const nullLanguageCode;
       
@@ -403,8 +430,11 @@ namespace Kine {
    }; // class Languages
 
    
-   /* Lazy reference thingy for lazy coders.. like me.. but shh, don't tell
-    * anyone I'm lazy and use lazy things like this lazy reference function :(
+   /*!
+    * \brief Return the current instance of the Languages:: class
+    *
+    * \return The current instance of the Languages class
+    * \relates Kine::Languages
     */
    inline static Languages& languages(void)
      { return Languages::getInstance(); };

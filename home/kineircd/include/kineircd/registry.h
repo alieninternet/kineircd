@@ -249,7 +249,12 @@ namespace Kine {
    }; // class Registry
    
 
-   //! Return the current instance of the Registry:: class
+   /*!
+    * \brief Return the current instance of the Registry:: class
+    * 
+    * \return The current instance of the Registry class
+    * \relates Kine::Registry
+    */
    inline static Registry& registry(void)
      { return Registry::getInstance(); };
 }; // namespace Kine

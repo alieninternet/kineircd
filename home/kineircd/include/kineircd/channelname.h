@@ -30,20 +30,21 @@ namespace Kine {
    //! A channel's name, conforming to RFC rules
    class ChannelName : public Name {
     public:
-      // Constructor
+      //! Constructor
       ChannelName(void)
 	{};
       
-      // Constructor (a magic one)
-      template <class Ta> ChannelName(const Ta& a)
-	: Name(a)
-        {};
+      //! Constructor (a magic one)
+      template <class T>
+	ChannelName(const T& string)
+	  : Name(string)
+	  {};
       
-      // Destructor
+      //! Destructor
       ~ChannelName(void)
 	{};
       
-      //! Check if the name is valid, according to channel name rules
+      // Check if the name is valid, according to channel name rules
       const Error::error_type checkValidity(void) const;
    }; // class ChannelName
 }; // namespace Kine

@@ -29,14 +29,25 @@
 
 namespace Kine {
    namespace LibIRC2 {
-      //! List of IRC-2 related numerics, mainly used between client <-> server
+      /*!
+       * \brief IRC-2 protocol numerics
+       *
+       * This is a list of IRC-2 related numerics. It's restricted to those
+       * which are not obsolete, conflicting or repeated, and therefore is
+       * considered to be a somewhat 'complete' list. If you find an error,
+       * or missing numerics, please contact pickle@alien.net.au with details.
+       *
+       * Most of these numerics are related to <em>server to client</em>
+       * traffic, as modern <em>server to server</em> protocols only pass
+       * numerics to clients, and not to other servers.
+       */
       namespace Numerics {
          enum numeric_type {[+FOR irc2numerics+][+IF
- (not
-    (or
-       (exist? "obsolete")
-       (exist? "conflict")
-       (exist? "repeated")))
+   (not
+      (or
+         (exist? "obsolete")
+         (exist? "conflict")
+         (exist? "repeated")))
  +]
 	    [+
    (sprintf "%-30s = %3s, %s"
@@ -44,22 +55,21 @@ namespace Kine {
       (get "numeric")
       (cond
          ((exist? "information")
-	    (sprintf "// %s"
+	    (sprintf "//! %s"
 	       (get "information")))
          ((exist? "origin")
-	    (sprintf "// From %s"
+	    (sprintf "//! From %s"
 	       (get "origin")))
 	 ((exist? "contact")
-	    (sprintf "// %s"
+	    (sprintf "//! %s"
 	       (get "contact")))
 	 (else
 	    "")))
  +][+ENDIF+][+ENDFOR+]
-            _HIGHEST_
+            _HIGHEST_ //! The highest known numeric, <b>plus one</b>
          };
       }; // namespace Numerics
    }; // namespace LibIRC2
 }; // namespace Kine
 
 #endif // [+(. header-guard)+]
-

@@ -51,7 +51,7 @@ namespace Kine {
 	{};
 
       /*!
-       * \breif Get the network's short name
+       * \brief Get the network's short name
        * 
        * Return the network name, in <em>short form</em>. For example,
        * <em>"The Foo Network"</em> would probably use something along the

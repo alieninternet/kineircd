@@ -38,7 +38,7 @@ namespace Kine {
 			     Receiver::Directivity& directivity,
 			     const bool includeServices = false);
 	 
-	 //! Make a user@host string
+	 //! Make a user\@host string
 	 inline static const std::string
 	   makeUserHostIdent(const Kine::Client& client)
 	   {
@@ -46,7 +46,7 @@ namespace Kine {
 		      client.getHostname());
 	   };
 	 
-	 //! Make a nick!user@host string
+	 //! Make a nick!user\@host string
 	 inline static const std::string
 	   makeNickUserHostIdent(const Kine::Client& client)
 	   {

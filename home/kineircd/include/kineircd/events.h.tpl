@@ -27,25 +27,23 @@
 [+(make-header-guard "kine")+]
 
 namespace Kine {
-   namespace Error {
-      //! Events dispatcher/registry
-      class Events {
-       public:
-	 struct Mask { // <=- should be namespace
-	    enum mask_type {[+FOR mask ","+]
-	       //! [+comment+]
-	       [+
+   //! Events dispatcher/registry
+   class Events {
+    public:
+      struct Mask { // <=- should be namespace
+	 enum mask_type {[+FOR mask ","+]
+	      //! [+comment+]
+	      [+
    (sprintf "%-25s = 0x%08X"
       (get "name")
       (expt 2
          (for-index)))
  +][+ENDFOR+]
-	    };
-	    
-	    typedef unsigned int lazy_type;
 	 };
-      }; // class Events
-   }; // namespace Error
+	    
+	 typedef unsigned int lazy_type;
+      };
+   }; // class Events
 }; // namespace Kine
 
 #endif [+(. header-guard)+]

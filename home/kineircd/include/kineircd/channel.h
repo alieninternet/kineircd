@@ -122,7 +122,11 @@ namespace Kine {
 	{};
       
       
-      //! Return the channel's name
+      /*!
+       * \brief Return the channel's name
+       * 
+       * \return The channel's name
+       */
       const ChannelName& getChannelName(void) const
 	{ return name; };
 
@@ -188,7 +192,16 @@ namespace Kine {
       const members_type& getMembers(void) const
 	{ return members; };
       
-      //! Return the number of users on the channel (0 = unknown/unavailable)
+      /*!
+       * \brief Return the number of clients on the channel
+       *
+       * This will return the number of clients currently listed as \e members
+       * on this channel. Depending on the channel type and the flags set,
+       * this may or may not be the number of people which have access to the
+       * channel. 
+       * 
+       * \retrun The number of clients listed as members of the channel
+       */
       const unsigned long getUserCount(void) const
 	{ return members.size(); };
 
@@ -200,11 +213,11 @@ namespace Kine {
       //! Is this channel private?
       const bool isPrivate(void) const
 	{ return false; };
-      
+
       // Is this channel hidden from public view (i.e. /whois, /list etc)
-      virtual const bool isHiddenFrom(const User& who) const
+      virtual const bool isHiddenFrom(const User& user) const
 	{ return (isSecret() || isPrivate()); };
-      
+
 
       //! Is the given client on the channel?
       const bool hasClient(const Client& who) const
@@ -213,15 +226,15 @@ namespace Kine {
       //! Is the given user banned? (+b list)
       virtual const bool isBanned(const User& who) const
 	{ return false; };
-      
+
       //! Is the given user exempt from being banned? (+e list)
       virtual const bool isBanExempt(const User& who) const
 	{ return false; };
-      
+
       //! Is the given user automatically invited? (+I list)
       virtual const bool isAutomaticallyInvited(const User& who) const
 	{ return false; };
-      
+
       //! Is the given user currently invited to the channel?
       virtual const bool isInvited(const User& who) const
 	{ return false; };

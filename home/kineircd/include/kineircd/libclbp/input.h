@@ -56,7 +56,7 @@ namespace Kine {
 	 virtual void parseLine(const std::string& line) = 0;
 
        public:
-	 //! Handle incoming data
+	 // Handle incoming data
 	 void handleInput(const std::string& data);
 	 
        protected:

@@ -77,6 +77,7 @@ namespace Kine {
     * your code.
     *
     * \return The current instance of MyServer
+    * \relates Kine::MyServer
     */
    inline static MyServer& myServer(void)
      { return MyServer::getInstance(); };

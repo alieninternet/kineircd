@@ -92,7 +92,7 @@ namespace Kine {
 
 
       // Is this server hidden from the given user? (this is broken)
-      const bool isHiddenFrom(const User& who) const
+      const bool isHiddenFrom(const User& user) const
 	{ return isModeSet(Mode::HIDDEN); };
       
       

@@ -99,11 +99,11 @@ namespace Kine {
 	   {};
 	 
 	 
-	 //! Return the number of messages sent through this protocol
+	 // Return the number of messages sent through this protocol
 	 const messageCount_type getSentMessageCount(void) const
 	   { return sentMessageCount; };
 	 
-	 //! Return the number of messages received through this protocol
+	 // Return the number of messages received through this protocol
 	 const messageCount_type getReceivedMessageCount(void) const
 	   { return receivedMessageCount; };
 

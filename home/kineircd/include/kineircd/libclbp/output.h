@@ -32,9 +32,9 @@ namespace Kine {
       //! The command line based protocol (CLBP) output handling class
       class Output : public Kine::Protocol::Output {
        public:
-	 static const char* const EOL_CR_LF;	//!< '\r\n' end of line (common)
-	 static const char* const EOL_CR;	//!< '\r' end of line (rare)
-	 static const char* const EOL_LF;	//!< '\n' end of line
+	 static const char* const EOL_CR_LF;	//!< '\\r\\n' end of line (common)
+	 static const char* const EOL_CR;	//!< '\\r' end of line (rare)
+	 static const char* const EOL_LF;	//!< '\\n' end of line
 
        private:
 	 //! The output data queue
@@ -76,12 +76,12 @@ namespace Kine {
 	   { outputRaw(message + "\r\n"); };
 	 
        public:
-	 //! Remove up to the amount of octets given from the output queue
+	 // Remove up to the amount of octets given from the output queue
 	 const std::string
 	   withdrawOutput(const AIS::Util::Socket::Socket::blockSize_type
 			  amount);
 	 
-	 //! Return true should there be anything in the output queue to send
+	 // Return true should there be anything in the output queue to send
 	 const bool moreOutput(void) const
 	   { return (!outputQueue.empty()); };
 	 

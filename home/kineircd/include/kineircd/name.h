@@ -28,27 +28,54 @@
 # include <kineircd/errors.h>
 
 namespace Kine {
-   //! A name, conforming to IRC rules (a specially modified form of a string)
+   /*!
+    * \brief A generic IRC entity name
+    *
+    * A Name is a label for an Entity, conforming to specific rules with
+    * regards to \e case-folding and \e validity (depending on how the server
+    * is compiled and/or configured).
+    * 
+    * Real Entity names are derived from this abstract class.
+    */
    class Name : public AIS::Util::String {
     protected:
-      // Constructor
+      //! Constructor
       Name(void)
 	{};
       
-      // Constructor (a magic one)
-      template <class Ta> Name(const Ta& a)
-	: AIS::Util::String(a)
-        {};
+      /*!
+       * \brief Constructor
+       * 
+       * \param string A string to initialise this name with
+       */
+      template <class T>
+	Name(const T& string)
+	  : AIS::Util::String(string)
+	  {};
       
     public:
-      // Destructor
+      //! Destructor
       ~Name(void)
 	{};
       
-      //! Lower-case the nickname based on compiled in case-mapping rules
+      /*!
+       * \brief Convert the name to lower-case
+       *
+       * Lower-case the name based on compiled in case-mapping rules
+       *
+       * \return The converted name as a string
+       */
       const AIS::Util::String IRCtoLower(void) const;
       
-      //! Check if the name is valid, according to whatever rules neccessary
+      /*!
+       * \brief Check if the name is valid
+       * 
+       * Check that the name stored is valid, based on whatever rules
+       * necessary.
+       * 
+       * \return The validity of the name
+       * \retval Kine::Error::NO_ERROR The name is considered to be valid
+       */
       virtual const Error::error_type checkValidity(void) const = 0;
    }; // class Name
 }; // namespace Kine
