@@ -29,6 +29,7 @@ _$*
 *.olb
 *.o
 *.lo
+*.la
 *.obj
 *.so
 *.exe
