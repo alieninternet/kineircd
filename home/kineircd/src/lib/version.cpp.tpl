@@ -2,6 +2,7 @@
 /* $Id$
  * Version and Compile information
  * 
+ * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *

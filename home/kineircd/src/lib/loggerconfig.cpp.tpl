@@ -2,12 +2,7 @@
 /* $Id$
  * Configuration helper stuff for logging modules which may need it
  * 
- * If you were expecting definitions to edit, either pass your configuration
- * parameters to the configuration script or edit autoconf.h. Default
- * configuration defines can be found in src/config/configdefault.h, but it 
- * is not recommended to edit that file, but rather to edit your configuration
- * file properly.
- * 
+ * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002 KineIRCd Development Team 
  * (See DEV-TEAM file for details)
  *

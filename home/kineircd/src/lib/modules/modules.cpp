@@ -1,6 +1,7 @@
 /* $Id$
  * Support class for modules
  * 
+ * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *

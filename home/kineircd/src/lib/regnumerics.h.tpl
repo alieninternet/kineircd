@@ -2,7 +2,9 @@
 /* $Id$
  * Tiny list of numerics potentially used during the registration of a client
  * 
- * Copyright (c) 2002 Alien Internet Services
+ * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002 KineIRCd Development Team 
+ * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
  * 

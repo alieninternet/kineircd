@@ -1,6 +1,7 @@
 /* $Id$
  * The IRC-2 protocol suite base class
  * 
+ * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *

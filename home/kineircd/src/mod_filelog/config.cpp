@@ -1,7 +1,9 @@
 /* $Id$
  * Config data for mod_filelog
  * 
- * Copyright (c) 2002 Alien Internet Services
+ * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002 KineIRCd Development Team
+ * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
  * 

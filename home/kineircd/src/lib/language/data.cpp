@@ -1,6 +1,7 @@
 /* $Id$
  * Language data container (one per language)
  *
+ * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *

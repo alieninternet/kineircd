@@ -1,6 +1,7 @@
 /* $Id$
  * Handle the languages list which resides in the daemon's configuration
  *
+ * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *

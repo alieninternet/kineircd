@@ -7,6 +7,7 @@
  * is not recommended to edit that file, but rather to edit your configuration
  * file properly.
  * 
+ * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2002 KineIRCd Development Team 
  * (See DEV-TEAM file for details)
  *
