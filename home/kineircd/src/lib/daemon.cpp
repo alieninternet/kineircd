@@ -1,4 +1,4 @@
-/* src/daemon.cpp
+/* daemon.cpp
  * The main class (IRC daemon) constructors and destructors
  */
 

@@ -1,4 +1,4 @@
-/* src/objects.cpp
+/* objects.cpp
  * Channel class
  */
 

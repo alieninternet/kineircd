@@ -1,4 +1,4 @@
-/* ./src/handlers/irc2user.cpp
+/* irc2user.cpp
  * Handle USER connection data using the irc2 server<->user protocol
  */
 

@@ -1,4 +1,4 @@
-/* ./src/include/connection.h
+/* connection.h
  * Connection class
  */
 

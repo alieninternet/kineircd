@@ -1,4 +1,4 @@
-/* src/include/daemon.h
+/* daemon.h
  * The main class
  */
 

@@ -1,4 +1,4 @@
-/* src/version.cpp
+/* version.cpp
  * Version and Compile information
  */
 

@@ -1,5 +1,5 @@
-/* src/include/modes.h
- * Flags :)
+/* modes.h
+ * Flags :) Modes :) Whatever you wanna call them :)
  */
 
 #ifndef __MODES_H_

@@ -1,4 +1,4 @@
-/* src/socket.cpp
+/* socket.cpp
  * Socket handling classes
  * 
  * Copyright (c) 1999-2001 Alien Internet Services

@@ -1,4 +1,4 @@
-/* src/include/language.h
+/* language.h
  * Text in a centralised location so it can be easily changed/fixed etc
  */
 

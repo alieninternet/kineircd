@@ -1,4 +1,4 @@
-/* src/common/utils.cc
+/* utils.cc
  * General utilities
  */
 

@@ -1,4 +1,4 @@
-/* ./src/remotes.cpp
+/* remotes.cpp
  * Protocol reply routines, remote replies.
  * 
  * NOTE: This needs to be seriously reworked! If/When irc3user comes half of

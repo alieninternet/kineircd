@@ -1,4 +1,4 @@
-/* src/include/utils.h
+/* utils.h
  * Utilities
  */
 

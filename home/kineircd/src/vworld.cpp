@@ -1,4 +1,4 @@
-/* src/common/vworld.cc
+/* vworld.cc
  * Virtual World routines
  */
 
@@ -8,7 +8,7 @@
 
 
 /* generateVWorld - Generate a virtual world hash on the given hostname
- * Original 22/08/01, Simon Butcher <pickle@austnet.org>
+ * Original , Simon Butcher <pickle@austnet.org>
  */
 String generateVWorld(String *hostname)
 {

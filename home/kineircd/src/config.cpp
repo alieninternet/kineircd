@@ -1,4 +1,4 @@
-/* src/config.cpp
+/* config.cpp
  * IRC daemon configuration data parsing functions
  */
 

@@ -1,4 +1,4 @@
-/* src/common/sha1.cc
+/* sha1.cc
  * SHA1 Message Digest Routines
  */
 

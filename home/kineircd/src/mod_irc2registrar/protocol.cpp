@@ -1,4 +1,4 @@
-/* ./src/register.cpp
+/* register.cpp
  * Handle registration data (before handling a real handler)
  */
 

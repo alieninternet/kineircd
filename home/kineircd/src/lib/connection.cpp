@@ -1,4 +1,4 @@
-/* src/connection.cpp
+/* connection.cpp
  * Connection class
  */
 

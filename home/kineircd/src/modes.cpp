@@ -1,4 +1,4 @@
-/* src/modes.cpp
+/* modes.cpp
  * Server/Channel/User mode tables and toggling routines
  */
 
