@@ -1178,6 +1178,12 @@ tag = {
 };
 
 tag = {
+   name		= "irc2registrar_NOTICE_WAIT_DNS_FOUND_CACHED";
+   components	= "mod_irc2registrar";
+   data_en	= "*** Found your hostname (was cached)";
+};
+
+tag = {
    name		= "irc2registrar_NOTICE_WAIT_IDENT_CHECK";
    components	= "mod_irc2registrar";
    data_en	= "*** Checking your identification...";
