@@ -30,7 +30,11 @@
 
 namespace Kine {
    namespace LibCLBP {
-      //! The command line based protocol (CLBP) input handling class
+      /*!
+       * \brief The command line based protocol (CLBP) input handling class
+       *
+       * \ingroup LibCLBP
+       */
       class Input : public Kine::Protocol::Input {
        private:
 	 // Our input queue

@@ -39,7 +39,11 @@
 
 namespace Kine {
    namespace LibIRC2 {
-      //! The IRC-2 protocol suite base class
+      /*!
+       * \brief The IRC-2 protocol suite base class
+       * 
+       * \ingroup LibIRC2
+       */
       class Protocol : public Kine::LibCLBP::Protocol {
        public:
 	 typedef unsigned int messageSize_type;

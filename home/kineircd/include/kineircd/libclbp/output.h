@@ -29,7 +29,11 @@
 
 namespace Kine {
    namespace LibCLBP {
-      //! The command line based protocol (CLBP) output handling class
+      /*!
+       * \brief The command line based protocol (CLBP) output handling class
+       * 
+       * \ingroup LibCLBP
+       */
       class Output : public Kine::Protocol::Output {
        public:
 	 static const char* const EOL_CR_LF;	//!< '\\r\\n' end of line (common)

@@ -26,10 +26,18 @@
 
 namespace Kine {
    namespace LibIRC2 {
-      //! Initialise the library
+      /*!
+       * \brief Initialise the library
+       * 
+       * \ingroup LibIRC2
+       */
       extern bool init(void);
       
-      //! Deinitialise the library
+      /*!
+       * \brief Deinitialise the library
+       * 
+       * \ingroup LibIRC2
+       */
       extern void deinit(void);
    }; // namespace LibIRC2
 }; // namespace Kine

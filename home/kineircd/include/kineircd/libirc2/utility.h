@@ -30,7 +30,11 @@
 
 namespace Kine {
    namespace LibIRC2 {
-      //! IRC-2 protocol related utilities
+      /*!
+       * \brief IRC-2 protocol related utilities
+       * 
+       * \ingroup LibIRC2
+       */
       namespace Utility {
 	 //! Find a message's destination target based on the given string
 	 extern Receiver* const

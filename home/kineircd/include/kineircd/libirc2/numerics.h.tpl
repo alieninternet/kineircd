@@ -40,6 +40,8 @@ namespace Kine {
        * Most of these numerics are related to <em>server to client</em>
        * traffic, as modern <em>server to server</em> protocols only pass
        * numerics to clients, and not to other servers.
+       *
+       * \ingroup LibIRC2
        */
       namespace Numerics {
          enum numeric_type {[+FOR irc2numerics+][+IF

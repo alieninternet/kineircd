@@ -30,7 +30,11 @@
 
 namespace Kine {
    namespace LibCLBP {
-      //! The command line based protocol (CLBP) class (both input and output)
+      /*!
+       * \brief The command line based protocol (CLBP) class (both input and output)
+       * 
+       * \ingroup LibCLBP
+       */
       class Protocol : public Input, public Output {
        protected:
 	 //! Constructor
