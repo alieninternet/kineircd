@@ -196,13 +196,14 @@ class Channel {
    ~Channel(void);   				// Destructor
 
    // Access checking
-   static bool isHidden(Channel *c)
+   bool isHidden(void) const
      {
-	return ((c->modes & MODE_PRIVATE) ||
-		(c->modes & MODE_SECRET));
+	return ((modes & MODE_PRIVATE) ||
+		(modes & MODE_SECRET));
      };
    
    ChannelMember *getMember(User *);		// Grab a channel member record
+   
    void processModes(Handler *, User *, 
 		     String &, StringTokens *); // Process a MODE change
    

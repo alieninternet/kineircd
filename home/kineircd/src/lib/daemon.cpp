@@ -161,8 +161,8 @@ Daemon::Daemon(String const &conf)
    
    // Close some descriptors we will not be using
    close(0); // stdin
-   close(1); // stdout
 #ifndef DEBUG
+   close(1); // stdout
    close(2); // stderr
 #endif
    
@@ -500,7 +500,7 @@ void Daemon::addInputFD(int fd)
    
    if (fd >= maxDescriptors) {
       maxDescriptors = fd + 1;
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug(String::printf("FD_SET input: maxDescriptors risen to %d",
 			   maxDescriptors));
 #endif
@@ -670,7 +670,8 @@ User *Daemon::getUser(String const &nick)
 /* changeUserNick - Change a user's nickname (may also mean replacing records)
  * Original 24/08/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::changeUserNick(User *user, String const &newnick)
+void Daemon::changeUserNick(User *user, String const &newnick, 
+			    time_t changeTime)
 {
 #ifdef DEBUG_EXTENDED
    debug(String::printf("changeUserNick() <- %s -> %s",
@@ -682,7 +683,11 @@ void Daemon::changeUserNick(User *user, String const &newnick)
    String nn = newnick.IRCtoLower();
 
    // Fix the last changed nick time for this user
-   user->lastNickChange = getTime();
+   if (changeTime) {
+      user->lastNickChange = changeTime;
+   } else {
+      user->lastNickChange = getTime();
+   }
    
    // Check if we are just doing a simple nick replacement
    if (nn == on) {
@@ -1009,7 +1014,7 @@ void Daemon::snapshotUser(User *u, Whowas::type_t type, String const &details)
  */
 void Daemon::addChannel(Channel *chan)
 {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
    debug(String::printf("addChannel() <- %s",
 			(char const *)chan->name));
 #endif
@@ -1306,7 +1311,7 @@ Operator *Daemon::getOperator(String const &nickname)
  */
 void Daemon::addServer(Server *server)
 {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
    debug(String::printf("addServer() <- %s",
 			(char const *)server->hostname));
 #endif
@@ -1774,7 +1779,7 @@ void Daemon::run(void)
       // Now, what did select say?
       switch (selectOut) {
        case -1: // Select aborted (caused by a signal, usually)
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 	 perror("run() - select()");
 #endif
 	 break;
@@ -1795,7 +1800,7 @@ void Daemon::run(void)
 	    // Check for activity on connections
 	    for (connection_list_t::iterator it = connections.begin();
 		 it != connections.end(); it++) {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
 	       if (!(*it) || !(*it)->socket) {
 		  debug("broken?!");
 		  continue;

@@ -64,9 +64,9 @@ typedef unsigned char TYPE_RPL_TIMEONSERVERIS_FLAGS;
 
 
 // If we are in debugging mode, we need this routine!
-//# ifdef DEBUG
+# ifdef DEBUG
 extern void debug(String const &);		// Output/Broadcast debug line
-//# endif
+# endif
 
 
 // A 'Listen' record
@@ -281,7 +281,8 @@ class Daemon {
 
    void addUser(User *);			// Add a user to the user list
    User *getUser(String const &);		// Find a user
-   void changeUserNick(User *, String const &);	// Change a users nickname
+   void changeUserNick(User *, String const &,
+		       time_t = 0);		// Change a users nickname
    void delUser(User *);			// Delete a user from the list
    void quitUser(User *, String const &, bool);	// User quitting IRC
    void killUser(User *, String const &, 

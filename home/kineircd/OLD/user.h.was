@@ -144,7 +144,7 @@ class User {
      };
 
    // Access checking
-   bool showVW(User *destination)
+   bool showVW(User *destination) const
      {
 	if (isOper(destination) ||
 	    !(modes & MODE_VWORLD) ||
@@ -188,12 +188,12 @@ class User {
 	return (nickname + "!" + username + "@" + hostname);
      };
    
-   String getVWAddress(void)			// Above, but w/ virtual-world
+   String getVWAddress(void) const		// Above, but w/ virtual-world
      {
 	return (nickname + "!" + username + "@" + vwhostname);
      };
 
-   String getHost(User *destination)
+   String getHost(User *destination) const
      {
 	return (showVW(destination) ? vwhostname : hostname);
      };

@@ -65,7 +65,8 @@ registerHandler::registerHandler(Connection *c)
  * Note: Double-up? Sort of, this one works a little differently than the
  *       irc2userHandler:: one
  */ 
-void registerHandler::sendGeneric(char const *command, String const &line)
+void registerHandler::sendGeneric(char const *command, 
+				  String const &line) const
 {
    getConnection()->
      sendRaw(String::printf(":%s %s %s %s" REGISTRATION_EOL_CHARS,
@@ -83,7 +84,8 @@ void registerHandler::sendGeneric(char const *command, String const &line)
  * Note: We do a cheap thing here with the numeric because we know it will
  * 	 be three digits and suffer no 0-prepadding issues.
  */
-void registerHandler::sendNumeric(short numeric, User *to, String const &line)
+void registerHandler::sendNumeric(short numeric, User *to, 
+				  String const &line) const
 {
    getConnection()->
      sendRaw(String::printf(":%s %d %s %s" REGISTRATION_EOL_CHARS,

@@ -68,7 +68,7 @@ bool Socket::setNonBlocking(bool nonblock /* = true */)
    
    // Sanity check
    if (fd < 0) {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug("setNonBlocking(): Called with a bad file descriptor!");
 #endif
       return false;
@@ -76,7 +76,7 @@ bool Socket::setNonBlocking(bool nonblock /* = true */)
    
    // We first get the file descriptor flags
    if (!fcntl(fd, F_GETFL, &flags)) {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug(String::printf("setNonBlocking(): Could not F_GETFL with "
 			   "fcntl (%s)",
 			   strerror(errno)));
@@ -86,7 +86,7 @@ bool Socket::setNonBlocking(bool nonblock /* = true */)
    
    // Check if it is already set
    if (flags & O_NONBLOCK) {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug(String::printf("setNonBlocking(): Socket is already set "
 			   "non-blocking (%d)",
 			   fd));
@@ -134,12 +134,12 @@ SocketIPv4::SocketIPv4(unsigned long newAddress, unsigned short newPort,
 
 #ifdef HAVE_OPENSSL
    if (!secure) {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug("New SocketIPv4 with PlainSocketIO");
 #endif
       io = new PlainSocketIO(this);
    } else {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug("New SocketIPv4 with SSLSocketIO");
 #endif
       io = new SSLSocketIO(this, accepting);
@@ -159,12 +159,12 @@ SocketIPv4::SocketIPv4(int newfd, in_addr newAddress, unsigned short newPort,
 
 #ifdef HAVE_OPENSSL
    if (!secure) {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug("New SocketIPv4 with PlainSocketIO");
 #endif
       io = new PlainSocketIO(this);
    } else {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug("New SocketIPv4 with SSLSocketIO");
 #endif
       io = new SSLSocketIO(this, accepting);
@@ -291,12 +291,12 @@ SocketIPv6::SocketIPv6(unsigned long newAddress, unsigned short newPort,
 
 #ifdef HAVE_OPENSSL
    if (!secure) {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug("New SocketIPv6 with PlainSocketIO");
 #endif
       io = new PlainSocketIO(this);
    } else {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug("New SocketIPv6 with SSLSocketIO");
 #endif
       io = new SSLSocketIO(this, accepting);
@@ -316,12 +316,12 @@ SocketIPv6::SocketIPv6(int newfd, in6_addr newAddress, unsigned short newPort,
 
 #ifdef HAVE_OPENSSL
    if (!secure) {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug("New SocketIPv6 with PlainSocketIO");
 #endif
       io = new PlainSocketIO(this);
    } else {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug("New SocketIPv6 with SSLSocketIO");
 #endif
       io = new SSLSocketIO(this, accepting);
@@ -461,7 +461,7 @@ String PlainSocketIO::read(void)
 {
    // Check that the file descriptor is ok!!
    if (socket->fd < 0) {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
       debug("PlainSocketIO::read(): Called on a closed file descriptor!");
 #endif
       return String("");

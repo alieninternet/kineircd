@@ -702,8 +702,8 @@ String irc2userHandler::processUserModes(String &modes, StringTokens *tokens,
 /* sendChannelMode - Send a channel mode change
  * Original 30/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendChannelMode(Channel *c, User *u, 
-				      String const &modes)
+void irc2userHandler::sendChannelMode(Channel *c, User *u,
+				      String const &modes) const
 {
    getConnection()->
      sendRaw(String::printf(":%s MODE %s %s" IRC2USER_EOL_CHARS,
@@ -716,7 +716,7 @@ void irc2userHandler::sendChannelMode(Channel *c, User *u,
 /* sendGoodbye - Send an ERROR message to tell the client we are saying bye
  * Original 14/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendGoodbye(String const &reason)
+void irc2userHandler::sendGoodbye(String const &reason) const
 {
    getConnection()->
      sendRaw(String::printf(LNG_ERROR_CLOSING_LINK 
@@ -730,7 +730,7 @@ void irc2userHandler::sendGoodbye(String const &reason)
 /* sendJoin - Send a channel join message
  * Original 14/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendJoin(Channel *c, User *u)
+void irc2userHandler::sendJoin(Channel *c, User *u) const
 {
    getConnection()->
      sendRaw(String::printf(":%s JOIN %s" IRC2USER_EOL_CHARS,
@@ -743,7 +743,7 @@ void irc2userHandler::sendJoin(Channel *c, User *u)
  * Original 20/09/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::sendKick(Channel *c, User *kicker, User *kickee,
-			       String const &reason)
+			       String const &reason) const
 {
    getConnection()->
      sendRaw(String::printf(":%s KICK %s %s%s" IRC2USER_EOL_CHARS,
@@ -761,7 +761,7 @@ void irc2userHandler::sendKick(Channel *c, User *kicker, User *kickee,
  * Note: The user field is ignored since any kill MUST be to us anyway
  */
 void irc2userHandler::sendKill(User *u, String const &caller, 
-			       String const &reason)
+			       String const &reason) const
 {
    getConnection()->
      sendRaw(String::printf(":%s KILL %s :%s (%s)" 
@@ -776,7 +776,7 @@ void irc2userHandler::sendKill(User *u, String const &caller,
 /* sendNickChange - Send a nickname change event
  * Original 24/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendNickChange(User *u, String const &nick)
+void irc2userHandler::sendNickChange(User *u, String const &nick) const
 {
    getConnection()->
      sendRaw(String::printf(":%s NICK :%s" IRC2USER_EOL_CHARS,
@@ -789,7 +789,7 @@ void irc2userHandler::sendNickChange(User *u, String const &nick)
  * Original 01/08/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::sendNotice(Server *from, User *destination, 
-				 String const &message)
+				 String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":%s NOTICE %s :%s" IRC2USER_EOL_CHARS,
@@ -799,7 +799,7 @@ void irc2userHandler::sendNotice(Server *from, User *destination,
 }
 
 void irc2userHandler::sendNotice(User *from, Channel *destination,
-				 String const &message)
+				 String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":%s NOTICE %s :%s" IRC2USER_EOL_CHARS,
@@ -809,7 +809,7 @@ void irc2userHandler::sendNotice(User *from, Channel *destination,
 }
 
 void irc2userHandler::sendNotice(User *from, User *destination, 
-				 String const &message)
+				 String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":%s NOTICE %s :%s" IRC2USER_EOL_CHARS,
@@ -819,7 +819,7 @@ void irc2userHandler::sendNotice(User *from, User *destination,
 }
 
 void irc2userHandler::sendNotice(User *from, StringMask const &destination,
-				 String const &message)
+				 String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":%s NOTICE %s :%s" IRC2USER_EOL_CHARS,
@@ -833,7 +833,7 @@ void irc2userHandler::sendNotice(User *from, StringMask const &destination,
  * Original 12/10/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::sendNoticeAnon(Channel *destination,
-				     String const &message)
+				     String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":" ANONYMOUS_CHANNEL_MASK " NOTICE %s :%s"
@@ -846,7 +846,7 @@ void irc2userHandler::sendNoticeAnon(Channel *destination,
 /* sendNumeric - [Various forms] Send a numeric to the connection
  * Original 12/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendNumeric(short numeric, String const &line)
+void irc2userHandler::sendNumeric(short numeric, String const &line) const
 {
    getConnection()->
      sendRaw(String::printf(":%s %03d %s %s" IRC2USER_EOL_CHARS,
@@ -857,7 +857,7 @@ void irc2userHandler::sendNumeric(short numeric, String const &line)
 }
 
 void irc2userHandler::sendNumeric(Server *from, short numeric, User *to, 
-				  String const &line)
+				  String const &line) const
 {
    getConnection()->
      sendRaw(String::printf(":%s %03d %s %s" IRC2USER_EOL_CHARS,
@@ -871,7 +871,7 @@ void irc2userHandler::sendNumeric(Server *from, short numeric, User *to,
 /* sendPart - Send a channel part message
  * Original 14/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendPart(Channel *c, User *u, String const &reason)
+void irc2userHandler::sendPart(Channel *c, User *u, String const &reason) const
 {
    getConnection()->
      sendRaw(String::printf(":%s PART %s%s" IRC2USER_EOL_CHARS,
@@ -886,7 +886,7 @@ void irc2userHandler::sendPart(Channel *c, User *u, String const &reason)
 /* sendPing - Send a PING request to this connection
  * Original 24/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendPing(void)
+void irc2userHandler::sendPing(void) const
 {
    getConnection()->
      sendRaw(String::printf("PING :%s" IRC2USER_EOL_CHARS,
@@ -897,7 +897,7 @@ void irc2userHandler::sendPing(void)
 /* sendPong - Send a PING reply (PONG)
  * Original 20/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendPong(String const &reply)
+void irc2userHandler::sendPong(String const &reply) const
 {
    getConnection()->
      sendRaw(String::printf(":%s PONG %s %s" IRC2USER_EOL_CHARS,
@@ -911,7 +911,7 @@ void irc2userHandler::sendPong(String const &reply)
  * Original 01/08/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::sendPrivmsg(Server *from, User *destination,
-				  String const &message)
+				  String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":%s PRIVMSG %s :%s" IRC2USER_EOL_CHARS,
@@ -921,7 +921,7 @@ void irc2userHandler::sendPrivmsg(Server *from, User *destination,
 }
 
 void irc2userHandler::sendPrivmsg(User *from, Channel *destination, 
-				  String const &message)
+				  String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":%s PRIVMSG %s :%s" IRC2USER_EOL_CHARS,
@@ -931,7 +931,7 @@ void irc2userHandler::sendPrivmsg(User *from, Channel *destination,
 }
 
 void irc2userHandler::sendPrivmsg(User *from, User *destination,
-				  String const &message)
+				  String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":%s PRIVMSG %s :%s" IRC2USER_EOL_CHARS,
@@ -941,7 +941,7 @@ void irc2userHandler::sendPrivmsg(User *from, User *destination,
 }
 
 void irc2userHandler::sendPrivmsg(User *from, StringMask const &destination,
-				  String const &message)
+				  String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":%s PRIVMSG %s :%s" IRC2USER_EOL_CHARS,
@@ -955,7 +955,7 @@ void irc2userHandler::sendPrivmsg(User *from, StringMask const &destination,
  * Original 12/10/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::sendPrivmsgAnon(Channel *destination,
-				      String const &message)
+				      String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":" ANONYMOUS_CHANNEL_MASK " PRIVMSG %s :%s" 
@@ -968,7 +968,7 @@ void irc2userHandler::sendPrivmsgAnon(Channel *destination,
 /* sendQuit - Send a network quit message
  * Original 22/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendQuit(User *u, String const &reason)
+void irc2userHandler::sendQuit(User *u, String const &reason) const
 {
    getConnection()->
      sendRaw(String::printf(":%s QUIT :%s" IRC2USER_EOL_CHARS,
@@ -983,7 +983,7 @@ void irc2userHandler::sendQuit(User *u, String const &reason)
  * Original 21/09/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::sendServerMode(Server *s, Server *setter, 
-				     String const &modes)
+				     String const &modes) const
 {
    getConnection()->
      sendRaw(String::printf(":%s MODE %s %s" IRC2USER_EOL_CHARS,
@@ -993,7 +993,7 @@ void irc2userHandler::sendServerMode(Server *s, Server *setter,
 }
 
 void irc2userHandler::sendServerMode(Server *s, User *setter, 
-				     String const &modes)
+				     String const &modes) const
 {
    getConnection()->
      sendRaw(String::printf(":%s MODE %s %s" IRC2USER_EOL_CHARS,
@@ -1009,7 +1009,7 @@ void irc2userHandler::sendServerMode(Server *s, User *setter,
  *       the current user.
  */
 void irc2userHandler::sendSilence(User *silencer, bool setting, 
-				  StringMask const &mask)
+				  StringMask const &mask) const
 {
    getConnection()->
      sendRaw(String::printf(":%s SILENCE %c%s" IRC2USER_EOL_CHARS,
@@ -1023,7 +1023,7 @@ void irc2userHandler::sendSilence(User *silencer, bool setting,
  * Original 19/09/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::sendTopic(Channel *chan, Server *from,
-				String const &topic)
+				String const &topic) const
 {
    getConnection()->
      sendRaw(String::printf(":%s TOPIC %s :%s" IRC2USER_EOL_CHARS,
@@ -1033,7 +1033,7 @@ void irc2userHandler::sendTopic(Channel *chan, Server *from,
 }
 
 void irc2userHandler::sendTopic(Channel *chan, User *from, 
-				String const &topic)
+				String const &topic) const
 {
    getConnection()->
      sendRaw(String::printf(":%s TOPIC %s :%s" IRC2USER_EOL_CHARS,
@@ -1049,7 +1049,7 @@ void irc2userHandler::sendTopic(Channel *chan, User *from,
  *       according to the implementations (not the RFC). Here the given user
  *       is ignored
  */
-void irc2userHandler::sendUserMode(User *u, String const &modes)
+void irc2userHandler::sendUserMode(User *u, String const &modes) const
 {
    getConnection()->
      sendRaw(String::printf(":%s MODE %s :%s" IRC2USER_EOL_CHARS,
@@ -1062,7 +1062,8 @@ void irc2userHandler::sendUserMode(User *u, String const &modes)
 /* sendWhoReply - Send a WHO reply
  * Original 22/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendWhoReply(User *u, Channel *c, ChannelMember *cm)
+void irc2userHandler::sendWhoReply(User *u, Channel *c, 
+				   ChannelMember *cm) const
 {
    sendNumeric(RPL_WHOREPLY,
 	       String::printf("%s %s %s %s %s %c%s :%d %s" IRC2USER_EOL_CHARS,
@@ -1098,7 +1099,7 @@ void irc2userHandler::sendWhoReply(User *u, Channel *c, ChannelMember *cm)
 /* sendWallops - [Various Forms] Send a WALLOPS message
  * Original 18/09/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendWallops(Server *from, String const &message)
+void irc2userHandler::sendWallops(Server *from, String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":%s WALLOPS :%s" IRC2USER_EOL_CHARS,
@@ -1106,7 +1107,7 @@ void irc2userHandler::sendWallops(Server *from, String const &message)
 			    (char const *)message));
 }
 
-void irc2userHandler::sendWallops(User *from, String const &message)
+void irc2userHandler::sendWallops(User *from, String const &message) const
 {
    getConnection()->
      sendRaw(String::printf(":%s WALLOPS :%s" IRC2USER_EOL_CHARS,
@@ -1118,7 +1119,7 @@ void irc2userHandler::sendWallops(User *from, String const &message)
 /* sendWatchOff - [Various Forms] Send an object sign-off notification message
  * Original 24/09/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendWatchOff(Server *target)
+void irc2userHandler::sendWatchOff(Server *target) const
 {
    getConnection()->
      sendRaw(String::printf(":%s %d %s %s * * 0 "
@@ -1130,7 +1131,7 @@ void irc2userHandler::sendWatchOff(Server *target)
 			    (char const *)target->getHostname()));
 }
 
-void irc2userHandler::sendWatchOff(Channel *target)
+void irc2userHandler::sendWatchOff(Channel *target) const
 {
    getConnection()->
      sendRaw(String::printf(":%s %d %s %s * * %lu "
@@ -1143,7 +1144,7 @@ void irc2userHandler::sendWatchOff(Channel *target)
 			    target->creationTime));
 }
 
-void irc2userHandler::sendWatchOff(User *target)
+void irc2userHandler::sendWatchOff(User *target) const
 {
    getConnection()->
      sendRaw(String::printf(":%s %d %s %s %s %s %lu "
@@ -1162,7 +1163,7 @@ void irc2userHandler::sendWatchOff(User *target)
 /* sendWatchOn - [Various Forms] Send an object sign-on notification message
  * Original 24/09/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendWatchOn(Server *target)
+void irc2userHandler::sendWatchOn(Server *target) const
 {
    getConnection()->
      sendRaw(String::printf(":%s %d %s %s * * 0 "
@@ -1174,7 +1175,7 @@ void irc2userHandler::sendWatchOn(Server *target)
 			    (char const *)target->getHostname()));
 }
 
-void irc2userHandler::sendWatchOn(Channel *target)
+void irc2userHandler::sendWatchOn(Channel *target) const
 {
    getConnection()->
      sendRaw(String::printf(":%s %d %s %s * * %lu "
@@ -1187,7 +1188,7 @@ void irc2userHandler::sendWatchOn(Channel *target)
 			    target->creationTime));
 }
 
-void irc2userHandler::sendWatchOn(User *target, String const &newNick)
+void irc2userHandler::sendWatchOn(User *target, String const &newNick) const
 {
    getConnection()->
      sendRaw(String::printf(":%s %d %s %s %s %s %lu "
@@ -2127,7 +2128,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
       }
       
       // Check if this user can see this channel
-      if (Channel::isHidden(c) && 
+      if (c->isHidden() &&
 	  !c->getMember(handler->user)) {
 	 handler->sendNumeric(ERR_NOTONCHANNEL,
 			      c->name + LNG_ERR_NOTONCHANNEL);
@@ -3668,7 +3669,7 @@ void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
 		  
 		  // Check that this channel can be made visible
 		  if (!User::isOper(handler->user) &&
-		      Channel::isHidden(chan)) {
+		      chan->isHidden()) {
 		     // go to next channel here?!
 		     chan = 0;
 		  }

@@ -534,7 +534,7 @@ bool Daemon::configure(bool firstRun)
       }
    }
 
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
    debug("Configuration loading/parsing complete.");
 #endif
    

@@ -70,7 +70,7 @@ class LocalUser {
      };
    
    // Check for a watched nick
-   bool watching(String const &target)
+   bool watching(String const &target) const
      {
 	return ((watches.find(target) != watches.end()) ? true : false);
      };

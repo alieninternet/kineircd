@@ -493,7 +493,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       for (User::channel_map_t::iterator it = u->channels.begin();
 	   it != u->channels.end(); it++) {
 	 // Add this channel to the list, if it is not a 'hidden' channel
-	 if (!Channel::isHidden((*it).second)) {
+	 if (!(*it).second->isHidden()) {
 	    ChannelMember *cm = (*it).second->getMember(u);
 	    
 	    // Sanity check, this should work..

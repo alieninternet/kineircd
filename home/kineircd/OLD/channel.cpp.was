@@ -369,7 +369,7 @@ void Channel::sendNotice(User *from, String const &message)
 	 (*it).second->user->local->handler->sendNoticeAnon(this, message);
 	 continue;
       } 
-      
+
       // stuff to route this message here.
    }
 }

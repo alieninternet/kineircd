@@ -94,17 +94,7 @@ Channel *User::getChannel(String &channel)
 void User::markAway(String &message)
 {
    // Set the away message
-#ifdef DEBUG
-   if (message.length()) {
-#endif
-      awayMessage = message;
-#ifdef DEBUG
-   } else {
-      // Sanity, but we should never get here honestly...
-      debug(String::printf("Null away message on %s - very wrong!!",
-			   (char const *)nickname));
-   }
-#endif
+   awayMessage = message;
    
    // Broadcast the change
    
