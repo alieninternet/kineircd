@@ -38,6 +38,13 @@ using AISutil::String;
 Languages* Languages::instance = 0;
 
 
+// Two replacement characters..
+const char* const Languages::replacementObjectGlyph = 
+  "\357\227\274"; // <=- Unicode U0FFFC; UTF-8 0xEF 0xBF 0xBC
+const char* const Languages::replacementCharacterGlyph =
+  "\357\277\275"; // <=- Unicode U0FFFD; UTF-8 0xEF 0xBF 0xBD
+
+
 /* initInstance - Create the single instance of this class
  * Original 13/03/2003 simonb
  * Note: This is separated from the getInstance() since doing the if for every

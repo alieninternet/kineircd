@@ -26,6 +26,8 @@
 # define _INCLUDE_KINEIRCD_LANGUAGES_H_ 1
 
 # include <set>
+# include <string>
+# include <vector>
 
 # include <kineircd/languagedata.h>
 # include <kineircd/receiver.h>
@@ -56,9 +58,14 @@ namespace Kine {
 	 LanguageData::tagID_type tagID;
       };
       typedef TagMapEntry tagMap_type[];
-
-    private:
       
+      /* Replacement glyphs, both used to substitute missing or erroneous
+       * values of some description. These are UTF-8 Encoded.
+       */
+      static const char* const replacementObjectGlyph;
+      static const char* const replacementCharacterGlyph;
+      
+    private:
       // A set full of language tag name to tag ID mapping arrays
       typedef std::set < tagMap_type* > tagMaps_type;
       tagMaps_type tagMaps;

@@ -35,6 +35,7 @@
 #include <aisutil/string/tokens.h>
 
 #include "kineircd/languagelist.h"
+#include "kineircd/languages.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
@@ -180,8 +181,7 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	     ((data[i] >= '\021') && (data[i] <= '\024'))) {
 	    /* Okay, it's a naughty char, we must replace it. Following
 	     * Unicode specifications, here we replace the bad character
-	     * with the "replacement" character (U0FFFD, or 0xEFBFBD in 
-	     * UTF-8).
+	     * with the "replacement" character.
 	     * 
 	     * Since all these bad chars are in the control char region,
 	     * I have considered up-converting them to their symbols, so
@@ -195,7 +195,7 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	     * reasoning, I probably could have written, and tested an
 	     * upconverter.. Hmm.. :)
 	     */
-	    line += "\357\277\275";
+	    line += Languages::replacementCharacterGlyph;
 	    continue;
 	 } 
 	    
