@@ -62,7 +62,7 @@ namespace mod_irc2user {
       MOD_IRC2USER_VERSION_EXTRA,
 
       // Flags to define how we need to be run
-      Kine::Module::basicInfo_type::FLAG_UNIQUE_INSTANCE,
+      Kine::Module::basicInfo_type::Flags::UNIQUE_INSTANCE,
 
       // Configuration stuff
       0,

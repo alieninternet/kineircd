@@ -81,12 +81,14 @@ namespace Kine {
 	 const char* versionExtra;
 
 	 // Flags to determine how this module needs to be configured
-	 enum flags_type {
-	    FLAG_NONE = 0,			      // No flags set
-            FLAG_UNIQUE_INSTANCE	= 0x00000001  // No multiple instances
+	 struct Flags { // <=- should be namespace?
+	    enum type {
+	       NONE = 0,			      // No flags set
+	       UNIQUE_INSTANCE		= 0x00000001  // No multiple instances
+	    };
 	 };
 	 const int flags;
-	 
+
 	 // Configuration info (optional, set to 0 if you don't want it)
 	 const AISutil::ConfigParser::defTable_type* configDefinitions;
 	 

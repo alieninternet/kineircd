@@ -56,7 +56,7 @@ ModuleDescriptor *ModuleList::loadModule(const String &moduleFile,
 
    // Does this module only want to be loaded once?
    if ((moduleDesc->getModule()->getBasicInfo().flags & 
-	Module::basicInfo_type::FLAG_UNIQUE_INSTANCE) &&
+	Module::basicInfo_type::Flags::UNIQUE_INSTANCE) &&
        (modules.count(moduleDesc->getModule()->getKeyName()) > 1)) {
       errorReturn = moduleDesc->getModule()->getVersionString() +
 	" can only be loaded once";
