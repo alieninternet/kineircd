@@ -58,26 +58,26 @@ namespace Kine {
        public:
 	 // A digest. SHA1 returns 160 bits, this makes it easier to manage.
 	 union digest_type {
-	    unsigned char c[20];
+	    unsigned char u_char[20];
 	    signed char s_char[20];
-	    unsigned long l[5];
+	    unsigned long u_long[5];
 	    
 	    // Boolean equals operator
 	    bool operator==(const digest_type &d) const {
-	       return ((l[0] == d.l[0]) &&
-		       (l[1] == d.l[1]) &&
-		       (l[2] == d.l[2]) &&
-		       (l[3] == d.l[3]) &&
-		       (l[4] == d.l[4]) &&
-		       (l[5] == d.l[5]));
+	       return ((u_long[0] == d.u_long[0]) &&
+		       (u_long[1] == d.u_long[1]) &&
+		       (u_long[2] == d.u_long[2]) &&
+		       (u_long[3] == d.u_long[3]) &&
+		       (u_long[4] == d.u_long[4]) &&
+		       (u_long[5] == d.u_long[5]));
 	    };
 	 };
 	 
 	 // An empty digest
 	 static const digest_type nullDigest;
 	 
-	 static digest_type generate(const 
-				     String &);	// SHA1 digest from a string
+	 // SHA1 digest from a string
+	 static digest_type generate(const String &);
 	 
 	 // Convert an SHA1 digest output to particular base
 	 static String digestToStr(const digest_type &, const base_type,

@@ -87,8 +87,8 @@ void SHA1transform(unsigned long state[5], unsigned char buffer[64])
    unsigned long a, b, c, d, e;
    
    typedef union {
-      unsigned char c[64];
-      unsigned long l[16];
+      unsigned char u_char[64];
+      unsigned long u_long[16];
    } CHAR64LONG16;
 
    CHAR64LONG16* block = (CHAR64LONG16*)buffer;
@@ -322,7 +322,7 @@ Utils::SHA1::digest_type Utils::SHA1::generate(const String &line)
       
       SHA1init(context);
       SHA1update(context, (unsigned char *)line.c_str(), line.length());
-      SHA1final(digest.c, context);
+      SHA1final(digest.u_char, context);
 #endif
       
       return digest;
@@ -343,7 +343,7 @@ String Utils::SHA1::digestToStr(const digest_type &digest,
    String output;
    
    for (unsigned char i = 5; i--;) {
-      output += Utils::baseXStr(digest.l[i], base).prepad(pad, '0');
+      output += Utils::baseXStr(digest.u_long[i], base).prepad(pad, '0');
    }
    
    return output;
