@@ -1,5 +1,13 @@
 /* sha1.cc
  * SHA1 Message Digest Routines
+ * 
+ * Originally released as Public Domain by Steve Reid, this software has been
+ * ported to C by Scott Mackenzie (of Alien Internet Services) and edited by
+ * both Scott Mackenzie and Simon Butcher.
+ * 
+ * This file remains Public Domain, however credit must remain due to the
+ * authors:
+ *   Steve Reid, Scott Mackenzie, and Simon Butcher.
  */
 
 #include "autoconf.h"
