@@ -599,8 +599,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
    // If there's a real-name field, we should grab that one too
    if (parameters.size() > 5) {
       registrantData.realname = 
-	parameters[5].substr(0,
-			     config().getOptionsLimitsUsersMaxRealNameLength());
+	parameters[5].substr(0, config().getLimitsUsersMaxRealNameLength());
    }
    
 #ifdef KINE_DEBUG_PSYCHO
@@ -648,8 +647,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
    // If there's a real-name field, grab it too
    if (parameters.size() > 3) {
       registrantData.realname =
-	parameters[3].substr(0,
-			     config().getOptionsLimitsUsersMaxRealNameLength());
+	parameters[3].substr(0, config().getLimitsUsersMaxRealNameLength());
    }
 
 #ifdef KINE_DEBUG_PSYCHO
