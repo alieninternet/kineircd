@@ -118,8 +118,16 @@ usermodes = {
    irc2char	= "d";
    name		= "DEAF";
    origin	= "ircu";
+   comment	= "User does not receive channel messages";
+   conflict	= "yes";
+};
+
+usermodes = {
+   irc2char	= "d";
+   name		= "DEAF";
    comment	= "User does not receive channel messages unless they are "
-                  "prefixed with a specific character (usually '!' ?)";
+                  "prefixed with a specific character (usually '!' ?). This "
+		  "is an extension of the ircu '+d'";
    conflict	= "yes";
 };
 
