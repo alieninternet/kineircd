@@ -1849,9 +1849,38 @@ irc2numerics = {
    name		= "RPL_TIME";
    numeric	= "391";
    origin	= "RFC1459";
-   format	= "<server> [<unix_time>] :<string_showing_server's_local_time>";
-   comment	= "Response to the TIME command. Some implementations also return the time in 'unix time' format. The string format may vary, see RPL_TIMEONSERVERIS for something more accurate.";
+   format	= "<server> :<time string>";
+   comment	= "Response to the TIME command. The string format may vary "
+                  "greatly.";
    seealso	= "679";
+};
+
+irc2numerics = {
+   name		= "RPL_TIME";
+   numeric	= "391";
+   origin	= "ircu";
+   format	= "<server> <timestamp> <offset> :<time string>";
+   comment	= "This extention adds the timestamp and timestamp-offet "
+                  "information for clients.";
+};
+
+irc2numerics = {
+   name		= "RPL_TIME";
+   numeric	= "391";
+   format	= "<server> <timezone name> <microseconds> :<time string>";
+   comment	= "Timezone name is acronym style (eg. 'EST', 'PST' etc). The "
+                  "microseconds field is the number of microseconds since "
+		  "the UNIX epoch, however it is relative to the local "
+		  "timezone of the server. The timezone field is ambiguous, "
+		  "since it only appears to include American zones.";
+};
+
+irc2numerics = {
+   name		= "RPL_TIME";
+   numeric	= "391";
+   format	= "<server> <year> <month> <day> <hour> <minute> <second>";
+   comment	= "Yet another variation, including the time broken down "
+                  "into its components. Time is supposedly relative to UTC.";
 };
 
 irc2numerics = {
