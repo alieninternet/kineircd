@@ -30,6 +30,8 @@
 
 #include "kineircd/server.h"
 #include "kineircd/config.h"
+#include "kineircd/mynetwork.h"
+#include "lib/registry.h"
 #include "lib/debug.h"
 
 using namespace Kine;
@@ -40,9 +42,7 @@ using namespace Kine;
  */
 const Error::error_type Server::Name::checkValidity(void) const
 {
-   /* First off, if the hostname is invalid by 1034 standards, break!
-    * 
-    */
+   // First off, if the hostname is invalid by 1034 standards, break!
    if (length() > 255) { // RFC 1034, Section 3.1
       return Error::NAME_TOO_LONG;
    }
@@ -107,19 +107,26 @@ const Error::error_type Server::Name::checkValidity(void) const
    // The hostname must be okay!!
    return Error::NO_ERROR;
 }
-   
-   
+
+
 /* addUser - Add the given user
- * Original 08/04/2003
+ * Original 08/04/2003 pickle
  */
 const Error::error_type Server::addUser(User& user)
 {
 #ifdef KINE_DEBUG
-# warning "ICK!"
+# warning "Lots of checking missing here!!"
 #endif
-   // For now, fob this off to the registry - ick ick ICK ICK.
-//   return registry().addUser(user);
-
-   // All is well!
-   return Error::NO_ERROR;
+   // Okay, fob this off to the registry
+   const Error::error_type addError = Internal::registry().addUser(user);
+   if (addError == Error::NO_ERROR) {
+      // Increase the user count for this server
+      userCount++;
+      
+      // .. and for the network as a whole
+      myNetwork().userCount++;
+   }
+   
+   // Return the status
+   return addError;
 }

@@ -44,7 +44,7 @@ const Error::error_type Network::Name::checkValidity(void) const
 //   }
    
    // Currently the network name rules are pretty flimsy..
-   if (find_first_of(L"\0\007\012\015 ,:", 1) != npos) {
+   if (find_first_of(L"\0\007\012\015 ,./@\\:", 1) != npos) {
       return Error::NAME_HAS_BAD_CHARS;
    }
    

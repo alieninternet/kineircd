@@ -48,7 +48,7 @@ namespace Kine {
     */
    class Service : public Client {
     private: 
-      const Client::Name nickname;		//!< Service's nickname
+      const Service::Name nickname;		//!< Service's nickname
       const AIS::Util::StringMask scopeMask;	//!< Service server scope mask
       
     protected:
@@ -59,7 +59,7 @@ namespace Kine {
        * \param _hostname The host the service is connected from
        * \param _signonTime The time the service connected to the network
        */
-      explicit Service(const Client::Name& _nickname,
+      explicit Service(const Service::Name& _nickname,
 		       const std::wstring& _hostname,
 		       const AIS::Util::Time& _signonTime)
 	: Client(_hostname, _signonTime),
@@ -106,10 +106,6 @@ namespace Kine {
 		  const Receiver::Directivity directivity =
 		  Receiver::Directivity())
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
-      
-      
-      // Decamp
-      void decamp(void) {};
    }; // class Service
 }; // namespace Kine
 

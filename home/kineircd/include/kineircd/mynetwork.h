@@ -1,7 +1,7 @@
 /* $Id$
  * 
- * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2003 KineIRCd Development Team
+ * Copyright (c) 2003,2004 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2003,2004 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -42,6 +42,10 @@ namespace Kine {
     */
    class MyNetwork : public Network {
     private:
+      // These classes need to access the counters
+      friend class Kine::Server;
+      friend class Kine::User;
+      
       counter_type userCount;			//! Total users online
       counter_type serviceCount;		//! Total services online
       counter_type serverCount;			//! Total servers linked
@@ -52,7 +56,7 @@ namespace Kine {
       
       //! Constructor
       MyNetwork(void);
-      
+
     public:
       //! Destructor
       ~MyNetwork(void)
@@ -90,7 +94,7 @@ namespace Kine {
        * \retval 0
        *    The user could not be found
        */
-      User* const findUser(const Client::Name& name) const;
+      User* const findUser(const User::Name& name) const;
 
       /*!
        * \brief Find the given service, using its name
@@ -100,7 +104,7 @@ namespace Kine {
        * \retval 0
        *    The service could not be found
        */
-      Service* const findService(const Client::Name& name) const;
+      Service* const findService(const Service::Name& name) const;
 
       /*!
        * \brief Find the given client, using its name

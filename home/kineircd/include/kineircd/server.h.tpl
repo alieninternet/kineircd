@@ -1,8 +1,8 @@
 [+ AutoGen5 template h +]
 /* $Id$
  * 
- * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002,2003 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003,2004 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003,2004 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -77,6 +77,9 @@ namespace Kine {
       };
       
     private:
+      // These classes need access to the counters
+      friend class Kine::User;
+      
       const Name hostname;			// The server's hostname
       modes_type modes;				// Server modes set
 
@@ -266,10 +269,6 @@ namespace Kine {
        */
 //      const Error::error_type addService(Service& service);
       //@}
-      
-      
-      // Decamp
-      void decamp(void) {};
    }; // class Server
 }; // namespace Kine
 

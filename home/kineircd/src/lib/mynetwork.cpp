@@ -29,6 +29,7 @@
 #include "kineircd/mynetwork.h"
 #include "kineircd/config.h"
 #include "kineircd/daemon.h"
+#include "lib/registry.h"
 #include "lib/debug.h"
 
 using namespace Kine;
@@ -45,7 +46,16 @@ MyNetwork::MyNetwork(void)
   : Network(Languages::toWideStr(config().getNetworkName()),
 	    daemon().getTime())
 {
-   // Register ourself to the registry?
+   // Register ourself to the registry
+#ifdef KINE_DEBUG_ASSERT
+   assert(Internal::registry().addNetwork(*this) == Error::NO_ERROR);
+#else
+   (void)Internal::registry().addNetwork(*this);
+#endif
+   networkCount++;
+   
+   // We have no choice but to count ourself as a server too - it's inevitable!
+   serverCount++;
 }
 
 
@@ -68,3 +78,19 @@ void MyNetwork::initInstance(void)
    debug(debugOut.str());
 #endif
 }
+
+
+#ifdef KINE_DEBUG
+# warning "This snippet of code is ugly - there must be a better way"
+#endif
+// Find various entities
+User* const MyNetwork::findUser(const User::Name& name) const
+{ return Internal::registry().findUser(name); }
+Service* const MyNetwork::findService(const Service::Name& name) const
+{ return Internal::registry().findService(name); }
+Server* const MyNetwork::findServer(const Server::Name& name) const
+{ return Internal::registry().findServer(name); }
+Network* const MyNetwork::findNetwork(const Network::Name& name) const
+{ return Internal::registry().findNetwork(name); }
+Channel* const MyNetwork::findChannel(const Channel::Name& name) const
+{ return Internal::registry().findChannel(name); }

@@ -28,6 +28,7 @@
 
 #include "kineircd/myserver.h"
 #include "kineircd/daemon.h"
+#include "lib/registry.h"
 #include "lib/debug.h"
 
 using namespace Kine;
@@ -44,7 +45,12 @@ MyServer::MyServer(void)
   : Server(Languages::toWideStr(config().getServerName()), daemon().getTime()),
     description(Languages::toWideStr(config().getServerDescription())) // bleh
 {
-   // Register ourself to the registry?
+   // Register ourself to the registry
+#ifdef KINE_DEBUG_ASSERT
+   assert(Internal::registry().addServer(*this) == Error::NO_ERROR);
+#else
+   (void)Internal::registry().addServer(*this);
+#endif
 }
 
 

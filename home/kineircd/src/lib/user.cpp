@@ -32,6 +32,8 @@
 #include "kineircd/user.h"
 #include "kineircd/localuser.h"
 #include "kineircd/myserver.h"
+#include "kineircd/mynetwork.h"
+#include "lib/registry.h"
 #include "lib/debug.h"
 
 using namespace Kine;
@@ -219,4 +221,39 @@ const Error::error_type
    doEventReceivePrivateNotice(from, message);
 
    return Error::NO_ERROR;
+}
+
+
+/* quit - Quit, with no reason
+ * Original 28/11/2003 pickle
+ */
+const Error::error_type User::quit(void)
+{
+   // Lower the user count for the user's server, and our network as a whole
+   getServer().userCount--;
+   myNetwork().userCount--;
+   
+   // Deregister the user
+   const Error::error_type removeError =
+     Internal::registry().removeUser(*this);
+   if (removeError != Error::NO_ERROR) {
+      // Return the error we got from trying to remove the client
+      return removeError;
+   }
+   
+   // All happy!
+   return Error::NO_ERROR;
+}
+
+
+/* quit - Quit, with a reason
+ * Original 28/11/2003 pickle
+ */
+const Error::error_type User::quit(const std::wstring reason)
+{
+#ifdef KINE_DEBUG
+# warning "Client::quit() with a reason is really just the no reason form!"
+#endif
+   // Cheat, for now, use the no-reason form
+   return quit();
 }

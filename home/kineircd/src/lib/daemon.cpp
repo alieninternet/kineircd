@@ -44,6 +44,7 @@
 #include "kineircd/myserver.h"
 #include "kineircd/version.h"
 #include "lib/debug.h"
+#include "lib/registry.h"
 
 using namespace Kine;
 using AIS::Util::String;
@@ -76,6 +77,12 @@ Daemon::Daemon(void)
    // Seed the random thingy for rand() - this is kinda dodgey
    srand(getTime().seconds);
 
+   // Initialise the registry!
+#ifdef KINE_DEBUG
+# warning "Initialising the registry from the Daemon's constructor needs rethinking"
+#endif
+   Internal::Registry::initInstance();
+   
    // Initialise the 'INFO' stuff (for the first time)
    createInfo();
    
