@@ -77,15 +77,24 @@ namespace Kine {
        * \param directivity The focus or Directivity of the specified
        *    receiver
        * \return The status of the operation
-       * \retval Kine::Error::NO_ERROR The message was sent successfully.
-       *    Note that this <b>does not</b> guarantee that the message will
-       *    be received, though.
-       * \retval Kine::Error::PERMISSION_DENIED The \p sender is not allowed
-       *    to send to this receiver
-       * \retval Kine::Error::UNREGISTERED_ENTITY The \p sender is not
-       *    registered on the network, and therefore cannot send messages
-       * \retval Kine::Error::UNSUPPORTED_BY_ENTITY The receiver is
-       *    unequipped to accept the message
+       * \retval Kine::Error::NO_ERROR
+       *    The message was sent successfully. Note that this <b>does not</b>
+       *    guarantee that the message will be received.
+       * \retval Kine::Error::PERMISSION_DENIED
+       *    The \p sender is not allowed to send to this receiver
+       * \retval Kine::Error::TEXT_TOO_LONG
+       *    The given message was too long. Some entities impose maximum
+       *    length limits on the messages given, and others will simply
+       *    convert them into fragments.
+       * \retval Kine::Error::TEXT_TOO_SHORT
+       *    The given message was too short. This normally means that the
+       *    message was empty, however some entities may impose minimum
+       *    length limits.
+       * \retval Kine::Error::UNREGISTERED_ENTITY
+       *    The \p sender is not registered on the network, and therefore
+       *    cannot send messages
+       * \retval Kine::Error::UNSUPPORTED_BY_ENTITY
+       *    The receiver is unequipped to accept the message
        */
       virtual const Error::error_type
 	sendMessage(Sender& sender,
