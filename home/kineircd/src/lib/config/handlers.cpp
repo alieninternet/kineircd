@@ -719,7 +719,8 @@ Kine::Config::~Config(void)
  */
 CONFIG_CLASS_HANDLER(Kine::Config::classHandleModule)
 {
-   return false;
+   // Be happy
+   return true;
 }
 
 
