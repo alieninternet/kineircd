@@ -36,19 +36,23 @@ namespace Kine {
    // The Daemon class
    class Daemon {
     private:
+      enum stage_type {
+	 STAGE_INIT,				// Initialising the daemon
+	 STAGE_NORMAL,				// Running normally
+         STAGE_SHUTDOWN				// The daemon is shutting down
+      } stage;
+      
       Config &config;					// Configuration data
       
     public:
       // Constructor
-      Daemon(Config &c)
-	: config(c)
-	{};
+      Daemon(Config &c);
 
       // Destructor
-      ~Daemon(void) {};
+      ~Daemon(void);
       
       // Main loop
-      void run(void) {};
+      int run(void);
    };
    
 };

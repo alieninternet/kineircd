@@ -35,7 +35,68 @@
 
 #include "kineircd/daemon.h"
 #include "kineircd/debug.h"
+#include "kineircd/exit.h"
 #include "kineircd/version.h"
 
 using namespace Kine;
+
+
+/* Daemon - Init the server
+ * Original 11/08/01 simonb
+ */
+Daemon::Daemon(Config &conf)
+  : stage(STAGE_INIT),
+    config(conf)
+{
+   // We are ready to go, go into normal running stage
+   stage = STAGE_NORMAL;
+}
+
+
+/* ~Daemon - Deinit the server
+ * Original 11/08/01 simonb
+ */
+Daemon::~Daemon(void)
+{
+#ifdef DEBUG
+   debug("Shutting down server");
+#endif
+
+}
+
+
+/* run - The main loop
+ * Original 11/08/01 simonb
+ * Note: Unfortuantely not a very nice looking routine..
+ */
+int Kine::Daemon::run(void)
+{
+   /* Make sure the init was all happy, else there isn't much point us
+    * going beyond this point really
+    */
+   if (stage != STAGE_NORMAL) {
+      return Exit::ERR_DAEMON_INIT;
+   }
+   
+#ifdef DEBUG
+   debug("Entering main loop");
+#endif
+
+   for (;;) {
+      // Do stuff here with the poller :)
+      
+      // Check if we are in shutdown mode
+      if (stage == STAGE_SHUTDOWN) {
+	 // check queues here..
+
+	 // If we get here the queues must be all dry
+#ifdef DEBUG
+	 debug("Output queues exhausted - Breaking main loop");
+#endif
+	 break;
+      }
+   }
+   
+   return Exit::NO_ERROR;
+}
 
