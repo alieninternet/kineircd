@@ -386,6 +386,14 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString)
    
    // Close the file!
    file.close();
+
+   /* If the daemon is not in the middle of configuration, we need to trigger
+    * the tag maps to be updated, otherwise any new tags that were needed and
+    * now actually exist won't be discovered automatically..
+    */
+   if (!config().isConfiguring()) {
+      processMaps();
+   }
    
    // Presume everything went okay!
    return true;
@@ -450,6 +458,22 @@ void Languages::deregisterMap(const tagMap_type map)
     * registered)
     */
    (void)tagMaps.erase((tagMap_type*)&map);
+}
+
+
+/* processMaps - Process all known language maps
+ * Original 22/03/2003 simonb
+ * Note: No, I'm not using std::for_each - it's too much effort for something
+ *       this simple. std::for_each requires the processTagMap() function to
+ *       have a wrapper, and other rubbish.
+ */
+void Languages::processMaps(void) const
+{
+   for (tagMaps_type::const_iterator it = tagMaps.begin();
+	it != tagMaps.end();
+	it++) {
+      processTagMap(*(*it));
+   }
 }
 
 

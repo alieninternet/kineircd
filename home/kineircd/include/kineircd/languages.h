@@ -193,6 +193,7 @@ namespace Kine {
       // Add/remove/process tag name/ID correlation maps
       bool registerMap(tagMap_type map);
       void deregisterMap(const tagMap_type map);
+      void processMaps(void) const;
       
       // Return the given language data, from the given language
       const std::string
