@@ -6,8 +6,14 @@
 
 #include "config.h"
 
+// Our constructor
+Config::Config(const String &f)
+  : parser(&Config::topDefs, f)
+{};
 
-CONFIG_VAR_HANDLER(Config::defVarNONE)
+
+// This is temporary.
+CONFIG_DEF_HANDLER(Config::defVarNONE)
 {
    return true;
 }
