@@ -2071,17 +2071,23 @@ irc2numerics = {
 };
 
 irc2numerics = {
-   name		= "ERR_QUERYTOOLONG";
-   numeric	= "416";
-   origin	= "ircu";
-   conflict	= "yes";
-};
-
-irc2numerics = {
    name		= "ERR_TOOMANYMATCHES";
    numeric	= "416";
    origin	= "IRCnet";
-   conflict	= "yes";
+   format	= "<command> :<info>";
+   comment	= "Returned when too many matches have been found for a "
+                  "command and the output has been truncated. An example "
+		  "would be the WHO command, where by the mask '*' would "
+		  "match everyone on the network! Ouch!";
+   repeated	= "yes";
+};
+
+irc2numerics = {
+   name		= "ERR_QUERYTOOLONG";
+   numeric	= "416";
+   origin	= "ircu";
+   comment	= "Same as ERR_TOOMANYMATCHES";
+   repeated	= "yes";
 };
 
 irc2numerics = {
