@@ -2,7 +2,7 @@
 # Little makefile for developers wishing to bootstrap the package
 #
 
-.PHONY: all install clean distclean autoconf autogen dready sums distro fresh
+.PHONY: __bs__ autoconf
 
 __bs__:
 	@echo "Do not make directly from Makefile.bs!"
@@ -13,4 +13,5 @@ __bs__:
 autoconf: autoconf/configure.in
 	autoconf -I autoconf -o configure autoconf/configure.in
 	-chmod 755 configure
-	autoheader --localdir=autoconf autoconf/configure.in >include/kineircd/kineircdconf.h.in
+	autoheader --localdir=autoconf autoconf/configure.in \
+		>include/kineircd/kineircdconf.h.in
