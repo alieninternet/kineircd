@@ -49,6 +49,11 @@ errors = {
 };
 
 errors = {
+   name		= "NICKNAME_BEGINS_WITH_DIGIT";
+   reason	= "The nickname given begins with a number (which is invalid)";
+};
+
+errors = {
    name		= "SERVER_EXISTS";
    reason	= "Server already in list";
 };

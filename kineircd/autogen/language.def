@@ -184,7 +184,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_ERRONEUSNICKNAME";
-   components	= "mod_irc2registrar";
+   components	= "mod_irc2registrar mod_irc2user";
    data_en	= "Erroneous nickname";
    data_tr	= "Yanlıž^_ nickname";
 };
@@ -194,6 +194,12 @@ tag = {
    components	= "mod_irc2user";
    data_en	= "The given nickname contained unaccaptable characters and "
                   "cannot be used as your nickname";
+};
+
+tag = {
+   name		= "irc2_ERR_ERRONEUSNICKNAME_BEGINS_WITH_DIGIT";
+   components	= "mod_irc2user";
+   data_en	= "The given nickname begins with a number and cannot be used";
 };
 
 tag = {
