@@ -33,6 +33,7 @@
 
 #include "mod_irc2user/protocol.h"
 #include "mod_irc2user/language.h"
+#include "mod_irc2user/commands.h"
 
 using namespace Kine::mod_irc2user;
 
@@ -93,4 +94,21 @@ void Protocol::parseMessage(const std::string& origin,
 {
    std::cout << "COMMAND: " << command << "\nFrom: " << origin << "\nTo: " <<
      destination << std::endl;
+   
+   // Try and find the command..
+   const Commands::CommandInfo* const commandInfo =
+     Commands::getInstance().findCommand(command);
+   
+   // Did we find it? (most of the time we will find it
+   if (commandInfo != 0) {
+      // Do stuff.
+      std::cout << "Found the command with a penalty rate of " <<
+	(unsigned int)commandInfo->penalty << std::endl;
+      
+      // We're done.
+      return;
+   }
+   
+   // If we got here, the command was not found - tell the user the bad news
+   std::cout << "Command not found" << std::endl;
 }
