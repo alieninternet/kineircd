@@ -35,7 +35,7 @@ using namespace Kine;
  */
 String Module::getVersionString(void) const
 {
-   ostringstream output;
+   std::ostringstream output;
    
    // Add the start of the string, these are required fields
    output << basicInfo.nameShort << '-' << 
