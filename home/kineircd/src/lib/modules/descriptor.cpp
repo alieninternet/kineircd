@@ -84,7 +84,17 @@ ModuleDescriptor *ModuleDescriptor::loadModule(const String &moduleFile,
    // Initialise the module and grab its info!
    const Module *moduleInfo = (*initFunction)();
 
-   // Check the structure perhaps here?
+   // Make sure the module's init function did not return 0 (null)
+   if (moduleInfo == 0) {
+      errorReturn = "Module initialisation returned no information";
+      return 0;
+   }
+   
+   // Check the basic info structure
+   if (!moduleInfo->getBasicInfo().isOkay()) {
+      errorReturn = "Module contains an invalid basicInfo structure";
+      return 0;
+   }
    
    // Return a new module descriptor
    return new ModuleDescriptor(moduleHandle, moduleInfo);

@@ -95,13 +95,22 @@ namespace Kine {
 	 };
 	 const int flags;
 	 
-	 // Configuration info (optional)
+	 // Configuration info (optional, set to 0 if you don't want it)
 	 const ConfigData *configData;
 	 const ConfigParser::defTable_type *configDefinitions;
 	 
 	 // The two required functions - start and stop
 	 const startFunction_type *startFunction;
 	 const stopFunction_type *stopFunction;
+	 
+	 // Padding, for future use (ignore this, or fill it with 0's)
+	 char _padding[24];
+	 
+	 // This little function checks if the stuff above is valid
+	 const bool isOkay(void) const {
+	    return ((nameShort != 0) && (nameLong != 0) && (copyright != 0) &&
+		    (startFunction != 0) && (stopFunction != 0));
+	 };
       };
 
     private:
