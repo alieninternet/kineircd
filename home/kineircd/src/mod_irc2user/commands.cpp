@@ -88,3 +88,28 @@ const Commands::CommandInfo* const
    // We didn't find the command.. oh well..
    return 0;
 }
+
+
+/* Commands - Constructor for the command list managing singleton
+ * Original 01/04/2003 simonb
+ */
+const bool Commands::CommandInfo::checkAccess(const User& user) const
+{
+   // What are we checking?
+   switch (access) {
+    // Is the user an IRC operator (local or global)
+    case Access::OPERATOR:
+      return user.isOperator();
+      
+    // Is the user a Global IRC operator?
+    case Access::GLOBAL_OPERATOR:
+      return user.isGlobalOperator();
+      
+    // Anyone? This should never be hit, so it's listed last..
+    case Access::ANYBODY:
+      return true;
+   }
+   
+   // No idea - I guess not..
+   return false;
+}

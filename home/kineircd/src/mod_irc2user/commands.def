@@ -45,7 +45,7 @@ commands = {
 //   command		= "CONNECT";
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
-//   access		= "oper";
+//   access		= "OPERATOR";
 //   changeIdleTime;
 //};
 
@@ -53,7 +53,7 @@ commands = {
 //   command		= "DIE";
 //   defaultPenalty	= 0;
 //   minimumParams	= 0;
-//   access		= "oper";
+//   access		= "OPERATOR";
 //   disabled;
 //};
 
@@ -61,7 +61,7 @@ commands = {
 //   command		= "GLOBOPS";
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
-//   access		= "globaloper";
+//   access		= "GLOBAL_OPERATOR";
 //   changeIdleTime;
 //};
 
@@ -105,7 +105,7 @@ commands = {
 //   command		= "KILL";
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
-//   access		= "oper";
+//   access		= "OPERATOR";
 //   changeIdleTime;
 //};
 
@@ -138,7 +138,7 @@ commands = {
 //   command		= "LOCOPS";
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
-//   access		= "oper";
+//   access		= "OPERATOR";
 //   changeIdleTime;
 //};
 
@@ -225,14 +225,14 @@ commands = {
 //   command		= "REHASH";
 //   defaultPenalty	= 0;
 //   minimumParams	= 0;
-//   access		= "oper";
+//   access		= "OPERATOR";
 //};
 
 //commands = {
 //   command		= "RESTART";
 //   defaultPenalty	= 0;
 //   minimumParams	= 0;
-//   access		= "oper";
+//   access		= "OPERATOR";
 //   changeIdleTime;
 //   disabled;
 //};
@@ -253,7 +253,7 @@ commands = {
 //   command		= "SQUIT";
 //   defaultPenalty	= 1;
 //   minimumParams	= 1;
-//   access		= "oper";
+//   access		= "OPERATOR";
 //   changeIdleTime;
 //};
 
@@ -286,14 +286,14 @@ commands = {
 //   command		= "TRACE";
 //   defaultPenalty	= 0;
 //   minimumParams	= 0;
-//   access		= "oper";
+//   access		= "OPERATOR";
 //};
 
 //commands = {
 //   command		= "TRACEROUTE";
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
-//   access		= "oper";
+//   access		= "OPERATOR";
 //};
 
 //commands = {
@@ -337,7 +337,7 @@ commands = {
 //   command		= "WALLOPS";
 //   defaultPenalty	= 0;
 //   minimumParams	= 1;
-//   access		= "oper";
+//   access		= "GLOBAL_OPERATOR";
 //   changeIdleTime;
 //   disabled;
 //};

@@ -33,7 +33,6 @@
 #  include <map>
 # endif
 
-# include "mod_irc2user/access.h"
 # include "mod_irc2user/protocol.h"
 
 namespace Kine {
@@ -49,13 +48,21 @@ namespace Kine {
 	    typedef unsigned int lazy_type;
 	 };
 	 
+	 struct Access { // <=- namespace :(
+	    enum access_type {
+	       ANYBODY = 0,
+	       OPERATOR,
+	       GLOBAL_OPERATOR
+	    };
+	 };
+	 
        private:
 	 // A table holding the built-in commands we always support
 	 struct preInitCommand_type {
 	    const char* const commandName;		// Name of the command
 	    Protocol::handler_type Protocol::* const
 	      handler;					// Handler function
-	    Access::function_type* const accessChecker;	// Access checker
+	    const Access::access_type access;		// Required access
 	    const bool enabledByDefault;		// Enabled from init?
 	    const unsigned char defaultPenalty;		// Initial penalty rate
 	    const unsigned char minimumParams;		// Minimum param count
@@ -68,10 +75,15 @@ namespace Kine {
 
        public:
 	 // A 'command descriptor' for our commands table.
-	 struct CommandInfo {
+	 class CommandInfo {
+	  private:
+	    // Check the access required by a user (in-depth)
+	    const bool checkAccess(const User& user) const;
+	    
+	  public:
 	    Protocol::handler_type Protocol::* const
 	      handler;					// Handler function
-	    Access::function_type* accessChecker;	// Access checker
+	    const Access::access_type access;		// Required access
 	    bool enabled;				// Is enabled?
 	    unsigned char penalty;			// Set penalty rate
 	    const unsigned char minimumParams;		// Minimum param count
@@ -85,7 +97,7 @@ namespace Kine {
 	    // Copy constructor to aid in initialisation
 	    CommandInfo(const preInitCommand_type& info)
 	      : handler(info.handler),
-	        accessChecker(info.accessChecker),
+	        access(info.access),
 	        enabled(info.enabledByDefault),
 	        penalty(info.defaultPenalty),
 	        minimumParams(info.minimumParams),
@@ -95,13 +107,11 @@ namespace Kine {
 	        callCount(0)
 	      {};
 	    
-	    // Convenient access checking thing :)
-	    const bool hasAccess(const User& user) const
+	    // Check if a user has access to this command (inline for speed)
+	    inline const bool hasAccess(const User& user) const
 	      {
-		 if (accessChecker == 0) {
-		    return true;
-		 }
-		 return (accessChecker)(user);
+	         return ((access == Access::ANYBODY) ?
+	              	 true : checkAccess(user));
 	      };
 	 };
 	 
