@@ -212,8 +212,8 @@ void Channel::processModes(Handler *handler, User *user,
       for (Channel::member_map_t::iterator it = members.begin();
 	   it != members.end(); it++) {
 	 if ((*it).second->user->local) {
-	 (*it).second->user->local->handler->sendChannelMode(this, user, 
-							     &modeString);
+	    (*it).second->user->local->handler->sendChannelMode(this, user, 
+								modeString);
 	 }
       }
       

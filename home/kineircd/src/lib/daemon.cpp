@@ -22,7 +22,7 @@
 /* Daemon - Init the server
  * Original 11/08/01, Simon Butcher <pickle@austnet.org>
  */
-Daemon::Daemon(String &conf)
+Daemon::Daemon(String const &conf)
 : configFile(conf),
   adminName(DEFAULT_CONFIG_ADMIN_NAME),
   adminEmail(DEFAULT_CONFIG_ADMIN_EMAIL),
@@ -139,11 +139,8 @@ Daemon::Daemon(String &conf)
    
    // Load config!
    if (!configure(true)) {
-      String reason = "IRCd not started: Configuration file error";
-      logger(&reason, LOGPRI_ERROR);
-#ifndef DEBUG
-      cout << reason << endl;
-#endif
+      logger("IRCd not started: Configuration file error", 
+	     LOGPRI_ERROR);
       return;
    }
    
@@ -151,11 +148,8 @@ Daemon::Daemon(String &conf)
     * else we aren't going to be very useful at all
     */
    if (listens.empty()) {
-      String reason = "IRCd not started: No listening sockets - Nobody can connect!";
-      logger(&reason, LOGPRI_ERROR);
-#ifndef DEBUG
-      cout << reason << endl;
-#endif
+      logger("IRCd not started: No listening sockets - Nobody can connect!", 
+	     LOGPRI_ERROR);
       return;
    }
 
@@ -252,7 +246,7 @@ Daemon::~Daemon(void)
  * Original 11/08/01, Simon Butcher <pickle@austnet.org>
  * Note: Should this routine be in another file perhaps?
  */
-void Daemon::logger(String *line, int priority /* = LOGPRI_NOTICE */)
+void Daemon::logger(String const &line, int priority)
 {
    /* Notice how we do not log if we are in debug mode. This is because I
     * wasn't too happy about my syslog getting filled with junk while I was
@@ -261,20 +255,15 @@ void Daemon::logger(String *line, int priority /* = LOGPRI_NOTICE */)
 #ifndef DEBUG
 # ifdef LOG_TO_SYSLOG
    if (priority >= 0) {
-      syslog(priority, "%s", (char const *)*line);
+      syslog(priority, "%s", (char const *)line);
    }
 # endif
 #else
    // Pipe to stderr if we are debugging
-   clog << "logger() <- [" << priority << "] " << *line << endl;
+   clog << "logger() <- [" << priority << "] " << line << endl;
 #endif
    
    // Broadcast it to +s people
-}
-
-void Daemon::logger(String line, int priority /* = LOGPRI_NOTICE */)
-{
-   logger(&line, priority);
 }
 
 
@@ -282,7 +271,7 @@ void Daemon::logger(String line, int priority /* = LOGPRI_NOTICE */)
  * Original 17/08/01, Simon Butcher <pickle@austnet.org>
  * Note: the goto's are more efficient
  */
-void Daemon::garbo(bool called /* = false */ )
+void Daemon::garbo(bool called)
 {
 #ifdef MAX_GARBO_RUN_ITEMS
    int items = 0;
@@ -401,11 +390,13 @@ void Daemon::rehash(Handler *handler, User *user)
 /* broadcastServerNotice - [Various Forms] Broadcast a server notice to +s's
  * Original 18/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::broadcastServerNotice(snotice_bitmask_t type, String *message)
+void Daemon::broadcastServerNotice(snotice_bitmask_t type, 
+				   String const &message)
 {
 #ifdef DEBUG
    /* If we are debugging this could be called prematurely, so we need to just
-    * ignore it.
+    * ignore it. This is a really dodgey kluge, but it's only here during
+    * debugging, so shh, hopefully nobody will notice :)
     */
    if (!this) {
       return;
@@ -431,27 +422,21 @@ void Daemon::broadcastServerNotice(snotice_bitmask_t type, String *message)
 	 // Send the message via the notice interface
 	 (*it).second->handler->sendNotice(&server->hostname,
 					   &(*it).second->user->nickname,
-					   *message);
+					   message);
       }
    }
-}
-
-void Daemon::broadcastServerNotice(snotice_bitmask_t type, 
-				   String message)
-{
-   broadcastServerNotice(type, &message);
 }
 
 
 /* broadcastWallops - [Various Forms] Broadcast a WALLOPS to local +w's
  * Original 18/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::broadcastWallops(String *from, String *message)
+void Daemon::broadcastWallops(Server *from, String const &message)
 {
 #ifdef DEBUG_EXTENDED
    debug(String::printf("broadcastWallops() (%s) %s",
-			(char const *)(*from),
-			(char const *)(*message)));
+			(char const *)from->hostname,
+			(char const *)message));
 #endif
    
    // Run through the local user list
@@ -476,12 +461,12 @@ void Daemon::broadcastWallops(String *from, String *message)
    }
 }
 
-void Daemon::broadcastWallops(User *from, String *message)
+void Daemon::broadcastWallops(User *from, String const &message)
 {
 #ifdef DEBUG_EXTENDED
    debug(String::printf("broadcastWallops() (%s) %s",
 			(char const *)from->nickname,
-			(char const *)(*message)));
+			(char const *)message));
 #endif
    
    // Run through the local user list
@@ -504,11 +489,6 @@ void Daemon::broadcastWallops(User *from, String *message)
 	 (*it).second->handler->sendWallops(from, message);
       }
    }
-}
-
-void Daemon::broadcastWallops(String *message)
-{
-   broadcastWallops(&server->hostname, message);
 }
 
 
@@ -616,8 +596,8 @@ void Daemon::newConnection(Listen *l)
  */
 void Daemon::addUser(User *user)
 {
-#ifdef DEBUG
-   debug(String::printf("AddUser() <- %s (%s)",
+#ifdef DEBUG_EXTENDED
+   debug(String::printf("addUser() <- %s (%s)",
 			(char const *)user->nickname,
 			(user->local ?
 			 "local" : "remote")));
@@ -670,7 +650,7 @@ void Daemon::addUser(User *user)
 /* getUser - Get a user record from the users list, if we can
  * Original 14/08/01, Simon Butcher <pickle@austnet.org>
  */
-User *Daemon::getUser(String &nick)
+User *Daemon::getUser(String const &nick)
 {
    // Look for this nick
    String n = nick.IRCtoLower();
@@ -691,16 +671,16 @@ User *Daemon::getUser(String &nick)
 /* changeUserNick - Change a user's nickname (may also mean replacing records)
  * Original 24/08/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::changeUserNick(User *user, String *newnick)
+void Daemon::changeUserNick(User *user, String const &newnick)
 {
 #ifdef DEBUG_EXTENDED
    debug(String::printf("changeUserNick() <- %s -> %s",
 			(char const *)user->nickname,
-			(char const *)(*newnick)));
+			(char const *)newnick));
 #endif
    
    String on = user->nickname.IRCtoLower();
-   String nn = newnick->IRCtoLower();
+   String nn = newnick.IRCtoLower();
 
    // Fix the last changed nick time for this user
    user->lastNickChange = getTime();
@@ -708,7 +688,7 @@ void Daemon::changeUserNick(User *user, String *newnick)
    // Check if we are just doing a simple nick replacement
    if (nn == on) {
       // Replace the nickname
-      user->nickname = *newnick;
+      user->nickname = newnick;
    } else {
       // Remove the user from the userlist, and add them again
       users.erase(on);
@@ -747,7 +727,7 @@ void Daemon::changeUserNick(User *user, String *newnick)
       
       // Check the new nickname
       if ((*it).second->watching(nn)) {
-	 (*it).second->handler->sendWatchOn(user, &nn);
+	 (*it).second->handler->sendWatchOn(user, newnick);
       }
    }
 
@@ -769,7 +749,8 @@ void Daemon::changeUserNick(User *user, String *newnick)
 	       // Check if the user is local
 	       if ((*it2).second->user->local) {
 		  // Send it
-		  (*it2).second->user->local->handler->sendNick(user, newnick);
+		  (*it2).second->user->local->handler->sendNickChange(user, 
+								      newnick);
 	       }
 	    }
 	 } else {
@@ -793,7 +774,7 @@ void Daemon::changeUserNick(User *user, String *newnick)
    
    
    // Replace the nickname in the user record
-   user->nickname = *newnick;
+   user->nickname = newnick;
 }
 
 
@@ -802,7 +783,7 @@ void Daemon::changeUserNick(User *user, String *newnick)
  */
 void Daemon::delUser(User *user)
 {
-#ifdef DEBUG
+#ifdef DEBUG_EXTENDED
    debug(String::printf("delUser() <- %s",
 			(char const *)user->nickname));
 #endif
@@ -940,7 +921,8 @@ void Daemon::quitUser(User *user, String const &reason, bool broadcast)
 /* killUser - Kill a user off the network
  * Original 22/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::killUser(User *user, String *caller, String *reason)
+void Daemon::killUser(User *user, String const &caller, 
+		      String const &reason)
 {
    // Same as the quit, use a map
    map <String, bool> messages;
@@ -948,8 +930,8 @@ void Daemon::killUser(User *user, String *caller, String *reason)
    
    // Fix up the reason
    String newReason = String::printf(LNG_QUIT_KILLED,
-				     (char const *)(*caller),
-				     (char const *)(*reason));
+				     (char const *)caller,
+				     (char const *)reason);
    
    // If this was one of ours, we need to do the physical kill
    if (user->local) {
@@ -1067,7 +1049,7 @@ void Daemon::addChannel(Channel *chan)
 /* getChannel - Grab a channel record from the appropriate channel list
  * Original 15/08/01, Simon Butcher <pickle@austnet.org>
  */
-Channel *Daemon::getChannel(String &channel)
+Channel *Daemon::getChannel(String const &channel)
 {
    // Look for this channel
    String chan = channel.IRCtoLower();
@@ -1187,13 +1169,13 @@ void Daemon::leaveChannel(Channel *c, User *u)
 /* partChannel - User leaving a channel via PART
  * Original 15/08/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::partChannel(Channel *c, User *u, String *reason)
+void Daemon::partChannel(Channel *c, User *u, String const &reason)
 {
    // Broadcast the join to anyone locally connected
    for (Channel::member_map_t::iterator it = c->members.begin();
 	it != c->members.end(); it++) {
       if ((*it).second->user->local) {
-	 (*it).second->user->local->handler->sendPart(c, u, *reason);
+	 (*it).second->user->local->handler->sendPart(c, u, reason);
       }
    }
    
@@ -1208,17 +1190,17 @@ void Daemon::partChannel(Channel *c, User *u, String *reason)
  * Original 15/09/01, Simon Butcher <pickle@austnet.org>
  */
 void Daemon::kickChannelMember(Channel *c, User *kicker, User *kickee,
-			     String *reason)
+			       String const &reason)
 {
    // Trim this if we need to
-   String newReason = reason->subString(0, MAXLEN_KICK_REASON);
+   String newReason = reason.subString(0, MAXLEN_KICK_REASON);
    
    // Broadcast the kick to anyone locally connected
    for (Channel::member_map_t::iterator it = c->members.begin();
 	it != c->members.end(); it++) {
       if ((*it).second->user->local) {
 	 (*it).second->user->local->handler->sendKick(c, kicker, kickee, 
-						      &newReason);
+						      newReason);
       }
    }
    
@@ -1232,16 +1214,17 @@ void Daemon::kickChannelMember(Channel *c, User *kicker, User *kickee,
 /* changeChannelTopic - [Various Forms] User/Server changing a channel topic
  * Original 19/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::changeChannelTopic(Channel *c, User *from, String *topic)
+void Daemon::changeChannelTopic(Channel *c, User *from, String const &topic)
 {
 #ifdef DEBUG_EXTENDED
-   debug(String::printf("changeChannelTopic() <- %s, %s",
+   debug(String::printf("changeChannelTopic() <- %s, %s (%s)",
 			(char const *)c->name,
-			(char const *)from->nickname));
+			(char const *)from->nickname,
+			(const char *)topic));
 #endif
 
    // Trim this if we need to
-   String newTopic = topic->subString(0, MAXLEN_TOPIC);
+   String newTopic = topic.subString(0, MAXLEN_TOPIC);
    
    // Check if this topic is already set (dumb to reset it)
    if (newTopic == c->topic) {
@@ -1257,35 +1240,37 @@ void Daemon::changeChannelTopic(Channel *c, User *from, String *topic)
    for (Channel::member_map_t::iterator it = c->members.begin();
 	it != c->members.end(); it++) {
       if ((*it).second->user->local) {
-	 (*it).second->user->local->handler->sendTopic(c, from, &newTopic);
+	 (*it).second->user->local->handler->sendTopic(c, from, newTopic);
       }
    }
    
    // broadcast.
 }
 
-void Daemon::changeChannelTopic(Channel *c, String *from, String *topic,
-			      String *setter, time_t settime)
+void Daemon::changeChannelTopic(Channel *c, Server *from, 
+				String const &topic, String const &setter,
+				time_t settime)
 {
 #ifdef DEBUG_EXTENDED
-   debug(String::printf("changeChannelTopic() <- %s, %s",
+   debug(String::printf("changeChannelTopic() <- %s, %s (%s)",
 			(char const *)c->name,
-			(char const *)(*from)));
+			(char const *)from->hostname,
+			(const char *)topic));
 #endif
 
    // Trim this if we need to
-   String newTopic = topic->subString(0, MAXLEN_TOPIC);
+   String newTopic = topic.subString(0, MAXLEN_TOPIC);
    
    // Set the new topic stuff
    c->topic = newTopic;
-   c->topicWho = *setter;
+   c->topicWho = setter;
    c->topicTime = settime;
    
    // Run through the list of channel members and send them the new topic
    for (Channel::member_map_t::iterator it = c->members.begin();
 	it != c->members.end(); it++) {
       if ((*it).second->user->local) {
-	 (*it).second->user->local->handler->sendTopic(c, from, &newTopic);
+	 (*it).second->user->local->handler->sendTopic(c, from, newTopic);
       }
    }
    
@@ -1296,10 +1281,10 @@ void Daemon::changeChannelTopic(Channel *c, String *from, String *topic,
 /* getOperator - Grab an operator record from the operators list
  * Original 08/09/01, Simon Butcher <pickle@austnet.org>
  */
-Operator *Daemon::getOperator(String *nickname)
+Operator *Daemon::getOperator(String const &nickname)
 {
    // Fix up the nickname string
-   String nick = nickname->IRCtoLower();
+   String nick = nickname.IRCtoLower();
    Operator *oper = 0;
    
    // Grab the operator if we can
@@ -1370,7 +1355,21 @@ void Daemon::addServer(Server *server)
 /* getServer - [Various Forms] Grab a record from the servers list if we can
  * Original 10/09/01, Simon Butcher <pickle@austnet.org>
  */
-Server *Daemon::getServer(String &hostname)
+Server *Daemon::getServer(char magicChar)
+{
+//   // Run through the list of servers to find this server
+//   for (server_map_t::iterator it = servers.begin();
+//	it != servers.end(); it++) {
+//      // Check for a match
+//      if ((*it).second->hostname == servname) {
+//	 return (*it).second;
+//      }
+//   }
+   
+   return 0;
+}
+
+Server *Daemon::getServer(String const &hostname)
 {
    // Fix up the hostname
    String servname = hostname.toLower();
@@ -1386,20 +1385,6 @@ Server *Daemon::getServer(String &hostname)
 
    // Else we gotta delete this empty record we just made and return nothing
    servers.erase(servname);
-   
-   return 0;
-}
-
-Server *Daemon::getServer(char magicChar)
-{
-//   // Run through the list of servers to find this server
-//   for (server_map_t::iterator it = servers.begin();
-//	it != servers.end(); it++) {
-//      // Check for a match
-//      if ((*it).second->hostname == servname) {
-//	 return (*it).second;
-//      }
-//   }
    
    return 0;
 }
@@ -1422,8 +1407,9 @@ Server *Daemon::getServer(StringMask *hostmask)
 /* processServerModes - Support routine for the change server modes below
  * Original 21/09/01, Simon Butcher <pickle@austnet.org>
  */
-String Daemon::processServerModes(Server *server, Handler *handler, 
-				String *modes, StringTokens *tokens)
+inline String Daemon::processServerModes(Server *server, Handler *handler, 
+					 String const &modes, 
+					 StringTokens *tokens)
 {
    bool toggle = true;
    int numModes = 0;
@@ -1434,9 +1420,9 @@ String Daemon::processServerModes(Server *server, Handler *handler,
    String toggleParamsOff = "";
    
    for (String::length_t i = 0;
-	((i < modes->length()) && (numModes < MAX_MODES_PER_COMMAND));
+	((i < modes.length()) && (numModes < MAX_MODES_PER_COMMAND));
 	i++) {
-      switch ((*modes)[i]) {
+      switch (modes[i]) {
        case '+':
 	 toggle = true;
 	 continue;
@@ -1450,7 +1436,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 	 // Run through the server mode list
 	 for (int ii = 0; serverModeTable[ii].letter != 0; ii++) {
 	    // Check for a match
-	    if (serverModeTable[ii].letter == (*modes)[i]) {
+	    if (serverModeTable[ii].letter == modes[i]) {
 	       // If this mode needs a parameter, grab the next token
 	       if ((toggle && serverModeTable[ii].hasParamOn) ||
 		   (!toggle && serverModeTable[ii].hasParamOff)) {
@@ -1466,14 +1452,14 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 		  if (serverModeTable[ii].toggler(toggle, server, &param)) {
 		     // It worked, check which toggle string toa dd this to
 		     if (toggle) {
-			toggleOnStr = toggleOnStr + String((*modes)[i]);
+			toggleOnStr = toggleOnStr + String(modes[i]);
 			
 			// If this mode had a parameter, add it to the list too
 			if (param.length()) {
 			   toggleParamsOn = toggleParamsOn + " " + param;
 			}
 		     } else {
-			toggleOffStr = toggleOffStr + String((*modes)[i]);
+			toggleOffStr = toggleOffStr + String(modes[i]);
 			
 			// If this mode had a parameter, add it to the list too
 			if (param.length()) {
@@ -1487,7 +1473,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 		     handler->sendNumeric(server,
 					  ERR_CANNOTCHANGESERVERMODE, 0,
 					  String::printf(LNG_ERR_CANNOTCHANGESERVERMODE,
-							 (*modes)[i]));
+							 modes[i]));
 		  }
 	       }
 	       
@@ -1499,7 +1485,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 	 if (!gotModeChar && handler) {
 	    handler->sendNumeric(server, ERR_UNKNOWNSERVERMODE, 0,
 				 String::printf(LNG_ERR_UNKNOWNSERVERMODE,
-						(*modes)[i]));
+						modes[i]));
 
 	 }
       }
@@ -1528,8 +1514,8 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 /* changeServerMode - Broadcast and change a server mode modification
  * Original 21/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::changeServerMode(Server *server, String *from, String *modes,
-			    StringTokens *tokens)
+void Daemon::changeServerMode(Server *server, Server *from, 
+			      String const &modes, StringTokens *tokens)
 {
    String modeStr = processServerModes(server, 0, modes, tokens);
 
@@ -1555,7 +1541,7 @@ void Daemon::changeServerMode(Server *server, String *from, String *modes,
       if (((*it).second->user->modes & USERMODE_GLOBALOPER) ||
 	  ((*it).second->user->modes & USERMODE_LOCALOPER)) {
 	 // Send the mode change
-	 (*it).second->handler->sendServerMode(server, from, &modeStr);
+	 (*it).second->handler->sendServerMode(server, from, modeStr);
       }
    }
    
@@ -1563,7 +1549,7 @@ void Daemon::changeServerMode(Server *server, String *from, String *modes,
 }
 
 void Daemon::changeServerMode(Server *server, Handler *handler, User *from, 
-			    String *modes, StringTokens *tokens)
+			      String const &modes, StringTokens *tokens)
 {
    String modeStr = processServerModes(server, handler, modes, tokens);
    
@@ -1589,7 +1575,7 @@ void Daemon::changeServerMode(Server *server, Handler *handler, User *from,
       if (((*it).second->user->modes & USERMODE_GLOBALOPER) ||
 	  ((*it).second->user->modes & USERMODE_LOCALOPER)) {
 	 // Send the mode change
-	 (*it).second->handler->sendServerMode(server, from, &modeStr);
+	 (*it).second->handler->sendServerMode(server, from, modeStr);
       }
    }
 
@@ -1693,12 +1679,9 @@ void Daemon::wipeRedirects(void)
 /* onRelationMaskList - Check if something is on the given relation list
  * Original 06/09/01, Simon Butcher <pickle@austnet.org>
  */
-inline String Daemon::onRelationMaskList(relationmask_list_t *rmList, 
-				       String *itemName)
+String Daemon::onRelationMaskList(relationmask_list_t *rmList, 
+				  String const &item)
 {
-   // Fix the string up for mass searching
-   String item = itemName->toLower();
-   
    // Run through the list and check the masks
    for (relationmask_list_t::iterator it = rmList->begin();
 	it != rmList->end(); it++) {
@@ -1711,33 +1694,6 @@ inline String Daemon::onRelationMaskList(relationmask_list_t *rmList,
    
    // All is well, return nothing
    return "";
-}
-
-
-/* failedChannel - Check if the given channel is on the channel fail list
- * Original 13/09/01, Simon Butcher <pickle@austnet.org>
- */
-String Daemon::failedChannel(String *channel)
-{
-   return onRelationMaskList(&failChannels, channel);
-}
-
-
-/* failedNickname - Check if the given nickname is on the nickname fail list
- * Original 13/09/01, Simon Butcher <pickle@austnet.org>
- */
-String Daemon::failedNickname(String *nickname)
-{
-   return onRelationMaskList(&failNicknames, nickname);
-}
-
-
-/* redirectedChannel - Check if the given channel is being redirected
- * Original 13/09/01, Simon Butcher <pickle@austnet.org>
- */
-String Daemon::redirectedChannel(String *channel)
-{
-   return onRelationMaskList(&redirectChannels, channel);
 }
 
 
@@ -1756,7 +1712,7 @@ void Daemon::shutdown(String const &reason)
 		     String("Shutting down"));
    
    // Log our nice message
-   logger(&message, LOGPRI_INFO);
+   logger(message, LOGPRI_INFO);
 
    // Kill any ports we are listening on - we are no longer accepting ppl
    wipeListens();

@@ -81,7 +81,7 @@ void registerHandler::sendGeneric(char const *command, String line)
  * Note: We do a cheap thing here with the numeric because we know it will
  * 	 be three digits and suffer no 0-prepadding issues.
  */
-void registerHandler::sendNumeric(short numeric, User *to, String line)
+void registerHandler::sendNumeric(short numeric, User *to, String const &line)
 {
    getConnection()->sendRaw(String::printf(":%s %d %s %s\r\n",
 				      (char const *)getConnection()->getDaemon()->myServer()->hostname,
@@ -348,7 +348,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    }
  
    // Check for nicks that are not allowed here (from config)
-   String reason = TO_DAEMON->failedNickname(&nick);
+   String reason = TO_DAEMON->failedNickname(nick);
    if (reason.length()) {
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();

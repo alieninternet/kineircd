@@ -65,7 +65,7 @@ typedef unsigned char TYPE_RPL_TIMEONSERVERIS_FLAGS;
 
 // If we are in debugging mode, we need this routine!
 //# ifdef DEBUG
-extern void debug(String);			// Output/Broadcast debug line
+extern void debug(String const &);		// Output/Broadcast debug line
 //# endif
 
 
@@ -89,7 +89,7 @@ class RelationMask {
    String data;					// Data
    
    // Minature constructor
-   RelationMask(StringMask m, String d)
+   RelationMask(StringMask m, String const &d)
      : mask(m), data(d)
      {};
 };
@@ -126,7 +126,7 @@ class Daemon {
    typedef deque <Whowas> whowas_deque_t;
    
  private:
-   String configFile;				// Main configuration file
+   String const configFile;			// Main configuration file
    
    String adminName;				// Administrator name
    String adminEmail;				// Administrator e-mail
@@ -173,16 +173,16 @@ class Daemon {
    
    Server *server;				// Our server record
 
-   void configComplain(bool, String);		// Configuration complaints
-   void configWarning(bool, String);		// Configuration warnings
+   void configComplain(bool, String const &);	// Configuration complaints
+   void configWarning(bool, String const &);	// Configuration warnings
    bool configCopy(bool, ConfigData *);		// Copy configuration data over
    
    void garbo(bool = false);			// Garbage collector
    
    String onRelationMaskList(relationmask_list_t *,
-			     String *);		// Check for a bad channel name
+			     String const &);	// Check for a bad channel name
 
-   String processServerModes(Server *, Handler *, String *,
+   String processServerModes(Server *, Handler *, String const &,
 			     StringTokens *);	// Process a server mode change
    
  public:
@@ -218,7 +218,7 @@ class Daemon {
    motd_t motd;					// The cached MOTD
    
  public:
-   Daemon(String &);				// Class constructor
+   Daemon(String const &);			// Class constructor
    ~Daemon(void);				// Class destructor
 
    // Do we have a network name?
@@ -228,7 +228,7 @@ class Daemon {
      };
    
    // Return the name of the network this server is configured for
-   String const &getNetworkName(void) const
+   String getNetworkName(void) const
      {
 	return networkName;
      };
@@ -257,17 +257,20 @@ class Daemon {
 	return server;
      };
    
-   void logger(String *, int = LOGPRI_NOTICE);	// Log a string of text
-   void logger(String, int = LOGPRI_NOTICE);
+   void logger(String const &, 
+	       int = LOGPRI_NOTICE);		// Log a string of text
 
    void rehash(Handler *, User *);		// Rehash
    
    void broadcastServerNotice(snotice_bitmask_t,
-			      String *);	// Broadcast a server notice
-   void broadcastServerNotice(snotice_bitmask_t, String);
-   void broadcastWallops(String *, String *);	// Broadcast a wallops message
-   void broadcastWallops(User *, String *);
-   void broadcastWallops(String *);
+			      String const &);	// Broadcast a server notice
+   void broadcastWallops(Server *, 
+			 String const &);	// Broadcast a wallops message
+   void broadcastWallops(User *, String const &);
+   void broadcastWallops(String const &message) 
+     {
+	broadcastWallops(server, message);
+     };
    
    void addInputFD(int);			// Add an input fd
    void delInputFD(int);			// Delete an input fd
@@ -277,37 +280,39 @@ class Daemon {
    void newConnection(Listen *);		// accept() new connection
 
    void addUser(User *);			// Add a user to the user list
-   User *getUser(String &);			// Find a user
-   void changeUserNick(User *, String *);	// Change a users nickname
+   User *getUser(String const &);		// Find a user
+   void changeUserNick(User *, String const &);	// Change a users nickname
    void delUser(User *);			// Delete a user from the list
    void quitUser(User *, String const &, bool);	// User quitting IRC
-   void killUser(User *, String *, String *);	// Kill a user off the network
+   void killUser(User *, String const &, 
+		 String const &);		// Kill a user off the network
    bool addUserSilence(User *, StringMask *);	// Add/Broadcast a user silence
    bool delUserSilence(User *, StringMask *);	// Delete a user silence
    void snapshotUser(User *, Whowas::type_t,
 		     String const &);		// Snapshot a user for WHOWAS
    
    void addChannel(Channel *);			// Add a channel to a list
-   Channel *getChannel(String &);		// Find a channel
+   Channel *getChannel(String const &);		// Find a channel
    void joinChannel(Channel *, User *);		// User joining a channel
    void leaveChannel(Channel *, User *);	// Raw user leave routine
    void partChannel(Channel *, User *, 
-		    String *);			// User parting a channel
+		    String const &);		// User parting a channel
    void kickChannelMember(Channel *, User *, User *,
-		    String *);			// User kicking another user
+		    String const &);		// User kicking another user
    void changeChannelTopic(Channel *, User *,
-			   String *);		// Change the channel topic
-   void changeChannelTopic(Channel *, String *, String *, String *, time_t);
+			   String const &);	// Change the channel topic
+   void changeChannelTopic(Channel *, Server *, String const &, 
+			   String const &, time_t);
    
-   Operator *getOperator(String *);		// Grab an operator record
+   Operator *getOperator(String const &);	// Grab an operator record
 
    void addServer(Server *);			// Add a server to the list
    Server *getServer(char);			// Grab a server record
-   Server *getServer(String &);
+   Server *getServer(String const &);
    Server *getServer(StringMask *);
-   void changeServerMode(Server *, String *, String *,
+   void changeServerMode(Server *, Server *, String const &,
 			 StringTokens *);	// Change a server mode
-   void changeServerMode(Server *, Handler *, User *, String *, 
+   void changeServerMode(Server *, Handler *, User *, String const &, 
 			 StringTokens *);
    
    Handler *routeTo(Server *);			// Find a route to a server
@@ -317,10 +322,24 @@ class Daemon {
    void wipeListens(void);			// Wipe all listening sockets
    void wipeOpers(void);			// Wipe the operators list
    void wipeRedirects(void);			// Wipe the redirects
-
-   String failedChannel(String *);		// Check if a channel is bad
-   String failedNickname(String *);		// Check if a nickname is bad
-   String redirectedChannel(String *);		// Check for channel redirects
+   
+   // Check if a channel is bad
+   String failedChannel(String const &channel)
+     {
+	return onRelationMaskList(&failChannels, channel.IRCtoLower());
+     };
+     
+   // Check if a nickname is bad
+   String failedNickname(String const &nickname)
+     {
+	return onRelationMaskList(&failNicknames, nickname.IRCtoLower());
+     };
+   
+   // Check for channel redirects
+   String redirectedChannel(String const &channel)
+     {
+	return onRelationMaskList(&redirectChannels, channel.IRCtoLower());
+     };
    
    // Configuration top-level class parsing routines
    bool configure(bool = false);

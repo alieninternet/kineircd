@@ -34,7 +34,8 @@ class Handler {
      };
 
    virtual void goodbye(String const &) {};	// Handle a goodbye
-   virtual void kill(String *, String *) {};	// Kill the connection (sharp)
+   virtual void kill(String const &, 
+		     String const &) {};	// Kill the connection (sharp)
    virtual time_t getStamp(void)		// Connection relevant stamp
      {
 	return 0;
@@ -47,23 +48,23 @@ class Handler {
    
    virtual void sendAway(User *) {};		// Send a user away message
    virtual void sendChannelMode(Channel *, User *, 
-			 String *) {};		// Send a channel mode change
-   virtual void sendChannelMode(Channel *, User *, String) {};
+			 String const &) {};	// Send a channel mode change
    virtual void sendJoin(Channel *, User *) {};	// Send a channel join
    virtual void sendKick(Channel *, User *, User *,
-			 String *) {};		// Send a channel kick message
-   virtual void sendKill(User *, String *, 
-			 String *) {};		// Send a user kill message
+			 String const &) {};	// Send a channel kick message
+   virtual void sendKill(User *, String const &, 
+			 String const &) {};	// Send a user kill message
    virtual void sendNewNick(User *) {};		// Send a signon notification
-   virtual void sendNick(User *, String *) {};	// Send a nickname change
+   virtual void sendNickChange(User *, String const &) 
+     {};					// Send a nickname change
    virtual void sendNotice(String *, String *, 
 			   String const &) {};	// Send a NOTICE
    virtual void sendNotice(String, String *, String const &) {};
    virtual void sendNotice(User *, String *, String const &) {};
    virtual void sendNumeric(Server *, short, User *,
-			    String) {};		// Send a numeric reply
+			    String const &) {};	// Send a numeric reply
    virtual void sendPart(Channel *, User *,
-			 String const &) {};		// Send a channel part
+			 String const &) {};	// Send a channel part
    virtual void sendPing(void) {};		// Send a ping request
    virtual void sendPrivmsg(String *, String *, 
 			    String const &) {};	// Send a PRIVMSG
@@ -71,24 +72,24 @@ class Handler {
    virtual void sendPrivmsg(User *, String *, String const &) {};
    virtual void sendQuit(User *, 
 			 String const &) {};	// Send a network quit
-   virtual void sendServerMode(Server *, String *, 
-			       String *) {};	// Send a channel mode change
-   virtual void sendServerMode(Server *, User *, String *) {};
+   virtual void sendServerMode(Server *, Server *, String const &) 
+     {};					// Send a channel mode change
+   virtual void sendServerMode(Server *, User *, String const &) {};
    virtual void sendSilence(User *, bool, StringMask *) {};
-   virtual void sendTopic(Channel *, String *, 
-			  String *) {};		// Send a channel topic change
-   virtual void sendTopic(Channel *, User *, String *) {};	
-   virtual void sendUserMode(User *,
-			     String) {};	// Send a user mode change
-   virtual void sendWallops(String *, 
-			    String *) {};	// Send a wallops message
-   virtual void sendWallops(User *, String *) {};
+   virtual void sendTopic(Channel *, Server *,
+			  String const &) {};	// Send a channel topic change
+   virtual void sendTopic(Channel *, User *, String const &) {};	
+   virtual void sendUserMode(User *, String const &) 
+     {};					// Send a user mode change
+   virtual void sendWallops(Server *, 
+			    String const &) {};	// Send a wallops message
+   virtual void sendWallops(User *, String const &) {};
    virtual void sendWatchOff(Server *) {};	// Send a server is off notice
    virtual void sendWatchOff(Channel *) {};	// Send a user is off notice
    virtual void sendWatchOff(User *) {};	// Send a channel is off notice
    virtual void sendWatchOn(Server *) {};	// Send a server is on notice
-   virtual void sendWatchOn(User *, 
-			    String * = 0) {};	// Send a user is on notice
+   virtual void sendWatchOn(User *, String const & = "") 
+     {};					// Send a user is on notice
    virtual void sendWatchOn(Channel *) {};	// Send a channel is on notice
    
    virtual void parseLine(String const &) {};	// Parse a line
@@ -126,13 +127,13 @@ class irc2userHandler : public Handler {
 			   bool = false);	// Process a usermode request
    
    void sendGoodbye(String const &);		// Closing link message
-   void sendNumeric(short, String);		// Send numeric, breif
+   void sendNumeric(short, String const &);	// Send numeric, breif
    void sendPong(String);			// PING reply
    void sendWhoReply(User *, Channel *,
 		     ChannelMember *);		// WHO reply
 
    // Helpers
-   void doNAMES(String &);			// Do a NAMES request
+   void doNAMES(String const &);		// Do a NAMES request
    
    // Protocol input
    static void parseACCEPT(irc2userHandler *handler, StringTokens *tokens);
@@ -192,38 +193,37 @@ class irc2userHandler : public Handler {
 
    // Operations
    void goodbye(String const &);
-   void kill(String *, String *);
+   void kill(String const &, String const &);
    
    // Protocol output routines...
    void sendJoin(Channel *, User *);
-   void sendChannelMode(Channel *, User *, String *);
-   void sendChannelMode(Channel *, User *, String);
-   void sendKick(Channel *, User *, User *, String *);
-   void sendKill(User *, String *, String *);
-   void sendNick(User *, String *);
+   void sendChannelMode(Channel *, User *, String const &);
+   void sendKick(Channel *, User *, User *, String const &);
+   void sendKill(User *, String const &, String const &);
+   void sendNickChange(User *, String const &);
    void sendNotice(String *, String *, String const &);
    void sendNotice(String, String *, String const &);
    void sendNotice(User *, String *, String const &);
-   void sendNumeric(Server *, short, User *, String);
+   void sendNumeric(Server *, short, User *, String const &);
    void sendPart(Channel *, User *, String const &);
    void sendPing(void);
    void sendPrivmsg(String *, String *, String const &);
    void sendPrivmsg(String, String *, String const &);
    void sendPrivmsg(User *, String *, String const &);
    void sendQuit(User *, String const &);
-   void sendServerMode(Server *, String *, String *);
-   void sendServerMode(Server *, User *, String *);
+   void sendServerMode(Server *, Server *, String const &);
+   void sendServerMode(Server *, User *, String const &);
    void sendSilence(User *, bool, StringMask *);
-   void sendUserMode(User *, String);
-   void sendTopic(Channel *, String *, String *);
-   void sendTopic(Channel *, User *, String *);
-   void sendWallops(String *, String *);
-   void sendWallops(User *, String *);
+   void sendUserMode(User *, String const &);
+   void sendTopic(Channel *, Server *, String const &);
+   void sendTopic(Channel *, User *, String const &);
+   void sendWallops(Server *, String const &);
+   void sendWallops(User *, String const &);
    void sendWatchOff(Server *);
    void sendWatchOff(Channel *);
    void sendWatchOff(User *);
    void sendWatchOn(Server *);
-   void sendWatchOn(User *, String * = 0);
+   void sendWatchOn(User *, String const & = "");
    void sendWatchOn(Channel *);
    
    // Protocol input
@@ -238,7 +238,7 @@ class p13serverHandler : public Handler {
 
    struct functionTableStruct {
       char const *command;			// Command name
-      void (*function)(p13serverHandler *handler, String &origin, 
+      void (*function)(p13serverHandler *handler, String const &origin,
 		       StringTokens *tokens);	// Parsing handler function
    }; 
    static functionTableStruct functionsTable[];
@@ -253,38 +253,38 @@ class p13serverHandler : public Handler {
 		  String const &);		// Closing link message
  
    // Protocol input
-   static void parseADMIN(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseAWAY(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseCONNECT(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseEND_OF_BURST(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseGLOBOPS(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseHELPME(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseINFO(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseINVITE(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseJ(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseK(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseKILL(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseL(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseLINKS(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseM(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseMOTD(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseN(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseNO(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseP(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parsePING(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parsePONG(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseQ(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseRPING(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseRPONG(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseSQUIT(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseSTATS(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseT(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseTIME(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseTRACE(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseTRACEROUTE(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseVERSION(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseWALLOPS(p13serverHandler *handler, String &origin, StringTokens *tokens);
-   static void parseWHOIS(p13serverHandler *handler, String &origin, StringTokens *tokens);
+   static void parseADMIN(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseAWAY(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseCONNECT(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseEND_OF_BURST(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseGLOBOPS(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseHELPME(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseINFO(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseINVITE(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseJ(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseK(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseKILL(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseL(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseLINKS(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseM(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseMOTD(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseN(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseNO(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseP(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parsePING(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parsePONG(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseQ(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseRPING(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseRPONG(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseSQUIT(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseSTATS(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseT(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseTIME(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseTRACE(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseTRACEROUTE(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseVERSION(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseWALLOPS(p13serverHandler *handler, String const &origin, StringTokens *tokens);
+   static void parseWHOIS(p13serverHandler *handler, String const &origin, StringTokens *tokens);
 
  public:
    p13serverHandler(Connection *, Server *, 
@@ -301,7 +301,7 @@ class p13serverHandler : public Handler {
    void sendJoin(Channel *, User *);
    void sendNewNick(User *);
    void sendNotice(User *, String *, String const &);
-   void sendNumeric(Server *, short, User *, String);
+   void sendNumeric(Server *, short, User *, String const &);
    void sendPing(void);
    void sendPrivmsg(User *, String *, String const &);
    
@@ -317,7 +317,7 @@ class p14serverHandler : public Handler {
 
    struct functionTableStruct {
       char const command;			// Command name
-      void (*function)(p14serverHandler *handler, String &origin, 
+      void (*function)(p14serverHandler *handler, String const &origin, 
 		       StringTokens *tokens);	// Parsing handler function
    }; 
    static functionTableStruct functionsTable[];
@@ -363,7 +363,8 @@ class registerHandler : public Handler {
    static functionTableStruct functionsTable[];
    
    void sendGeneric(const char *, String);	// Generic send routine
-   void sendNumeric(short, User *, String);	// Minature send-numeric
+   void sendNumeric(short, User *, 
+		    String const &);		// Minature send-numeric
 
    // Protocol Input
    static void parseCAPAB(registerHandler *handler, StringTokens *tokens);

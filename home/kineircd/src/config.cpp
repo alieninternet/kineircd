@@ -77,15 +77,15 @@ ConfigData::ConfigData(void)
 /* configComplain - Complain about something to the appropriate output
  * Original 05/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::configComplain(bool firstRun, String complaint)
+void Daemon::configComplain(bool firstRun, String const &complaint)
 {
    String message = String("Configuration error: ") + complaint;
    
    if (firstRun) {
       cout << message << endl;
    } else {
-      logger(&message, LOGPRI_ERROR);
-      broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING, &message);
+      logger(message, LOGPRI_ERROR);
+      broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING, message);
    }
 }
 
@@ -93,15 +93,15 @@ void Daemon::configComplain(bool firstRun, String complaint)
 /* configWarning - Warn about something to the appropriate output
  * Original 05/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::configWarning(bool firstRun, String complaint)
+void Daemon::configWarning(bool firstRun, String const &complaint)
 {
    String message = String("Configuration warning: ") + complaint;
    
    if (firstRun) {
       cout << message << endl;
    } else {
-      logger(&message, LOGPRI_WARNING);
-      broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING, &message);
+      logger(message, LOGPRI_WARNING);
+      broadcastServerNotice(SERVERNOTICE_HOUSEKEEPING, message);
    }
 }
 

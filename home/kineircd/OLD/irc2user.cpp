@@ -564,7 +564,7 @@ void irc2userHandler::goodbye(String const &reason)
 /* kill - Handle a connection closure (killed)
  * Original 22/09/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::kill(String *caller, String *reason)
+void irc2userHandler::kill(String const &caller, String const &reason)
 {
    // Tell the user why the link is being closed
    sendKill(user, caller, reason);
@@ -701,15 +701,8 @@ String irc2userHandler::processUserModes(String *modes, StringTokens *tokens,
 /* sendChannelMode - Send a channel mode change
  * Original 30/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendChannelMode(Channel *c, User *u, String *modes)
-{
-   getConnection()->sendRaw(String::printf(":%s MODE %s %s" IRC2USER_EOL_CHARS,
-				      (char const *)u->getAddress(user),
-				      (char const *)c->name,
-				      (char const *)*modes));
-}
-
-void irc2userHandler::sendChannelMode(Channel *c, User *u, String modes)
+void irc2userHandler::sendChannelMode(Channel *c, User *u, 
+				      String const &modes)
 {
    getConnection()->sendRaw(String::printf(":%s MODE %s %s" IRC2USER_EOL_CHARS,
 				      (char const *)u->getAddress(user),
@@ -746,15 +739,15 @@ void irc2userHandler::sendJoin(Channel *c, User *u)
  * Original 20/09/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::sendKick(Channel *c, User *kicker, User *kickee,
-			       String *reason)
+			       String const &reason)
 {
    getConnection()->sendRaw(String::printf(":%s KICK %s %s%s" IRC2USER_EOL_CHARS,
 				      (char const *)kicker->getAddress(user),
 				      (char const *)c->name,
 				      (char const *)kickee->nickname,
-				      (((reason && reason->length()) ?
+				      ((reason.length() ?
 					(char const *)(String(" :") + 
-						       *reason) :
+						       reason) :
 					""))));
 }
 
@@ -763,25 +756,26 @@ void irc2userHandler::sendKick(Channel *c, User *kicker, User *kickee,
  * Original 22/09/01, Simon Butcher <pickle@austnet.org>
  * Note: The user field is ignored since any kill MUST be to us anyway
  */
-void irc2userHandler::sendKill(User *u, String *caller, String *reason)
+void irc2userHandler::sendKill(User *u, String const &caller, 
+			       String const &reason)
 {
    getConnection()->sendRaw(String::printf(":%s KILL %s :%s (%s)" 
-				      IRC2USER_EOL_CHARS,
-				      (char const *)(*caller),
-				      (char const *)user->nickname,
-				      (char const *)(*caller),
-				      (char const *)(*reason)));
+					   IRC2USER_EOL_CHARS,
+					   (char const *)caller,
+					   (char const *)user->nickname,
+					   (char const *)caller,
+					   (char const *)reason));
 }
 
 
-/* sendNick - Send a nickname change event
+/* sendNickChange - Send a nickname change event
  * Original 24/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendNick(User *u, String *nick)
+void irc2userHandler::sendNickChange(User *u, String const &nick)
 {
    getConnection()->sendRaw(String::printf(":%s NICK :%s" IRC2USER_EOL_CHARS,
 				      (char const *)u->getAddress(user),
-				      (char const *)(*nick)));
+				      (char const *)nick));
 }
 
 
@@ -819,7 +813,7 @@ void irc2userHandler::sendNotice(User *from, String *destination,
 /* sendNumeric - [Various forms] Send a numeric to the connection
  * Original 12/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendNumeric(short numeric, String line)
+void irc2userHandler::sendNumeric(short numeric, String const &line)
 {
    getConnection()->sendRaw(String::printf(":%s %03d %s %s" IRC2USER_EOL_CHARS,
 				      (char const *)getConnection()->getDaemon()->myServer()->hostname,
@@ -829,7 +823,7 @@ void irc2userHandler::sendNumeric(short numeric, String line)
 }
 
 void irc2userHandler::sendNumeric(Server *from, short numeric, User *to, 
-				  String line)
+				  String const &line)
 {
    getConnection()->sendRaw(String::printf(":%s %03d %s %s" IRC2USER_EOL_CHARS,
 				      (char const *)from->hostname,
@@ -922,20 +916,22 @@ void irc2userHandler::sendQuit(User *u, String const &reason)
 /* sendServerMode - [Various forms] Send a server mode change
  * Original 21/09/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendServerMode(Server *s, String *setter, String *modes)
+void irc2userHandler::sendServerMode(Server *s, Server *setter, 
+				     String const &modes)
 {
    getConnection()->sendRaw(String::printf(":%s MODE %s %s" IRC2USER_EOL_CHARS,
-				      (char const *)(*setter),
+				      (char const *)setter->hostname,
 				      (char const *)s->hostname,
-				      (char const *)(*modes)));
+				      (char const *)modes));
 }
 
-void irc2userHandler::sendServerMode(Server *s, User *setter, String *modes)
+void irc2userHandler::sendServerMode(Server *s, User *setter, 
+				     String const &modes)
 {
    getConnection()->sendRaw(String::printf(":%s MODE %s %s" IRC2USER_EOL_CHARS,
 				      (char const *)setter->getAddress(user),
 				      (char const *)s->hostname,
-				      (char const *)(*modes)));
+				      (char const *)modes));
 }
 
 
@@ -957,20 +953,22 @@ void irc2userHandler::sendSilence(User *silencer, bool setting,
 /* sendTopic - [Various Forms] Send a channel topic change
  * Original 19/09/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendTopic(Channel *chan, String *from, String *topic)
+void irc2userHandler::sendTopic(Channel *chan, Server *from,
+				String const &topic)
 {
    getConnection()->sendRaw(String::printf(":%s TOPIC %s :%s" IRC2USER_EOL_CHARS,
-				      (char const *)*from,
+				      (char const *)from->hostname,
 				      (char const *)chan->name,
-				      (char const *)*topic));
+				      (char const *)topic));
 }
 
-void irc2userHandler::sendTopic(Channel *chan, User *from, String *topic)
+void irc2userHandler::sendTopic(Channel *chan, User *from, 
+				String const &topic)
 {
    getConnection()->sendRaw(String::printf(":%s TOPIC %s :%s" IRC2USER_EOL_CHARS,
 				      (char const *)from->getAddress(user),
 				      (char const *)chan->name,
-				      (char const *)*topic));
+				      (char const *)topic));
 }
 
 
@@ -980,7 +978,7 @@ void irc2userHandler::sendTopic(Channel *chan, User *from, String *topic)
  *       according to the implementations (not the RFC). Here the given user
  *       is ignored
  */
-void irc2userHandler::sendUserMode(User *u, String modes)
+void irc2userHandler::sendUserMode(User *u, String const &modes)
 {
    getConnection()->sendRaw(String::printf(":%s MODE %s :%s" IRC2USER_EOL_CHARS,
 				      (char const *)user->nickname,
@@ -1028,18 +1026,18 @@ void irc2userHandler::sendWhoReply(User *u, Channel *c, ChannelMember *cm)
 /* sendWallops - [Various Forms] Send a WALLOPS message
  * Original 18/09/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::sendWallops(String *from, String *message)
+void irc2userHandler::sendWallops(Server *from, String const &message)
 {
    getConnection()->sendRaw(String::printf(":%s WALLOPS :%s" IRC2USER_EOL_CHARS,
-				      (char const *)*from,
-				      (char const *)*message));
+				      (char const *)from->hostname,
+				      (char const *)message));
 }
 
-void irc2userHandler::sendWallops(User *from, String *message)
+void irc2userHandler::sendWallops(User *from, String const &message)
 {
    getConnection()->sendRaw(String::printf(":%s WALLOPS :%s" IRC2USER_EOL_CHARS,
 				      (char const *)from->getAddress(user),
-				      (char const *)*message));
+				      (char const *)message));
 }
 
 
@@ -1110,7 +1108,7 @@ void irc2userHandler::sendWatchOn(Channel *target)
 					   target->creationTime));
 }
 
-void irc2userHandler::sendWatchOn(User *target, String *newNick /* = 0 */)
+void irc2userHandler::sendWatchOn(User *target, String const &newNick)
 {
    getConnection()->sendRaw(String::printf(":%s %d %s %s %s %s %lu "
 					   LNG_RPL_LOGON_USER
@@ -1118,8 +1116,8 @@ void irc2userHandler::sendWatchOn(User *target, String *newNick /* = 0 */)
 					   (char const *)getConnection()->getDaemon()->myServer()->hostname,
 					   RPL_LOGON,
 					   (char const *)user->nickname,
-					   (newNick ?
-					    (char const *)(*newNick) :
+					   (newNick.length() ?
+					    (char const *)newNick :
 					    (char const *)target->nickname),
 					   (char const *)target->username,
 					   (char const *)target->getHost(user),
@@ -1130,7 +1128,7 @@ void irc2userHandler::sendWatchOn(User *target, String *newNick /* = 0 */)
 /* doNAMES - Process and reply to a NAMES command
  * Original 15/08/01, Simon Butcher <pickle@austnet.org>
  */
-void irc2userHandler::doNAMES(String &param)
+void irc2userHandler::doNAMES(String const &param)
 {
 #ifdef DO_MATCH_COUNTING
    int matches = 0;
@@ -1582,7 +1580,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	chan = channels.nextToken(',')) {
       if (!User::isHelper(handler->user)) {
 	 // Check if this channel is being redirected to another channel
-	 String redir = TO_DAEMON->redirectedChannel(&chan);
+	 String redir = TO_DAEMON->redirectedChannel(chan);
 	 if (redir.length()) {
 	    // Notify a savvy client
 	    handler->sendNumeric(RPL_CHANREDIR,
@@ -1679,7 +1677,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	 // Check for stuff that helpers/operators skip
 	 if (!User::isHelper(handler->user)) {
 	    // Check if this channel is not marked on the fail mask list
-	    String reason = TO_DAEMON->failedChannel(&chan);
+	    String reason = TO_DAEMON->failedChannel(chan);
 	    if (reason.length()) {
 	       // Tell the user they cannot join, giving them the reaso
 	       handler->sendNumeric(ERR_BADCHANNAME,
@@ -1834,7 +1832,7 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       }
       
       // Finally, all things say we can kick this bloke out!
-      TO_DAEMON->kickChannelMember(c, handler->user, u, &reason);
+      TO_DAEMON->kickChannelMember(c, handler->user, u, reason);
    }
 }
 
@@ -1875,7 +1873,7 @@ void irc2userHandler::parseKILL(irc2userHandler *handler, StringTokens *tokens)
    // Check permissions here
    
    // Do the kill
-   TO_DAEMON->killUser(u, &handler->user->nickname, &reason);
+   TO_DAEMON->killUser(u, handler->user->nickname, reason);
 
    /* This is 'obsolete' but it is a good idea if the oper has server notices
     * turned off just to confirm the kill.
@@ -2144,8 +2142,8 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    
    // OK! Are we setting modes or just getting the modes
    if (modes.length()) {
-      TO_DAEMON->changeServerMode(server, handler, handler->user, &modes,
-				tokens);
+      TO_DAEMON->changeServerMode(server, handler, handler->user, modes,
+				  tokens);
       return;
    }
 
@@ -2232,7 +2230,7 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
    // Checks that IRC operators can bypass
    if (!User::isOper(handler->user)) {
       // Check if this nickname is marked on the fail mask list
-      String reason = TO_DAEMON->failedNickname(&nick);
+      String reason = TO_DAEMON->failedNickname(nick);
       if (reason.length()) {
 	 // Tell the user they cannot join, giving them the reaso
 	 handler->sendNumeric(ERR_ERRONEUSNICKNAME,
@@ -2245,7 +2243,7 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
       // Check if this user is already at this nickname
       if (handler->user->nickname == nick) {
 	 // Fake a nickname change, since none happened (stupid client)
-	 handler->sendNick(handler->user, &handler->user->nickname);
+	 handler->sendNickChange(handler->user, handler->user->nickname);
 	 return;
       }
       
@@ -2283,10 +2281,10 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
    }
 
    // Tell the user we are changing their nickname
-   handler->sendNick(handler->user, &nick);
+   handler->sendNickChange(handler->user, nick);
 
    // Do the change (this also broadcasts the nick change)
-   TO_DAEMON->changeUserNick(handler->user, &nick);
+   TO_DAEMON->changeUserNick(handler->user, nick);
 }
 
 
@@ -2480,7 +2478,7 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    String password = tokens->nextToken();
    
    // Get the operator
-   Operator *oper = TO_DAEMON->getOperator(&nickname);
+   Operator *oper = TO_DAEMON->getOperator(nickname);
    
    // Check.
    if (!oper) {
@@ -2571,7 +2569,7 @@ void irc2userHandler::parsePART(irc2userHandler *handler, StringTokens *tokens)
       } 
       
       // Do the part
-      TO_DAEMON->partChannel(c, handler->user, &reason);
+      TO_DAEMON->partChannel(c, handler->user, reason);
    }
 }
 
@@ -3096,7 +3094,7 @@ void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
    }
 
    // Change the topic, finally.
-   TO_DAEMON->changeChannelTopic(c, handler->user, &topic);
+   TO_DAEMON->changeChannelTopic(c, handler->user, topic);
 }
 
 
@@ -3204,7 +3202,7 @@ void irc2userHandler::parseWALLOPS(irc2userHandler *handler, StringTokens *token
    
    // Check that we have been given something
    if (message.length()) {
-      TO_DAEMON->broadcastWallops(handler->user, &message);
+      TO_DAEMON->broadcastWallops(handler->user, message);
       return;
    }
    
