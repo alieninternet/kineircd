@@ -333,9 +333,19 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
       return;
    }
    
-   // Rip out the data from the command
+   // Take out the remote network's name from the line..
    registrantData.nickname = line.nextToken();
-   (void)line.nextToken();
+   
+   // Check that the 'from network' field is * - it must be during registration
+   if (line.nextToken() != "*") {
+#ifdef KINE_DEBUG_PSYCHO
+      debug("Registrar::parseIIRCN() - Invalid: from network != \"*\"");
+#endif
+      connection.goodbye();
+      return;
+   }
+   
+   // Continue ripping out the data
    registrantData.hostname = line.nextToken();
    registrantData.protocol = line.nextToken().toUpper();
    registrantData.linkStamp = line.nextToken().toLong();
@@ -351,7 +361,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
    // Check the linkstamp, it must be greater than 0..
    if (registrantData.linkStamp <= 0) {
 #ifdef KINE_DEBUG_PSYCHO
-      debug("Registrar::parseIIRCN() - timestamp <= 0");
+      debug("Registrar::parseIIRCN() - Invalid: timestamp <= 0");
 #endif
       connection.goodbye();
       return;

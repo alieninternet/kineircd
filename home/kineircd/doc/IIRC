@@ -74,7 +74,8 @@ Connection commands:
     'via network' is the network this network is connected via. If this is *
        then the hop count is presumed to be 1 (direct), such as would be used
        during registration. During a burst, the network listed here must have
-       already been spoken for.
+       already been spoken for. This MUST be * during registration, or it is
+       considered invalid.
     'hostname' is the server hostname associated with this link, and may be
        masked to only show the network's domain name, or nothing at all
     'protocol' is the name of the protocol being used. Currently the IRC2
