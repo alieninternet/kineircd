@@ -469,8 +469,11 @@ if KINEIRCD_MOD_IRC2USER_WITH_SCHEME
  KINEIRCD_MOD_IRC2USER_SCHEME_CFLAGS=@GUILE_CFLAGS@
  KINEIRCD_MOD_IRC2USER_SCHEME_LDFLAGS=@GUILE_LDFLAGS@
  KINEIRCD_MOD_IRC2USER_SCHEME_SOURCES=\
+	src/mod_irc2user/numerics.cpp \
 	src/mod_irc2user/scheme.cpp \
-	src/mod_irc2user/scheme.h
+	src/mod_irc2user/scheme.h \
+	src/mod_irc2user/schemesubs.cpp \
+	src/mod_irc2user/schemesubs.h
 endif
 
 
@@ -526,11 +529,23 @@ src/mod_irc2user/language.cpp src/mod_irc2user/language.h: $(AUTOGEN_DIR)/langua
 		-DCOMPONENT=mod_irc2user \
 		$(AUTOGEN_DIR)/language.def
 
+src/mod_irc2user/numerics.cpp: src/mod_irc2user/numerics.cpp.tpl $(AUTOGEN_DIR)/irc2numerics.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T src/mod_irc2user/numerics.cpp.tpl \
+		$(AUTOGEN_DIR)/irc2numerics.def
+
 src/mod_irc2user/protocol.h: src/mod_irc2user/protocol.h.tpl src/mod_irc2user/commands.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T src/mod_irc2user/protocol.h.tpl \
 		src/mod_irc2user/commands.def
+
+src/mod_irc2user/schemesubs.cpp src/mod_irc2user/schemesubs.h: src/mod_irc2user/schemesubs.tpl src/mod_irc2user/schemesubs.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		-T src/mod_irc2user/schemesubs.tpl \
+		src/mod_irc2user/schemesubs.def
 
 
 

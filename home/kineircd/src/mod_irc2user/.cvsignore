@@ -2,4 +2,7 @@ commandlist.cpp
 commands.h
 language.cpp
 language.h
+numerics.cpp
 protocol.h
+schemesubs.cpp
+schemesubs.h

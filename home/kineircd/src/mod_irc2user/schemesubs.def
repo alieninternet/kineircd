@@ -1,5 +1,5 @@
 /* $Id$
- * 
+ *
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
@@ -20,23 +20,46 @@
  * along with KineIRCd; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+autogen definitions schemesubs;
 
-#ifndef _SRC_MOD_IRC2USER_SCHEME_H_
-# define _SRC_MOD_IRC2USER_SCHEME_H_ 1
+subs = {
+   name			= "isChannelOnline?";
+   requiredParams	= 1;
+   optionalParams	= 0;
+   restParams		= 0;
+};
 
-namespace Kine {
-   namespace mod_irc2user {
-      namespace Scheme {
-	 // Name to numeric map so that schemers can use names for readability
-	 struct numericName_type {
-	    const char* const name;
-	    const unsigned int numeric;
-	 } extern const numericNames[];
-	 
-	 // Initialise the scheme stuff
-	 extern void initScheme(void);
-      }; // namespace Scheme
-   }; // namespace mod_irc2user
-}; // namespace Kine
-   
-#endif // _SRC_MOD_IRC2USER_SCHEME_H_
+subs = {
+   name			= "isClientOnline?";
+   requiredParams	= 1;
+   optionalParams	= 0;
+   restParams		= 0;
+};
+
+subs = {
+   name			= "isNetworkOnline?";
+   requiredParams	= 1;
+   optionalParams	= 0;
+   restParams		= 0;
+};
+
+subs = {
+   name			= "isServerOnline?";
+   requiredParams	= 1;
+   optionalParams	= 0;
+   restParams		= 0;
+};
+
+subs = {
+   name			= "isServiceOnline?";
+   requiredParams	= 1;
+   optionalParams	= 0;
+   restParams		= 0;
+};
+
+subs = {
+   name			= "isUserOnline?";
+   requiredParams	= 1;
+   optionalParams	= 0;
+   restParams		= 0;
+};
