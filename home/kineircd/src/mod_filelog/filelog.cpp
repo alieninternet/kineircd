@@ -40,7 +40,7 @@ FileLog::FileLog(Config& c)
     config(c)
 {
    logFile.open(c.getFilename().c_str(),
-		std::ofstream::out | std::ofstream::ate);
+		std::ofstream::out | std::ofstream::app);
 }
 
 
@@ -63,6 +63,18 @@ void FileLog::logLine(const std::string& str,
 		      const Kine::Logger::Mask::type mask)
 {
    if (ok()) {
-      logFile << '[' << time(NULL) << ':' << mask << "] " << str << std::endl;
+      // Grab the time, *sigh* this is messy
+      time_t currentTimeT = time(NULL);
+      struct tm currentTime = *localtime(&currentTimeT);
+      
+      // Generate the prefix. If the prefix is too large, we will replace it.
+      if (strftime((char*)buffer, bufferLength, 
+		   config.getPrefixFormat().c_str(), &currentTime) == 0) {
+	 logFile << "<prefix too large>: " << str << std::endl;
+	 return;
+      }
+
+      // Output the line
+      logFile << (char*)buffer << str << std::endl;
    }
 }
