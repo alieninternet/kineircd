@@ -44,6 +44,7 @@ Registry::Registry(void)
 {
 #ifdef KINE_DEBUG_ASSERT
    // Are we sane? Please say yes.. please say yes..
+   assert(users.empty());
    assert(localUsers.empty());
 #endif
 }
@@ -81,6 +82,38 @@ void Registry::initInstance(void)
 }
 
 
+/* add - Add the given user
+ * Original 08/04/2003
+ */
+Error::error_type Registry::add(User& entity)
+{
+#ifdef KINE_DEBUG
+   std::ostringstream debugOut;
+   debugOut << "Registry::add() - Trying to add user @ " << &entity <<
+     " (" << users.size() << " users known)";
+   debug(debugOut.str());
+#endif
+
+   // Make sure the client doesn't already exist..
+   if (findClient(entity.getNickname()) == 0) {
+      // Add the user to the list
+      (void)users.
+	insert(users_type::value_type(entity.getNickname().IRCtoLower(),
+				      &entity));
+      
+      // Smile..
+      return Error::NO_ERROR;
+   }
+   
+#ifdef KINE_DEBUG
+   debug("Registry::add() - Client already exists (name conflict)");
+#endif
+
+   // Complain
+   return Error::CLIENT_EXISTS;
+}
+
+
 /* add - Add the given local user
  * Original 08/04/2003
  */
@@ -89,17 +122,22 @@ Error::error_type Registry::add(LocalUser& entity)
 #ifdef KINE_DEBUG
    std::ostringstream debugOut;
    debugOut << "Registry::add() - Trying to add local user @ " << &entity <<
-     " (" << localUsers.size() << " local users known)";
+     " (" << localUsers.size() << " local users, " << users.size() << 
+     " users known)";
    debug(debugOut.str());
 #endif
 
    // Make sure the client doesn't already exist..
    if (findClient(entity.getNickname()) == 0) {
-
       // Add the user to the local user list..
       (void)localUsers.
 	insert(localUsers_type::value_type(entity.getNickname().IRCtoLower(),
 					   &entity));
+      
+      // .. And to the user list..
+      (void)users.
+	insert(users_type::value_type(entity.getNickname().IRCtoLower(),
+				      &entity));
       
       // All is well :)
       return Error::NO_ERROR;
@@ -114,7 +152,39 @@ Error::error_type Registry::add(LocalUser& entity)
 }
 
 
-/* remove - Add the given local user
+/* remove - Remove the given user
+ * Original 08/04/2003
+ */
+Error::error_type Registry::remove(const User& entity)
+{
+#ifdef KINE_DEBUG
+   std::ostringstream debugOut;
+   debugOut << "Registry::add() - Trying to remove user @ " << &entity;
+   debug(debugOut.str());
+#endif
+
+   // Find the local user
+   users_type::iterator it = users.find(entity.getNickname().IRCtoLower());
+   
+   // Make sure we found something
+   if (it != users.end()) {
+      // .. and also from the users list
+      (void)users.erase(it);
+      
+      // Done
+      return Error::NO_ERROR;
+   }
+   
+#ifdef KINE_DEBUG
+   debug("Registry::remove() - Given user was not found");
+#endif
+
+   // Complain about the user not existing
+   return Error::UNREGISTERED_ENTITY;
+}
+
+
+/* remove - Remove the given local user
  * Original 08/04/2003
  */
 Error::error_type Registry::remove(const LocalUser& entity)
@@ -133,9 +203,9 @@ Error::error_type Registry::remove(const LocalUser& entity)
    if (it != localUsers.end()) {
       // Remove the user from the local user list
       (void)localUsers.erase(it);
-   
-      // Done
-      return Error::NO_ERROR;
+
+      // Remove it from the global user list too..
+      return remove((const User&)entity);
    }
    
 #ifdef KINE_DEBUG
@@ -144,6 +214,24 @@ Error::error_type Registry::remove(const LocalUser& entity)
 
    // Complain about the user not existing
    return Error::UNREGISTERED_ENTITY;
+}
+
+
+/* findUser - Find the a user by its name
+ * Original 08/04/2003
+ */
+User* const Registry::findUser(const Name& name) const
+{
+   // Look up the given use from the local user list
+   users_type::const_iterator it = users.find(name.IRCtoLower());
+   
+   // Make sure we found something..
+   if (it != users.end()) {
+      return it->second;
+   }
+   
+   // Not found
+   return 0;
 }
 
 

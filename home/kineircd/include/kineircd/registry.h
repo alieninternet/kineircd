@@ -40,15 +40,25 @@
 namespace Kine {
    class Registry {
     public:
+      //! Network-wide connected users list type
+# ifdef KINE_STL_HAS_HASH
+      typedef std::hash_map < Name, User* const > users_type;
+# else
+      typedef std::map < Name, User* const > users_type;
+# endif
+
       //! Locally connected users list type
 # ifdef KINE_STL_HAS_HASH
-      typedef std::hash_map < Name, LocalUser* > localUsers_type;
+      typedef std::hash_map < Name, LocalUser* const > localUsers_type;
 # else
-      typedef std::map < Name, LocalUser* > localUsers_type;
+      typedef std::map < Name, LocalUser* const > localUsers_type;
 # endif
-      
+
     private:
-      //! List of locally connected users (these are also in the netwide table)
+      //! Network-wide connected users (includes users local, and network wide)
+      users_type users;
+      
+      //! List of locally connected users
       localUsers_type localUsers;
       
       //! Our single instance
@@ -69,18 +79,31 @@ namespace Kine {
       static Registry& getInstance(void)
 	{ return *instance; };
       
+      //! Add the given user
+      Error::error_type add(User& entity);
+      
       //! Add the given local user
       Error::error_type add(LocalUser& entity);
       
+      //! Remove the given user
+      Error::error_type remove(const User& entity);
+
       //! Remove the given local user
       Error::error_type remove(const LocalUser& entity);
+      
+      //! Find the given local user, by its name
+      User* const findUser(const Name& name) const;
       
       //! Find the given local user, by its name
       LocalUser* const findLocalUser(const Name& name) const;
       
       //! Find the given client, by its name
       Client* const findClient(const Name& name) const
-	{ return findLocalUser(name); /* <=- temporary */ };
+	{ return findUser(name); /* <=- temporary */ };
+      
+      //! Return the local user list (read-only access)
+      const users_type& getUsers(void) const
+	{ return users; };
       
       //! Return the local user list (read-only access)
       const localUsers_type& getLocalUsers(void) const
