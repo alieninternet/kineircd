@@ -25,6 +25,9 @@
 # include "autoconf.h"
 #endif
 
+#include <ctime>
+#include <sstream>
+#include <iomanip>
 #include <aisutil/string/mask.h>
 #include <kineircd/version.h>
 
@@ -37,7 +40,7 @@ using namespace Kine::mod_irc2user;
 
 /* handleHELP
  * Original 13/08/2001 simonb
- * 02/04/2001 simonb - Imported from old code
+ * 02/04/2003 simonb - Imported from old code
  * Note: Not the best use on CPU since it's checking a match no matter how
  *       this is called, but since this is very rarely called I decided the
  *       code should be small rather than faster :)
@@ -139,7 +142,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 
 /* handleLANGUAGE
  * Original 26/10/2001 simonb
- * 03/04/2001 simonb - Imported from old code
+ * 03/04/2003 simonb - Imported from old code
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 {
@@ -211,7 +214,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 
 /* handleLUSERS
  * Original 27/08/2001 simonb
- * 03/04/2001 simonb - Imported from old code
+ * 03/04/2003 simonb - Imported from old code
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 {
@@ -227,7 +230,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 
 /* handleMOTD
  * Original 13/08/2001 simonb
- * 03/04/2001 simonb - Imported from old code
+ * 03/04/2003 simonb - Imported from old code
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 {
@@ -243,7 +246,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 
 /* handlePING
  * Original 25/08/2001 simonb
- * 03/04/2001 simonb - Imported from old code
+ * 03/04/2003 simonb - Imported from old code
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
 {
@@ -264,7 +267,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
 
 /* handleQUIT
  * Original 14/08/2001 simonb
- * 08/04/2001 simonb - Imported from old code
+ * 08/04/2003 simonb - Imported from old code
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 {
@@ -277,9 +280,66 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 }
 
 
+/* handleTIME
+ * Original 27/08/2001 simonb
+ * 14/04/2003 simonb - Imported from old code
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
+{
+   // If there are no parameters, the user was wants us to reply..
+   if (parameters.empty()) {
+      // Make up a "human readable" time string
+      struct tm currentTime;
+      currentTime = *gmtime((const time_t*)&daemon().getTime());
+      std::ostringstream text;
+      
+//      if (true) { // <=- should be a configurable define or something
+	 /* Stuff used to make a human readable time string which confirms
+	  * relatively strictly to what traditional IRC daemons output.
+	  * Unfortunately it is not internationalised, and too many 
+	  * scripts/bots rely on it. Hopefully this changes one day.
+	  */
+	 static const char* const months[12] = {
+	    "January", "February", "March", "April", "May", 
+	    "June", "July", "August", "September", "October",
+	    "November", "December"
+	 };
+	 static const char* const days[7] = {
+	    "Sunday", "Monday", "Tuesday", "Wednesday",
+	    "Thursday", "Friday", "Saturday"
+	 };
+	 
+	 text << std::setfill('0') <<
+	   days[currentTime.tm_wday] << ' ' <<
+	   months[currentTime.tm_mon] << ' ' <<
+	   currentTime.tm_mday << ' ' <<
+	   (currentTime.tm_year + 1900) << " -- " <<
+	   std::setw(2) << currentTime.tm_hour << ':' <<
+	   std::setw(2) << currentTime.tm_min << ' ' <<
+	   ((timezone > 0) ? '-' : '+') <<
+	   std::setw(2) << ((-timezone) / 3600) << ':' <<
+	   std::setw(2) << (((-timezone) % 3600) / 60);
+//      }
+	
+      // Send the RPL_TIME reply
+      sendNumeric(LibIRC2::Numerics::RPL_TIME,
+		  config().getOptionsServerName(),
+		  text.str());
+      
+      // Also send the RPL_TIMEONSERVERIS
+      sendTimeOnServer();
+      
+      // We're done..
+      return;
+   }
+   
+   // Look up the server?
+}
+
+
 /* handleVERSION
  * Original 24/08/2001 simonb
- * 03/04/2001 simonb - Imported from old code
+ * 03/04/2003 simonb - Imported from old code
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
 {

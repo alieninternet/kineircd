@@ -25,6 +25,7 @@
 # include "autoconf.h"
 #endif
 
+#include <ctime>
 #include <kineircd/module.h>
 #include <kineircd/daemon.h>
 
@@ -84,6 +85,9 @@ namespace {
        * Original 04/11/2002 simonb
        */
       bool start(void) {
+	 // Make sure the timezone information exists (we need it)
+	 tzset();
+	 
 	 // Attempt to register our protocol to the daemon
 	 if (!Kine::daemon().registerProtocol(protocolInfo)) {
 	    return false;

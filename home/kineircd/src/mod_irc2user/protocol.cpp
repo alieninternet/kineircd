@@ -25,7 +25,9 @@
 # include "autoconf.h"
 #endif
 
+#include <ctime>
 #include <sstream>
+#include <iomanip>
 #include <kineircd/config.h>
 #include <kineircd/languages.h>
 #include <kineircd/registry.h>
@@ -88,6 +90,9 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    // Tell the user a about what we can do.. (005 numeric)
    sendISUPPORT();
 
+   // Tell the user the time on server
+   sendTimeOnServer();
+   
    // Send the LUSERS output, for some reason some clients want this??
    sendLUSERS();
    
@@ -287,6 +292,43 @@ void Protocol::sendMOTD(const bool justConnected)
 }
 
 
+/* sendTimeOnServer - Send RPL_TIMEONSERVERIS
+ * Original 12/08/2003 simonb
+ */
+void Protocol::sendTimeOnServer(void)
+{
+   std::ostringstream data;
+   
+   // Compile the time data (it's messy, so we compile the fields by hand)
+   data << 
+     daemon().getTime().seconds << ' ' <<
+     daemon().getTime().nanoseconds << ' ';
+   
+   /* Work out the timezone.. This is a pain in the arse, because the stupid
+    * Americans get timezones in C in seconds *WEST* of Greenwich. Sorry to say
+    * the Americans, in their infinite wisdom, have forgotten, once again,
+    * that the entire WORLD specifies timezones in terms of being *EAST* of
+    * Greenwich, as it has always been (it's no coincidence that the world
+    * rotates in such a direction for this to be logical). It's funny to note
+    * this seems just as stupid as the %D formatting code in strftime().
+    * At least you know why we're processing this integer backwards.
+    */
+   data <<
+     ((timezone > 0) ? '-' : '+') << std::setfill('0') <<
+     std::setw(2) << ((-timezone) / 3600) <<
+     std::setw(2) << (((-timezone) % 3600) / 60) <<
+     ' ';
+   
+   // Yes, no flags.. yet..
+   data << '*';
+   
+   // Send the time
+   sendNumeric(LibIRC2::Numerics::RPL_TIMEONSERVERIS,
+	       data.str(),
+	       GETLANG(irc2_RPL_TIMEONSERVERIS));
+}
+
+
 
 // Stuff not transferred yet..
 IRC2USER_COMMAND_HANDLER(Protocol::handleACCEPT) {};
@@ -321,7 +363,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSILENCE) {};
 IRC2USER_COMMAND_HANDLER(Protocol::handleSQUIT) {};
 IRC2USER_COMMAND_HANDLER(Protocol::handleSTATS) {};
 IRC2USER_COMMAND_HANDLER(Protocol::handleSUMMON) {};
-IRC2USER_COMMAND_HANDLER(Protocol::handleTIME) {};
 IRC2USER_COMMAND_HANDLER(Protocol::handleTOPIC) {};
 IRC2USER_COMMAND_HANDLER(Protocol::handleTRACE) {};
 IRC2USER_COMMAND_HANDLER(Protocol::handleTRACEROUTE) {};
