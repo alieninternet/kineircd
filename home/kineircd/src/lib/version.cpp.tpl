@@ -118,7 +118,7 @@ namespace Version {
 #ifdef ALLOW_GLOBALOP_DIE
 				"X"
 #endif
-#ifdef LOG_TO_SYSLOG
+#ifdef SYSLOG_IDENT
 				"Y"
 #endif
 #ifdef ALLOW_SERVER_CONNECTIONS

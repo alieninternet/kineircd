@@ -90,6 +90,7 @@ void Connection::handleInput(void)
 {
    // Catch a dead connection here
    if (socket->isConnected()) {
+      // Read a line from the socket buffer (this should change!!!)
       String line = socket->io->read();
 
       // Make sure we have a whole line - we only want to deal with full lines

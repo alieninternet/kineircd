@@ -75,7 +75,7 @@ On to the letters!
  x = ALLOW_LOCALOP_DIE (tba)
  X = ALLOW_GLOBALOP_DIE (tba)
  y = 
- Y = LOG_TO_SYSLOG
+ Y = SYSLOG_IDENT (logging to syslog rather than austhex8 logging)
  z = ALLOW_SERVER_CONNECTIONS
  Z = ALLOW_SERVICE_CONNECTIONS
 

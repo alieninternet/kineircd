@@ -485,7 +485,13 @@ String PlainSocketIO::read(void)
 	 
 	 // Otherwise, shut this connection down
 	 if (socket->connection) {
+#ifdef DEBUG_EXTENDED
+	    debug("Killing a connection's queue");
+#endif
 	    socket->connection->killQueue();
+#ifdef DEBUG_EXTENDED
+	    debug("goodbye()ing a connection");
+#endif
 	    socket->connection->goodbye(String::printf("Read error: %s",
 						       strerror(errno)));
 	 }

@@ -8,24 +8,12 @@
 #ifndef __CONFIG_H_
 # define __CONFIG_H_
 
-/* Undefine this if you don't want us to log to syslog */
-# define LOG_TO_SYSLOG
 
-
-/* Change this if you feel like it.. */
-# define SYSLOG_IDENT			"ircd"
-
-
-/* This is the location to the PID file, generated upon startup. Edit to fit
- * your operating system, or undefine this if you do not want a PID file to 
- * be created at all - it's handy to have, though, if you want to kill the 
- * server from a script or something.
- */
-# define PID_FILE			"/var/run/ircd.pid"
-
-
-/* Socket listen maximum backlog.. */
-# define LISTEN_MAXQUEUE		50
+/******************************************************************************
+*                                                                             *
+*  DO NOT TOUCH ANYTHING BELOW THIS POINT UNLESS YOU KNOW WHAT YOU'RE DOING!  *
+*                                                                             *
+******************************************************************************/
 
 
 /* This is the location of the configuration file. It can be overwritten
@@ -80,15 +68,7 @@
  * Check user.h for more usermodes you can 'or' together.
  * Undefining this will stop users automatically being set a mode.
  */
-#define USER_REGISTRATION_MODES		User::M_VWORLD | \
-					User::M_IDENTIFIED // temporary
-
-
-/******************************************************************************
-*                                                                             *
-*  DO NOT TOUCH ANYTHING BELOW THIS POINT UNLESS YOU KNOW WHAT YOU'RE DOING!  *
-*                                                                             *
-******************************************************************************/
+#define USER_REGISTRATION_MODES		User::M_VWORLD
 
 
 /* Maximums for various things, probably best not to touch these.
@@ -283,6 +263,14 @@
 
 @TOP@
 
+/* This is the location to the PID file, generated upon startup. Edit to fit
+ * your operating system, or undefine this if you do not want a PID file to 
+ * be created at all - it's handy to have, though, if you want to kill the 
+ * server from a script or something.
+ */
+# undef PID_FILE
+
+
 /* Default maximums for various things - see the INSTALL file for more info */
 # undef DEFAULT_MAX_ACCEPTS_PER_USER
 # undef DEFAULT_MAX_BANS_PER_CHANNEL
@@ -302,6 +290,18 @@
 # undef ACCEPT_UNKNOWN_LANGS
   
   
+/* When enabled, this turns on logging to the syslog interface. When
+ * disabled, logging will not occur. A string must be specified with this
+ * define - it will be the identity of the process as far as syslog is 
+ * concerned.
+ */
+# undef SYSLOG_IDENT
+
+
+/* Socket listen maximum backlog.. */
+# undef LISTEN_MAXQUEUE
+
+
 /* Define these depending on what connections you want to allow/disallow */
 # undef ALLOW_CLIENT_CONNECTIONS
 # undef ALLOW_SERVER_CONNECTIONS
@@ -537,7 +537,7 @@
 
   
 /* Work out what to do about the logging priorities */
-# ifdef LOG_TO_SYSLOG
+# ifdef SYSLOG_IDENT
 #  include <syslog.h>
 #  define LOGPRI_INFO		LOG_INFO
 #  define LOGPRI_NOTICE		LOG_NOTICE

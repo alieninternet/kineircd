@@ -162,7 +162,7 @@ Daemon::~Daemon(void)
    // Clean up the whowas list
    whowas.clear();
 
-#ifdef LOG_TO_SYSLOG
+#ifdef SYSLOG_IDENT
    // Kill the syslog link
    closelog();
 #endif
@@ -214,7 +214,7 @@ bool Daemon::init(String const &conf)
    /* Seed the random number thingy.. this is kinda dodgey :( */
    srand((unsigned int)getTime());
    
-#ifdef LOG_TO_SYSLOG
+#ifdef SYSLOG_IDENT
    /* Open up logging session with syslog - The reason why I chose syslog
     * is that syslog is an easy to read format, easy to log to, and there are
     * heaps of utilities out there to help format, strip, grep syslogs etc.
@@ -314,7 +314,7 @@ void Daemon::logger(String const &line, int priority)
     * starting, stopping, starting, stopping etc etc..
     */
 #ifndef DEBUG
-# ifdef LOG_TO_SYSLOG
+# ifdef SYSLOG_IDENT
    if (priority >= 0) {
       syslog(priority, "%s", (char const *)line);
    }
@@ -599,12 +599,6 @@ void Daemon::serverNotice(ServerNotice::servnotice_t type, String const &message
  */
 void Daemon::broadcastWallops(Server *from, String const &message)
 {
-#ifdef DEBUG_EXTENDED
-   debug(String::printf("broadcastWallops() (%s) %s",
-			(char const *)from->hostname,
-			(char const *)message));
-#endif
-   
    // Run through the local user list
    for (localuser_map_t::iterator it = localUsers.begin();
 	it != localUsers.end(); it++) {
@@ -629,12 +623,6 @@ void Daemon::broadcastWallops(Server *from, String const &message)
 
 void Daemon::broadcastWallops(User *from, String const &message)
 {
-#ifdef DEBUG_EXTENDED
-   debug(String::printf("broadcastWallops() (%s) %s",
-			(char const *)from->nickname,
-			(char const *)message));
-#endif
-   
    // Run through the local user list
    for (localuser_map_t::iterator it = localUsers.begin();
 	it != localUsers.end(); it++) {
@@ -1123,13 +1111,27 @@ void Daemon::killUser(User *user, String const &caller,
    
    // If this was one of ours, we need to do the physical kill
    if (user->local) {
+      // Notify the network about this kill just before we do it...
+      serverNotice(ServerNotice::SN_KILL_LOCAL,
+		   String::printf("%s %s %s",
+				  (char const *)caller,
+				  (char const *)user->getNickname(),
+				  (char const *)reason));
+      
       // Get the handler connection to clean up the mess
       user->local->handler->kill(caller, reason);
+   } else {
+      // The kill is 'remote', use the remote kill notice instead
+      serverNotice(ServerNotice::SN_KILL_REMOTE,
+		   String::printf("%s %s %s",
+				  (char const *)caller,
+				  (char const *)user->getNickname(),
+				  (char const *)reason));
    }
    
    // Just quit them, minus the broadcast. We will do that
    quitUser(user, newReason, false);
-   
+ 
    // Broadcast the kill to other servers
 }
 

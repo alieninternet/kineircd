@@ -851,6 +851,25 @@ AC_ARG_ENABLE(max-langs-per-user,[
    AC_DEFINE(DEFAULT_MAX_LANGS_PER_USER, 6)
  ])
 
+AC_MSG_CHECKING([max-listen-queue parameter])
+AC_ARG_ENABLE(max-listen-queue,[
+  --enable-max-listen-queue=sockets          (Default is 25)
+    This option defines how many sockets are allowed to be pending connection
+    in the TCP/IP stack. This option cannot be disabled. If you do not
+    know what this does, it is best to leave it alone.
+ ],[
+   if test "$enableval" -gt 0 -a "$enableval" -lt 1000; then
+     AC_MSG_RESULT([$enableval sockets])
+     AC_DEFINE_UNQUOTED(LISTEN_MAXQUEUE, $enableval)
+   else
+     AC_MSG_RESULT([25 sockets (default, fixed)])
+     AC_DEFINE(LISTEN_MAXQUEUE, 25)
+   fi
+ ],[
+   AC_MSG_RESULT([25 sockets (default)])
+   AC_DEFINE(LISTEN_MAXQUEUE, 25)
+ ])
+
 AC_MSG_CHECKING([max-modes-per-command parameter])
 AC_ARG_ENABLE(max-modes-per-command,[
   --enable-max-modes-per-command=number      (Default is '6')
@@ -975,6 +994,26 @@ AC_ARG_ENABLE(passive-registration,[
    AC_MSG_RESULT([no (default)])
  ])
 
+AC_MSG_CHECKING([pid-file parameter])
+AC_ARG_ENABLE(pid-file,[
+  --enable-pid-file[=default]                (Default is disabled)
+    When enabled, this makes the IRC daemon write the PID number to a file
+    as it forks out. This can aid control scripts to send signals to the
+    IRC Daemon's process, eg. SIGHUP to reload the configuration. If a
+    parameter is specified when enabling this option, it will be the default
+    file name to write the PID number to. This file can be overrided by
+    the configuration file.
+ ],[
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT($enableval)
+     AC_DEFINE(PID_FILE)
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+ ])
+
 AC_MSG_CHECKING([strict-channel-names parameter])
 AC_ARG_ENABLE(strict-channel-names,[
   --enable-strict-channel-names              (Default is enabled)
@@ -1014,6 +1053,31 @@ AC_ARG_ENABLE(strict-registration,[
  ],[
    AC_MSG_RESULT([yes (default)])
    AC_DEFINE(STRICT_REGISTRATIONS)
+ ])
+
+dnl this really should check if syslog is AVAILABLE!! .. right? :(
+AC_MSG_CHECKING([syslog-logging parameter])
+AC_ARG_ENABLE(syslog-logging,[
+  --enable-syslog-logging[=identity]         (Default is on, 'ircd')
+    When enabled, this enables logging to the syslog device (if it is
+    available on your system). If an optional identity is specified, this
+    will be used to identify the process in the log file (eg. you may wish
+    to use 'austhex' instead of 'ircd'). When disabled, no logging will
+    occur. This software does not output much to the log, so it won't hurt
+    if you leave this on.
+ ],[
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   elif test "$enableval" = "yes"; then
+     AC_MSG_RESULT([yes, identity: ircd])
+     AC_DEFINE(SYSLOG_IDENT, "ircd")
+   else
+     AC_MSG_RESULT([yes, identity: $enableval])
+     AC_DEFINE(SYSLOG_IDENT, $enableval)
+   fi
+ ],[
+   AC_MSG_RESULT([yes, identity: ircd (default)])
+   AC_DEFINE(SYSLOG_IDENT, "ircd")
  ])
 
 AC_MSG_CHECKING([time-to-be-idle parameter])

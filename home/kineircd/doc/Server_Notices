@@ -77,7 +77,10 @@ Char | Description/Format
   H  | High-Traffic Mode (level of 0 means means, -1 means leaving)
      | <level> <input_bps> <htm_high_water_mark_bps>
      |
-  k  | Kill notice 
+  k  | Kill notice (local)
+     | <killer> <nick> <reason...>
+     |     
+  K  | Kill notice (remote)
      | <killer> <nick> <reason...>
      |     
   L  | LOCOPS messages
