@@ -17,9 +17,6 @@ endif
 if KINEIRCD_COMPILE_MOD_FILELOG
  KINEIRCD_TARGET_MOD_FILELOG=mod_filelog.la
 endif
-if KINEIRCD_COMPILE_MOD_HTTP
- KINEIRCD_TARGET_MOD_HTTP=mod_http.la
-endif
 if KINEIRCD_COMPILE_MOD_IIRC1
  KINEIRCD_TARGET_MOD_IIRC1=mod_iirc1.la
 endif
@@ -49,7 +46,6 @@ lib_LTLIBRARIES=\
 	$(KINEIRCD_TARGET_MOD_BOVINI1) \
 	$(KINEIRCD_TARGET_MOD_CHANNELLOG) \
 	$(KINEIRCD_TARGET_MOD_FILELOG) \
-	$(KINEIRCD_TARGET_MOD_HTTP) \
 	$(KINEIRCD_TARGET_MOD_IIRC1) \
 	$(KINEIRCD_TARGET_MOD_IRC2REGISTRAR) \
 	$(KINEIRCD_TARGET_MOD_IRC2USER) \
@@ -424,26 +420,6 @@ mod_filelog_la_LDFLAGS=\
 
 mod_filelog_la_LIBADD=\
 	libkineircd.la
-
-
-
-###############################################################################
-# 'mod_http' module
-###############################################################################
-mod_http_la_SOURCES=\
-	src/mod_http/module.cpp \
-	src/mod_http/module.h \
-	src/mod_http/protocol.cpp \
-	src/mod_http/protocol.h \
-	src/mod_http/protocolinfo.h
-
-mod_http_la_LDFLAGS=\
-	-avoid-version \
-	-module
-
-mod_http_la_LIBADD=\
-	libkineircd.la \
-	libkineircd_clbp.la
 
 
 
