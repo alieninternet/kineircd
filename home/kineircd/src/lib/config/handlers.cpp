@@ -41,14 +41,14 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::topDefs = {
 	{
-	   "ADMINISTRATOR",
+	   "ADMINISTRATOR", 5,
 	     0,
 	     0,
 	     &defClassAdministrator,
 	     0
 	},
 	{
-	   "ARBITERS",
+	   "ARBITERS", 7,
 	     0,
 	     0,
 	     &defClassArbiters,
@@ -56,7 +56,7 @@ namespace Config {
 	},
 #ifdef KINE_OLD_CONFIG_SUBPARSER
 	{
-	   "INCLUDEOLDCONFIG",
+	   "INCLUDEOLDCONFIG", 14,
 	     0, // Intentionally null
 	     &varHandleOldConfig,
 	     0,
@@ -64,56 +64,56 @@ namespace Config {
 	},
 #endif
 	{
-	   "LANGUAGES",
+	   "LANGUAGES", 4,
 	     (void *)&Config::defLanguageList,
 	     0,
 	     &defClassLanguages,
 	     0
 	},
 	{
-	   "LISTEN",
+	   "LISTEN", 6,
 	     (void *)&Config::defListenerList,
 	     0,
 	     0,
 	     &ListenerConfig::classHandler
 	},
 	{
-	   "LOGGING",
+	   "LOGGING", 3,
 	     0,
 	     0,
 	     &defClassLogging,
 	     0
 	},
 	{
-	   "MODULE",
+	   "MODULE", 3,
 	     (void *)&Config::defModuleList,
 	     &varHandleModule,
 	     0,
 	     &classHandleModule
 	},
 	{
-	   "NETWORK",
+	   "NETWORK", 3,
 	     0,
 	     0,
 	     &defClassNetwork,
 	     0
 	},
 	{
-	   "OPERATORS",
+	   "OPERATORS", 4,
 	     0,
 	     0,
 	     &defClassOperators,
 	     0
 	},
 	{
-	   "OPTIONS",
+	   "OPTIONS", 3,
 	     0,
 	     0,
 	     &defClassOptions,
 	     0
 	},
 	{
-	   "REDIRECTION",
+	   "REDIRECTION", 5,
 	     0,
 	     0,
 	     &defClassRedirection,
@@ -121,7 +121,7 @@ namespace Config {
 	},
 #ifdef KINE_WITH_SSL
 	{
-	   "SSL",
+	   "SSL", 3,
 	     0,
 	     0,
 	     &defClassSSL,
@@ -129,7 +129,7 @@ namespace Config {
 	},
 #endif
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -142,28 +142,28 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassAdministrator = {
 	{
-	   "EMAIL",
+	   "EMAIL", 5,
 	     (void *)&Config::defAdminEmail,
 	     &varHandleString,
 	     0,
 	     0
 	},
 	{
-	   "LOCATION",
+	   "LOCATION", 3,
 	     (void *)&Config::defAdminLocation,
 	     &varHandleString,
 	     0,
 	     0
 	},
 	{
-	   "NAME",
+	   "NAME", 4,
 	     (void *)&Config::defAdminName,
 	     &varHandleString,
 	     0,
 	     0
 	},
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -176,14 +176,14 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassArbiters = {
 	{
-	   "SERVERS",
+	   "SERVERS", 4,
 	     0,
 	     0,
 	     &defClassArbitersServers,
 	     0
 	},
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -195,7 +195,7 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassArbitersServers = {
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -208,7 +208,7 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassLanguages = {
 	{
-	   0,
+	   0, 0,
 	     (void *)&Config::defLanguageList,
 	     &LanguageConfig::varHandler,
 	     0,
@@ -221,7 +221,7 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassLogging = {
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -234,14 +234,14 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassNetwork = {
 	{
-	   "NAME",
+	   "NAME", 4,
 	     (void *)&Config::defNetworkName,
 	     &varHandleNetworkName,
 	     0,
 	     0
 	},
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -254,7 +254,7 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassOperators = {
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     &defClassOperatorsGeneric,
@@ -266,35 +266,35 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassOperatorsGeneric = {
 	{
-	   "HOSTS",
+	   "HOSTS", 4,
 	     0,
 	     0,
 	     &defClassOperatorsGenericHosts,
 	     0
 	},
 	{
-	   "NAME",
+	   "NAME", 4,
 	     0,
 	     0,
 	     0,
 	     0
 	},
 	{
-	   "PASSWORD",
+	   "PASSWORD", 4,
 	     0,
 	     0,
 	     0,
 	     0
 	},
 	{
-	   "TYPE",
+	   "TYPE", 4,
 	     0,
 	     0,
 	     0,
 	     0
 	},
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -306,7 +306,7 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassOperatorsGenericHosts = {
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -319,70 +319,70 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassOptions = {
 	{
-	   "DESCRIPTION",
+	   "DESCRIPTION", 4,
 	     (void *)&Config::defOptionsDescription,
 	     &varHandleString,
 	     0,
 	     0
 	},
 	{
-	   "CHGROUP",
+	   "CHGROUP", 3,
 	     0,
 	     0,
 	     0,
 	     0
 	},
 	{
-	   "CHROOT",
+	   "CHROOT", 3,
 	     0,
 	     0,
 	     0,
 	     0
 	},
 	{
-	   "CHUSER",
+	   "CHUSER", 3,
 	     0,
 	     0,
 	     0,
 	     0
 	},
 	{
-	   "HIDDEN",
+	   "HIDDEN", 3,
 	     (void *)&Config::defOptionsHidden,
 	     &varHandleBoolean,
 	     0,
 	     0
 	},
 	{
-	   "LIMITS",
+	   "LIMITS", 3,
 	     0,
 	     0,
 	     &defClassOptionsLimits,
 	     0
 	},
 	{
-	   "MOTDFILE",
+	   "MOTDFILE", 4,
 	     (void *)&Config::defOptionsMOTD,
 	     0,
 	     0,
 	     0
 	},
 	{
-	   "PIDFILE",
+	   "PIDFILE", 3,
 	     (void *)&Config::defOptionsPidFile,
 	     &varHandleString,
 	     0,
 	     0
 	},
 	{
-	   "SERVERNAME",
+	   "SERVERNAME", 6,
 	     (void *)&Config::defOptionsServerName,
 	     &varHandleHostName,
 	     0,
 	     0
 	},
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -394,42 +394,42 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassOptionsLimits = {
 	{
-	   "CHANNELS",
+	   "CHANNELS", 4,
 	     0,
 	     0,
 	     &defClassOptionsLimitsChannels,
 	     0
 	},
 	{
-	   "MAXKICKREASONLENGTH",
+	   "MAXKICKREASONLENGTH", 16,
 	     (void *)&Config::defOptionsLimitsMaxKickReasonLength,
 	     &varHandleUnsignedShortNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MAXTARGETS",
+	   "MAXTARGETS", 7,
 	     (void *)&Config::defOptionsLimitsMaxTargets,
 	     &varHandleUnsignedCharNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MINBROADCASTLENGTH",
+	   "MINBROADCASTLENGTH", 15,
 	     (void *)&Config::defOptionsLimitsMinBroadcastLength,
 	     &varHandleUnsignedShort,
 	     0,
 	     0
 	},
 	{
-	   "USERS",
+	   "USERS", 4,
 	     0,
 	     0,
 	     &defClassOptionsLimitsUsers,
 	     0
 	},
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -441,42 +441,42 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassOptionsLimitsChannels = {
 	{
-	   "MAXBANS",
+	   "MAXBANS", 7,
 	     (void *)&Config::defOptionsLimitsChannelsMaxBans,
 	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MAXBANEXCEPTIONS",
+	   "MAXBANEXCEPTIONS", 12,
 	     (void *)&Config::defOptionsLimitsChannelsMaxBanExceptions,
 	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MAXINVITEEXCEPTIONS",
+	   "MAXINVITEEXCEPTIONS", 15,
 	     (void *)&Config::defOptionsLimitsChannelsMaxInviteExceptions,
 	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MAXNAMELENGTH",
+	   "MAXNAMELENGTH", 10,
 	     (void *)&Config::defOptionsLimitsChannelsMaxNameLength,
 	     &varHandleUnsignedShortNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MAXTOPICLENGTH",
+	   "MAXTOPICLENGTH", 11,
 	     (void *)&Config::defOptionsLimitsChannelsMaxTopicLength,
 	     &varHandleUnsignedShortNoZero,
 	     0,
 	     0
 	},
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -488,56 +488,56 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassOptionsLimitsUsers = {
 	{
-	   "MAXACCEPTS",
+	   "MAXACCEPTS", 9,
 	     (void *)&Config::defOptionsLimitsUsersMaxAccepts,
 	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MAXCHANNELS",
+	   "MAXCHANNELS", 7,
 	     (void *)&Config::defOptionsLimitsUsersMaxChannels,
 	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MAXLANGUAGES",
+	   "MAXLANGUAGES", 7,
 	     (void *)&Config::defOptionsLimitsUsersMaxLanguages,
 	     &varHandleUnsignedCharNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MAXNICKNAMELENGTH",
+	   "MAXNICKNAMELENGTH", 14,
 	     (void *)&Config::defOptionsLimitsUsersMaxNickNameLength,
 	     &varHandleUnsignedCharNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MAXREALNAMELENGTH",
+	   "MAXREALNAMELENGTH", 14,
 	     (void *)&Config::defOptionsLimitsUsersMaxRealNameLength,
 	     &varHandleUnsignedCharNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MAXSILENCES",
+	   "MAXSILENCES", 7,
 	     (void *)&Config::defOptionsLimitsUsersMaxSilences,
 	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
 	{
-	   "MAXWATCHES",
+	   "MAXWATCHES", 8,
 	     (void *)&Config::defOptionsLimitsUsersMaxWatches,
 	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -550,14 +550,14 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassRedirection = {
 	{
-	   "CHANNELS",
+	   "CHANNELS", 4,
 	     0,
 	     0,
 	     &defClassRedirectionChannels,
 	     0
 	},
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -569,7 +569,7 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassRedirectionChannels = {
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,
@@ -583,14 +583,14 @@ namespace Config {
    const LibAIS::ConfigParser::defTable_type
      Kine::Config::defClassSSL = {
 	{
-	   "CERTIFICATE",
+	   "CERTIFICATE", 4,
 	     0,
 	     0,
 	     0,
 	     0
 	},
 	{
-	   0,
+	   0, 0,
 	     0,
 	     0,
 	     0,

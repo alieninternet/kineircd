@@ -48,63 +48,63 @@ const char* ListenerConfig::tcpProtocolName = "TCP";
 // "LISTEN" class
 const LibAIS::ConfigParser::defTable_type ListenerConfig::classDefs = {
      {
-	"ADDRESS",
+	"ADDRESS", 4,
 	  (void *)&ListenerConfig::varAddress,
 	  &varHandleString,
 	  0,
 	  0
      },
      {
-	"ALLOWNETWORKS",
+	"ALLOWNETWORKS", 8,
 	  (void *)&ListenerConfig::varAllowNetworks,
 	  &varHandleBoolean,
 	  0,
 	  0
      },
      {
-	"ALLOWSERVERS",
+	"ALLOWSERVERS", 11,
 	  (void *)&ListenerConfig::varAllowServers,
 	  &varHandleBoolean,
 	  0,
 	  0
      },
      {
-	"ALLOWSERVICES",
+	"ALLOWSERVICES", 12,
 	  (void *)&ListenerConfig::varAllowServices,
 	  &varHandleBoolean,
 	  0,
 	  0
      },
      {
-	"ALLOWUSERS",
+	"ALLOWUSERS", 9,
 	  (void *)&ListenerConfig::varAllowUsers,
 	  &varHandleBoolean,
 	  0,
 	  0
      },
      {
-	"LISTENBACKLOG",
+	"LISTENBACKLOG", 13,
 	  (void *)&ListenerConfig::varListenBacklog,
 	  &varHandleUnsignedShortNoZero,
 	  0,
 	  0
      },
      {
-	"PORT",
+	"PORT", 4,
 	  (void *)&ListenerConfig::varPort,
 	  &varHandleString,
 	  0,
 	  0
      },
      {
-	"SECURE",
+	"SECURE", 3,
 	  (void *)&ListenerConfig::varSecure,
 	  &varHandleBoolean,
 	  0,
 	  0
      },
      {
-	0,
+	0, 0,
 	  0,
 	  0,
 	  0,
