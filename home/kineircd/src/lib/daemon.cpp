@@ -32,15 +32,12 @@
 #include <ctime>
 #include <cstdlib>
 #include <algorithm>
-
-extern "C" {
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
 #ifdef KINE_HAVE_OPENSSL
 # include <openssl/ssl.h>
 #endif
-}
 
 #include "kineircd/daemon.h"
 #include "kineircd/config.h"

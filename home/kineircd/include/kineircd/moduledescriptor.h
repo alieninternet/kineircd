@@ -28,9 +28,7 @@
 
 // This open dependance on ltdl publicly is disturbing. Hopefully it will
 // disappear if this file is removed from public view..
-extern "C" {
 # include <ltdl.h>
-}
 
 # include <kineircd/module.h>
 

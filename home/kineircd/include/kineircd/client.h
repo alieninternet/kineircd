@@ -26,10 +26,7 @@
 
 # include <string>
 # include <map>
-
-extern "C" {
 # include <sys/time.h>
-}
 
 # include <kineircd/denizen.h>
 # include <kineircd/sender.h>

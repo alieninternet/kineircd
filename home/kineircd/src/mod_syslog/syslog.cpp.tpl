@@ -30,11 +30,9 @@
 # include "autoconf.h"
 #endif
 
-extern "C" {
 #ifdef HAVE_SYSLOG_H
 # include <syslog.h>
 #endif
-};
  
 #include "mod_syslog/syslog.h"
 

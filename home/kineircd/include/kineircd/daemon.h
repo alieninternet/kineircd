@@ -37,12 +37,9 @@
 # include <map>
 # include <ctime>
 # include <aisutil/string/string.h>
-
-extern "C" {
 # include <sys/time.h>
 # include <sys/types.h>
 # include <unistd.h>
-};
 
 # include <kineircd/listener.h>
 # include <kineircd/logger.h>

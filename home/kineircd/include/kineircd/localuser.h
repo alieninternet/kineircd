@@ -24,9 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_LOCALUSER_H_
 # define _INCLUDE_KINEIRCD_LOCALUSER_H_ 1
 
-extern "C" {
 # include <sys/time.h>
-}
 
 # include <kineircd/user.h>
 # include <kineircd/daemon.h>

@@ -36,9 +36,7 @@
 # include <kineircd/modulelist.h>
  
 # ifdef KINE_WITH_SSL
-extern "C" {
 #  include <openssl/ssl.h>
-}
 # endif
 
 namespace Kine {

@@ -26,9 +26,7 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
-extern "C" {
 #include <ltdl.h>
-};
 
 #include "kineircd/moduledescriptor.h"
 #include "libkineircd/debug.h"
