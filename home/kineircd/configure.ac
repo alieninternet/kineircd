@@ -27,7 +27,7 @@ dnl -------------------------------------------------------------------------
 dnl Initialise the thingamebobs
 AC_INIT([KineIRCd], [ ], [kineircd@alien.net.au])
 AC_CONFIG_AUX_DIR(config)
-AM_INIT_AUTOMAKE([1.7 foreign no-installinfo no-installman nostdinc subdir-objects])
+AM_INIT_AUTOMAKE([1.7 foreign no-installinfo nostdinc subdir-objects])
 AC_COPYRIGHT([Portions Copyright (c) 2001,2002 KineIRCd Development Team])
 AC_PREREQ(2.57)
 AC_CONFIG_SRCDIR(src/ircd/ircd.cpp)
