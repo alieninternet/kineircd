@@ -51,6 +51,9 @@ namespace Kine {
       // The list of definitions for the configuration handler
       static const ConfigParser::defTable_type classDefs;
 
+      // A helper to set the socket up
+      bool setupSocket(Socket& socket, String& errString, int port = 0);
+      
     public:
       ListenerConfig(void);
 

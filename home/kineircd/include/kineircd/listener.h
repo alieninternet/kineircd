@@ -26,7 +26,6 @@
 
 # include "kineircd/socket.h"
 
-
 namespace Kine {
    class Listener {
     public:
@@ -39,13 +38,13 @@ namespace Kine {
       typedef unsigned int flags_type;
       
     private:
-      Socket* const socket;				// The socket
+      Socket& socket;					// The socket
       flags_type flags;					// Flags (see above)
       bool listening;					// Are we listening?
       
     public:
       // Constructor
-      Listener(Socket* const s = 0, flags_type f = 0)
+      Listener(Socket& s, flags_type f = 0)
 	: socket(s),
           flags(f),
           listening(false)
@@ -53,15 +52,11 @@ namespace Kine {
       
       // Destructor
       ~Listener(void)
-	{
-	   if (socket != 0) {
-	      delete socket;
-	   }
-	};
+	{ delete &socket; };
       
       // Grab the socket
       const Socket& getSocket(void) const
-	{ return *socket; };
+	{ return socket; };
       
       // Make the socket listen
       const bool listen(void);

@@ -107,6 +107,43 @@ ListenerConfig::ListenerConfig(void)
 
 
 /* classHandleListen
+ * Original 18/08/2002 simonb
+ */
+bool ListenerConfig::setupSocket(Socket& socket, String& errString, int port)
+{
+   // Set its address
+   if (!varAddress.empty()) {
+      if (!socket.setLocalAddress(varAddress)) {
+	 // Delete the socket and complain
+	 delete &socket;
+	 errString = "Invalid socket address '" + varAddress + '\'';
+	 return false;
+      }
+   }
+
+   // Set up the port, if it isn't 0
+   if (port != 0) {
+      if (!socket.setLocalPort(port)) {
+	 // Delete the socket and complain
+	 delete &socket;
+	 errString = "Invalid port number '" + varPort + '\'';
+	 return false;
+      }
+   }
+      
+   // Bind
+   if (!socket.bind()) {
+      // Delete the socket and complain
+      delete &socket;
+      errString = "Unable to bind on '" + varAddress + '\'';
+      return false;
+   }
+   
+   // All worked out okay
+   return true;
+}
+
+/* classHandleListen
  * Original 11/08/2002 simonb
  */
 CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
@@ -251,33 +288,76 @@ CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
 # ifdef KINE_DEBUG_PSYCHO
       debug("ListenerConfig::classHandler() - Creating a UNIX socket...");
 # endif
-      // Create the socket, set its address, and add it to the listener list
-      Socket *socket = new SocketUNIX();
-      if (!socket->setLocalAddress(config.varAddress)) {
-	 // Delete the socket and complain
-	 delete socket;
-	 errString = "Invalid socket address '" + config.varAddress + '\'';
+      // Create the socket and set it up
+      SocketUNIX *socket = new SocketUNIX();
+      if (!config.setupSocket(*socket, errString)) {
 	 return false;
       }
+      
+      // Add it to the list
       (dataClass.*((ListenerList ConfigData::*)dataVariable)).listeners.
-	push_front(Listener(socket, flags));
+	push_front(Listener(*socket, flags));
       return true;
    }
 #endif
    
    // Try and convert the port number over (note the base variable on strtol())
    char *portEndPtr = 0;
-   long int port = strtol(config.varPort.c_str(), &portEndPtr, 0);
+   int port = strtol(config.varPort.c_str(), &portEndPtr, 0);
 
-   return true; // temporary.
+   // Check if that worked
+   if (*portEndPtr != 0) {
+      errString = "bah.";
+cout << "************************** IS TEXT" << endl;
+      return false;
+   }
    
    // Check the port is greater than 0
    if (port <= 0) {
       errString = "Invalid port number '" + config.varPort + '\'';
+//      return false;
+return true; // temporary.
+   }
+
+#ifdef KINE_DEBUG_PSYCHO
+   debug("Port discovered was " + String::convert(port));
+#endif
+   
+   /* Okay, well the port number was valid, and being a single number we
+    * will only need to create ONE instance of this listener, rather than
+    * look up the port(s) and potentially create multiple instances.
+    */
+   Socket *socket = 0;
+#ifdef KINE_HAVE_SOCKET_IPV4_TCP
+   if (domainType == DOMAIN_IPV4) {
+      socket = new SocketIPv4TCP();
+   } else
+#endif   
+#ifdef KINE_HAVE_SOCKET_IPV6_TCP
+   if (domainType == DOMAIN_IPV6) {
+      socket = new SocketIPv6TCP();
+   } else
+#endif
+#ifdef KINE_HAVE_SOCKET_IPX_SPX
+   if (domainType == DOMAIN_IPX) {
+      socket = new SocketIPXSPX();
+   } else
+#endif
+   { /* explode? */ };
+   
+#ifdef KINE_DEBUG_ASSERT
+   // Make sure we are not insane - we must have gotten a socket here.
+   assert(socket != 0);
+#endif
+   
+   if (!config.setupSocket(*socket, errString, port)) {
       return false;
    }
    
-
-   // All is well!
+   // Add it to the list
+   (dataClass.*((ListenerList ConfigData::*)dataVariable)).listeners.
+     push_front(Listener(*socket, flags));
+   
+   // All is well
    return true;
 }

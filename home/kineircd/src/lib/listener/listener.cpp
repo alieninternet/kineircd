@@ -24,6 +24,8 @@
 #include "kineircd/kineircdconf.h"
 
 #include "kineircd/listener.h"
+#include "socket/sockets.h"
+#include "debug.h"
 
 using namespace Kine;
 
@@ -34,12 +36,20 @@ using namespace Kine;
 const bool Listener::listen(void)
 {
    // Make sure we are not already listening, and that the socket exists
-   if (listening || (socket == 0)) {
+   if (listening) {
+#ifdef KINE_DEBUG_EXTENDED
+      debug("Already listening on the socket");
+#endif
       return false;
    }
 
    // Try and listen..
-   listening = (socket->bind() && socket->listen());
+   if (!socket.listen()) {
+#ifdef KINE_DEBUG_EXTENDED
+      debug("Could not listen on " + socket.getLocalAddressStr());
+#endif
+      return false;
+   }
    
-   return listening;
+   return (listening = true);
 };
