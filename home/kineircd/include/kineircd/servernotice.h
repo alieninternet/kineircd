@@ -43,15 +43,16 @@ class ServerNotice {
    static servnotice_t const SN_NETJOIN_MAJOR	= 0x00000080; // +J
    static servnotice_t const SN_KILL_LOCAL	= 0x00000100; // +k
    static servnotice_t const SN_KILL_REMOTE	= 0x00000200; // +K
-   static servnotice_t const SN_LOCOPS		= 0x00000400; // +L
-   static servnotice_t const SN_OPERING_LOCAL	= 0x00000800; // +o
-   static servnotice_t const SN_OPERING_GLOBAL	= 0x00001000; // +O
-   static servnotice_t const SN_SIGNON		= 0x00002000; // +s
-   static servnotice_t const SN_SIGNOFF		= 0x00004000; // +S
-   static servnotice_t const SN_SERVER		= 0x00008000; // +z
-   static servnotice_t const SN_HOUSEKEEPING	= 0x00010000; // +Z
-   static servnotice_t const SN_NETSPLIT_MINOR	= 0x00020000; // +n
-   static servnotice_t const SN_NETSPLIT_MAJOR	= 0x00040000; // +N
+   static servnotice_t const SN_LOG		= 0x00000400; // +l
+   static servnotice_t const SN_LOCOPS		= 0x00000800; // +L
+   static servnotice_t const SN_NETSPLIT_MINOR	= 0x00001000; // +n
+   static servnotice_t const SN_NETSPLIT_MAJOR	= 0x00002000; // +N
+   static servnotice_t const SN_OPERING_LOCAL	= 0x00004000; // +o
+   static servnotice_t const SN_OPERING_GLOBAL	= 0x00008000; // +O
+   static servnotice_t const SN_SIGNON		= 0x00010000; // +s
+   static servnotice_t const SN_SIGNOFF		= 0x00020000; // +S
+   static servnotice_t const SN_SERVER		= 0x00040000; // +z
+   static servnotice_t const SN_HOUSEKEEPING	= 0x00080000; // +Z
 
    // The server notice char 
    struct typeTableStruct {
