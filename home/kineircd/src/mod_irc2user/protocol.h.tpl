@@ -68,8 +68,7 @@ namespace Kine {
 		  std::string& outputQueue);
 	 
 	 // Destructor
-	 ~Protocol(void)
-	   {};
+	 ~Protocol(void);
 
 	 // Send a numeric
 	 void sendNumeric(const LibIRC2::Numerics::numeric_type numeric)

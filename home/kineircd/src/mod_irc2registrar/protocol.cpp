@@ -32,6 +32,7 @@
 #include <aisutil/utils.h>
 #include <kineircd/protocolinfo.h>
 #include <kineircd/daemon.h>
+#include <kineircd/registry.h>
 
 #include "mod_irc2registrar/protocol.h"
 #ifdef KINE_DEBUG
@@ -343,6 +344,9 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
       return;
    }
    
+   // Grab the nickname..
+   Name nick = parameters[0];
+   
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
 //   if (!User::okName(nick)) {
 //      handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
@@ -370,15 +374,13 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
 //   }
    
    // Check that the nickname is not already in use
-//   if (Daemon::getUser(nick)) {
-//      handler->sendNumeric(Numerics::ERR_NICKNAMEINUSE, 0,
-//			   nick + " :" +
-//			   Lang::lang(LangTags::L_ERR_NICKNAMEINUSE));
-//      return;
-//   }
+   if (registry().findClient(nick)) {
+      sendNumeric(LibIRC2::Numerics::ERR_NICKNAMEINUSE);
+      return;
+   }
    
    // If we got here, the nick was ok - allow it
-   registrantData.name = parameters[0];
+   registrantData.name = nick;
 #ifdef KINE_DEBUG
    debug("mod_irc2registrar: -=>         Nick: " +
 	 registrantData.name);

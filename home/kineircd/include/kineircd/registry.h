@@ -35,16 +35,21 @@
 # include <kineircd/channel.h>
 # include <kineircd/service.h>
 # include <kineircd/localuser.h>
+# include <kineircd/errors.h>
 
 namespace Kine {
    class Registry {
-    private:
+    public:
       //! Locally connected users list type
 # ifdef KINE_STL_HAS_HASH
       typedef std::hash_map < Name, LocalUser* > localUsers_type;
 # else
       typedef std::map < Name, LocalUser* > localUsers_type;
 # endif
+      
+    private:
+      //! List of locally connected users (these are also in the netwide table)
+      localUsers_type localUsers;
       
       //! Our single instance
       static Registry* instance;
@@ -53,9 +58,6 @@ namespace Kine {
       Registry(void);
       
     public:
-      //! List of locally connected users (these are also in the netwide table)
-      localUsers_type localUsers;
-      
       //! Destructor
       ~Registry(void)
 	{};
@@ -66,6 +68,23 @@ namespace Kine {
       //! Get the single instance of this class
       static Registry& getInstance(void)
 	{ return *instance; };
+      
+      //! Add the given local user
+      Error::error_type add(LocalUser& entity);
+      
+      //! Remove the given local user
+      Error::error_type remove(const LocalUser& entity);
+      
+      //! Find the given local user, by its name
+      LocalUser* const findLocalUser(const Name& name) const;
+      
+      //! Find the given client, by its name
+      Client* const findClient(const Name& name) const
+	{ return findLocalUser(name); /* <=- temporary */ };
+      
+      //! Return the local user list (read-only access)
+      const localUsers_type& getLocalUsers(void) const
+	{ return localUsers; };
    }; // class Registry
    
 

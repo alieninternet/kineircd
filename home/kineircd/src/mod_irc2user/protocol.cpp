@@ -29,6 +29,7 @@
 #include <sstream>
 #include <kineircd/config.h>
 #include <kineircd/languages.h>
+#include <kineircd/registry.h>
 #include <kineircd/version.h>
 
 #include "mod_irc2user/protocol.h"
@@ -48,6 +49,12 @@ Protocol::Protocol(const Kine::Registrant& registrant,
     user(registrant, connection.getSocket().getRemoteAddress()),
     maxMessageSize(512) // <=- should really be configurable
 {
+   // Attempt to register the user to the registry..
+   if (registry().add(user) != Error::NO_ERROR) {
+      // Deal with this in a nice way.. but we don't, yet, do we?
+      return;
+   };
+   
    // Welcome the user to the server (001)
    sendNumeric(LibIRC2::Numerics::RPL_WELCOME,
 	       GETLANG(irc2_RPL_WELCOME,
@@ -85,6 +92,16 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    
    // Send an MOTD, of some sort..
    sendMOTD(user, true);
+}
+
+
+/* Protocol - Destroy the connection
+ * Original 14/08/2001 simonb
+ */
+Protocol::~Protocol(void)
+{
+   // Deregister our user, we hope.. It is not smart to ignore the error..
+   (void)registry().remove(user);
 }
 
 
