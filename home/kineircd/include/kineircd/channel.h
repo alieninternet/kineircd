@@ -48,6 +48,10 @@ namespace Kine {
 	 //! Destructor
 	 ~Member(void)
 	   {};
+	 
+	 //! Return the client object associated with this member
+	 Client& getClient(void) const
+	   { return client; };
       };
 
     private:
