@@ -773,6 +773,8 @@ AC_OUTPUT([
 	make/defs
 	make/rules
 	src/Makefile
+	src/extensions/Makefile
+	src/extensions/mod_snmp/Makefile
 	src/lib/Makefile
 	src/lib/config/Makefile
 	src/lib/logger/Makefile
