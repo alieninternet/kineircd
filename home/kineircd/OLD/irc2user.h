@@ -22,8 +22,8 @@
  */
 
 #ifdef HAVE_IRC2USER_PROTOCOL
-# ifndef __IRC2USER_H__
-#  define __IRC2USER_H__
+# ifndef _INCLUDE_IRC2USER_H_
+#  define _INCLUDE_IRC2USER_H_
 
 #  include "handler.h"
 #  include "lang.h"

@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __UTILS_H__
-# define __UTILS_H__
+#ifndef _INCLUDE_UTILS_H_
+# define _INCLUDE_UTILS_H_
 
 # include <cstdlib>
 # include <netinet/in.h>

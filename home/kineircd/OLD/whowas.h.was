@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __WHOWAS_H__
-# define __WHOWAS_H__
+#ifndef _INCLUDE_WHOWAS_H_
+# define _INCLUDE_WHOWAS_H_
 
 # include <ctime>
 

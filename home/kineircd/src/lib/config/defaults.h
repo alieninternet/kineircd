@@ -24,8 +24,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __SRC_CONFIG_CONFIGDEFAULT_H__
-# define __SRC_CONFIG_CONFIGDEFAULT_H__
+#ifndef _SRC_LIB_CONFIG_CONFIGDEFAULT_H_
+# define _SRC_LIB_CONFIG_CONFIGDEFAULT_H_
 
 # include "autoconf.h"
 

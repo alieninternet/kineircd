@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __VERSION_H__
-# define __VERSION_H__
+#ifndef _INCLUDE_VERSION_H_
+# define _INCLUDE_VERSION_H_
 
 class Version {
  private:

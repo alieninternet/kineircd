@@ -22,8 +22,8 @@
  */
 
 #ifdef DEBUG
-# ifndef __DEBUG_H__
-#  define __DEBUG_H__
+# ifndef _INCLUDE_DEBUG_H_
+#  define _INCLUDE_DEBUG_H_
 
 #  ifdef DEBUG_ASSERT
 #   include <cassert>

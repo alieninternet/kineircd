@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __HANDLER_H__
-# define __HANDLER_H__
+#ifndef _INCLUDE_HANDLER_H_
+# define _INCLUDE_HANDLER_H_
 
 class Handler;
 
