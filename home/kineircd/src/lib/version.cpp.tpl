@@ -2,7 +2,8 @@
  * Version and Compile information
  */
 
-#include "config.h"
+#include "autoconf.h"
+
 #include "version.h"
 
 namespace Version {

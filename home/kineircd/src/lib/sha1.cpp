@@ -2,7 +2,7 @@
  * SHA1 Message Digest Routines
  */
 
-#include "config.h"
+#include "autoconf.h"
 
 #include <string.h>
 #include <stdlib.h>

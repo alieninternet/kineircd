@@ -2,11 +2,12 @@
  * Handle USER connection data using the IRC-3 server<->user protocol
  */
 
-#include "config.h"
+#include "autoconf.h"
 
 #include <ctype.h>
 
-#include "handler.h"
+#include "irc2user.h"
+#include "debug.h"
 #include "numerics.h"
 #include "language.h"
 #include "version.h"

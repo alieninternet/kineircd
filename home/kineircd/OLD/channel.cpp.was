@@ -2,7 +2,7 @@
  * Channel and associated classes
  */
 
-#include "config.h"
+#include "autoconf.h"
 
 #include "daemon.h"
 #include "user.h"

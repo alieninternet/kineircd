@@ -1,4 +1,4 @@
-/* config.h
+/* autoconf.h
  * Compile-time configuration settings
  * 
  * This file needs major organisational work :) 
@@ -533,7 +533,7 @@
 
 /* Force autoconf before compilation (else stuff might be left out) */
 # ifndef HAVE_CONFIG_H
-#  error "You must run configure before compiling this software"  
+#  error "You must run the configure script before compiling this software!!"
 # endif
 
   
@@ -541,12 +541,14 @@
  * change the BLOODY_IRCII_KLUGE define rather than edit these.. The name
  * irc2user refers to the protocol name, not the ircII client, btw.
  */
-# ifdef BLOODY_IRCII_KLUGE
-#  define MAXLEN_IRC2USER_OUTPUT_CALC	(MAXLEN_IRC2USER_OUTPUT - 2)
-#  define IRC2USER_EOL_CHARS		"\r\n"
-# else
-#  define MAXLEN_IRC2USER_OUTPUT_CALC	(MAXLEN_IRC2USER_OUTPUT - 1)
-#  define IRC2USER_EOL_CHARS		"\n"
+# ifdef HAVE_PROTOCOL_IRC2USER
+#  ifdef BLOODY_IRCII_KLUGE
+#   define MAXLEN_IRC2USER_OUTPUT_CALC	(MAXLEN_IRC2USER_OUTPUT - 2)
+#   define IRC2USER_EOL_CHARS		"\r\n"
+#  else
+#   define MAXLEN_IRC2USER_OUTPUT_CALC	(MAXLEN_IRC2USER_OUTPUT - 1)
+#   define IRC2USER_EOL_CHARS		"\n"
+#  endif
 # endif
 
   
@@ -559,7 +561,7 @@
 #  define LOGPRI_ERROR		LOG_ERR
 #  define LOGPRI_CRITICAL	LOG_CRIT
 # else
-#  error "No other logging facility :("
+#  error "No other logging facility -- Woops :("
 # endif
 
   

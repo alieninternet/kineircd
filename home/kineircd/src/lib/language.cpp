@@ -2,7 +2,7 @@
  * Text in a centralised location so it can be easily changed/fixed etc
  */
 
-#include "config.h"
+#include "autoconf.h"
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -13,7 +13,7 @@
 #include <errno.h>
 
 #include "language.h"
-#include "daemon.h"
+#include "debug.h"
 
 
 namespace Language {

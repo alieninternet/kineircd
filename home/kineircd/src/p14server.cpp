@@ -2,9 +2,10 @@
  * Handle SERVER connection data using the austnet P14 server<->server protocol
  */
 
-#include "config.h"
+#include "autoconf.h"
 
-#include "handler.h"
+#include "p14server.h"
+#include "debug.h"
 #include "language.h"
 
 // Functions table (from P14_Notes)

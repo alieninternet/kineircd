@@ -2,7 +2,7 @@
  * Server and associated classes
  */
 
-#include "config.h"
+#include "autoconf.h"
 
 #include "server.h"
 

@@ -2,7 +2,7 @@
  * IRC daemon configuration data parsing functions
  */
 
-#include "config.h"
+#include "autoconf.h"
 
 #include <fstream.h>
 
@@ -11,6 +11,7 @@
 #endif
 
 #include "daemon.h"
+#include "debug.h"
 #include "operator.h"
 #include "utils.h"
 #include "language.h"

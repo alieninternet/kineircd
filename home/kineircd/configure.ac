@@ -9,7 +9,7 @@ dnl  -------------------------------------------------------------------------
 AC_PREREQ(2.52)
 AC_INIT(src/Makefile.in)
 AC_CONFIG_AUX_DIR(autoconf)
-AC_CONFIG_HEADER(include/config.h)
+AC_CONFIG_HEADER(include/autoconf.h)
 
 dnl
 dnl Grab version information
@@ -180,7 +180,7 @@ AC_CACHE_CHECK([maximum number of files I can open at once],
    ],[
      austhex_cv_sys_maxfds=256
      AC_MSG_WARN([Making the assumption of 256 bits could be wrong.])
-     echo "  It is recommended that you edit config.h manually to correct this"
+     echo "  It is recommended that you edit autoconf.h manually to correct this"
    ])
  ])
 AC_DEFINE_UNQUOTED(MAX_FD_PER_PROCESS, $austhex_cv_sys_maxfds)
@@ -215,7 +215,7 @@ AC_CACHE_CHECK([default select() file fd_set bit-size],
    ],[
      austhex_cv_sys_fdset_numfds=256
      AC_MSG_WARN([Making the assumption of 256 bits could be wrong.])
-     echo "  It is recommended that you edit config.h manually to correct this"
+     echo "  It is recommended that you edit autoconf.h manually to correct this"
    ])
  ])
 AC_DEFINE_UNQUOTED(SELECT_FDSET_NUMFDS, $austhex_cv_sys_fdset_numfds)
@@ -693,20 +693,6 @@ AC_ARG_ENABLE(helpers-see-umodes,[  --enable-helpers-see-umodes    allow helpers
    AC_DEFINE(HELPERS_CAN_SEE_USER_MODES)
  ])
 
-AC_MSG_CHECKING([ircii-kluge parameter])
-AC_ARG_ENABLE(ircii-kluge,[  --enable-ircii-kluge           kluge to allow old ircII clients to work],
- [
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(BLOODY_IRCII_KLUGE)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(BLOODY_IRCII_KLUGE)
- ])
-
 AC_MSG_CHECKING([match-counting parameter])
 AC_ARG_ENABLE(match-counting,[  --enable-match-counting        add match counts to end of listing numerics],
  [
@@ -967,6 +953,23 @@ if test "$austhex_test_enable_user_protocols" = "yes"; then
      AC_DEFINE(HAVE_PROTOCOL_IRC2USER)
      austhex_test_have_protocol_irc2user=yes
    ])
+
+  dnl If we are using the protocol, we may need some more stuff...
+  if test "$austhex_test_have_protocol_irc2user" = "yes"; then
+    AC_MSG_CHECKING([ircii-kluge parameter])
+    AC_ARG_ENABLE(ircii-kluge,[  --enable-ircii-kluge           kluge to allow old ircII clients to work],
+     [
+       if test "$enableval" = "no"; then
+         AC_MSG_RESULT(no)
+       else
+         AC_MSG_RESULT(yes)
+         AC_DEFINE(BLOODY_IRCII_KLUGE)
+       fi
+     ],[
+       AC_MSG_RESULT([yes (default)])
+       AC_DEFINE(BLOODY_IRCII_KLUGE)
+     ])
+  fi
 else
   AC_MSG_RESULT([no (clients disallowed)])
   austhex_test_have_protocol_irc2user=no
@@ -989,32 +992,33 @@ if test "$austhex_test_enable_user_protocols" = "yes"; then
      AC_MSG_RESULT([no (default)])
      austhex_test_have_protocol_irc3user=no
    ])
+
+  dnl Check for other stuff if irc3user is on...
+  if test "$austhex_test_have_protocol_irc3user" = "yes"; then
+  AC_MSG_CHECKING([compress-irc3user parameter])
+    AC_ARG_ENABLE(compress-irc3user,[  --enable-compress-irc3user     allow compression of the IRC-3 user protocol],
+     [
+       if test "$enableval" = "no"; then
+         AC_MSG_RESULT(no)
+         austhex_test_compress_protocol_irc3user=no
+       else
+         AC_MSG_RESULT(yes)
+         AC_DEFINE(COMPRESS_PROTOCOL_IRC3USER)
+         austhex_test_compress_protocol_irc3user=yes
+       fi
+     ],[
+       AC_MSG_RESULT([yes (default)])
+       AC_DEFINE(COMPRESS_PROTOCOL_IRC3USER)
+       austhex_test_compress_protocol_irc3user=yes
+     ])
+  else
+    austhex_test_compress_protocol_irc3user=no
+  fi
 else
   AC_MSG_RESULT([no (clients disallowed)])
   austhex_test_have_protocol_irc3user=no
 fi
 AC_SUBST(austhex_test_have_protocol_irc3user)
-
-if test "$austhex_test_have_protocol_irc3user" = "yes"; then
-AC_MSG_CHECKING([compress-irc3user parameter])
-  AC_ARG_ENABLE(compress-irc3user,[  --enable-compress-irc3user     allow compression of the IRC-3 user protocol],
-   [
-     if test "$enableval" = "no"; then
-       AC_MSG_RESULT(no)
-       austhex_test_compress_protocol_irc3user=no
-     else
-       AC_MSG_RESULT(yes)
-       AC_DEFINE(COMPRESS_PROTOCOL_IRC3USER)
-       austhex_test_compress_protocol_irc3user=yes
-     fi
-   ],[
-     AC_MSG_RESULT([yes (default)])
-     AC_DEFINE(COMPRESS_PROTOCOL_IRC3USER)
-     austhex_test_compress_protocol_irc3user=yes
-   ])
-else
-  austhex_test_compress_protocol_irc3user=no
-fi
 AC_SUBST(austhex_test_compress_protocol_irc3user)
  
 AC_MSG_CHECKING([protocol-p13server parameter])

@@ -1,15 +1,469 @@
 
-                         ---------------------------
-                          AustHex IRC Server Daemon 
-                         ---------------------------
-		  
-		  
+            -------------------------------------------------------
+              AustHex IRC Server Daemon Installation Instructions
+            -------------------------------------------------------
+
+ 1. What is all this about?
+    -----------------------
     
- 1. Header
+    Don't ask me, I just work here.
+    
+    Oh, you want a real answer? Well, maybe one day I'll write this file
+    up properly :) Until then, shhh.
+
+
+
+ 2. For those who just can't be bothered
+    ------------------------------------
+ 
+    Ok, so you're too lazy to read this file? Here's how you can get around
+    any serious thinking to make and install this package. Lucky for you,
+    this will be easy for you :)
+    
+    If you want to make and install the package, after untarring the package
+    simply type:
+
+
+       $ make install
+
+
+    Lucky for you, this will automatically invoke the configuration
+    script, compile, and install the package in the default location.
+    
+    If you wish to just make the package, omit the 'install' parameter.
+    
+    
+    
+ 3. Package requirements
     --------------------
     
-    Text
+    The following requirements need to be forfilled for this package to work
+    correctly:
 
-     - Bullet point
+     - Disk space:
      
-       Bullet point info
+       Compilation of the package will normally take up around 5Mb (more
+       if compiled for debugging). The package will take up about 1.5Mb
+       after installation.
+
+
+     - C++ Standard Template Library:
+      
+       You will need a current copy of the C++ STL. All C++ compilers will
+       have this these days. Location of the latest STL is below. The latest
+       standard template library from SGI includes capabilities which will
+       enhance the performance of the daemon immensely, especially under high
+       load.
+       
+       
+     - Threading library:
+       
+       More information later, probably looks like pthreads only though?
+       
+       
+       
+ 4. Recommended additions
+    ---------------------
+    
+    The following items are recommended
+
+     - OpenSSL:
+       
+       Adding SSL to the server will allow encrypted secure server to server
+       and server to client connections which can be enforced for different
+       connection classes or access levels. This can greatly secure your
+       server and protect important passwords which may be transmitted over
+       the network
+    
+    
+    
+ 5. Configuration of the package
+    ----------------------------
+    
+    The configuration of the server's compilation time settings can be
+    important performance wise
+
+    If you're lazy (but not lazy enough to read the above) you can use these:
+    
+     --enable-lower-cpu
+     --disable-lower-cpu (default)
+     
+       With this enabled, it will effect the defaults of some of the 
+       feature settings in order to reduce cpu usage. The change will not
+       be very dramatic, though.
+       
+       
+     --enable-lower-memory
+     --disable-lower-memory (default)
+     
+       With this enabled, like the option above, it will effect the default
+       settings of some of the feature settings below, but this time to
+       reduce any additional memory usage. The change will not be a
+       dramatic one.
+       
+
+
+    The following features can be toggled:
+
+     --enable-accept-unknown-langs
+     --disable-accept-unknown-langs (default)
+     
+       When enabled, this allowed languages that are unknown to this server
+       to be set by a user and become visible to other servers, users and
+       services on the network. This can be good in case other servers on the
+       network are aware of more languages (eg. the language(s) being 
+       requested), or other users can see languages that are unsupported
+       network-wide. This can be bad for the reason that it leaves the
+       language command open to abuse with users selecting stupid languages
+       that don't exist (the server does not check the language against
+       existing language codes).
+       
+
+     --enable-allow-clients (default)
+     --disable-allow-clients
+      
+       This allows users (clients) to connect to the server. Disabling this 
+       also has the same effect as disabling user protocols on the server if
+       services are also disallowed. Normally this should be left on but 
+       in the case of a hubbing server, user connections would server no 
+       purpose.
+     
+     
+     --enable-allow-servers (default)
+     --disable-allow-servers
+
+       This allows servers to connect to the server. This normally should 
+       not be disabled unless the server is a stand-alone server.
+      
+
+     --enable-allow-services
+     --disable-allow-services (default)
+
+       This allows services to connect to the server. Services are like
+       bots however they must have authorisation to connect as they get
+       a different level of access (in some places higher access, and some 
+       places lower access). Normally services use the same protocols as
+       the user/client protocols, so disallowing services and clients (above)
+       will result in all user protocols will be disabled. Do not confuse
+       this with servers which have built in services such as ChanOP/NickOP
+       etc.
+      
+
+     --enable-convert-motd-tabs (default)
+     --disable-convert-motd-tabs
+    
+       When this is enabled, TAB characters in your MOTD file will be
+       converted to a series of spaces to 'simulate' a TAB. Some clients,
+       especially GUI based clients, do not understand the TAB character
+       and this can result in a messy looking MOTD being sent. Disabling this
+       will only change the configuration loading stage of the server, and
+       the difference won't be noticeable.
+       
+       
+     --enable-drop-lame-servers
+     --disable-drop-lame-servers (default)
+    
+       This allows your server to drop other servers that are potentially
+       spoofing data, however this may also be produced by an 'out-of-sync'
+       condition which can temporarily exist on lagging connections. Arguably
+       having this on is a good idea, but may become a disasterous nightmare
+       on large networks, especially networks based on a star-topology.
+       
+
+     --enable-floodlock-accept-msg (default = 120)
+     --disable-floodlock-accept-msg
+     
+       This enables the accept request message flood-lock. When in user mode
+       +g (caller-id 'ignore all' mode), a user that is not on your ACCEPT
+       list messaging you will send a message notifying you of their request
+       to talk to you. This can be limited to avoid people being able to 
+       flood you while you're trying to 'ignore' them.
+
+
+     --enable-floodlock-away-reply (default = 60)
+     --disable-floodlock-away-reply
+     
+       This enables the away-reply flood-lock. When talking to someone who's
+       away, this makes the server only send a 'user is away' reply to the
+       message-sending user upon the first message, and then only after a
+       flood-lock timeout of the given value in seconds has expired. This
+       reduces the amount of traffic leaving the server, but does use a
+       tiny bit more memory. Disabling this feature follows traditional
+       functionality -- an away message reply per message sent.
+     
+     
+     --enable-floodlock-away-set (default = 45)
+     --disable-floodlock-away-set
+
+       This enables the away-set flood-lock, which reduces the amount of time
+       between setting /AWAY. The user will be able to change their away
+       message twice before having to wait the amount of time given (in
+       seconds) to change their away message. The flood-lock remains in
+       effect if they unset their away message, and they can unset it
+       anytime during the floodlock. This is to reduce server traffic since
+       the away message is broadcast over the network -- some scripts will
+       change the away message every two seconds or so to have an 'idle 
+       time' in their away message. This uses a slight bit more memory. 
+       Disabling this will allow anyone to change their away message whenever 
+       they like.
+     
+     
+     --enable-floodlock-knock-msg (default = 300)
+     --disable-floodlock-knock-msg
+     
+       This enables the channel KNOCK message flood-lock, to avoid flooders
+       taking advantage of the KNOCK command and using it to flood a channel
+       while they are not allowed on (invite only). When disabled, users are
+       able to use KNOCK as many times as they like. WHen enabled, they can
+       only send one knock every <seconds> given, per channel.
+
+
+     --enable-helpers-see-umodes (default)
+     --disable-helpers-see-umodes
+    
+       This enables helpers and operators to be able to see user modes via
+       the /mode command (eg. /mode nickname). This command has the potential
+       to be abused, but can be handy in instances where a user needs help
+       and does not know how to see what modes they have enabled.
+
+
+     --enable-match-counting (default)
+     --disable-match-counting
+    
+       This enables an aesthetics option to many commands that involve a
+       variable list of items, such as HELP, NAMES, WHO etc. Instead of a
+       simple "End of X list" (where X is the command name), it will add
+       the number of matches if there is more than one match, or a 
+       'no matches' message, eg. "End of X list (21 matches)". This uses only
+       a very slight amount of CPU usage, but if you're being tight on the
+       CPU usage you may wish to disable this as it does not effect the
+       commands in any way except for the matches count message at the end.
+
+       
+     --enable-max-accepts-per-user (default = 100)
+
+       This cannot be disabled. This defines how many entries on a user's
+       ACCEPT list can be used. A reasonable number of ACCEPTS should be
+       given for users as this is used in conjunction with usermode +g which
+       blocks messages from everyone. Having said that, though, it is unlikly
+       that people will need to accept more than 100 people at one time, but
+       this feature uses less CPU-time than SILENCE lists.
+       
+     
+     --enable-max-bans-per-channel (default = 50)
+     
+       This cannot be disabled. This defines how many bans (MODE +b) can be
+       set on a channel at any one time. This can be over-written by the
+       server configuration file. Currently this also restricts the number of
+       auto-invitations (MODE +I) and ban-excemptions (MODE +e), but this is
+       likely to change in the future.
+     
+     
+     --enable-max-modes-per-command (default = 6)
+     
+       This cannot be disabled. This defines how many mode characters can
+       be used on a MODE command line. Until clients become aware of
+       this setting and the 'ISUPPORT' line upon connection, it may be
+       wise not to change this setting. This can be over-written by the
+       server configuration file.
+     
+     
+     --enable-max-silences-per-user (default = 20)
+     
+       This cannot be disabled. This defines how many entries on a user's
+       SILENCE list can be used. Not many silences are usually needed because
+       clients are usually smart enough to utilise other methods to block
+       messages if things are that serious (eg. Usermode +g and ACCEPT).
+       This can be over-written by the server configuration file.
+
+     
+     --enable-max-watches-per-user (default = 128)
+
+       This cannot be disabled. This defines how many entries on a user's
+       WATCH list can be used. Higher numbers will take up more CPU time,
+       while lower numbers will frustrate users! This can be over-written by
+       the server configuration file.
+
+      
+     --enable-oper-wallops (default)
+     --disable-oper-wallops
+
+       Following IRC protocol specifications, normally nobody but servers
+       are allowed to generate WALLOPS messages (sent to anyone with +w set).
+       Fortunately we can bend the rules a little and allow IRC operators to
+       use WALLOPS to send messages about the network to people, but
+       unfortunately this can be abused, so the option to disable it exists.
+       
+       
+     --enable-paranoid-opers
+     --disable-paranoid-opers (default)
+    
+       This feature adds a notification to operators when they are being
+       'checked out'. When a user does a WHOIS on an operator locally while
+       they are online, they will receive notification that someone has
+       looked at their WHOIS information. Currently this does not effect
+       any other commands, but it may in the future.
+       
+       
+     --enable-passive-registration
+     --disable-passive-registration (default)
+    
+       This feature increases registration security by never saying anything
+       to the client/server during the connection phase. This means no errors
+       will be reported, instead the user is disconnected. Unfortunately
+       this means that nicknames that are currently in use will result in
+       people being disconnected. This may change in the future.
+       
+       
+     --enable-strict-channel-names (default)
+     --disable-strict-channel-names
+    
+       This enables stricter channel name checking than usual. This stops
+       channels with potentially nasty characters being created, such as any
+       control character, and the mysterious 'extra-space' character which
+       exists in the standard ISO-8859-1 and derivative character sets. This
+       will stop many fake channels by avoiding the '#foo' and '#foo^B' issue.
+       
+       
+     --enable-strict-registration (default)
+     --disable-strict-registration
+    
+       This enables a stricter registration process. Once a connection type
+       has been established (user/server/service etc) it cannot be changed.
+       This can stop many denial of service attacks which exploit the fact
+       that the server is a little braindead during registration time.
+
+       
+     --enable-time-to-be-idle (default = 30)
+     --disable-time-to-be-idle
+     
+       When enabled, idle information will only be considered/shown when
+       the idle time of a user is greater than the given time (in seconds).
+       This is a small addition to code, and lowers some bandwidth output.
+       When this is disabled, idle times will always be shown (even it a
+       person is idle 0 seconds).
+
+     
+     --enable-traceroute (default)
+     --disable-traceroute
+    
+       This enables the traceroute command for network routing staff to use.
+       This command can be used to probe other networks so it is a command
+       that has the potential to be abused. Also, on some servers it may not
+       be worth enabling it since it is common to firewall ICMP to the server
+       to avoid some attacks. This command is useful, however, for detecting
+       quality of links to other servers in instances where a simple ping
+       isn't enough.
+       
+       
+     --enable-user-conn-ping (default)
+     --disable-user-conn-ping
+
+       This feature will force clients to reply to a PING request with 
+       random data upon connection to the server before allowing the client
+       to proceed with registration. This can trip up poorly programmed
+       bots which cannot reply to server requests like a PING by not allowing
+       them to complete their connection successfully.
+       
+    
+     --enable-warn-bad-reg-cmds
+     --disable-warn-bad-reg-cmds (default)
+    
+       This can open up a security issue with the registration phase. With
+       this disabled, unknown commands being sent during the registration
+       phase are simply ignored. When this is enabled, however, unknown
+       commands will return an error reply (provided passive registrations 
+       are not enabled, in which case unknown commands will result in the 
+       connection being dropped). When enabled, this follows protocol, but
+       leaves you open to attacks that exploit this, as it could be used for
+       denial of service attacks by flooding your out-bound traffic.
+       
+
+    The following protocols can be toggled:
+    
+     --enable-protocol-irc2user (default)
+     --disable-protocol-irc2user
+     
+       The IRC-2 protocol is used with every irc client these days. Unless
+       the server is being set up for something specific (such as hubbing)
+       it would be wise to have this enabled.
+
+     
+     --enable-ircii-kluge (default)
+     --disable-ircii-kluge
+    
+       This enables a kluge to allow the old ircII client, and other clients
+       which are technically broken by adding additional data to the server's
+       output. This will generate a very slight increase in outgoing data,
+       and potentially isn't even necessary these days (those clients are
+       practically extinct). As this only effects the irc2user protocol,
+       having this enabled will have no effect if the irc2user protocol is
+       disabled.
+       
+       
+     --enable-protocol-irc3user
+     --disable-protocol-irc3user (default)
+
+       The IRC-3 protocol is currently experimental and is not used in any
+       available clients. This protocol is still on the drawing boards, and
+       as such should not be compiled into the server until it is finalised.
+
+     
+     --enable-protocol-p13server (default)
+     --disable-protocol-p13server
+    
+       The P13 protocol was the last protocol before the rewrite of austhex.
+       It is quite bulky, and only handles star-topology based networks.
+       This protocol maintains compatibility back to austhex.servd7.6.
+    
+    
+     --enable-compress-p13server (default)
+     --disable-compress-p13server
+    
+       Only valid when the P13 server protocol is enabled (above), this allows
+       the links to be negotiated for compression which will significantly
+       reduce the amount of data transferred, however in the case of this
+       protocol it will add quite a large amount of additional memory usage.
+       Compression uses significantly increased CPU usage too.
+
+
+     --enable-protocol-p14server
+     --disable-protocol-p14server (default)
+       
+       The P14 protocol is a major advancement in IRC server to server
+       protocols. While being tightly implemented it allows itself to be
+       compressed easily by a customised compression algorithm and helps
+       assist security and lower bandwidth network-wide. The major
+       advancement is that it no longer requires a star-topology network
+       by implementing 'bone' and 'tendril' links, allowing for well designed
+       networks to be virtually split-free with minimal lag.
+       This protocol is currently experimental and incomplete.
+
+
+     --enable-compress-p14server (default)
+     --disable-compress-p14server
+    
+       Only valid when the P14 server protocol is enabled (above), this allows
+       the links to be negotiated for compression which will significantly
+       reduce the amount of data transferred. Note that compression uses a 
+       lot of CPU usage too.
+    
+    
+    
+ 6. Building of the package
+    -----------------------
+    
+ 7. Installation of the package
+    ---------------------------
+    
+ 8. Configuration of the server
+    ---------------------------
+       
+ A. Additional package download information
+    ---------------------------------------
+    
+    SGI's C++ Standard Template Library:
+       http://www.sgi.com/tech/stl
+       
+    OpenSSL
+       http://www.openssl.org/

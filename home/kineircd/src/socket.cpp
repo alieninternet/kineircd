@@ -4,7 +4,7 @@
  * Copyright (c) 1999-2001 Alien Internet Services
  */
 
-#include "config.h"
+#include "autoconf.h"
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -20,8 +20,9 @@
 # include <openssl/ssl.h>
 #endif
 
-#include "daemon.h"
 #include "socket.h"
+#include "debug.h"
+#include "daemon.h"
 
 #if defined(__MACH__)
 typedef int socklen_t;

@@ -2,9 +2,15 @@
  * Handle registration data (before handling a real handler)
  */
 
-#include "config.h"
+#include "autoconf.h"
 
-#include "handler.h"
+#include "register.h"
+#include "irc2user.h"
+#include "irc3user.h"
+#include "p13server.h"
+#include "p14server.h"
+
+#include "debug.h"
 #include "numerics.h"
 #include "language.h"
 #include "utils.h"

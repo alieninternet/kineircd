@@ -2,7 +2,7 @@
  * The main class (IRC daemon) constructors and destructors
  */
 
-#include "config.h"
+#include "autoconf.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -15,6 +15,7 @@
 #endif
 
 #include "daemon.h"
+#include "debug.h"
 #include "version.h"
 #include "language.h"
 #include "numerics.h"
@@ -1969,7 +1970,7 @@ void Daemon::run(void)
       outFDtemp = outFDSET;
       
       // Poll select()
-      selectOut = select(maxDescriptors, &inFDtemp, &outFDtemp, 
+      selectOut = select(maxDescriptors, &inFDtemp, &outFDtemp,
 			 SELECT_TYPE_ARG234 NULL, &timeout);
       
       // Update the clock

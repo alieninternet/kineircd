@@ -2,7 +2,7 @@
  * General utilities
  */
 
-#include "config.h"
+#include "autoconf.h"
 
 #include <ctype.h>
 #include <stdlib.h>

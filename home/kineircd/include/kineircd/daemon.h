@@ -39,12 +39,6 @@ class Daemon;
 # include "whowas.h"
 
 
-// If we are in debugging mode, we need this routine!
-# ifdef DEBUG
-extern void debug(String const &);		// Output/Broadcast debug line
-# endif
-
-
 // A 'Listen' record
 class Listen {
  public:

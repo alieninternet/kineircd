@@ -6,7 +6,7 @@
  * taken!
  */
 
-#include "config.h"
+#include "autoconf.h"
 
 #include <ctype.h>
 #include <time.h>

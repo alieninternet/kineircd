@@ -2,12 +2,14 @@
  * Connection class
  */
 
-#include "config.h"
+#include "autoconf.h"
 
 #include <errno.h>
 #include <string.h>
 
 #include "connection.h"
+#include "register.h"
+#include "debug.h"
 #include "daemon.h"
 #include "utils.h"
 
