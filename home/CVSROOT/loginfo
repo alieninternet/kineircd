@@ -25,9 +25,5 @@
 # or
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 
-# CVSROOT works a little differently; At this stage we just ignore it :)
-# is there a better way of doing this? :(
-CVSROOT cat >/dev/null
-
-# Default setting
-DEFAULT /cvsbin/austhex/loginfo.sh $USER $CVSROOT %{sVv}
+# Call our mailing routine
+austhex.servd8.0 /cvsbin/austhex/loginfo.sh $USER $CVSROOT %{sVv}
