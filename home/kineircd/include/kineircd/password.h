@@ -43,7 +43,11 @@ namespace Kine {
       // Constructor   
       Password(const digest_type& p)
 	: password(p)
-	  {};
+	{};
+
+      // Destructor
+      ~Password(void)
+	{};
       
       // Return the password digest
       const digest_type& getPassword(void) const {

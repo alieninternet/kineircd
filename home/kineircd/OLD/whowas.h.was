@@ -88,6 +88,10 @@ namespace Kine {
           signoffTime(sot)
 	{};
 
+      // Destructor
+      ~Whowas(void)
+	{};
+      
       // Grab the nickname
       String getNickname(void) const {
 	 return nickname;

@@ -45,10 +45,21 @@ Connection::Connection(Daemon& d, AISutil::Socket& s)
   connected(socket.isOkay())
 {
 #ifdef KINE_DEBUG_PSYCHO
-   debug("Connection::Connection() Loading new connection on fd " +
-	 String::convert(socket.getFD()) + " @ " + 
-	 String::convert(connectedTime));
+   std::ostringstream out;
+   out << "Connection::Connection() Loading new connection on fd " <<
+    socket.getFD() << " @ " << this << " (" << connectedTime << ')';
+   debug(out.str());
 #endif
+}
+
+
+/* ~Connection - Shutdown connection
+ * Original 12/08/2001 simonb
+ */
+Connection::~Connection(void)
+{ 
+   delete &socket;
+   delete protocol;
 }
 
 

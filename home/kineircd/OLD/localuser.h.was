@@ -58,6 +58,10 @@ namespace Kine {
 	: inviter(i),
           timeout(t)
 	{};
+
+      // Destructor
+      ~LocalUserinvitation(void)
+	{};
       
       // Variable access
       String const &getInviter(void) const {

@@ -64,9 +64,13 @@ namespace Kine {
       
     public:
       // Constructor
-      LanguageList()
+      LanguageList(void)
 	: highestTagID(0),
           defaultLanguage(0)
+	{};
+
+      // Destructor
+      ~LanguageList(void)
 	{};
       
       // Load a new language data file

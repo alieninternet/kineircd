@@ -58,8 +58,7 @@ namespace Kine {
       Connection(Daemon& d, AISutil::Socket& s);
       
       // Shutdown connection
-      ~Connection(void) 
-	{ delete &socket; };
+      ~Connection(void);
 
       // Return the daemon
       Daemon& getDaemon(void)

@@ -47,6 +47,10 @@ namespace Kine {
           global(g)
 	{};
       
+      // Destructor
+      ~Operator(void)
+	{};
+      
       // Return the operator name (description)
       const AISutil::String& getName(void) const {
 	 return name;

@@ -144,6 +144,10 @@ namespace Kine {
 	   servers.clear();
 	};
       
+      // Destructor
+      ~Server(void)
+	{};
+      
       // Variable access
       String getHostname(void) const {		// Return the hostname
 	 return hostname;

@@ -62,8 +62,13 @@ namespace Kine {
 		       int port = 0);
       
     public:
+      // Constructor
       ListenerConfig(void);
 
+      // Destructor
+      ~ListenerConfig(void)
+	{};
+      
       // The class handler for the configuration class
       static LIBAISUTIL_CONFIG_CLASS_HANDLER(classHandler);
    };
