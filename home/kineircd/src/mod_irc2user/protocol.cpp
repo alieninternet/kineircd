@@ -144,6 +144,11 @@ void Protocol::parseMessage(const std::string& origin,
 	 if (commandInfo->hasAccess(user)) {
 	    // Do we have enough parameters?
 	    if (parameters.size() >= commandInfo->minimumParams) {
+	       // Does this command reset the user's idle time?
+	       if (commandInfo->flags & Commands::Flags::CHANGE_IDLE_TIME) {
+		  user.updateLastAwake();
+	       }
+	       
 	       // Is it a built-in command?
 	       if (commandInfo->handler != 0) {
 		  // Call it..
