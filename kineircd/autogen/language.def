@@ -2101,6 +2101,15 @@ tag = {
 };
 
 tag = {
+   name		= "irc2user_SNOTICE_BURST_COMPLETED";
+   fields	= "0 = from server, 1 = to server, 2 = bytes, 3 = rough CPS, "
+                  "4 = time";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Completed burst data (%p0 → %p1): "
+                  "Received %p2 bytes in %p4ms (CPS ≅ %p3)";
+};
+
+tag = {
    name		= "irc2user_SNOTICE_CLIENT_LOCAL";
    fields	= "0 = nick, 1 = username, 2 = hostname, 3 = masked hostname, "
                   "4 = address, 5 = class";
@@ -2130,6 +2139,20 @@ tag = {
    fields	= "0 = wanted oper nick, 1 = nick, 2 = username, 3 = hostname";
    components	= "mod_irc2user";
    data_en	= "*** Notice -- Failed OPER attempt for %p0 by %p1 (%p2@%p3)";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_JUNCTION_MAJOR";
+   fields	= "0 = caller, 1 = from server, 2 = to server, 3 = protocol";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Major net-junction (%p1 → %p2) by %p0 (%p3)";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_JUNCTION_MINOR";
+   fields	= "0 = caller, 1 = from server, 2 = to server, 3 = protocol";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Minor net-junction (%p1 → %p2) by %p0 (%p3)";
 };
 
 tag = {
@@ -2169,6 +2192,20 @@ tag = {
    fields	= "0 = nick, 1 = username, 2 = hostname, 3 = did what";
    components	= "mod_irc2user";
    data_en	= "*** Notice -- %p0 (%p1@%p2) did '%p3' on you";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_SPLIT_MAJOR";
+   fields	= "0 = cause, 1 = from server, 2 = to server, 3 = reason";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Major net-split (%p1 → %p2) [%p0]: %p3";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_SPLIT_MINOR";
+   fields	= "0 = cause, 1 = from server, 2 = to server, 3 = reason";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Minor net-split (%p1 → %p2) [%p0]: %p3";
 };
 
 tag = {
