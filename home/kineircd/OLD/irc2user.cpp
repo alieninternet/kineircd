@@ -456,10 +456,10 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 #endif
 
    // Send a nice notice to those who care
-   Daemon::serverNotice(ServerNotice::SN_SIGNON,
-			user->getNickname() + ' ' +
-			user->getUsername() + ' ' +
-			user->getHost());
+   Daemon::logger(user->getNickname() + ' ' +
+		  user->getUsername() + ' ' +
+		  user->getHost(),
+		  Logger::MASK_CLIENT_SIGNON);
    
    // Create a LocalUser class for this user since they are obviouslly local
    user->local = new LocalUser(user, this, Lang::defaultLanguage);
@@ -626,11 +626,11 @@ irc2userHandler::~irc2userHandler(void)
 void irc2userHandler::goodbye(String const &reason)
 {
    // Send a notice to those who care
-   Daemon::serverNotice(ServerNotice::SN_SIGNOFF,
-			user->getNickname() + ' ' +
-			user->getUsername() + ' ' +
-			user->getHost() + ' ' +
-			reason);
+   Daemon::logger(user->getNickname() + ' ' +
+		  user->getUsername() + ' ' +
+		  user->getHost() + ' ' +
+		  reason,
+		  Logger::MASK_CLIENT_SIGNOFF);
 
    // Tell the user why the link is being closed if we need to
    sendGoodbye(reason);
@@ -1687,8 +1687,7 @@ void irc2userHandler::parseDIE(irc2userHandler *handler, StringTokens *tokens)
    String reason = tokens->rest();
 
    // Send out a server notice
-   Daemon::
-     serverNotice(ServerNotice::SN_SERVER, handler->user->nickname);
+   Daemon::logger(handler->user->nickname, Logger::MASK_AUSTHEX);
    
    // Check if we have a reason
    if (reason.length()) {
@@ -1722,9 +1721,8 @@ void irc2userHandler::parseGLOBOPS(irc2userHandler *handler, StringTokens *token
       }
    
       // Send the message!
-      Daemon::serverNotice(ServerNotice::SN_GLOBOPS,
-			   handler->user->nickname + ' ' +
-			   message);
+      Daemon::logger(handler->user->nickname + ' ' + message,
+		     Logger::MASK_GLOBOPS);
       return;
    }
    
@@ -1864,9 +1862,8 @@ void irc2userHandler::parseHELPME(irc2userHandler *handler, StringTokens *tokens
       }
    
       // Send the message!
-      Daemon::serverNotice(ServerNotice::SN_HELPME,
-			   handler->user->nickname + ' ' +
-			   message);
+      Daemon::logger(handler->user->nickname + ' ' + message,
+		     Logger::MASK_HELPME);
       return;
    }
    
@@ -2721,9 +2718,8 @@ void irc2userHandler::parseLOCOPS(irc2userHandler *handler, StringTokens *tokens
       }
       
       // Send the message!
-      Daemon::serverNotice(ServerNotice::SN_LOCOPS,
-			   handler->user->nickname + ' ' +
-			   message);
+      Daemon::logger(handler->user->nickname + ' ' + message,
+		     Logger::MASK_LOCOPS);
       return;
    }
    

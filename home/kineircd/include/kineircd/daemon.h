@@ -56,7 +56,6 @@ class Daemon;
 # include "str.h"
 # include "operator.h"
 # include "whowas.h"
-# include "servernotice.h"
 
 
 // A 'Listen' record
@@ -277,8 +276,8 @@ class Daemon {
 
    static String makeISUPPORT(void);		// Make an ISUPPORT string
    
-   static void serverNotice(ServerNotice::servnotice_t,
-			    String const &);	// Broadcast a server notice
+//   static void serverNotice(ServerNotice::servnotice_t,
+//			    String const &);	// Broadcast a server notice
    static void broadcastWallops(Server *, 
 				String const &);// Broadcast a wallops message
    static void broadcastWallops(User *, String const &);

@@ -52,7 +52,6 @@ SOURCES=\
 	register.cpp \
 	remotes.cpp \
 	server.cpp \
-	servernotice.cpp \
 	sha1.cpp \
 	str.cpp \
 	user.cpp \

@@ -57,12 +57,12 @@ LoggerFile::~LoggerFile(void)
 }
 
 
-/* log - Log a line to the syslog daemon
+/* logLine - Log a line to the file
  * Original 18/02/2000 simonb
  * 04/04/2002 simonb - Added debugging info
  * Note: This logging output sucks.
  */
-void LoggerFile::log(const String &line, const mask_type mask)
+void LoggerFile::logLine(const String &line, const mask_type mask)
 {
    if (ok()) {
 #ifdef DEBUG_PSYCHO

@@ -51,14 +51,14 @@ class Logger {
    };
    
    // Logger types (each logger class must set itself to one of these)
-   enum logtype_type {
+   enum logType_type {
       TYPE_OTHER,				// Other; eg. module extension
 # ifdef HAVE_SYSLOG_H
       TYPE_SYSLOG,				// Syslog interface
 # endif
       TYPE_FILE,				// Generic file based log
       TYPE_SNOTICE				// Server Notice (via daemon)
-   } const type;
+   };
 
    static const unsigned char maskTableSize = [+ 
       (count "logger_masks")
@@ -71,9 +71,19 @@ class Logger {
       const mask_type mask;			// The mask itself
    } static const maskTable[maskTableSize];
 
+ private:
+   const logType logType;				// Type of log this is
+   const mask_type logMask;				// OK log message types
+ 
+   // Log a string of text
+   virtual void log(const String &, const mask_type = MASK_HOUSEKEEPING)
+     {};
+
+ public:
    // Constructor
-   Logger(logtype_type t)
-     : type(t)
+   Logger(logType_type t, logMask_type m)
+     : logType(t),
+       logMask(m)
      {};
    
    // Destructor
@@ -81,16 +91,24 @@ class Logger {
      {};
    
    // Grab logging type
-   const logtype_type getType(void) const
-     { return type; };
-   
+   const logType_type getType(void) const
+     { return logType; };
+
+   // Grab logging mask
+   const logMask_type getMask(void) const
+     { return logMask; };
+
    // Is the log ok?
    virtual bool ok(void) const
      { return true; };
 
-   // Log a string of text
-   virtual void log(const String &, const mask_type = MASK_HOUSEKEEPING)
-     {};
+   // Pass a line of text to the logging function if it matches our mask
+   void log(const String &line, const mask_type mask = MASK_HOUSEKEEPING)
+     {
+        if (logMask & mask) {
+	   logLine(line, mask);
+	}
+     };
 };
 
 #endif

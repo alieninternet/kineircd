@@ -41,6 +41,6 @@ void debug(String const &line)
    // Output it to stderr
    cerr << line << endl;
    
-   // Also, broadcast it
-   Daemon::serverNotice(ServerNotice::SN_DEBUG, line);
+   // Also, log it
+   Daemon::logger(line, Logger::MASK_DEBUG);
 }

@@ -38,7 +38,8 @@ class LocalUser;
 # include "lang.h"
 # include "str.h"
 # include "utils.h"
-# include "servernotice.h"
+# include "logger.h"
+
 
 // An 'invitation' (for channel invites)
 class LocalUserInvitation {
@@ -82,7 +83,7 @@ class LocalUser {
    Handler *handler;				// Link into user handler
    LangData *language;				// Language dialogue data
    
-   ServerNotice::servnotice_t serverNotices;	// Server notices to receive
+   Logger::mask_type serverNoticeMask;		// Server notices to receive
    
    watch_set_t watches;				// Watching these nicknames
    invitation_map_t invitations;		// Invitations to channels
@@ -106,7 +107,7 @@ class LocalUser {
      : user(u),
        handler(h),
        language(l),
-       serverNotices(0)
+       serverNoticeMask(Logger::MASK_NONE)
      {
 	watches.clear();
 	invitations.clear();

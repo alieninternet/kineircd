@@ -67,12 +67,12 @@ LoggerSyslog::~LoggerSyslog(void)
 }
 
 
-/* log - Log a line to the syslog daemon
+/* logLine - Log a line to the syslog daemon
  * Original 16/02/2000 simonb
  * 04/04/2002 simonb - Modified for use with new String class
  * 04/04/2002 simonb - Added debugging info
  */
-void LoggerSyslog::log(const String &line, const mask_type mask)
+void LoggerSyslog::logLine(const String &line, const mask_type mask)
 {
 #ifdef DEBUG_PSYCHO
    debug("LoggerSyslog::log(" + line + ')');

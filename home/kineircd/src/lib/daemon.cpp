@@ -364,12 +364,11 @@ check_connections:
     */
    if (called) {
 #ifdef MAX_GARBO_RUN_ITEMS
-      serverNotice(ServerNotice::SN_HOUSEKEEPING,
-		   String::printf("Garbo collected %d items",
-				  items));
+      logger("Garbo collected " + String::convert(items) + " items",
+	     Logger::MASK_HOUSEKEEPING);
 #else
-      serverNotice(ServerNotice::SN_HOUSEKEEPING, 
-		   LangTags::L_SERVNOTICE_GARBO);
+      logger(LangTags::L_SERVNOTICE_GARBO,
+	     Logger::MASK_HOUSEKEEPING);
 #endif
    }
 }
@@ -422,12 +421,12 @@ void Daemon::rehash(Handler *handler, User *user)
       }
       
       // Send out a server broadcast notifying of the rehash
-      serverNotice(ServerNotice::SN_HOUSEKEEPING,
-		   "Rehash called by " + user->nickname);
+      logger("Rehash called by " + user->nickname,
+	     Logger::MASK_HOUSEKEEPING);
    } else {
       // Send out a server broadcast notifying of the rehash
-      serverNotice(ServerNotice::SN_HOUSEKEEPING,
-		   "Rehash called by signal SIGHUP");
+      logger("Rehash called by signal SIGHUP",
+	     Logger::MASK_HOUSEKEEPING);
    }
 
    // Check the extended clock information (hey, you never know!)
@@ -495,54 +494,54 @@ String Daemon::makeISUPPORT(void)
 /* serverNotice - [Various Forms] Broadcast a server notice to +s's
  * Original 18/09/01 simonb
  */
-void Daemon::serverNotice(ServerNotice::servnotice_t type, String const &message)
-{
-   // Run through the local user list
-   for (localuser_map_t::iterator it = localUsers.begin();
-	it != localUsers.end(); it++) {
-#ifdef DEBUG_EXTENDED
-      // If we are debugging do a little sanity check. This should NEVER happen
-      if (!(*it).second->user || !(*it).second->user->local) {
-	 debug("SANITY CHECK FAILED! User " + (*it).first + " discovered in "
-	       "Daemon::localUsers and is missing a local record!");
-	 continue;
-      }
-#endif
-   
-      char typePrefix = '\0';
-      
-      // Run through the server notice types and grab the appropriate type-char
-      for (register unsigned int i = ServerNotice::NUM_TYPES; i--;) {
-	 // Check if this is the type
-	 if (ServerNotice::typeTable[i].mask == type) {
-	    typePrefix = ServerNotice::typeTable[i].type;
-	    break;
-	 }
-      }
-      
-#ifdef DEBUG
-      // This should only ever happen in a development phase..
-      if (!typePrefix) {
-	 debug(String::printf("Cannot output server notice of type %ld -- "
-			      "No type-char associated with it or "
-			      "ServerNotice::NUM_TYPES is incorrect!",
-			      type));
-	 continue;
-      }
-#endif
-      
-      // Fix the message up (with the prefix)
-      String fixedMessage = String(typePrefix) + message;
-      
-      // Check if this user is to receive server notices
-      if ((*it).second->serverNotices & type) {
-	 // Send the message via the notice interface
-	 (*it).second->handler->
-	   sendNotice(server, (*it).second->user, 
-		      fixedMessage);
-      }
-   }
-}
+//void Daemon::serverNotice(ServerNotice::servnotice_t type, String const &message)
+//{
+//   // Run through the local user list
+//   for (localuser_map_t::iterator it = localUsers.begin();
+//	it != localUsers.end(); it++) {
+//#ifdef DEBUG_EXTENDED
+//      // If we are debugging do a little sanity check. This should NEVER happen
+//      if (!(*it).second->user || !(*it).second->user->local) {
+//	 debug("SANITY CHECK FAILED! User " + (*it).first + " discovered in "
+//	       "Daemon::localUsers and is missing a local record!");
+//	 continue;
+//      }
+//#endif
+//   
+//      char typePrefix = '\0';
+//      
+//      // Run through the server notice types and grab the appropriate type-char
+//      for (register unsigned int i = ServerNotice::NUM_TYPES; i--;) {
+//	 // Check if this is the type
+//	 if (ServerNotice::typeTable[i].mask == type) {
+//	    typePrefix = ServerNotice::typeTable[i].type;
+//	    break;
+//	 }
+//      }
+//      
+//#ifdef DEBUG
+//      // This should only ever happen in a development phase..
+//      if (!typePrefix) {
+//	 debug(String::printf("Cannot output server notice of type %ld -- "
+//			      "No type-char associated with it or "
+//			      "ServerNotice::NUM_TYPES is incorrect!",
+//			      type));
+//	 continue;
+//      }
+//#endif
+//      
+//      // Fix the message up (with the prefix)
+//      String fixedMessage = String(typePrefix) + message;
+//      
+//      // Check if this user is to receive server notices
+//      if ((*it).second->serverNotices & type) {
+//	 // Send the message via the notice interface
+//	 (*it).second->handler->
+//	   sendNotice(server, (*it).second->user, 
+//		      fixedMessage);
+//      }
+//   }
+//}
 
 
 /* broadcastWallops - [Various Forms] Broadcast a WALLOPS to local +w's
@@ -1043,15 +1042,15 @@ void Daemon::killUser(User *user, String const &caller,
    // If this was one of ours, we need to do the physical kill
    if (user->local) {
       // Notify the network about this kill just before we do it...
-      serverNotice(ServerNotice::SN_KILL_LOCAL,
-		   caller + ' ' + user->getNickname() + ' ' + reason);
+      logger(caller + ' ' + user->getNickname() + ' ' + reason,
+	     Logger::MASK_KILL_LOCAL);
       
       // Get the handler connection to clean up the mess
       user->local->handler->kill(caller, reason);
    } else {
       // The kill is 'remote', use the remote kill notice instead
-      serverNotice(ServerNotice::SN_KILL_REMOTE,
-		   caller + ' ' + user->getNickname() + ' ' + reason);
+      logger(caller + ' ' + user->getNickname() + ' ' + reason,
+	     Logger::MASK_KILL_REMOTE);
    }
    
    // Just quit them, minus the broadcast. We will do that

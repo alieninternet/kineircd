@@ -225,7 +225,7 @@ String User::makeModes(User *user)
    }
    
    // Parameter based modes
-   if (user->local && user->local->serverNotices) {
+   if (user->local && user->local->serverNoticeMask) {
       reply = reply + "s";
       params = String(" ") + "?";
    }
@@ -521,7 +521,7 @@ bool User::toggleModeSERVNOTICES(bool setting, Handler *handler, User *user, cha
    if (setting) {
       // Check if we are a helper/oper
       if (User::isHelper(user)) {
-	 user->local->serverNotices = 0xFFFFFFFF; // fix this.
+	 user->local->serverNoticeMask = Logger::MASK_ALL; // fix this.
 	 return true;
       } else {
 	 // Get cranky
@@ -536,7 +536,7 @@ bool User::toggleModeSERVNOTICES(bool setting, Handler *handler, User *user, cha
    } 
 
    // Turn off all the modes
-   user->local->serverNotices = 0;
+   user->local->serverNoticeMask = Logger::MASK_NONE;
    
    // Return true, since the server notices are turned off completely
    return true;

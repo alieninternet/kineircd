@@ -33,6 +33,9 @@ class LoggerFile : public Logger {
  private:
    ofstream logFile;
    
+   void logLine(const String &, 
+		const mask_type = MASK_HOUSEKEEPING);	// Log a string of text
+   
  public:
    LoggerFile(const char *);				// Constructor
    ~LoggerFile(void);					// Destructor
@@ -40,9 +43,6 @@ class LoggerFile : public Logger {
    // Is the log ok?
    bool ok(void) const
      { return logFile.good(); };
-   
-   void log(const String &, 
-	    const mask_type = MASK_HOUSEKEEPING);	// Log a string of text
 };
 
 #endif
