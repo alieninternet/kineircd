@@ -312,6 +312,22 @@ definition = {
 	    "Maximum number of nickname/channel/server watches per user";
       };
    };
+   
+   definition = {
+      name = "Servers";
+      comment =
+	 "Limits for servers";
+	 
+      definition = {
+	 name = "MaxDescriptionLength";
+	 hasVariable = yes;
+         varType = "unsigned char";
+	 varHandler = "varHandleUnsignedCharNoZero";
+	 defaultValue = "50";
+	 comment =
+	    "Maximum length of the description field for servers";
+      };
+   };
 };
    
 definition = {
