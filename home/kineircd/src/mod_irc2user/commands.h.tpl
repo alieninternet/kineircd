@@ -32,7 +32,14 @@
 #ifndef _SRC_MOD_IRC2USER_COMMANDS_H_
 # define _SRC_MOD_IRC2USER_COMMANDS_H_ 1
 
+# include <kineircd/kineircdconf.h>
 # include <kineircd/languages.h>
+# include <string>
+# ifdef KINE_STL_HAS_HASH
+#  include <hash_map>
+# else
+#  include <map>
+# endif
 
 namespace Kine {
    namespace mod_irc2user {
@@ -47,6 +54,34 @@ namespace Kine {
 	    const Kine::Languages::tagID_type* const 
 	      helpInfo;					// Detailed help tag
 	 } static const preInitCommands[];
+
+       public:
+	 // A 'command descriptor' for our commands table.
+	 struct CommandInfo {
+	    unsigned char penalty;			// Set penalty rate
+	    const Kine::Languages::tagID_type* const
+	      helpUsage;				// Command usage hint
+	    const Kine::Languages::tagID_type* const
+	      helpInfo;					// Detailed help tag
+	    unsigned long long callCount;		// # times used
+	    
+	    // Copy constructor to aid in initialisation
+	    CommandInfo(const preInitCommand_type& info)
+	      : penalty(info.defaultPenalty),
+	        helpUsage(info.helpUsage),
+	        helpInfo(info.helpInfo),
+	        callCount(0)
+	      {};
+	 };
+	 
+       private:
+	 // A list of commands
+# ifdef KINE_STL_HAS_HASH
+	 typedef std::hash_map < std::string, CommandInfo > commandsList_type;
+# else
+	 typedef std::map < std::string, CommandInfo > commandsList_type;
+# endif
+	 commandsList_type commandsList;
 	 
        public:
 	 // Constructor

@@ -376,6 +376,7 @@ mod_iirc1_la_LIBADD=\
 # 'mod_irc2user' module
 ###############################################################################
 mod_irc2user_la_SOURCES=\
+	src/mod_irc2user/commandlist.cpp \
 	src/mod_irc2user/commands.cpp \
 	src/mod_irc2user/commands.h \
 	src/mod_irc2user/language.cpp \
@@ -395,10 +396,10 @@ mod_irc2user_la_LIBADD=\
 	libkineircd.la \
 	libkineircd_irc2.la
 
-src/mod_irc2user/commands.cpp: src/mod_irc2user/commands.cpp.tpl src/mod_irc2user/commands.def
+src/mod_irc2user/commandlist.cpp: src/mod_irc2user/commandlist.cpp.tpl src/mod_irc2user/commands.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T src/mod_irc2user/commands.cpp.tpl \
+		-T src/mod_irc2user/commandlist.cpp.tpl \
 		src/mod_irc2user/commands.def
 
 src/mod_irc2user/language.cpp src/mod_irc2user/language.h: src/mod_irc2user/language.tpl $(AUTOGEN_DEF_DIR)/language.def
