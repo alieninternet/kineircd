@@ -199,6 +199,7 @@ libkineircd_la_SOURCES=\
 	include/kineircd/module.h \
 	include/kineircd/moduledescriptor.h \
 	include/kineircd/modulelist.h \
+	include/kineircd/myserver.h \
 	include/kineircd/network.h \
 	include/kineircd/name.h \
 	include/kineircd/password.h \
