@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_CONNECTION_H_
 # define _INCLUDE_KINEIRCD_CONNECTION_H_ 1
 
-# include "kineircd/kineircdconf.h"
+# include <kineircd/kineircdconf.h>
 
 # include <aisutil/socket/socket.h>
 
@@ -32,7 +32,7 @@ namespace Kine {
    class Protocol;
 };
 
-# include "kineircd/daemon.h"
+# include <kineircd/daemon.h>
 
 namespace Kine {
    class Connection {
@@ -92,7 +92,7 @@ namespace Kine {
 };
 
 // Complete forwarded declarations
-# include "kineircd/protocol.h"
+# include <kineircd/protocol.h>
 
 #endif // _INCLUDE_KINEIRCD_CONNECTION_H_ 
 

@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_UTILS_H_
 # define _INCLUDE_KINEIRCD_UTILS_H_ 1
 
-# include "kineircd/kineircdconf.h"
+# include <kineircd/kineircdconf.h>
 
 # include <string>
 # include <cstdlib>

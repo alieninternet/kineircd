@@ -30,11 +30,11 @@ namespace Kine {
 
 # include <aisutil/string/string.h>
 
-# include "kineircd/numerics.h"
-# include "kineircd/connection.h"
-# include "kineircd/server.h"
-# include "kineircd/user.h"
-# include "kineircd/channel.h"
+# include <kineircd/numerics.h>
+# include <kineircd/connection.h>
+# include <kineircd/server.h>
+# include <kineircd/user.h>
+# include <kineircd/channel.h>
 
 
 namespace Kine {

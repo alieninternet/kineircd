@@ -26,7 +26,7 @@
 
 # include <aisutil/string/string.h>
 
-# include "kineircd/utils.h"
+# include <kineircd/utils.h>
 
 namespace Kine {
    class Password {

@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_SIGNALS_H_
 # define _INCLUDE_KINEIRCD_SIGNALS_H_ 1
 
-# include "kineircd/kineircdconf.h"
+# include <kineircd/kineircdconf.h>
 
 # ifdef KINE_STL_HAS_SLIST
 #  include <slist>

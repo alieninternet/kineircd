@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_LOCALUSER_H_
 # define _INCLUDE_KINEIRCD_LOCALUSER_H_ 1
 
-# include "kineircd/kineircdconf.h"
+# include <kineircd/kineircdconf.h>
 
 # ifdef KINE_STL_HAS_HASH
 #  include <hash_set>
@@ -38,12 +38,12 @@ namespace Kine {
    class LocalUser;
 };
 
-# include "kineircd/user.h"
-# include "kineircd/channel.h"
-# include "kineircd/handler.h"
-# include "kineircd/lang.h"
-# include "kineircd/utils.h"
-# include "kineircd/logger.h"
+# include <kineircd/user.h>
+# include <kineircd/channel.h>
+# include <kineircd/handler.h>
+# include <kineircd/lang.h>
+# include <kineircd/utils.h>
+# include <kineircd/logger.h>
 
 namespace Kine {
    

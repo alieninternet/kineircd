@@ -31,7 +31,7 @@ namespace Kine {
    class Whowas;
 };
 
-# include "kineircd/user.h"
+# include <kineircd/user.h>
 
 namespace Kine {
 

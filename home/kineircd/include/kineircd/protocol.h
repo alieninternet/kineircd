@@ -28,7 +28,7 @@
 # include <string>
 # include <aisutil/socket/socket.h>
 
-# include "kineircd/connection.h"
+# include <kineircd/connection.h>
 
 
 namespace Kine {

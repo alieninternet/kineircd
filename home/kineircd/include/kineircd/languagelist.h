@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_LANGUAGELIST_H_
 # define _INCLUDE_KINEIRCD_LANGUAGELIST_H_ 1
 
-# include "kineircd/kineircdconf.h"
+# include <kineircd/kineircdconf.h>
 
 # ifdef KINE_STL_HAS_HASH
 #  include <hash_map>
@@ -34,7 +34,7 @@
 
 # include <aisutil/string/string.h>
 
-# include "kineircd/languagedata.h"
+# include <kineircd/languagedata.h>
 
 namespace Kine {
    class LanguageList {

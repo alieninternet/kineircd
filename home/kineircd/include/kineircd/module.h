@@ -154,7 +154,7 @@ namespace Kine {
 };
    
 // Complete forwarded declarations
-# include "kineircd/daemon.h"
+# include <kineircd/daemon.h>
 
 #endif // _INCLUDE_KINEIRCD_MODULE_H_
    

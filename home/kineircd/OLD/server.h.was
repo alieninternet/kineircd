@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_SERVER_H_
 # define _INCLUDE_KINEIRCD_SERVER_H_ 1
 
-# include "kineircd/kineircdconf.h"
+# include <kineircd/kineircdconf.h>
 
 # ifdef KINE_STL_HAS_HASH
 #  include <hash_map>
@@ -40,7 +40,7 @@ namespace Kine {
    class Server;
 };
 
-# include "kineircd/handler.h"
+# include <kineircd/handler.h>
 
 //# define SERVERFLAG_STAR	0x0001		// Star topology?
 //# define SERVERFLAG_TENDRIL	0x0002		// Link is a 'tendril'?

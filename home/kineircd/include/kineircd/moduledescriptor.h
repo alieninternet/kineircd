@@ -31,7 +31,7 @@ namespace Kine {
 
 # include <aisutil/string/string.h>
 
-# include "kineircd/module.h"
+# include <kineircd/module.h>
 
 namespace Kine {
    class ModuleDescriptor {
@@ -70,7 +70,7 @@ namespace Kine {
 };
 
 // Complete forwarded declarations
-# include "kineircd/daemon.h"
+# include <kineircd/daemon.h>
 
 #endif // _INCLUDE_KINEIRCD_MODULEDESCRIPTOR_H_
    

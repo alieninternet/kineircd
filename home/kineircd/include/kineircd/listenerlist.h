@@ -32,7 +32,7 @@
 #  include <list>
 # endif
 
-# include "kineircd/listener.h"
+# include <kineircd/listener.h>
 
 namespace Kine {
    class ListenerList {

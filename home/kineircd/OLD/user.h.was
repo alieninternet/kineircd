@@ -41,11 +41,11 @@ namespace Kine {
    class User;
 };
 
-# include "kineircd/localuser.h"
-# include "kineircd/server.h"
-# include "kineircd/channel.h"
-# include "kineircd/handler.h"
-# include "kineircd/langtags.h"
+# include <kineircd/localuser.h>
+# include <kineircd/server.h>
+# include <kineircd/channel.h>
+# include <kineircd/handler.h>
+# include <kineircd/langtags.h>
 
 
 namespace Kine {

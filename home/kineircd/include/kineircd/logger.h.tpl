@@ -27,7 +27,7 @@
 #ifndef _INCLUDE_KINEIRCD_LOGGER_H_
 # define _INCLUDE_KINEIRCD_LOGGER_H_ 1
 
-# include "kineircd/kineircdconf.h"
+# include <kineircd/kineircdconf.h>
 
 # include <aisutil/string/string.h>
 

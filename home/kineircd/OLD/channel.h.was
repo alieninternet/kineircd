@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_CHANNEL_H_
 # define _INCLUDE_KINEIRCD_CHANNEL_H_ 1
 
-# include "kineircd/kineircdconf.h"
+# include <kineircd/kineircdconf.h>
 
 # include <ctime>
 
@@ -50,8 +50,8 @@ namespace Kine {
    class ChannelMember;
 };
 
-# include "kineircd/user.h"
-# include "kineircd/handler.h"
+# include <kineircd/user.h>
+# include <kineircd/handler.h>
 
 
 namespace Kine {

@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_DAEMON_H_
 # define _INCLUDE_KINEIRCD_DAEMON_H_ 1
 
-# include "kineircd/kineircdconf.h"
+# include <kineircd/kineircdconf.h>
 
 # ifdef KINE_STL_HAS_SLIST
 #  include <slist>
@@ -48,8 +48,8 @@ namespace Kine {
    class Connection;
 };
 
-# include "kineircd/exit.h"
-# include "kineircd/listener.h"
+# include <kineircd/exit.h>
+# include <kineircd/listener.h>
 
 namespace Kine {
    // The Daemon class
@@ -135,8 +135,8 @@ namespace Kine {
 };
 
 // Complete forwarded declarations
-# include "kineircd/config.h"
-# include "kineircd/signals.h"
-# include "kineircd/connection.h"
+# include <kineircd/config.h>
+# include <kineircd/signals.h>
+# include <kineircd/connection.h>
 
 #endif // _INCLUDE_KINEIRCD_DAEMON_H_ 
