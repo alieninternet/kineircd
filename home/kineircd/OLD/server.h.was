@@ -9,12 +9,9 @@ class Server;
 
 # include "handler.h"
 # include "str.h"
-# include "modes.h"
 
 # define SERVERFLAG_STAR	0x0001		// Star topology?
 # define SERVERFLAG_TENDRIL	0x0002		// Link is a 'tendril'?
-
-typedef unsigned short TYPE_SERVERFLAGS;
 
 class Server {
  public:
@@ -43,6 +40,15 @@ class Server {
    Handler *handler;				// Link into user handler
    unsigned char numHops;			// Number of hops away
    unsigned int numUsers;			// Number of users connected
+
+   // Server mode change routines
+   static bool toggleModeAUTOTBS(bool setting, Server *server, String *param);
+   static bool toggleModeHIDDEN(bool setting, Server *server, String *param);
+   static bool toggleModeMODELOCK(bool setting, Server *server, String *param);
+   static bool toggleModeNOOP(bool setting, Server *server, String *param);
+   static bool toggleModeREMOTEMOTD(bool setting, Server *server, String *param);
+   static bool toggleModeSHORTMOTD(bool setting, Server *server, String *param);
+   static bool toggleModeUSERSFULL(bool setting, Server *server, String *param);
 
  public:
    /* Server modes (note modes that use paramters are not listed here)

@@ -10,7 +10,6 @@
 #include "numerics.h"
 #include "language.h"
 #include "utils.h"
-#include "modes.h"
 
 
 // User modes -- IMPORTANT: Update the mode strings as you update the table!
@@ -18,49 +17,49 @@ char const *User::modeStr 		= "dghkiInoOrRsSvw";
 char const *User::modeParamStr 		= "s";
 struct User::modeTableStruct const User::modeTable[] = {
      { 'd',	MODE_DEAF,		false,	false,	true,
-	toggleUsermodeDEAF
+	User::toggleModeDEAF
      },
      { 'g',	MODE_IGNORING,		false,	false,	false,
-	toggleUsermodeIGNORING
+	User::toggleModeIGNORING
      },
      { 'h',	MODE_HELPER,		false,	false,	true,
-	toggleUsermodeHELPER
+	User::toggleModeHELPER
      },
      { 'k',	MODE_NONKICKABLE,	false,	false,	false,
-	toggleUsermodeNONKICKABLE
+	User::toggleModeNONKICKABLE
      },
      { 'i',	MODE_INVISIBLE,		false,	false,	true,
-	toggleUsermodeINVISIBLE
+	User::toggleModeINVISIBLE
      },
      { 'I',	MODE_IDENTIFIED,	false,	false,	false,
-	toggleUsermodeIDENTIFIED
+	User::toggleModeIDENTIFIED
      },
      { 'n',	MODE_GOT_IDENTD,	false,	false,	false,
-	toggleUsermodeGOT_IDENTD
+	User::toggleModeGOT_IDENTD
      },
      { 'o',	MODE_LOCALOPER,		false,	false,	true,
-	toggleUsermodeOPER
+	User::toggleModeOPER
      },
      { 'O',	MODE_GLOBALOPER,	false,	false,	true,
-	toggleUsermodeOPER
+	User::toggleModeOPER
      },
      { 'r',	MODE_RESTRICTED,	false,	false,	false,
-	toggleUsermodeRESTRICTED
+	User::toggleModeRESTRICTED
      },
      { 'R',	MODE_REGNICKSMSG,	false,	false,	true,
-	toggleUsermodeREGNICKSMSG
+	User::toggleModeREGNICKSMSG
      },
      { 's',	0,			true,	false,	true,
-	toggleUsermodeSERVNOTICES
+	User::toggleModeSERVNOTICES
      },
      { 'S',	MODE_SECURE,		false,	false,	false,
-	toggleUsermodeSECURE
+	User::toggleModeSECURE
      },
      { 'v',	MODE_VWORLD,		false,	false,	true,
-	toggleUsermodeVWORLD
+	User::toggleModeVWORLD
      },
      { 'w',	MODE_WALLOPS,		false,	false,	true,
-	toggleUsermodeWALLOPS
+	User::toggleModeWALLOPS
      },
      { 0 }
 };
@@ -135,7 +134,7 @@ bool User::isSilencing(User *target)
 /* makeModes - [Various forms] Create a string of user modes
  * Original 24/08/01, Simon Butcher <pickle@austnet.org>
  */
-String User::makeModes(TYPE_USERMODES modes)
+String User::makeModes(modes_t modes)
 {
    String reply = "+";
    
@@ -173,3 +172,331 @@ String User::makeModes(User *user)
 }
 
 
+/* User::toggleModeDEAF
+ * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeDEAF(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_DEAF)) {
+      user->modes |= User::MODE_DEAF;
+      return true;
+   } else if (!setting && (user->modes & User::MODE_DEAF)) {
+      user->modes &= ~User::MODE_DEAF;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* User::toggleModeGOT_IDENTD
+ * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeGOT_IDENTD(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_GOT_IDENTD)) {
+      user->modes |= User::MODE_GOT_IDENTD;
+      return true;
+   } else if (!setting && (user->modes & User::MODE_GOT_IDENTD)) {
+      user->modes &= ~User::MODE_GOT_IDENTD;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* User::toggleModeHELPER
+ * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeHELPER(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   // Check if we are turning this on
+   if (setting) {
+      if (handler) {
+	 /* Tell the user they're an idiot :) */
+	 if (!(user->modes & User::MODE_HELPER)) {
+	    handler->sendNumeric(TO_DAEMON->myServer(),
+				 ERR_NOPRIVILEGES, 0,
+				 LNG_ERR_NOPRIVILEGES_PLUS_HELPER);
+	 }
+	 return false;
+      } else {
+	 // Turn it on
+	 user->modes |= User::MODE_HELPER;
+	 
+	 // Modify the helper counter
+	 daemon->numHelpers++;
+	 
+	 return true;
+      }
+   }
+   
+   // If this user is not a helper, this does not have an effect at all
+   if (!(user->modes & User::MODE_HELPER)) {
+      return false;
+   }
+   
+   // Turn off the flag and return true
+   user->modes &= ~User::MODE_HELPER;
+
+   // Modify the helper counter
+   daemon->numHelpers--;
+	 
+   return true;
+}
+
+
+/* User::toggleModeIDENTIFIED
+ * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeIDENTIFIED(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_IDENTIFIED)) {
+      user->modes |= User::MODE_IDENTIFIED;
+      return true;
+   } else if (!setting && (user->modes & User::MODE_IDENTIFIED)) {
+      user->modes &= ~User::MODE_IDENTIFIED;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* User::toggleModeIGNORING
+ * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeIGNORING(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_IGNORING)) {
+      user->modes |= User::MODE_IGNORING;
+      return true;
+   } else if (!setting && (user->modes & User::MODE_IGNORING)) {
+      user->modes &= ~User::MODE_IGNORING;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* User::toggleModeINVISIBLE
+ * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeINVISIBLE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_INVISIBLE)) {
+      user->modes |= User::MODE_INVISIBLE;
+      return true;
+   } else if (!setting && (user->modes & User::MODE_INVISIBLE)) {
+      user->modes &= ~User::MODE_INVISIBLE;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* User::toggleModeNONKICKABLE
+ * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeNONKICKABLE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_NONKICKABLE)) {
+      user->modes |= User::MODE_NONKICKABLE;
+      return true;
+   } else if (!setting && (user->modes & User::MODE_NONKICKABLE)) {
+      user->modes &= ~User::MODE_NONKICKABLE;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* User::toggleModeOPER
+ * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ * Note: This can only be toggled off, not on.
+ */
+bool User::toggleModeOPER(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   // Check if this user is trying to turn this mode on
+   if (setting) {
+      if (handler) {
+	 if (!(user->modes & User::MODE_GLOBALOPER) ||
+	     !(user->modes & User::MODE_LOCALOPER)) {
+	    /* Tell the user they're an idiot :) */
+	    handler->sendNumeric(TO_DAEMON->myServer(),
+				ERR_NOPRIVILEGES, 0,
+				 LNG_ERR_NOPRIVILEGES_PLUS_IRCOPER);
+	 }
+	 return false;
+      } else {
+	 // If this is setting someone as a global operator, then turn it on.
+	 if (*modeChr == 'O') {
+	    user->modes |= User::MODE_GLOBALOPER;
+	    return true;
+	 }
+	 
+	 // Ignore it, must be a local oper and a mistake.
+	 return false;
+      }
+   }
+   
+   // If this user is not an oper, this does not have an effect at all
+   if (!(user->modes & User::MODE_GLOBALOPER) &&
+       !(user->modes & User::MODE_LOCALOPER)) {
+      return false;
+   }
+   
+   // Fix up the character so that the client does not get confused.
+   if (user->modes & User::MODE_GLOBALOPER) {
+      // While we are here, decrement the global operator counter
+      daemon->numOpers--;
+      
+      *modeChr = 'O';
+   } else {
+      *modeChr = 'o';
+   }
+   
+   // Turn off the oper flags and return true
+   user->modes &= ~User::MODE_GLOBALOPER & ~User::MODE_LOCALOPER;
+
+   return true;
+}
+
+
+/* User::toggleModeREGNICKSMSG
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeREGNICKSMSG(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_REGNICKSMSG)) {
+      user->modes |= User::MODE_REGNICKSMSG;
+
+      // If this user is an oper or a helper they really should not have this
+      if (handler && User::isHelper(user)) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      RPL_MODECHANGEWARN, 0,
+			      LNG_RPL_MODECHANGEWARN_HELPER_PLUS_REGNICKSMSG);
+      }
+      
+      return true;
+   } else if (!setting && (user->modes & User::MODE_REGNICKSMSG)) {
+      user->modes &= ~User::MODE_REGNICKSMSG;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* User::toggleModeRESTRICTED
+ * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeRESTRICTED(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_RESTRICTED)) {
+      user->modes |= User::MODE_RESTRICTED;
+      return true;
+   } else if (!setting && (user->modes & User::MODE_RESTRICTED)) {
+      user->modes &= ~User::MODE_RESTRICTED;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* User::toggleModeSECURE
+ * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeSECURE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_SECURE)) {
+      user->modes |= User::MODE_SECURE;
+      return true;
+   } else if (!setting && (user->modes & User::MODE_SECURE)) {
+      user->modes &= ~User::MODE_SECURE;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* User::toggleModeSERVNOTICES
+ * Original , Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeSERVNOTICES(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   // This should not be set remotely
+   if (!user->local) {
+      return false;
+   }
+   
+   // Check if we are setting this mode
+   if (setting) {
+      user->local->serverNotices = 0xFFFFFFFF;
+      return true; // fix me
+   } 
+
+   // Turn off all the modes
+   user->local->serverNotices = 0;
+   
+   // Return true, since the server notices are turned off completely
+   return true;
+}
+
+
+/* User::toggleModeVWORLD
+ * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeVWORLD(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_VWORLD)) {
+      user->modes |= User::MODE_VWORLD;
+      return true;
+   } else if (!setting && (user->modes & User::MODE_VWORLD)) {
+      user->modes &= ~User::MODE_VWORLD;
+      
+      // Warn this user, if we can, about turning off virtual world
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      RPL_MODECHANGEWARN, 0,
+			      LNG_RPL_MODECHANGEWARN_MINUS_VWORLD);
+      }
+      
+      return true;
+   }
+
+   return false;
+}
+
+
+/* User::toggleModeWALLOPS
+ * Original 25/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeWALLOPS(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_WALLOPS)) {
+      user->modes |= User::MODE_WALLOPS;
+      return true;
+   } else if (!setting && (user->modes & User::MODE_WALLOPS)) {
+      user->modes &= ~User::MODE_WALLOPS;
+      
+      // Check if we need to (and can) warn this user about this command
+      if (handler &&
+	  ((user->modes & User::MODE_GLOBALOPER) ||
+	   (user->modes & User::MODE_LOCALOPER))) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      RPL_MODECHANGEWARN, 0,
+			      LNG_RPL_MODECHANGEWARN_IRCOPER_MINUS_WALLOPS);
+      }
+      
+      return true;
+   }
+   
+   return false;
+}

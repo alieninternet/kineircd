@@ -19,7 +19,6 @@ class User;
 # include "localuser.h"
 # include "daemon.h"
 # include "str.h"
-# include "modes.h"
 # include "server.h"
 # include "channel.h"
 # include "handler.h"
@@ -73,6 +72,22 @@ class User {
    
    silence_list_t silences;			// Silence list
 
+   // User mode change routines
+   static bool toggleModeDEAF(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeGOT_IDENTD(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeHELPER(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeIDENTIFIED(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeIGNORING(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeINVISIBLE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeNONKICKABLE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeOPER(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeREGNICKSMSG(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeRESTRICTED(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeSECURE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeSERVNOTICES(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeVWORLD(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeWALLOPS(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+
  public:
    /* User modes (note modes that use paramters are not listed here)
     * WARNING!! Do not change these once they are set! P14 relies on them
@@ -103,7 +118,7 @@ class User {
    // Constructor
    User(String const &nick, String const &user, String ip, String host, 
 	String vwhost, String real, time_t signon, Server *serv,
-	TYPE_USERMODES mode = 0, unsigned char stat = 0)
+	modes_t mode = 0, unsigned char stat = 0)
      : nickname(nick),
        username(user),
        hostname(host),

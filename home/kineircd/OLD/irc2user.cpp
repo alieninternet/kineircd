@@ -10,7 +10,6 @@
 #include "numerics.h"
 #include "language.h"
 #include "version.h"
-#include "modes.h"
 #include "utils.h"
 #include "user.h"
 #include "channel.h"
@@ -2571,7 +2570,7 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    }
 
    // Work out what log messages to send, and what modes to set this user
-   TYPE_USERMODES modes = 0;
+   User::modes_t modes = 0;
    if (oper->isGlobal()) {
       // Log this action
       TO_DAEMON->logger(handler->user->nickname + " is now a global operator",

@@ -20,7 +20,6 @@
 #include "numerics.h"
 #include "language.h"
 #include "version.h"
-#include "modes.h"
 
 
 /* doADMIN

@@ -28,7 +28,6 @@ class ChannelMember;
 # include "str.h"
 # include "user.h"
 # include "handler.h"
-# include "modes.h"
 
 
 // A channel member class
@@ -130,6 +129,29 @@ class Channel {
    member_map_t members;			// List of channel members
 
    Daemon *daemon;				// Hook back into the daemon
+
+   // Channel mode change routines
+   static bool toggleModeANONYMOUS(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeBAN(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeBANEXCEPT(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeCHANCREATOR(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeCHANOPER(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeDENY(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeEVENT(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeHALFOPER(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeINVITE(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeINVITEALLOW(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeKEY(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeLIMIT(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeMODERATED(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeNOOUTSIDEMSG(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModePRIVATE(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeQUIET(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeREGNICKSONLY(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeREOP(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeSECRET(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeTOPICLOCK(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
+   static bool toggleModeVOICE(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);
 
  public:
    /* Channel modes (note modes that use paramters are not listed here)

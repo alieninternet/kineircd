@@ -12,25 +12,25 @@ char const *Server::modeStr		= "aFhLmMn";
 char const *Server::modeParamStr	= "*";
 struct Server::modeTableStruct const Server::modeTable[] = {
      { 'a',	MODE_AUTOTBS,		false,	false,	true,
-	toggleServermodeAUTOTBS
+	Server::toggleModeAUTOTBS
      },
      { 'F',	MODE_USERSFULL,		false,	false,	false,
-	toggleServermodeUSERSFULL
+	Server::toggleModeUSERSFULL
      },
      { 'h',	MODE_HIDDEN,		false,	false,	true,
-	toggleServermodeHIDDEN
+	Server::toggleModeHIDDEN
      },
      { 'L',	MODE_MODELOCK,		false,	false,	false,
-	toggleServermodeMODELOCK
+	Server::toggleModeMODELOCK
      },
      { 'm',	MODE_SHORTMOTD,		false,	false,	true,
-	toggleServermodeSHORTMOTD
+	Server::toggleModeSHORTMOTD
      },
      { 'M',	MODE_REMOTEMOTD,	false,	false,	true,
-	toggleServermodeREMOTEMOTD
+	Server::toggleModeREMOTEMOTD
      },
      { 'n',	MODE_NOOP,		false,	false,	true,
-	toggleServermodeNOOP
+	Server::toggleModeNOOP
      },
      { 0 }
 };
@@ -54,6 +54,125 @@ String Server::makeModes(Server *server)
    }
    
    return reply + params;
+}
+
+
+/* Server::toggleModeAUTOTBS
+ * Original 21/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Server::toggleModeAUTOTBS(bool setting, Server *server, String *param)
+{
+   if (setting && !(server->modes & Server::MODE_AUTOTBS)) {
+      server->modes |= Server::MODE_AUTOTBS;
+      return true;
+   } else if (!setting && (server->modes & Server::MODE_AUTOTBS)) {
+      server->modes &= ~Server::MODE_AUTOTBS;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Server::toggleModeHIDDEN
+ * Original 21/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Server::toggleModeHIDDEN(bool setting, Server *server, String *param)
+{
+   if (setting && !(server->modes & Server::MODE_HIDDEN)) {
+      server->modes |= Server::MODE_HIDDEN;
+      return true;
+   } else if (!setting && (server->modes & Server::MODE_HIDDEN)) {
+      server->modes &= ~Server::MODE_HIDDEN;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Server::toggleModeMODELOCK
+ * Original 23/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Server::toggleModeMODELOCK(bool setting, Server *server, String *param)
+{
+   if (setting && !(server->modes & Server::MODE_MODELOCK)) {
+      server->modes |= Server::MODE_MODELOCK;
+      return true;
+   } else if (!setting && (server->modes & Server::MODE_MODELOCK)) {
+      server->modes &= ~Server::MODE_MODELOCK;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Server::toggleModeAUTONOOP
+ * Original 21/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Server::toggleModeNOOP(bool setting, Server *server, String *param)
+{
+   if (setting && !(server->modes & Server::MODE_NOOP)) {
+      server->modes |= Server::MODE_NOOP;
+      return true;
+   } else if (!setting && (server->modes & Server::MODE_NOOP)) {
+      server->modes &= ~Server::MODE_NOOP;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Server::toggleModeREMOTEMOTD
+ * Original 23/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Server::toggleModeREMOTEMOTD(bool setting, Server *server, String *param)
+{
+   if (setting && !(server->modes & Server::MODE_REMOTEMOTD)) {
+      server->modes |= Server::MODE_REMOTEMOTD;
+      return true;
+   } else if (!setting && (server->modes & Server::MODE_REMOTEMOTD)) {
+      server->modes &= ~Server::MODE_REMOTEMOTD;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Server::toggleModeSHORTMOTD
+ * Original 23/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Server::toggleModeSHORTMOTD(bool setting, Server *server, String *param)
+{
+   if (setting && !(server->modes & Server::MODE_SHORTMOTD)) {
+      server->modes |= Server::MODE_SHORTMOTD;
+      return true;
+   } else if (!setting && (server->modes & Server::MODE_SHORTMOTD)) {
+      server->modes &= ~Server::MODE_SHORTMOTD;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Server::toggleModeUSERSFULL
+ * Original 23/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Server::toggleModeUSERSFULL(bool setting, Server *server, String *param)
+{
+   if (setting && !(server->modes & Server::MODE_USERSFULL)) {
+      server->modes |= Server::MODE_USERSFULL;
+      return true;
+   } else if (!setting && (server->modes & Server::MODE_USERSFULL)) {
+      server->modes &= ~Server::MODE_USERSFULL;
+      return true;
+   }
+   
+   return false;
 }
 
 

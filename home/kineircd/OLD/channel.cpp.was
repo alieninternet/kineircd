@@ -10,7 +10,6 @@
 #include "numerics.h"
 #include "language.h"
 #include "utils.h"
-#include "modes.h"
 
 
 // Channel modes -- IMPORTANT: Update the mode strings as you update the table!
@@ -19,67 +18,67 @@ char const *Channel::modeParamStr 	= "bdehIkloOv";
 char const *Channel::prefixStr		= "(ohv)@%+";
 struct Channel::modeTableStruct const Channel::modeTable[] = {
      { 'a',	MODE_ANONYMOUS,		false,	false,	true,
-	toggleChanmodeANONYMOUS 
+	Channel::toggleModeANONYMOUS 
      },
      { 'b',	0,			true,	true,	true,
-	toggleChanmodeBAN 
+	Channel::toggleModeBAN 
      },
      { 'd',	0,			true,	true,	true,
-	toggleChanmodeDENY 
+	Channel::toggleModeDENY 
      },
      { 'e',	0,			true,	true,	true,
-	toggleChanmodeBANEXCEPT 
+	Channel::toggleModeBANEXCEPT 
      },
      { 'E',	MODE_EVENT,		false,	false,	true,
-	toggleChanmodeEVENT
+	Channel::toggleModeEVENT
      },
      { 'h',	0,			true,	true,	true,
-	toggleChanmodeHALFOPER
+	Channel::toggleModeHALFOPER
      },
      { 'i',	MODE_INVITE,		false,	false,	true,
-	toggleChanmodeINVITE
+	Channel::toggleModeINVITE
      },
      { 'I',	0,			true,	true,	true,
-	toggleChanmodeINVITEALLOW
+	Channel::toggleModeINVITEALLOW
      },
      { 'k',	0,			true,	true,	true,
-	toggleChanmodeKEY
+	Channel::toggleModeKEY
      },
      { 'l',	0,			true,	false,	true,
-	toggleChanmodeLIMIT
+	Channel::toggleModeLIMIT
      },
      { 'm',	MODE_MODERATED,		false,	false,	true,
-	toggleChanmodeMODERATED
+	Channel::toggleModeMODERATED
      },
      { 'n',	MODE_NOOUTSIDEMSG,	false,	false,	true,
-	toggleChanmodeNOOUTSIDEMSG
+	Channel::toggleModeNOOUTSIDEMSG
      },
      { 'o',	0,			true,	true,	true,
-	toggleChanmodeCHANOPER
+	Channel::toggleModeCHANOPER
      },
      { 'O',	0,			true,	true,	false,
-	toggleChanmodeCHANCREATOR
+	Channel::toggleModeCHANCREATOR
      },
      { 'p',	MODE_PRIVATE,		false,	false,	true,
-	toggleChanmodePRIVATE
+	Channel::toggleModePRIVATE
      },
      { 'q',	MODE_QUIET,		false,	false,	false,
-	toggleChanmodeQUIET
+	Channel::toggleModeQUIET
      },
      { 'r',	MODE_REOP,		false,	false,	false,
-	toggleChanmodeREOP
+	Channel::toggleModeREOP
      },
      { 'R',	MODE_REGNICKSONLY,	false,	false,	true,
-	toggleChanmodeREGNICKSONLY
+	Channel::toggleModeREGNICKSONLY
      },
      { 's',	MODE_SECRET,		false,	false,	true,
-	toggleChanmodeSECRET
+	Channel::toggleModeSECRET
      },
      { 't',	MODE_TOPICLOCK,		false,	false,	true,
-	toggleChanmodeTOPICLOCK
+	Channel::toggleModeTOPICLOCK
      },
      { 'v',	0,			true,	true,	true,
-	toggleChanmodeVOICE
+	Channel::toggleModeVOICE
      },
      { 0 }
 };
@@ -435,3 +434,929 @@ String Channel::makeModes(Channel *channel)
    
    return reply + params;
 }
+
+
+/* Channel::toggleModeANONYMOUS
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeANONYMOUS(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   /* If this is a ! channel, this can only be set/removed by the CREATOR.
+    * In our case, so far, we cannot have a safe-channel creator so we just
+    * fail any requests to do this on a safe channel
+    */
+   if (channel->name[0] == '!') {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_UNIQOPRIVSNEEDED, 0,
+			      LNG_ERR_UNIQOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   // Check that this user is a channel operator
+   if (member && 
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   if (setting && !(channel->modes & Channel::MODE_ANONYMOUS)) {
+      channel->modes |= Channel::MODE_ANONYMOUS;
+      return true;
+   } else if (!setting && (channel->modes & Channel::MODE_ANONYMOUS)) {
+      channel->modes &= ~Channel::MODE_ANONYMOUS;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeBAN
+ * Original 28/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeBAN(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check if the user is requesting the ban list
+   if (!param->length()) {
+      if (handler) {
+	 for (Channel::mask_list_t::iterator it = channel->bans.begin();
+	      it != channel->bans.end(); it++) {
+	    handler->sendNumeric(TO_DAEMON->myServer(),
+				 RPL_BANLIST, 0,
+				 String::printf("%s %s %s %lu",
+						(char const *)channel->name,
+						(char const *)(*it)->mask.getMask(),
+						(char const *)(*it)->whoset,
+						(*it)->whenset));
+	 }
+
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      RPL_ENDOFBANLIST, 0,
+			      channel->name + LNG_RPL_ENDOFBANLIST);
+      }
+      
+      // Return false since no mode was actually changed
+      return false;
+   }
+
+   // Check that this user is a channel operator
+   if (member && !(member->modes & ChannelMember::MODE_OPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   *param = param->toLower();
+   
+   // Are we setting or removing a mask?
+   if (setting) {
+      // Look for this mask in the list to check it is not already set
+      for (Channel::mask_list_t::iterator it = channel->bans.begin();
+	   it != channel->bans.end(); it++) {
+	 if ((*it)->mask.getMask().toLower() == *param) {
+	    return false;
+	 }
+      }
+
+      // Create a new mask and add it to the list
+      channel->bans.push_front(new ChannelMask(fixToIdentityMask(*param),
+					       *setter,
+					       channel->daemon->getTime()));
+
+      return true;
+   } else {
+      ChannelMask *mask;
+      
+      // Find this mask in the list
+      for (Channel::mask_list_t::iterator it = channel->bans.begin();
+	   it != channel->bans.end(); it++) {
+	 // Check for a match
+	 if ((*it)->mask.getMask().toLower() == *param) {
+	    mask = *it;
+	    channel->bans.erase(it);
+	    delete mask;
+	    return true;
+	 }
+      }
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeBANEXCEPT
+ * Original 28/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeBANEXCEPT(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check if the user is requesting the ban exception list
+   if (!param->length()) {
+      if (handler) {
+	 for (Channel::mask_list_t::iterator it = 
+	      channel->exceptions.begin();
+	      it != channel->exceptions.end(); it++) {
+	    handler->sendNumeric(TO_DAEMON->myServer(),
+				 RPL_EXCEPTLIST, 0,
+				 String::printf("%s %s %s %lu",
+						(char const *)channel->name,
+						(char const *)(*it)->mask.getMask(),
+						(char const *)(*it)->whoset,
+						(*it)->whenset));
+	 }
+
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      RPL_ENDOFEXCEPTLIST, 0,
+			      channel->name + LNG_RPL_ENDOFEXCEPTLIST);
+      }
+      
+      // Return false since no mode was actually changed
+      return false;
+   }
+
+   // Check that this user is a channel operator
+   if (member && !(member->modes & ChannelMember::MODE_OPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   *param = param->toLower();
+   
+   // Are we setting or removing a mask?
+   if (setting) {
+      // Look for this mask in the list to check it is not already set
+      for (Channel::mask_list_t::iterator it = channel->exceptions.begin();
+	   it != channel->exceptions.end(); it++) {
+	 if ((*it)->mask.getMask().toLower() == *param) {
+	    return false;
+	 }
+      }
+
+      // Create a new mask and add it to the list
+      channel->exceptions.push_front(new ChannelMask(fixToIdentityMask(*param),
+						     *setter,
+						     channel->daemon->getTime()));
+
+      return true;
+   } else {
+      ChannelMask *mask;
+      
+      // Find this mask in the list
+      for (Channel::mask_list_t::iterator it = channel->exceptions.begin();
+	   it != channel->exceptions.end(); it++) {
+	 // Check for a match
+	 if ((*it)->mask.getMask().toLower() == *param) {
+	    mask = *it;
+	    channel->exceptions.erase(it);
+	    delete mask;
+	    return true;
+	 }
+      }
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeCHANCREATOR
+ * Original , Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeCHANCREATOR(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   return false;
+}
+
+
+/* Channel::toggleModeCHANOPER
+ * Original 31/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeCHANOPER(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // If no parameter was given, ignore this
+   if (!param->length()) {
+      return false;
+   }
+   
+   // Check that this user is a channel operator
+   if (member && !(member->modes & ChannelMember::MODE_OPPED)) {
+      if (handler) {
+	 // If they are a half oper, give them a better explanation
+	 if (member->modes & ChannelMember::MODE_HALFOPPED) {
+	    handler->sendNumeric(TO_DAEMON->myServer(),
+				 ERR_CHANOPRIVSNEEDED, 0,
+				 channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+	 } else {
+	    handler->sendNumeric(TO_DAEMON->myServer(),
+				 ERR_CHANOPRIVSNEEDED, 0,
+				 channel->name + 
+				 LNG_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER);
+	 }
+      }
+      return false;
+   }
+   
+   /* Look up this nickname. We should check that it is valid but most of
+    * the time it will be valid so checking would be a waste of time, 
+    * perhaps...
+    */
+   User *u = channel->daemon->getUser(*param);
+   
+   // Check..
+   if (!u) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_NOSUCHNICK, 0,
+			      *param + LNG_ERR_NOSUCHNICK_NICK);
+      }
+      return false;
+   }
+   
+   // Grab the channel member record for this user
+   ChannelMember *cm = channel->getMember(u);
+   
+   // Check..
+   if (!cm) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_USERNOTINCHANNEL, 0,
+			      String::printf(LNG_ERR_USERNOTINCHANNEL,
+					     (char const *)u->nickname,
+					     (char const *)channel->name));
+      }
+      return false;
+   }
+
+   // Check if this user is immune from deopping
+   if (u->modes & User::MODE_NONKICKABLE) {
+      handler->sendNumeric(TO_DAEMON->myServer(),
+			   ERR_ISCHANSERVICE, 0,
+			   String::printf(LNG_ERR_ISCHANSERVICE,
+					  (char const *)u->nickname,
+					  (char const *)channel->name));
+      return false;
+   }
+      
+   
+   // OK!! Are we setting or removing this status?
+   if (setting) {
+      // Check that this channel member is not already opped
+      if (cm->modes & ChannelMember::MODE_OPPED) {
+	 return false;
+      }
+      
+      // Set the mode, finally
+      cm->modes |= ChannelMember::MODE_OPPED;
+   } else {
+      // Check that this channel member is already deopped
+      if (!(cm->modes & ChannelMember::MODE_OPPED)) {
+	 return false;
+      }
+      
+      // Remove the flag
+      cm->modes &= ~ChannelMember::MODE_OPPED;
+   }
+   
+   // Make the parameter string a little more accurate, for neatness!
+   *param = cm->user->nickname;
+   
+   // We made it!
+   return true;
+}
+
+
+/* Channel::toggleModeDENY
+ * Original , Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeDENY(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   return true;
+}
+
+
+/* Channel::toggleModeEVENT
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeEVENT(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check that this user is a channel operator
+   if (member && 
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   if (setting && !(channel->modes & Channel::MODE_EVENT)) {
+      channel->modes |= Channel::MODE_EVENT;
+      return true;
+   } else if (!setting && (channel->modes & Channel::MODE_EVENT)) {
+      channel->modes &= ~Channel::MODE_EVENT;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeHALFOPER
+ * Original 19/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeHALFOPER(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // If no parameter was given, ignore this
+   if (!param->length()) {
+      return false;
+   }
+   
+   // If the member is themselves, we can skip a few steps..
+   if (member->user->nickname.IRCtoLower() == param->IRCtoLower()) {
+      // The user can dehalfop themselves, but cannot halfop themselves.
+      if (!(member->modes & ChannelMember::MODE_HALFOPPED) &&
+	  !(member->modes & ChannelMember::MODE_OPPED)) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+	 return false;
+      }
+   } else {
+      // Check that this user is a channel operator
+      if (member && 
+	  !(member->modes & ChannelMember::MODE_OPPED) &&
+	  !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+	 if (handler) {
+	    handler->sendNumeric(TO_DAEMON->myServer(),
+				 ERR_CHANOPRIVSNEEDED, 0,
+				 channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+	 }
+	 return false;
+      }
+   }
+   
+   /* Look up this nickname. We should check that it is valid but most of
+    * the time it will be valid so checking would be a waste of time, 
+    * perhaps...
+    */
+   User *u = channel->daemon->getUser(*param);
+   
+   // Check..
+   if (!u) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_NOSUCHNICK, 0,
+			      *param + LNG_ERR_NOSUCHNICK_NICK);
+      }
+      return false;
+   }
+   
+   // Grab the channel member record for this user
+   ChannelMember *cm = channel->getMember(u);
+   
+   // Check..
+   if (!cm) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_USERNOTINCHANNEL, 0,
+			      String::printf(LNG_ERR_USERNOTINCHANNEL,
+					     (char const *)u->nickname,
+					     (char const *)channel->name));
+      }
+      return false;
+   }
+   
+   // OK!! Are we setting or removing this status?
+   if (setting) {
+      // Check that this channel member is not already opped
+      if (cm->modes & ChannelMember::MODE_HALFOPPED) {
+	 return false;
+      }
+      
+      // Set the mode, finally
+      cm->modes |= ChannelMember::MODE_HALFOPPED;
+   } else {
+      // Check that this channel member is already deopped
+      if (!(cm->modes & ChannelMember::MODE_HALFOPPED)) {
+	 return false;
+      }
+      
+      // Remove the flag
+      cm->modes &= ~ChannelMember::MODE_HALFOPPED;
+   }
+   
+   // Make the parameter string a little more accurate, for neatness!
+   *param = cm->user->nickname;
+   
+   // We made it!
+   return true;
+}
+
+
+/* Channel::toggleModeINVITE
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeINVITE(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check that this user is a channel operator
+   if (member && 
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   if (setting && !(channel->modes & Channel::MODE_INVITE)) {
+      channel->modes |= Channel::MODE_INVITE;
+      return true;
+   } else if (!setting && (channel->modes & Channel::MODE_INVITE)) {
+      channel->modes &= ~Channel::MODE_INVITE;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeINVITEALLOW
+ * Original 28/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeINVITEALLOW(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check if the user is requesting the ban exception list
+   if (!param->length()) {
+      if (handler) {
+	 for (Channel::mask_list_t::iterator it = channel->invites.begin();
+	      it != channel->invites.end(); it++) {
+	    handler->sendNumeric(TO_DAEMON->myServer(),
+				 RPL_INVITELIST, 0,
+				 String::printf("%s %s %s %lu",
+						(char const *)channel->name,
+						(char const *)(*it)->mask.getMask(),
+						(char const *)(*it)->whoset,
+						(*it)->whenset));
+	 }
+
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      RPL_ENDOFINVITELIST, 0,
+			      channel->name + LNG_RPL_ENDOFINVITELIST);
+      }
+
+      // Return false since no mode was actually changed
+      return false;
+   }
+
+   // Check that this user is a channel operator
+   if (member && !(member->modes & ChannelMember::MODE_OPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   *param = param->toLower();
+   
+   // Are we setting or removing a mask?
+   if (setting) {
+      // Look for this mask in the list to check it is not already set
+      for (Channel::mask_list_t::iterator it = channel->invites.begin();
+	   it != channel->invites.end(); it++) {
+	 if ((*it)->mask.getMask().toLower() == *param) {
+	    return false;
+	 }
+      }
+
+      // Create a new mask and add it to the list
+      channel->invites.push_front(new ChannelMask(fixToIdentityMask(*param),
+						  *setter,
+						  channel->daemon->getTime()));
+
+      return true;
+   } else {
+      ChannelMask *mask;
+      
+      // Find this mask in the list
+      for (Channel::mask_list_t::iterator it = channel->invites.begin();
+	   it != channel->invites.end(); it++) {
+	 // Check for a match
+	 if ((*it)->mask.getMask().toLower() == *param) {
+	    mask = *it;
+	    channel->invites.erase(it);
+	    delete mask;
+	    return true;
+	 }
+      }
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeKEY
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeKEY(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check that this user is a channel operator
+   if (member && 
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   if (setting) {
+      // Make sure we are not resetting the key, got to unset it first
+      if (channel->key.length()) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_KEYSET, 0,
+			      channel->name + LNG_ERR_KEYSET);
+	 return false;
+      }
+      
+      // Make sure we were given something to set as the key!
+      if (param->length()) {
+	 channel->key = *param;
+	 return true;
+      }
+      
+      return false;
+   } else if (!setting && (channel->key.length())) {
+      // Check that the key matches the one already set
+      if (channel->key != *param) {
+	 return false;
+      }
+      
+      channel->key = "";
+      *param = "";
+      return true;
+   }
+
+   return false;
+}
+
+
+/* Channel::toggleModeLIMIT
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ * Note: We reset the parameter here to make the reply 'safe'
+ */
+bool Channel::toggleModeLIMIT(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check that this user is a channel operator
+   if (member && 
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   if (setting) {
+      long limit = param->toLong();
+      
+      // Check that worked ok
+      if (limit <= 0) {
+	 return false;
+      }
+
+      channel->limit = param->toLong();
+      *param = String(channel->limit);
+      return true;
+   } else if (!setting && (channel->limit > 0)) {
+      channel->limit = 0;
+      *param = "";
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeMODERATED
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeMODERATED(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check that this user is a channel operator
+   if (member && 
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   if (setting && !(channel->modes & Channel::MODE_MODERATED)) {
+      channel->modes |= Channel::MODE_MODERATED;
+      return true;
+   } else if (!setting && (channel->modes & Channel::MODE_MODERATED)) {
+      channel->modes &= ~Channel::MODE_MODERATED;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeNOOUTSIDEMSG
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeNOOUTSIDEMSG(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check that this user is a channel operator
+   if (member && 
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   if (setting && !(channel->modes & Channel::MODE_NOOUTSIDEMSG)) {
+      channel->modes |= Channel::MODE_NOOUTSIDEMSG;
+      return true;
+   } else if (!setting && (channel->modes & Channel::MODE_NOOUTSIDEMSG)) {
+      channel->modes &= ~Channel::MODE_NOOUTSIDEMSG;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModePRIVATE
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModePRIVATE(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check that this user is a channel operator
+   if (member && 
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   if (setting && !(channel->modes & Channel::MODE_PRIVATE)) {
+      channel->modes |= Channel::MODE_PRIVATE;
+      return true;
+   } else if (!setting && (channel->modes & Channel::MODE_PRIVATE)) {
+      channel->modes &= ~Channel::MODE_PRIVATE;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeREGNICKSONLY
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeREGNICKSONLY(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check that this user is a channel operator
+   if (member && 
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   if (setting && !(channel->modes & Channel::MODE_REGNICKSONLY)) {
+      channel->modes |= Channel::MODE_REGNICKSONLY;
+      return true;
+   } else if (!setting && (channel->modes & Channel::MODE_REGNICKSONLY)) {
+      channel->modes &= ~Channel::MODE_REGNICKSONLY;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeSECRET
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeSECRET(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check that this user is a channel operator
+   if (member && 
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   if (setting && !(channel->modes & Channel::MODE_SECRET)) {
+      channel->modes |= Channel::MODE_SECRET;
+      return true;
+   } else if (!setting && (channel->modes & Channel::MODE_SECRET)) {
+      channel->modes &= ~Channel::MODE_SECRET;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeTOPICLOCK
+ * Original 30/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeTOPICLOCK(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // Check that this user is a channel operator
+   if (member && 
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+      }
+      return false;
+   }
+   
+   if (setting && !(channel->modes & Channel::MODE_TOPICLOCK)) {
+      channel->modes |= Channel::MODE_TOPICLOCK;
+      return true;
+   } else if (!setting && (channel->modes & Channel::MODE_TOPICLOCK)) {
+      channel->modes &= ~Channel::MODE_TOPICLOCK;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeQUIET
+ * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeQUIET(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   if (setting && !(channel->modes & Channel::MODE_QUIET)) {
+      channel->modes |= Channel::MODE_QUIET;
+      return true;
+   } else if (!setting && (channel->modes & Channel::MODE_QUIET)) {
+      channel->modes &= ~Channel::MODE_QUIET;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeREOP
+ * Original 22/09/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeREOP(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   if (setting && !(channel->modes & Channel::MODE_REOP)) {
+      channel->modes |= Channel::MODE_REOP;
+      return true;
+   } else if (!setting && (channel->modes & Channel::MODE_REOP)) {
+      channel->modes &= ~Channel::MODE_REOP;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* Channel::toggleModeVOICE
+ * Original 31/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::toggleModeVOICE(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
+{
+   // If no parameter was given, ignore this
+   if (!param->length()) {
+      return false;
+   }
+   
+   // If the member is themselves, we can skip a few steps..
+   if (member->user->nickname.IRCtoLower() == param->IRCtoLower()) {
+      // The user can devoice themselves, but cannot voice themselves.
+      if (setting && 
+	  !(member->modes & ChannelMember::MODE_OPPED) &&
+	  !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_CHANOPRIVSNEEDED, 0,
+			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+	 return false;
+      }
+   } else {
+      // Check that this user is a channel operator
+      if (member && 
+	  !(member->modes & ChannelMember::MODE_OPPED) &&
+	  !(member->modes & ChannelMember::MODE_HALFOPPED)) {
+	 if (handler) {
+	    handler->sendNumeric(TO_DAEMON->myServer(),
+				 ERR_CHANOPRIVSNEEDED, 0,
+				 channel->name + LNG_ERR_CHANOPRIVSNEEDED);
+	 }
+	 return false;
+      }
+   }
+   
+   /* Look up this nickname. We should check that it is valid but most of
+    * the time it will be valid so checking would be a waste of time, 
+    * perhaps...
+    */
+   User *u = channel->daemon->getUser(*param);
+   
+   // Check..
+   if (!u) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_NOSUCHNICK, 0,
+			      *param + LNG_ERR_NOSUCHNICK_NICK);
+      }
+      return false;
+   }
+   
+   // Grab the channel member record for this user
+   ChannelMember *cm = channel->getMember(u);
+   
+   // Check..
+   if (!cm) {
+      if (handler) {
+	 handler->sendNumeric(TO_DAEMON->myServer(),
+			      ERR_USERNOTINCHANNEL, 0,
+			      String::printf(LNG_ERR_USERNOTINCHANNEL,
+					     (char const *)u->nickname,
+					     (char const *)channel->name));
+      }
+      return false;
+   }
+   
+   // OK!! Are we setting or removing this status?
+   if (setting) {
+      // Check that this channel member is not already voiced!
+      if (cm->modes & ChannelMember::MODE_VOICED) {
+	 return false;
+      }
+      
+      // Set the mode, finally
+      cm->modes |= ChannelMember::MODE_VOICED;
+   } else {
+      // Check that this channel member is already devoiced
+      if (!(cm->modes & ChannelMember::MODE_VOICED)) {
+	 return false;
+      }
+      
+      // Remove the flag
+      cm->modes &= ~ChannelMember::MODE_VOICED;
+   }
+   
+   // Make the parameter string a little more accurate, for neatness!
+   *param = cm->user->nickname;
+   
+   // We made it!
+   return true;
+}
+
+
