@@ -22,6 +22,15 @@
  */
 autogen definitions snotices;
 
+filter = {
+   name		= "BURST_COMPLETED";
+   char		= "B";
+   format	= "B <from server> <to server> <bytes> <estimated cps> <time>";
+   description	= "Completed sending burst (one way) between two servers. The "
+                  "'time' field is in milliseconds (1000 = 1 second). In a "
+		  "normal net-junction, two of these would be received, with "
+		  "the from/to fields flipped";
+};
 
 filter = {
    name		= "CONNECT_LOCAL";
@@ -51,6 +60,23 @@ filter = {
    char		= "F";
    format	= "F <wanted oper nick> <nick> <username> <hostname>";
    description	= "Failed OPER's (done on this server)";
+};
+
+filter = {
+   name		= "JUNCTION_MINOR";
+   char		= "j";
+   format	= "j <caller> <from server> <to server> <protocol>"
+   description	= "Secondary links from two servers already existing on the "
+                  "network (redundant link)";
+};
+
+filter = {
+   name		= "JUNCTION_MAJOR";
+   char		= "J";
+   format	= "J <caller> <from server> <to server> <protocol>"
+   description	= "Primary link from two servers. The 'from' server is "
+                  "already on the network, while the 'to' server is new "
+		  "to the network";
 };
 
 filter = {
@@ -91,11 +117,20 @@ filter = {
 };
 
 filter = {
-   name		= "STAFF_CHANGE";
+   name		= "SPLIT_MINOR";
+   char		= "s";
+   format	= "s <cause> <from server> <to server> <reason>";
+   description	= "A minor (redundant) link split away, the 'cause' field may "
+                  "be a nickname or a enumerated code";
+};
+
+filter = {
+   name		= "SPLIT_MAJOR";
    char		= "S";
-   format	= "S <nick> <username> <hostname> <old status> <new status>";
-   description	= "A staff member's 'status' has changed. If they were not "
-                  "designated as staff before, the old status will be '*'";
+   format	= "S <cause> <from server> <to server> <reason>";
+   description	= "A major link split away, meaning the 'to' server will have "
+                  "disappeared from the network. The 'cause' field may be a "
+                  "nickname or a enumerated code";
 };
 
 filter = {
@@ -106,3 +141,12 @@ filter = {
                   "notice data (designed for scripts), this instead will "
 		  "output the notices in a human-readable format";
 };
+
+filter = {
+   name		= "STAFF_CHANGE";
+   char		= "z";
+   format	= "z <nick> <username> <hostname> <old status> <new status>";
+   description	= "A staff member's 'status' has changed. If they were not "
+                  "designated as staff before, the old status will be '*'";
+};
+
