@@ -978,7 +978,7 @@ AC_SUBST(austhex_test_have_protocol_irc2user)
 
 AC_MSG_CHECKING([protocol-irc3user parameter])
 if test "$austhex_test_enable_user_protocols" = "yes"; then
-  AC_ARG_ENABLE(protocol-irc2user,[  --enable-protocol-irc3user     allow the IRC-3 user/client protocol],
+  AC_ARG_ENABLE(protocol-irc3user,[  --enable-protocol-irc3user     allow the IRC-3 user/client protocol],
    [
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)

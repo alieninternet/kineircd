@@ -98,6 +98,7 @@ class Handler {
    virtual void callADMIN(Server *, User *) const {};
    virtual void callINFO(Server *, User *) const {};
    virtual void callLUSERS(Server *, User *, String const &) const {};
+   virtual void callMAP(Server *, User *) const {};
    virtual void callMOTD(Server *, User *) const {};
    virtual void callSTATS(Server *, User *, String const &) const {};
    virtual void callTIME(Server *, User *) const {};
@@ -109,8 +110,8 @@ class Handler {
    
    // These are responces to requests by either remote or local users
    static void doADMIN(Handler *, User *);
-   static void doINFO(Handler *, User *);
    static void doLUSERS(Handler *, User *, String const &);
+   static void doMAP(Handler *, User *);
    static void doMOTD(Handler *, User *);
    static void doSTATS(Handler *, User *, String const &);
    static void doTIME(Handler *, User *);

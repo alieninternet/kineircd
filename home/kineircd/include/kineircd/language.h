@@ -34,14 +34,28 @@ class Language {
     */
    enum tag_t {
 	B_RPL_CREATED,
+	B_RPL_TIMEONSERVERIS,
 	CHARSET,
+	E_ERR_ACCEPTEXIST,
+	E_ERR_ACCEPTNOT,
+	E_ERR_NOLANGUAGE,
+	E_ERR_UNKNOWNMODE,
+	E_ERR_USERONCHANNEL,
+	E_RPL_ACCEPTED,
+	E_RPL_ACCEPTNOTICE,
 	E_RPL_ISUPPORT,
+	E_RPL_KNOCKING,
 	E_RPL_LOGOFF_CHANNEL,
 	E_RPL_LOGOFF_SERVER,
 	E_RPL_LOGOFF_USER,
 	E_RPL_LOGON_CHANNEL,
 	E_RPL_LOGON_SERVER,
 	E_RPL_LOGON_USER,
+	E_RPL_LUSERCHANNELS,
+	E_RPL_LUSERHELPERS,
+	E_RPL_LUSEROP,
+	E_RPL_LUSERUNKNOWN,
+	E_RPL_NOTACCEPTED,
 	E_RPL_NOWOFF,
 	E_RPL_NOWON_CHANNEL,
 	E_RPL_NOWON_SERVER,
@@ -51,6 +65,8 @@ class Language {
 	E_RPL_WHOISOPERATOR,
 	E_RPL_WHOISSECURE,
 	L_DEFAULT_KNOCK_REASON,
+	L_ERR_ACCEPTFULL,
+	L_ERR_ALREADYREGISTERED,
 	L_ERR_BADCHANNELKEY,
 	L_ERR_BADCHANNAME,
 	L_ERR_BADCHANNAME_FAILMASK,
@@ -61,32 +77,63 @@ class Language {
 	L_ERR_CANNOTSENDTOCHAN_NOOUTSIDEMSG,
 	L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY,
 	L_ERR_CANNOTSENDTONICK_REGNICKSONLY,
+	L_ERR_CANNOTCHANGEUMODE,
+	L_ERR_CANTKILLSERVICES,
 	L_ERR_CHANNELISFULL,
+	L_ERR_ERRONEUSNICKNAME,
+	L_ERR_EVENTNICKCHANGE,
 	L_ERR_INVITEONLYCHAN,
 	L_ERR_NEEDMOREPARAMS,
+	L_ERR_NICKNAMEINUSE,
+	L_ERR_NOKNOCK_INVITED,
+	L_ERR_NOKNOCK_ONCHANNEL,
+	L_ERR_NOKNOCK_OPENCHANNEL,
+	L_ERR_NOKNOCK_REGONLY,
+	L_ERR_NOMORELANGS,
 	L_ERR_NONICKNAMEGIVEN,
 	L_ERR_NONONREG_CHANNEL,
 	L_ERR_NOOPERHOST,
 	L_ERR_NOOPERHOST_NOOP,
+	L_ERR_NOPRIVILEGES_PLUS_HELPER,
+	L_ERR_NOPRIVILEGES_PLUS_IRCOPER,
+	L_ERR_NOPRIVILEGES_PLUS_SERVNOTICES,
+	L_ERR_NORECIPIENT,
 	L_ERR_NOSUCHCHANNEL,
+	L_ERR_NOSUCHNICK,
+	L_ERR_NOSUCHNICK_OR_SERVER,
+	L_ERR_NOSUCHSERVER,
+	L_ERR_NOTEXTTOSEND,
+	L_ERR_NOTEXTTOSEND_NEEDMORE,
 	L_ERR_NOTONCHANNEL,
 	L_ERR_PASSWDMISMATCH,
+	L_ERR_SERVERMODELOCK,
 	L_ERR_SERVERTOOFULL,
 	L_ERR_SILELISTFULL,
 	L_ERR_TOOMANYCHANNELS,
 	L_ERR_UMODEUNKNOWNFLAG,
 	L_ERR_UNKNOWNCOMMAND,
+	L_ERR_USERSDONTMATCH_MODE,
 	L_ERR_WHOTRUNC,
+	L_RPL_ADMINME,
 	L_RPL_CHANREDIR,
 	L_RPL_ENDOFACCEPT,
 	L_RPL_ENDOFHELP,
+	L_RPL_ENDOFHELP_SIMPLE,
+	L_RPL_ENDOFINFO,
+	L_RPL_ENDOFLANGUAGES,
 	L_RPL_ENDOFLINKS,
 	L_RPL_ENDOFNAMES,
 	L_RPL_ENDOFSILELIST,
+	L_RPL_ENDOFSTATS,
+	L_RPL_ENDOFWATCHLIST,
 	L_RPL_ENDOFWHO,
 	L_RPL_ENDOFWHOIS,
 	L_RPL_ENDOFWHOWAS,
+	L_RPL_KILLDONE,
 	L_RPL_LISTEND,
+	L_RPL_MODECHANGEWARN_HELPER_PLUS_REGONLY,
+	L_RPL_MODECHANGEWARN_OPER_MINUS_WALLOPS,
+	L_RPL_MODECHANGEWARN_MINUS_VWORLD,
 	L_RPL_NOTOPIC,
 	L_RPL_NOWAWAY,
 	L_RPL_REHASHING,
@@ -95,7 +142,10 @@ class Language {
 	L_RPL_SPAM_B,
 	L_RPL_SPAM_C,
 	L_RPL_SPAM_D,
+	L_RPL_TRYAGAIN_AWAY,
+	L_RPL_TRYAGAIN_KNOCK,
 	L_RPL_UNAWAY,
+	L_RPL_VERSION,
 	L_RPL_YOUREOPER,
 	L_RPL_YOUREOPER_ALREADY,
 	LANGCODE,
@@ -105,6 +155,7 @@ class Language {
 	P_NO_MATCH,
 	P_RPL_WHOISVIRT,
         REVISION,
+	W_LANGUAGE_PL,
 	W_MATCH,
 	W_MATCH_PL,
 	_END_
@@ -155,43 +206,20 @@ class Language {
    static char const *L_PINGPONG_NOTICE;
    static char const *L_RPL_WELCOME;
    static char const *L_RPL_YOURHOST;
-   static char const *L_RPL_YOURHOST_IRCII_KLUGE_NOTICE;
-   static char const *L_RPL_TIMEONSERVERIS;
 
-   // Generic responces
-   static char const *L_ERR_ALREADYREGISTERED;
-   static char const *L_ERR_NOPRIVILEGES;
-   
-   // Nickname related errors
-   static char const *L_ERR_ERRONEUSNICKNAME;
-   static char const *L_ERR_ERRONEUSNICKNAME_W_REASON;
-   static char const *L_ERR_NICKNAMEINUSE;
-   static char const *L_ERR_EVENTNICKCHANGE;
 
-   
    // Channel related messages
    static char const *L_ERR_USERNOTINCHANNEL;
    static char const *L_ERR_CHANOPRIVSNEEDED;
    static char const *L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER;
    static char const *L_ERR_UNIQOPRIVSNEEDED;
-   static char const *L_ERR_USERONCHANNEL;
 
    
    // Mode related messages
    static char const *L_RPL_ENDOFBANLIST;
    static char const *L_RPL_ENDOFEXCEPTLIST;
    static char const *L_RPL_ENDOFINVITELIST;
-   static char const *L_ERR_USERSDONTMATCH_MODE;
-   static char const *L_ERR_UNKNOWNMODE;
    static char const *L_ERR_UNKNOWNSERVERMODE;
-   static char const *L_ERR_NOPRIVILEGES_PLUS_IRCOPER;
-   static char const *L_ERR_NOPRIVILEGES_PLUS_HELPER;
-   static char const *L_ERR_NOPRIVILEGES_PLUS_SERVNOTICES;
-   static char const *L_ERR_SERVERMODELOCK;
-   static char const *L_RPL_MODECHANGEWARN_MINUS_VWORLD;
-   static char const *L_RPL_MODECHANGEWARN_IRCOPER_MINUS_WALLOPS;
-   static char const *L_RPL_MODECHANGEWARN_HELPER_PLUS_REGNICKSMSG;
-   static char const *L_ERR_CANNOTCHANGEUMODE;
    static char const *L_ERR_CANNOTCHANGECHANMODE;
    static char const *L_ERR_CANNOTCHANGESERVERMODE;
    static char const *L_ERR_NOCHANMODES;
@@ -207,48 +235,16 @@ class Language {
    static char const *L_ERR_NOMOTD;
    static char const *L_ERR_NOMOTD_NOREMOTE;
    
-   // HELP command replies
-   static char const *L_RPL_ENDOFHELP_SIMPLE;
-
-   // LANGUAGE command messages
-   static char const *L_RPL_ENDOFLANGUAGES;
-   static char const *L_ERR_NOLANGUAGE;
-   static char const *L_ERR_NOMORELANGS;
-   
    // WATCH command messages
    static char const *L_ERR_TOOMANYWATCH;
    static char const *L_RPL_WATCHSTAT;
-   static char const *L_RPL_ENDOFWATCHLIST;
 
-   // ACCEPT command replies
-   static char const *L_ERR_ACCEPTFULL;
-   static char const *L_ERR_ACCEPTEXIST;
-   static char const *L_ERR_ACCEPTNOT;
-   static char const *L_RPL_NOTACCEPTED;
-   static char const *L_RPL_ACCEPTNOTICE;
-   static char const *L_RPL_ACCEPTED;
-
-   // KNOCK replies
-   static char const *L_ERR_NOKNOCK_ONCHANNEL;
-   static char const *L_ERR_NOKNOCK_OPENCHANNEL;
-   static char const *L_ERR_NOKNOCK_INVITED;
-   static char const *L_ERR_NOKNOCK_REGONLY;
-   static char const *L_RPL_KNOCKING; 
-   
    // LUSERS command replies
    static char const *L_RPL_LUSERCLIENT;
-   static char const *L_RPL_LUSEROP;
-   static char const *L_RPL_LUSERHELPERS;
-   static char const *L_RPL_LUSERUNKNOWN;
-   static char const *L_RPL_LUSERCHANNELS;
    static char const *L_RPL_LUSERME;
    static char const *L_RPL_LOCALUSERS;
    static char const *L_RPL_GLOBALUSERS;
 
-   // Command not processed messages
-   static char const *L_RPL_TRYAGAIN_AWAY;
-   static char const *L_RPL_TRYAGAIN_KNOCK;
-   
    // Server notice output strings
    static char const *L_SERVNOTICE_LINK;
    static char const *L_SERVNOTICE_DELINK;
@@ -266,30 +262,16 @@ class Language {
    
    // Misc/Disorganised
    static char const *L_NOTIFY_PARANOID_OPERS_ON_WHOIS;
-   static char const *L_ERR_NOSUCHSERVER;
    static char const *L_ERR_ISCHANSERVICE;
-   static char const *L_ERR_CANTKILLSERVICES;
    static char const *L_QUIT_KILLED;
-   static char const *L_RPL_KILLDONE;
-   static char const *L_ERR_NORECIPIENT;
-   static char const *L_ERR_NOTEXTTOSEND;
-# ifdef MINLEN_OP_BROADCAST
-   static char const *L_ERR_NOTEXTTOSEND_NEEDMORE;
-# endif
    static char const *L_REQUESTED_SHUTDOWN;
    static char const *L_BYE_BYE_USER;
    static char const *L_ERROR_CLOSING_LINK;
    static char const *L_ERROR_CLOSING_LINK_DEFAULT_REASON;
-   static char const *L_RPL_ENDOFINFO;
-   static char const *L_RPL_ENDOFSTATS;
-   static char const *L_RPL_VERSION;
-   static char const *L_RPL_ADMINME;
+
    static char const *L_RPL_STATSUPTIME;
    static char const *L_RPL_STATSCONN;
-   static char const *L_ERR_NOSUCHNICK;
    static char const *L_ERR_NOSUCHNICK_NICK;
-   static char const *L_ERR_NOSUCHNICK_CHANNEL;
-   static char const *L_ERR_NOSUCHNICK_OR_SERVER;
    static char const *L_DEFAULT_QUIT_MESSAGE;
    
    friend class LanguageData;

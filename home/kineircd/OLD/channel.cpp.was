@@ -311,9 +311,9 @@ void Channel::processModes(Handler *handler, User *user,
 	    handler->
 	      sendNumeric(Daemon::myServer(),
 			  ERR_UNKNOWNMODE, 0,
-			  String::printf((char *)Language::L_ERR_UNKNOWNMODE,
-					 modes[i], 
-					 (char const *)name));
+			  String::printf("%c :%s",
+					 modes[i],
+					 (char const *)user->lang(Language::E_ERR_UNKNOWNMODE)));
 	 }
       }
    }
@@ -1091,7 +1091,8 @@ bool Channel::toggleModeKEY(bool setting, Handler *handler, Channel *channel, Ch
       if (channel->key.length()) {
 	 handler->sendNumeric(Daemon::myServer(),
 			      ERR_KEYSET, 0,
-			      channel->name + Language::L_ERR_KEYSET);
+			      channel->name +
+			      Language::L_ERR_KEYSET);
 	 return false;
       }
       

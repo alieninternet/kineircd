@@ -261,9 +261,10 @@ bool User::toggleModeHELPER(bool setting, Handler *handler, User *user, char *mo
       if (handler) {
 	 /* Tell the user they're an idiot :) */
 	 if (!(user->modes & User::M_HELPER)) {
-	    handler->sendNumeric(Daemon::myServer(),
-				 ERR_NOPRIVILEGES, 0,
-				 Language::L_ERR_NOPRIVILEGES_PLUS_HELPER);
+	    handler->
+	      sendNumeric(Daemon::myServer(),
+			  ERR_NOPRIVILEGES, 0, String(':') +
+			  user->lang(Language::L_ERR_NOPRIVILEGES_PLUS_HELPER));
 	 }
 	 return false;
       } else {
@@ -372,9 +373,10 @@ bool User::toggleModeOPER(bool setting, Handler *handler, User *user, char *mode
 	 if (!(user->modes & User::M_GLOBALOPER) ||
 	     !(user->modes & User::M_LOCALOPER)) {
 	    /* Tell the user they're an idiot :) */
-	    handler->sendNumeric(Daemon::myServer(),
-				 ERR_NOPRIVILEGES, 0,
-				 Language::L_ERR_NOPRIVILEGES_PLUS_IRCOPER);
+	    handler->
+	      sendNumeric(Daemon::myServer(),
+			  ERR_NOPRIVILEGES, 0, String(':') +
+			  user->lang(Language::L_ERR_NOPRIVILEGES_PLUS_IRCOPER));
 	 }
 	 return false;
       } else {
@@ -423,8 +425,8 @@ bool User::toggleModeREGNICKSMSG(bool setting, Handler *handler, User *user, cha
       // If this user is an oper or a helper they really should not have this
       if (handler && User::isHelper(user)) {
 	 handler->sendNumeric(Daemon::myServer(),
-			      RPL_MODECHANGEWARN, 0,
-			      Language::L_RPL_MODECHANGEWARN_HELPER_PLUS_REGNICKSMSG);
+			      RPL_MODECHANGEWARN, 0, String("+R :") +
+			      user->lang(Language::L_RPL_MODECHANGEWARN_HELPER_PLUS_REGONLY));
       }
       
       return true;
@@ -507,9 +509,10 @@ bool User::toggleModeSERVNOTICES(bool setting, Handler *handler, User *user, cha
       } else {
 	 // Get cranky
 	 if (handler) {
-	    handler->sendNumeric(Daemon::myServer(),
-				 ERR_NOPRIVILEGES, 0,
-				 Language::L_ERR_NOPRIVILEGES_PLUS_SERVNOTICES);
+	    handler->
+	      sendNumeric(Daemon::myServer(),
+			  ERR_NOPRIVILEGES, 0, String(':') +
+			  user->lang(Language::L_ERR_NOPRIVILEGES_PLUS_SERVNOTICES));
 	 }
 	 return false;
       }
@@ -537,8 +540,8 @@ bool User::toggleModeVWORLD(bool setting, Handler *handler, User *user, char *mo
       // Warn this user, if we can, about turning off virtual world
       if (handler) {
 	 handler->sendNumeric(Daemon::myServer(),
-			      RPL_MODECHANGEWARN, 0,
-			      Language::L_RPL_MODECHANGEWARN_MINUS_VWORLD);
+			      RPL_MODECHANGEWARN, 0, String("-v ") +
+			      user->lang(Language::L_RPL_MODECHANGEWARN_MINUS_VWORLD));
       }
       
       return true;
@@ -564,8 +567,8 @@ bool User::toggleModeWALLOPS(bool setting, Handler *handler, User *user, char *m
 	  ((user->modes & User::M_GLOBALOPER) ||
 	   (user->modes & User::M_LOCALOPER))) {
 	 handler->sendNumeric(Daemon::myServer(),
-			      RPL_MODECHANGEWARN, 0,
-			      Language::L_RPL_MODECHANGEWARN_IRCOPER_MINUS_WALLOPS);
+			      RPL_MODECHANGEWARN, 0, String("-w :") +
+			      user->lang(Language::L_RPL_MODECHANGEWARN_OPER_MINUS_WALLOPS));
       }
       
       return true;

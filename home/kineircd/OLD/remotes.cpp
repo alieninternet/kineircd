@@ -33,8 +33,8 @@
 void Handler::doADMIN(Handler *handler, User *from)
 {
    handler->sendNumeric(Daemon::myServer(), RPL_ADMINME, from, 
-			Daemon::myServer()->getHostname() + 
-			Language::L_RPL_ADMINME);
+			Daemon::myServer()->getHostname() + " :" +
+			from->lang(Language::L_RPL_ADMINME));
    handler->sendNumeric(Daemon::myServer(), RPL_ADMINLOC1, from,
 			Daemon::adminName);
    
@@ -49,22 +49,6 @@ void Handler::doADMIN(Handler *handler, User *from)
 }
 
 
-/* doINFO
- * Original 14/08/01, Simon Butcher <pickle@austnet.org>
- */
-void Handler::doINFO(Handler *handler, User *from)
-{
-   handler->sendNumeric(Daemon::myServer(), RPL_INFO, from,
-":Portions of this code Copyright (c) 1996-2001 Alien Internet Services");
-   handler->sendNumeric(Daemon::myServer(), RPL_INFO, from,
-":Umm.. stuff goes here... :)");
-
-   // End of the list
-   handler->sendNumeric(Daemon::myServer(), RPL_ENDOFINFO, from, 
-			Language::L_RPL_ENDOFINFO);
-}
-
-
 /* doLUSERS
  * Original 13/08/01, Simon Butcher <pickle@austnet.org>
  */
@@ -75,19 +59,27 @@ void Handler::doLUSERS(Handler *handler, User *from, String const &request)
 				       Daemon::numTotalUsers,
 				       Daemon::numServices,
 				       Daemon::numServers));
-   handler->sendNumeric(Daemon::myServer(), RPL_LUSEROP, from,
-			String::printf((char *)Language::L_RPL_LUSEROP,
-				       Daemon::numOpers));
-   handler->sendNumeric(Daemon::myServer(), RPL_LUSERHELPERS, from,
-			String::printf((char *)Language::L_RPL_LUSERHELPERS,
-				       Daemon::numHelpers));
-   handler->sendNumeric(Daemon::myServer(), RPL_LUSERUNKNOWN, from,
-			String::printf((char *)Language::L_RPL_LUSERUNKNOWN,
-				       Daemon::numUnknown));
-   handler->sendNumeric(Daemon::myServer(), RPL_LUSERCHANNELS, from,
-			String::printf((char *)Language::L_RPL_LUSERCHANNELS,
-				       (Daemon::channels.size() +
-					Daemon::localChannels.size())));
+   handler->
+     sendNumeric(Daemon::myServer(), RPL_LUSEROP, from,
+		 String::printf("%u :%s",
+				Daemon::numOpers,
+				(char const *)from->lang(Language::E_RPL_LUSEROP)));
+   handler->
+     sendNumeric(Daemon::myServer(), RPL_LUSERHELPERS, from,
+		 String::printf("%u :%s",
+				Daemon::numHelpers,
+				(char const *)from->lang(Language::E_RPL_LUSERHELPERS)));
+   handler->
+     sendNumeric(Daemon::myServer(), RPL_LUSERUNKNOWN, from,
+		 String::printf("%u :%s",
+				Daemon::numUnknown,
+				(char const *)from->lang(Language::E_RPL_LUSERUNKNOWN)));
+   handler->
+     sendNumeric(Daemon::myServer(), RPL_LUSERCHANNELS, from,
+		 String::printf("%u :%s",
+				(Daemon::channels.size() +
+				 Daemon::localChannels.size()),
+				(char const *)from->lang(Language::E_RPL_LUSERCHANNELS)));
    handler->sendNumeric(Daemon::myServer(), RPL_LUSERME, from,
 			String::printf((char *)Language::L_RPL_LUSERME,
 				       Daemon::numClientConns,
@@ -100,6 +92,29 @@ void Handler::doLUSERS(Handler *handler, User *from, String const &request)
 			String::printf((char *)Language::L_RPL_GLOBALUSERS,
 				       Daemon::numTotalUsers,
 				       Daemon::numTotalUsersPeak));
+}
+
+
+/* doMAP
+ * Original 01/11/01, Simon Butcher <pickle@austnet.org>
+ */
+void Handler::doMAP(Handler *handler, User *from)
+{
+   // Run through the server list (this needs to change, ripped from LINKS)
+   for (Daemon::server_map_t::iterator it = Daemon::servers.begin();
+	it != Daemon::servers.end(); it++) {
+      // Send the user this record
+      handler->
+	sendNumeric(Daemon::myServer(), RPL_MAP, from,
+		    String::printf("%u %u %u modes * * : ?- %s",
+				   (*it).second->getProtocol(),
+				   (*it).second->getNumHops(),
+				   (*it).second->getNumUsers(),
+				   (char const *)(*it).second->getHostname()));
+   }
+   
+   handler->sendNumeric(Daemon::myServer(), RPL_MAPEND, from,
+			":End of dodgey map command");
 }
 
 
@@ -316,7 +331,8 @@ void Handler::doSTATS(Handler *handler, User *from, String const &request)
 
    // Send the footer
    handler->sendNumeric(Daemon::myServer(), RPL_ENDOFSTATS, from, 
-			request + Language::L_RPL_ENDOFSTATS);
+			request + " :" +
+			from->lang(Language::L_RPL_ENDOFSTATS));
 }
 
 
@@ -327,12 +343,14 @@ void Handler::doSTATS(Handler *handler, User *from, String const &request)
 void Handler::doTIME(Handler *handler, User *from)
 {
    // Send time on server data (more accurate)
-   handler->sendNumeric(Daemon::myServer(), RPL_TIMEONSERVERIS, from,
-			String::printf((char *)Language::L_RPL_TIMEONSERVERIS,
-				       Daemon::getTime(),
-				       Daemon::getTimeUsecs(),
-				       (char const *)Daemon::getTimeZone(),	
-				       (char const *)Daemon::getTimeFlags()));
+   handler->
+     sendNumeric(Daemon::myServer(), RPL_TIMEONSERVERIS, from,
+		 String::printf("%lu %ld %s %s :%s ...fix-me...",
+				Daemon::getTime(),
+				Daemon::getTimeUsecs(),
+				(char const *)Daemon::getTimeZone(),
+				(char const *)Daemon::getTimeFlags(),
+				(char const *)from->lang(Language::B_RPL_TIMEONSERVERIS)));
    
    // Compile the time string (human readable)
    char timestr[TIMESTR_BUF_LEN];
@@ -352,13 +370,16 @@ void Handler::doTIME(Handler *handler, User *from)
  */
 void Handler::doVERSION(Handler *handler, User *from)
 {
-   handler->sendNumeric(Daemon::myServer(), RPL_VERSION, from,
-			String::printf((char *)Language::L_RPL_VERSION,
-				       Version::version,
-				       (char const *)Daemon::myServer()->getHostname(),
-				       Version::versionChars));
+   handler->
+     sendNumeric(Daemon::myServer(), RPL_VERSION, from,
+		 String::printf("%s %s :%s (%s)",
+				Version::version,
+				(char const *)Daemon::myServer()->getHostname(),
+				Version::versionChars,
+				(char const *)from->lang(Language::L_RPL_VERSION)));
    handler->sendNumeric(Daemon::myServer(), RPL_ISUPPORT, from,
-			Daemon::makeISUPPORT());
+			Daemon::makeISUPPORT() + " :" + 
+			from->lang(Language::E_RPL_ISUPPORT));
 }
 
 

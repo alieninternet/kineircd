@@ -428,7 +428,8 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 #else
       handler->sendNumeric(ERR_ERRONEUSNICKNAME, 0,
-			   nick + Language::L_ERR_ERRONEUSNICKNAME);
+			   nick + " :" +
+			   Language::lang(Language::L_ERR_ERRONEUSNICKNAME));
 #endif
       return;
    }
@@ -450,8 +451,9 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 #else
       handler->
 	sendNumeric(ERR_ERRONEUSNICKNAME, 0,
-		    String::printf((char *)Language::L_ERR_ERRONEUSNICKNAME_W_REASON,
+		    String::printf("%s :%s (%s)",
 				   (char const *)nick,
+				   (char const *)Language::lang(Language::L_ERR_ERRONEUSNICKNAME),
 				   (char const *)reason));
       return;
 #endif
@@ -463,7 +465,8 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 #else
       handler->sendNumeric(ERR_NICKNAMEINUSE, 0,
-			   nick + Language::L_ERR_NICKNAMEINUSE);
+			   nick + " :" +
+			   Language::lang(Language::L_ERR_NICKNAMEINUSE));
 #endif
       return;
    }
@@ -559,8 +562,8 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
 #  ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #  else
-      handler->sendNumeric(ERR_ALREADYREGISTERED, 0,
-			   Language::L_ERR_ALREADYREGISTERED);
+      handler->sendNumeric(ERR_ALREADYREGISTERED, 0, String(':') +
+			   Language::lang(Language::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
       return;
@@ -634,8 +637,8 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
 #  ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #  else
-      handler->sendNumeric(ERR_ALREADYREGISTERED, 0,
-			   Language::L_ERR_ALREADYREGISTERED);
+      handler->sendNumeric(ERR_ALREADYREGISTERED, 0, String(':') +
+			   Language::lang(Language::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
       return;
@@ -663,7 +666,8 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
       handler->getConnection()->goodbye();
 #else
       handler->sendNumeric(ERR_ERRONEUSNICKNAME, 0,
-			   name + Language::L_ERR_ERRONEUSNICKNAME);
+			   name + " :" +
+			   Language::lang(Language::L_ERR_ERRONEUSNICKNAME));
 #endif
       return;
    }
@@ -720,8 +724,8 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
 #  ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #  else
-      handler->sendNumeric(ERR_ALREADYREGISTERED, 0,
-			   Language::L_ERR_ALREADYREGISTERED);
+      handler->sendNumeric(ERR_ALREADYREGISTERED, 0, String(':') +
+			   Language::lang(Language::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
       return;

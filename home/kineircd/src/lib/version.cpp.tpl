@@ -7,11 +7,32 @@
 #include "version.h"
 
 namespace Version {
-
+   // Build information
    char const *build = BUILD_STRING;
 
+   // Version information (program name and version number)
    char const *version = PROGNAME_STRING VERSION_STRING;
 
+   /* Information for INFO command (note: no colon prefixes for any protocol)
+    * Note: Try to make this work OK on a 80 column display (check in text
+    *       clients like EPIC/BitchX etc). This is the reason for the special
+    *       formatting.. DO NOT EDIT THIS UNLESS YOU ARE TOLD TO!!!
+    */
+   char const *versionInfo[] = {
+"          \026                     _   _               ___      \026",
+"          \026      __ _ _   _ ___| |_| |__   _____  _( _ )     \026",
+"          \026     / _` | | | / __| __|  _ \\ / _ \\ \\/ / _ \\     \026",
+"          \026    | (_| | |_| \\__ | |_| | | |  __/>  < (_) |    \026",
+"          \026     \\__._|\\__._|___/\\__|_| |_|\\___/_/\\_\\___/     \026",
+"          \026                                                  \026",
+"",
+"Portions of this code Copyright (c) 1996-2001 Alien Internet Services",
+"austhex.servd8 development team:",
+"  to be done.. hehe shh, it will come before release :)",
+      0
+   };
+   
+   // Version characters for VERSION command
    char const *versionChars = 
 #ifdef ALLOW_LOCALOP_CONNECT
 				"c"
