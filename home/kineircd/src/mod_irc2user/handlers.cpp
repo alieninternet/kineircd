@@ -382,14 +382,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
 {
-   static const char* const commandName = "PING";
-   
    // If we were given a parameter, send it back (simple as that!)
    if (!parameters.empty()) {
-      // Send the reply in full form
+      // Send the reply (pong) in full form
       sendMessageTo(config().getOptionsServerName(), 
 		    config().getOptionsServerName(), 
-		    commandName, parameters[0]);
+		    "PONG", parameters[0]);
       return;
    }
    
