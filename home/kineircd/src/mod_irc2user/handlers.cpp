@@ -31,6 +31,7 @@
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
+#include <typeinfo>
 #include <aisutil/string.h>
 #include <kineircd/registry.h>
 #include <kineircd/libirc2/utility.h>
@@ -1552,10 +1553,18 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHO)
 	    if (!output.str().empty()) {
 	       output << ' ';
 	    }
-	    output << ((it->second->getLocalSelf() != 0) ?
-		       (daemon().getTime() -
-			it->second->getLocalSelf()->getLastAwake()).seconds :
-		       0);
+	    
+	    // Try to convert this over to a local user (should use typeid()?)
+	    const LocalUser* const lu =
+	      dynamic_cast<const LocalUser* const>(it->second);
+	    
+	    // Well, was it a local user?
+	    if (lu != 0) {
+	       output << (daemon().getTime() - lu->getLastAwake()).seconds;
+	    } else {
+	       // We cannot determine the idle time of this user
+	       output << 0;
+	    }
 	 }
 	 
 	 // Did the user want the 'real name' field?

@@ -30,8 +30,6 @@
 # include <kineircd/languages.h>
 
 namespace Kine {
-   class LocalUser;
-   
    //! A user (refinement of a client)
    class User : public Client {
     public:
@@ -186,16 +184,7 @@ namespace Kine {
 			const Languages::languageDataList_type& languages,
 			const bool secret = false);
       
-      
-      //! If this user is local, this will return the local version of this
-      virtual const LocalUser* const getLocalSelf(void) const
-	{ return 0; };
-      
-      // Check if this user is a local user
-      const bool isLocalUser(void) const
-	{ return (getLocalSelf() != 0); };
-      
-      
+
       // Handle the reception of a message
       const Error::error_type
 	sendMessage(Sender& from, const std::string& message,
@@ -209,7 +198,5 @@ namespace Kine {
 		   Receiver::Directivity());
    }; // class User
 }; // namespace Kine
-
-# include <kineircd/localuser.h>
 
 #endif // _INCLUDE_KINEIRCD_USER_H_

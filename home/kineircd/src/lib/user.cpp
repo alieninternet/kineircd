@@ -30,6 +30,7 @@
 #include <aisutil/string.h>
 
 #include "kineircd/user.h"
+#include "kineircd/localuser.h"
 #include "kineircd/registry.h"
 #include "kineircd/myserver.h"
 #include "lib/debug.h"

@@ -26,6 +26,7 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
+#include "kineircd/daemon.h"
 #include "lib/myserver.h"
 #include "lib/debug.h"
 

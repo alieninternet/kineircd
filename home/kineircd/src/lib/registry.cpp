@@ -26,7 +26,10 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
+#include <typeinfo>
+
 #include "kineircd/registry.h"
+#include "kineircd/localuser.h"
 #include "lib/debug.h"
 
 using namespace Kine;
@@ -170,7 +173,7 @@ const Error::error_type Registry::addUser(User& entity)
       }
       
       // If this is a local user, we should increase the local user count too
-      if (entity.isLocalUser()) {
+      if (typeid(entity) == typeid(LocalUser)) {
 	 // Increase the local user count
 	 ++localUserCount;
 	 
@@ -214,7 +217,7 @@ const Error::error_type Registry::removeUser(const User& entity)
       (void)users.erase(it);
       
       // If this user was a local user, decrease the local user count
-      if (entity.isLocalUser()) {
+      if (typeid(entity) == typeid(LocalUser)) {
 	 --localUserCount;
       }
       

@@ -47,6 +47,7 @@
 #include <kineircd/daemon.h>
 #include <kineircd/registry.h>
 #include <kineircd/version.h>
+#include <kineircd/localuser.h>
 
 #include "kineircd/libirc2/protocol.h"
 #include "lib_irc2/lang.h"
@@ -541,7 +542,8 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	    }
 	    
 	    // See if the user is locally connected
-	    const LocalUser* const foundLocalUser = foundUser->getLocalSelf();
+	    const LocalUser* const foundLocalUser =
+	      dynamic_cast<const LocalUser* const>(foundUser);
 	    if (foundLocalUser != 0) {
 	       // Output the idle time, and the time this user connected
 	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOISIDLE,

@@ -48,10 +48,6 @@ namespace Kine {
       //! Return the last time this user was known to be not idle
       virtual const AIS::Util::Time& getLastAwake(void) const = 0;
       
-      //! This is a locally connected user, so we must be able to return 'this'
-      const LocalUser* const getLocalSelf(void) const
-	{ return this; };
-
       //! Return the server this user is connect to (that is, us!)
       Server& getServer(void);
    }; // class LocalUser
