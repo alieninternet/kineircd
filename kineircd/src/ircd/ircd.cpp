@@ -44,7 +44,6 @@
 # include <unistd.h>
 #endif
 #include <ltdl.h>
-#include <kineircd/signals.h>
 #include <kineircd/languages.h>
 #include <kineircd/registry.h>
 #include <kineircd/config.h>
