@@ -90,13 +90,21 @@ namespace Kine {
       // The list of handlers we run through to find functions to throw
       handlerList_type handlers;
 
-    public:
+    private:
       // Constructor
       Signals(void);
       
+    public:
       // Destructor
       ~Signals(void);
 
+      // Get the single instance of this class (this class 'always' exists)
+      static Signals& getInstance(void)
+	{
+	   static Signals instance;
+	   return instance;
+	};
+      
       // Add a handler to the handlers list (false if structure is invalid)
       bool addHandler(const handlerPtr_type handler,
 		      const mask_type mask, void* foo = 0);
@@ -105,6 +113,11 @@ namespace Kine {
 //      void removeHandler(const handlerInfo &handler)
 //	{ handlers.remove(&handler); };
    };
+   
+   
+   // Lazy reference function :)
+   inline static Signals& signals(void)
+     { return Signals::getInstance(); };
 };
 
 #endif // _INCLUDE_KINEIRCD_SIGNALS_H_

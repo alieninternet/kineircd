@@ -54,10 +54,9 @@ using AISutil::String;
 /* Daemon - Init the server
  * Original 11/08/2001 simonb
  */
-Daemon::Daemon(Config& conf, Signals& sigs)
+Daemon::Daemon(Config& conf)
   : runlevel(RUNLEVEL_INIT),
     config(conf),
-    signals(sigs),
     startTime(time(NULL)),
     sentBytes(0),
     receivedBytes(0)

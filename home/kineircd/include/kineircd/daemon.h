@@ -47,7 +47,6 @@ extern "C" {
 // Forwarded declarations (completed after class)
 namespace Kine {
    class Config;
-   class Signals;
    class Connection;
    class ProtocolInfo;
 };
@@ -73,7 +72,6 @@ namespace Kine {
       runlevel_type runlevel;			// What stage is the daemon in
       
       Config& config;				// Configuration data
-      Signals& signals;				// Signal handlers
       
       const long startTime;			// Time the daemon started
       timeval currentTime;			// The time now
@@ -111,7 +109,7 @@ namespace Kine {
 
     public:
       // Constructor
-      Daemon(Config& conf, Signals& sigs);
+      Daemon(Config& conf);
 
       // Destructor
       ~Daemon(void);
@@ -124,10 +122,6 @@ namespace Kine {
       const Config& getConfig(void) const
 	{ return config; };
       
-      // Grab the signal handler
-      Signals& getSignals(void)
-	{ return signals; };
-
       // Grab our 'uptime'
       unsigned long getUptime(void) const
 	{ return (unsigned long)(currentTime.tv_sec - startTime); };
@@ -163,7 +157,6 @@ namespace Kine {
 
 // Complete forwarded declarations
 # include <kineircd/config.h>
-# include <kineircd/signals.h>
 # include <kineircd/connection.h>
 # include <kineircd/protocolinfo.h>
 

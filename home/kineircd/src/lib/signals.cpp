@@ -40,31 +40,26 @@ using namespace Kine;
 using AISutil::String;
 
 
-// This is here so we can remember where we are!
-Signals *siggies = 0;
-
-
 /* checkMask - Check if a handler should be called based on the mask
  * Original 09/07/2002 simonb
  */
-struct checkMask 
-  : public std::unary_function<const Signals::handlerInfo&, void> {
-     const int signum;
-     const Signals::mask_type maskBit;
-     
-     // Constructor
-     checkMask(const int s, const Signals::mask_type m)
-       : signum(s), maskBit(m)
-       {};
-     
-     // Analyser
-     void operator()(const Signals::handlerInfo& handlerInfo)
-       {
-	  if (handlerInfo.mask & maskBit) {
-	     (*handlerInfo.handler)(signum, maskBit, handlerInfo.foo);
-	  }
-       };
-  };
+struct checkMask {
+   const int signum;
+   const Signals::mask_type maskBit;
+   
+   // Constructor
+   checkMask(const int s, const Signals::mask_type m)
+     : signum(s), maskBit(m)
+     {};
+   
+   // Broadcaster, to make sure the signal is distributed to those who want it
+   void operator()(const Signals::handlerInfo& handlerInfo)
+     {
+	if (handlerInfo.mask & maskBit) {
+	   (*handlerInfo.handler)(signum, maskBit, handlerInfo.foo);
+	}
+     };
+};
 
 
 /* sigHandler - Handle signals
@@ -75,11 +70,6 @@ struct checkMask
  */
 static RETSIGTYPE signalHandler(int signum)
 {
-#ifdef KINE_DEBUG_ASSERT
-   // Make sure we are called properly - siggies must not be null
-   assert(siggies != 0);
-#endif
-   
 #ifdef KINE_DEBUG
    debug("sigHandler() -> [" + String::convert(signum) +
 # ifdef SYS_SIGLIST_DECLARED
@@ -91,7 +81,7 @@ static RETSIGTYPE signalHandler(int signum)
 #endif
 
    // If the handlers list is not empty, use it
-   if (!siggies->handlers.empty()) {
+   if (!signals().handlers.empty()) {
       Signals::mask_type maskBit;
       
       // Work out what bit in the mask we are looking for
@@ -156,7 +146,7 @@ static RETSIGTYPE signalHandler(int signum)
       }
       
       // Run through our handler list and look for handlers to call
-      (void)std::for_each(siggies->handlers.begin(), siggies->handlers.end(),
+      (void)std::for_each(signals().handlers.begin(), signals().handlers.end(),
 			  checkMask(signum, maskBit));
    } else {
       // This could be nicer..
@@ -256,9 +246,6 @@ Signals::Signals(void)
    // Make sure the list is really empty
    assert(handlers.empty());
 #endif
-   
-   // Remember who we are..
-   siggies = this;
    
    // Run through our signal instruction list...
    for (unsigned int i = 0; signalHandlerInstructions[i].signal != 0; i++) {
