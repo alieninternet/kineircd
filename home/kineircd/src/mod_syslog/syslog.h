@@ -23,6 +23,7 @@
 #ifndef _SRC_LIB_LOGGER_SYSLOG_H_
 # define _SRC_LIB_LOGGER_SYSLOG_H_ 1
 
+# include "autoconf.h"
 # include "kineircd/kineircdconf.h"
 
 // Only continue if we actually have syslog support on this system

@@ -24,7 +24,8 @@
 [+(dne " * ")+]
  */
 
-#include "config.h"
+#include "autoconf.h"
+#include "kineircd/kineircdconf.h"
 
 // Make sure we are being compiled OK
 #ifndef HAVE_SYSLOG_H

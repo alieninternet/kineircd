@@ -10,7 +10,8 @@
  *   Steve Reid, Scott Mackenzie, and Simon Butcher.
  */
 
-#include "config.h"
+#include "autoconf.h"
+#include "kineircd/kineircdconf.h"
 
 #include <string>
 #include <cstring>

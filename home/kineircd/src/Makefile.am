@@ -14,7 +14,7 @@ SUBDIRS=\
 
 # Include dirs
 INCLUDES=\
-	-I$(srcdir)/../include
+	-I$(top_builddir)/include
 
 
 # Binaries to build

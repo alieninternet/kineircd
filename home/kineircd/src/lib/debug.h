@@ -24,6 +24,7 @@
 #ifndef _SRC_LIB_DEBUG_H_
 # define _SRC_LIB_DEBUG_H_ 1
 
+# include "autoconf.h"
 # include "kineircd/kineircdconf.h"
 
 # ifdef KINE_DEBUG

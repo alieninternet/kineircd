@@ -24,7 +24,8 @@
 [+(dne " * ")+]
  */
 
-#include "config.h"
+#include "autoconf.h"
+#include "kineircd/kineircdconf.h"
 
 #include "kineircd/logger.h"
 

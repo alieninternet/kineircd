@@ -7,7 +7,7 @@
 AUTOCONF_DIR=./config
 AUTOCONF_FILE=./configure.ac
 AUTOCONF_SCRIPT=./configure
-AUTOCONF_HEADER=./include/config.h.in
+AUTOCONF_HEADER=./include/autoconf.h.in
 
 bootstrap:
 	aclocal -I $(AUTOCONF_DIR)
