@@ -114,10 +114,6 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
  */
 void Registrar::parseLine(const String& line)
 {
-#ifdef KINE_DEBUG_PSYCHO
-   debug("Registrar::parseLine() <- " + line);
-#endif
-   
    bool found = false;
    
    // Tokenise the line, and grab the command
@@ -127,6 +123,9 @@ void Registrar::parseLine(const String& line)
    // Run through the list and find a function..
    for (int i = 0; commandTable[i].command != 0; i++) {
       if (command == commandTable[i].command) {
+#ifdef KINE_DEBUG_PSYCHO
+	 debug("Registrar::parseLine() <- Command: " + command);
+#endif
 	 found = true;
 	 (this->*(commandTable[i].handler))(st);
 	 break;
