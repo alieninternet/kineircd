@@ -26,15 +26,34 @@
 
 class Module {
  private:
-   enum modType_type {
-      MOD_PROTOCOL,				// Protocol module (pmod)
-      MOD_SERVICE,				// Service module (smod)
-      MOD_EXTENTION				// Core extention module (emod)
-   } const type;
+   /* This structure defines information about the module itself. Each module
+    * must have one of these present to define parameters about the module
+    * so that the server has some idea of how to handle it, what version it
+    * is and so on.
+    */
+   struct modInfo_type {
+      // Type of the module, so we know how to install it correctly
+      enum type_type {
+	 MODTYPE_PROTOCOL,			// Protocol module (pmod)
+	 MODTYPE_SERVICE,			// Service module (smod)
+	 MODTYPE_EXTENTION			// Core extention module (emod)
+      } const type;
+      
+      /* Name and version information of the module.
+       * Note that the full module version will be seen as follows:
+       * <name>-<versionMajor>.<versionMinor>.<versionPatchLevel><versionExtra>
+       * Eg. FooMod-1.2.3b
+       */
+      const char *name;
+      const char *copyright;
+      const unsigned char versionMajor;
+      const unsigned char versionMinor;
+      const unsigned short versionPatchLevel;
+      const char *versionExtra;
+   } moduleInfo;
    
  public:
-   Module(modType_type t)
-     : type(t)
+   Module(void)
      {};
    ~Module(void)
      {};
