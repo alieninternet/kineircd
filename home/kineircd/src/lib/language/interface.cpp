@@ -143,7 +143,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
    if (convDesc == (iconv_t)(-1)) {
       errString =
 	"Could not open conversion descriptor for " 
-	KINE_LANGTAGS_LANGFILE_CHARSET " -> " KINE_LANGTAGS_INTERNAL_CHARSET
+	KINE_LANGFILE_CHARSET " -> " KINE_INTERNAL_CHARSET
 	" (";
       errString += strerror(errno);
       errString += ')';
@@ -316,7 +316,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	  case EILSEQ: // An illegal multibyte sequence was found in the input
 	  case EINVAL: // An incomplete multibyte sequence was found..
 	    errString =
-	      "Illegal " KINE_LANGTAGS_LANGFILE_CHARSET
+	      "Illegal " KINE_LANGFILE_CHARSET
 	      " sequence or corrupt language file";
 	    (void)iconv_close(convDesc);
 	    return false;
