@@ -403,7 +403,7 @@ chanmodes = {
 chanmodes = {
    irc2char	= "r";
    name		= "REGONLY";
-   origin	= "QuakeNet";
+   origin	= "ircu";
    comment	= "Channel only allows registered nicknames to join/talk.";
    conflict	= "yes";
 };
