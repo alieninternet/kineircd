@@ -123,8 +123,8 @@
  * Check modes.h for more usermodes you can 'or' together.
  * Undefining this will stop users automatically being set a mode.
  */
-#define USER_REGISTRATION_MODES		USERMODE_VWORLD | \
-					USERMODE_INVISIBLE
+#define USER_REGISTRATION_MODES		User::MODE_VWORLD | \
+					User::MODE_INVISIBLE
 
 
 /* Define this if you want PRIVMSG and NOTICE to work traditionally for IRC
@@ -383,7 +383,7 @@
  * +O/+o which is given to the user. Modes should be or'd together with the
  * '|' character.
  */
-# define GIVE_MODES_GLOBALOP		USERMODE_WALLOPS
+# define GIVE_MODES_GLOBALOP		User::MODE_WALLOPS
 //# define GIVE_MODES_LOCALOP
 
 

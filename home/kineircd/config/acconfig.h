@@ -119,11 +119,11 @@
 
 
 /* These are the modes a user is automatically given upon registration.
- * Check modes.h for more usermodes you can 'or' together.
+ * Check user.h for more usermodes you can 'or' together.
  * Undefining this will stop users automatically being set a mode.
  */
-#define USER_REGISTRATION_MODES		USERMODE_VWORLD | \
-					USERMODE_INVISIBLE
+#define USER_REGISTRATION_MODES		User::MODE_VWORLD | \
+					User::MODE_INVISIBLE
 
 
 /* Define this if you want PRIVMSG and NOTICE to work traditionally for IRC
@@ -377,12 +377,12 @@
 							       
 
 /* These define what 'extra' modes local and global operators get. Undefining
- * these do not give the operators any extra modes. Check the modes.h include
+ * these do not give the operators any extra modes. Check the user.h include
  * file for what modes are available. These modes are given additional to the
  * +O/+o which is given to the user. Modes should be or'd together with the
  * '|' character.
  */
-# define GIVE_MODES_GLOBALOP		USERMODE_WALLOPS
+# define GIVE_MODES_GLOBALOP		User::MODE_WALLOPS
 //# define GIVE_MODES_LOCALOP
 
 

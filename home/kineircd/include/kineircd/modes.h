@@ -9,69 +9,17 @@
 
 /* This is the type of the modes - big enough for the modes to fit!
  * Warning: Changing these MAY EFFECT SERVER PROTOCOL!!
- * BTW, you may be wondering why these are not typedefs. Answer: Some compilers
- * HATE long long's (64-bit numbers) as typedefs, GCC included. :(
+ * These are kinda temporary too, btw. Use User::modes_t/Channel::modes_t etc
  */
 typedef unsigned long long TYPE_USERMODES;
 typedef unsigned long long TYPE_CHANMODES;
 typedef unsigned short TYPE_CHANMEMMODES;
-typedef unsigned long long TYPE_SERVERMODES;
+typedef unsigned long TYPE_SERVERMODES;
 
 /*
  * Once these flags are set, do not change them - they may effect protocol
  * output etc.
  */
-
-/* Channel flags
- * Note: Flags not mentioned here are most likely flags with a parameter,
- *       so check the mode tables
- */
-# define CHANMODE_INVITE	0x0000000000000001 // +i (invite only)
-# define CHANMODE_MODERATED	0x0000000000000002 // +m (moderated)
-# define CHANMODE_NOOUTSIDEMSG	0x0000000000000004 // +n (no extern PRIVMSGs)
-# define CHANMODE_TOPICLOCK	0x0000000000000008 // +t (topic locked for opers)
-# define CHANMODE_PRIVATE	0x0000000000000010 // +p (private)
-# define CHANMODE_SECRET	0x0000000000000020 // +s (secret)
-# define CHANMODE_QUIET		0x0000000000000040 // +q (server msgs not sent)
-# define CHANMODE_ANONYMOUS	0x0000000000000080 // +a (masks changed to anonymous!anonymous@anonymous)
-# define CHANMODE_EVENT		0x0000000000000100 // +E (no nick changes allowed)
-# define CHANMODE_REOP		0x0000000000000200 // +r (re-op mode)
-# define CHANMODE_REGNICKSONLY	0x0000000000000400 // +R (registered nicks only)
-
-
-// Channel member flags
-# define CHANMEMMODE_CREATOR	0x0001		// +O (channel creator)
-# define CHANMEMMODE_OPPED	0x0002		// +o (channel operator)
-# define CHANMEMMODE_VOICED	0x0004		// +v (voiced)
-# define CHANMEMMODE_HALFOPPED	0x0008		// +h (half opped)
-
-
-// User flags -- note the first byte is set up on purpose (see RFC2812)
-# define USERMODE_WALLOPS	0x0000000000000004 // +w (wallops)
-# define USERMODE_INVISIBLE	0x0000000000000008 // +i (invisible)
-# define USERMODE_NONKICKABLE	0x0000000000000100 // +k (non-kick/deop/killable)
-# define USERMODE_DEAF		0x0000000000000200 // +d (deaf)
-# define USERMODE_SECURE	0x0000000000000400 // +S (secure connection)
-# define USERMODE_VWORLD	0x0000000000000800 // +v (virtual world)
-# define USERMODE_LOCALOPER	0x0000000000001000 // +o (local operator)
-# define USERMODE_GLOBALOPER	0x0000000000002000 // +O (global operator)
-# define USERMODE_HELPER	0x0000000000004000 // +h (AustNet helper)
-# define USERMODE_RESTRICTED	0x0000000000008000 // +r (restricted connection)
-# define USERMODE_IDENTIFIED	0x0000000000010000 // +I (services identified)
-# define USERMODE_GOT_IDENTD	0x0000000000020000 // +n (received identd reply)
-# define USERMODE_REGNICKSMSG	0x0000000000040000 // +R (msgs from reg nicks)
-# define USERMODE_IGNORING	0x0000000000080000 // +g (ignoring)
-
-
-// Server flags (note flags that use paramters are not listed here)
-# define SERVERMODE_HIDDEN	0x0000000000000001 // +h (hidden server)
-# define SERVERMODE_NOOP	0x0000000000000002 // +n (NOOP server)
-# define SERVERMODE_AUTOTBS	0x0000000000000004 // +a (automatic TBSing)
-# define SERVERMODE_REMOTEMOTD	0x0000000000000008 // +M (allow remote /motd)
-# define SERVERMODE_SHORTMOTD	0x0000000000000010 // +m (short motd on connection)
-# define SERVERMODE_MODELOCK	0x0000000000000020 // +L (lock server mode toggles)
-# define SERVERMODE_USERSFULL	0x0000000000000040 // +F (full, no more users)
-
 
 // Finally get around to including these files
 # include "handler.h"

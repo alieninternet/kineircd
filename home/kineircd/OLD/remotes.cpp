@@ -34,7 +34,7 @@
 void Handler::doADMIN(Handler *handler, User *from)
 {
    handler->sendNumeric(TO_DAEMON->server, RPL_ADMINME, from, 
-			TO_DAEMON->server->hostname + LNG_RPL_ADMINME);
+			TO_DAEMON->server->getHostname() + LNG_RPL_ADMINME);
    handler->sendNumeric(TO_DAEMON->server, RPL_ADMINLOC1, from,
 			TO_DAEMON->adminName);
    
@@ -93,15 +93,15 @@ void Handler::doLINKS(Handler *handler, User *from, String const &request)
 	TO_DAEMON->servers.begin();
 	it != TO_DAEMON->servers.end(); it++) {
       // Check for a match, and send this if the server is not hidden
-      if (mask.matches((*it).second->hostname) && 
-	  !((*it).second->modes & SERVERMODE_HIDDEN)) {
+      if (mask.matches((*it).second->getHostname()) && 
+	  !((*it).second->isModeSet(Server::MODE_HIDDEN))) {
 	 // Send the user this record
 	 handler->sendNumeric(TO_DAEMON->server, RPL_LINKS, from,
 			      String::printf("%s %s :%d %s",
-					     (char const *)(*it).second->hostname,
-					     (char const *)TO_DAEMON->server->hostname,
-					     (*it).second->numHops,
-					     (char const *)(*it).second->description));
+					     (char const *)(*it).second->getHostname(),
+					     (char const *)TO_DAEMON->server->getHostname(),
+					     (*it).second->getNumHops(),
+					     (char const *)(*it).second->getDescription()));
       }
    }
    
@@ -161,12 +161,12 @@ void Handler::doMOTD(Handler *handler, User *from)
 {
    // Are we being called remote? Can we allow this to happen?
    if ((from->server != TO_DAEMON->server) &&
-       !(TO_DAEMON->server->modes & SERVERMODE_REMOTEMOTD)) {
+       !(TO_DAEMON->server->isModeSet(Server::MODE_REMOTEMOTD))) {
       // Not allowed to send the motd over the network
       handler->sendNumeric(TO_DAEMON->server, ERR_NOMOTD, from,
 			   String::printf(LNG_ERR_NOMOTD_NOREMOTE,
 					  ((char const *)
-					   TO_DAEMON->server->hostname)));
+					   TO_DAEMON->server->getHostname())));
       return;
    }
    
@@ -175,7 +175,7 @@ void Handler::doMOTD(Handler *handler, User *from)
       // Send the header
       handler->sendNumeric(TO_DAEMON->server, RPL_MOTDSTART, from,
 			   String::printf(LNG_RPL_MOTDSTART,
-					  (char const *)TO_DAEMON->server->hostname));
+					  (char const *)TO_DAEMON->server->getHostname()));
 
       // Run through the MOTD and send each line in the list
       for (Daemon::motd_t::iterator it = TO_DAEMON->motd.begin();
@@ -413,7 +413,7 @@ void Handler::doTIME(Handler *handler, User *from)
 				       "%s (%c%02d:%02d) "
 #endif
 				       "%d",
-				       (char const *)TO_DAEMON->server->hostname,
+				       (char const *)TO_DAEMON->server->getHostname(),
 				       TO_DAEMON->getTime(),
 				       dayNames[timeinfo->tm_wday],
 				       monthNames[timeinfo->tm_mon],
@@ -444,7 +444,7 @@ void Handler::doVERSION(Handler *handler, User *from)
    handler->sendNumeric(TO_DAEMON->server, RPL_VERSION, from,
 			String::printf(LNG_RPL_VERSION,
 				       getVersion,
-				       (char const *)TO_DAEMON->server->hostname,
+				       (char const *)TO_DAEMON->server->getHostname(),
 				       getVersionChars));
 }
 
@@ -483,7 +483,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       
       // Send the virtual world information if we need to
       if (!u->showVW(from) && 
-	  (u->modes & USERMODE_VWORLD)) {
+	  (u->modes & User::MODE_VWORLD)) {
 	 handler->sendNumeric(TO_DAEMON->server, RPL_WHOISVIRT, from,
 			      u->nickname + LNG_RPL_WHOISVIRT +
 			      u->vwhostname);
@@ -499,13 +499,13 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 	    
 	    // Sanity check, this should work..
 	    if (cm) {
-	       channels = channels + (String(((u->modes & USERMODE_DEAF) ?
+	       channels = channels + (String(((u->modes & User::MODE_DEAF) ?
 					      "-" : "")) +
-				      ((cm->modes & CHANMEMMODE_OPPED) ?
+				      ((cm->modes & ChannelMember::MODE_OPPED) ?
 				       "@" : 
-				       ((cm->modes & CHANMEMMODE_HALFOPPED) ?
+				       ((cm->modes & ChannelMember::MODE_HALFOPPED) ?
 					"%" :
-					((cm->modes & CHANMEMMODE_VOICED) ?
+					((cm->modes & ChannelMember::MODE_VOICED) ?
 					 "+" : ""))) +
 				      // channel op/voice here?!
 				      (*it).second->name + " ");
@@ -530,11 +530,11 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       }
       
       // Send the server information, if the server is not hidden
-      if (!(u->server->modes & SERVERMODE_HIDDEN) ||
+      if (!(u->server->isModeSet(Server::MODE_HIDDEN)) ||
 	  User::isOper(from)) {
 	 handler->sendNumeric(TO_DAEMON->server, RPL_WHOISSERVER, from,
-			      u->nickname + " " + u->server->hostname + " :" +
-			      u->server->description);
+			      u->nickname + " " + u->server->getHostname() + 
+			      " :" + u->server->getDescription());
       }
       
       // If the user is away, send the away message
@@ -572,7 +572,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       }
       
       // Check if this user is connected via an SSL enabled port
-      if (u->modes & USERMODE_SECURE) {
+      if (u->modes & User::MODE_SECURE) {
 	 handler->sendNumeric(TO_DAEMON->server, RPL_WHOISSECURE, from,
 			      u->nickname + " *" + LNG_RPL_WHOISSECURE);
       }

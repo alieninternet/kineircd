@@ -177,8 +177,8 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
    // Check the AUTOBONE setting
 //   if (conf->confAutobone) {
       // Is this a change?
-//      if (!(server->modes & SERVERMODE_AUTOBONE)) {
-//	 server->modes |= SERVERMODE_AUTOBONE;
+//      if (!(server->modes & Server::MODE_AUTOBONE)) {
+//	 server->modes |= Server::MODE_AUTOBONE;
 //	 toggleOnStr = toggleOnStr + String('a');
 //      }
 //   } else {

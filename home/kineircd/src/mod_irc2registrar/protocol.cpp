@@ -68,7 +68,7 @@ void registerHandler::sendGeneric(char const *command, String const &line)
 {
    getConnection()->
      sendRaw(String::printf(":%s %s %s %s" REGISTRATION_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->hostname,
+			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
 			    command,
 			    (nickname.length() ?
 			     (char const *)nickname :
@@ -86,7 +86,7 @@ void registerHandler::sendNumeric(short numeric, User *to, String const &line)
 {
    getConnection()->
      sendRaw(String::printf(":%s %d %s %s" REGISTRATION_EOL_CHARS,
-			    (char const *)getConnection()->getDaemon()->myServer()->hostname,
+			    (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
 			    numeric,
 			    (nickname.length() ?
 			     (char const *)nickname :
@@ -225,7 +225,7 @@ void registerHandler::parseLine(String const &line)
 	       getConnection()->getDaemon()->addServer(server);
 	    } else {
 	       // Check if this server is already connected here
-	       if (server->handler) {
+	       if (server->isLocal()) {
 #ifdef DEBUG
 		  debug(String::printf("Server %s is already connected!",
 				       (char const *)username));
@@ -259,7 +259,13 @@ void registerHandler::parseLine(String const &line)
 	    getConnection()->name = &server->hostname;
 
 	    // Fix server handler pointer
-	    server->handler = newHandler;
+	    if (!server->resetHandler(newHandler)) {
+#ifdef DEBUG
+	       debug("Server is already connected locally - woops!!");
+#endif
+	       getConnection()->goodbye();
+	       return;
+	    }
 	 } else {
 	    // Dodgey connection, no password...
 #ifdef DEBUG_EXTENDED
@@ -394,7 +400,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 			String::printf(LNG_PINGPONG_NOTICE,
 				       (char const *)handler->pingpong, 
 				       (char const *)handler->pingpong,
-				       (char const *)TO_DAEMON->myServer()->hostname));
+				       (char const *)TO_DAEMON->myServer()->getHostname()));
 # endif
    handler->getConnection()->sendRaw(String("PING :") + handler->pingpong + "\r\n");
 #endif

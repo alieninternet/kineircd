@@ -453,7 +453,7 @@ void Daemon::broadcastWallops(Server *from, String const &message)
 #endif
       
       // Check if this user is to receive server notices
-      if ((*it).second->user->modes & USERMODE_WALLOPS) {
+      if ((*it).second->user->modes & User::MODE_WALLOPS) {
 	 // Send the message via the notice interface
 	 (*it).second->handler->sendWallops(from, message);
       }
@@ -483,7 +483,7 @@ void Daemon::broadcastWallops(User *from, String const &message)
 #endif
       
       // Check if this user is to receive server notices
-      if ((*it).second->user->modes & USERMODE_WALLOPS) {
+      if ((*it).second->user->modes & User::MODE_WALLOPS) {
 	 // Send the message via the notice interface
 	 (*it).second->handler->sendWallops(from, message);
       }
@@ -818,7 +818,7 @@ void Daemon::delUser(User *user)
    }
 
    // If this user was also a global operator, we need to decrement the counter
-   if (user->modes & USERMODE_GLOBALOPER) {
+   if (user->modes & User::MODE_GLOBALOPER) {
       numOpers--;
    }
    
@@ -878,7 +878,7 @@ void Daemon::quitUser(User *user, String const &reason, bool broadcast)
 	    // If we have not already done so, send a message to this user
 	    if (!messages[(*it).second->user->nickname]) {
 	       // Send a quit if the channel is not marked anonymous
-	       if (!(chan->modes & CHANMODE_ANONYMOUS)) {
+	       if (!(chan->modes & Channel::MODE_ANONYMOUS)) {
 		  // Mark this user down as being touched upon
 		  messages[(*it).second->user->nickname] = true;
 
@@ -1339,9 +1339,9 @@ void Daemon::addServer(Server *server)
 #endif
 
       // Check if this user is not an operator or a helper
-      if (!((*it).second->user->modes & USERMODE_GLOBALOPER) &&
-	  !((*it).second->user->modes & USERMODE_LOCALOPER) &&
-	  !((*it).second->user->modes & USERMODE_HELPER)) {
+      if (!((*it).second->user->modes & User::MODE_GLOBALOPER) &&
+	  !((*it).second->user->modes & User::MODE_LOCALOPER) &&
+	  !((*it).second->user->modes & User::MODE_HELPER)) {
 	 continue;
       }
       
@@ -1537,8 +1537,8 @@ void Daemon::changeServerMode(Server *server, Server *from,
 #endif
       
       // Check if this user is to receive this mode change
-      if (((*it).second->user->modes & USERMODE_GLOBALOPER) ||
-	  ((*it).second->user->modes & USERMODE_LOCALOPER)) {
+      if (((*it).second->user->modes & User::MODE_GLOBALOPER) ||
+	  ((*it).second->user->modes & User::MODE_LOCALOPER)) {
 	 // Send the mode change
 	 (*it).second->handler->sendServerMode(server, from, modeStr);
       }
@@ -1571,8 +1571,8 @@ void Daemon::changeServerMode(Server *server, Handler *handler, User *from,
 #endif
       
       // Check if this user is to receive this mode change
-      if (((*it).second->user->modes & USERMODE_GLOBALOPER) ||
-	  ((*it).second->user->modes & USERMODE_LOCALOPER)) {
+      if (((*it).second->user->modes & User::MODE_GLOBALOPER) ||
+	  ((*it).second->user->modes & User::MODE_LOCALOPER)) {
 	 // Send the mode change
 	 (*it).second->handler->sendServerMode(server, from, modeStr);
       }

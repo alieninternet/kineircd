@@ -31,8 +31,19 @@ class ChannelMember;
 // A channel member class
 class ChannelMember {
  public:
+   /* Channel member modes...
+    * WARNING!! Do not change these once they are set! P14 relies on them
+    * being constant over ALL servers!
+    */
+   typedef unsigned short modes_t;
+   static modes_t const MODE_CREATOR		= 0x0001; // +O
+   static modes_t const MODE_OPPED		= 0x0002; // +o
+   static modes_t const MODE_VOICED		= 0x0004; // +v
+   static modes_t const MODE_HALFOPPED		= 0x0008; // +h
+ 
+ public:
    User *user;					// Link into user record
-   TYPE_CHANMEMMODES modes;			// User modes on channel
+   modes_t modes;				// User modes on channel
 
  public:
    // Constructors
@@ -41,7 +52,7 @@ class ChannelMember {
        modes(0)
      {};
    
-   ChannelMember(User *u, TYPE_CHANMEMMODES m = 0)
+   ChannelMember(User *u, modes_t m = 0)
      : user(u),
        modes(m)
      {};
@@ -79,10 +90,27 @@ class Channel {
 # else
    typedef list <ChannelMask *> mask_list_t;
 # endif
+
+   /* Channel modes (note modes that use paramters are not listed here)
+    * WARNING!! Do not change these once they are set! P14 relies on them
+    * being constant over ALL servers!
+    */
+   typedef unsigned long long modes_t;
+   static modes_t const MODE_INVITE		= 0x0000000000000001; // +i
+   static modes_t const MODE_MODERATED		= 0x0000000000000002; // +m
+   static modes_t const MODE_NOOUTSIDEMSG	= 0x0000000000000004; // +n
+   static modes_t const MODE_TOPICLOCK		= 0x0000000000000008; // +t
+   static modes_t const MODE_PRIVATE		= 0x0000000000000010; // +p
+   static modes_t const MODE_SECRET		= 0x0000000000000020; // +s
+   static modes_t const MODE_QUIET		= 0x0000000000000040; // +q
+   static modes_t const MODE_ANONYMOUS		= 0x0000000000000080; // +a
+   static modes_t const MODE_EVENT		= 0x0000000000000100; // +E
+   static modes_t const MODE_REOP		= 0x0000000000000200; // +r
+   static modes_t const MODE_REGNICKSONLY	= 0x0000000000000400; // +R
    
  public:
    String name;					// Name of the channel + prefix
-   TYPE_CHANMODES modes;			// Channel mode flags
+   modes_t modes;				// Channel mode flags
    time_t creationTime;				// Time channel was created
 
    String topic;				// Channel topic
@@ -124,8 +152,8 @@ class Channel {
    // Access checking
    static bool isHidden(Channel *c)
      {
-	return ((c->modes & CHANMODE_PRIVATE) ||
-		(c->modes & CHANMODE_SECRET));
+	return ((c->modes & MODE_PRIVATE) ||
+		(c->modes & MODE_SECRET));
      };
    
    ChannelMember *getMember(User *);		// Grab a channel member record

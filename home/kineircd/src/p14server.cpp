@@ -69,7 +69,7 @@ p14serverHandler::p14serverHandler(Connection *c, Server *s)
    getConnection()->getDaemon()->
      broadcastServerNotice(SERVERNOTICE_NETWORK,
 			   String::printf(LNG_SERVNOTICE_LINK " (P14)",
-					  (char const *)server->hostname));
+					  (char const *)server->getHostname()));
    
    // Increase the server connection count
    getConnection()->getDaemon()->numServerConns++;

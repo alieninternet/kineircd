@@ -18,13 +18,30 @@ typedef unsigned short TYPE_SERVERFLAGS;
 
 class Server {
  public:
+   typedef unsigned short flags_t;
+
+   /* Server modes (note modes that use paramters are not listed here)
+    * WARNING!! Do not change these once they are set! P14 relies on them
+    * being constant over ALL servers!
+    */
+   typedef unsigned long modes_t;
+   static modes_t const MODE_HIDDEN		= 0x0000000000000001; // +h
+   static modes_t const MODE_NOOP		= 0x0000000000000002; // +n
+   static modes_t const MODE_AUTOTBS		= 0x0000000000000004; // +a
+   static modes_t const MODE_REMOTEMOTD		= 0x0000000000000008; // +M
+   static modes_t const MODE_SHORTMOTD		= 0x0000000000000010; // +m
+   static modes_t const MODE_MODELOCK		= 0x0000000000000020; // +L
+   static modes_t const MODE_USERSFULL		= 0x0000000000000040; // +F
+
+// private:
+ public:
    String hostname;				// Server hostname
    String description;				// Server description
-   TYPE_SERVERFLAGS flags;			// Server flags
-   TYPE_SERVERMODES modes;			// Server modes
+   flags_t flags;				// Server flags
+   modes_t modes;				// Server modes
    Handler *handler;				// Link into user handler
    unsigned char numHops;			// Number of hops away
-   unsigned long numUsers;			// Number of users connected
+   unsigned int numUsers;			// Number of users connected
 
  public:
    // Constructors
@@ -58,6 +75,69 @@ class Server {
        numHops(s.numHops),
        numUsers(s.numUsers)
      {};
+   
+   // Variable access
+   String getHostname(void) const		// Return the hostname
+     {
+	return hostname;
+     };
+   
+   String getDescription(void) const		// Return the description/name
+     {
+	return description;
+     };
+   
+   flags_t getFlags(void) const			// Return the flags integer
+     {
+	return flags;
+     };
+
+   void setFlag(flags_t flag)			// Set a server flag
+     {
+	flags |= flag;
+     };
+   
+   bool isModeSet(modes_t mode) const		// Is a mode set?
+     {
+	return (modes & mode);
+     };
+   
+   modes_t getModes(void) const			// Return the modes integer
+     {
+	return modes;
+     };
+   
+   bool isLocal(void) const			// Is the server local?
+     {
+	return (handler > 0);
+     };
+   
+   Handler *getHandler(void) const		// Return the handler (maybe)
+     {
+	return handler;
+     };
+   
+   bool resetHandler(Handler *h)		// Re-set the handler (maybe)
+     {
+	if (!handler) {
+	   handler = h;
+	   return true;
+	}
+	return false;
+     };
+   
+   unsigned char getNumHops(void) const		// Grab number of hops
+     {
+	return numHops;
+     };
+   
+   unsigned int getNumUsers(void) const		// Grab number of users there
+     {
+	return numUsers;
+     };
+   
+   
+   friend Daemon;
 };
 
 #endif

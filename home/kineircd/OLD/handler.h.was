@@ -22,13 +22,16 @@ class Handler {
    Connection *connection;			// Recursive back up
 
  public:
-   Handler(Connection *c)			// Initialise the base class
+   // Initialise the base class
+   Handler(Connection *c)
      : connection(c)
-     {};
+       {};
+   
+   // Destructor
+   virtual ~Handler(void) {};
 
-   virtual ~Handler(void) {};			// Destructor
-
-   Connection *getConnection(void) const	// Return the connection link
+   // Return the connection link
+   Connection *getConnection(void) const
      {
 	return connection;
      };
@@ -36,67 +39,69 @@ class Handler {
    virtual void goodbye(String const &) {};	// Handle a goodbye
    virtual void kill(String const &, 
 		     String const &) {};	// Kill the connection (sharp)
-   virtual time_t getStamp(void)		// Connection relevant stamp
+   
+   // Connection relevant stamp
+   virtual time_t getStamp(void)
      {
 	return 0;
      };
    
-   virtual time_t returnStamp(time_t)		// Server relevant stamp
+   // Server relevant stamp
+   virtual time_t returnStamp(time_t)
      {
 	return 0;
      };
-   
-   virtual void sendAway(User *) {};		// Send a user away message
-   virtual void sendChannelMode(Channel *, User *, 
-			 String const &) {};	// Send a channel mode change
-   virtual void sendJoin(Channel *, User *) {};	// Send a channel join
-   virtual void sendKick(Channel *, User *, User *,
-			 String const &) {};	// Send a channel kick message
-   virtual void sendKill(User *, String const &, 
-			 String const &) {};	// Send a user kill message
-   virtual void sendNewNick(User *) {};		// Send a signon notification
-   virtual void sendNickChange(User *, String const &) 
-     {};					// Send a nickname change
-   virtual void sendNotice(Server *, User *, 
-			   String const &) {};	// Send a NOTICE
+
+   // Protocol output routines
+   virtual void sendAway(User *) {};
+   virtual void sendChannelMode(Channel *, User *, String const &) {};
+   virtual void sendJoin(Channel *, User *) {};
+   virtual void sendKick(Channel *, User *, User *, String const &) {};
+   virtual void sendKill(User *, String const &, String const &) {};
+   virtual void sendNewNick(User *) {};
+   virtual void sendNickChange(User *, String const &) {};
+   virtual void sendNotice(Server *, User *, String const &) {};
    virtual void sendNotice(User *, Channel *, String const &) {};
    virtual void sendNotice(User *, User *, String const &) {};
    virtual void sendNotice(User *, StringMask const &, String const &) {};
    virtual void sendNoticeAnon(Channel *, String const &) {};
-   virtual void sendNumeric(Server *, short, User *,
-			    String const &) {};	// Send a numeric reply
-   virtual void sendPart(Channel *, User *,
-			 String const &) {};	// Send a channel part
-   virtual void sendPing(void) {};		// Send a ping request
-   virtual void sendPrivmsg(Server *, User *, 
-			    String const &) {};	// Send a PRIVMSG
+   virtual void sendNumeric(Server *, short, User *, String const &) {};
+   virtual void sendPart(Channel *, User *, String const &) {};
+   virtual void sendPing(void) {};
+   virtual void sendPrivmsg(Server *, User *, String const &) {};
    virtual void sendPrivmsg(User *, Channel *, String const &) {};
    virtual void sendPrivmsg(User *, User *, String const &) {};
    virtual void sendPrivmsg(User *, StringMask const &, String const &) {};
    virtual void sendPrivmsgAnon(Channel *, String const &) {};
-   virtual void sendQuit(User *, 
-			 String const &) {};	// Send a network quit
-   virtual void sendServerMode(Server *, Server *, String const &) 
-     {};					// Send a channel mode change
+   virtual void sendQuit(User *, String const &) {};
+   virtual void sendServerMode(Server *, Server *, String const &) {};
    virtual void sendServerMode(Server *, User *, String const &) {};
    virtual void sendSilence(User *, bool, StringMask const &) {};
-   virtual void sendTopic(Channel *, Server *,
-			  String const &) {};	// Send a channel topic change
+   virtual void sendTopic(Channel *, Server *, String const &) {};
    virtual void sendTopic(Channel *, User *, String const &) {};	
-   virtual void sendUserMode(User *, String const &) 
-     {};					// Send a user mode change
-   virtual void sendWallops(Server *, 
-			    String const &) {};	// Send a wallops message
+   virtual void sendUserMode(User *, String const &) {};
+   virtual void sendWallops(Server *, String const &) {};
    virtual void sendWallops(User *, String const &) {};
-   virtual void sendWatchOff(Server *) {};	// Send a server is off notice
-   virtual void sendWatchOff(Channel *) {};	// Send a user is off notice
-   virtual void sendWatchOff(User *) {};	// Send a channel is off notice
-   virtual void sendWatchOn(Server *) {};	// Send a server is on notice
-   virtual void sendWatchOn(User *, String const & = "") 
-     {};					// Send a user is on notice
-   virtual void sendWatchOn(Channel *) {};	// Send a channel is on notice
+   virtual void sendWatchOff(Server *) {};
+   virtual void sendWatchOff(Channel *) {};
+   virtual void sendWatchOff(User *) {};
+   virtual void sendWatchOn(Server *) {};
+   virtual void sendWatchOn(User *, String const & = "") {};
+   virtual void sendWatchOn(Channel *) {};
    
-   virtual void parseLine(String const &) {};	// Parse a line
+   // Calls for remotes (similar to sends, really)
+   virtual void callADMIN(Server *, User *) {};
+   virtual void callINFO(Server *, User *) {};
+   virtual void callLINKS(Server *, User *, String const &) {};
+   virtual void callLUSERS(Server *, User *, String const &) {};
+   virtual void callMOTD(Server *, User *) {};
+   virtual void callSTATS(Server *, User *, String const &) {};
+   virtual void callTIME(Server *, User *) {};
+   virtual void callVERSION(Server *, User *) {};
+   virtual void callWHOIS(Server *, User *, String const &) {};
+
+   // Parse a line
+   virtual void parseLine(String const &) {};
    
    // These are responces to requests by either remote or local users
    static void doADMIN(Handler *, User *);
@@ -259,7 +264,10 @@ class p13serverHandler : public Handler {
    void sendPong(String const &);		// PING reply
    void sendSQUIT(String const &, Server *, 
 		  String const &);		// Closing link message
- 
+   
+   void callGeneric(char const *, Server *, User *, 
+		    String const & = "");	// Generic remote call function
+   
    // Protocol input
    static void parseADMIN(p13serverHandler *handler, String const &origin, StringTokens *tokens);
    static void parseAWAY(p13serverHandler *handler, String const &origin, StringTokens *tokens);
@@ -313,6 +321,17 @@ class p13serverHandler : public Handler {
    void sendPing(void);
    void sendPrivmsg(User *, User *, String const &);
    
+   // Calls for remotes (similar to sends, really)
+   void callADMIN(Server *, User *);
+   void callINFO(Server *, User *);
+   void callLINKS(Server *, User *, String const &);
+   void callLUSERS(Server *, User *, String const &);
+   void callMOTD(Server *, User *);
+   void callSTATS(Server *, User *, String const &);
+   void callTIME(Server *, User *);
+   void callVERSION(Server *, User *);
+   void callWHOIS(Server *, User *, String const &);
+
    // Protocol input
    void parseLine(String const &);
 };

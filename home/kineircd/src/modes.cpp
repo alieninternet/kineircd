@@ -23,7 +23,7 @@ char const *channelModeStr 		= "abdeEhiIklmnoOpqrRstv";
 char const *channelModeParamStr 	= "bdehIkloOv";
 char const *channelPrefixes		= "(ohv)@%+";
 channelModeTableStruct channelModeTable[] = {
-     { 'a',	CHANMODE_ANONYMOUS,	false,	false,	true,
+     { 'a',	Channel::MODE_ANONYMOUS,	false,	false,	true,
 	toggleChanmodeANONYMOUS 
      },
      { 'b',	0,			true,	true,	true,
@@ -35,13 +35,13 @@ channelModeTableStruct channelModeTable[] = {
      { 'e',	0,			true,	true,	true,
 	toggleChanmodeBANEXCEPT 
      },
-     { 'E',	CHANMODE_EVENT,		false,	false,	true,
+     { 'E',	Channel::MODE_EVENT,		false,	false,	true,
 	toggleChanmodeEVENT
      },
      { 'h',	0,			true,	true,	true,
 	toggleChanmodeHALFOPER
      },
-     { 'i',	CHANMODE_INVITE,	false,	false,	true,
+     { 'i',	Channel::MODE_INVITE,	false,	false,	true,
 	toggleChanmodeINVITE
      },
      { 'I',	0,			true,	true,	true,
@@ -53,10 +53,10 @@ channelModeTableStruct channelModeTable[] = {
      { 'l',	0,			true,	false,	true,
 	toggleChanmodeLIMIT
      },
-     { 'm',	CHANMODE_MODERATED,	false,	false,	true,
+     { 'm',	Channel::MODE_MODERATED,	false,	false,	true,
 	toggleChanmodeMODERATED
      },
-     { 'n',	CHANMODE_NOOUTSIDEMSG,	false,	false,	true,
+     { 'n',	Channel::MODE_NOOUTSIDEMSG,	false,	false,	true,
 	toggleChanmodeNOOUTSIDEMSG
      },
      { 'o',	0,			true,	true,	true,
@@ -65,22 +65,22 @@ channelModeTableStruct channelModeTable[] = {
      { 'O',	0,			true,	true,	false,
 	toggleChanmodeCHANCREATOR
      },
-     { 'p',	CHANMODE_PRIVATE,	false,	false,	true,
+     { 'p',	Channel::MODE_PRIVATE,	false,	false,	true,
 	toggleChanmodePRIVATE
      },
-     { 'q',	CHANMODE_QUIET,		false,	false,	false,
+     { 'q',	Channel::MODE_QUIET,		false,	false,	false,
 	toggleChanmodeQUIET
      },
-     { 'r',	CHANMODE_REOP,		false,	false,	false,
+     { 'r',	Channel::MODE_REOP,		false,	false,	false,
 	toggleChanmodeREOP
      },
-     { 'R',	CHANMODE_REGNICKSONLY,	false,	false,	true,
+     { 'R',	Channel::MODE_REGNICKSONLY,	false,	false,	true,
 	toggleChanmodeREGNICKSONLY
      },
-     { 's',	CHANMODE_SECRET,	false,	false,	true,
+     { 's',	Channel::MODE_SECRET,	false,	false,	true,
 	toggleChanmodeSECRET
      },
-     { 't',	CHANMODE_TOPICLOCK,	false,	false,	true,
+     { 't',	Channel::MODE_TOPICLOCK,	false,	false,	true,
 	toggleChanmodeTOPICLOCK
      },
      { 'v',	0,			true,	true,	true,
@@ -94,49 +94,49 @@ channelModeTableStruct channelModeTable[] = {
 char const *userModeStr 		= "dghkiInoOrRsSvw";
 char const *userModeParamStr 		= "s";
 userModeTableStruct userModeTable[] = {
-     { 'd',	USERMODE_DEAF,		false,	false,	true,
+     { 'd',	User::MODE_DEAF,		false,	false,	true,
 	toggleUsermodeDEAF
      },
-     { 'g',	USERMODE_IGNORING,	false,	false,	false,
+     { 'g',	User::MODE_IGNORING,	false,	false,	false,
 	toggleUsermodeIGNORING
      },
-     { 'h',	USERMODE_HELPER,	false,	false,	true,
+     { 'h',	User::MODE_HELPER,	false,	false,	true,
 	toggleUsermodeHELPER
      },
-     { 'k',	USERMODE_NONKICKABLE,	false,	false,	false,
+     { 'k',	User::MODE_NONKICKABLE,	false,	false,	false,
 	toggleUsermodeNONKICKABLE
      },
-     { 'i',	USERMODE_INVISIBLE,	false,	false,	true,
+     { 'i',	User::MODE_INVISIBLE,	false,	false,	true,
 	toggleUsermodeINVISIBLE
      },
-     { 'I',	USERMODE_IDENTIFIED,	false,	false,	false,
+     { 'I',	User::MODE_IDENTIFIED,	false,	false,	false,
 	toggleUsermodeIDENTIFIED
      },
-     { 'n',	USERMODE_GOT_IDENTD,	false,	false,	false,
+     { 'n',	User::MODE_GOT_IDENTD,	false,	false,	false,
 	toggleUsermodeGOT_IDENTD
      },
-     { 'o',	USERMODE_LOCALOPER,	false,	false,	true,
+     { 'o',	User::MODE_LOCALOPER,	false,	false,	true,
 	toggleUsermodeOPER
      },
-     { 'O',	USERMODE_GLOBALOPER,	false,	false,	true,
+     { 'O',	User::MODE_GLOBALOPER,	false,	false,	true,
 	toggleUsermodeOPER
      },
-     { 'r',	USERMODE_RESTRICTED,	false,	false,	false,
+     { 'r',	User::MODE_RESTRICTED,	false,	false,	false,
 	toggleUsermodeRESTRICTED
      },
-     { 'R',	USERMODE_REGNICKSMSG,	false,	false,	true,
+     { 'R',	User::MODE_REGNICKSMSG,	false,	false,	true,
 	toggleUsermodeREGNICKSMSG
      },
      { 's',	0,			true,	false,	true,
 	toggleUsermodeSERVNOTICES
      },
-     { 'S',	USERMODE_SECURE,	false,	false,	false,
+     { 'S',	User::MODE_SECURE,	false,	false,	false,
 	toggleUsermodeSECURE
      },
-     { 'v',	USERMODE_VWORLD,	false,	false,	true,
+     { 'v',	User::MODE_VWORLD,	false,	false,	true,
 	toggleUsermodeVWORLD
      },
-     { 'w',	USERMODE_WALLOPS,	false,	false,	true,
+     { 'w',	User::MODE_WALLOPS,	false,	false,	true,
 	toggleUsermodeWALLOPS
      },
      { 0 }
@@ -147,25 +147,25 @@ userModeTableStruct userModeTable[] = {
 char const *serverModeStr		= "aFhLmMn";
 char const *serverModeParamStr		= "*";
 serverModeTableStruct serverModeTable[] = {
-     { 'a',	SERVERMODE_AUTOTBS,	false,	false,	true,
+     { 'a',	Server::MODE_AUTOTBS,	false,	false,	true,
 	toggleServermodeAUTOTBS
      },
-     { 'F',	SERVERMODE_USERSFULL,	false,	false,	false,
+     { 'F',	Server::MODE_USERSFULL,	false,	false,	false,
 	toggleServermodeUSERSFULL
      },
-     { 'h',	SERVERMODE_HIDDEN,	false,	false,	true,
+     { 'h',	Server::MODE_HIDDEN,	false,	false,	true,
 	toggleServermodeHIDDEN
      },
-     { 'L',	SERVERMODE_MODELOCK,	false,	false,	false,
+     { 'L',	Server::MODE_MODELOCK,	false,	false,	false,
 	toggleServermodeMODELOCK
      },
-     { 'm',	SERVERMODE_SHORTMOTD,	false,	false,	true,
+     { 'm',	Server::MODE_SHORTMOTD,	false,	false,	true,
 	toggleServermodeSHORTMOTD
      },
-     { 'M',	SERVERMODE_REMOTEMOTD,	false,	false,	true,
+     { 'M',	Server::MODE_REMOTEMOTD,	false,	false,	true,
 	toggleServermodeREMOTEMOTD
      },
-     { 'n',	SERVERMODE_NOOP,	false,	false,	true,
+     { 'n',	Server::MODE_NOOP,	false,	false,	true,
 	toggleServermodeNOOP
      },
      { 0 }
@@ -269,11 +269,11 @@ String makeServerModes(Server *server)
  */
 bool toggleServermodeAUTOTBS(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & SERVERMODE_AUTOTBS)) {
-      server->modes |= SERVERMODE_AUTOTBS;
+   if (setting && !(server->modes & Server::MODE_AUTOTBS)) {
+      server->modes |= Server::MODE_AUTOTBS;
       return true;
-   } else if (!setting && (server->modes & SERVERMODE_AUTOTBS)) {
-      server->modes &= ~SERVERMODE_AUTOTBS;
+   } else if (!setting && (server->modes & Server::MODE_AUTOTBS)) {
+      server->modes &= ~Server::MODE_AUTOTBS;
       return true;
    }
    
@@ -286,11 +286,11 @@ bool toggleServermodeAUTOTBS(bool setting, Server *server, String *param)
  */
 bool toggleServermodeHIDDEN(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & SERVERMODE_HIDDEN)) {
-      server->modes |= SERVERMODE_HIDDEN;
+   if (setting && !(server->modes & Server::MODE_HIDDEN)) {
+      server->modes |= Server::MODE_HIDDEN;
       return true;
-   } else if (!setting && (server->modes & SERVERMODE_HIDDEN)) {
-      server->modes &= ~SERVERMODE_HIDDEN;
+   } else if (!setting && (server->modes & Server::MODE_HIDDEN)) {
+      server->modes &= ~Server::MODE_HIDDEN;
       return true;
    }
    
@@ -303,11 +303,11 @@ bool toggleServermodeHIDDEN(bool setting, Server *server, String *param)
  */
 bool toggleServermodeMODELOCK(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & SERVERMODE_MODELOCK)) {
-      server->modes |= SERVERMODE_MODELOCK;
+   if (setting && !(server->modes & Server::MODE_MODELOCK)) {
+      server->modes |= Server::MODE_MODELOCK;
       return true;
-   } else if (!setting && (server->modes & SERVERMODE_MODELOCK)) {
-      server->modes &= ~SERVERMODE_MODELOCK;
+   } else if (!setting && (server->modes & Server::MODE_MODELOCK)) {
+      server->modes &= ~Server::MODE_MODELOCK;
       return true;
    }
    
@@ -320,11 +320,11 @@ bool toggleServermodeMODELOCK(bool setting, Server *server, String *param)
  */
 bool toggleServermodeNOOP(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & SERVERMODE_NOOP)) {
-      server->modes |= SERVERMODE_NOOP;
+   if (setting && !(server->modes & Server::MODE_NOOP)) {
+      server->modes |= Server::MODE_NOOP;
       return true;
-   } else if (!setting && (server->modes & SERVERMODE_NOOP)) {
-      server->modes &= ~SERVERMODE_NOOP;
+   } else if (!setting && (server->modes & Server::MODE_NOOP)) {
+      server->modes &= ~Server::MODE_NOOP;
       return true;
    }
    
@@ -337,11 +337,11 @@ bool toggleServermodeNOOP(bool setting, Server *server, String *param)
  */
 bool toggleServermodeREMOTEMOTD(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & SERVERMODE_REMOTEMOTD)) {
-      server->modes |= SERVERMODE_REMOTEMOTD;
+   if (setting && !(server->modes & Server::MODE_REMOTEMOTD)) {
+      server->modes |= Server::MODE_REMOTEMOTD;
       return true;
-   } else if (!setting && (server->modes & SERVERMODE_REMOTEMOTD)) {
-      server->modes &= ~SERVERMODE_REMOTEMOTD;
+   } else if (!setting && (server->modes & Server::MODE_REMOTEMOTD)) {
+      server->modes &= ~Server::MODE_REMOTEMOTD;
       return true;
    }
    
@@ -354,11 +354,11 @@ bool toggleServermodeREMOTEMOTD(bool setting, Server *server, String *param)
  */
 bool toggleServermodeSHORTMOTD(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & SERVERMODE_SHORTMOTD)) {
-      server->modes |= SERVERMODE_SHORTMOTD;
+   if (setting && !(server->modes & Server::MODE_SHORTMOTD)) {
+      server->modes |= Server::MODE_SHORTMOTD;
       return true;
-   } else if (!setting && (server->modes & SERVERMODE_SHORTMOTD)) {
-      server->modes &= ~SERVERMODE_SHORTMOTD;
+   } else if (!setting && (server->modes & Server::MODE_SHORTMOTD)) {
+      server->modes &= ~Server::MODE_SHORTMOTD;
       return true;
    }
    
@@ -371,11 +371,11 @@ bool toggleServermodeSHORTMOTD(bool setting, Server *server, String *param)
  */
 bool toggleServermodeUSERSFULL(bool setting, Server *server, String *param)
 {
-   if (setting && !(server->modes & SERVERMODE_USERSFULL)) {
-      server->modes |= SERVERMODE_USERSFULL;
+   if (setting && !(server->modes & Server::MODE_USERSFULL)) {
+      server->modes |= Server::MODE_USERSFULL;
       return true;
-   } else if (!setting && (server->modes & SERVERMODE_USERSFULL)) {
-      server->modes &= ~SERVERMODE_USERSFULL;
+   } else if (!setting && (server->modes & Server::MODE_USERSFULL)) {
+      server->modes &= ~Server::MODE_USERSFULL;
       return true;
    }
    
@@ -403,8 +403,8 @@ bool toggleChanmodeANONYMOUS(bool setting, Handler *handler, Channel *channel, C
    
    // Check that this user is a channel operator
    if (member && 
-       !(member->modes & CHANMEMMODE_OPPED) &&
-       !(member->modes & CHANMEMMODE_HALFOPPED)) {
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -413,11 +413,11 @@ bool toggleChanmodeANONYMOUS(bool setting, Handler *handler, Channel *channel, C
       return false;
    }
    
-   if (setting && !(channel->modes & CHANMODE_ANONYMOUS)) {
-      channel->modes |= CHANMODE_ANONYMOUS;
+   if (setting && !(channel->modes & Channel::MODE_ANONYMOUS)) {
+      channel->modes |= Channel::MODE_ANONYMOUS;
       return true;
-   } else if (!setting && (channel->modes & CHANMODE_ANONYMOUS)) {
-      channel->modes &= ~CHANMODE_ANONYMOUS;
+   } else if (!setting && (channel->modes & Channel::MODE_ANONYMOUS)) {
+      channel->modes &= ~Channel::MODE_ANONYMOUS;
       return true;
    }
    
@@ -454,7 +454,7 @@ bool toggleChanmodeBAN(bool setting, Handler *handler, Channel *channel, Channel
    }
 
    // Check that this user is a channel operator
-   if (member && !(member->modes & CHANMEMMODE_OPPED)) {
+   if (member && !(member->modes & ChannelMember::MODE_OPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -531,7 +531,7 @@ bool toggleChanmodeBANEXCEPT(bool setting, Handler *handler, Channel *channel, C
    }
 
    // Check that this user is a channel operator
-   if (member && !(member->modes & CHANMEMMODE_OPPED)) {
+   if (member && !(member->modes & ChannelMember::MODE_OPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -598,10 +598,10 @@ bool toggleChanmodeCHANOPER(bool setting, Handler *handler, Channel *channel, Ch
    }
    
    // Check that this user is a channel operator
-   if (member && !(member->modes & CHANMEMMODE_OPPED)) {
+   if (member && !(member->modes & ChannelMember::MODE_OPPED)) {
       if (handler) {
 	 // If they are a half oper, give them a better explanation
-	 if (member->modes & CHANMEMMODE_HALFOPPED) {
+	 if (member->modes & ChannelMember::MODE_HALFOPPED) {
 	    handler->sendNumeric(TO_DAEMON->myServer(),
 				 ERR_CHANOPRIVSNEEDED, 0,
 				 channel->name + LNG_ERR_CHANOPRIVSNEEDED);
@@ -647,7 +647,7 @@ bool toggleChanmodeCHANOPER(bool setting, Handler *handler, Channel *channel, Ch
    }
 
    // Check if this user is immune from deopping
-   if (u->modes & USERMODE_NONKICKABLE) {
+   if (u->modes & User::MODE_NONKICKABLE) {
       handler->sendNumeric(TO_DAEMON->myServer(),
 			   ERR_ISCHANSERVICE, 0,
 			   String::printf(LNG_ERR_ISCHANSERVICE,
@@ -660,20 +660,20 @@ bool toggleChanmodeCHANOPER(bool setting, Handler *handler, Channel *channel, Ch
    // OK!! Are we setting or removing this status?
    if (setting) {
       // Check that this channel member is not already opped
-      if (cm->modes & CHANMEMMODE_OPPED) {
+      if (cm->modes & ChannelMember::MODE_OPPED) {
 	 return false;
       }
       
       // Set the mode, finally
-      cm->modes |= CHANMEMMODE_OPPED;
+      cm->modes |= ChannelMember::MODE_OPPED;
    } else {
       // Check that this channel member is already deopped
-      if (!(cm->modes & CHANMEMMODE_OPPED)) {
+      if (!(cm->modes & ChannelMember::MODE_OPPED)) {
 	 return false;
       }
       
       // Remove the flag
-      cm->modes &= ~CHANMEMMODE_OPPED;
+      cm->modes &= ~ChannelMember::MODE_OPPED;
    }
    
    // Make the parameter string a little more accurate, for neatness!
@@ -700,8 +700,8 @@ bool toggleChanmodeEVENT(bool setting, Handler *handler, Channel *channel, Chann
 {
    // Check that this user is a channel operator
    if (member && 
-       !(member->modes & CHANMEMMODE_OPPED) &&
-       !(member->modes & CHANMEMMODE_HALFOPPED)) {
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -710,11 +710,11 @@ bool toggleChanmodeEVENT(bool setting, Handler *handler, Channel *channel, Chann
       return false;
    }
    
-   if (setting && !(channel->modes & CHANMODE_EVENT)) {
-      channel->modes |= CHANMODE_EVENT;
+   if (setting && !(channel->modes & Channel::MODE_EVENT)) {
+      channel->modes |= Channel::MODE_EVENT;
       return true;
-   } else if (!setting && (channel->modes & CHANMODE_EVENT)) {
-      channel->modes &= ~CHANMODE_EVENT;
+   } else if (!setting && (channel->modes & Channel::MODE_EVENT)) {
+      channel->modes &= ~Channel::MODE_EVENT;
       return true;
    }
    
@@ -735,8 +735,8 @@ bool toggleChanmodeHALFOPER(bool setting, Handler *handler, Channel *channel, Ch
    // If the member is themselves, we can skip a few steps..
    if (member->user->nickname.IRCtoLower() == param->IRCtoLower()) {
       // The user can dehalfop themselves, but cannot halfop themselves.
-      if (!(member->modes & CHANMEMMODE_HALFOPPED) &&
-	  !(member->modes & CHANMEMMODE_OPPED)) {
+      if (!(member->modes & ChannelMember::MODE_HALFOPPED) &&
+	  !(member->modes & ChannelMember::MODE_OPPED)) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
 			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
@@ -745,8 +745,8 @@ bool toggleChanmodeHALFOPER(bool setting, Handler *handler, Channel *channel, Ch
    } else {
       // Check that this user is a channel operator
       if (member && 
-	  !(member->modes & CHANMEMMODE_OPPED) &&
-	  !(member->modes & CHANMEMMODE_HALFOPPED)) {
+	  !(member->modes & ChannelMember::MODE_OPPED) &&
+	  !(member->modes & ChannelMember::MODE_HALFOPPED)) {
 	 if (handler) {
 	    handler->sendNumeric(TO_DAEMON->myServer(),
 				 ERR_CHANOPRIVSNEEDED, 0,
@@ -790,20 +790,20 @@ bool toggleChanmodeHALFOPER(bool setting, Handler *handler, Channel *channel, Ch
    // OK!! Are we setting or removing this status?
    if (setting) {
       // Check that this channel member is not already opped
-      if (cm->modes & CHANMEMMODE_HALFOPPED) {
+      if (cm->modes & ChannelMember::MODE_HALFOPPED) {
 	 return false;
       }
       
       // Set the mode, finally
-      cm->modes |= CHANMEMMODE_HALFOPPED;
+      cm->modes |= ChannelMember::MODE_HALFOPPED;
    } else {
       // Check that this channel member is already deopped
-      if (!(cm->modes & CHANMEMMODE_HALFOPPED)) {
+      if (!(cm->modes & ChannelMember::MODE_HALFOPPED)) {
 	 return false;
       }
       
       // Remove the flag
-      cm->modes &= ~CHANMEMMODE_HALFOPPED;
+      cm->modes &= ~ChannelMember::MODE_HALFOPPED;
    }
    
    // Make the parameter string a little more accurate, for neatness!
@@ -821,8 +821,8 @@ bool toggleChanmodeINVITE(bool setting, Handler *handler, Channel *channel, Chan
 {
    // Check that this user is a channel operator
    if (member && 
-       !(member->modes & CHANMEMMODE_OPPED) &&
-       !(member->modes & CHANMEMMODE_HALFOPPED)) {
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -831,11 +831,11 @@ bool toggleChanmodeINVITE(bool setting, Handler *handler, Channel *channel, Chan
       return false;
    }
    
-   if (setting && !(channel->modes & CHANMODE_INVITE)) {
-      channel->modes |= CHANMODE_INVITE;
+   if (setting && !(channel->modes & Channel::MODE_INVITE)) {
+      channel->modes |= Channel::MODE_INVITE;
       return true;
-   } else if (!setting && (channel->modes & CHANMODE_INVITE)) {
-      channel->modes &= ~CHANMODE_INVITE;
+   } else if (!setting && (channel->modes & Channel::MODE_INVITE)) {
+      channel->modes &= ~Channel::MODE_INVITE;
       return true;
    }
    
@@ -872,7 +872,7 @@ bool toggleChanmodeINVITEALLOW(bool setting, Handler *handler, Channel *channel,
    }
 
    // Check that this user is a channel operator
-   if (member && !(member->modes & CHANMEMMODE_OPPED)) {
+   if (member && !(member->modes & ChannelMember::MODE_OPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -926,8 +926,8 @@ bool toggleChanmodeKEY(bool setting, Handler *handler, Channel *channel, Channel
 {
    // Check that this user is a channel operator
    if (member && 
-       !(member->modes & CHANMEMMODE_OPPED) &&
-       !(member->modes & CHANMEMMODE_HALFOPPED)) {
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -975,8 +975,8 @@ bool toggleChanmodeLIMIT(bool setting, Handler *handler, Channel *channel, Chann
 {
    // Check that this user is a channel operator
    if (member && 
-       !(member->modes & CHANMEMMODE_OPPED) &&
-       !(member->modes & CHANMEMMODE_HALFOPPED)) {
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -1013,8 +1013,8 @@ bool toggleChanmodeMODERATED(bool setting, Handler *handler, Channel *channel, C
 {
    // Check that this user is a channel operator
    if (member && 
-       !(member->modes & CHANMEMMODE_OPPED) &&
-       !(member->modes & CHANMEMMODE_HALFOPPED)) {
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -1023,11 +1023,11 @@ bool toggleChanmodeMODERATED(bool setting, Handler *handler, Channel *channel, C
       return false;
    }
    
-   if (setting && !(channel->modes & CHANMODE_MODERATED)) {
-      channel->modes |= CHANMODE_MODERATED;
+   if (setting && !(channel->modes & Channel::MODE_MODERATED)) {
+      channel->modes |= Channel::MODE_MODERATED;
       return true;
-   } else if (!setting && (channel->modes & CHANMODE_MODERATED)) {
-      channel->modes &= ~CHANMODE_MODERATED;
+   } else if (!setting && (channel->modes & Channel::MODE_MODERATED)) {
+      channel->modes &= ~Channel::MODE_MODERATED;
       return true;
    }
    
@@ -1042,8 +1042,8 @@ bool toggleChanmodeNOOUTSIDEMSG(bool setting, Handler *handler, Channel *channel
 {
    // Check that this user is a channel operator
    if (member && 
-       !(member->modes & CHANMEMMODE_OPPED) &&
-       !(member->modes & CHANMEMMODE_HALFOPPED)) {
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -1052,11 +1052,11 @@ bool toggleChanmodeNOOUTSIDEMSG(bool setting, Handler *handler, Channel *channel
       return false;
    }
    
-   if (setting && !(channel->modes & CHANMODE_NOOUTSIDEMSG)) {
-      channel->modes |= CHANMODE_NOOUTSIDEMSG;
+   if (setting && !(channel->modes & Channel::MODE_NOOUTSIDEMSG)) {
+      channel->modes |= Channel::MODE_NOOUTSIDEMSG;
       return true;
-   } else if (!setting && (channel->modes & CHANMODE_NOOUTSIDEMSG)) {
-      channel->modes &= ~CHANMODE_NOOUTSIDEMSG;
+   } else if (!setting && (channel->modes & Channel::MODE_NOOUTSIDEMSG)) {
+      channel->modes &= ~Channel::MODE_NOOUTSIDEMSG;
       return true;
    }
    
@@ -1071,8 +1071,8 @@ bool toggleChanmodePRIVATE(bool setting, Handler *handler, Channel *channel, Cha
 {
    // Check that this user is a channel operator
    if (member && 
-       !(member->modes & CHANMEMMODE_OPPED) &&
-       !(member->modes & CHANMEMMODE_HALFOPPED)) {
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -1081,11 +1081,11 @@ bool toggleChanmodePRIVATE(bool setting, Handler *handler, Channel *channel, Cha
       return false;
    }
    
-   if (setting && !(channel->modes & CHANMODE_PRIVATE)) {
-      channel->modes |= CHANMODE_PRIVATE;
+   if (setting && !(channel->modes & Channel::MODE_PRIVATE)) {
+      channel->modes |= Channel::MODE_PRIVATE;
       return true;
-   } else if (!setting && (channel->modes & CHANMODE_PRIVATE)) {
-      channel->modes &= ~CHANMODE_PRIVATE;
+   } else if (!setting && (channel->modes & Channel::MODE_PRIVATE)) {
+      channel->modes &= ~Channel::MODE_PRIVATE;
       return true;
    }
    
@@ -1100,8 +1100,8 @@ bool toggleChanmodeREGNICKSONLY(bool setting, Handler *handler, Channel *channel
 {
    // Check that this user is a channel operator
    if (member && 
-       !(member->modes & CHANMEMMODE_OPPED) &&
-       !(member->modes & CHANMEMMODE_HALFOPPED)) {
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -1110,11 +1110,11 @@ bool toggleChanmodeREGNICKSONLY(bool setting, Handler *handler, Channel *channel
       return false;
    }
    
-   if (setting && !(channel->modes & CHANMODE_REGNICKSONLY)) {
-      channel->modes |= CHANMODE_REGNICKSONLY;
+   if (setting && !(channel->modes & Channel::MODE_REGNICKSONLY)) {
+      channel->modes |= Channel::MODE_REGNICKSONLY;
       return true;
-   } else if (!setting && (channel->modes & CHANMODE_REGNICKSONLY)) {
-      channel->modes &= ~CHANMODE_REGNICKSONLY;
+   } else if (!setting && (channel->modes & Channel::MODE_REGNICKSONLY)) {
+      channel->modes &= ~Channel::MODE_REGNICKSONLY;
       return true;
    }
    
@@ -1129,8 +1129,8 @@ bool toggleChanmodeSECRET(bool setting, Handler *handler, Channel *channel, Chan
 {
    // Check that this user is a channel operator
    if (member && 
-       !(member->modes & CHANMEMMODE_OPPED) &&
-       !(member->modes & CHANMEMMODE_HALFOPPED)) {
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -1139,11 +1139,11 @@ bool toggleChanmodeSECRET(bool setting, Handler *handler, Channel *channel, Chan
       return false;
    }
    
-   if (setting && !(channel->modes & CHANMODE_SECRET)) {
-      channel->modes |= CHANMODE_SECRET;
+   if (setting && !(channel->modes & Channel::MODE_SECRET)) {
+      channel->modes |= Channel::MODE_SECRET;
       return true;
-   } else if (!setting && (channel->modes & CHANMODE_SECRET)) {
-      channel->modes &= ~CHANMODE_SECRET;
+   } else if (!setting && (channel->modes & Channel::MODE_SECRET)) {
+      channel->modes &= ~Channel::MODE_SECRET;
       return true;
    }
    
@@ -1158,8 +1158,8 @@ bool toggleChanmodeTOPICLOCK(bool setting, Handler *handler, Channel *channel, C
 {
    // Check that this user is a channel operator
    if (member && 
-       !(member->modes & CHANMEMMODE_OPPED) &&
-       !(member->modes & CHANMEMMODE_HALFOPPED)) {
+       !(member->modes & ChannelMember::MODE_OPPED) &&
+       !(member->modes & ChannelMember::MODE_HALFOPPED)) {
       if (handler) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
@@ -1168,11 +1168,11 @@ bool toggleChanmodeTOPICLOCK(bool setting, Handler *handler, Channel *channel, C
       return false;
    }
    
-   if (setting && !(channel->modes & CHANMODE_TOPICLOCK)) {
-      channel->modes |= CHANMODE_TOPICLOCK;
+   if (setting && !(channel->modes & Channel::MODE_TOPICLOCK)) {
+      channel->modes |= Channel::MODE_TOPICLOCK;
       return true;
-   } else if (!setting && (channel->modes & CHANMODE_TOPICLOCK)) {
-      channel->modes &= ~CHANMODE_TOPICLOCK;
+   } else if (!setting && (channel->modes & Channel::MODE_TOPICLOCK)) {
+      channel->modes &= ~Channel::MODE_TOPICLOCK;
       return true;
    }
    
@@ -1185,11 +1185,11 @@ bool toggleChanmodeTOPICLOCK(bool setting, Handler *handler, Channel *channel, C
  */
 bool toggleChanmodeQUIET(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
 {
-   if (setting && !(channel->modes & CHANMODE_QUIET)) {
-      channel->modes |= CHANMODE_QUIET;
+   if (setting && !(channel->modes & Channel::MODE_QUIET)) {
+      channel->modes |= Channel::MODE_QUIET;
       return true;
-   } else if (!setting && (channel->modes & CHANMODE_QUIET)) {
-      channel->modes &= ~CHANMODE_QUIET;
+   } else if (!setting && (channel->modes & Channel::MODE_QUIET)) {
+      channel->modes &= ~Channel::MODE_QUIET;
       return true;
    }
    
@@ -1202,11 +1202,11 @@ bool toggleChanmodeQUIET(bool setting, Handler *handler, Channel *channel, Chann
  */
 bool toggleChanmodeREOP(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param)
 {
-   if (setting && !(channel->modes & CHANMODE_REOP)) {
-      channel->modes |= CHANMODE_REOP;
+   if (setting && !(channel->modes & Channel::MODE_REOP)) {
+      channel->modes |= Channel::MODE_REOP;
       return true;
-   } else if (!setting && (channel->modes & CHANMODE_REOP)) {
-      channel->modes &= ~CHANMODE_REOP;
+   } else if (!setting && (channel->modes & Channel::MODE_REOP)) {
+      channel->modes &= ~Channel::MODE_REOP;
       return true;
    }
    
@@ -1228,8 +1228,8 @@ bool toggleChanmodeVOICE(bool setting, Handler *handler, Channel *channel, Chann
    if (member->user->nickname.IRCtoLower() == param->IRCtoLower()) {
       // The user can devoice themselves, but cannot voice themselves.
       if (setting && 
-	  !(member->modes & CHANMEMMODE_OPPED) &&
-	  !(member->modes & CHANMEMMODE_HALFOPPED)) {
+	  !(member->modes & ChannelMember::MODE_OPPED) &&
+	  !(member->modes & ChannelMember::MODE_HALFOPPED)) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      ERR_CHANOPRIVSNEEDED, 0,
 			      channel->name + LNG_ERR_CHANOPRIVSNEEDED);
@@ -1238,8 +1238,8 @@ bool toggleChanmodeVOICE(bool setting, Handler *handler, Channel *channel, Chann
    } else {
       // Check that this user is a channel operator
       if (member && 
-	  !(member->modes & CHANMEMMODE_OPPED) &&
-	  !(member->modes & CHANMEMMODE_HALFOPPED)) {
+	  !(member->modes & ChannelMember::MODE_OPPED) &&
+	  !(member->modes & ChannelMember::MODE_HALFOPPED)) {
 	 if (handler) {
 	    handler->sendNumeric(TO_DAEMON->myServer(),
 				 ERR_CHANOPRIVSNEEDED, 0,
@@ -1283,20 +1283,20 @@ bool toggleChanmodeVOICE(bool setting, Handler *handler, Channel *channel, Chann
    // OK!! Are we setting or removing this status?
    if (setting) {
       // Check that this channel member is not already voiced!
-      if (cm->modes & CHANMEMMODE_VOICED) {
+      if (cm->modes & ChannelMember::MODE_VOICED) {
 	 return false;
       }
       
       // Set the mode, finally
-      cm->modes |= CHANMEMMODE_VOICED;
+      cm->modes |= ChannelMember::MODE_VOICED;
    } else {
       // Check that this channel member is already devoiced
-      if (!(cm->modes & CHANMEMMODE_VOICED)) {
+      if (!(cm->modes & ChannelMember::MODE_VOICED)) {
 	 return false;
       }
       
       // Remove the flag
-      cm->modes &= ~CHANMEMMODE_VOICED;
+      cm->modes &= ~ChannelMember::MODE_VOICED;
    }
    
    // Make the parameter string a little more accurate, for neatness!
@@ -1312,11 +1312,11 @@ bool toggleChanmodeVOICE(bool setting, Handler *handler, Channel *channel, Chann
  */
 bool toggleUsermodeDEAF(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & USERMODE_DEAF)) {
-      user->modes |= USERMODE_DEAF;
+   if (setting && !(user->modes & User::MODE_DEAF)) {
+      user->modes |= User::MODE_DEAF;
       return true;
-   } else if (!setting && (user->modes & USERMODE_DEAF)) {
-      user->modes &= ~USERMODE_DEAF;
+   } else if (!setting && (user->modes & User::MODE_DEAF)) {
+      user->modes &= ~User::MODE_DEAF;
       return true;
    }
    
@@ -1329,11 +1329,11 @@ bool toggleUsermodeDEAF(bool setting, Handler *handler, Daemon *daemon, User *us
  */
 bool toggleUsermodeGOT_IDENTD(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & USERMODE_GOT_IDENTD)) {
-      user->modes |= USERMODE_GOT_IDENTD;
+   if (setting && !(user->modes & User::MODE_GOT_IDENTD)) {
+      user->modes |= User::MODE_GOT_IDENTD;
       return true;
-   } else if (!setting && (user->modes & USERMODE_GOT_IDENTD)) {
-      user->modes &= ~USERMODE_GOT_IDENTD;
+   } else if (!setting && (user->modes & User::MODE_GOT_IDENTD)) {
+      user->modes &= ~User::MODE_GOT_IDENTD;
       return true;
    }
    
@@ -1350,7 +1350,7 @@ bool toggleUsermodeHELPER(bool setting, Handler *handler, Daemon *daemon, User *
    if (setting) {
       if (handler) {
 	 /* Tell the user they're an idiot :) */
-	 if (!(user->modes & USERMODE_HELPER)) {
+	 if (!(user->modes & User::MODE_HELPER)) {
 	    handler->sendNumeric(TO_DAEMON->myServer(),
 				 ERR_NOPRIVILEGES, 0,
 				 LNG_ERR_NOPRIVILEGES_PLUS_HELPER);
@@ -1358,7 +1358,7 @@ bool toggleUsermodeHELPER(bool setting, Handler *handler, Daemon *daemon, User *
 	 return false;
       } else {
 	 // Turn it on
-	 user->modes |= USERMODE_HELPER;
+	 user->modes |= User::MODE_HELPER;
 	 
 	 // Modify the helper counter
 	 daemon->numHelpers++;
@@ -1368,12 +1368,12 @@ bool toggleUsermodeHELPER(bool setting, Handler *handler, Daemon *daemon, User *
    }
    
    // If this user is not a helper, this does not have an effect at all
-   if (!(user->modes & USERMODE_HELPER)) {
+   if (!(user->modes & User::MODE_HELPER)) {
       return false;
    }
    
    // Turn off the flag and return true
-   user->modes &= ~USERMODE_HELPER;
+   user->modes &= ~User::MODE_HELPER;
 
    // Modify the helper counter
    daemon->numHelpers--;
@@ -1387,11 +1387,11 @@ bool toggleUsermodeHELPER(bool setting, Handler *handler, Daemon *daemon, User *
  */
 bool toggleUsermodeIDENTIFIED(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & USERMODE_IDENTIFIED)) {
-      user->modes |= USERMODE_IDENTIFIED;
+   if (setting && !(user->modes & User::MODE_IDENTIFIED)) {
+      user->modes |= User::MODE_IDENTIFIED;
       return true;
-   } else if (!setting && (user->modes & USERMODE_IDENTIFIED)) {
-      user->modes &= ~USERMODE_IDENTIFIED;
+   } else if (!setting && (user->modes & User::MODE_IDENTIFIED)) {
+      user->modes &= ~User::MODE_IDENTIFIED;
       return true;
    }
    
@@ -1404,11 +1404,11 @@ bool toggleUsermodeIDENTIFIED(bool setting, Handler *handler, Daemon *daemon, Us
  */
 bool toggleUsermodeIGNORING(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & USERMODE_IGNORING)) {
-      user->modes |= USERMODE_IGNORING;
+   if (setting && !(user->modes & User::MODE_IGNORING)) {
+      user->modes |= User::MODE_IGNORING;
       return true;
-   } else if (!setting && (user->modes & USERMODE_IGNORING)) {
-      user->modes &= ~USERMODE_IGNORING;
+   } else if (!setting && (user->modes & User::MODE_IGNORING)) {
+      user->modes &= ~User::MODE_IGNORING;
       return true;
    }
    
@@ -1421,11 +1421,11 @@ bool toggleUsermodeIGNORING(bool setting, Handler *handler, Daemon *daemon, User
  */
 bool toggleUsermodeINVISIBLE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & USERMODE_INVISIBLE)) {
-      user->modes |= USERMODE_INVISIBLE;
+   if (setting && !(user->modes & User::MODE_INVISIBLE)) {
+      user->modes |= User::MODE_INVISIBLE;
       return true;
-   } else if (!setting && (user->modes & USERMODE_INVISIBLE)) {
-      user->modes &= ~USERMODE_INVISIBLE;
+   } else if (!setting && (user->modes & User::MODE_INVISIBLE)) {
+      user->modes &= ~User::MODE_INVISIBLE;
       return true;
    }
    
@@ -1438,11 +1438,11 @@ bool toggleUsermodeINVISIBLE(bool setting, Handler *handler, Daemon *daemon, Use
  */
 bool toggleUsermodeNONKICKABLE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & USERMODE_NONKICKABLE)) {
-      user->modes |= USERMODE_NONKICKABLE;
+   if (setting && !(user->modes & User::MODE_NONKICKABLE)) {
+      user->modes |= User::MODE_NONKICKABLE;
       return true;
-   } else if (!setting && (user->modes & USERMODE_NONKICKABLE)) {
-      user->modes &= ~USERMODE_NONKICKABLE;
+   } else if (!setting && (user->modes & User::MODE_NONKICKABLE)) {
+      user->modes &= ~User::MODE_NONKICKABLE;
       return true;
    }
    
@@ -1459,8 +1459,8 @@ bool toggleUsermodeOPER(bool setting, Handler *handler, Daemon *daemon, User *us
    // Check if this user is trying to turn this mode on
    if (setting) {
       if (handler) {
-	 if (!(user->modes & USERMODE_GLOBALOPER) ||
-	     !(user->modes & USERMODE_LOCALOPER)) {
+	 if (!(user->modes & User::MODE_GLOBALOPER) ||
+	     !(user->modes & User::MODE_LOCALOPER)) {
 	    /* Tell the user they're an idiot :) */
 	    handler->sendNumeric(TO_DAEMON->myServer(),
 				ERR_NOPRIVILEGES, 0,
@@ -1470,7 +1470,7 @@ bool toggleUsermodeOPER(bool setting, Handler *handler, Daemon *daemon, User *us
       } else {
 	 // If this is setting someone as a global operator, then turn it on.
 	 if (*modeChr == 'O') {
-	    user->modes |= USERMODE_GLOBALOPER;
+	    user->modes |= User::MODE_GLOBALOPER;
 	    return true;
 	 }
 	 
@@ -1480,13 +1480,13 @@ bool toggleUsermodeOPER(bool setting, Handler *handler, Daemon *daemon, User *us
    }
    
    // If this user is not an oper, this does not have an effect at all
-   if (!(user->modes & USERMODE_GLOBALOPER) &&
-       !(user->modes & USERMODE_LOCALOPER)) {
+   if (!(user->modes & User::MODE_GLOBALOPER) &&
+       !(user->modes & User::MODE_LOCALOPER)) {
       return false;
    }
    
    // Fix up the character so that the client does not get confused.
-   if (user->modes & USERMODE_GLOBALOPER) {
+   if (user->modes & User::MODE_GLOBALOPER) {
       // While we are here, decrement the global operator counter
       daemon->numOpers--;
       
@@ -1496,7 +1496,7 @@ bool toggleUsermodeOPER(bool setting, Handler *handler, Daemon *daemon, User *us
    }
    
    // Turn off the oper flags and return true
-   user->modes &= ~USERMODE_GLOBALOPER & ~USERMODE_LOCALOPER;
+   user->modes &= ~User::MODE_GLOBALOPER & ~User::MODE_LOCALOPER;
 
    return true;
 }
@@ -1507,8 +1507,8 @@ bool toggleUsermodeOPER(bool setting, Handler *handler, Daemon *daemon, User *us
  */
 bool toggleUsermodeREGNICKSMSG(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & USERMODE_REGNICKSMSG)) {
-      user->modes |= USERMODE_REGNICKSMSG;
+   if (setting && !(user->modes & User::MODE_REGNICKSMSG)) {
+      user->modes |= User::MODE_REGNICKSMSG;
 
       // If this user is an oper or a helper they really should not have this
       if (handler && User::isHelper(user)) {
@@ -1518,8 +1518,8 @@ bool toggleUsermodeREGNICKSMSG(bool setting, Handler *handler, Daemon *daemon, U
       }
       
       return true;
-   } else if (!setting && (user->modes & USERMODE_REGNICKSMSG)) {
-      user->modes &= ~USERMODE_REGNICKSMSG;
+   } else if (!setting && (user->modes & User::MODE_REGNICKSMSG)) {
+      user->modes &= ~User::MODE_REGNICKSMSG;
       return true;
    }
    
@@ -1532,11 +1532,11 @@ bool toggleUsermodeREGNICKSMSG(bool setting, Handler *handler, Daemon *daemon, U
  */
 bool toggleUsermodeRESTRICTED(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & USERMODE_RESTRICTED)) {
-      user->modes |= USERMODE_RESTRICTED;
+   if (setting && !(user->modes & User::MODE_RESTRICTED)) {
+      user->modes |= User::MODE_RESTRICTED;
       return true;
-   } else if (!setting && (user->modes & USERMODE_RESTRICTED)) {
-      user->modes &= ~USERMODE_RESTRICTED;
+   } else if (!setting && (user->modes & User::MODE_RESTRICTED)) {
+      user->modes &= ~User::MODE_RESTRICTED;
       return true;
    }
    
@@ -1549,11 +1549,11 @@ bool toggleUsermodeRESTRICTED(bool setting, Handler *handler, Daemon *daemon, Us
  */
 bool toggleUsermodeSECURE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & USERMODE_SECURE)) {
-      user->modes |= USERMODE_SECURE;
+   if (setting && !(user->modes & User::MODE_SECURE)) {
+      user->modes |= User::MODE_SECURE;
       return true;
-   } else if (!setting && (user->modes & USERMODE_SECURE)) {
-      user->modes &= ~USERMODE_SECURE;
+   } else if (!setting && (user->modes & User::MODE_SECURE)) {
+      user->modes &= ~User::MODE_SECURE;
       return true;
    }
    
@@ -1590,11 +1590,11 @@ bool toggleUsermodeSERVNOTICES(bool setting, Handler *handler, Daemon *daemon, U
  */
 bool toggleUsermodeVWORLD(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & USERMODE_VWORLD)) {
-      user->modes |= USERMODE_VWORLD;
+   if (setting && !(user->modes & User::MODE_VWORLD)) {
+      user->modes |= User::MODE_VWORLD;
       return true;
-   } else if (!setting && (user->modes & USERMODE_VWORLD)) {
-      user->modes &= ~USERMODE_VWORLD;
+   } else if (!setting && (user->modes & User::MODE_VWORLD)) {
+      user->modes &= ~User::MODE_VWORLD;
       
       // Warn this user, if we can, about turning off virtual world
       if (handler) {
@@ -1615,16 +1615,16 @@ bool toggleUsermodeVWORLD(bool setting, Handler *handler, Daemon *daemon, User *
  */
 bool toggleUsermodeWALLOPS(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
 {
-   if (setting && !(user->modes & USERMODE_WALLOPS)) {
-      user->modes |= USERMODE_WALLOPS;
+   if (setting && !(user->modes & User::MODE_WALLOPS)) {
+      user->modes |= User::MODE_WALLOPS;
       return true;
-   } else if (!setting && (user->modes & USERMODE_WALLOPS)) {
-      user->modes &= ~USERMODE_WALLOPS;
+   } else if (!setting && (user->modes & User::MODE_WALLOPS)) {
+      user->modes &= ~User::MODE_WALLOPS;
       
       // Check if we need to (and can) warn this user about this command
       if (handler &&
-	  ((user->modes & USERMODE_GLOBALOPER) ||
-	   (user->modes & USERMODE_LOCALOPER))) {
+	  ((user->modes & User::MODE_GLOBALOPER) ||
+	   (user->modes & User::MODE_LOCALOPER))) {
 	 handler->sendNumeric(TO_DAEMON->myServer(),
 			      RPL_MODECHANGEWARN, 0,
 			      LNG_RPL_MODECHANGEWARN_IRCOPER_MINUS_WALLOPS);

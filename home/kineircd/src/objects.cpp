@@ -288,7 +288,7 @@ void Channel::sendNotice(User *from, String const &message)
       // If this user is local, then this is very easy!
       if ((*it).second->user->local) {
 	 // Real users?
-	 if (!(modes & CHANMODE_ANONYMOUS)) {
+	 if (!(modes & Channel::MODE_ANONYMOUS)) {
 	    (*it).second->user->local->handler->sendNotice(from, this,
 							   message);
 	    continue;
@@ -319,7 +319,7 @@ void Channel::sendPrivmsg(User *from, String const &message)
       // If this user is local, then this is very easy!
       if ((*it).second->user->local) {
 	 // Real users?
-	 if (!(modes & CHANMODE_ANONYMOUS)) {
+	 if (!(modes & Channel::MODE_ANONYMOUS)) {
 	    (*it).second->user->local->handler->sendPrivmsg(from, this, 
 							    message);
 	    continue;
