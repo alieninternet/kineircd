@@ -110,14 +110,15 @@ class Handler {
 
 
 // IRC-2 User-handler sub-class
-
 class irc2userHandler : public Handler {
  private:
    User *user;					// Link to the user data
 
    struct functionTableStruct {
       char const *command;			// Command name
-		void (*function)(irc2userHandler *handler, StringTokens *tokens);	// Parsing handler function
+      void (*function)(irc2userHandler *handler, 
+		       StringTokens *tokens);	// Parsing handler function
+      unsigned char const penalty;		// Calling penalty amount
       bool const (*access)(User *u);		// Access checking function
       char const *parameters;			// Parameter string for HELP
       char const *help;				// Plain-text line for HELP
@@ -231,22 +232,22 @@ class irc2userHandler : public Handler {
 };
 
 
-// Register-handler sub-class
-	
+// P13-handler sub-class
 class p13serverHandler : public Handler {
  private:
    Server *server;				// Server data
+
+   struct functionTableStruct {
+      char const *command;			// Command name
+      void (*function)(p13serverHandler *handler, String *origin, 
+		       StringTokens *tokens);	// Parsing handler function
+   }; 
+   static functionTableStruct functionsTable[];
 
    time_t stampDiff;				// Timestamp difference
 
    String modeWrapper(User *);			// Fix up user modes
    
-   struct functionTableStruct {
-      char const *command;			// Command name
-      void (*function)(p13serverHandler *handler, String *origin, StringTokens *tokens);	// Parsing handler function
-   }; 
-   static functionTableStruct functionsTable[];
-
    void sendJoin(String *, User *);		// Send a multiple join message
    void sendPong(String);			// PING reply
    void sendSQUIT(String *, Server *, 
@@ -311,8 +312,25 @@ class p13serverHandler : public Handler {
 };
 
 
-// Register-handler sub-class
+// P14-handler sub-class
+class p14serverHandler : public Handler {
+ private:
+   Server *server;				// Server data
 
+   struct functionTableStruct {
+      char const command;			// Command name
+      void (*function)(p14serverHandler *handler, String *origin, 
+		       StringTokens *tokens);	// Parsing handler function
+   }; 
+   static functionTableStruct functionsTable[];
+
+ public:
+   p14serverHandler(Connection *, Server *);	// Constructor
+   ~p14serverHandler(void);			// Destructor
+};
+
+
+// Register-handler sub-class
 class registerHandler : public Handler {
  private:
    String password;				// Logon password
@@ -340,8 +358,8 @@ class registerHandler : public Handler {
    
    struct functionTableStruct {
       char const *command;			// Command name
-//      REGISTERHANDLER_PARSE((*function));	// Parsing handler function
-		void (*function)(registerHandler *handler, StringTokens *tokens);
+      void (*function)(registerHandler *handler,
+		       StringTokens *tokens);	// Parsing handler function
    };
    
    static functionTableStruct functionsTable[];

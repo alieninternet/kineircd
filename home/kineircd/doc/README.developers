@@ -45,6 +45,12 @@ and code formatting information.
      * anything but a null pointer is given to it - damn :(
      */
 
+* Do not rush and ignore comments - Comments should be read all the
+  time, and changed if necessary. Old, stale comments are obviously
+  useless and a potential hinderance in the future. I will get cranky
+  if comments are stale, and I expect you to get cranky with me if my
+  comments are stale too!
+  
 * Top of the .h/.cpp files should be in this format:
      /* <filename>
       * <description>
@@ -54,7 +60,23 @@ and code formatting information.
      /* foo.h
       * Foo routines for the bar-baz engine
       */
-     
+  
+* Following the head of the .cpp files, included files should be
+  included in this order:
+    1. config.h
+    2. system wide header files
+    3. Header file relating to the content of this file
+    4. Other local header files.
+   eg.
+    #include "config.h"
+    
+    #include <stdlib.h>
+    #include <errno.h>
+    
+    #include "foo.h"
+    #include "user.h"
+    #include "server.h"
+  
 * Use a code formatter (woops, more details later)
 
 * Explicitly specify braces.
@@ -144,14 +166,46 @@ and code formatting information.
   keep track of what is being done to the code, and also what can be
   undone. Update OFTEN, even if the edits are small -- once you have
   completed a section (eg. a function, or a bug fix) please update.
-  Make sure you do the full 'cvs update' then 'cvs commit'. Also, it
-  is very highly recommended (read: People will get angry if you don't
-  do this) that you are subscribed to the development list
-  (dev@austnet.org). CVS commits notifications and logs are sent there
-  so that the entire development team can be aware of the actions.
-  Make sure you submit details logs of your changes. Logs which are
-  simplistic such as "fixed foo" are just as bad as simplistic code
-  comments and should be avoided. "Fixed foo to foo - 1 to fix the
-  slight oversight that was causing clients to be disconnected" is a
-  much better explanation of what was going on, and will help in
-  future revision tracking.
+  Make sure you do the full 'cvs update' then 'cvs commit'. If you are
+  new to CVS, don't be shy. Ask questions, or you'll do what I did and
+  make a very bad embarrasing mistake. There's heaps of information on
+  CVS out there, but there's also a heap of useless documentation that
+  will confuse you more than anything. At least check out the command
+  references on http://www.cvshome.org/docs
+  
+* Before you update, make the code. Make sure it compiles, make sure
+  it runs, make sure whatever you did doesn't make the server die when
+  it's run (by all permutations too, if possible). Make sure there
+  aren't any warnings during compilation, or if you can't help them, make 
+  sure there aren't any major warnings at least. This will save other
+  people time so that they will be able to keep updating often and not
+  have to work around or fix bugs they don't need to fix.
+  
+* It is very highly recommended (read: People will get angry if you don't
+  do this) that you are subscribed to the development list (dev@austnet.org). 
+  CVS commits notifications and logs are sent there so that the entire 
+  development team can be aware of the actions. Make sure you submit 
+  detailed logs of your changes. Logs which are simplistic such as "fixed foo"
+  are just as bad as simplistic code comments and should be avoided. 
+  "Fixed foo -- slight oversight (-1 bug) that was causing clients 
+  to be disconnected" is a much better explanation of what was going on, and 
+  will help in future revision tracking.
+  
+* Do not code text or special values in directly at the source unless
+  there is no other choice. Instead, to make it easier for future 
+  updates, use language.h or another method that allows it to be easily 
+  updated.
+  
+* Alphabetical ordering of items in the Makefile and various tables,
+  classes, source code etc in the source code is not an accident. It
+  helps find things faster in the code, and makes it look neater. I
+  would hope that you would also place new items in alphabetical order
+  with the other items too to help find things faster in the future. The
+  only exception is that in the makefile the file lists are in
+  alphabetical order except for the file containing the main() routine,
+  which is specified last. If this didn't make sense, read the next
+  point.
+  
+* If you're new to the code, READ it. You will not be given a task to do
+  until you have read the code through and know how things are done.
+  Even read the makefiles, headers, documentation! This is important!!

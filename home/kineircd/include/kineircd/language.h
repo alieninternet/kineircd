@@ -242,9 +242,9 @@
 # define LNG_RPL_LUSERME \
 	":I have %u clients and %u servers"
 # define LNG_RPL_LOCALUSERS \
-	":Current local users: %u Max: %u"
+	":Current local users: %u Peak: %u"
 # define LNG_RPL_GLOBALUSERS \
-	":Current global users: %u Max: %u"
+	":Current global users: %u Peak: %u"
 
 # define LNG_ERR_NONONREG_CHANNEL \
 	" :You must be identified with NickOP to join this channel"

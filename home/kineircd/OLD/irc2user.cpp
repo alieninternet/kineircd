@@ -16,224 +16,292 @@
 #include "channel.h"
 
 
-// Functions table
+/* Functions table. In the interests of efficiency should this table be 
+ * broken down since a compiler would not be able to efficiently create a
+ * structure multiplier for the CPU?
+ */
 irc2userHandler::functionTableStruct irc2userHandler::functionsTable[] = {
-     { "ACCEPT",	parseACCEPT,		0,
-	"{ <nickname> | -<nickname> | * } ( SPACE { nickname | -nickname | * } )",
-	"This command is only useful with the user mode '+g' set. When set, "
+     { "ACCEPT",	parseACCEPT,		1,	0,
+	  "{ <nickname> | -<nickname> | * } ( SPACE { nickname | -nickname | * } )",
+	  "This command is only useful with the user mode '+g' set. When set, "
 	  "this command allows you to accept people, thus enabling them to "
 	  "talk to you while you are ignoring everyone with user-mode '+g'."
      },
-     { "ADMIN",		parseADMIN,		0,
-	"[ <server> ]",
-	"Returns information about the administrators of the given server. "
+     { "ADMIN",		parseADMIN,		2,	0,
+	  "[ <server> ]",
+	  "Returns information about the administrators of the given server. "
 	  "If no server is specified, this returns information regarding "
 	  "the administrators of the server you are locally connected to."
      }, 
-     { "AWAY",		parseAWAY,		0,
-	"[ <message> ]",
-	0
+     { "AWAY",		parseAWAY,		1,	0,
+	  "[ <message> ]",
+	  "If a message is given, this will mark you as 'away', using the "
+	  "given message as your reason. If you do not give a message, this "
+	  "will mark you as 'unaway', or that you have returned, and will "
+	  "remove the given away message."
      }, 
-     { "CONNECT",	parseCONNECT,		User::isOper,
-	"<target server>  <port>  [ <remote server> ]",
-	0
+     { "CONNECT",	parseCONNECT,		0,	User::isOper,
+	  "<target server>  [ <port>  [ <remote server> ] ]",
+	  "Instruct a server to connect to the target server on the default "
+	  "port found in the configuration file for that server. If a port is "
+	  "given, the server will connect on that port instead. If a remote "
+	  "server is given, that server will be instructed to connect to "
+	  "the target server rather than the local server forfilling the "
+	  "request."
      }, 
-     { "DIE",		parseDIE,		User::isOper,
-	"[ <reason> ]",
-	"This command shuts down the server you are currently connected to. "
+     { "DIE",		parseDIE,		0,	User::isOper,
+	  "[ <reason> ]",
+	  "This command shuts down the server you are currently connected to. "
 	  "Optionally a reason can be specified which will be broadcast to "
 	  "other operators on the network as the reason for the server's "
 	  "disappearance."
      },
-     { "GLOBOPS",	parseGLOBOPS,		User::isGlobalOper,
-	"<message>",
-	0
+     { "GLOBOPS",	parseGLOBOPS,		0,	User::isGlobalOper,
+	  "<message>",
+	  "Sends the given message to all global operators online (provided "
+	  "they have their server-notices usermode set to receive them)."
      },
-     { "HELP",		parseHELP,		0,
-	"[ '-' ] [ <command> | <command mask> ]",
-	"Returns command parameters for the given command or mask. If no "
+     { "HELP",		parseHELP,		3,	0,
+	  "[ '-' ] [ <command> | <command mask> ]",
+	  "Returns command parameters for the given command or mask. If no "
 	  "mask it specified, it is assuming you mean all commands (or a mask "
 	  "of '*'). When the '-' prefix is added to the command or mask, "
 	  "additional help will be returned, such as what you are reading now."
      },
-     { "HELPME",	parseHELPME,		User::isHelper,
-	"<message>",
-	0
+     { "HELPME",	parseHELPME,		4,	User::isHelper,
+	  "<message>",
+	  "Sends the given message to operators on-line for requesting help "
+	  "with something. This is usually used to ask for an operator's "
+	  "assistance with something a 'helper' cannot acheive on their own, "
+	  "such as a KILL or GLINE."
      }, 
-     { "INFO",		parseINFO,		0,
-	"[ <server> ]",
-	"Returns extended information about the version of the given server. "
-	  "If no server is specified, this returns information regarding "
-	  "the server you are locally connected to."
+     { "INFO",		parseINFO,		1,	0,
+	  "[ <server> ]",
+	  "Returns extended information about the version of the given "
+	  "server. If no server is specified, this returns information "
+	  "regarding the server you are locally connected to."
      }, 
-     { "INVITE",	parseINVITE,		0,
-	"<nickname>  <channel>",
-	0
+     { "INVITE",	parseINVITE,		3,	0,
+	  "<nickname>  <channel>",
+	  "Invite the person under the given nickname to the specified "
+	  "channel. For this to work, you must currently be on the given "
+	  "channel and be of either 'Operator' or 'Half-Operator' status."
      }, 
-     { "ISON",		parseISON,		0,
-	"<nickname> ( SPACE <nickname> )",
-	0
+     { "ISON",		parseISON,		2,	0,
+	  "<nickname> ( SPACE <nickname> )",
+	  "Check if the given nickname(s) are online. The server will "
+	  "compile a list of nicknames who are online now in the exact "
+	  "order of the list given."
      },
-     { "JOIN",		parseJOIN,		0,
-	"{ <channel> ( ',' <channel> )  [ <key> ( ',' <key> ) ] } | '0'",
-	0
+     { "JOIN",		parseJOIN,		3,	0,
+	  "{ <channel> ( ',' <channel> )  [ <key> ( ',' <key> ) ] } | '0'",
+	  0
      }, 
-     { "KICK",		parseKICK,		0,
-	"<channel> ( ',' <channel> )  <user> ( ',' <user> )  [ <reason> ]",
-	0
+     { "KICK",		parseKICK,		1,	0,
+	  "<channel> ( ',' <channel> )  <user> ( ',' <user> )  [ <reason> ]",
+	  0
      },
-     { "KILL",		parseKILL,		User::isGlobalOper,
-	"<nickname>  <reason>",
-	0
+     { "KILL",		parseKILL,		0,	User::isGlobalOper,
+	  "<nickname>  <reason>",
+	  "Kill the given nickname with the specified reason. The reason is "
+	  "manditory as you must have a reason for KILLing someone, "
+	  "naturally :)"
      },
-     { "LINKS",		parseLINKS,		0,
-	"[ [ <remote server> ]  <server mask> ]",
-	0
+     { "LINKS",		parseLINKS,		2,	0,
+	  "[ [ <remote server> ]  <server mask> ]",
+	  0
      },
-     { "LIST",		parseLIST,		0,
-	"[ <channel> ( ',' <channel> )  [ <server> ] ]",
-	0
+     { "LIST",		parseLIST,		5,	0,
+	  "[ <channel> ( ',' <channel> )  [ <server> ] ]",
+	  0
      },
-     { "LOCOPS",	parseLOCOPS,		User::isOper,
-	"<message>",
-	0
+     { "LOCOPS",	parseLOCOPS,		0,	User::isOper,
+	  "<message>",
+	  "Sends a message to any operator connected to the same server as "
+	  "you are. This is not to be confused with 'local operators', as "
+	  "this command will send the given message to both local AND global "
+	  "operators, limiting its reception to this server. Like GLOBOPS, "
+	  "the message will only be received by an operator who has their "
+	  "server-notices usermode set appropriately."
      },
-     { "LUSERS",	parseLUSERS,		0,
-	"[ <mask>  [ <server> ] ]",
-	0
+     { "LUSERS",	parseLUSERS,		2,	0,
+	  "[ <mask>  [ <server> ] ]",
+	  "Show the current local-user status. This command has been "
+	  "extended to also include global users, and peak user counts."
      },
-     { "MODE",		parseMODE,		0,
-	"{ <channel> | <nickname> | <server> }  ( [ '-' | '+' ] <mode> )  [ <modeparams> ]",
-	0
+     { "MODE",		parseMODE,		2,	0,
+	  "{ <channel> | <nickname> | <server> }  ( [ '-' | '+' ] <mode> )  [ <modeparams> ]",
+	  0
      },
-     { "MOTD",		parseMOTD,		0,
-	"[ <server> ]",
-	0
+     { "MOTD",		parseMOTD,		3,	0,
+	  "[ <server> ]",
+	  "Display the MOTD (Message Of The Day). If a server is specified, "
+	  "the MOTD displayed will come from that server, provided the given "
+	  "server will allow you to receive it remotely."
      }, 
-     { "NAMES",		parseNAMES,		0,
-	"[ <channel> ( ',' <channel> )  [ <target> ] ]",
-	0
+     { "NAMES",		parseNAMES,		1,	0,
+	  "[ <channel> ( ',' <channel> )  [ <server> ] ]",
+	  0
      },
-     { "NICK",		parseNICK,		0,
-	"<new nickname>",
-	0
+     { "NICK",		parseNICK,		3,	0,
+	  "<new nickname>",
+	  "Change your current nickname to the given nickname. This command "
+	  "will fail if the given nickname is already in use, the nickname is "
+	  "reserved for another purpose by the IRC Operators, you are in a "
+	  "channel which is holding an event (channel mode +E), or your "
+	  "connection is restricted."
      },
-     { "NOTICE",	parseNOTICE,		0,
-	"{ <nickname> | <channel> } ( ',' { <nickname> | <channel> } )  <message>",
-	0
+     { "NOTICE",	parseNOTICE,		4,	0,
+	  "{ <nickname> | <channel> } ( ',' { <nickname> | <channel> } )  <message>",
+	  0
      },
-     { "OPER",		parseOPER,		0,
-	"<nickname>  <password>",
-	0
+     { "OPER",		parseOPER,		5,	0,
+	  "<nickname>  <password>",
+	  "This command allows you to become an IRC operator. You must give "
+	  "your operator nickname and password for this command to be "
+	  "successful."
      },
-     { "PART",		parsePART,		0,
-	"<channel> ( ',' <channel> )  [ <reason> ]",
-	0
+     { "PART",		parsePART,		3,	0,
+	  "<channel> ( ',' <channel> )  [ <reason> ]",
+	  "Leave the given channel(s), optionally giving a reason for your "
+	  "departure."
      },
-     { "PING",		parsePING,		0,
-	"[ <text> ]",
-	0
+     { "PING",		parsePING,		1,	0,
+	  "[ <text> ]",
+	  "Ping the server, optionally giving text. The server will reply "
+	  "with the given text, or just a PONG. Some clients use this "
+	  "for 'lag checking', to measure the lag between the client and "
+	  "the server."
      },
-     { "PONG",		parsePONG,		0,
-	"[ <text> ]",
-	0
+     { "PONG",		parsePONG,		1,	0,
+	  "[ <text> ]",
+	  "Used as a reply to a server ping, has no other purpose but for a "
+	  "client to automatically respond to prove to the server the client "
+	  "is still active."
      },
-     { "PRIVMSG",	parsePRIVMSG,		0,
-	"{ <nickname> | <channel> } ( ',' { <nickname> | <channel> } )  <message>",
-	0
+     { "PRIVMSG",	parsePRIVMSG,		4,	0,
+	  "{ <nickname> | <channel> } ( ',' { <nickname> | <channel> } )  <message>",
+	  0
      },
-     { "QUIT",		parseQUIT,		0,
-	"[ <reason> ]",
-	0
+     { "QUIT",		parseQUIT,		0,	0,
+	  "[ <reason> ]",
+	  "Leave the IRC network, optionally giving a reason for "
+	  "disconnecting."
      },
-     { "REHASH",	parseREHASH,		User::isOper,
-	"",
-	0
+     { "REHASH",	parseREHASH,		0,	User::isOper,
+	  "",
+	  "'Rehash' the server. This command (although incorrectly named) "
+	  "will reload and parse the configuration file, as well as perform "
+	  "some quick checks similar to start-up operation."
      },
-     { "RESTART",	parseRESTART,		User::isOper,
-	"",
-	0
+     { "RESTART",	parseRESTART,		0,	User::isOper,
+	  "",
+	  "This will restart the server. This command will load an entirely "
+	  "new process for the IRC Daemon."
      },
-     { "SERVLIST",	parseSERVLIST,		0,
-	"[ <mask>  [ <type> ] ]",
-	0
+     { "SERVLIST",	parseSERVLIST,		2,	0,
+	  "[ <mask>  [ <type> ] ]",
+	  0
      },
-     { "SILENCE",	parseSILENCE,		0,
-	"{ { '+' | '-' } { <mask> | <nickname } } | [ <nickname > ]",
-	0
+     { "SILENCE",	parseSILENCE,		1,	0,
+	  "{ { '+' | '-' } { <mask> | <nickname } } | [ <nickname > ]",
+	  "Silence the given mask or nickname. This will stop any privage "
+	  "messages or notices being sent to you from anyone matching the "
+	  "mask or nickname (excluding services, servers, operators and "
+	  "helpers). The mask or nickname must be specified with a '+' or '-' "
+	  "prefix to denote adding the silence or removing the silence "
+	  "respectively. If only a nickname is given, and you are a helper "
+	  "or an operator, you will see that person's current silence list."
+     }, // This help message may be too big?
+     { "SQUIT",		parseSQUIT,		0,	User::isOper,
+	  "<server>  <reason>",
+	  "Force the given server to depart the network with the given "
+	  "reason. Warning: this command may cause a netsplit."
      },
-     { "SQUIT",		parseSQUIT,		User::isOper,
-	"<server>  <reason>",
-	0
+     { "STATS",		parseSTATS,		0,	User::isOper,
+	  "[ <query>  [ <server> ] ]",
+	  "Ask for a status/statistical report from the current server. If "
+	  "another server is given, the report will be generated there. If "
+	  "no query is given, a list of possible queries you can specify."
      },
-     { "STATS",		parseSTATS,		User::isOper,
-	"[ <query>  [ <server> ] ]",
-	0
-     },
-     { "TIME",		parseTIME,		0,
-	"[ <nickname> | <service> | <server> ]",
-	"Returns the current time on the given server, or the server the "
+     { "TIME",		parseTIME,		1,	0,
+	  "[ <nickname> | <service> | <server> ]",
+	  "Returns the current time on the given server, or the server the "
 	  "given user or service is connected to. This is useful when talking "
 	  "to people around the world, provided they are connected to a "
 	  "server that is geographically local to where they are situated."
      },
-     { "TOPIC",		parseTOPIC,		0,
-	"<channel>  [ <topic> ]",
-	"If no topic is specified, this returns the current topic on the "
+     { "TOPIC",		parseTOPIC,		3,	0,
+	  "<channel>  [ <topic> ]",
+	  "If no topic is specified, this returns the current topic on the "
 	  "given channel. If a topic is specified, this command will change "
 	  "the topic to the one given, provided you have access to do so."
      },
-     { "TRACE",		parseTRACE,		User::isOper,
-	"[ <nickname> | <service> | <server> ]",
-	0
+     { "TRACE",		parseTRACE,		0,	User::isOper,
+	  "[ <nickname> | <service> | <server> ]",
+	  "Trace the path (internally on the network) if a given nickname, "
+	  "service or server. This is useful for locating lagging "
+	  "connections that need to be re-routed."
      },
-     { "TRACEROUTE",	parseTRACEROUTE,	User::isOper,
-	"<destination>  [ <server> ]",
-	0
+     { "TRACEROUTE",	parseTRACEROUTE,	0,	User::isOper,
+	  "<destination>  [ <server> ]",
+	  "Trace the path of IP packets (externally to the network) of the "
+	  "given server. This is useful for finding better routes and should "
+	  "be used to confirm a better solution for a route."
      }, // this command is planned...
-     { "USERHOST",	parseUSERHOST,		0,
-	"<nickname> ( SPACE <nickname> )",
-	"Returns the hosts of the nicknames on the given list. Note that the "
-	  "host may in-fact be a virtual-world host, rather than the real "
-	  "host."
+     { "USERHOST",	parseUSERHOST,		2,	0,
+	  "<nickname> ( SPACE <nickname> )",
+	  "Returns the hosts of the nicknames on the given list. Note that "
+	  "the host may in fact be a virtual-world host rather than the "
+	  "real host. Also see USERIP."
      },
-     { "USERIP",	parseUSERIP,		0,
-	"*tba*",
-	0
+     { "USERIP",	parseUSERIP,		2,	0,
+	  "<nickname> ( SPACE <nickname> )",
+	  "Returns the IP addresses of the nicknames on the given list. Note "
+	  "that the IP may in fact be a virtual-world IP rather than the "
+	  "real IP. Also see USERHOST."
      },
-     { "VERSION",	parseVERSION,		0,
-	"[ <nickname> | <service> | <server> ]",
-	"Returns the version of the given server, or the server the given "
+     { "VERSION",	parseVERSION,		1,	0,
+	  "[ <nickname> | <service> | <server> ]",
+	  "Returns the version of the given server, or the server the given "
 	  "user or service is connected to."
      },
-     { "WATCH",		parseWATCH,		0,
-	"'C' | 'S' | 'L' | { '+' | '-' } <nickname> ( SPACE { '+' | '-' } <nickname> )",
-	0
+     { "WATCH",		parseWATCH,		3,	0,
+	  "'C' | 'S' | 'L' | { '+' | '-' } { <nickname> | <channel> | <server> } ( SPACE { '+' | '-' } { <nickname> | <channel> | <server> } )",
+	  "Used as an alternative to ISON, WATCH sets up a list of "
+	  "nicknames, channels or servers you can 'watch'. You will be "
+	  "notified of their appearance and disappearances on the network. "
+	  "Note that only helpers and operators can watch a server."
      },
-     { "WALLCHOPS",	parseWALLCHOPS,	0,
-	"*tba*",
-	0
+     { "WALLCHOPS",	parseWALLCHOPS,		4,	0,
+	  "*tba*",
+	  0
      },
 #ifdef ALLOW_OPER_WALLOPS
-     { "WALLOPS",	parseWALLOPS,		User::isOper,
-	"<message>",
-	"Broadcasts the given message to all users on the network with the "
+     { "WALLOPS",	parseWALLOPS,		0,	User::isOper,
+	  "<message>",
+	  "Broadcasts the given message to all users on the network with the "
 	  "user mode '+w' set."
      },
 #endif
-     { "WHO",		parseWHO,		0,
-	"[ <channel> | <nickname mask> | '0' ]  [ 'O' ]",
-	0
+     { "WHO",		parseWHO,		2,	0,
+	  "[ <channel> | <nickname mask> | '0' ]  [ 'O' ]",
+	  0
      },
-     { "WHOIS",		parseWHOIS,		0,
-	"[ <server> ]  <nickname> ( ',' <nickname> )",
-	0
+     { "WHOIS",		parseWHOIS,		2,	0,
+	  "[ <server> ]  <nickname> ( ',' <nickname> )",
+	  "Return information on who the given nickname(s) is/are. If a "
+	  "server is specified, that server will generate the reply. This is "
+	  "an extended version of the simplistic WHO command."
      },
-     { "WHOWAS",	parseWHOWAS,		0,
-	"<nickname> ( ',' <nickname> )  [ <count>  [ <server> ] ]",
-	0
+     { "WHOWAS",	parseWHOWAS,		2,	0,
+	  "<nickname> ( ',' <nickname> )  [ <count> ]",
+	  "Return information on who the given nickname(s) was/were. The "
+	  "information on who somebody was is kept for a short amount of "
+	  "time after they have disconnected from the network. If 'count' is "
+	  "given, it is the number of entries that should be shown."
      },
-     { 0 }
+     { 0, 0, 0, 0, 0, 0 }
 };
 
 
