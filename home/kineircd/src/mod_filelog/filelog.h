@@ -40,7 +40,7 @@ namespace Kine {
 	 
        public:
 	 // Constructor
- 	 FileLog(Kine::Logger::Mask::type, const char *);
+ 	 FileLog(Kine::Logger::Mask::lazy_type, const char *);
 	 
 	 // Destructor
 	 ~FileLog(void);				

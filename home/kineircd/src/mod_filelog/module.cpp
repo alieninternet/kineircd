@@ -53,14 +53,28 @@ namespace {
 
 
    class mod_filelog : public Kine::Module {
+    private:
+      Kine::Daemon* daemon;
+      Kine::mod_filelog::FileLog* logger;
+      
     public:
       // Constructor
       mod_filelog(void)
+	: daemon(0),
+          logger(0)
 	{};
       
       // Destructor
       ~mod_filelog(void)
-	{};
+	{
+	   // If the logger has been created, deregister/delete it
+	   if (logger != 0) {
+	      if (daemon != 0) {
+		 (void)daemon->deregisterLogger(*logger);
+	      }
+	      delete logger;
+	   }
+	};
       
       // Return the information
       const Kine::Module::Info& getInfo(void) const
@@ -69,8 +83,21 @@ namespace {
       /* moduleStart - Fire up the module
        * Original 15/10/2002 simonb
        */
-      bool start(Kine::Daemon& daemon) {
-	 return true;
+      bool start(Kine::Daemon& d) {
+	 // Set the location for the daemon..
+	 daemon = &d;
+	 
+	 // Make our logging class
+	 logger = new Kine::mod_filelog::FileLog(Kine::Logger::Mask::Everything,
+						 "./testlog.log");
+
+	 // Make sure that worked..
+	 if (logger == 0) {
+	    return false;
+	 }
+
+	 // Register the logger
+	 return daemon->registerLogger(*logger);
       };
    }; // class mod_filelog
 }; // namespace {anonymous}
