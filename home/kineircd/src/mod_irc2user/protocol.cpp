@@ -129,6 +129,8 @@ void Protocol::parseMessage(const std::string& origin,
    if (commandInfo != 0) {
       // Do we have enough parameters?
       if (parameters.size() >= commandInfo->minimumParams) {
+	 // Okay, I guess we can run it
+	 (this->*(commandInfo->handler))(parameters);
 	 
 	 // We're done!
 	 return;

@@ -39,7 +39,7 @@
 
 // Handy definition thingy
 # define IRC2USER_COMMAND_HANDLER(x) \
-     void x(void)
+     void x(const Kine::LibIRC2::Protocol::parameters_type& parameters)
 
 
 namespace Kine {
