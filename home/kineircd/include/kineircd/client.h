@@ -26,6 +26,7 @@
 # define _INCLUDE_KINEIRCD_CLIENT_H_ 1
 
 # include <string>
+# include <map>
 
 extern "C" {
 # include <sys/time.h>
