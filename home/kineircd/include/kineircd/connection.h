@@ -37,8 +37,8 @@ namespace Kine {
 # include "kineircd/socket.h"
 
 // Connection status flags
-# define CONFLAG_CONNECTED	0x0001	// Connected
-# define CONFLAG_PING_SENT	0x0002	// Sent a ping, waiting for a pong
+//# define CONFLAG_CONNECTED	0x0001	// Connected
+//# define CONFLAG_PING_SENT	0x0002	// Sent a ping, waiting for a pong
 
 namespace Kine {
    

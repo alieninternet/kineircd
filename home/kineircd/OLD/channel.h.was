@@ -41,7 +41,7 @@
 # endif
 
 // Channel types we support for the ISUPPORT line.
-# define CHANNEL_TYPES			"&#+!"
+//# define CHANNEL_TYPES			"&#+!"
 
 namespace Kine {
    class Channel;
