@@ -147,9 +147,9 @@ class User {
 	return vwhostname;
      };
    
-   Channel *getChannel(String *);		// Return a channel
+   Channel *getChannel(String &);		// Return a channel
 
-   void markAway(String *);			// Set/Unset away message
+   void markAway(String &);			// Set/Unset away message
    
    bool isSilencing(User *);			// Silencing a user?
 };

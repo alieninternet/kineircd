@@ -321,7 +321,7 @@ and code formatting information.
      yourself) can understand without having to flick up and down the
      source code trying to work out WTF you're doing with these weird
      variables.
-   
+
 * Finally -- Use a code formatter (will give a file for use soon)
    * Three spaces are used for indentation (with the exception of a few
      instances, see examples below)

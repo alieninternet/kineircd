@@ -431,7 +431,7 @@ void Daemon::broadcastServerNotice(snotice_bitmask_t type, String *message)
 	 // Send the message via the notice interface
 	 (*it).second->handler->sendNotice(&server->hostname,
 					   &(*it).second->user->nickname,
-					   message);
+					   *message);
       }
    }
 }
@@ -670,10 +670,10 @@ void Daemon::addUser(User *user)
 /* getUser - Get a user record from the users list, if we can
  * Original 14/08/01, Simon Butcher <pickle@austnet.org>
  */
-User *Daemon::getUser(String *nick)
+User *Daemon::getUser(String &nick)
 {
    // Look for this nick
-   String n = nick->IRCtoLower();
+   String n = nick.IRCtoLower();
    User *u = users[n];
    
    // Make sure we got this user
@@ -870,7 +870,7 @@ void Daemon::delUser(User *user)
 /* quitUser - Delete a user from the user list
  * Original 16/08/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::quitUser(User *user, String *reason, bool broadcast)
+void Daemon::quitUser(User *user, String const &reason, bool broadcast)
 {
    /* We use a map here because it becomes faster to add things without
     * having to check for repeats (the STL does all this).. and besides
@@ -958,7 +958,7 @@ void Daemon::killUser(User *user, String *caller, String *reason)
    }
    
    // Just quit them, minus the broadcast. We will do that
-   quitUser(user, &newReason, false);
+   quitUser(user, newReason, false);
    
    // Broadcast the kill to other servers
 }
@@ -1067,10 +1067,10 @@ void Daemon::addChannel(Channel *chan)
 /* getChannel - Grab a channel record from the appropriate channel list
  * Original 15/08/01, Simon Butcher <pickle@austnet.org>
  */
-Channel *Daemon::getChannel(String *channel)
+Channel *Daemon::getChannel(String &channel)
 {
    // Look for this channel
-   String chan = channel->IRCtoLower();
+   String chan = channel.IRCtoLower();
    Channel *c = 0;
    
    // Check which channel list we need to look at
@@ -1370,10 +1370,10 @@ void Daemon::addServer(Server *server)
 /* getServer - [Various Forms] Grab a record from the servers list if we can
  * Original 10/09/01, Simon Butcher <pickle@austnet.org>
  */
-Server *Daemon::getServer(String *hostname)
+Server *Daemon::getServer(String &hostname)
 {
    // Fix up the hostname
-   String servname = hostname->toLower();
+   String servname = hostname.toLower();
    Server *s = 0;
    
    // Try to grab the server record pointer from the map
@@ -1744,7 +1744,7 @@ String Daemon::redirectedChannel(String *channel)
 /* shutdown - Start the shutdown cycle
  * Original 11/08/01, Simon Butcher <pickle@austnet.org>
  */
-void Daemon::shutdown(String reason /* = "" */)
+void Daemon::shutdown(String const &reason)
 {
 #ifdef DEBUG
    debug(String("shutdown() <- ") + reason);
@@ -1768,7 +1768,7 @@ void Daemon::shutdown(String reason /* = "" */)
    for (connection_list_t::iterator it = connections.begin();
 	it != connections.end(); it++) {
       if (!((*it)->status & CONFLAG_CONNECTED)) {
-	 (*it)->goodbye(&message);
+	 (*it)->goodbye(message);
       }
    }
    

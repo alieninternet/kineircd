@@ -462,7 +462,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String *request)
    // Run through the parameter tokens
    for (String user = users.nextToken(','); user.length();
 	user = users.nextToken(',')) {
-      User *u = TO_DAEMON->getUser(&user);
+      User *u = TO_DAEMON->getUser(user);
       
       // Make sure we found that user record
       if (!u) {
@@ -564,7 +564,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String *request)
 					    (char const *)from->getAddress());
 	    u->local->handler->
 	      sendNotice(&TO_DAEMON->server->hostname, &from->nickname, 
-			 &message);
+			 message);
 			 
 	 }
 #endif

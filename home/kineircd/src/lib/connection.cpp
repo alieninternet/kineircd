@@ -99,7 +99,7 @@ void Connection::handleInput(void)
 	 daemon->receivedBytes += line.length();
       
 	 // Handle the data (finally!)
-	 handler->parseLine(&line);
+	 handler->parseLine(line);
       }
       
       return;
@@ -120,20 +120,15 @@ void Connection::handleInput(void)
 /* sendRaw - [Various forms] Write a raw line to the connection output queue
  * Original 12/08/01, Simon Butcher <pickle@austnet.org>
  */
-void Connection::sendRaw(String *line)
+void Connection::sendRaw(String const &line)
 {
    if (status & CONFLAG_CONNECTED) {
       if (outQueue.empty()) {
 	 daemon->addOutputFD(socket->getFD());
       }
 
-      outQueue.push(*line);
+      outQueue.push(line);
    }
-}
-
-void Connection::sendRaw(String line)
-{
-   sendRaw(&line);
 }
 
 
@@ -214,13 +209,12 @@ void Connection::sendQueue(void)
 /* goodbye - [Various forms] Say goodbye to a socket and mark it 'disconnected'
  * Original 12/08/01, Simon Butcher <pickle@austnet.org>
  */
-void Connection::goodbye(String *reason /* = 0 */)
+void Connection::goodbye(String const &reason)
 {
    // Check that we are marked connected
    if (status & CONFLAG_CONNECTED) {
 #ifdef DEBUG_EXTENDED
-      debug(String::printf("[%d] goodbye()",
-			   socket->getFD()));
+      debug(String::printf("[%d] goodbye()", socket->getFD()));
 #endif
 
       // Inform the handler it is going bye bye
@@ -240,11 +234,6 @@ void Connection::goodbye(String *reason /* = 0 */)
 			   socket->getFD()));
    }
 #endif
-}
-
-void Connection::goodbye(String reason)
-{
-   goodbye(&reason);
 }
 
 

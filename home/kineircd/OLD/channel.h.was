@@ -57,9 +57,9 @@ class ChannelMask {
 
  public:
    // Constructors
-   ChannelMask(StringMask sm, String *who, time_t when)
+   ChannelMask(StringMask sm, String const &who, time_t when)
      : mask(sm),
-       whoset(*who),
+       whoset(who),
        whenset(when)
      {};
 };
@@ -136,8 +136,8 @@ class Channel {
    bool onBanExcept(User *);			// Is a user ban excepted
    bool onInvite(User *);			// Is a user 'auto-invited'
    
-   void sendNotice(User *, String *);		// Send a NOTICE to this chan
-   void sendPrivmsg(User *, String *);		// Send a PRIVMSG to this chan
+   void sendNotice(User *, String const &);	// Send a NOTICE to this chan
+   void sendPrivmsg(User *, String const &);	// Send a PRIVMSG to this chan
 };
 
 #endif

@@ -43,7 +43,7 @@ class Connection {
    String *name;			// The name of this connection
    
  public:
-   Connection(Socket *, Daemon *, 
+   Connection(Socket *, Daemon *,
 	      bool);			// Class constructor
    ~Connection(void);			// Shutdown connection
 
@@ -76,14 +76,12 @@ class Connection {
 
    void handleInput(void);		// Handle input on connection
    
-   void sendRaw(String *);		// Send a line to the connection raw
-   void sendRaw(String);
+   void sendRaw(String const &);	// Send a line to the connection raw
 
    void killQueue(void);		// Kill the queue
    void sendQueue(void);		// Send an output queue line
    
-   void goodbye(String * = 0);		// Close down socket
-   void goodbye(String);
+   void goodbye(String const & = "");	// Close down socket
    void kill(void);			// Kill the connection (sharp)
    
    friend class Daemon;

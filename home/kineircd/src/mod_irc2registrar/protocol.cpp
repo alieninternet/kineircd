@@ -96,7 +96,7 @@ void registerHandler::sendNumeric(short numeric, User *to, String line)
 /* parseLine - Parse an incoming line
  * Original 12/08/01, Simon Butcher <pickle@austnet.org>
  */
-void registerHandler::parseLine(String *line)
+void registerHandler::parseLine(String const &line)
 {
 #ifdef MAX_REGISTRATION_LINES
    // Increase and check the line counter
@@ -111,7 +111,7 @@ void registerHandler::parseLine(String *line)
 #endif
    
    bool found = false;
-   StringTokens st(*line);
+   StringTokens st(line);
    String command = st.nextToken().toUpper();
    
    // Run through the list and find a function..
@@ -209,7 +209,7 @@ void registerHandler::parseLine(String *line)
 	    
 	    // Try to find the server record
 	    Server *server = 0;
-	    server = getConnection()->getDaemon()->getServer(&username);
+	    server = getConnection()->getDaemon()->getServer(username);
 	    
 	    // Check if we got it
 	    if (!server) {
@@ -362,7 +362,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    }
    
    // Check that the nickname is not already in use
-   if (TO_DAEMON->getUser(&nick)) {
+   if (TO_DAEMON->getUser(nick)) {
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else

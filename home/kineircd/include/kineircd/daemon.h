@@ -277,10 +277,10 @@ class Daemon {
    void newConnection(Listen *);		// accept() new connection
 
    void addUser(User *);			// Add a user to the user list
-   User *getUser(String *);			// Find a user
+   User *getUser(String &);			// Find a user
    void changeUserNick(User *, String *);	// Change a users nickname
    void delUser(User *);			// Delete a user from the list
-   void quitUser(User *, String *, bool);	// User quitting IRC
+   void quitUser(User *, String const &, bool);	// User quitting IRC
    void killUser(User *, String *, String *);	// Kill a user off the network
    bool addUserSilence(User *, StringMask *);	// Add/Broadcast a user silence
    bool delUserSilence(User *, StringMask *);	// Delete a user silence
@@ -288,7 +288,7 @@ class Daemon {
 		     String const &);		// Snapshot a user for WHOWAS
    
    void addChannel(Channel *);			// Add a channel to a list
-   Channel *getChannel(String *);		// Find a channel
+   Channel *getChannel(String &);		// Find a channel
    void joinChannel(Channel *, User *);		// User joining a channel
    void leaveChannel(Channel *, User *);	// Raw user leave routine
    void partChannel(Channel *, User *, 
@@ -303,7 +303,7 @@ class Daemon {
 
    void addServer(Server *);			// Add a server to the list
    Server *getServer(char);			// Grab a server record
-   Server *getServer(String *);
+   Server *getServer(String &);
    Server *getServer(StringMask *);
    void changeServerMode(Server *, String *, String *,
 			 StringTokens *);	// Change a server mode
@@ -334,7 +334,7 @@ class Daemon {
    static void configSSL(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
    static void configSTATUS(Daemon *daemon, ConfigData *conf, String *line, String::length_t *pos, bool firstRun);
    
-   void shutdown(String = "");			// Start the shutdown sequence
+   void shutdown(String const & = "");		// Start the shutdown sequence
    void run(void);				// The main loop
 
    friend class Handler;

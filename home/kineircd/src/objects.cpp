@@ -276,7 +276,7 @@ bool Channel::onInvite(User *u)
 /* sendNotice - Send a NOTICE to this channel
  * Original 01/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Channel::sendNotice(User *from, String *message)
+void Channel::sendNotice(User *from, String const &message)
 {
    for (Channel::member_map_t::iterator it = members.begin();
 	it != members.end(); it++) {
@@ -308,7 +308,7 @@ void Channel::sendNotice(User *from, String *message)
 /* sendPrivmsg - Send a PRIVMSG to this channel
  * Original 01/09/01, Simon Butcher <pickle@austnet.org>
  */
-void Channel::sendPrivmsg(User *from, String *message)
+void Channel::sendPrivmsg(User *from, String const &message)
 {
    for (Channel::member_map_t::iterator it = members.begin();
 	it != members.end(); it++) {
@@ -342,10 +342,10 @@ void Channel::sendPrivmsg(User *from, String *message)
  * Note: Minature version of what appears for the main channel list, why
  *       we do this is for speed purposes mainly
  */
-Channel *User::getChannel(String *channel)
+Channel *User::getChannel(String &channel)
 {
    // Look for this channel
-   String chan = channel->IRCtoLower();
+   String chan = channel.IRCtoLower();
    Channel *c = channels[chan];
    
    // Make sure we got this user
@@ -363,13 +363,13 @@ Channel *User::getChannel(String *channel)
 /* markAway - Toggle the user's away 
  * Original 11/09/01, Simon Butcher <pickle@austnet.org
  */
-void User::markAway(String *message)
+void User::markAway(String &message)
 {
    // Set the away message
 #ifdef DEBUG
-   if (message) {
+   if (message.length()) {
 #endif
-      awayMessage = *message;
+      awayMessage = message;
 #ifdef DEBUG
    } else {
       // Sanity, but we should never get here honestly...
