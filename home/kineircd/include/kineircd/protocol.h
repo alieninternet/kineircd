@@ -36,6 +36,10 @@ namespace Kine {
     public:
       //! The type of a message counter
       typedef unsigned long messageCount_type;
+
+      //! An unknown number of messages
+      static const messageCount_type unknownMessageCount =
+	((messageCount_type)-1);
       
     protected:
       // The specific connection running this instance of the protocol
@@ -64,11 +68,11 @@ namespace Kine {
       
       //! Return the number of messages sent through this protocol
       virtual const messageCount_type getSentMessageCount(void) const
-	{ return 0; };
+	{ return unknownMessageCount; };
       
       //! Return the number of messages received through this protocol
       virtual const messageCount_type getReceivedMessageCount(void) const
-	{ return 0; };
+	{ return unknownMessageCount; };
       
       
       //! Return some sort of official name of this protocol
