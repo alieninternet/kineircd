@@ -365,7 +365,7 @@ src/lib_irc2/language.cpp src/lib_irc2/language.h: $(AUTOGEN_DIR)/language.tpl $
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T $(AUTOGEN_DIR)/language.tpl \
-		-DCOMPONENT=libkineircd_irc2 \
+		-DCOMPONENT=lib_irc2 \
 		-DNAMESPACE=LibIRC2 \
 		$(AUTOGEN_DIR)/language.def
 
