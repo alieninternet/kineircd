@@ -495,7 +495,9 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
     * the tag maps to be updated, otherwise any new tags that were needed and
     * now actually exist won't be discovered automatically..
     */
-#warning "Language maps are processed, regardless of config().isConfiguring()"
+#ifdef DEBUG
+# warning "Language maps are processed, regardless of config().isConfiguring()"
+#endif
 //   if (!config().isConfiguring()) {
       processMaps();
 //   }

@@ -146,29 +146,31 @@ const std::wstring
 	 
 	 // What do we do with this substitution?
 	 switch (data[++i]) {
-#warning "Substitutions are not in effect"
+#ifdef DEBUG
+# warning "Substitutions from the configuration are not internationalised"
+#endif
 	  case 'a': // The name of the server's administrator
-//	    output += config().getAdministratorName();
+	    output += toWideStr(config().getAdministratorName());
 	    continue;
 	    
 	  case 'A': // The contact point of the server's administrator (e-mail)
-//	    output += config().getAdministratorContact();
+	    output += toWideStr(config().getAdministratorContact());
 	    continue;
 	    
 	  case 'd': // The description of the server
-//	    output += myServer().getDescription();
+	    output += toWideStr(myServer().getDescription());
 	    continue;
 	    
 	  case 'L': // The location of the server
-//	    output += config().getAdministratorLocation();
+	    output += toWideStr(config().getAdministratorLocation());
 	    continue;
 	    
 	  case 'n': // The name of the server (its hostname)
-//	    output += myServer().getName();
+	    output += toWideStr(myServer().getName());
 	    continue;
 	    
 	  case 'N': // The name of the network (if there is one)
-//	    output += config().getNetworkName();
+	    output += toWideStr(config().getNetworkName());
 	    continue;
 	    
 	  case 'p':

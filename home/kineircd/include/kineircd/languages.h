@@ -32,6 +32,7 @@
 # else
 #  include <map>
 # endif
+# include <algorithm>
 # include <string>
 # include <vector>
 
@@ -268,6 +269,23 @@ namespace Kine {
       static Languages& getInstance(void)
 	{ return *instance; };
 
+      
+      /*!
+       * \brief Convert an ordinary std::string to a std::wstring
+       * 
+       * \param str The input string, only containing chars from the
+       *    ISO-8859-1 set
+       * \return A string of wchar_t characters with the same value as the
+       *    input string
+       */
+      static const std::wstring toWideStr(const std::string str)
+	{
+	   std::wstring output;
+	   output.reserve(str.length());
+	   std::copy(str.begin(), str.end(), output.begin());
+	   return output;
+	};
+      
       //! Load a given language file
       bool loadFile(const std::string& fileName, std::string& errString,
 		    const bool makeDefault = false);
