@@ -68,8 +68,8 @@ class Operator {
    };
 
    // Transform the nickname and password pair into SHA1 output
-   static Utils::SHA1::digest_type makeOperPassword(String const &nickname,
-						    String const &password) {
+   static Utils::SHA1::digest_type makePassword(String const &nickname,
+						String const &password) {
       return Utils::SHA1::generate(nickname.IRCtoLower() + password);
    };
 };

@@ -3304,8 +3304,7 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    }
    
    // Try this password against this operator
-   if (oper->getPassword() != 
-       Operator::makeOperPassword(nickname, password)) {
+   if (oper->getPassword() != Operator::makePassword(nickname, password)) {
       handler->sendNumeric(Numerics::ERR_PASSWDMISMATCH, ':' +
 			   handler->lang(LangTags::L_ERR_PASSWDMISMATCH));
       return;
