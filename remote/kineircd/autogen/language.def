@@ -249,6 +249,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOOPERHOST";
+   components	= "mod_irc2user";
    data_en	= "Your host is not configured to allow the OPER command";
    data_tr	= "HOSTunuz OPER komutunu kullanmak için konfigüre edilmedi";
 };
@@ -369,6 +370,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_PASSWDMISMATCH";
+   components	= "mod_irc2user";
    data_en	= "Password incorrect";
    data_tr	= "Yanlıž^_ ž^_ifre";
 };
@@ -896,6 +898,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_YOUREOPER";
+   components	= "mod_irc2user";
    data_en	= "You are now an IRC operator";
    data_tr	= "IRC Operator statüsüne geçtiniz";
 };
