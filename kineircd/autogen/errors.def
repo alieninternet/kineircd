@@ -34,6 +34,7 @@ successes = {
 };
 
 
+
 errors = {
    name		= "CHANNEL_NAME_NONSTANDARD_PREFIX";
    reason	= "Channel name has a non-standard prefix";
@@ -45,8 +46,8 @@ errors = {
 };
 
 errors = {
-   name		= "CLIENT_EXISTS";
-   reason	= "Client already in list";
+   name		= "ENTITY_EXISTS";
+   reason	= "The given entity already exists";
 };
 
 errors = {
@@ -70,11 +71,6 @@ errors = {
 };
 
 errors = {
-   name		= "NETWORK_EXISTS";
-   reason	= "Network already in list";
-};
-
-errors = {
    name		= "NICKNAME_BEGINS_WITH_DIGIT";
    reason	= "The nickname given begins with a number (which is invalid)";
 };
@@ -85,11 +81,6 @@ errors = {
 };
 
 errors = {
-   name		= "SERVER_EXISTS";
-   reason	= "Server already in list";
-};
-
-errors = {
    name		= "SERVER_NAME_HAS_DOT_DOT";
    reason	= "Server name has two dots with nothing between them";
 };
@@ -97,11 +88,6 @@ errors = {
 errors = {
    name		= "SERVER_NAME_HAS_NO_DOT";
    reason	= "Server name has no dot in it";
-};
-
-errors = {
-   name		= "SERVICE_EXISTS";
-   reason	= "Service already in list";
 };
 
 errors = {

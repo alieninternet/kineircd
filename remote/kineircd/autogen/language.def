@@ -2262,9 +2262,9 @@ tag = {
 };
 
 tag = {
-   name		= "Kine_Error_CLIENT_EXISTS";
+   name		= "Kine_Error_ENTITY_EXISTS";
    components	= "libkineircd";
-   data_en	= "Client already exists";
+   data_en	= "The entity already exists";
 };
 
 tag = {
@@ -2289,12 +2289,6 @@ tag = {
    name		= "Kine_Error_NAME_TOO_LONG";
    components	= "libkineircd";
    data_en	= "The name given is too long to be acceptable";
-};
-
-tag = {
-   name		= "Kine_Error_NETWORK_EXISTS";
-   components	= "libkineircd";
-   data_en	= "Network already exists";
 };
 
 tag = {
@@ -2323,12 +2317,6 @@ tag = {
 };
 
 tag = {
-   name		= "Kine_Error_SERVER_EXISTS";
-   components	= "libkineircd";
-   data_en	= "Server already exists";
-};
-
-tag = {
    name		= "Kine_Error_SERVER_NAME_HAS_DOT_DOT";
    components	= "libkineircd";
    data_en	= "The server name given has two dots with nothing between "
@@ -2340,12 +2328,6 @@ tag = {
    components	= "libkineircd";
    data_en	= "The server name given has no dot in it to be considered "
                   "a valid host name";
-};
-
-tag = {
-   name		= "Kine_Error_SERVICE_EXISTS";
-   components	= "libkineircd";
-   data_en	= "Service already exists";
 };
 
 tag = {
