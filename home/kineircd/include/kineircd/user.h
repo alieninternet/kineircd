@@ -25,10 +25,16 @@
 #ifndef _INCLUDE_KINEIRCD_USER_H_
 # define _INCLUDE_KINEIRCD_USER_H_ 1
 
+# include <string>
+
 # include <kineircd/client.h>
 
 namespace Kine {
    class User : public Client {
+    private:
+      std::string virtualHostname;		// Virtual Hostname
+      std::string awayMessage;			// Away message (blank for off)
+
     public:
       // Constructor
       User(void)
@@ -37,6 +43,10 @@ namespace Kine {
       // Destructor
       virtual ~User(void)
 	{};
+      
+      // Return variables
+      const std::string& getVirtualHostname(void) const
+	{ return virtualHostname; };
    };
 };
 

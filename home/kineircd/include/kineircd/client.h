@@ -25,11 +25,28 @@
 #ifndef _INCLUDE_KINEIRCD_CLIENT_H_
 # define _INCLUDE_KINEIRCD_CLIENT_H_ 1
 
+# include <string>
+# include <ctime>
+
 # include <kineircd/sender.h>
 # include <kineircd/receiver.h>
+# include <kineircd/server.h>
+# include <kineircd/channel.h>
 
 namespace Kine {
    class Client : public Sender, public Receiver {
+    private:
+      std::string nickname;			// Nickname
+      std::string hostname;			// Hostname
+      std::string description;			// Description/GECOS/Real name
+      time_t signonTime;			// Time of connection
+      Server* server;				// Server this client is on
+      
+      // The channel list for this client
+      typedef std::map < std::string, Channel* const > channels_type;
+      channels_type channels;
+      
+      
     protected:
       // Constructor
       Client(void)
@@ -39,6 +56,16 @@ namespace Kine {
       // Destructor
       virtual ~Client(void)
 	{};
+      
+      // Return variables
+      const std::string& getNickname(void) const
+	{ return nickname; };
+      const std::string& getHostname(void) const
+	{ return hostname; };
+      const std::string& getDescription(void) const
+	{ return description; };
+      const time_t& getSignonTime(void) const
+	{ return signonTime; };
    };
 };
 

@@ -25,10 +25,18 @@
 #ifndef _INCLUDE_KINEIRCD_LOCALUSER_H_
 # define _INCLUDE_KINEIRCD_LOCALUSER_H_ 1
 
+# include <ctime>
+
 # include <kineircd/user.h>
 
 namespace Kine {
    class LocalUser : public User {
+    private:
+      time_t lastNickChange;			// Last nickname change time
+      time_t lastAwake;				// Time this user was 'awake'
+      
+      std::string awayMessage;			// Away message (blank for off)
+      
     public:
       // Constructor
       LocalUser(void)
@@ -37,6 +45,12 @@ namespace Kine {
       // Destructor
       virtual ~LocalUser(void)
 	{};
+      
+      // Return variables
+      const time_t& getLastNickChange(void) const
+	{ return lastNickChange; };
+      const time_t& getLastAwake(void) const
+	{ return lastAwake; };
    };
 };
 
