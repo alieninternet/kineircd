@@ -114,18 +114,18 @@ SUBDIRS=\
 
 
 # Customised .tpl rules
-install/example.conf: install/example.conf.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
+install/example.conf: install/example.conf.tpl $(AUTOGEN_DIR)/config.def $(AUTOGEN_DIR)/config.scm
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T install/example.conf.tpl \
-		-S $(AUTOGEN_DEF_DIR)/config.scm \
-		$(AUTOGEN_DEF_DIR)/config.def
+		-S $(AUTOGEN_DIR)/config.scm \
+		$(AUTOGEN_DIR)/config.def
 
-install/.lang: install/language.tpl $(AUTOGEN_DEF_DIR)/language.def
+install/.lang: install/language.tpl $(AUTOGEN_DIR)/language.def
 	$(AUTOGEN) \
 		-b install/ \
 		-T install/language.tpl \
-		$(AUTOGEN_DEF_DIR)/language.def
+		$(AUTOGEN_DIR)/language.def
 
 
 # A rule to download RFCs :)
@@ -240,25 +240,25 @@ libkineircd_la_CPPFLAGS=\
 	-DBUILD_TIME="\"`date -u +%Y%m%dT%H%MZ`\""
 
 # Customised .tpl rules
-include/kineircd/config.h: include/kineircd/config.h.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
+include/kineircd/config.h: include/kineircd/config.h.tpl $(AUTOGEN_DIR)/config.def $(AUTOGEN_DIR)/config.scm
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T include/kineircd/config.h.tpl \
-		-S $(AUTOGEN_DEF_DIR)/config.scm \
-		$(AUTOGEN_DEF_DIR)/config.def
+		-S $(AUTOGEN_DIR)/config.scm \
+		$(AUTOGEN_DIR)/config.def
 
-include/kineircd/server.h: include/kineircd/server.h.tpl $(AUTOGEN_DEF_DIR)/servermodes.def
+include/kineircd/server.h: include/kineircd/server.h.tpl $(AUTOGEN_DIR)/servermodes.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T include/kineircd/server.h.tpl \
-		$(AUTOGEN_DEF_DIR)/servermodes.def
+		$(AUTOGEN_DIR)/servermodes.def
 
-src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
+src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOGEN_DIR)/config.def $(AUTOGEN_DIR)/config.scm
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T src/libkineircd/config/config.cpp.tpl \
-		-S $(AUTOGEN_DEF_DIR)/config.scm \
-		$(AUTOGEN_DEF_DIR)/config.def
+		-S $(AUTOGEN_DIR)/config.scm \
+		$(AUTOGEN_DIR)/config.def
 		
 
 
@@ -278,11 +278,11 @@ libkineircd_irc2_la_LDFLAGS=\
 libkineircd_irc2_la_LIBADD=\
 	libkineircd.la
 		
-include/kineircd/irc2/numerics.h: include/kineircd/irc2/numerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
+include/kineircd/irc2/numerics.h: include/kineircd/irc2/numerics.h.tpl $(AUTOGEN_DIR)/irc2numerics.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T include/kineircd/irc2/numerics.h.tpl \
-		$(AUTOGEN_DEF_DIR)/irc2numerics.def
+		$(AUTOGEN_DIR)/irc2numerics.def
 
 
 
@@ -429,11 +429,12 @@ src/mod_irc2user/commandlist.cpp: src/mod_irc2user/commandlist.cpp.tpl src/mod_i
 		-T src/mod_irc2user/commandlist.cpp.tpl \
 		src/mod_irc2user/commands.def
 
-src/mod_irc2user/language.cpp src/mod_irc2user/language.h: src/mod_irc2user/language.tpl $(AUTOGEN_DEF_DIR)/language.def
+src/mod_irc2user/language.cpp src/mod_irc2user/language.h: $(AUTOGEN_DIR)/language.tpl $(AUTOGEN_DIR)/language.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T src/mod_irc2user/language.tpl \
-		$(AUTOGEN_DEF_DIR)/language.def
+		-T $(AUTOGEN_DIR)/language.tpl \
+		-DCOMPONENT=mod_irc2user \
+		$(AUTOGEN_DIR)/language.def
 
 src/mod_irc2user/protocol.h: src/mod_irc2user/protocol.h.tpl src/mod_irc2user/commands.def
 	$(AUTOGEN) \
@@ -480,11 +481,11 @@ mod_syslog_la_LIBADD=\
 	libkineircd.la
 
 # Customised .tpl to .cpp rules
-src/mod_syslog/syslog.cpp: src/mod_syslog/syslog.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
+src/mod_syslog/syslog.cpp: src/mod_syslog/syslog.cpp.tpl $(AUTOGEN_DIR)/logger.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T src/mod_syslog/syslog.cpp.tpl \
-		$(AUTOGEN_DEF_DIR)/logger.def
+		$(AUTOGEN_DIR)/logger.def
 
 
 

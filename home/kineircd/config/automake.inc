@@ -1,13 +1,13 @@
 
 AUTOGEN=autogen
-AUTOGEN_DEF_DIR=$(top_builddir)/autogen
+AUTOGEN_DIR=$(top_builddir)/autogen
 
 # .tpl to .h
 %.h: %.h.tpl
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T $< \
-		$(AUTOGEN_DEF_DIR)/$(basename $(notdir $@)).def
+		$(AUTOGEN_DIR)/$(basename $(notdir $@)).def
 
 
 # .tpl to .cpp
@@ -15,4 +15,4 @@ AUTOGEN_DEF_DIR=$(top_builddir)/autogen
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T $< \
-		$(AUTOGEN_DEF_DIR)/$(basename $(notdir $@)).def
+		$(AUTOGEN_DIR)/$(basename $(notdir $@)).def
