@@ -26,259 +26,311 @@ autogen definitions commands;
 commands = {
    command		= "ACCEPT";
    defaultPenalty	= 1;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "ADMIN";
    defaultPenalty	= 2;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "AWAY";
    defaultPenalty	= 1;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "CONNECT";
    defaultPenalty	= 0;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "DIE";
    defaultPenalty	= 0;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "GLOBOPS";
    defaultPenalty	= 0;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "HELP";
    defaultPenalty	= 3;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "INFO";
    defaultPenalty	= 2;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "INVITE";
    defaultPenalty	= 3;
+   minimumParams	= 2;
 };
 
 commands = {
    command		= "ISON";
    defaultPenalty	= 2;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "JOIN";
    defaultPenalty	= 3;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "KICK";
    defaultPenalty	= 1;
+   minimumParams	= 2;
 };
 
 commands = {
    command		= "KILL";
    defaultPenalty	= 0;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "KNOCK";
    defaultPenalty	= 2;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "LANGUAGE";
    defaultPenalty	= 1;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "LINKS";
    defaultPenalty	= 2;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "LIST";
    defaultPenalty	= 5;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "LOCOPS";
    defaultPenalty	= 0;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "LUSERS";
    defaultPenalty	= 2;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "MAP";
    defaultPenalty	= 2;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "MODE";
    defaultPenalty	= 2;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "MOTD";
    defaultPenalty	= 3;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "NAMES";
    defaultPenalty	= 1;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "NICK";
    defaultPenalty	= 3;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "NOTICE";
    defaultPenalty	= 4;
+   minimumParams	= 2;
 };
 
 commands = {
    command		= "OPER";
    defaultPenalty	= 5;
+   minimumParams	= 2;
 };
 
 commands = {
    command		= "PART";
    defaultPenalty	= 3;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "PING";
    defaultPenalty	= 1;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "PONG";
    defaultPenalty	= 1;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "PRIVMSG";
    defaultPenalty	= 4;
+   minimumParams	= 2;
 };
 
 commands = {
    command		= "QUIT";
    defaultPenalty	= 0;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "REHASH";
    defaultPenalty	= 0;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "RESTART";
    defaultPenalty	= 0;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "SERVLIST";
    defaultPenalty	= 1;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "SILENCE";
    defaultPenalty	= 1;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "SQUIT";
    defaultPenalty	= 1;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "STATS";
    defaultPenalty	= 1;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "SUMMON";
    defaultPenalty	= 1;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "TIME";
    defaultPenalty	= 1;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "TOPIC";
    defaultPenalty	= 3;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "TRACE";
    defaultPenalty	= 0;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "TRACEROUTE";
    defaultPenalty	= 0;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "USERHOST";
    defaultPenalty	= 2;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "USERIP";
    defaultPenalty	= 2;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "USERS";
    defaultPenalty	= 1;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "VERSION";
    defaultPenalty	= 1;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "WATCH";
    defaultPenalty	= 3;
+   minimumParams	= 0;
 };
 
 commands = {
    command		= "WALLCHOPS";
    defaultPenalty	= 4;
+   minimumParams	= 2;
 };
 
 commands = {
    command		= "WALLOPS";
    defaultPenalty	= 0;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "WHO";
    defaultPenalty	= 2;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "WHOIS";
    defaultPenalty	= 2;
+   minimumParams	= 1;
 };
 
 commands = {
    command		= "WHOWAS";
    defaultPenalty	= 2;
+   minimumParams	= 1;
 };

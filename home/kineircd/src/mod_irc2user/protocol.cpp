@@ -93,7 +93,7 @@ void Protocol::parseMessage(const std::string& origin,
 			    parameters)
 {
    std::cout << "COMMAND: " << command << "\nFrom: " << origin << "\nTo: " <<
-     destination << std::endl;
+     destination << "\nParam count: " << parameters.size() << std::endl;
    
    // Try and find the command..
    const Commands::CommandInfo* const commandInfo =
@@ -101,14 +101,21 @@ void Protocol::parseMessage(const std::string& origin,
    
    // Did we find it? (most of the time we will find it
    if (commandInfo != 0) {
-      // Do stuff.
       std::cout << "Found the command with a penalty rate of " <<
 	(unsigned int)commandInfo->penalty << std::endl;
+
+      // Do we have enough parameters?
+      if (parameters.size() >= commandInfo->minimumParams) {
+	 
+	 // We're done!
+	 return;
+      }
       
-      // We're done.
+      // Complain about not having enough parameters, and return
+
       return;
    }
-   
+
    // If we got here, the command was not found - tell the user the bad news
    std::cout << "Command not found" << std::endl;
 }

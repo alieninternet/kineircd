@@ -49,6 +49,7 @@ namespace Kine {
 	 struct preInitCommand_type {
 	    const char* const commandName;		// Name of the command
 	    const unsigned char defaultPenalty;		// Initial penalty rate
+	    const unsigned char minimumParams;		// Minimum param count
 	    const Kine::Languages::tagID_type* const 
 	      helpUsage;				// Command usage hint
 	    const Kine::Languages::tagID_type* const 
@@ -59,6 +60,7 @@ namespace Kine {
 	 // A 'command descriptor' for our commands table.
 	 struct CommandInfo {
 	    unsigned char penalty;			// Set penalty rate
+	    const unsigned char minimumParams;		// Minimum param count
 	    const Kine::Languages::tagID_type* const
 	      helpUsage;				// Command usage hint
 	    const Kine::Languages::tagID_type* const
@@ -68,6 +70,7 @@ namespace Kine {
 	    // Copy constructor to aid in initialisation
 	    CommandInfo(const preInitCommand_type& info)
 	      : penalty(info.defaultPenalty),
+	        minimumParams(info.minimumParams),
 	        helpUsage(info.helpUsage),
 	        helpInfo(info.helpInfo),
 	        callCount(0)
