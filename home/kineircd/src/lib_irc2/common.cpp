@@ -364,7 +364,7 @@ void Protocol::doVERSION(const User& user)
 
 /* doWHOIS
  * Original 23/08/2001 simonb
- * Note: Very imcomplete transfer
+ * Note: Still incomplete
  */
 void Protocol::doWHOIS(const User& user, const std::string& targets)
 {
@@ -375,151 +375,173 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
       // Find out who to look for
       std::string target = st.nextToken(',');
 
-      // Find this target (presuming it is a user)
-      const User* const u = registry().findUser(target);
+      // Find this target.. First look to see if it is a user
+      const User* const foundUser = registry().findUser(target);
       
-      // Make sure we found that user
-      if (u != 0) {
+      // If we did not find a user, look for this as a service
+      const Service* const foundService = 
+	((foundUser == 0) ? registry().findService(target) : 0);
+      
+      // Whatever it is, it's a client, and we want to keep the code simple :)
+      const Client* const foundClient =
+	((foundUser != 0) ? 
+	 static_cast<const Client* const>(foundUser) : 
+	 static_cast<const Client* const>(foundService));
+      
+      // Make sure we found that client
+      if (foundClient != 0) {
 	 // Check if this user is allowed to see the real hostname of this user
-	 if (&user == u) {
+//	 if (&user == foundUser) {
 	    // Send the user entry as normal
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
-			u->getNickname(),
-			u->getUsername(),
-			u->getHostname(),
+			foundClient->getNickname(),
+			foundClient->getUsername(),
+			foundClient->getHostname(),
 			'*',
-			u->getDescription());
+			foundClient->getDescription());
 	    
 	    // Also send the virtual host details
-	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOIS_HIDDEN,
-			u->getNickname(),
-			u->getVirtualHostname(),
-			GETLANG(irc2_RPL_WHOIS_HIDDEN));
-	 } else {
+//	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOIS_HIDDEN,
+//			foundClient->getNickname(),
+//			foundClient->getVirtualHostname(),
+//			GETLANG(irc2_RPL_WHOIS_HIDDEN));
+//	 } else {
 	    // Send the user details with the virtual hostname
-	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
-			u->getNickname(),
-			u->getUsername(),
-			u->getVirtualHostname(),
-			'*',
-			u->getDescription());
+//	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISUSER,
+//			foundClient->getNickname(),
+//			foundClient->getUsername(),
+//			foundClient->getVirtualHostname(),
+//			'*',
+//			foundClient->getDescription());
+//	 }
+
+	 /* If the client is a normal user (or the caller is an operator),
+	  * potentially compile a list of channels the user is on. Also check
+	  * if the user is even on any channels!
+	  */
+	 if (((foundService == 0) || user.isStaff()) &&
+	     (false /*!foundService->getChannelList().empty()*/)) {
+	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISCHANNELS,
+			foundClient->getNickname(),
+			"#foo +!bah12345 @&baz %.qux");
 	 }
 	 
-	 sendNumeric(user, LibIRC2::Numerics::RPL_WHOISCHANNELS,
-		     u->getNickname(),
-		     "%#foo +#bah @#baz");
-	 
-	 // If the server the user is on is not hidden, send that too
-	 if (false) {
+	 // If the server the client is on is not hidden, send that too
+	 if ((true/*!foundClient->getServer().isHidden()*/ && 
+	      (foundService == 0)) ||
+	     user.isStaff()) {
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSERVER,
-			u->getNickname(),
+			foundClient->getNickname(),
 			"server.host.name",
 			"server description here");
 	 }
 	 
-	 // If this user has language info, we should send it too
-	 if (!u->getLanguageList().empty()) {
-	    std::ostringstream langs;
+	 // If this is a user, we have lots more we can say
+	 if (foundUser != 0) {
+	    // If this user has language info, we should send it too
+	    if (!foundUser->getLanguageList().empty()) {
+	       std::ostringstream langs;
 	    
-	    // Assemble the language information for this user
-	    for (Languages::languageDataList_type::const_iterator it =
-		 u->getLanguageList().begin();
-		 it != u->getLanguageList().end();
-		 ++it) {
-	       // Can we output this langauge?
-	       if (*it != 0) {
-		  // Do we need to output a delimeter here?
-		  if (!langs.str().empty()) {
-		     langs << ',';
+	       // Assemble the language information for this user
+	       for (Languages::languageDataList_type::const_iterator it =
+		    foundUser->getLanguageList().begin();
+		    it != foundUser->getLanguageList().end();
+		    ++it) {
+		  // Can we output this langauge?
+		  if (*it != 0) {
+		     // Do we need to output a delimeter here?
+		     if (!langs.str().empty()) {
+			langs << ',';
+		     }
+		     
+		     // Output the language code
+		     langs << (*it)->getLanguageCode();
 		  }
-		  
-		  // Output the language code
-		  langs << (*it)->getLanguageCode();
 	       }
+	       
+	       // Send the language info
+	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOISLANGUAGE,
+			   foundUser->getNickname(),
+			   langs.str(),
+			   GETLANG(irc2_RPL_WHOISLANGUAGE));
+	    }
+	 
+	    // If the user is marked away, send their away information
+	    if (foundUser->isAway()) {
+	       sendNumeric(user, LibIRC2::Numerics::RPL_AWAY,
+			   foundUser->getNickname(),
+			   foundUser->getAwayMessage());
+	    }
+	 
+	    // If the user is an IRC operator, tell the world about it
+	    if (foundUser->isGlobalOperator()) {
+	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOISOPERATOR,
+			   foundUser->getNickname(),
+			   GETLANG(irc2_RPL_WHOISOPERATOR));
+	    } else if (foundUser->isLocalOperator()) {
+	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOISOPERATOR,
+			   foundUser->getNickname(),
+			   GETLANG(irc2_RPL_WHOISOPERATOR_LOCAL));
+	    }
+	 
+	    /* If this user is a network staff member (i.e. network services),
+	     * then we should also add this to the list
+	     */
+	    if (foundUser->isStaff()) {
+	       /* Try to locate an appropriate tag ID which describes this
+		* user's job..
+		*/
+	       std::string text;
+	       Languages::tagID_type tagID;
+	       if ((tagID = 
+		    languages().getTagID(WHOISSTAFF_TAG_PREFIX +
+					 foundUser->getStaffStatus())) !=
+		   Languages::unknownTagID) {
+		  /* Output the data at the tag we found (and hope there is
+		   * data for the user's selected language(s)!!)
+		   */
+		  text = GETLANG_BY_ID(tagID);
+	       } else {
+		  /* We cannot work out what kind of staff member, or we do not
+		   * have the appropriate language data to say what kind of
+		   * staff member this person is, so we'll just say they're a 
+		   * staff member and leave it at that.
+		   */
+		  text = GETLANG(irc2_RPL_WHOISSTAFF);
+	       }
+	       
+	       // Send it, with whatever language text we could find..
+	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSTAFF,
+			   foundUser->getNickname(),
+			   text);
 	    }
 	    
-	    // Send the language info
-	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISLANGUAGE,
-			u->getNickname(),
-			langs.str(),
-			GETLANG(irc2_RPL_WHOISLANGUAGE));
-	 }
-	 
-	 // If the user is marked away, send their away information
-	 if (u->isAway()) {
-	    sendNumeric(user, LibIRC2::Numerics::RPL_AWAY,
-			u->getNickname(),
-			u->getAwayMessage());
-	 }
-	 
-	 // If the user is an IRC operator, tell the world about it
-	 if (u->isGlobalOperator()) {
-	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISOPERATOR,
-			u->getNickname(),
-			GETLANG(irc2_RPL_WHOISOPERATOR));
-	 } else if (u->isLocalOperator()) {
-	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISOPERATOR,
-			u->getNickname(),
-			GETLANG(irc2_RPL_WHOISOPERATOR_LOCAL));
-	 }
-	 
-	 /* If this user is a network staff member (i.e. network services),
-	  * then we should also add this to the list
-	  */
-	 if (u->isStaff()) {
-	    /* Try to locate an appropriate tag ID which describes this user's
-	     * job..
-	     */
-	    std::string text;
-	    Languages::tagID_type tagID;
-	    if ((tagID = languages().getTagID(WHOISSTAFF_TAG_PREFIX +
-					      u->getStaffStatus())) !=
-		Languages::unknownTagID) {
-	       /* Output the data at the tag we found (and hope there is data
-		* for the user's selected language(s)!!)
-		*/
-	       text = GETLANG_BY_ID(tagID);
-	    } else {
-	       /* We cannot work out what kind of staff member, or we do not
-		* have the appropriate language data to say what kind of staff
-		* member this person is, so we'll just say they're a staff
-		* member and leave it at that.
-		*/
-	       text = GETLANG(irc2_RPL_WHOISSTAFF);
+	    // See if the user is locally connected
+	    const LocalUser* const foundLocalUser = foundUser->getLocalSelf();
+	    if (foundLocalUser != 0) {
+	       // Output the idle time, and the time this user connected
+	       sendNumeric(user, LibIRC2::Numerics::RPL_WHOISIDLE,
+			   foundUser->getNickname(),
+			   (daemon().getTime() - 
+			    foundLocalUser->getLastAwake()).seconds,
+			   foundUser->getSignonTime().seconds,
+			   GETLANG(irc2_RPL_WHOISIDLE));
 	    }
-	 
-	    // Send it, with whatever language text we could find..
-	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSTAFF,
-			u->getNickname(),
-			text);
 	 }
 	 
-	 // If the user is connected via a secure connection, say what type
+	 // If the client is connected via a secure connection, say what type
 	 if (false) {
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSECURE,
-			u->getNickname(),
+			foundClient->getNickname(),
 			"SSL",
 			GETLANG(irc2_RPL_WHOISSECURE));
-	 }
-	 
-	 // See if the user is locally connected
-	 const LocalUser* const lu = u->getLocalSelf();
-	 if (lu != 0) {
-	    // Output the idle time, and the time this user connected
-	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISIDLE,
-			u->getNickname(),
-			(daemon().getTime() - lu->getLastAwake()).seconds,
-			u->getSignonTime().seconds,
-			GETLANG(irc2_RPL_WHOISIDLE));
 	 }
 	 
 	 // Continue to the next target
 	 continue;
       }
 
-      // Maybe check the services list here, if we are allowed?
-      
-      // If we got here, the user was unknown
+      // If we got here, the client was unknown
       sendNumeric(user, LibIRC2::Numerics::ERR_NOSUCHNICK,
 		  target,
 		  GETLANG(irc2_ERR_NOSUCHNICK));
