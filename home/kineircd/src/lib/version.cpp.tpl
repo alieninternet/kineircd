@@ -59,7 +59,13 @@ namespace Kine {
        *       least ISO-8859-1 encoding in a vague attempt to try and keep it 
        *       fairly standard to read for the various clients out there. This
        *       is the reason for the special formatting..
+       * 
        *       PLEASE DO NOT EDIT THIS UNLESS YOU ARE TOLD TO!!! :)
+       * 
+       *       Warning: Under the terms of the GNU GPL you MUST NOT remove
+       *       any copyright information here, nor the Kine IRC Daemon
+       *       development team list (as it is an integral part of the primary
+       *       copyright).
        */
       const char *versionInfo[] = {
 "            (__)     _  __              ___ ____   ____    _",
@@ -76,8 +82,10 @@ namespace Kine {
 "PARTICULAR PURPOSE.",
 "",	
 " KineIRCd Development Team:",
-"  to be done.. hehe shh, it will come before release :)",
-	   0
+"    Simon Butcher           Scott Mackenzie",
+"",
+"Bugs? Questions? Comments? E-mail: kineircd@alien.net.au",	   
+	 0
       };
       
       /* Special version mark thingy whatsit string doohickey.. thingamejig...
