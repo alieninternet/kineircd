@@ -23,6 +23,17 @@
 autogen definitions errors;
 
 
+successes = {
+   name		= "NO_ERROR";
+   reason	= "The operation was a success";
+};
+
+successes = {
+   name		= "NO_ERROR_OR_DATA";
+   reason	= "The operation was successful, but no data was returned";
+};
+
+
 errors = {
    name		= "CHANNEL_NAME_NONSTANDARD_PREFIX";
    reason	= "Channel name has a non-standard prefix";
