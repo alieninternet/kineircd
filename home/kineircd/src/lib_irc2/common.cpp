@@ -47,63 +47,6 @@ using AISutil::String;
                          ##__VA_ARGS__)
 
 
-/* sendLUSERS - Send a LUSERS reply to the user
- * Original 13/08/2001 simonb
- */
-void Protocol::sendLUSERS(const User& user)
-{
-   sendNumeric(user, Numerics::RPL_LUSERCLIENT,
-	       GETLANG(irc2_RPL_LUSERCLIENT,
-		       String::convert(registry().getUsers().size()),
-		       String::convert(0),
-		       String::convert(0)));
-   sendNumeric(user, Numerics::RPL_LUSEROP,
-	       0,
-	       GETLANG(irc2_RPL_LUSEROP));
-   sendNumeric(user, Numerics::RPL_LUSERSTAFF,
-	       0,
-	       GETLANG(irc2_RPL_LUSERSTAFF));
-   sendNumeric(user, Numerics::RPL_LUSERUNKNOWN,
-	       0,
-	       GETLANG(irc2_RPL_LUSERUNKNOWN));
-   sendNumeric(user, Numerics::RPL_LUSERCHANNELS,
-	       0,
-	       GETLANG(irc2_RPL_LUSERCHANNELS));
-   sendNumeric(user, Numerics::RPL_LUSERME,
-	       GETLANG(irc2_RPL_LUSERME,
-		       String::convert(registry().getLocalUsers().size()),
-		       String::convert(0)));
-   sendNumeric(user, Numerics::RPL_LOCALUSERS,
-	       GETLANG(irc2_RPL_LOCALUSERS,
-		       String::convert(registry().getLocalUsers().size()),
-		       String::convert(0)));
-   sendNumeric(user, Numerics::RPL_GLOBALUSERS,
-	       GETLANG(irc2_RPL_GLOBALUSERS,
-		       String::convert(registry().getUsers().size()),
-		       String::convert(0)));
-}
-
-
-/* sendMOTD - Send our MOTD to the user
- * Original 13/08/2001 simonb
- */
-void Protocol::sendMOTD(const User& user, const bool justConnected)
-{
-   // Send the MOTD header
-   sendNumeric(user, Numerics::RPL_MOTDSTART,
-	       GETLANG(irc2_RPL_MOTDSTART,
-		       Kine::config().getOptionsServerName()));
-
-   // Send this line
-   sendNumeric(user, Numerics::RPL_MOTD,
-	       "- This is MOTD data");
-   
-   // Send the MOTD footer
-   sendNumeric(user, Numerics::RPL_ENDOFMOTD,
-	       GETLANG(irc2_RPL_ENDOFMOTD));
-}
-
-
 /* sendTimeOnServer - Send RPL_TIMEONSERVERIS
  * Original 12/08/2003 simonb
  */
@@ -141,10 +84,67 @@ void Protocol::sendTimeOnServer(const User& user)
 }
 
 
-/* sendTime - Send RPL_TIME and RPL_TIMEONSERVERIS
+/* doLUSERS - Handle the 'LUSERS' command
+ * Original 13/08/2001 simonb
+ */
+void Protocol::doLUSERS(const User& user)
+{
+   sendNumeric(user, Numerics::RPL_LUSERCLIENT,
+	       GETLANG(irc2_RPL_LUSERCLIENT,
+		       String::convert(registry().getUsers().size()),
+		       String::convert(0),
+		       String::convert(0)));
+   sendNumeric(user, Numerics::RPL_LUSEROP,
+	       0,
+	       GETLANG(irc2_RPL_LUSEROP));
+   sendNumeric(user, Numerics::RPL_LUSERSTAFF,
+	       0,
+	       GETLANG(irc2_RPL_LUSERSTAFF));
+   sendNumeric(user, Numerics::RPL_LUSERUNKNOWN,
+	       0,
+	       GETLANG(irc2_RPL_LUSERUNKNOWN));
+   sendNumeric(user, Numerics::RPL_LUSERCHANNELS,
+	       0,
+	       GETLANG(irc2_RPL_LUSERCHANNELS));
+   sendNumeric(user, Numerics::RPL_LUSERME,
+	       GETLANG(irc2_RPL_LUSERME,
+		       String::convert(registry().getLocalUsers().size()),
+		       String::convert(0)));
+   sendNumeric(user, Numerics::RPL_LOCALUSERS,
+	       GETLANG(irc2_RPL_LOCALUSERS,
+		       String::convert(registry().getLocalUsers().size()),
+		       String::convert(0)));
+   sendNumeric(user, Numerics::RPL_GLOBALUSERS,
+	       GETLANG(irc2_RPL_GLOBALUSERS,
+		       String::convert(registry().getUsers().size()),
+		       String::convert(0)));
+}
+
+
+/* doMOTD - Handle the 'MOTD' command
+ * Original 13/08/2001 simonb
+ */
+void Protocol::doMOTD(const User& user, const bool justConnected)
+{
+   // Send the MOTD header
+   sendNumeric(user, Numerics::RPL_MOTDSTART,
+	       GETLANG(irc2_RPL_MOTDSTART,
+		       Kine::config().getOptionsServerName()));
+
+   // Send this line
+   sendNumeric(user, Numerics::RPL_MOTD,
+	       "- This is MOTD data");
+   
+   // Send the MOTD footer
+   sendNumeric(user, Numerics::RPL_ENDOFMOTD,
+	       GETLANG(irc2_RPL_ENDOFMOTD));
+}
+
+
+/* doTIME - Handle the 'TIME' command
  * Original 29/08/2001 simonb
  */
-void Protocol::sendTime(const User& user)
+void Protocol::doTIME(const User& user)
 {
    // Make up a "human readable" time string
    struct tm currentTime;

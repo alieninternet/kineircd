@@ -309,17 +309,17 @@ namespace Kine {
 			      pa, pb, pc, pd, pe, pf, pg, ph);	
 	     };
 
-	 // Send the reply to the LUSERS command to the given client
-	 void sendLUSERS(const User& user);
-	 
-	 // Send our MOTD to the given client
-	 void sendMOTD(const User& user, const bool justConnected = false);
-	 
 	 // Send RPL_TIMEONSERVERIS to the given client
 	 void sendTimeOnServer(const User& user);
 	 
-	 // Send RPL_TIME and RPL_TIMEONSERVERIS to the given client
-	 void sendTime(const User& user);
+	 // Handle the 'LUSERS' command
+	 void doLUSERS(const User& user);
+	 
+	 // Handle the 'MOTD' command
+	 void doMOTD(const User& user, const bool justConnected = false);
+	 
+	 // Handle the 'TIME' command
+	 void doTIME(const User& user);
       };
    }; // namespace LibIRC2
 }; // namespace Kine

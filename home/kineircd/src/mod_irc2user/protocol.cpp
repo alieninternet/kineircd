@@ -91,11 +91,11 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    // Tell the user the time on server
    sendTimeOnServer(user);
    
-   // Send the LUSERS output, for some reason some clients want this??
-   sendLUSERS(user);
+   // Do an LUSERS command, for some reason some clients want this??
+   doLUSERS(user);
    
-   // Send an MOTD, of some sort.. maybe..
-   sendMOTD(user, true);
+   // Also do the MOTD command
+   doMOTD(user, true);
 }
 
 

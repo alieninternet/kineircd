@@ -268,7 +268,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 {
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
-      sendLUSERS(user);
+      doLUSERS(user);
       return;
    }
    
@@ -284,7 +284,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 {
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
-      sendMOTD(user);
+      doMOTD(user);
       return;
    }
    
@@ -354,7 +354,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
 {
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
-      sendTime(user);
+      doTIME(user);
       return;
    }
    
