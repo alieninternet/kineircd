@@ -184,9 +184,24 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_ERRONEUSNICKNAME";
-   components	= "mod_irc2registrar mod_irc2user";
+   components	= "mod_irc2registrar";
    data_en	= "Erroneous nickname";
    data_tr	= "Yanlıž^_ nickname";
+};
+
+tag = {
+   name		= "irc2_ERR_ERRONEUSNICKNAME_BAD_CHARS";
+   components	= "mod_irc2user";
+   data_en	= "The given nickname contained unaccaptable characters and "
+                  "cannot be used as your nickname";
+};
+
+tag = {
+   name		= "irc2_ERR_ERRONEUSNICKNAME_TOO_LONG";
+   fields	= "0 = maximum nickname length";
+   components	= "mod_irc2user";
+   data_en	= "The given nickname is too long (must be between 1 and %p0 "
+                  "characters long)";
 };
 
 tag = {
