@@ -1014,6 +1014,53 @@ tag = {
    data_en	= "Your primary language is set to '%p0'";
 };
 
+tag = {
+   name		= "irc2_STATS_RESOURCES_RUSAGE_CONTEXT";
+   fields	= "0 = voluntary context switches, 1 = involuntary ones";
+   components	= "mod_irc2user";
+   data_en	= "I've had %p0 voluntary and %p1 involuntary context "
+                  "switches";
+};
+
+tag = {
+   name		= "irc2_STATS_RESOURCES_RUSAGE_FAULTS_SWAP";
+   fields	= "0 = major faults, 1 = minor faults, 2 = swaps";
+   components	= "mod_irc2user";
+   data_en	= "I've had %p0 page faults, %p1 page reclamations, and have "
+                  "swapped %p2 times";
+};
+
+tag = {
+   name		= "irc2_STATS_RESOURCES_SYSINFO_MEMORY";
+   fields	= "0 = totalram, 1 = freeram, 2 = totalswap, 3 = freeswap, "
+                  "4 = sharedram, 5 = bufferedram";
+   components	= "mod_irc2user";
+   data_en	= "Free RAM: %p1MiB / %p0MiB; Free swap: %p3MiB/%p2MiB); "
+                  "Shared RAM: %p4MiB; Buffered RAM: %p5MiB";
+};
+
+tag = {
+   name		= "irc2_STATS_RESOURCES_SYSINFO_PROCESSES";
+   fields	= "0 = number of processes";
+   components	= "mod_irc2user";
+   data_en	= "This system is running %p0 processes";
+};
+
+tag = {
+   name		= "irc2_STATS_RESOURCES_SYSINFO_UPTIME";
+   fields	= "0 = days, 1 = hours, 2 = minutes, 3 = seconds";
+   components	= "mod_irc2user";
+   data_en	= "This system has been running for %p0 days, %p1 hours, "
+                  "%p2 minutes and %p3 seconds";
+};
+
+tag = {
+   name		= "irc2_STATS_RESOURCES_UNAME";
+   fields	= "0 = machine, 1 = sysname, 2 = release, 3 = version";
+   components	= "mod_irc2user";
+   data_en	= "I'm on a %p0 running %p1 %p2 (%p3)";
+};
+
 
 
 /*****************************************************************************
