@@ -570,6 +570,13 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_RPL_GLOBALUSERS";
+   fields	= "0 = # of global users, 1 = peak global user count";
+   component	= "mod_irc2user";
+   data_en	= "Current global users: %p0 Max: %p1";
+};
+
+tags = {
    name		= "irc2_RPL_ISUPPORT";
    component	= "mod_irc2user";
    data_en	= "are supported by this server";
@@ -581,6 +588,13 @@ tags = {
    component	= "mod_irc2user";
    data_en	= "End of LIST";
    data_tr	= "LIST komutunun sonu";
+};
+
+tags = {
+   name		= "irc2_RPL_LOCALUSERS";
+   fields	= "0 = # of local users, 1 = peak local user count";
+   component	= "mod_irc2user";
+   data_en	= "Current local users: %p0 Max: %p1";
 };
 
 tags = {
