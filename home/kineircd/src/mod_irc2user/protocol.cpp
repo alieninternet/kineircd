@@ -31,12 +31,14 @@
 #include <kineircd/languages.h>
 #include <kineircd/registry.h>
 #include <kineircd/version.h>
+#include <aisutil/string/string.h>
 
 #include "mod_irc2user/protocol.h"
 #include "mod_irc2user/language.h"
 #include "mod_irc2user/commands.h"
 
 using namespace Kine::mod_irc2user;
+using AISutil::String;
 
 
 /* Protocol - Constructor/Initialise the connection
@@ -166,8 +168,11 @@ void Protocol::parseMessage(const std::string& origin,
  */
 void Protocol::sendISUPPORT(void)
 {
+   // Save the suffix string, since we could be using it a few times..
+   std::string suffix = GETLANG(irc2_RPL_ISUPPORT);
+   
    sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
-	       "isupport");
+	       suffix);
 }
 
 
@@ -177,26 +182,34 @@ void Protocol::sendISUPPORT(void)
 void Protocol::sendLUSERS(void)
 {
    sendNumeric(LibIRC2::Numerics::RPL_LUSERCLIENT,
-	       "Stuff..");
+	       GETLANG(irc2_RPL_LUSERCLIENT,
+		       String::convert(registry().getUsers().size()),
+		       String::convert(0),
+		       String::convert(0)));
    sendNumeric(LibIRC2::Numerics::RPL_LUSEROP,
 	       0,
-	       "luserop");
+	       GETLANG(irc2_RPL_LUSEROP));
    sendNumeric(LibIRC2::Numerics::RPL_LUSERSTAFF,
 	       0,
-	       "luserstaff");
+	       GETLANG(irc2_RPL_LUSERSTAFF));
    sendNumeric(LibIRC2::Numerics::RPL_LUSERUNKNOWN,
 	       0,
-	       "luserunknown");
+	       GETLANG(irc2_RPL_LUSERUNKNOWN));
    sendNumeric(LibIRC2::Numerics::RPL_LUSERCHANNELS,
 	       0,
-	       0,
-	       "luserchannels");
+	       GETLANG(irc2_RPL_LUSERCHANNELS));
    sendNumeric(LibIRC2::Numerics::RPL_LUSERME,
-	       "luserme");
+	       GETLANG(irc2_RPL_LUSERME,
+		       String::convert(registry().getLocalUsers().size()),
+		       String::convert(0)));
    sendNumeric(LibIRC2::Numerics::RPL_LOCALUSERS,
-	       "localusers");
+	       GETLANG(irc2_RPL_LOCALUSERS,
+		       String::convert(registry().getLocalUsers().size()),
+		       String::convert(0)));
    sendNumeric(LibIRC2::Numerics::RPL_GLOBALUSERS,
-	       "globalusers");
+	       GETLANG(irc2_RPL_GLOBALUSERS,
+		       String::convert(registry().getUsers().size()),
+		       String::convert(0)));
 }
 
 
@@ -207,15 +220,16 @@ void Protocol::sendMOTD(const bool justConnected)
 {
    // Send the MOTD header
    sendNumeric(LibIRC2::Numerics::RPL_MOTDSTART,
-	       "start motd");
-   
+	       GETLANG(irc2_RPL_MOTDSTART,
+		       config().getOptionsServerName()));
+
    // Send this line
    sendNumeric(LibIRC2::Numerics::RPL_MOTD,
 	       "- This is MOTD data");
    
    // Send the MOTD footer
    sendNumeric(LibIRC2::Numerics::RPL_ENDOFMOTD,
-	       "end motd");
+	       GETLANG(irc2_RPL_ENDOFMOTD));
 }
 
 
