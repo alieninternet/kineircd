@@ -33,7 +33,7 @@ dnl Determine our version information.
 dnl These should not be touched as they define the version of this software
 dnl from an 'official' standpoint - only the developers who should touch 
 dnl them .. uhh.. should touch them :)
-VERSION_MAJOR=8
+VERSION_MAJOR=0
 VERSION_MINOR=0
 VERSION_EXTRA=.prealpha
 PACKAGE_NAME=kineircd
@@ -43,7 +43,7 @@ PACKAGE_STRING=
 PACKAGE_BUGREPORT=kineircd@alien.net.au
 LIB_VERSION=0
 LIB_REVISION=0
-LIB_AGE=0
+LIB_AGE=1
 
 dnl Export our version information
 AC_SUBST(VERSION_MAJOR)
