@@ -2,8 +2,8 @@
 [+#
    $Id$
 
-   Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
-   Copyright (c) 2002,2003 KineIRCd Development Team
+   Copyright (c) 2002,2003,2004 Simon Butcher <pickle@alien.net.au>
+   Copyright (c) 2002,2003,2004 KineIRCd Development Team
    (See DEV-TEAM file for details)
   
    This file is a part of KineIRCd.
@@ -47,8 +47,35 @@
 ## This file uses a variety of comment, quote and definition styles on purpose
 ## to show how they can be used.
 ##
-## You must edit this to suit your server!!!
+## You must edit this to suit your server!
 ##[+
+   ;;; tabLength - The length of a 'tab' - the vertical mark for indentation
+   (define tabLength 3)
+
+
+
+   ;;; indentOffset - Our indentation offset, for manual indentation changes
+   (define indentOffset 0)
+
+
+
+   ;;; increaseIndent - Increase the indentation offset
+   (define (increaseIndent)
+      (set! indentOffset
+         (+
+	    indentOffset
+	    tabLength)))
+
+
+
+   ;;; decreaseIndent - Decrease the indentation offset
+   (define (decreaseIndent)
+      (set! indentOffset
+         (-
+	    indentOffset
+	    tabLength)))
+
+
 
    ;;; getIndentLevel - Work out the identation depth (# of chars)
    ;;; Note: Yes, we cheat. We use the size of the table used to generate
@@ -56,7 +83,13 @@
    ;;;       even if those internal variable names are not visible in the
    ;;;       example conf (or indeed to the user).
    (define (getIndentLevel)
-      (- (* (length tablePrefixStack) 3) 3))
+      (+
+         (-
+	    (*
+	       (length tablePrefixStack)
+	       tabLength)
+	    tabLength)
+         indentOffset))
 
 
 
@@ -125,7 +158,7 @@
 			      0
 			      cutWhere)))
 
-		     ;; Return the but after the cut
+		     ;; Return the bit after the cut
 		     (substring tail
 		        cutWhere
 			(string-length tail))))
@@ -172,3 +205,8 @@
 [+ENDIF+][+(formatComment (get "comment"))+][+ENDIF+]
 [+(lineIndent)+][+make-def-name+] = [+IF .exampleValue+][+exampleValue+][+ELSE+][+defaultValue+][+ENDIF+];[+ENDIF+][+ENDIF+][+ENDIF+][+ENDFOR+][+ENDDEF+]
 [+output-config-stuff+]
+[+FOR .module+][+IF .comment+]
+[+(formatComment (get "comment"))+][+ENDIF+]
+module [+name+].so[+IF (exist? "hasOptions")+] {[+(increaseIndent)+][+output-config-stuff+]
+[+(decreaseIndent)+]}[+ELSE+];[+ENDIF+]
+[+ENDFOR+]
