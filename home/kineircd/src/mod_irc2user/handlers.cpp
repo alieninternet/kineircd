@@ -318,14 +318,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 	   languages().getLanguageDataMap().begin();
 	   it != languages().getLanguageDataMap().end();
 	   ++it) {
-	 // Make the maintainer string
-	 std::string maintainer(it->second->getMaintainer());
-	 
-	 // Fill the maintainer string if it is empty
-	 if (maintainer.empty()) {
-	    maintainer = '*';
-	 }
-	 
 	 // Make the modes string
 	 std::string modes;
 	 
@@ -349,27 +341,17 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 	    modes = '*';
 	 }
 	 
-	 // Do we send the language with or without a note?
-	 if (it->second->getLanguageNote().empty()) {
-	    sendNumeric(LibIRC2::Numerics::RPL_LANGUAGE,
-			it->second->getLanguageCode(),
-			it->second->getFileRevision(),
-			maintainer,
-			modes,
-			it->second->getLanguageName());
-	 } else {
-	    // Put together the name field
-	    std::ostringstream nameField;
-	    nameField <<
-	      it->second->getLanguageName() << " (" <<
-	      it->second->getLanguageNote() << ')';
-	    sendNumeric(LibIRC2::Numerics::RPL_LANGUAGE,
-			it->second->getLanguageCode(),
-			it->second->getFileRevision(),
-			maintainer,
-			modes,
-			nameField.str());
-	 }
+	 // Send the info on this language
+	 sendNumeric(LibIRC2::Numerics::RPL_LANGUAGE,
+		     it->second->getLanguageCode(),
+		     it->second->getFileRevision(),
+		     (it->second->getMaintainer().empty() ?
+		      "*" : it->second->getMaintainer()),
+		     modes,
+		     (it->second->getLanguageNote().empty() ?
+		      it->second->getLanguageName() :
+		      (it->second->getLanguageName() + " (" +
+		       it->second->getLanguageNote() + ")")));
       }
       
       // Send the end of list tag
