@@ -55,6 +55,7 @@ VER_FLG=-DBUILD_STRING="\"`date -u +%04Y%02m%02d%02H%02M%02S`\"" \
 # libkineircd library sources that are required
 SOURCES=\
 	daemon.cpp \
+	modules.cpp \
 	sha1.cpp \
 	str.cpp \
 	utils.cpp
