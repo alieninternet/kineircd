@@ -3,6 +3,9 @@
  * Logging functions base class
  *
  * Copyright (c) 2000,2002 Alien Internet Services
+ * Copyright (c) 2000,2002 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002 KineIRCd Development Team 
+ * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
  * 
@@ -24,16 +27,82 @@
 [+(dne " * ")+]
  */
 
-#include "autoconf.h"
+#ifdef HAVE_CONFIG_H
+# include "autoconf.h"
+#endif
 #include "kineircd/kineircdconf.h"
 
+#include <cstring>
+ 
 #include "kineircd/logger.h"
 
 using namespace Kine;
 
 
 // Our list of masks, and how to translate them around nicely
-const Logger::maskTable_type Logger::maskTable[Logger::maskTableSize] = {[+ 
-   FOR logger_masks "," +]
-     { "[+name+]", '[+char+]', Logger::Mask::[+name+] }[+ ENDFOR logger_masks +]
+const Logger::MaskMapper Logger::maskTable[Logger::maskTableSize] = {[+FOR logger_masks ","+]
+     {
+        Logger::Mask::[+name+],
+	  '[+char+]',
+	  "[+name+]",
+	  "[+(string-upcase (get "name"))+]"
+     }[+ENDFOR logger_masks+]
 };
+
+
+/* getMaskMapper - Return a mask entry from the above table, using various means
+ * Original 01/11/2002 simonb
+ */
+const Logger::MaskMapper& Logger::getMaskMapper(const Logger::Mask::type m)
+{
+   // Run through the table to find what we are looking for
+   for (unsigned int i = maskTableSize; i--;) {
+      // Is this the one?
+      if (maskTable[i].mask == m) {
+	 return maskTable[i];
+      }
+   }
+
+#ifdef DEBUG_ASSERT
+   assert(false);
+#endif
+   
+   // Argh!!
+   return maskTable[0];
+}
+
+const Logger::MaskMapper& Logger::getMaskMapper(const char c)
+{
+   // Run through the table to find what we are looking for
+   for (unsigned int i = Logger::maskTableSize; i--;) {
+      // Is this the one?
+      if (maskTable[i].character == c) {
+	 return maskTable[i];
+      }
+   }
+
+#ifdef DEBUG_ASSERT
+   assert(false);
+#endif
+
+   // Argh!!
+   return maskTable[0];
+}
+
+const Logger::MaskMapper& Logger::getMaskMapper(const char* const n)
+{
+   // Run through the table to find what we are looking for
+   for (unsigned int i = maskTableSize; i--;) {
+      // Is this the one?
+      if (strcasecmp(maskTable[i].name, n) == 0) {
+	 return maskTable[i];
+      }
+   }
+
+#ifdef DEBUG_ASSERT
+   assert(false);
+#endif
+   
+   // Argh!!
+   return maskTable[0];
+}

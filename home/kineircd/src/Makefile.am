@@ -99,6 +99,7 @@ libkineircd_la_SOURCES=\
 	lib/daemon.cpp \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_CPP) \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_H) \
+	lib/logger.cpp \
 	lib/loggerconfig.cpp \
 	lib/registrar.cpp \
 	lib/registrar.h \

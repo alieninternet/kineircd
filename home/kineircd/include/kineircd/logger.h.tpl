@@ -2,8 +2,10 @@
 /* $Id$
  * Logging functions base class
  *
- * Copyright (c) 2000,2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2000,2002 Alien Internet Services
+ * Copyright (c) 2000,2002 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002 KineIRCd Development Team 
+ * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
  * 
@@ -50,17 +52,21 @@ namespace Kine {
 	 static const lazy_type Everything    = 0xFFFFFFFF;
       };
    
-      static const unsigned char maskTableSize = [+ 
-         (count "logger_masks")
-       +];
+      static const unsigned char maskTableSize = [+(count "logger_masks")+];
 
       // The table holding our mask to name to character translations
-      struct maskTable_type {
-	 const char *name;			// Name of the mask
-	 const char chr;			// Character for the mask
-	 const Mask::type mask;			// The mask itself
+      struct MaskMapper {
+	 const Mask::type mask;			// The mask
+	 const char character;			// Character for the mask
+	 const char* const name;		// Name of the mask
+	 const char* const nameUpper;		// Name of the mask (uppercase)
       } static const maskTable[maskTableSize];
-      
+
+      // Handy functions for grabbing data in the table above
+      static const MaskMapper& getMaskMapper(const Mask::type m);
+      static const MaskMapper& getMaskMapper(const char c);
+      static const MaskMapper& getMaskMapper(const char* const n);
+
     protected:
       const Mask::lazy_type logMask;			// OK log message types
       
