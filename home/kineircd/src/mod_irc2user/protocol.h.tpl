@@ -49,6 +49,8 @@ namespace Kine {
 	 typedef IRC2USER_COMMAND_HANDLER(handler_type);
 	 
        private:
+	 static const char* const protocolName;	// An 'official' name for us
+	 
 	 User user;				// The user for this instance
 
 	 messageSize_type maxMessageSize;	// Maximum message size
@@ -70,6 +72,16 @@ namespace Kine {
 	 // Destructor
 	 ~Protocol(void);
 
+	 
+	 // Return some sort of official name of this protocol
+	 const char* const getProtocolName(void) const
+	   { return protocolName; };
+	 
+	 // Return some sort of identifying name for this instance
+	 const std::string* const getIdentifyingName(void) const
+	   { return &user.getName(); };
+	 
+	 
 	 // Send a numeric
 	 void sendNumeric(const LibIRC2::Numerics::numeric_type numeric)
 	   {

@@ -43,6 +43,11 @@ using namespace Kine::mod_irc2registrar;
 using AISutil::String;
 
 
+// Our "official" protocol name
+const char* const Protocol::protocolName =
+  "irc2registrar";
+
+
 // Master command table (zero terminated, ordered alphabetically)
 const Protocol::commandTable_type Protocol::commandTable[] = {
      { "CAPAB",		&Protocol::parseCAPAB },
@@ -70,7 +75,7 @@ void Protocol::sendPing(void)
 			      36);
 
    // Output the ping
-   outputQueue.push("PING :" + pongMatch + "\r\n");
+   sendMessage("PING", ":" + pongMatch + "\r\n");
 }
 
 

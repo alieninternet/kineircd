@@ -33,6 +33,10 @@
 namespace Kine {
    //! The protocol base class
    class Protocol {
+    public:
+      //! The type of a message counter
+      typedef unsigned long messageCount_type;
+      
     protected:
       // The specific connection running this instance of the protocol
       Connection& connection;
@@ -56,6 +60,23 @@ namespace Kine {
       
       // Return true should there be anything in the output queue to send
       virtual bool moreOutput(void) const = 0;
+      
+      
+      //! Return the number of messages sent through this protocol
+      virtual const messageCount_type getSentMessageCount(void) const
+	{ return 0; };
+      
+      //! Return the number of messages received through this protocol
+      virtual const messageCount_type getReceivedMessageCount(void) const
+	{ return 0; };
+      
+      
+      //! Return some sort of official name of this protocol
+      virtual const char* const getProtocolName(void) const = 0;
+      
+      //! Return some sort of identifying name for this instance
+      virtual const std::string* const getIdentifyingName(void) const
+	{ return 0; };
    };
 };
    

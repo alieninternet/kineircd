@@ -118,8 +118,9 @@ bool Connection::handleInput(void)
  */
 void Connection::sendOutput(void)
 {
-   // Dump a chunk
-   socket.write(protocol->withdrawOutput(socket.getReadBlockSize()));
+   // Dump out a chunk of data from the output buffer
+   sentBytes +=
+     socket.write(protocol->withdrawOutput(socket.getReadBlockSize()));
    
    // If there is nothing else left in the queue, stop output-okay checks
    if (!protocol->moreOutput()) {

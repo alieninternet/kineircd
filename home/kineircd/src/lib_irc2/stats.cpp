@@ -41,12 +41,63 @@ using AISutil::Time;
 
 // List of statistics requests we can handle
 const Stats::statsCommand_type Stats::statsCommands[] = {
-     { "uptime",	1,	handleUptime },
+     { "listconnections",	1,	handleListConnections },
+     { "operators",		1,	handleOperators },
+     { "uptime",		1,	handleUptime },
      { 0, 0, 0 }
 };
 
 
-/* handleUptime - Server uptime information
+/* handleListConnections - List connections (RFC1459)
+ * Original 26/08/2001 simonb
+ */
+KINE_IRC2_STATS_HANDLER(Stats::handleListConnections)
+{
+   // Run through the connection list
+   for (Daemon::connections_type::const_iterator it =
+	daemon().getConnections().begin();
+	it != daemon().getConnections().end();
+	++it) {
+      protocol.sendNumeric(user, Numerics::RPL_STATSLINKINFO,
+			   ((((*it)->getProtocol() != 0) &&
+			     ((*it)->getProtocol()->getIdentifyingName() !=
+			      0)) ?
+			    *(*it)->getProtocol()->getIdentifyingName() :
+			    "!"),
+			   0, // <=- sendq..
+			   (((*it)->getProtocol() != 0) ?
+			    (*it)->getProtocol()->getSentMessageCount() :
+			    0),
+			   ((*it)->getSentBytes() / 1024),
+			   (((*it)->getProtocol() != 0) ?
+			    (*it)->getProtocol()->getReceivedMessageCount() :
+			    0),
+			   ((*it)->getReceivedBytes() / 1024),
+			   (daemon().getTime() -
+			    (*it)->getConnectedTime()).seconds,
+			   (false /* is secured */ ? "SSL" : "*"),
+			   (((*it)->getProtocol() != 0) ?
+			    (*it)->getProtocol()->getProtocolName() :
+			    "*"));
+   }
+}
+
+
+/* handleOperators - List the local and global operator information (RFC1459)
+ * Original ? simonb
+ */
+KINE_IRC2_STATS_HANDLER(Stats::handleOperators)
+{
+   protocol.sendNumeric(user, Numerics::RPL_STATSOLINE,
+			(true /* is global */ ? 'O' : 'o'),
+			"user@host.mask",
+			"*", // <=- use for flags, but RFC says '*'
+			"nickname",
+			"This is a description field");
+}
+
+
+/* handleUptime - Server uptime information (RFC1459)
  * Original 26/08/2001 simonb
  */
 KINE_IRC2_STATS_HANDLER(Stats::handleUptime)
@@ -61,7 +112,7 @@ KINE_IRC2_STATS_HANDLER(Stats::handleUptime)
      std::setw(2) << ((uptime.seconds % 3600) / 60) << ':' <<
      std::setw(2) << (uptime.seconds % 60);
    
-   // Send the up-time
+   // Send the uptime
    protocol.sendNumeric(user, Numerics::RPL_STATSUPTIME,
 			GETLANG(irc2_RPL_STATSUPTIME,
 				String::convert(uptime.seconds / 86400),

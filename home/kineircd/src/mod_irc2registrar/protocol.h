@@ -38,6 +38,8 @@ namespace Kine {
    namespace mod_irc2registrar {
       class Protocol : public LibIRC2::Protocol {
        private:
+	 static const char* const protocolName;	// 'Official name' for us
+	 
 	 const Listener& listener;		// The listener who invoked us
 	 
 	 Registrant registrantData;		// Collected registrant info
@@ -126,6 +128,18 @@ namespace Kine {
 	 // Destructor
 	 ~Protocol(void)
 	   {};
+	 
+	 
+	 // Return some sort of official name of this protocol
+	 const char* const getProtocolName(void) const
+	   { return protocolName; };
+	 
+	 // Return some sort of identifying name for this instance
+	 const std::string* const getIdentifyingName(void) const
+	   {
+	      return (registrantData.name.empty() ?
+		      0 : &registrantData.name);
+	   };
       }; // class Protocol
    }; // namespace mod_irc2registrar
 }; // namespace Kine

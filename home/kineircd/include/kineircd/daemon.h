@@ -61,6 +61,12 @@ namespace Kine {
       // The 'INFO' data type, which is dynamically generated
       typedef std::vector < std::string > info_type;
       
+# ifdef KINE_STL_HAS_SLIST
+      typedef std::slist <Connection*> connections_type;
+# else
+      typedef std::list <Connection*> connections_type;
+# endif
+      
     private:
       runlevel_type runlevel;			//!< What stage is the daemon in
       
@@ -78,11 +84,6 @@ namespace Kine {
       loggerList_type loggers;
 
       // The list of connections (this should be hidden)
-# ifdef KINE_STL_HAS_SLIST
-      typedef std::slist <Connection*> connections_type;
-# else
-      typedef std::list <Connection*> connections_type;
-# endif
       connections_type connections;
 
       // The protocol list
@@ -134,6 +135,11 @@ namespace Kine {
       const AISutil::Time& getTime(void) const
 	{ return currentTime; };
 
+      
+      //! Return the connections list
+      const connections_type& getConnections(void) const
+	{ return connections; };
+
       //! Increase the sent bytes count
       void addSentBytes(const unsigned int bytes)
 	{ sentBytes += bytes; };
@@ -142,6 +148,7 @@ namespace Kine {
       void addReceivedBytes(const unsigned int bytes)
 	{ receivedBytes += bytes; };
 
+      
       // Protocol set manipulators, for the registrar and modules to tap into
       bool registerProtocol(ProtocolInfo& info);
       void deregisterProtocol(const ProtocolInfo& info);

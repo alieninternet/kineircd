@@ -41,6 +41,11 @@ using namespace Kine::mod_irc2user;
 using AISutil::String;
 
 
+// Our "official" protocol name
+const char* const Protocol::protocolName =
+  "irc2user";
+
+
 /* Protocol - Constructor/Initialise the connection
  * Original 12/08/2001 simonb
  */

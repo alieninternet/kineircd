@@ -41,7 +41,9 @@ using namespace Kine::LibIRC2;
 Protocol::Protocol(Kine::Connection& c, std::string& iq, std::string& oq)
   : Kine::Protocol(c),
     lineTerminator("\r\n"),
-    inputQueue(iq)
+    inputQueue(iq),
+    sentMessageCount(0),
+    receivedMessageCount(0)
 {
    // Push the old output queue onto the new one..
    outputQueue.push(oq);
@@ -60,6 +62,9 @@ void Protocol::parseLine(const std::string& line)
    std::string destination;
    parameters_type parameters;
 
+   // Oh look! It's a message! Increase the received message counter
+   ++receivedMessageCount;
+   
    // Do we have an origin/destination to break out?
    if (line[0] == ':') {
       origin = message.nextToken().substr(1);

@@ -32,12 +32,15 @@ namespace Kine {
    
    //! Connection class
    class Connection {
+    public:
+      typedef unsigned long long byteCount_type;
+      
     private:
       AISutil::Socket& socket;		//!< The connected socket
       Protocol* protocol;		//!< The protocol we are running
       
-      unsigned long long sentBytes;	//!< Number of bytes sent
-      unsigned long long receivedBytes;	//!< Number of bytes received
+      byteCount_type sentBytes;		//!< Number of bytes sent
+      byteCount_type receivedBytes;	//!< Number of bytes received
       
       const AISutil::Time connectedTime;//!< Time connection was established
       AISutil::Time lastSpoke;		//!< Time the connection last spoke
@@ -55,9 +58,23 @@ namespace Kine {
       const AISutil::Socket& getSocket(void) const
 	{ return socket; };
 
+      
+      //! Return the protocol in use (read-only access)
+      const Protocol* const getProtocol(void) const
+	{ return protocol; }; 
+      
       //! Replace the protocol with something new
       void setProtocol(Protocol& p)
 	{ protocol = &p; };
+
+      
+      //! Return the number of bytes sent
+      const byteCount_type getSentBytes(void) const
+	{ return sentBytes; };
+      
+      //! Return the number of bytes sent
+      const byteCount_type getReceivedBytes(void) const
+	{ return receivedBytes; };
       
       //! Return the connection time
       const AISutil::Time& getConnectedTime(void) const 
@@ -67,11 +84,13 @@ namespace Kine {
       const AISutil::Time& getLastSpoke(void) const 
 	{ return lastSpoke; };
 
+      
       //! Handle input on connection
       bool handleInput(void);
 
       //! Send a chunk from the output queue
       void sendOutput(void);
+      
       
       //! Close the connection
       void goodbye(void);
