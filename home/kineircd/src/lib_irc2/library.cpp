@@ -39,16 +39,19 @@ namespace {
  */
 bool Kine::LibIRC2::init(void)
 {
+   // Increase the reference counter
+   ++references;
+   
    // Do we really want to initialise?
-   if (references == 0) {
+   if (references == 1) {
       // Register the language map
       if (!Kine::languages().registerMap(Kine::LibIRC2::Language::tagMap)) {
 	 return false;
       }
    }
    
-   // Increase the reference counter
-   ++references;
+   // If we got this far, then everything would have worked out fine
+   return true;
 }
 
 
