@@ -259,8 +259,6 @@ bool Daemon::init(String const &configFile)
       
       // For our sanity, just in case.
       sslContext = 0;
-      
-						      exit(0);
    }
 #endif
 

@@ -1,0 +1,14 @@
+
+If the server is used in some sort of automated script, the following return
+values from the daemon may be used to determine why the server has exited
+(each exit point inside the daemon has an individual number to assist with
+hunting down potential issues).
+
+  #  | Description
+-----+-------------------------------------------------------------------------
+  0  | OK (No error)
+  1  | Error (undefinied)
+  2  | Bad command line parameter(s)
+  3  | Could not initialise the IRC Daemon
+  4  | Could not execute fork() request
+  5  | Caught an ugly signal and had to die (only applies if not dumping core)
