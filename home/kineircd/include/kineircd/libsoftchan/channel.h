@@ -29,7 +29,7 @@
 namespace Kine {
    namespace LibSoftChan {
       //! An abstract class for a software controlled channel (or 'softchan')
-      class Channel : Kine::Channel {
+      class Channel : public Kine::Channel {
        public:
 	 //! Constructor
 	 Channel(void)
