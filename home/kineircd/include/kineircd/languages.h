@@ -64,7 +64,7 @@ namespace Kine {
       };
       typedef TagMapEntry tagMap_type[];
 
-      // The type of a 'parameter' (used in substitutions)
+      //! The type of a 'parameter' (used in substitutions)
       typedef std::string parameter_type;
       
       /* The type of a 'parameter list'. Parameter lists are sent along side
@@ -80,7 +80,7 @@ namespace Kine {
       static const char* const replacementObjectGlyph;
       static const char* const replacementCharacterGlyph;
 
-      // The ID of the 'unknown tag'
+      //! The ID of the 'unknown tag'
       static const tagID_type unknownTagID = 0;
 
       /* Language data class, this holds information about the language, along
@@ -89,7 +89,7 @@ namespace Kine {
        */
       class LanguageData {
        public:
-	 // Tag data type
+	 //! Tag data type
 	 typedef std::vector < std::string* > tagData_type;
 	 
        private:
@@ -102,34 +102,44 @@ namespace Kine {
 	 
 	 tagData_type tagData;			//!< The tag data itself!
 
-	 // Merge the given language data "over" this language data
+	 //! Merge the given language data "over" this language data
 	 void mergeWith(const LanguageData& newData);
 	 
        public:
-	 // Constructor
+	 //! Constructor
 	 LanguageData(void)
 	   : fileRevision(0),
 	     tagCount(0)
 	   {};
 	 
-	 // Destructor
+	 //! Destructor
 	 ~LanguageData(void);
 	 
-	 // Look for a given TID's data, and return it if possible
+	 //! Look for a given TID's data, and return it if possible
 	 const std::string* const 
 	   findTag(const Languages::tagID_type tagID) const;
 	 
-	 // Grab other stuff..
+	 //! Return the language code (BCP-0047) related to the data
 	 const std::string& getLanguageCode(void) const
 	   { return languageCode; };
+	 
+	 //! Return the name of the language, as said in its own language
 	 const std::string& getLanguageName(void) const
 	   { return languageName; };
+	 
+	 //! Return a note, if any, associated with this language
 	 const std::string& getLanguageNote(void) const
 	   { return languageNote; };
+	 
+	 //! Return the contact address (email/url/etc) of a maintainer, if any
 	 const std::string& getMaintainer(void) const
 	   { return maintainer; };
+	 
+	 //! Return the unique revision number of this data
 	 const unsigned long getFileRevision(void) const
 	   { return fileRevision; };
+	 
+	 //! Return the real number of tags contained within this data
 	 const unsigned long getTagCount(void) const
 	   { return tagCount; };
 	 
@@ -156,59 +166,59 @@ namespace Kine {
 # endif
       tagDictionary_type tagDictionary;
 
-      // The highest known TID
+      //! The highest known TID
       tagID_type highestTagID;
 
       // Languages!! Well, language data..
       typedef std::map < std::string, LanguageData* > languageDataList_type;
       languageDataList_type languageDataList;
       
-      // Our default language, to use if all else fails..
+      //! Our default language, to use if all else fails..
       const LanguageData* defaultLanguage;
       
-      // Our single instance (we exist once, and only once)
+      //! Our single instance (we exist once, and only once)
       static Languages* instance;
       
-      // Constructor
+      //! Constructor
       Languages(void)
 	: highestTagID(0),
 	  defaultLanguage(0)
 	{};
 
-      // Process a given tag name -> tag id map table using the tag dictionary
+      //! Process a given tag name -> tag id map table using the tag dictionary
       void processTagMap(tagMap_type map) const;
       
     public:
-      // Destructor
+      //! Destructor
       ~Languages(void)
 	{};
       
-      // Create the single instance of this class
+      //! Create the single instance of this class
       static void initInstance(void);
       
-      // Return the single instance of this class (hopefully it exists ;)
+      //! Return the single instance of this class (hopefully it exists ;)
       static Languages& getInstance(void)
 	{ return *instance; };
 
-      // Load a given language file
+      //! Load a given language file
       bool loadFile(const std::string& fileName, std::string& errString,
 		    const bool makeDefault = false);
       
-      // Add/remove/process tag name/ID correlation maps
+      //! Add/remove/process tag name/ID correlation maps
       bool registerMap(tagMap_type map);
       void deregisterMap(const tagMap_type map);
       void processMaps(void) const;
 
-      // Find the given language, by its code..
+      //! Find the given language, by its code..
       LanguageData* const findByCode(const std::string& code) const;
       
-      // Return the given language data, from the given language
+      //! Return the given language data, from the given language
       const std::string
 	get(const std::string& languageCode,
 	    const tagID_type tagID,
 	    const parameterList_type* const parameters = 0) const;
       
-      // Lazy functions for use when you have one to five parameters..
+      //! Lazy functions for use when you have one to five parameters..
       const std::string get(const std::string& languageCode,
 			    const tagID_type tagID,
 			    const parameter_type& p0) const;

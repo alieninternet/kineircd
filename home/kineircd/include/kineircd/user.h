@@ -36,17 +36,25 @@ namespace Kine {
       std::string awayMessage;			//!< Away message (empty = off)
 
     public:
-      // Constructor
+      //! Constructor
       User(void)
 	{};
       
-      // Destructor
+      //! Destructor
       virtual ~User(void)
 	{};
       
-      // Return variables
+      //! Return the virtual hostname of this user
       const std::string& getVirtualHostname(void) const
 	{ return virtualHostname; };
+      
+      //! Return the away message for this user. If blank, there is none set
+      const std::string& getAwayMessage(void) const
+	{ return awayMessage; };
+      
+      //! Check if this user is away
+      const bool isAway(void) const
+	{ return (!awayMessage.empty()); };
    };
 };
 

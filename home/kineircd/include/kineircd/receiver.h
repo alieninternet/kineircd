@@ -28,12 +28,12 @@
 namespace Kine {
    class Receiver {
     protected:
-      // Constructor
+      //! Constructor
       Receiver(void)
 	{};
       
     public:
-      // Destructor
+      //! Destructor
       virtual ~Receiver(void)
 	{};
    };

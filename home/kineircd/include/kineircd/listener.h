@@ -40,23 +40,23 @@ namespace Kine {
       typedef unsigned int flags_type;
       
     private:
-      // The socket
+      //! The socket
       AISutil::Socket& socket;
       
-      // The pending acceptance backlog for this socket (for when we listen())
+      //! The pending acceptance backlog for this socket (for when we listen())
       unsigned short listenBacklog;
       
-      // Flags (see above)
+      //! Flags (see above)
       flags_type flags;	
       
-      // Are we listening?
+      //! Are we listening?
       bool listening;
       
-      // How many accept()'s have we done since our creation?
+      //! How many accept()'s have we done since our creation?
       unsigned long int acceptCount;
       
     public:
-      // Constructor
+      //! Constructor
       Listener(AISutil::Socket& s, const unsigned short lb, 
 	       const flags_type f = 0)
 	: socket(s),
@@ -66,34 +66,34 @@ namespace Kine {
           acceptCount(0)
 	{};
       
-      // Destructor
+      //! Destructor
       ~Listener(void)
 	{ delete &socket; };
       
-      // Make the socket listen
+      //! Make the socket listen
       const bool listen(void);
       
-      // Are we listening?
+      //! Are we listening?
       const bool isListening(void) const
 	{ return listening; };
       
-      // Return the flags
+      //! Return the flags
       const flags_type getFlags(void) const
 	{ return flags; };
       
-      // Check if a specific flag is set
+      //! Check if a specific flag is set
       const bool isFlagSet(const Flags::type flag) const
 	{ return (flags & flag); };
       
-      // Return the number of accepts we have done since we started
+      //! Return the number of accepts we have done since we started
       const unsigned long int getAcceptCount(void) const
 	{ return acceptCount; };
       
-      // Return the socket's file descriptor
+      //! Return the socket's file descriptor
       const int getFD(void) const
 	{ return socket.getFD(); };
       
-      // Accept a new connection from the socket
+      //! Accept a new connection from the socket
       AISutil::Socket* const accept(void)
 	{
 	   acceptCount++;

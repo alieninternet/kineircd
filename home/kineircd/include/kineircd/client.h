@@ -46,18 +46,20 @@ namespace Kine {
       
       
     protected:
-      // Constructor
+      //! Constructor
       Client(void)
 	{};
       
     public:
-      // Destructor
+      //! Destructor
       virtual ~Client(void)
 	{};
       
-      // Return variables
+      //! Return the client's nickname
       const std::string& getNickname(void) const
 	{ return nickname; };
+      
+      //! Return the client's description/real name/gecos field
       const std::string& getDescription(void) const
 	{ return description; };
    };

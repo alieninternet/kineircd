@@ -73,7 +73,7 @@ namespace Kine {
       const Mask::lazy_type logMask;			//!< OK log message types
       
     private:
-      // Log a string of text
+      //! Log a string of text
       virtual void logLine(const std::string& str,
       	                   const Mask::type mask) = 0;
       
@@ -87,10 +87,10 @@ namespace Kine {
       virtual ~Logger(void) 
 	{};
    
-      // Is the log ok?
+      //! Is the log ok?
       virtual bool ok(void) const = 0;
 
-      // Pass a line of text to the logging function if it matches our mask
+      //! Pass a line of text to the logging function if it matches our mask
       void log(const std::string &str, const Mask::type mask)
 	{
 	   if (logMask & mask) {

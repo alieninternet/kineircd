@@ -36,17 +36,19 @@ namespace Kine {
       time_t lastAwake;				//!< Time this user was 'awake'
       
     public:
-      // Constructor
+      //! Constructor
       LocalUser(void)
 	{};
       
-      // Destructor
+      //! Destructor
       virtual ~LocalUser(void)
 	{};
       
-      // Return variables
+      //! Return the last time this nickname was changed by the user
       const time_t& getLastNickChange(void) const
 	{ return lastNickChange; };
+      
+      //! Return the last time this user was known to be not idle
       const time_t& getLastAwake(void) const
 	{ return lastAwake; };
    };

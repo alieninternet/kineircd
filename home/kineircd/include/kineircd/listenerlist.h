@@ -44,21 +44,21 @@ namespace Kine {
 # endif
       
     private:
-      // The list of listeners
+      //! The list of listeners
       listeners_type listeners;
 
     public:
-      // Constructor
+      //! Constructor
       ListenerList(void)
 	{};
       
-      // Destructor
+      //! Destructor
       ~ListenerList(void);
 
-      // Start all listeners listening
+      //! Start all listeners listening
       void startAll(void);
 
-      // Return the listen list (should be temporary)
+      //! Return the listen list (should be temporary)
       const listeners_type& getList(void) const
 	{ return listeners; };
 

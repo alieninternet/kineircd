@@ -35,18 +35,20 @@ namespace Kine {
       time_t signonTime;			//!< Time of connection
       
     protected:
-      // Constructor
+      //! Constructor
       Entity(void)
 	{};
       
     public:
-      // Destructor
+      //! Destructor
       virtual ~Entity(void)
 	{};
       
-      // Return variables
+      //! Return the hostname
       const std::string& getHostname(void) const
 	{ return hostname; };
+      
+      //! Return the time this entity initially connected to the network
       const time_t& getSignonTime(void) const
 	{ return signonTime; };
    };

@@ -63,10 +63,10 @@ namespace Kine {
       static const AISutil::String::size_type operPasswordStrBaseLongPad = 5;
       
     private:
-      // The config file to use..
+      //! The config file to use..
       std::string configFile;
       
-      // Are we configuring?
+      //! Are we configuring?
       bool configuring;
 [+DEFINE output-variables+][+FOR definition+][+
  IF (or
@@ -98,17 +98,17 @@ namespace Kine {
       static LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varHandleOldConfig);
 # endif
       
-      // Out single instance
+      // Our single instance
       static Config* instance;
       
-      // Constructor
+      //! Constructor
       Config(void);
       
     public:
-      // Destructor
+      //! Destructor
       ~Config(void);
       
-      // Get the single instance of this class
+      //! Get the single instance of this class
       static Config& getInstance(void)
 	{
 	   if (instance == 0) {
@@ -117,15 +117,15 @@ namespace Kine {
 	   return *instance;
 	};
       
-      // Grab the configuration file name
+      //! Grab the configuration file name
       const std::string& getConfigFile(void) const
 	{ return configFile; };
 
-      // Are we in the middle of configuration?
+      //! Are we in the middle of configuration?
       const bool isConfiguring(void) const
         { return configuring; };
 
-      // Load/parse the config (from the parser routines)
+      //! Load/parse the config (from the parser routines)
       bool configure(void);
       bool configure(const std::string& file)
 	{
@@ -146,7 +146,7 @@ namespace Kine {
    }; // class Config
 
 
-   // Lazy reference function :)
+   //! Return the current instance of the Config:: class
    inline static Config& config(void)
      { return Config::getInstance(); };
 }; // namespace Kine

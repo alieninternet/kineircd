@@ -31,11 +31,11 @@
 namespace Kine {
    class Network : public Entity, public Sender {
     public:
-      // Constructor
+      //! Constructor
       Network(void)
 	{};
       
-      // Destructor
+      //! Destructor
       virtual ~Network(void)
 	{};
    };

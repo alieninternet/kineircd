@@ -31,12 +31,12 @@
 namespace Kine {
    class Channel : public Entity, public Receiver {
     protected:
-      // Constructor
+      //! Constructor
       Channel(void)
 	{};
       
     public:
-      // Destructor
+      //! Destructor
       virtual ~Channel(void)
 	{};
    };

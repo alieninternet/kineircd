@@ -30,11 +30,11 @@
 namespace Kine {
    class Service : public Client {
     public:
-      // Constructor
+      //! Constructor
       Service(void)
 	{};
       
-      // Destructor
+      //! Destructor
       virtual ~Service(void)
 	{};
    };

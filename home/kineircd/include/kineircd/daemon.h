@@ -52,7 +52,7 @@ extern "C" {
 # include <kineircd/protocolinfo.h>
 
 namespace Kine {
-   // The Daemon class
+   //! The Daemon class
    class Daemon {
     public:
       enum runlevel_type {
@@ -92,47 +92,47 @@ namespace Kine {
     private: // <=- temporary
       int maxDescriptors;			//!< Highest descriptor to check
       
-      // Set the current time
+      //! Set the current time
       void setTime(void) 
 	{ (void)gettimeofday(&currentTime, NULL); };
 
-      // Process a new connection
+      //! Process a new connection
       void newConnection(Listener& listener);
 
-      // Our single instance :)
+      //! Our single instance :)
       static Daemon* instance;
       
-      // Constructor
+      //! Constructor
       Daemon(void);
       
     public:
-      // Destructor
+      //! Destructor
       ~Daemon(void);
 
-      // Create the single instance of this class
+      //! Create the single instance of this class
       static void initInstance(void);
       
-      // Get the single instance of this class (this class 'always' exists)
+      //! Get the single instance of this class (this class 'always' exists)
       static Daemon& getInstance(void)
 	{ return *instance; };
       
-      // Return the run-level or stage the daemon is running in
+      //! Return the run-level or stage the daemon is running in
       runlevel_type const getRunlevel(void) const
 	{ return runlevel; };
       
-      // Grab our 'uptime'
+      //! Grab our 'uptime'
       unsigned long getUptime(void) const
 	{ return (unsigned long)(currentTime.tv_sec - startTime); };
 
-      // Grab the time now
+      //! Grab the time now
       const timeval& getTime(void) const
 	{ return currentTime; };
 
-      // Increase the sent bytes count
+      //! Increase the sent bytes count
       void addSentBytes(const unsigned int bytes)
 	{ sentBytes += bytes; };
       
-      // Increase the sent bytes count
+      //! Increase the sent bytes count
       void addReceivedBytes(const unsigned int bytes)
 	{ receivedBytes += bytes; };
 
@@ -148,12 +148,12 @@ namespace Kine {
       void log(const std::string& str,
 	       const Logger::Mask::type mask = Logger::Mask::Housekeeping);
       
-      // Main loop
+      //! Main loop
       Exit::status_type run(void);
    };
 
    
-   // Lazy reference function :)
+   //! Return the current instance of the Daemon:: class
    inline static Daemon& daemon(void)
      { return Daemon::getInstance(); };
 };

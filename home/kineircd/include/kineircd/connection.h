@@ -34,47 +34,47 @@ namespace Kine {
    
    class Connection {
     private:
-      AISutil::Socket& socket;		// The connected socket
-      Protocol* protocol;		// The protocol we are running
+      AISutil::Socket& socket;		//!< The connected socket
+      Protocol* protocol;		//!< The protocol we are running
       
-      unsigned long long sentBytes;	// Number of bytes sent
-      unsigned long long receivedBytes;	// Number of bytes received
+      unsigned long long sentBytes;	//!< Number of bytes sent
+      unsigned long long receivedBytes;	//!< Number of bytes received
       
-      const time_t connectedTime;	// Time connection was established
-      time_t lastSpoke;			// Time the connection last spoke
+      const time_t connectedTime;	//!< Time connection was established
+      time_t lastSpoke;			//!< Time the connection last spoke
 
-      bool connected;			// Are we connected?
+      bool connected;			//!< Are we connected?
       
     public:
-      // Class constructor
+      //! Class constructor
       Connection(AISutil::Socket& s);
       
-      // Shutdown connection
+      //! Shutdown connection
       ~Connection(void);
 
-      // Return the socket
+      //! Return the socket
       const AISutil::Socket& getSocket(void) const
 	{ return socket; };
 
-      // Replace the protocol with something new
+      //! Replace the protocol with something new
       void setProtocol(Protocol& p)
 	{ protocol = &p; };
       
-      // Return the connection time
+      //! Return the connection time
       const time_t getConnectedTime(void) const 
 	{ return connectedTime; };
       
-      // Return the last time this connection 'spoke'
+      //! Return the last time this connection 'spoke'
       time_t getLastSpoke(void) const 
 	{ return lastSpoke; };
 
-      // Handle input on connection
+      //! Handle input on connection
       bool handleInput(void);
 
-      // Send a chunk from the output queue
+      //! Send a chunk from the output queue
       void sendOutput(void);
       
-      // Close the connection
+      //! Close the connection
       void goodbye(void);
    };
 };
@@ -82,5 +82,4 @@ namespace Kine {
 // Complete forwarded declarations
 # include <kineircd/protocol.h>
 
-#endif // _INCLUDE_KINEIRCD_CONNECTION_H_ 
-
+#endif // _INCLUDE_KINEIRCD_CONNECTION_H_

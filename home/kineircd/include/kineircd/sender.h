@@ -28,12 +28,12 @@
 namespace Kine {
    class Sender {
     protected:
-      // Constructor
+      //! Constructor
       Sender(void)
 	{};
       
     public:
-      // Destructor
+      //! Destructor
       virtual ~Sender(void)
 	{};
    };
