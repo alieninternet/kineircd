@@ -57,12 +57,6 @@ ModuleDescriptor::~ModuleDescriptor(void)
 ModuleDescriptor* const ModuleDescriptor::loadModule(const String& filename,
 						     String& errString) 
 {
-   // Initialise the libtool dlopen mechanism incase it has not been done yet
-   if (lt_dlinit() != 0) {
-      errString = "Unable to initialise ltdl";
-      return 0;
-   }
-   
 #ifdef KINE_DEBUG_PSYCHO
    debug("ModuleDescriptor::loadModule() - Trying to load " + filename);
 #endif
