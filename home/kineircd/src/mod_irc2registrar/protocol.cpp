@@ -563,25 +563,36 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVER)
 
    // Check what the third variable is here...
    
-//   startStamp = line.nextToken().toLong();
-//   linkStamp = line.nextToken().toLong();
-//   protocol = line.nextToken();
-//   realname = 
-//     line.nextColonToken().substr(0, 
-//				  config().
-//				  getOptionsLimitsServersMaxDescriptionLength());
+   if (parameters.size() >= 5) {
+      registrantData.startStamp = parameters[2].toLong();
+      registrantData.linkStamp = parameters[3].toLong();
+      registrantData.protocol = parameters[4];
+      
+#ifdef KINE_DEBUG
+      // Send what we got to the debugging output
+      debug("mod_irc2registrar: -=>   startStamp: " +
+	    String::convert(registrantData.startStamp));
+      debug("mod_irc2registrar: -=>    linkStamp: " +
+	    String::convert(registrantData.linkStamp));
+      debug("mod_irc2registrar: -=>     Protocol: " +
+	    registrantData.protocol);
+#endif
+      
+      registrantData.description =
+	parameters[5]/*.substr(0,
+			     config().
+			     getOptionsLimitsServersMaxDescriptionLength())*/;
+   } else {
+      registrantData.description =
+	parameters[2]/*.substr(0, 
+			     config().
+			     getOptionsLimitsServersMaxDescriptionLength())*/;
+   }
    
-//#ifdef KINE_DEBUG
-//   // Send what we got to the debugging output
-//   debug("mod_irc2registrar: -=>   startStamp: " +
-//	 String::convert(startStamp));
-//   debug("mod_irc2registrar: -=>    linkStamp: " +
-//	 String::convert(linkStamp));
-//   debug("mod_irc2registrar: -=>     Protocol: " +
-//	 protocol);
-//   debug("mod_irc2registrar: -=>         Name: " +
-//	 realname);
-//#endif
+#ifdef KINE_DEBUG
+   debug("mod_irc2registrar: -=>         Name: " +
+	 registrantData.description);
+#endif
    
    // Set the registration mode
    registrationType = RegistrationType::SERVER;
