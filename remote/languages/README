@@ -137,20 +137,31 @@ Control tags
 
  .LANGCODE	(required)
  
-    This must be a registered language code defined by ISO-639-1, ISO-639-2 or
-   by the IANA. Please see RFC-3066 for more information, including
-   information on how to register a new languages/dialects. 
-   
-    See http://www.loc.gov/standards/iso639-2/bibcodes.html for more
-   information on the ISO-639-1 and ISO-639-2 standards. For information
-   on the IANA registrations (dialects and 'i-*' names), please see
-   http://www.iana.org/assignments/language-tags for details.
+    This must be a registered language code as per BCP-0047. BCP-0047 includes
+   language codes from a number of sources, but may have some limits, so it
+   is advised that you read that document first prior to presuming a language
+   code.
+
+    For more information:
+    
+     * http://www.rfc-editor.org/rfc/bcp/bcp47.txt contains information about
+       language codes used to identify languages on the internet. It also
+       contains information on how to register specific dialects, and other
+       such things.
+       
+     * http://www.iana.org/assignments/language-tags has a list of language
+       codes for unique languages or language variations, as per BCP-0047.
+
+     * http://www.loc.gov/standards/iso639-2/langcodes.html lists the ISO
+       assigned language codes, however in order to remain compliant with
+       BCP-0047 you must refer to the ISO-639-1 codes, and not ISO-639-2,
+       as per the requirements set out in BCP-0047.
 
 
  .LANGNAME	(required)
 
     This is the name of the language in use, it should be the same as the
-   name associated with the ISO-639-(1/2) or IANA Language Tags. The name of
+   name associated with the BCP-0047 or IANA Language Tags. The name of
    the language should be in it's own language, eg. 'English' in English,
    'Deutsch' in German etc.
 
