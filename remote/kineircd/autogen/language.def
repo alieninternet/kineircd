@@ -1293,6 +1293,12 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_RPL_ENDOF_GENERIC_LANGUAGE";
+   component	= "mod_irc2user";
+   data_en	= "End of LANGUAGE list";
+};
+
+tags = {
    name		= "irc2_RPL_ENDOFINFO";
    component	= "mod_irc2user";
    data_en	= "End of INFO list";
