@@ -301,8 +301,8 @@ dnl Check that we have an snmp_dir variable, and the lib directory exist
 if test -n "$snmp_dir" -a -d "$snmp_dir/lib"; then
     dnl Blindly agree on that basis. How stupid is that..
     AC_MSG_RESULT($snmp_dir)
-    MOD_SNMP_INCDIRS="-I$snmp_dir/include"
-    MOD_SNMP_LIBS="-L$snmp_dir/libs -lnetsnmpagent -lnetsnmpmibs -lsnmp"
+    MOD_SNMP_INCDIRS="`net-snmp-config --cflags`"
+    MOD_SNMP_LIBS="`net-snmp-config --agent-libs`"
     kineircd_test_netsnmp_broken=no
 else
   AC_MSG_RESULT(not found)
