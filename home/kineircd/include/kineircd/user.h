@@ -55,7 +55,7 @@ namespace Kine {
       //! Check if this user is away
       const bool isAway(void) const
 	{ return (!awayMessage.empty()); };
-   };
-};
+   }; // class User
+}; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_USER_H_

@@ -36,7 +36,7 @@ namespace Kine {
       //! Destructor
       virtual ~Receiver(void)
 	{};
-   };
-};
+   }; // class Receiver
+}; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_RECEIVER_H_

@@ -28,11 +28,16 @@
 # include <string>
 # include <ctime>
 
+# include <kineircd/server.h>
+
+
 namespace Kine {
    class Entity {
     private:
       std::string hostname;			//!< Hostname
+      std::string description;			//!< Description/Real name
       time_t signonTime;			//!< Time of connection
+      Server& server;				//!< Server this client is on
       
     protected:
       //! Constructor
@@ -48,10 +53,18 @@ namespace Kine {
       const std::string& getHostname(void) const
 	{ return hostname; };
       
+      //! Return the client's description/real name/gecos field
+      const std::string& getDescription(void) const
+	{ return description; };
+
       //! Return the time this entity initially connected to the network
       const time_t& getSignonTime(void) const
 	{ return signonTime; };
-   };
-};
+
+      //! Return a pointer to the server this entity is connected to
+      const Server& getServer(void) const
+	{ return server; };
+   }; // class Entity
+}; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_ENTITY_H_

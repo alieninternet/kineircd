@@ -38,7 +38,7 @@ namespace Kine {
       //! Destructor
       virtual ~Network(void)
 	{};
-   };
-};
+   }; // class Network
+}; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_NETWORK_H_

@@ -39,7 +39,7 @@ namespace Kine {
       //! Destructor
       virtual ~Channel(void)
 	{};
-   };
-};
+   }; // class Channel
+}; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_CHANNEL_H_

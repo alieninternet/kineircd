@@ -37,7 +37,7 @@ namespace Kine {
       //! Destructor
       virtual ~Service(void)
 	{};
-   };
-};
+   }; // class Service
+}; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_SERVICE_H_

@@ -51,7 +51,7 @@ namespace Kine {
       //! Return the last time this user was known to be not idle
       const time_t& getLastAwake(void) const
 	{ return lastAwake; };
-   };
-};
+   }; // class LocalUser
+}; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_LOCALUSER_H_

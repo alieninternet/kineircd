@@ -30,15 +30,12 @@
 # include <kineircd/entity.h>
 # include <kineircd/sender.h>
 # include <kineircd/receiver.h>
-# include <kineircd/server.h>
 # include <kineircd/channel.h>
 
 namespace Kine {
    class Client : public Entity, public Sender, public Receiver {
     private:
       std::string nickname;			//!< Nickname
-      std::string description;			//!< Description/Real name
-      Server* server;				//!< Server this client is on
       
       // The channel list for this client
       typedef std::map < std::string, Channel* const > channels_type;
@@ -58,11 +55,7 @@ namespace Kine {
       //! Return the client's nickname
       const std::string& getNickname(void) const
 	{ return nickname; };
-      
-      //! Return the client's description/real name/gecos field
-      const std::string& getDescription(void) const
-	{ return description; };
-   };
-};
+   }; // class Client
+}; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_CLIENT_H_
