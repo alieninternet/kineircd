@@ -36,7 +36,6 @@ extern "C" {
 }
 
 #include "kineircd/daemon.h"
-#include "kineircd/exit.h"
 #include "kineircd/version.h"
 #include "debug.h"
 
@@ -46,16 +45,18 @@ using namespace Kine;
 /* Daemon - Init the server
  * Original 11/08/01 simonb
  */
-Daemon::Daemon(Config &conf, Signals &sigs)
-  : stage(STAGE_INIT),
+Daemon::Daemon(Config& conf, Signals& sigs)
+  : runlevel(RUNLEVEL_INIT),
     config(conf),
-    signals(sigs)
+    signals(sigs),
+    startTime(time(NULL)),
+    timeNow(startTime)
 {
    // Fire-up the modules we have loaded!
    config.getModuleList().startAll(*this);
    
-   // We are ready to go, go into normal running stage
-   stage = STAGE_NORMAL;
+   // We are ready to go, go into normal running runlevel
+   runlevel = RUNLEVEL_NORMAL;
 }
 
 
@@ -75,12 +76,12 @@ Daemon::~Daemon(void)
  * Original 11/08/01 simonb
  * Note: Unfortuantely not a very nice looking routine..
  */
-int Kine::Daemon::run(void)
+Exit::status_type Kine::Daemon::run(void)
 {
    /* Make sure the init was all happy, else there isn't much point us
     * going beyond this point really
     */
-   if (stage != STAGE_NORMAL) {
+   if (runlevel != RUNLEVEL_NORMAL) {
       return Exit::ERR_DAEMON_INIT;
    }
    
@@ -95,7 +96,7 @@ int Kine::Daemon::run(void)
       debug("Doing nothing...");
       
       // Check if we are in shutdown mode
-      if (stage == STAGE_SHUTDOWN) {
+      if (runlevel == RUNLEVEL_SHUTDOWN) {
 	 // check queues here..
 	 
 	 // If we get here the queues must be all dry

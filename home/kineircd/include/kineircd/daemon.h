@@ -26,44 +26,65 @@
 
 # include "kineircd/kineircdconf.h"
 
+# include <ctime>
+
 // Forwarded declarations (completed after class)
 namespace Kine {
    class Config;
    class Signals;
 };
 
+# include "kineircd/exit.h"
 # include "kineircd/str.h"
 
 namespace Kine {
    // The Daemon class
    class Daemon {
-    private:
-      enum stage_type {
-	 STAGE_INIT,				// Initialising the daemon
-	 STAGE_NORMAL,				// Running normally
-         STAGE_SHUTDOWN				// The daemon is shutting down
-      } stage;
+    public:
+      enum runlevel_type {
+	 RUNLEVEL_INIT,			// Initialising the daemon
+	 RUNLEVEL_NORMAL,		// Running normally
+         RUNLEVEL_SHUTDOWN		// The daemon is shutting down
+      };
       
-      Config &config;					// Configuration data
-      Signals &signals;					// Signal handlers
+    private:
+      runlevel_type runlevel;			// What stage is the daemon in
+      
+      Config& config;				// Configuration data
+      Signals& signals;				// Signal handlers
+      
+      const time_t startTime;			// Time the daemon started
+      time_t timeNow;				// The time now
       
     public:
       // Constructor
-      Daemon(Config &conf, Signals &sigs);
+      Daemon(Config& conf, Signals& sigs);
 
       // Destructor
       ~Daemon(void);
 
+      // Return the run-level or stage the daemon is running in
+      runlevel_type const getRunlevel(void) const
+	{ return runlevel; };
+      
       // Grab the configuration data
-      Config &getConfig(void) const
+      const Config& getConfig(void) const
 	{ return config; };
       
       // Grab the signal handler
-      Signals &getSignals(void)
+      Signals& getSignals(void)
 	{ return signals; };
       
+      // Grab our 'uptime'
+      unsigned long getUptime(void) const
+	{ return (unsigned long)difftime(timeNow, startTime); };
+
+      // Grab the time now
+      time_t const getTime(void) const
+	{ return timeNow; };
+      
       // Main loop
-      int run(void);
+      Exit::status_type run(void);
    };
 };
 
