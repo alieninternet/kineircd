@@ -26,7 +26,6 @@
 # define _INCLUDE_KINEIRCD_CLIENT_H_ 1
 
 # include <string>
-# include <ctime>
 
 # include <kineircd/entity.h>
 # include <kineircd/sender.h>
@@ -39,7 +38,6 @@ namespace Kine {
     private:
       std::string nickname;			// Nickname
       std::string description;			// Description/GECOS/Real name
-      time_t signonTime;			// Time of connection
       Server* server;				// Server this client is on
       
       // The channel list for this client
@@ -62,8 +60,6 @@ namespace Kine {
 	{ return nickname; };
       const std::string& getDescription(void) const
 	{ return description; };
-      const time_t& getSignonTime(void) const
-	{ return signonTime; };
    };
 };
 

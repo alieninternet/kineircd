@@ -26,11 +26,13 @@
 # define _INCLUDE_KINEIRCD_ENTITY_H_ 1
 
 # include <string>
+# include <ctime>
 
 namespace Kine {
    class Entity {
     private:
       std::string hostname;			// Hostname
+      time_t signonTime;			// Time of connection
       
     protected:
       // Constructor
@@ -45,6 +47,8 @@ namespace Kine {
       // Return variables
       const std::string& getHostname(void) const
 	{ return hostname; };
+      const time_t& getSignonTime(void) const
+	{ return signonTime; };
    };
 };
 
