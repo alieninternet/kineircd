@@ -146,7 +146,7 @@ const std::wstring
 	 
 	 // What do we do with this substitution?
 	 switch (data[++i]) {
-#ifdef DEBUG
+#ifdef KINE_DEBUG
 # warning "Substitutions from the configuration are not internationalised"
 #endif
 	  case 'a': // The name of the server's administrator

@@ -100,7 +100,7 @@ void Registry::initInstance(void)
 }
 
 
-#ifdef DEBUG
+#ifdef KINE_DEBUG
 # warning "This file is crappy"
 #endif
 /* changeUserNickname - Change a user's nickname (may involve a key change)

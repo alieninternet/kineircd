@@ -50,7 +50,7 @@ const Error::error_type User::changeNickname(const Denizen& changer,
 					     const ClientName& newNickname)
 {
    // Check the nickname is valid
-#ifdef DEBUG
+#ifdef KINE_DEBUG
 # warning "fix me before committing :("
 #endif
    return Error::UNKNOWN_ERROR;

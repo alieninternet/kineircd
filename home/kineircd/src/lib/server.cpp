@@ -38,7 +38,7 @@ using namespace Kine;
  */
 const Error::error_type Server::addUser(User& user)
 {
-#ifdef DEBUG
+#ifdef KINE_DEBUG
 # warning "ICK!"
 #endif
    // For now, fob this off to the registry - ick ick ICK ICK.
