@@ -1,5 +1,5 @@
-/* operator.h
- * Operator class
+/* password.h
+ * Password class
  * 
  * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
@@ -21,37 +21,31 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_OPERATOR_H_
-# define _INCLUDE_KINEIRCD_OPERATOR_H_
+#ifndef _INCLUDE_KINEIRCD_PASSWORD_H_
+# define _INCLUDE_KINEIRCD_PASSWORD_H_
 
 # include "kineircd/str.h"
-# include "kineircd/password.h"
+# include "kineircd/utils.h"
 
-/* Note that the nickname of the operator is stored as the key of the map
- * that uses this structure
- */
-
-class Operator : public Password {
+class Password {
  private:
-   String const name;				// Name of this operator
-   const bool global;				// Global?
+   Utils::SHA1::digest_type const password;	// Password (hashed)
 
  public:
    // Constructor   
-   Operator(const String &n, const Utils::SHA1::digest_type &p, const bool g)
-     : Password(p),
-       name(n),
-       global(g)
+   Password(const Utils::SHA1::digest_type &p)
+     : password(p)
      {};
    
-   // Return the operator name (description)
-   const String &getName(void) const {
-      return name;
+   // Return the password digest
+   const Utils::SHA1::digest_type &getPassword(void) const {
+      return password;
    };
    
-   // Return whether or not this operator is global
-   bool isGlobal(void) const {
-      return global;
+   // Transform the nickname and password pair into SHA1 output
+   static Utils::SHA1::digest_type makePassword(String const &nickname,
+						String const &password) {
+      return Utils::SHA1::generate(nickname.IRCtoLower() + password);
    };
 };
 
