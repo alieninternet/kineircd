@@ -25,15 +25,16 @@
 # define _SRC_LIB_MODULES_DESCRIPTOR_H_ 1
 
 # include "kineircd/module.h"
+# include "kineircd/str.h"
 
 namespace Kine {
    class ModuleDescriptor {
     private:
       void *handle;				// Module handle from dlopen()
-      Module *module;				// The module's info itself
+      const Module *module;			// The module's info itself
       
       // Constructor
-      ModuleDescriptor(void *h, Module *m)
+      ModuleDescriptor(void *h, const Module *m)
 	: handle(h),
           module(m)
 	{};
@@ -45,6 +46,10 @@ namespace Kine {
       // Return the module
       const Module *getModule(void) const
 	{ return module; };
+
+      // Load a module, hopefully. Returns 0 (null) if we failed
+      static ModuleDescriptor *openModule(const String &moduleFile,
+					  String &errorReturn);
    };
 };
    

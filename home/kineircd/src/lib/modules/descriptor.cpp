@@ -46,3 +46,46 @@ ModuleDescriptor::~ModuleDescriptor(void)
    delete module;
 }
       
+
+/* openModule - Open a module using the given file
+ * Original 04/07/2002 simonb
+ */
+ModuleDescriptor *ModuleDescriptor::openModule(const String &moduleFile, 
+					       String &errorReturn) 
+{
+   // Try and load the given module
+   void *moduleHandle = dlopen(moduleFile.c_str(), RTLD_LAZY);
+   
+   // Check if the module loaded okay
+   if (moduleHandle == 0) {
+      // Set the error string
+      errorReturn = dlerror();
+      return 0;
+   }
+
+   char *error = 0;
+   
+   // Attempt to find the init function
+   KINE_MODULE_INIT_PROTOTYPE((*initFunction)) =
+     (KINE_MODULE_INIT_PROTOTYPE((*)))
+     dlsym(moduleHandle, KINE_MODULE_INIT_SYMBOL_NAME);
+   
+   // Check if we found something
+   if ((initFunction == 0) || 
+       ((error = dlerror()) != 0)) {
+      // Set the error string
+      errorReturn = error;
+      
+      // Close the function
+      (void)dlclose(moduleHandle);
+      return 0;
+   }
+   
+   // Initialise the module and grab its info!
+   const Module *moduleInfo = (*initFunction)();
+
+   // Check the structure perhaps here?
+   
+   // Return a new module descriptor
+   return new ModuleDescriptor(moduleHandle, moduleInfo);
+}
