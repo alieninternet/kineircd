@@ -243,6 +243,8 @@ AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS( \
 	errno.h \
 	fcntl.h \
+	iconv.h \
+	langinfo.h \
 	limits.h \
 	netdb.h \
 	pthread.h \
