@@ -68,8 +68,8 @@ namespace Kine {
       void sendNumeric(const RegistrationNumerics::numeric_type numeric)
 	{
 	   sendMessage(config().getOptionsServerName(),
-		       (registrantData.nickname.empty() ? '*' :
-			registrantData.nickname),
+		       (registrantData.name.empty() ? '*' :
+			registrantData.name),
 		       numeric, ':');
 	};
       
@@ -77,8 +77,8 @@ namespace Kine {
 		       const char* const data)
 	{
 	   sendMessage(config().getOptionsServerName(),
-		       (registrantData.nickname.empty() ? '*' :
-			registrantData.nickname),
+		       (registrantData.name.empty() ? '*' :
+			registrantData.name),
 		       numeric, data);
 	};
 

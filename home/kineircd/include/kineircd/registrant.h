@@ -41,7 +41,7 @@ namespace Kine {
       /* The nickname, given via NICK or SERVICE. This is the network name
        * if given by IIRCN for an IIRC connection.
        */
-      AISutil::String nickname;
+      AISutil::String name;
       
       // The username, given via NICK
       AISutil::String username;

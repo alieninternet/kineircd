@@ -123,7 +123,7 @@ void Registrar::parseMessage(const std::string& origin,
       
     case RegistrationType::USER:
       // Make sure all required fields have been given..
-      if (registrantData.nickname.empty() ||
+      if (registrantData.name.empty() ||
 	  registrantData.username.empty() ||
 	  registrantData.hostname.empty() ||
 	  (pongsLeft > 0)) {
@@ -159,7 +159,7 @@ void Registrar::parseMessage(const std::string& origin,
     case RegistrationType::IIRCN:
       // Make sure all required fields have been given..
       if (registrantData.password.empty() ||
-	  registrantData.nickname.empty() ||
+	  registrantData.name.empty() ||
 	  registrantData.hostname.empty() ||
 	  registrantData.protocol.empty() ||
 	  registrantData.linkStamp <= 0) {
@@ -195,7 +195,7 @@ void Registrar::parseMessage(const std::string& origin,
     case RegistrationType::SERVICE:
       // Make sure all required fields have been given..
       if (registrantData.password.empty() ||
-	  registrantData.nickname.empty() ||
+	  registrantData.name.empty() ||
 	  registrantData.distribution.empty()) {
 	 return;
       }
@@ -306,14 +306,14 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
    }
    
    // Rip out the data, then..
-   registrantData.nickname = parameters[0];
+   registrantData.name = parameters[0];
    registrantData.hostname = parameters[2];
    registrantData.protocol = parameters[3].toUpper();
    registrantData.linkStamp = parameters[4].toLong();
    
 #ifdef KINE_DEBUG_PSYCHO
    // Output debugging info
-   debug(" -=>      Network: " + registrantData.nickname);
+   debug(" -=>      Network: " + registrantData.name);
    debug(" -=> Gateway Host: " + registrantData.hostname);
    debug(" -=>   IIRC Proto: " + registrantData.protocol);
    debug(" -->   Time stamp: " + String::convert(registrantData.linkStamp));
@@ -386,9 +386,9 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
 //   }
    
    // If we got here, the nick was ok - allow it
-   registrantData.nickname = parameters[0];
+   registrantData.name = parameters[0];
 # ifdef KINE_DEBUG_PSYCHO
-   debug(" -=>         Nick: " + registrantData.nickname);
+   debug(" -=>         Nick: " + registrantData.name);
 # endif
    
    // Do we need to send a ping out?
