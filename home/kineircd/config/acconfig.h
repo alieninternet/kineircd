@@ -449,6 +449,7 @@
 /* Define these depending on which transport types you wish to support */
 # undef HAVE_TRANSPORT_TCP_IPV4
 # undef HAVE_TRANSPORT_TCP_IPV6
+# undef HAVE_TRANSPORT_SPX_IPX
   
   
 /* Define these depending on what protocols you want compiled in */

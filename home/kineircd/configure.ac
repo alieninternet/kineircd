@@ -1280,14 +1280,18 @@ AC_ARG_ENABLE(transport-tcp-ipv4,[
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
+     austhex_test_have_tcp_ipv4_transport=no
    else
      AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_TRANSPORT_TCP_IPV4)
+     austhex_test_have_tcp_ipv4_transport=yes
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
    AC_DEFINE(HAVE_TRANSPORT_TCP_IPV4)
+   austhex_test_have_tcp_ipv4_transport=yes
  ])
+AC_SUBST(austhex_test_have_tcp_ipv4_transport)
 
 AC_MSG_CHECKING([transport-tcp-ipv6 parameter])
 AC_ARG_ENABLE(transport-tcp-ipv6,[
@@ -1297,13 +1301,36 @@ AC_ARG_ENABLE(transport-tcp-ipv6,[
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
+     austhex_test_have_tcp_ipv6_transport=no
    else
      AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_TRANSPORT_TCP_IPV6)
+     austhex_test_have_tcp_ipv6_transport=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
+   austhex_test_have_tcp_ipv6_transport=no
  ])
+AC_SUBST(austhex_test_have_tcp_ipv6_transport)
+
+AC_MSG_CHECKING([transport-spx-ipx parameter])
+AC_ARG_ENABLE(transport-spx-ipx,[
+  --enable-transport-spx-ipx                 (Default is disabled)
+    Enable SPX/IPX connectivity to the server.
+ ],[
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+     austhex_test_have_spx_ipx_transport=no
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(HAVE_TRANSPORT_SPX_IPX)
+     austhex_test_have_spx_ipx_transport=yes
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+   austhex_test_have_spx_ipx_transport=no
+ ])
+AC_SUBST(austhex_test_have_spx_ipx_transport)
 
 AC_MSG_CHECKING([user-conn-ping parameter])
 AC_ARG_ENABLE(user-conn-ping,[
