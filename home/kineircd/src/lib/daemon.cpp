@@ -259,7 +259,7 @@ bool Daemon::registerLogger(Logger& logger)
    // Add the logger
    (void)loggers.insert(&logger);
    
-   return false;
+   return true;
 }
 
 
