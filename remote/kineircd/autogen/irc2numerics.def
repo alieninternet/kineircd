@@ -29,6 +29,7 @@ autogen definitions irc2numerics;
  *  [ registration = "yes"; ]
  *  [ conflict     = "yes"; ]
  *  [ obsolete     = "yes"; ]
+ *  [ repeated     = "yes"; ]
  * }
  */
 
@@ -41,7 +42,7 @@ lastupdated	= "$Date$";
 
 irc2numerics = {
    name		= "RPL_WELCOME";
-   numeric	= "001";
+   numeric	= "1";
    origin	= "RFC2812";
    format	= ":Welcome to the Internet Relay Network <nick>!<user>@<host>";
    comment	= "The first message sent after client registration. The text used varies widely";
@@ -49,7 +50,7 @@ irc2numerics = {
 
 irc2numerics = {
    name		= "RPL_YOURHOST";
-   numeric	= "002";
+   numeric	= "2";
    origin	= "RFC2812";
    format	= ":Your host is <servername>, running version <version>";
    comment	= "Part of the post-registration greeting. Text varies widely";
@@ -57,7 +58,7 @@ irc2numerics = {
 
 irc2numerics = {
    name		= "RPL_CREATED";
-   numeric	= "003";
+   numeric	= "3";
    origin	= "RFC2812";
    format	= ":This server was created <date>";
    comment	= "Part of the post-registration greeting. Text varies widely";
@@ -65,7 +66,7 @@ irc2numerics = {
 
 irc2numerics = {
    name		= "RPL_MYINFO";
-   numeric	= "004";
+   numeric	= "4";
    origin	= "RFC2812";
    format	= "<server_name> <version> <user_modes> <chan_modes>";
    comment	= "Part of the post-registration greeting";
@@ -73,16 +74,17 @@ irc2numerics = {
 
 irc2numerics = {
    name		= "RPL_MYINFO";
-   numeric	= "004";
+   numeric	= "4";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<server_name> <version> <user_modes> <chan_modes> <channel_modes_with_params> <user_modes_with_params> <server_modes> <server_modes_with_params>";
    comment	= "Same as RFC2812 however with additional fields to avoid additional 005 burden.";
+   repeated	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_BOUNCE";
-   numeric	= "005";
+   numeric	= "5";
    origin	= "RFC2812";
    format	= ":Try server <server_name>, port <port_number>";
    comment	= "Sent by the server to a user to suggest an alternative server, sometimes used when the connection is refused because the server is already full. Also known as RPL_SLINE (AustHex), and RPL_REDIR";
@@ -92,48 +94,48 @@ irc2numerics = {
 
 irc2numerics = {
    name		= "RPL_ISUPPORT";
-   numeric	= "005";
+   numeric	= "5";
    information	= "http://www.irc.org/tech_docs/005.html";
    comment	= "Also known as RPL_PROTOCTL (Bahamut, Unreal, Ultimate)";
 };
 
 irc2numerics = {
    name		= "RPL_MAP";
-   numeric	= "006";
+   numeric	= "6";
    origin	= "Unreal";
    conflict	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_MAPEND";
-   numeric	= "007";
+   numeric	= "7";
    origin	= "Unreal";
    conflict	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_SNOMASK";
-   numeric	= "008";
+   numeric	= "8";
    origin	= "ircu";
    comment	= "Server notice mask (hex)";
 };
 
 irc2numerics = {
    name		= "RPL_STATMEMTOT";
-   numeric	= "009";
+   numeric	= "9";
    origin	= "ircu";
 };
 
 irc2numerics = {
    name		= "RPL_STATMEM";
-   numeric	= "010";
+   numeric	= "10";
    origin	= "ircu";
    conflict	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_REDIR";
-   numeric	= "010";
+   numeric	= "10";
    format	= "<hostname> <port> :<info>";
    comment	= "Sent to the client to redirect it to another server. Also known as RPL_BOUNCE (IRCnet)";
    conflict	= "yes";
@@ -141,40 +143,40 @@ irc2numerics = {
 
 irc2numerics = {
    name		= "RPL_YOURCOOKIE";
-   numeric	= "014";
+   numeric	= "14";
    origin	= "Hybrid?";
 };
 
 irc2numerics = {
    name		= "RPL_MAP";
-   numeric	= "015";
+   numeric	= "15";
    origin	= "ircu";
    conflict	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_MAPMORE";
-   numeric	= "016";
+   numeric	= "16";
    origin	= "ircu";
    conflict	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_MAPEND";
-   numeric	= "017";
+   numeric	= "17";
    origin	= "ircu";
    conflict	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_YOURID";
-   numeric	= "042";
+   numeric	= "42";
    origin	= "IRCnet";
 };
 
 irc2numerics = {
    name		= "RPL_SAVENICK";
-   numeric	= "043";
+   numeric	= "43";
    origin	= "IRCnet";
    format	= ":<info>";
    comment	= "Sent to the client when their nickname was forced to change due to a collision";
@@ -182,13 +184,13 @@ irc2numerics = {
 
 irc2numerics = {
    name		= "RPL_ATTEMPTINGJUNC";
-   numeric	= "050";
+   numeric	= "50";
    origin	= "aircd";
 };
 
 irc2numerics = {
    name		= "RPL_ATTEMPTINGREROUTE";
-   numeric	= "051";
+   numeric	= "51";
    origin	= "aircd";
 };
 
