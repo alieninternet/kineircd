@@ -77,7 +77,10 @@ namespace Kine {
 	 
 	 // Add a 'line' to the output queue to be sent (appends EOL chars)
 	 void outputLine(const std::string& message)
-	   { outputRaw(message + eolChars); };
+	   {
+	      outputRaw(message);
+	      outputRaw(eolChars);
+	   };
 	 
        public:
 	 // Remove up to the amount of octets given from the output queue
