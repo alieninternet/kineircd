@@ -140,7 +140,7 @@ irc2numerics = {
    name		= "RPL_STATMEM";
    numeric	= "10";
    origin	= "ircu";
-   conflict	= "yes";
+   obsolete	= "yes";
 };
 
 irc2numerics = {
@@ -149,7 +149,6 @@ irc2numerics = {
    format	= "<hostname> <port> :<info>";
    comment	= "Sent to the client to redirect it to another server. Also "
                   "known as RPL_BOUNCE (IRCnet)";
-   conflict	= "yes";
 };
 
 irc2numerics = {
