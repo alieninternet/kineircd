@@ -86,8 +86,30 @@ bool Connection::handleInput(void)
       protocol->handleInput(line);
    }
    
+   // If there is something wanting to be outputted, tell the poller
+   if (protocol->moreOutput()) {
+      // this is temporary, until the poller code comes into play
+      FD_SET(socket.getFD(), &daemon.outFDSET);
+   }
+   
    // All is well!
    return true;
+}
+
+
+/* sendOutput - Send a chunk from the output queue
+ * Original 29/09/2002 simonb
+ */
+void Connection::sendOutput(void)
+{
+   // Dump a chunk
+   socket.write(protocol->withdrawOutput(socket.getReadBlockSize()));
+   
+   // If there is nothing else left in the queue, stop output-okay checks
+   if (!protocol->moreOutput()) {
+      // this is temporary, until the poller code comes into play
+      FD_CLR(socket.getFD(), &daemon.outFDSET);
+   }
 }
 
 

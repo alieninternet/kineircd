@@ -81,8 +81,10 @@ namespace Kine {
 # endif
       connections_type connections;
       
+    public: // <=- temporary      
       // For select()
       fd_set inFDSET, outFDSET;			// Input/Output descriptor sets
+    private: // <=- temporary
       int maxDescriptors;			// Highest descriptor to check
       
       // Set the current time

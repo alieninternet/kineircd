@@ -83,6 +83,9 @@ namespace Kine {
 
       // Handle input on connection
       bool handleInput(void);
+
+      // Send a chunk from the output queue
+      void sendOutput(void);
       
       // Close the connection
       void goodbye(void);

@@ -240,9 +240,9 @@ Exit::status_type Daemon::run(void)
 	       }
 	       
 	       // Check for OK to send and something in the queue
-//	       if (CheckOutput((*it)->socket->getFD())) {
-//		  (*it)->sendQueue();
-//	       }
+	       if (FD_ISSET((*it)->getSocket().getFD(), &outFDtemp)) {
+		  (*it)->sendOutput();
+	       }
 	    }
 	 }
       }

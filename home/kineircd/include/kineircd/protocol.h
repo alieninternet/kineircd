@@ -26,6 +26,7 @@
 
 # include <iostream>
 # include <string>
+# include <aisutil/socket/socket.h>
 
 # include "kineircd/connection.h"
 
@@ -49,7 +50,8 @@ namespace Kine {
       virtual void handleInput(std::stringstream& data) = 0;
       
       // Remove up to the amount of octets given from the output queue
-      virtual std::string withdrawOutput(unsigned int amount) = 0;
+      virtual std::string 
+	withdrawOutput(AISutil::Socket::blockSize_type amount) = 0;
       
       // Return true should there be anything in the output queue to send
       virtual bool moreOutput(void) const = 0;

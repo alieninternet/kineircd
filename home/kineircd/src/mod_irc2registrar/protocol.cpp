@@ -544,21 +544,21 @@ void Registrar::handleInput(std::stringstream& data)
  * Original 28/09/2002 simonb
  * Note: This could be more efficient :(
  */
-std::string Registrar::withdrawOutput(unsigned int amount)
+std::string Registrar::withdrawOutput(AISutil::Socket::blockSize_type amount)
 {
    std::string output;
    
    /* Append as much data as we can to the output without breaking the amount
     * limit we were given
     */
-   while (outputQueue.front().size() <= amount) {
+   while (!outputQueue.empty() && (outputQueue.front().size() <= amount)) {
       output += outputQueue.front();
       amount -= outputQueue.front().size();
       outputQueue.pop();
    }
    
    // Is there anything left we might also be able to send?
-   if (amount > 0) {
+   if (!outputQueue.empty() && (amount > 0)) {
       amount--;
       output += outputQueue.front().substr(0, amount);
       outputQueue.front().erase(0, amount);
