@@ -24,6 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_IRC2_INPUT_H_
 # define _INCLUDE_KINEIRCD_IRC2_INPUT_H_ 1
 
+# include <string>
 # include <kineircd/libclbp/input.h>
 
 namespace Kine {
@@ -35,19 +36,44 @@ namespace Kine {
        */
       class Input : public Kine::LibCLBP::Input {
        protected:
+	 // The type of a 'parameter list'
+	 typedef std::vector < AIS::Util::String > parameters_type;
+
+
+       private:
+	 //! Incoming message counter
+	 messageCount_type messageCount;
+
+	 // Appropriately parse a protocol message
+	 virtual void parseMessage(const std::string& origin,
+				   const std::string& command,
+				   const parameters_type& parameters) = 0;
+
+	 // Break up a protocol message into its components
+	 virtual void parseLine(const std::string& line);
+
+
+       protected:
 	 //! Constructor
 	 Input(void)
+	   : messageCount(0)
 	   {};
 
 	 //! Constructor (for migrating I/O queues)
 	 explicit Input(const std::string& _inputQueue)
-	   : LibCLBP::Input(_inputQueue)
+	   : LibCLBP::Input(_inputQueue),
+	     messageCount(0)
 	   {};
 	 
        public:
 	 //! Destructor
 	 virtual ~Input(void)
 	   {};
+
+
+	 // Return the number of messages received through this protocol
+	 const messageCount_type getReceivedMessageCount(void) const
+	   { return messageCount; };
       }; // class Input
    }; // namespace LibIRC2
 }; // namespace Kine

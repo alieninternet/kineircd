@@ -53,26 +53,9 @@ namespace Kine {
 	 static const char* const errorCommandName;
 	 
        protected:
-	 // The type of a 'parameter list'
-	 typedef std::vector < AIS::Util::String > parameters_type;
-
-       private:
-	 //! Incoming message counter
-	 messageCount_type receivedMessageCount;
-
-	 // Appropriately parse a protocol message
-	 virtual void parseMessage(const std::string& origin,
-				   const std::string& command,
-				   const parameters_type& parameters) = 0;
-
-	 // Break up a protocol message into its components
-	 virtual void parseLine(const std::string& line);
-	 
-       protected:
 	 // Constructor
 	 explicit Protocol(Kine::Connection& c)
-	   : Output(c),
-	     receivedMessageCount(0)
+	   : Output(c)
 	   {};
 
 	 // Constructor (for migrating I/O queues)
@@ -80,8 +63,7 @@ namespace Kine {
 			   const std::string& iq,
 			   const std::string& oq)
 	   : Input(iq),
-	     Output(c, oq),
-	     receivedMessageCount(0)
+	     Output(c, oq)
 	   {};
 	 
        public:
@@ -90,11 +72,6 @@ namespace Kine {
 	   {};
 	 
 	 
-	 // Return the number of messages received through this protocol
-	 const messageCount_type getReceivedMessageCount(void) const
-	   { return receivedMessageCount; };
-
-
 	 //! Send an appropriately formatted message with raw data (no TO/FROM)
 	 template <class Tc, class Tp>
 	   void sendRawMessage(const Tc& command, const Tp& parameters)

@@ -371,6 +371,7 @@ libkineircd_irc2_la_SOURCES=\
 	include/kineircd/libirc2/protocol.h \
 	include/kineircd/libirc2/utility.h \
 	src/lib_irc2/common.cpp \
+	src/lib_irc2/input.cpp \
 	src/lib_irc2/lang.h \
 	src/lib_irc2/language.cpp \
 	src/lib_irc2/language.h \
