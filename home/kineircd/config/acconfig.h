@@ -34,6 +34,13 @@
 ******************************************************************************/
 
 
+// THESE SHOULD BE REMOVED ASAP!! :( (see register.cpp)
+#define ALLOW_CLIENT_CONNECTIONS
+#define ALLOW_SERVER_CONNECTIONS
+#define ALLOW_SERVICE_CONNECTIONS
+#define MAXLEN_REALNAME 30
+
+
 /* Defaults for the Config class :) Change at will, but be careful.
  * It is HIGHLY RECOMMENDED you just edit your configuration file.
  */
@@ -294,47 +301,6 @@
 # undef STRICT_REGISTRATIONS
 
 
-/* Define this if you want to produce a server that does not say anything
- * during the connection registration phase. While this is technically
- * protocol incorrect, it can save a server from clone attacks where the
- * clones are able to connect faster than the server can deny their
- * connection.
- * 
- * I do not like this, but at this stage if the server is in passive
- * registration mode and someone enters in a bad nickname such as one that
- * exists on the network or a ChanOP etc style nickname, this results in
- * them being disconnected rather than an error message being sent and the
- * client fixing the problem. This is one of the problems with passive
- * registration, unfortunately, as leaving that open for attack voids the
- * whole point of having this define's ability.
- * 
- * Remember: Defining this makes your server anal, and can make it a prick
- * to connect to, but it may also protect your server from any unwanted
- * exploiting bots.
- * 
- * In in doubt, leave this undefined and firewall trouble addresses :)
- */
-#undef PASSIVE_REGISTRATION
-
-
-/* Define this if you want registrations to follow protocol, that is
- * unknown command messages being sent to the client during the registration
- * handler phase if they send a command that is unknown. While this follows
- * protocol, this also opens your server up to all sorts of fun - it doesn't
- * take a genius to realise that someone can send one character and a new
- * line (two bytes) faster than your server can return a string telling the
- * person at the other end that their character was an unknown command.
- * 
- * If you have set PASSIVE_REGISTRATION on, this will have the effect of
- * bumping clients off if they send a bad command. This does not allow
- * flexibility in the registration protocol, but the two combined could stop
- * your server being the target of complete idiots.
- * 
- * Weigh it up, your choice. Probably best to just leave it as is.
- */
-# undef WARN_UNKNOWN_COMMANDS_IN_REGISTRATION
-
-  
 /* Define this if you want to allow IRC operators to use the WALLOPS command.
  * Usually it's ok to allow this, but some networks do not like this very much
  * as it is often abused. Many clients/scripts turn +w on automatically like

@@ -907,26 +907,6 @@ AC_ARG_ENABLE(paranoid-opers,[
    AC_DEFINE(NOTIFY_PARANOID_OPERS_ON_WHOIS)
  ])
 
-AC_MSG_CHECKING([passive-registration parameter])
-AC_ARG_ENABLE(passive-registration,[
-  --enable-passive-registration              (Default is disabled)
-    This feature increases registration security by never saying anything
-    to the client/server during the connection phase. This means no errors
-    will be reported, instead the user will be disconnected. Unfortunately
-    this means that nicknames that are currently in use will result in
-    people being disconnected. This was implemented for servers who receive
-    a lot of registration attackers.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(PASSIVE_REGISTRATION)
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
- ])
-
 AC_MSG_CHECKING([pid-file parameter])
 AC_ARG_ENABLE(pid-file,[
   --enable-pid-file[=default]                (Default is disabled)
@@ -1139,33 +1119,11 @@ AC_ARG_ENABLE(user-conn-ping,[
    AC_DEFINE(USER_CONNECTION_PINGPONG)
  ])
 
-AC_MSG_CHECKING([warn-bad-reg-cmds parameter])
-AC_ARG_ENABLE(warn-bad-reg-cmds,[
-  --enable-warn-bad-reg-cmds                 (Default is disabled)
-    This can open up a security issue with the registration phase. With this
-    disabled, unknown commands being sent during the registration phase are
-    simply ighnored. When this is enabled, however, unknown commands will
-    return an error reply (providing passive registrations are not enabled,
-    otherwise unknown commands will result in the connection being dropped).
-    When enabled, this follows proper registration protocols, but leaves you
-    open to attacks that exploit this, as it could be used for registration
-    attacks that flood your out-bound pipe.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(WARN_UNKNOWN_COMMANDS_IN_REGISTRATION)
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
- ])
-
 dnl
 dnl Protocol toggles
 dnl
 AC_MSG_CHECKING([irc2user-protocol parameter])
-if test "$kineircd_test_enable_client_protocols" = "yes"; then
+dnl if test "$kineircd_test_enable_client_protocols" = "yes"; then
   AC_ARG_ENABLE(irc2user-protocol,[
   --enable-irc2user-protocol                 (Default is enabled)
     The IRC-2 protocol is used with every irc client these days. Unless the
@@ -1232,10 +1190,10 @@ if test "$kineircd_test_enable_client_protocols" = "yes"; then
        AC_DEFINE(HAVE_IRC2USER_MATCH_COUNTING)
      ])
   fi
-else
-  AC_MSG_RESULT([no (clients disallowed)])
-  kineircd_test_have_irc2user_protocol=no
-fi
+dnl else
+dnl   AC_MSG_RESULT([no (clients disallowed)])
+dnl   kineircd_test_have_irc2user_protocol=no
+dnl fi
 AC_SUBST(kineircd_test_have_irc2user_protocol)
 
 AC_MSG_CHECKING([irc3user-protocol parameter])

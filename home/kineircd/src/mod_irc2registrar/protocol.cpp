@@ -33,12 +33,6 @@
 #include "kineircd/utils.h"
 
 
-// THESE SHOULD BE REMOVED ASAP!! :(
-#define ALLOW_CLIENT_CONNECTIONS
-#define ALLOW_SERVER_CONNECTIONS
-#define ALLOW_SERVICE_CONNECTIONS
-
-
 // Functions table
 struct registerHandler::functionTableStruct const 
   registerHandler::functionsTable[] = {
@@ -168,29 +162,10 @@ void registerHandler::parseLine(String const &line)
       }
    }
    
-#ifdef WARN_UNKNOWN_COMMANDS_IN_REGISTRATION
-   if (!found) {
-# ifdef PASSIVE_REGISTRATION      	 
-#  ifdef DEBUG_EXTENDED
-      debug("Unknown command encountered during registration");
-#  endif
-      handler->getConnection()->goodbye();
-# else
-      sendNumeric(Numerics::ERR_UNKNOWNCOMMAND, 0, 
-		  command + LangTags::L_ERR_UNKNOWNCOMMAND);
-# endif
-      return;
-   }
-#endif
-   
    /* If we got a command, and we have at least a hostname and a username,
     * we can check if it is time to follow through with a registration
     */
-   if (
-#ifndef WARN_UNKNOWN_COMMANDS_IN_REGISTRATION
-       found &&
-#endif
-       username.length() && hostname.length()) {
+   if (found && username.length() && hostname.length()) {
       Handler *newHandler = 0;
       
       switch (regmode) {
@@ -204,10 +179,8 @@ void registerHandler::parseLine(String const &line)
 	    // Check if we need to find a password here!!!
 	    if (password.length()) {
 	       // something here.
-# ifndef PASSIVE_REGISTRATION      	 
 	       sendNumeric(Numerics::ERR_PASSWDMISMATCH, 0,
 			   Lang::lang(LangTags::L_ERR_PASSWDMISMATCH));
-# endif
 # ifdef DEBUG_EXTENDED
 	       debug("Invalid password, terminating!");
 # endif
@@ -219,10 +192,8 @@ void registerHandler::parseLine(String const &line)
 	    
 	    // Check if we are not full up on clients at the moment
 	    if (getConnection()->socket->getFD() > MAX_FD_NO_MORE_USERS) {
-# ifndef PASSIVE_REGISTRATION      	 
 	       sendNumeric(Numerics::ERR_SERVERTOOFULL, 0, String(":") +
 			   Lang::lang(LangTags::L_ERR_SERVERTOOFULL));
-# endif
 # ifdef DEBUG
 	       debug("Server is too full, no more clients!");
 # endif
@@ -393,13 +364,9 @@ void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
 {
    // Make sure we were given at least one parameter
    if (!(tokens->countTokens() >= 2)) {
-#ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-#else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   "CAPAB :" + 
 			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
-#endif
       return;
    }
 
@@ -426,24 +393,16 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    
    // Check we got a nickname from that..
    if (!nick.length()) {
-# ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-# else
       handler->sendNumeric(Numerics::ERR_NONICKNAMEGIVEN, 0, ':' +
 			   Lang::lang(LangTags::L_ERR_NONICKNAMEGIVEN));
-# endif
       return;
    }
    
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
    if (!User::okName(nick)) {
-# ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-# else
       handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
 			   nick + " :" +
 			   Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME));
-# endif
       return;
    }
    
@@ -457,27 +416,19 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    // Check for nicks that are not allowed here (from config)
    String reason = Daemon::failedNickname(nick);
    if (reason.length()) {
-# ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-# else
       handler->
 	sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
 		    nick + " :" + 
 		    Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME) + " (" +
 		    reason + ')');
       return;
-# endif
    }
    
    // Check that the nickname is not already in use
    if (Daemon::getUser(nick)) {
-# ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-# else
       handler->sendNumeric(Numerics::ERR_NICKNAMEINUSE, 0,
 			   nick + " :" +
 			   Lang::lang(LangTags::L_ERR_NICKNAMEINUSE));
-# endif
       return;
    }
    
@@ -496,14 +447,12 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 				     RAND_MAX)));
    
    // Send a PING out to make sure we are dealing with a 'real' client
-#  ifndef PASSIVE_REGISTRATION      	 
    handler->
      sendGeneric("NOTICE",
 		 String::printf((char *)Lang::L_PINGPONG_NOTICE,
 				handler->pingpong.c_str(), 
 				handler->pingpong.c_str(),
 				Daemon::myServer()->getHostname().c_str()));
-#  endif
    handler->getConnection()->sendRaw("PING :" + handler->pingpong + "\r\n");
 # endif
 #else
@@ -573,26 +522,18 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
 # ifdef STRICT_REGISTRATIONS
    // Make sure this connection has not already been given a registration mode
    if (handler->regmode > IN_PROGRESS) {
-#  ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-#  else
       handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
 			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
-#  endif
       return;
    }
 # endif
    
    // Check there are enough tokens
    if (!(tokens->countTokens() >= 7)) {
-# ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-# else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   "SERVER :" +
 			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
-# endif
       return;
    }
 
@@ -641,26 +582,18 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
 # ifdef STRICT_REGISTRATIONS
    // Make sure this connection has not already been given a registration mode
    if (handler->regmode > IN_PROGRESS) {
-#  ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-#  else
       handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
 			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
-#  endif
       return;
    }
 # endif
    
    // Check there are enough tokens
    if (!(tokens->countTokens() >= 7)) {
-# ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-# else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   "SERVICE :" + 
 			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
-# endif
       return;
    }
 
@@ -669,13 +602,9 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
 
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
    if (!User::okName(name)) {
-#ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-#else
       handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
 			   name + " :" +
 			   Lang::lang(LangTags::L_ERR_ERRONEUSNICKNAME));
-#endif
       return;
    }
 
@@ -722,26 +651,18 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
 # ifdef STRICT_REGISTRATIONS
    // Make sure this connection has not already been given a registration mode
    if (handler->regmode > IN_PROGRESS) {
-#  ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-#  else
       handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
 			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
-#  endif
       return;
    }
 # endif
    
    // Check there are enough tokens
    if (!(tokens->countTokens() >= 5)) {
-# ifdef PASSIVE_REGISTRATION      	 
-      handler->getConnection()->goodbye();
-# else
       handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   "USER :" +
 			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
-# endif
       return;
    }
    

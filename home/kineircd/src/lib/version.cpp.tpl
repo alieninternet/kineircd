@@ -122,9 +122,6 @@ namespace Version {
 #ifdef STRICT_CHANNEL_NAMES
 				"N"
 #endif
-#ifdef PASSIVE_REGISTRATION
-				"p"
-#endif
 #ifdef NOTIFY_PARANOID_OPERS_ON_WHOIS
 				"P"
 #endif
@@ -136,9 +133,6 @@ namespace Version {
 #endif
 #ifdef STRICT_REGISTRATIONS
 				"r"
-#endif
-#ifdef WARN_UNKNOWN_COMMANDS_IN_REGISTRATION
-				"R"
 #endif
 #ifdef USER_CONNECTION_PINGPONG
 				"s"
