@@ -38,7 +38,6 @@ struct Server::modeTableStruct const Server::modeTable[] = {
 };
 
 
-
 /* makeModes - Create a string of server modes according to what is set
  * Original 21/09/01, Simon Butcher <pickle@austnet.org>
  */

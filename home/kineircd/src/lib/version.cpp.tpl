@@ -26,13 +26,13 @@ namespace Version {
 "          \026     \\__._|\\__._|___/\\__|_| |_|\\___/_/\\_\\___/     \026",
 "          \026                                                  \026",
 "",
-"Portions of this code Copyright (c) 1996-2001 Alien Internet Services",
+"Copyright (c) 1996,1998,1999,2000,2001,2002 Alien Internet Services",
 "austhex.servd8 development team:",
 "  to be done.. hehe shh, it will come before release :)",
       0
    };
    
-   // Version characters for VERSION command
+   // Special version mark thingy whatsit string doohickey
    char const *versionChars = 
 #ifdef ALLOW_LOCALOP_CONNECT
 				"c"

@@ -371,7 +371,8 @@ struct irc2userHandler::functionTableStruct const
      },
      { "WATCH",		parseWATCH,		3,
 	  ANYONE,
-	  "'C' | 'S' | 'L' | { '+' | '-' } { <nickname> | <channel> | <server> } ( SPACE { '+' | '-' } { <nickname> | <channel> | "
+	  "'C' | 'S' | 'L' | { '+' | '-' } { <nickname> | <channel> | "
+	  "<server> } ( SPACE { '+' | '-' } { <nickname> | <channel> | "
 	  "<server> } )",
 	  "Used as an alternative to ISON, WATCH sets up a list of "
 	  "nicknames, channels or servers you can 'watch'. You will be "
