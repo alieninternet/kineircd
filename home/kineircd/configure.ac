@@ -592,6 +592,9 @@ fi
 AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_LIB_IRC2,
 	       [test x$kineircd_test_compile_lib_irc2 = xyes])
 
+dnl finish off the line
+echo
+
 dnl
 dnl Developer stuff
 dnl
@@ -648,6 +651,5 @@ AC_OUTPUT([
 	Makefile
 	install/Makefile
 	src/Makefile
-	src/lib/Makefile
-	src/modules/Makefile
+	src/libkineircd/Makefile
 	])

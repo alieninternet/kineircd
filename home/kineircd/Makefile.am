@@ -8,7 +8,7 @@ include $(top_builddir)/config/automake.inc
 
 
 # Subdirectories we need to compile...
-SUBDIRS=\
+SUBDIRS=.\
 	src \
 	install
 
