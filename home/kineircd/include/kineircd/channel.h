@@ -1,8 +1,8 @@
 /* $Id$
  * An abstract class for a channel
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -25,10 +25,11 @@
 #ifndef _INCLUDE_KINEIRCD_CHANNEL_H_
 # define _INCLUDE_KINEIRCD_CHANNEL_H_ 1
 
+# include <kineircd/entity.h>
 # include <kineircd/receiver.h>
 
 namespace Kine {
-   class Channel : public Receiver {
+   class Channel : public Entity, public Receiver {
     protected:
       // Constructor
       Channel(void)

@@ -161,6 +161,7 @@ libkineircd_la_SOURCES=\
 	include/kineircd/config.h \
 	include/kineircd/connection.h \
 	include/kineircd/daemon.h \
+	include/kineircd/entity.h \
 	include/kineircd/errors.h \
 	include/kineircd/exit.h \
 	include/kineircd/kineircdconf.h \

@@ -1,8 +1,8 @@
 /* $Id$
  * An abstract class defining a client, since there are a few types
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -28,16 +28,16 @@
 # include <string>
 # include <ctime>
 
+# include <kineircd/entity.h>
 # include <kineircd/sender.h>
 # include <kineircd/receiver.h>
 # include <kineircd/server.h>
 # include <kineircd/channel.h>
 
 namespace Kine {
-   class Client : public Sender, public Receiver {
+   class Client : public Entity, public Sender, public Receiver {
     private:
       std::string nickname;			// Nickname
-      std::string hostname;			// Hostname
       std::string description;			// Description/GECOS/Real name
       time_t signonTime;			// Time of connection
       Server* server;				// Server this client is on
@@ -60,8 +60,6 @@ namespace Kine {
       // Return variables
       const std::string& getNickname(void) const
 	{ return nickname; };
-      const std::string& getHostname(void) const
-	{ return hostname; };
       const std::string& getDescription(void) const
 	{ return description; };
       const time_t& getSignonTime(void) const

@@ -1,8 +1,8 @@
 /* $Id$
  * A server
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -25,10 +25,11 @@
 #ifndef _INCLUDE_KINEIRCD_SERVER_H_
 # define _INCLUDE_KINEIRCD_SERVER_H_ 1
 
+# include <kineircd/entity.h>
 # include <kineircd/sender.h>
 
 namespace Kine {
-   class Server : public Sender {
+   class Server : public Entity, public Sender {
     public:
       // Constructor
       Server(void)
