@@ -106,7 +106,7 @@ void Daemon::newConnection(Listener& listener)
    
 #ifdef KINE_DEBUG_PSYCHO
    debug("New socket FD = " + String::convert(newSocket->getFD()) +
-	 "; Remote address is " + newSocket->getRemoteAddressStr() +
+	 "; Remote address is " + newSocket->getRemoteAddress() +
 	 " on port " + String::convert(newSocket->getRemotePort()));
 #endif
    

@@ -155,7 +155,7 @@ bool ListenerConfig::setupSocket(Socket& socket, String& errString, int port)
    // Bind
    if (!socket.bind()) {
       // Delete the socket and complain
-      errString = "Unable to bind on '" + socket.getLocalAddressStr() + "': " +
+      errString = "Unable to bind on '" + socket.getLocalAddress() + "': " +
 	socket.getErrorMessage();
       delete &socket;
       return false;
