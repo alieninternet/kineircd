@@ -1,6 +1,10 @@
 These are dirty notes for implementing IIRC, the inter-irc network stuff.
 
- * Accepted are numerics and the PRIVMSG, NOTICE, and WHOIS commands
+ * Accepted via the link are numerics from servers, PRIVMSG, NOTICE, and WHOIS
+   commands. Also JOIN, PART and QUIT for servers using IIRC channels. Also
+   IIRCCL to request a channel list from the remote server (also indicated
+   support for that option - both servers should switch to that after someone
+   requests it). Also EOB is also accepted
  
  * *NO* bursts, connections are totally stateless unless the optional IIRC
    channels are used.. ('~' prefixed channels).
@@ -20,6 +24,8 @@ These are dirty notes for implementing IIRC, the inter-irc network stuff.
    
  * SILENCE and ACCEPT commands on the server *must* be able to block from
    remote networks..
+   
+ * No length limits on IIRCS links, unless servers need to limit privmsgs.
 
     
 Example conversation: 'foo' is on networkA, 'bah' is on networkB
@@ -59,3 +65,27 @@ from bah's perspective (already in the channel):
   > foo#networkA!fooey@anotherhost.com JOIN :~qux
   > foo#networkA!fooey@anotherhost.com PRIVMSG ~qux :Hello everyone!
   < PRIVMSG ~qux :Hey foo!
+
+
+Connection commands:
+  IIRCS (connect an iirc server to server link):
+  IIRCS <network> <protocol>  * * :<description>
+    'network' is the name of the network connecting
+    'protocol' is the name of the protocol being used. Currently the IRC2
+       based protocol is called IIRC2
+    'description' is the description of the network, a url, or whatever.
+    * fields are for future use
+
+Example server connection:
+   (connects)
+  < PASS VerySecretWord
+  < IIRCS networkA IIRC2 ? * * :Network A !!
+   (registration okay, dump our password string and who we know - networkB
+    is also connected to networkC and networkD)
+  > PASS ReplyingSecretWord
+  > IIRCS networkB IIRC2 ? * * :Network B description!
+  > IIRCS networkC IIRC2 ? * * :Network C's description
+  > IIRCS networkD IIRC2 ? * * :Network D's description
+  > EOB
+   (we have nothing to send, our burst is over)
+  < EOB
