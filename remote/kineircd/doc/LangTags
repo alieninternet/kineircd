@@ -56,6 +56,26 @@ File format
 
 
 
+Why not just use GNU gettext instead of this LangTags thing?
+------------------------------------------------------------
+
+  I'm asked this more than you think, so I'll try to explain why I wrote my
+ own system.
+ 
+  First off, gettext is really orientated to user-space software. Each piece
+ of user-based software gets into its own 'locale' which controls which
+ translations to use, and so forth. A publicly accessible IRC server might
+ have several thousands of users, and more then a handful of different
+ languages, and so forth. This makes gettext a bit of a bloat and a bother to
+ deal with.
+ 
+  Secondly, by having its own engine, the engine can be stream-lined to work
+ as fast as possible to support those thousands of users at once. The file
+ format also allows for IRC-related substitutions (see below), which makes it
+ much easier.
+
+
+
 Editing language files
 ----------------------
 
@@ -76,53 +96,6 @@ Editing language files
   When using UniRed, that make sure when you open a language file you select
  "UTF-8" from the "Charset" drop-down box. Other Unicode/UTF-8 editors will
  have a similar requirement.
-
-
-
-Why UTF-8?
-----------
-
-  UTF-8 is a type of Unicode encoding. Unicode is a special character set
- designed to be *the* character set to end all character sets. It is developed
- in parallel with the ISO-10646 character set (the two are practically the
- same project, since they're compatible). The ultimate goal of Unicode is to
- contains glyphs (letters and symbols) from all known written languages, along
- with symbols from various places (engineering, mathematics, sciences,
- international organisations, and so forth).
- 
-  Because of Unicode's power to incorporate virtually every language on the
- planet within the one character set, it's logical that anything which accepts
- connections internationally (such as IRC, or indeed the Internet itself)
- would want to use it for simplicity.
- 
-  Raw Unicode is encoded using a 32-bit number, allowing for over 4-billion
- glyphs. UTF-8 is a special way of encoding Unicode, which offers many
- advantages:
- 
-   * UTF-8 is backwards compatible with US-ASCII;
-   
-   * It doesn't require any string manipulation modifications for clients,
-     which means old clients are automatically capable of remaining stable
-     when receiving UTF-8 data they cannot deal with. UTF-16 and raw Unicode
-     would break old clients;
-
-   * While representing characters in the #4bn range requires 6-characters to
-     encode, up to around a million glyphs can be encoded using 4-characters.
-     There is no plan for more than that many glyphs at this stage, and most
-     "common" characters can be encoded using 1-3 characters, which saves
-     space;
-     
-   * UTF-8 is easy to interpret, and several libraries are already available.
-     Most modern operating systems have at least some support for Unicode,
-     and porting is usually an easy task;
-     
-   * UTF-8 is quickly becoming a "default format" for many systems, and many
-     IRC developers from many different backgrounds all agree that UTF-8
-     should become the standard for IRC, rather than implementing multiple
-     character sets and complicating software.
-
-  For more information, check out RFC 2279, or try a test page to see if your
- operating system is UTF-8 ready (such as http://www.slovo.info/testuni.htm)
 
 
 
