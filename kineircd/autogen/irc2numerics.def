@@ -1609,6 +1609,12 @@ irc2numerics = {
    name		= "RPL_WHOSPCRPL";
    numeric	= "354";
    origin	= "ircu";
+   comment	= "Reply to WHO, however it is a 'special' reply because it "
+                  "is returned using a non-standard (non-RFC1459) format. The "
+		  "format is dictated by the command given by the user, and "
+		  "can vary widely. When this is used, the WHO command was "
+		  "invoked in its 'extended' form, as announced by the 'WHOX' "
+		  "ISUPPORT tag.";
 };
 
 irc2numerics = {
