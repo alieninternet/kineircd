@@ -1,0 +1,17 @@
+#
+# Makefile.bs
+# Little makefile for developers wishing to bootstrap the package
+#
+
+.PHONY: all install clean distclean autoconf autogen dready sums distro fresh
+
+__bs__:
+	@echo "Do not make directly from Makefile.bs!"
+	@echo "This file is intended for developers only."
+
+
+# Create AutoConf files from templates
+autoconf:
+	autoconf -l autoconf -o configure autoconf/configure.in
+	-chmod 755 configure
+	autoheader --localdir=autoconf autoconf/configure.in >include/kineircd/kineircdconf.h.in
