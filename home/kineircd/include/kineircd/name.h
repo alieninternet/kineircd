@@ -31,6 +31,10 @@ namespace Kine {
    class Name : public AISutil::String {
     public:
       // Constructor
+      Name(void)
+	{};
+      
+      // Constructor (a magic one)
       template <class Ta> Name(const Ta& a)
 	: AISutil::String(a)
         {};
