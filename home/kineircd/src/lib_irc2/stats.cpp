@@ -28,11 +28,21 @@
 #include <sstream>
 #include <iomanip>
 #include <cmath>
-#include <sys/utsname.h>
-#include <sys/sysinfo.h>
-#include <sys/time.h>
-#include <sys/resource.h>
-#include <unistd.h>
+#ifdef HAVE_SYS_UTSNAME_H
+# include <sys/utsname.h>
+#endif
+#ifdef HAVE_SYS_SYSINFO_H
+# include <sys/sysinfo.h>
+#endif
+#ifdef HAVE_SYS_TIME_H
+# include <sys/time.h>
+#endif
+#ifdef HAVE_SYS_RESOURCE_H
+# include <sys/resource.h>
+#endif
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
 #include <aisutil/time.h>
 #include <aisutil/string/string.h>
 #include <kineircd/daemon.h>
@@ -144,6 +154,7 @@ KINE_IRC2_STATS_HANDLER(Stats::handleOperators)
  */
 KINE_IRC2_STATS_HANDLER(Stats::handleResources)
 {
+#ifdef HAVE_UNAME
    // Try to output uname() info
    struct utsname unameinfo;
    if (uname(&unameinfo) == 0) {
@@ -155,7 +166,9 @@ KINE_IRC2_STATS_HANDLER(Stats::handleResources)
 				   unameinfo.release,
 				   unameinfo.version));
    }
+#endif
    
+#ifdef HAVE_SYSINFO
    // Try to output sysinfo() stuff
    struct sysinfo systeminfo;
    if (sysinfo(&systeminfo) == 0) {
@@ -196,7 +209,9 @@ KINE_IRC2_STATS_HANDLER(Stats::handleResources)
 						    3600) / 60),
 				   String::convert(systeminfo.uptime % 60)));
    }
+#endif
 
+#ifdef HAVE_GETRUSAGE
    // Try to output rusage() details
    struct rusage rusageinfo;
    if (getrusage(RUSAGE_SELF, &rusageinfo) == 0) {
@@ -214,6 +229,7 @@ KINE_IRC2_STATS_HANDLER(Stats::handleResources)
 				   String::convert(rusageinfo.ru_nivcsw)));
       
    }
+#endif
 }
 
 

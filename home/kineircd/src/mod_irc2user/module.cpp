@@ -25,7 +25,9 @@
 # include "autoconf.h"
 #endif
 
-#include <ctime>
+#ifdef HAVE_TZSET
+# include <ctime>
+#endif
 #include <kineircd/module.h>
 #include <kineircd/daemon.h>
 #include <kineircd/irc2/library.h>
@@ -96,8 +98,10 @@ namespace {
        * Original 04/11/2002 simonb
        */
       bool start(void) {
+#ifdef HAVE_TZSET
 	 // Make sure the timezone information exists (we need it)
 	 tzset();
+#endif
 	 
 	 // Initialise the IRC-2 library
 	 if (!Kine::LibIRC2::init()) {

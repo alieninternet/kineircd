@@ -234,7 +234,6 @@ AC_CONFIG_SUBDIRS(libltdl)
 dnl -------------------------------------------------------------------------
 dnl  Checking structures and types
 dnl -------------------------------------------------------------------------
-AC_DECL_SYS_SIGLIST
 AC_STRUCT_TM
 AC_STRUCT_TIMEZONE
 AC_TYPE_SIZE_T
@@ -242,6 +241,9 @@ AC_TYPE_PID_T
 AC_TYPE_MODE_T
 AC_TYPE_UID_T
 AC_TYPE_SIGNAL
+AC_CHECK_DECLS( \
+	sys_siglist \
+		)
 AC_CACHE_SAVE
 
 
@@ -266,12 +268,16 @@ AC_CHECK_HEADERS( \
 	syslog.h \
 	termios.h \
 	unistd.h \
+	utmp.h \
 	utmpx.h \
 	arpa/inet.h \
 	netinet/in.h \
+	sys/resource.h \
 	sys/socket.h \
+	sys/sysinfo.h \
 	sys/time.h \
 	sys/timeb.h \
+	sys/utsname.h \
 		)
 AC_CACHE_SAVE
 
@@ -290,7 +296,10 @@ AC_FUNC_SELECT_ARGTYPES
 AC_FUNC_STRFTIME
 AC_CHECK_FUNCS(
 	alarm \
+	getrusage \
 	gettimeofday \
+	getutent \
+	getutxent \
 	inet_ntoa \
 	memset \
 	select \
@@ -299,7 +308,10 @@ AC_CHECK_FUNCS(
 	strchr \
 	strerror \
 	strtol \
+	sysinfo \
+	tcgetattr \
 	tzset \
+	uname \
 		)
 
 GUILE_FLAGS

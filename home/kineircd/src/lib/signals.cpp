@@ -75,7 +75,7 @@ static RETSIGTYPE signalHandler(int signum)
 {
 #ifdef KINE_DEBUG
    debug("sigHandler() -> [" + String::convert(signum) +
-# ifdef SYS_SIGLIST_DECLARED
+# ifdef HAVE_DECL_SYS_SIGLIST
 	 "] " + String(sys_siglist[signum])
 # else
 	 "]"

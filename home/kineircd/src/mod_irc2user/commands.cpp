@@ -25,7 +25,9 @@
 # include "autoconf.h"
 #endif
 
-#include <cassert>
+#ifdef KINE_DEBUG_ASSERT
+# include <cassert>
+#endif
 
 #include "mod_irc2user/commands.h"
 
@@ -59,8 +61,10 @@ Commands::Commands(void)
  */
 void Commands::initInstance(void)
 {
+#ifdef KINE_DEBUG_ASSERT
    // Make sure we don't already exist - big woops if we do
    assert(instance == 0);
+#endif
    
    // Okay, create ourselves then
    instance = new Commands();

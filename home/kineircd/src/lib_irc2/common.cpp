@@ -33,7 +33,13 @@
 # include <cassert>
 #endif
 #include <algorithm>
-#include <utmpx.h>
+#ifdef HAVE_UTMPX_H
+# include <utmpx.h>
+#else
+# ifdef HAVE_UTMP_H
+#  include <utmp.h>
+# endif
+#endif
 #include <aisutil/string/string.h>
 #include <aisutil/string/tokens.h>
 #include <kineircd/config.h>
@@ -298,10 +304,13 @@ void Protocol::doTIME(const User& user)
  */
 void Protocol::doUSERS(const User& user)
 {
+#if defined(HAVE_GETUTENT) || defined(HAVE_GETUTXENT)
    if (!config().getOptionsEnableUsersCommand()) {
+#endif
       // Tell the user that users has been disabled (to conform to specs
       sendNumeric(user, LibIRC2::Numerics::ERR_USERSDISABLED,
 		  GETLANG(irc2_ERR_USERSDISABLED));
+#if defined(HAVE_GETUTENT) || defined(HAVE_GETUTXENT)
       return;
    }
    
@@ -349,6 +358,7 @@ void Protocol::doUSERS(const User& user)
    
    // Close the UTMP file
    endutxent();
+#endif
 }
 
 
