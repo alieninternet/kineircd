@@ -43,7 +43,7 @@ PACKAGE_STRING=
 PACKAGE_BUGREPORT=kineircd@alien.net.au
 LIB_VERSION=0
 LIB_REVISION=0
-LIB_AGE=1
+LIB_AGE=0
 
 dnl Export our version information
 AC_SUBST(VERSION_MAJOR)
