@@ -34,7 +34,7 @@
 
 // Template for the above, which you should use in your modules (correct name)
 # define KINE_MODULE_INIT \
-   static KINE_MODULE_INIT_PROTOTYPE(KineIRCdModuleInit)
+   extern "C" KINE_MODULE_INIT_PROTOTYPE(KineIRCdModuleInit)
 
 // Template for the function which triggers a module to start
 # define KINE_MODULE_START(x) \
