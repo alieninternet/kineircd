@@ -2019,6 +2019,12 @@ tag = {
    data_en	= "<nickname> ( ',' <nickname> )  [ <count> ]";
 };
 
+tag = {
+   name		= "irc2user_HELP_NO_PARAMETERS";
+   components	= "mod_irc2user";
+   data_en	= "Command has no parameters";
+};
+
 
 
 /*****************************************************************************
