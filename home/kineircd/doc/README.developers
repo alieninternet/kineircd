@@ -187,6 +187,12 @@ and code formatting information. Last updated 200203252022
         "data onto multiple lines easily");
 
 
+* Until the ANSI-C++ committee make a decision on the definition of 'NULL',
+  use '0' since the ANSI-C definition can be either '0' or '(void *)0'.
+  Unfortunately there are compilers out there which do define it as '(void *)0'
+  and this will cause issues.
+
+
 * Only use integers of the size you *NEED*. Leave word length
   optimisations, if any, to the compiler. Eg. 'int i' is a waste if
   you are only using a value between -3 and 3.
