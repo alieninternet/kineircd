@@ -34,7 +34,7 @@ namespace Kine {
       class Input : virtual public Base {
        private:
 	 //! iconv() input conversion descriptor
-	 iconv_t inputCharConvDesc;
+	 mutable iconv_t inputCharConvDesc;
 
 
        protected:

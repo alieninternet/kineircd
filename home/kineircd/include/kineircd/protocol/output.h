@@ -35,7 +35,7 @@ namespace Kine {
       class Output : virtual public Base {
        private:
 	 //! iconv() output conversion descriptor
-	 iconv_t outputCharConvDesc;
+	 mutable iconv_t outputCharConvDesc;
 
 
        protected:

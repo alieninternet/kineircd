@@ -33,6 +33,95 @@
 
 using namespace Kine;
 
+// The conversion output buffer size
+#define ICONV_BUFFER_SIZE 2048 // 2kB
+
+
+/* convertChars - Convert the given string using the given iconv descriptor..
+ * Original 07/11/2003 pickle
+ */
+template <class outT, class inT>
+  inline static const outT
+  convertChars(iconv_t& convDesc, const inT& input)
+{
+   outT outputString;
+   
+   // Make sure the conversion descriptor is okay..
+   if (convDesc == (iconv_t)(-1)) {
+#ifdef KINE_DEBUG
+      // Eek!
+      abort();
+#else
+      // Nothing we can do, really.. *sigh*
+      return outputString;
+#endif
+   }
+   
+   // Stuff we need for the conversion
+   char outputBuffer[ICONV_BUFFER_SIZE];
+   size_t inputBytes = (input.length() * sizeof(inT::value_type));
+   size_t outputBytes = ICONV_BUFFER_SIZE;
+   char* inputPtr = (char*)input.data();
+   char* outputPtr = outputBuffer;
+   
+   // Poke iconv() - reset the output buffer
+   (void)iconv(convDesc, NULL, NULL, &outputPtr, &outputBytes);
+
+   // Convert the data..
+   for (;;) {
+      const size_t convVal = iconv(convDesc,
+				   &inputPtr, &inputBytes,
+				   &outputPtr, &outputBytes);
+      
+      // Check to see if iconv() is happy or not..
+      if (convVal != (size_t)(-1)) {
+	 // Break the loop, we're done here
+	 break;
+      }
+      
+      // An error occurred.. Check what it was..
+      switch (errno) {
+       case E2BIG: // No more room left in the output buffer
+       case EILSEQ: // An illegal multibyte sequence was found in the input
+	 // Copy everything from the output buffer into the data string
+	 outputString.append((typename outT::pointer)outputBuffer,
+			     ((ICONV_BUFFER_SIZE - outputBytes) /
+			      sizeof(outT::value_type)));
+	 
+	 // Reset the output buffer stuff
+	 outputBytes = ICONV_BUFFER_SIZE;
+	 outputPtr = outputBuffer;
+	 continue;
+	 
+       case EINVAL: // An incomplete multibyte sequence was found..
+	 // We should deal with this better..
+#ifdef KINE_DEBUG
+# warning "Poor support for illegal multibyte sequences.."
+#endif
+	 return outputString;
+	 
+       default:
+	 // Unknown error.. this should not happen
+#ifdef KINE_DEBUG
+	 abort();
+#else
+	 return outputString;
+#endif
+      }
+   }
+   
+   // If there's anything else left in the buffer after all of that, copy it
+   register const size_t outputCharCount =
+     ((ICONV_BUFFER_SIZE - outputBytes) / sizeof(outT::value_type));
+   if (outputCharCount > 0) {
+      outputString.append((typename outT::pointer)outputBuffer,
+			  outputCharCount);
+   }
+   
+   // Return the (converted) string..
+   return outputString;
+}
+
 
 /* delocaliseStr - Convert the string from the internal character set
  * Original 06/11/2003 pickle
@@ -40,13 +129,7 @@ using namespace Kine;
 const std::string
   Protocol::Output::delocaliseStr(const std::wstring& string) const
 {
-   std::string out;
-   for (std::wstring::const_iterator it = string.begin();
-	it != string.end();
-	++it) {
-      out += (char)((unsigned long)(*it) % 0xFF);
-   }
-   return out;
+   return convertChars<std::string, std::wstring>(outputCharConvDesc, string);
 }
 
 
@@ -56,7 +139,7 @@ const std::string
 const std::wstring
   Protocol::Input::localiseStr(const std::string& string) const
 {
-   return Languages::toWideStr(string);
+   return convertChars<std::wstring, std::string>(inputCharConvDesc, string);
 }
 
 
@@ -87,6 +170,10 @@ inline static const Error::error_type
 
    // Try to open the new character set conversion descriptor
    if ((convDesc = iconv_open(charsetTo, charsetFrom)) != (iconv_t)(-1)) {
+      // Prod the converstion descriptor, since this is sometimes necessary
+      (void)iconv(convDesc, NULL, NULL, NULL, NULL);
+			   
+      // All happy!
       return Error::NO_ERROR;
    }
 
