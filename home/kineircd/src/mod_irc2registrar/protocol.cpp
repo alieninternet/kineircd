@@ -192,8 +192,8 @@ void registerHandler::parseLine(String const &line)
 	    // Check if we are not full up on clients at the moment
 	    if (getConnection()->socket->getFD() > MAX_FD_NO_MORE_USERS) {
 # ifndef PASSIVE_REGISTRATION      	 
-	       sendNumeric(ERR_SERVERTOOFULL, 0, 
-			   Language::L_ERR_SERVERTOOFULL);
+	       sendNumeric(ERR_SERVERTOOFULL, 0, String(":") +
+			   Language::lang(Language::L_ERR_SERVERTOOFULL));
 # endif
 # ifdef DEBUG
 	       debug("Server is too full, no more clients!");
@@ -378,7 +378,8 @@ void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 #else
       handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
-			   String("CAPAB") + Language::L_ERR_NEEDMOREPARAMS);
+			   String("CAPAB :") + 
+			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
 #endif
       return;
    }
@@ -409,8 +410,8 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else
-      handler->sendNumeric(ERR_NONICKNAMEGIVEN, 0, 
-			   Language::L_ERR_NONICKNAMEGIVEN);
+      handler->sendNumeric(ERR_NONICKNAMEGIVEN, 0, String(':') +
+			   Language::lang(Language::L_ERR_NONICKNAMEGIVEN));
 #endif
       return;
    }
@@ -566,7 +567,8 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
       handler->getConnection()->goodbye();
 # else
       handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
-			   String("SERVER") + Language::L_ERR_NEEDMOREPARAMS);
+			   String("SERVER :") +
+			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
 # endif
       return;
    }
@@ -640,7 +642,8 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
       handler->getConnection()->goodbye();
 # else
       handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
-			   String("SERVICE") + Language::L_ERR_NEEDMOREPARAMS);
+			   String("SERVICE :") + 
+			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
 # endif
       return;
    }
@@ -725,7 +728,8 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 # else
       handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
-			   String("USER") + Language::L_ERR_NEEDMOREPARAMS);
+			   String("USER :") + 
+			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
 # endif
       return;
    }

@@ -222,9 +222,12 @@ void Channel::processModes(Handler *handler, User *user,
       
       // Check we got this user...
       if (!cmTemp) {
-	 handler->sendNumeric(Daemon::myServer(),
-			      ERR_NOTONCHANNEL, 0,
-			      name + Language::L_ERR_NOTONCHANNEL);
+	 // This language assignment should not presume local info!! :(
+	 handler->
+	   sendNumeric(Daemon::myServer(),
+		       ERR_NOTONCHANNEL, 0,
+		       name + " :" +
+		       user->lang(Language::L_ERR_NOTONCHANNEL));
 	 return;
       }
       

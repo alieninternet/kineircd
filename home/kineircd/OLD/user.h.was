@@ -193,72 +193,95 @@ class User {
 		(u->modes & M_LOCALOPER));
      };
       
-   // Variable access
-   String getNickname(void) const		// Grab the nickname
+   // Grab the nickname
+   String getNickname(void) const
      {
 	return nickname;
      };
 
-   String getUsername(void) const		// Grab the username
+   // Grab the username
+   String getUsername(void) const
      {
 	return username;
      };
    
-   String getAddress(User *destination)		// Return appropriate address
+   // Return appropriate address
+   String getAddress(User *destination) const
      { 
 	return (showVW(destination) ? getVWAddress() : getAddress());
      };
    
-   String getAddress(void)			// Return address (x!y@z)
+   // Return address (x!y@z)
+   String getAddress(void) const
      {
 	return (nickname + "!" + username + "@" + hostname);
      };
    
-   String getVWAddress(void) const		// Above, but w/ virtual-world
+   // Above, but w/ virtual-world
+   String getVWAddress(void) const
      {
 	return (nickname + "!" + username + "@" + vwhostname);
      };
 
+   // Grab the appropriate hostname
    String getHost(User *destination) const
      {
 	return (showVW(destination) ? vwhostname : hostname);
      };
    
-   String getHost(void) const			// Return hostname
+   // Return hostname
+   String getHost(void) const
      {
 	return hostname;
      };
    
-   String getVWHost(void) const			// Return vworld hostname
+   // Return vworld hostname
+   String getVWHost(void) const
      {
 	return vwhostname;
      };
    
-   modes_t getModes(void) const			// Return the modes
+   // Return the modes
+   modes_t getModes(void) const
      {
 	return modes;
      };
    
-   bool isModeSet(modes_t mode) const		// Is a mode set?
+   // Is a mode set?
+   bool isModeSet(modes_t mode) const
      {
 	return (modes & mode);
      };
    
    Channel *getChannel(String &);		// Return a channel
 
-   Server *getServer(void) const		// Get the server we are on
+   // Get the server we are on
+   Server *getServer(void) const
      {
 	return server;
      };
    
-   bool const isLocal(void) const		// Are we a local user?
+   // Are we a local user?
+   bool const isLocal(void) const
      {
 	return local;
      };
    
-   LocalUser *getLocalInfo(void) const		// Get LocalUser info (maybe)
+   // Get LocalUser info (maybe)
+   LocalUser *getLocalInfo(void) const
      {
 	return local;
+     };
+
+   // Return the appropriate language information
+   String lang(Language::tag_t const &t) const
+     {
+	// If this user is local, this is easy
+	if (local) {
+	   return local->lang(t);
+	}
+	
+	return "woops--fix-me";
      };
    
    void markAway(String const &);		// Set/Unset away message

@@ -108,6 +108,11 @@
 # define MIN_INVITE_TIMEOUT		30	/* 30 second min timeout */
 
 
+/* Maximum protocol line lengths (pre-compressor) */
+# define MAXLEN_IRC2USER_OUTPUT		512
+# define MAXLEN_P13SERVER_OUTPUT	2048
+
+
 /* Number of descriptors off the max to stop incoming user connections */
 # define MAX_FD_SAFETY_NUM		32
 
@@ -817,14 +822,14 @@
 
   
 /* Work out the client end of line characters and the max ircII line length;
- * change the BLOODY_IRCII_KLUGE define rather than edit these.. Th name
+ * change the BLOODY_IRCII_KLUGE define rather than edit these.. The name
  * irc2user refers to the protocol name, not the ircII client, btw.
  */
 # ifdef BLOODY_IRCII_KLUGE
-#  define MAXLEN_IRC2USEROUTPUT		510
+#  define MAXLEN_IRC2USER_OUTPUT_CALC	(MAXLEN_IRC2USER_OUTPUT - 2)
 #  define IRC2USER_EOL_CHARS		"\r\n"
 # else
-#  define MAXLEN_IRC2USEROUTPUT		511
+#  define MAXLEN_IRC2USER_OUTPUT_CALC	(MAXLEN_IRC2USER_OUTPUT - 1)
 #  define IRC2USER_EOL_CHARS		"\n"
 # endif
 

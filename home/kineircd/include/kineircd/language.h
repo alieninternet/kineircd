@@ -33,6 +33,7 @@ class Language {
     * list in language.cpp!!
     */
    enum tag_t {
+	B_RPL_CREATED,
 	CHARSET,
 	E_RPL_ISUPPORT,
 	E_RPL_LOGOFF_CHANNEL,
@@ -46,29 +47,63 @@ class Language {
 	E_RPL_NOWON_SERVER,
 	E_RPL_NOWON_USER,
 	E_RPL_WATCHOFF,
+	E_RPL_WHOISIDLE,
+	E_RPL_WHOISOPERATOR,
+	E_RPL_WHOISSECURE,
 	L_DEFAULT_KNOCK_REASON,
+	L_ERR_BADCHANNELKEY,
+	L_ERR_BADCHANNAME,
+	L_ERR_BADCHANNAME_FAILMASK,
+	L_ERR_BADCHANNAME_SAFECHAN,
+	L_ERR_BANNEDFROMCHAN,
+	L_ERR_CANNOTSENDTOCHAN_BANNED,
+	L_ERR_CANNOTSENDTOCHAN_MODERATED,
+	L_ERR_CANNOTSENDTOCHAN_NOOUTSIDEMSG,
+	L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY,
+	L_ERR_CANNOTSENDTONICK_REGNICKSONLY,
+	L_ERR_CHANNELISFULL,
+	L_ERR_INVITEONLYCHAN,
+	L_ERR_NEEDMOREPARAMS,
+	L_ERR_NONICKNAMEGIVEN,
+	L_ERR_NONONREG_CHANNEL,
 	L_ERR_NOOPERHOST,
 	L_ERR_NOOPERHOST_NOOP,
+	L_ERR_NOSUCHCHANNEL,
+	L_ERR_NOTONCHANNEL,
 	L_ERR_PASSWDMISMATCH,
+	L_ERR_SERVERTOOFULL,
+	L_ERR_SILELISTFULL,
+	L_ERR_TOOMANYCHANNELS,
+	L_ERR_UMODEUNKNOWNFLAG,
+	L_ERR_UNKNOWNCOMMAND,
+	L_ERR_WHOTRUNC,
+	L_RPL_CHANREDIR,
+	L_RPL_ENDOFACCEPT,
+	L_RPL_ENDOFHELP,
+	L_RPL_ENDOFLINKS,
+	L_RPL_ENDOFNAMES,
+	L_RPL_ENDOFSILELIST,
+	L_RPL_ENDOFWHO,
+	L_RPL_ENDOFWHOIS,
+	L_RPL_ENDOFWHOWAS,
+	L_RPL_LISTEND,
+	L_RPL_NOTOPIC,
+	L_RPL_NOWAWAY,
 	L_RPL_REHASHING,
+	L_RPL_SERVLISTEND,
 	L_RPL_SPAM_A,
 	L_RPL_SPAM_B,
 	L_RPL_SPAM_C,
 	L_RPL_SPAM_D,
+	L_RPL_UNAWAY,
 	L_RPL_YOUREOPER,
 	L_RPL_YOUREOPER_ALREADY,
 	LANGCODE,
 	LANGNAME,
 	LANGNOTE,
 	MAINTAINER,
-	P_ERR_WHOTRUNC,
 	P_NO_MATCH,
-	P_RPL_ENDOFHELP,
-	P_RPL_ENDOFNAMES,
-	P_RPL_ENDOFWHOWAS,
-	P_RPL_NOTOPIC,
-	P_RPL_NOWAWAY,
-	P_RPL_UNAWAY,
+	P_RPL_WHOISVIRT,
         REVISION,
 	W_MATCH,
 	W_MATCH_PL,
@@ -121,20 +156,13 @@ class Language {
    static char const *L_RPL_WELCOME;
    static char const *L_RPL_YOURHOST;
    static char const *L_RPL_YOURHOST_IRCII_KLUGE_NOTICE;
-   static char const *L_RPL_CREATED;
    static char const *L_RPL_TIMEONSERVERIS;
 
    // Generic responces
-   static char const *L_ERR_UNKNOWNCOMMAND;
-   static char const *L_ERR_SERVERTOOFULL;
-   static char const *L_ERR_NEEDMOREPARAMS;
    static char const *L_ERR_ALREADYREGISTERED;
-   static char const *L_ERR_SUMMONDISABLED;
-   static char const *L_ERR_USERSDISABLED;
    static char const *L_ERR_NOPRIVILEGES;
    
    // Nickname related errors
-   static char const *L_ERR_NONICKNAMEGIVEN;
    static char const *L_ERR_ERRONEUSNICKNAME;
    static char const *L_ERR_ERRONEUSNICKNAME_W_REASON;
    static char const *L_ERR_NICKNAMEINUSE;
@@ -142,34 +170,18 @@ class Language {
 
    
    // Channel related messages
-   static char const *L_ERR_BADCHANNAME;
-   static char const *L_ERR_BADCHANNAME_SAFECHAN;
-   static char const *L_ERR_BADCHANNAME_FAILMASK;
-   static char const *L_ERR_NOTONCHANNEL;
    static char const *L_ERR_USERNOTINCHANNEL;
-   static char const *L_ERR_TOOMANYCHANNELS;
-   static char const *L_ERR_BANNEDFROMCHAN;
    static char const *L_ERR_CHANOPRIVSNEEDED;
    static char const *L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER;
    static char const *L_ERR_UNIQOPRIVSNEEDED;
-   static char const *L_ERR_NOSUCHCHANNEL;
-   static char const *L_ERR_INVITEONLYCHAN;
    static char const *L_ERR_USERONCHANNEL;
-   static char const *L_ERR_CHANNELISFULL;
-   static char const *L_ERR_BADCHANNELKEY;
-   static char const *L_ERR_CANNOTSENDTOCHAN;
-   static char const *L_ERR_CANNOTSENDTOCHAN_NOOUTSIDEMSG;
-   static char const *L_ERR_CANNOTSENDTOCHAN_BANNED;
-   static char const *L_ERR_CANNOTSENDTOCHAN_MODERATED;
-   static char const *L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY;
-   static char const *L_RPL_CHANREDIR;
+
    
    // Mode related messages
    static char const *L_RPL_ENDOFBANLIST;
    static char const *L_RPL_ENDOFEXCEPTLIST;
    static char const *L_RPL_ENDOFINVITELIST;
    static char const *L_ERR_USERSDONTMATCH_MODE;
-   static char const *L_ERR_UMODEUNKNOWNFLAG;
    static char const *L_ERR_UNKNOWNMODE;
    static char const *L_ERR_UNKNOWNSERVERMODE;
    static char const *L_ERR_NOPRIVILEGES_PLUS_IRCOPER;
@@ -195,16 +207,6 @@ class Language {
    static char const *L_ERR_NOMOTD;
    static char const *L_ERR_NOMOTD_NOREMOTE;
    
-   // WHO messages
-   static char const *L_RPL_ENDOFWHO;
-   
-   // WHOIS messages
-   static char const *L_RPL_WHOISVIRT;
-   static char const *L_RPL_WHOISIDLE;
-   static char const *L_RPL_WHOISOPERATOR;
-   static char const *L_RPL_WHOISSECURE;
-   static char const *L_RPL_ENDOFWHOIS;
-   
    // HELP command replies
    static char const *L_RPL_ENDOFHELP_SIMPLE;
 
@@ -219,20 +221,12 @@ class Language {
    static char const *L_RPL_ENDOFWATCHLIST;
 
    // ACCEPT command replies
-   static char const *L_RPL_ENDOFACCEPT;
    static char const *L_ERR_ACCEPTFULL;
    static char const *L_ERR_ACCEPTEXIST;
    static char const *L_ERR_ACCEPTNOT;
    static char const *L_RPL_NOTACCEPTED;
    static char const *L_RPL_ACCEPTNOTICE;
    static char const *L_RPL_ACCEPTED;
-
-   // SERVLIST replies
-   static char const *L_RPL_SERVLISTEND;
-   
-   // SILENCE list replies
-   static char const *L_RPL_ENDOFSILELIST;
-   static char const *L_ERR_SILELISTFULL;
 
    // KNOCK replies
    static char const *L_ERR_NOKNOCK_ONCHANNEL;
@@ -287,21 +281,16 @@ class Language {
    static char const *L_ERROR_CLOSING_LINK;
    static char const *L_ERROR_CLOSING_LINK_DEFAULT_REASON;
    static char const *L_RPL_ENDOFINFO;
-   static char const *L_RPL_LISTEND;
    static char const *L_RPL_ENDOFSTATS;
    static char const *L_RPL_VERSION;
    static char const *L_RPL_ADMINME;
    static char const *L_RPL_STATSUPTIME;
    static char const *L_RPL_STATSCONN;
-   static char const *L_ERR_NONONREG_CHANNEL;
-   static char const *L_ERR_NONONREG_USER;
    static char const *L_ERR_NOSUCHNICK;
    static char const *L_ERR_NOSUCHNICK_NICK;
    static char const *L_ERR_NOSUCHNICK_CHANNEL;
    static char const *L_ERR_NOSUCHNICK_OR_SERVER;
-   static char const *L_ERR_CANNOTSENDTONICK_MUSTID;
    static char const *L_DEFAULT_QUIT_MESSAGE;
-   static char const *L_RPL_ENDOFLINKS;
    
    friend class LanguageData;
 };

@@ -397,9 +397,12 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       // Send the virtual world information if we need to
       if (!u->showVW(from) && 
 	  (u->modes & User::M_VWORLD)) {
-	 handler->sendNumeric(Daemon::myServer(), RPL_WHOISVIRT, from,
-			      u->nickname + Language::L_RPL_WHOISVIRT +
-			      u->vwhostname);
+	 handler->
+	   sendNumeric(Daemon::myServer(), RPL_WHOISVIRT, from,
+		       String::printf("%s :%s %s",
+				      (char const *)u->nickname,
+				      (char const *)from->lang(Language::P_RPL_WHOISVIRT),
+				      (char const *)u->vwhostname));
       }
       
       // Send the channel list(s)
@@ -476,13 +479,14 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 #endif
 	  (!u->isModeSet(User::M_INVISIBLE) || User::isHelper(from))) {
 	 handler->
-	       sendNumeric(Daemon::myServer(), RPL_WHOISIDLE, from,
-			   u->nickname +
-			   String::printf((char *)Language::L_RPL_WHOISIDLE,
-					  ((unsigned long)
-					   difftime(Daemon::getTime(),
-						    u->local->handler->getConnection()->getLastSpoke())),
-					  u->signonTime));
+	   sendNumeric(Daemon::myServer(), RPL_WHOISIDLE, from,
+		       String::printf("%s %lu %lu :%s",
+				      (char const *)u->nickname,
+				      ((unsigned long)
+				       difftime(Daemon::getTime(),
+						u->local->handler->getConnection()->getLastSpoke())),
+				      u->signonTime,
+				      (char const *)from->lang(Language::E_RPL_WHOISIDLE)));
       }
       
       // Check if this user is an irc operator
@@ -500,18 +504,23 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 	 }
 #endif
 	 handler->sendNumeric(Daemon::myServer(), RPL_WHOISOPERATOR, from,
-			      u->nickname + Language::L_RPL_WHOISOPERATOR);
+			      u->nickname + " :" +
+			      from->lang(Language::E_RPL_WHOISOPERATOR));
       }
       
       // Check if this user is connected via an SSL enabled port
       if (u->modes & User::M_SECURE) {
-	 handler->sendNumeric(Daemon::myServer(), RPL_WHOISSECURE, from,
-			      u->nickname + " *" + Language::L_RPL_WHOISSECURE);
+	 handler->
+	   sendNumeric(Daemon::myServer(), RPL_WHOISSECURE, from,
+		       String::printf("%s * :%s",
+				      (char const *)u->nickname,
+				      (char const *)from->lang(Language::E_RPL_WHOISSECURE)));
       }
    }
    
    // Send the footer
    handler->sendNumeric(Daemon::myServer(), RPL_ENDOFWHOIS, from,
-			request + Language::L_RPL_ENDOFWHOIS);
+			request + " :" +
+			from->lang(Language::L_RPL_ENDOFWHOIS));
 }
 

@@ -24,45 +24,80 @@ namespace Language {
     */
    Language::languageTagsStruct languageTags[Language::_END_] =
      {
-	  { "CHARSET",				true,	true },
-	  { "E_RPL_ISUPPORT",			false,	false },
-	  { "E_RPL_LOGOFF_CHANNEL",		false,	false },
-	  { "E_RPL_LOGOFF_SERVER",		false,	false },
-	  { "E_RPL_LOGOFF_USER",		false,	false },
-	  { "E_RPL_LOGON_CHANNEL",		false,	false },
-	  { "E_RPL_LOGON_SERVER",		false,	false },
-	  { "E_RPL_LOGON_USER",			false,	false },
-	  { "E_RPL_NOWOFF",			false,	false },
-	  { "E_RPL_NOWON_CHANNEL",		false,	false },
-	  { "E_RPL_NOWON_SERVER",		false,	false },
-	  { "E_RPL_NOWON_USER",			false,	false },
-	  { "E_RPL_WATCHOFF",			false,	false },
-	  { "L_DEFAULT_KNOCK_REASON",		false,	false },
-	  { "L_ERR_NOOPERHOST",			false,	false },
-	  { "L_ERR_NOOPERHOST_NOOP",		false,	false },
-	  { "L_ERR_PASSWDMISMATCH",		false,	false },
-	  { "L_RPL_REHASHING",			false,	false },
-	  { "L_RPL_SPAM_A",			false,	false },
-	  { "L_RPL_SPAM_B",			false,	false },
-	  { "L_RPL_SPAM_C",			false,	false },
-	  { "L_RPL_SPAM_D",			false,	false },
-	  { "L_RPL_YOUREOPER",			false,	false },
-	  { "L_RPL_YOUREOPER_ALREADY",		false,	false },
-	  { "LANGCODE",				true,	true },
-	  { "LANGNAME",				true,	false },
-	  { "LANGNOTE",				false,	false },
-	  { "MAINTAINER",			true,	true },
-	  { "P_ERR_WHOTRUNC",			false,	false },
-	  { "P_NO_MATCH",			false,	false },
-	  { "P_RPL_ENDOFHELP",			false,	false },
-	  { "P_RPL_ENDOFNAMES",			false,	false },
-	  { "P_RPL_ENDOFWHOWAS",		false,	false },
-	  { "P_RPL_NOTOPIC",			false,	false },
-	  { "P_RPL_NOWAWAY",			false,	false },
-	  { "P_RPL_UNAWAY",			false,	false },
-	  { "REVISION",				true,	true },
-	  { "W_MATCH",				false,	false },
-	  { "W_MATCH_PL",			false,	false }
+	  { "B_RPL_CREATED",				false,	false },
+	  { "CHARSET",					true,	true },
+	  { "E_RPL_ISUPPORT",				false,	false },
+	  { "E_RPL_LOGOFF_CHANNEL",			false,	false },
+	  { "E_RPL_LOGOFF_SERVER",			false,	false },
+	  { "E_RPL_LOGOFF_USER",			false,	false },
+	  { "E_RPL_LOGON_CHANNEL",			false,	false },
+	  { "E_RPL_LOGON_SERVER",			false,	false },
+	  { "E_RPL_LOGON_USER",				false,	false },
+	  { "E_RPL_NOWOFF",				false,	false },
+	  { "E_RPL_NOWON_CHANNEL",			false,	false },
+	  { "E_RPL_NOWON_SERVER",			false,	false },
+	  { "E_RPL_NOWON_USER",				false,	false },
+	  { "E_RPL_WATCHOFF",				false,	false },
+	  { "E_RPL_WHOISIDLE",				false,	false },
+	  { "E_RPL_WHOISOPERATOR",			false,	false },
+	  { "E_RPL_WHOISSECURE",			false,	false },
+	  { "L_DEFAULT_KNOCK_REASON",			false,	false },
+	  { "L_ERR_BADCHANNELKEY",			false,	false },
+	  { "L_ERR_BADCHANNAME",			false,	false },
+	  { "L_ERR_BADCHANNAME_FAILMASK",		false,	false },
+	  { "L_ERR_BADCHANNAME_SAFECHAN",		false,	false },
+	  { "L_ERR_BANNEDFROMCHAN",			false,	false },
+	  { "L_ERR_CANNOTSENDTOCHAN_BANNED",		false,	false },
+	  { "L_ERR_CANNOTSENDTOCHAN_MODERATED",		false,	false },
+	  { "L_ERR_CANNOTSENDTOCHAN_NOOUTSIDEMSG",	false,	false },
+	  { "L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY",	false,	false },
+	  { "L_ERR_CANNOTSENDTONICK_REGNICKSONLY",	false,	false },
+	  { "L_ERR_CHANNELISFULL",			false,	false },
+	  { "L_ERR_INVITEONLYCHAN",			false,	false },
+	  { "L_ERR_NEEDMOREPARAMS",			false,	false },
+	  { "L_ERR_NONICKNAMEGIVEN",			false,	false },
+	  { "L_ERR_NONONREG_CHANNEL",			false,	false },
+	  { "L_ERR_NOOPERHOST",				false,	false },
+	  { "L_ERR_NOOPERHOST_NOOP",			false,	false },
+	  { "L_ERR_NOSUCHCHANNEL",			false,	false },
+	  { "L_ERR_NOTONCHANNEL",			false,	false },
+	  { "L_ERR_PASSWDMISMATCH",			false,	false },
+	  { "L_ERR_SERVERTOOFULL",			false,	false },
+	  { "L_ERR_SILELISTFULL",			false,	false },
+	  { "L_ERR_TOOMANYCHANNELS",			false,	false },
+	  { "L_ERR_UMODEUNKNOWNFLAG",			false,	false },
+	  { "L_ERR_UNKNOWNCOMMAND",			false,	false },
+	  { "L_ERR_WHOTRUNC",				false,	false },
+	  { "L_RPL_CHANREDIR",				false,	false },
+	  { "L_RPL_ENDOFACCEPT",			false,	false },
+	  { "L_RPL_ENDOFHELP",				false,	false },
+	  { "L_RPL_ENDOFLINKS",				false,	false },
+	  { "L_RPL_ENDOFNAMES",				false,	false },
+	  { "L_RPL_ENDOFSILELIST",			false,	false },
+	  { "L_RPL_ENDOFWHO",				false,	false },
+	  { "L_RPL_ENDOFWHOIS",				false,	false },
+	  { "L_RPL_ENDOFWHOWAS",			false,	false },
+	  { "L_RPL_LISTEND",				false,	false },
+	  { "L_RPL_NOTOPIC",				false,	false },
+	  { "L_RPL_NOWAWAY",				false,	false },
+	  { "L_RPL_REHASHING",				false,	false },
+	  { "L_RPL_SERVLISTEND",			false,	false },
+	  { "L_RPL_SPAM_A",				false,	false },
+	  { "L_RPL_SPAM_B",				false,	false },
+	  { "L_RPL_SPAM_C",				false,	false },
+	  { "L_RPL_SPAM_D",				false,	false },
+	  { "L_RPL_UNAWAY",				false,	false },
+	  { "L_RPL_YOUREOPER",				false,	false },
+	  { "L_RPL_YOUREOPER_ALREADY",			false,	false },
+	  { "LANGCODE",					true,	true },
+	  { "LANGNAME",					true,	false },
+	  { "LANGNOTE",					false,	false },
+	  { "MAINTAINER",				true,	true },
+	  { "P_NO_MATCH",				false,	false },
+	  { "P_RPL_WHOISVIRT",				false,	false },
+	  { "REVISION",					true,	true },
+	  { "W_MATCH",					false,	false },
+	  { "W_MATCH_PL",				false,	false }
      };
 
    // The map with the languages in it..
@@ -95,30 +130,16 @@ namespace Language {
      ":Your server is %s, running version %s";
    char const *L_RPL_YOURHOST_IRCII_KLUGE_NOTICE =
      "NOTICE %s :*** Your host is %s, running version %s%s";
-   char const *L_RPL_CREATED =
-     ":This server was created %s";
    char const *L_RPL_TIMEONSERVERIS =
      "%lu %ld %s %s :time according to server";
 
    // Generic responces
-   char const *L_ERR_UNKNOWNCOMMAND =
-     " :Unknown command";
-   char const *L_ERR_SERVERTOOFULL =
-     ":This server cannot accept any more user connections";
-   char const *L_ERR_NEEDMOREPARAMS =
-     " :Not enough parameters";
    char const *L_ERR_ALREADYREGISTERED =
      ":You may only claim registration type once";
-   char const *L_ERR_SUMMONDISABLED =
-     ":SUMMON has been disabled";
-   char const *L_ERR_USERSDISABLED =
-     ":USERS has been disabled";
    char const *L_ERR_NOPRIVILEGES =
      ":Permission Denied - You're not an AustNet IRC operator";
 
    // Nickname related errors
-   char const *L_ERR_NONICKNAMEGIVEN =
-     ":No nickname given";
    char const *L_ERR_ERRONEUSNICKNAME =
      " :Erroneous nickname";
    char const *L_ERR_ERRONEUSNICKNAME_W_REASON =
@@ -129,53 +150,18 @@ namespace Language {
      " :Sorry, cannot change nickname during a channel event (+E)";
 
    // Channel related messages
-   char const *L_ERR_BADCHANNAME =
-     " :Bad channel name";
-   char const *L_ERR_BADCHANNAME_SAFECHAN =
-     " :Safe channels must be created first";
-   char const *L_ERR_BADCHANNAME_FAILMASK =
-     "%s :Channel name is unavailable: %s";
-
-   char const *L_ERR_NOTONCHANNEL =
-     " :You're not on that channel";
    char const *L_ERR_USERNOTINCHANNEL =
      "%s %s :They aren't on that channel";
 
-   char const *L_ERR_TOOMANYCHANNELS =
-     " :You have joined too many channels";
-   char const *L_ERR_BANNEDFROMCHAN =
-     " :Cannot join channel (+b)";
    char const *L_ERR_CHANOPRIVSNEEDED =
      " :You're not a channel operator";
    char const *L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER =
      " :You're not a full channel operator";
    char const *L_ERR_UNIQOPRIVSNEEDED =
      ":You're not the original channel operator";
-   char const *L_ERR_NOSUCHCHANNEL =
-     " :No such channel";
 
-   char const *L_ERR_INVITEONLYCHAN =
-     " :Cannot join channel (+i)";
    char const *L_ERR_USERONCHANNEL =
      "%s %s :is already on channel";
-   char const *L_ERR_CHANNELISFULL =
-     " :Cannot join channel (+l)";
-   char const *L_ERR_BADCHANNELKEY =
-     " :Cannot join channel (+k)";
-
-   char const *L_ERR_CANNOTSENDTOCHAN =
-     " :Cannot send to channel";
-   char const *L_ERR_CANNOTSENDTOCHAN_NOOUTSIDEMSG =
-     " :Cannot send to channel, you are not on that channel (+n)";
-   char const *L_ERR_CANNOTSENDTOCHAN_BANNED =
-     " :Cannot send to channel, you are banned (+b)";
-   char const *L_ERR_CANNOTSENDTOCHAN_MODERATED =
-     " :Cannot send to channel, channel is moderated (+m)";
-   char const *L_ERR_CANNOTSENDTOCHAN_REGNICKSONLY =
-     " :Cannot send to channel, you need to be identified (+R)";
-
-   char const *L_RPL_CHANREDIR =
-     "%s %s :You are being redirected";
 
    // Mode related messages
    char const *L_RPL_ENDOFBANLIST =
@@ -186,8 +172,6 @@ namespace Language {
      " :End of channel invite list";
    char const *L_ERR_USERSDONTMATCH_MODE =
      ":Cannot change mode for other users";
-   char const *L_ERR_UMODEUNKNOWNFLAG =
-     " :Unknown user MODE flag";
    char const *L_ERR_UNKNOWNMODE =
      "%c :is an unknown mode char to me for %s";
    char const *L_ERR_UNKNOWNSERVERMODE =
@@ -239,22 +223,6 @@ namespace Language {
    char const *L_ERR_NOMOTD_NOREMOTE =
      ":MOTD on %s cannot be viewed remotely";
 
-   // WHO messages
-   char const *L_RPL_ENDOFWHO =
-     "%s :End of WHO list";
-
-   // WHOIS messages
-   char const *L_RPL_WHOISVIRT =
-     " :on Virtual World as ";
-   char const *L_RPL_WHOISIDLE =
-     " %lu %lu :seconds idle, signon time";
-   char const *L_RPL_WHOISOPERATOR =
-     " :is an AustNet IRC Operator";
-   char const *L_RPL_WHOISSECURE =
-     " :is connected via a secure connection";
-   char const *L_RPL_ENDOFWHOIS =
-     " :End of WHOIS list";
-
    // HELP command replies
    char const *L_RPL_ENDOFHELP_SIMPLE =
      "%s :End of HELP; Try 'HELP -%s' for more information";
@@ -276,8 +244,6 @@ namespace Language {
      ":End of WATCH %c";
 
    // ACCEPT command replies
-   char const *L_RPL_ENDOFACCEPT =
-     ":End of ACCEPT list";
    char const *L_ERR_ACCEPTFULL =
      ":Accept list is full";
    char const *L_ERR_ACCEPTEXIST =
@@ -292,16 +258,6 @@ namespace Language {
      "Use the ACCEPT command if you want to talk to them";
    char const *L_RPL_ACCEPTED =
      "%s %s %s :has put you on their ACCEPT list";
-
-   // SERVLIST replies
-   char const *L_RPL_SERVLISTEND =
-     " :End of services listing";
-   
-   // SILENCE list replies
-   char const *L_RPL_ENDOFSILELIST =
-     " :End of SILENCE list";
-   char const *L_ERR_SILELISTFULL =
-     " :Your silence list is full";
 
    // KNOCK replies
    char const *L_ERR_NOKNOCK_ONCHANNEL =
@@ -408,8 +364,6 @@ namespace Language {
 
    char const *L_RPL_ENDOFINFO =
      ":End of INFO";
-   char const *L_RPL_LISTEND =
-     ":End of LIST";
    char const *L_RPL_ENDOFSTATS =
      " :End of STATS report";
 
@@ -424,11 +378,6 @@ namespace Language {
    char const *L_RPL_STATSCONN =
      ":Highest connection count: %u (%u clients)";
 
-   char const *L_ERR_NONONREG_CHANNEL =
-     " :You must be identified with NickOP to join this channel";
-   char const *L_ERR_NONONREG_USER =
-     " :You must be identified with NickOP to talk privately with this user";
-
    char const *L_ERR_NOSUCHNICK =
      " :No such nickname or channel";
    char const *L_ERR_NOSUCHNICK_NICK =
@@ -438,14 +387,8 @@ namespace Language {
    char const *L_ERR_NOSUCHNICK_OR_SERVER =
      " :No such nickname, channel or server";
 
-   char const *L_ERR_CANNOTSENDTONICK_MUSTID =
-     " :You must be identified to send to this person";
-
    char const *L_DEFAULT_QUIT_MESSAGE =
      "Exit: Austnet Chat Network";
-
-   char const *L_RPL_ENDOFLINKS =
-     " :End of LINKS list";
 };
 
 
@@ -567,7 +510,7 @@ bool Language::loadLanguages(String const &directory,
 	    }
 	    
 #ifdef DEBUG_EXTENDED
-	    debug(String::printf(" +-> Tag: '%s', data: '%s'",
+	    debug(String::printf(" +-> %s: %s",
 				 (char const *)tag,
 				 (char const *)data));
 #endif
