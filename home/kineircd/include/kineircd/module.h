@@ -24,10 +24,38 @@
 #ifndef _INCLUDE_KINEIRCD_MODULE_H_
 # define _INCLUDE_KINEIRCD_MODULE_H_ 1
 
+// Template for the information structure YOU SHOULD USE in your module
+# define KINE_MODULE_INFORMATION \
+   static const struct Kine::Module::modInfo_type moduleInfo
+
+// Template for the function which triggers a module to start
+# define KINE_MODULE_START(x) \
+   bool x(void)
+
+// Template for the above which YOU SHOULD USE in your modules
+# define KINE_MODULE_START_FUNCTION \
+   static KINE_MODULE_START(moduleStart)
+
+// Template for the function which triggers a module to start
+# define KINE_MODULE_STOP(x) \
+   void x(void)
+
+// Template for the above which YOU SHOULD USE in your modules
+# define KINE_MODULE_STOP_FUNCTION \
+   static KINE_MODULE_STOP(moduleStop)
+
+// Template for the optional function which hands modules a time-slice
+# define KINE_MODULE_TIMESLICE(x) \
+   int x(int)
+
+// Template for the above which YOU SHOULD USE in your modules
+# define KINE_MODULE_TIMESLICE_FUNCTION \
+   static KINE_MODULE_TIMESLICE(moduleTimeSlice)
+
+
 namespace Kine {
-   
    class Module {
-    private:
+    public:
       /* This structure defines information about the module itself. Each 
        * module must have one of these present to define parameters about the 
        * module so that the server has some idea of how to handle it, what 
@@ -53,6 +81,12 @@ namespace Kine {
 	 const unsigned char versionMinor;
 	 const unsigned short versionPatchLevel;
 	 const char *versionExtra;
+
+	 // Flags to determine how this module needs to be configured
+	 enum flags_type {
+	    FLAG_NEEDS_ROOT_START = 0x00000001,	// Needs root access to start
+	    FLAG_NEEDS_ROOT_RUN = 0x00000002	// Needs root to run
+	 } const flags;
 	 
 	 // Check that the details are okay
 	 const bool isOkay(void) const
@@ -63,17 +97,15 @@ namespace Kine {
 	   };
       } const &moduleInfo;
       
-    public:
       // Constructor
       Module(const modInfo_type &mi)
 	: moduleInfo(mi)
-	{};
+        {};
       
       // Destructor
       ~Module(void)
 	{};
    };
-   
 };
    
 #endif // _INCLUDE_KINEIRCD_MODULE_H_
