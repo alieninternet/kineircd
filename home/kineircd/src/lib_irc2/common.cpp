@@ -84,6 +84,47 @@ void Protocol::sendTimeOnServer(const User& user)
 }
 
 
+/* doADMIN - Handle the 'ADMIN' command
+ * Original 27/08/2001 simonb
+ */
+void Protocol::doADMIN(const User& user)
+{
+   // Do we have administrative any information?
+   if (Kine::config().getAdministratorName().empty() &&
+       Kine::config().getAdministratorLocation().empty() &&
+       Kine::config().getAdministratorContact().empty()) {
+      sendNumeric(user, LibIRC2::Numerics::ERR_NOADMININFO,
+		  Kine::config().getOptionsServerName(),
+		  GETLANG(irc2_ERR_NOADMININFO));
+      return;
+   }
+   
+   // Send the admin header
+   sendNumeric(user, LibIRC2::Numerics::RPL_ADMINME,
+	       Kine::config().getOptionsServerName(),
+	       GETLANG(irc2_RPL_ADMINME,
+		       Kine::config().getOptionsServerName()));
+   
+   // Send the administrator's name
+   if (!Kine::config().getAdministratorName().empty()) {
+      sendNumeric(user, LibIRC2::Numerics::RPL_ADMINLOC1,
+		  Kine::config().getAdministratorName());
+   }
+   
+   // Send the administrator's location
+   if (!Kine::config().getAdministratorLocation().empty()) {
+      sendNumeric(user, LibIRC2::Numerics::RPL_ADMINLOC2,
+		  Kine::config().getAdministratorLocation());
+   }
+   
+   // Send the administrator's contact address
+   if (!Kine::config().getAdministratorContact().empty()) {
+      sendNumeric(user, LibIRC2::Numerics::RPL_ADMINEMAIL,
+		  Kine::config().getAdministratorContact());
+   }
+}
+
+
 /* doLUSERS - Handle the 'LUSERS' command
  * Original 13/08/2001 simonb
  */

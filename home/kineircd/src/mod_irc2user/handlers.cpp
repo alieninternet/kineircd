@@ -46,39 +46,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleADMIN)
 {
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
-      // Do we have administrative any information?
-      if (Kine::config().getAdministratorName().empty() &&
-	  Kine::config().getAdministratorLocation().empty() &&
-	  Kine::config().getAdministratorContact().empty()) {
-	 sendNumeric(LibIRC2::Numerics::ERR_NOADMININFO,
-		     Kine::config().getOptionsServerName(),
-		     GETLANG(irc2_ERR_NOADMININFO));
-	 return;
-      }
-      
-      // Send the admin header
-      sendNumeric(LibIRC2::Numerics::RPL_ADMINME,
-		  Kine::config().getOptionsServerName(),
-		  GETLANG(irc2_RPL_ENDOF_GENERIC_HELP,
-			  Kine::config().getOptionsServerName()));
-      
-      // Send the administrator's name
-      if (!Kine::config().getAdministratorName().empty()) {
-	 sendNumeric(LibIRC2::Numerics::RPL_ADMINLOC1,
-		     Kine::config().getAdministratorName());
-      }
-	 
-      // Send the administrator's location
-      if (!Kine::config().getAdministratorLocation().empty()) {
-	 sendNumeric(LibIRC2::Numerics::RPL_ADMINLOC2,
-		     Kine::config().getAdministratorLocation());
-      }
-      
-      // Send the administrator's contact address
-      if (!Kine::config().getAdministratorContact().empty()) {
-	 sendNumeric(LibIRC2::Numerics::RPL_ADMINEMAIL,
-		     Kine::config().getAdministratorContact());
-      }
+      doADMIN(user);
       return;
    }
    

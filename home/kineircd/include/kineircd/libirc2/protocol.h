@@ -312,6 +312,9 @@ namespace Kine {
 	 // Send RPL_TIMEONSERVERIS to the given client
 	 void sendTimeOnServer(const User& user);
 	 
+	 // Handle the 'ADMIN' command
+	 void doADMIN(const User& user);
+	 
 	 // Handle the 'LUSERS' command
 	 void doLUSERS(const User& user);
 	 
