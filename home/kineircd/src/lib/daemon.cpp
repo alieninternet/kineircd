@@ -507,7 +507,7 @@ String Daemon::makeISUPPORT(void)
 //			 " WHOX"				// (5chrs)
 //			 " WALLCHOPS"				// (10chrs)
 //			 " USERIP"				// (7chrs)
-			 " LANGUAGE=%u,(en)"			// (12chrs)
+			 " LANGUAGE=%u,%s"			// (12chrs)
 			 " KNOCK"				// (6chrs)
 			 " WATCH=%u"				// (~10chrs)
 			 " SILENCE=%u"				// (~11chrs)
@@ -527,6 +527,7 @@ String Daemon::makeISUPPORT(void)
 			   (String(" NETWORK=") + getNetworkName())) :
 			  ""),
 			 confMaxLangsPerUser,
+			 (char const *)Language::getISUPPORTcodes(),
 			 confMaxWatchesPerUser,
 			 confMaxSilencesPerUser,
 			 confMaxAcceptsPerUser,

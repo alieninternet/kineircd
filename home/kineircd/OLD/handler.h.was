@@ -12,6 +12,7 @@ class Handler;
 # include "str.h"
 # include "server.h"
 # include "channel.h"
+# include "language.h"
 # include "user.h"
 
 

@@ -262,10 +262,7 @@ bool Daemon::configCopy(bool firstRun, ConfigData *conf)
    }
 
    // Fire up the languages now that we know the directory
-   Language::loadLanguages(conf->confLanguageDir);
-   
-   // If we got here, all must be well...
-   return true;
+   return Language::loadLanguages(conf->confLanguageDir, "");
 }
 
 

@@ -26,9 +26,11 @@ namespace Language {
      {
 	{ "REVISION",			true,	true },
 	{ "MAINTAINER",			true,	true },
+	{ "LANGCODE",			true,	true },
 	{ "LANGNAME",			true,	false },
 	{ "LANGNOTE",			false,	false },
-	{ "CHARSET",			true,	true }
+	{ "CHARSET",			true,	true },
+	{ "E_RPL_ISUPPORT",		false,	false }
      };
 
    // The map with the languages in it..
@@ -36,6 +38,9 @@ namespace Language {
    
    // Default language, start off with it being none...
    LanguageData *defaultLanguage = 0;
+   
+   // Language tag list for ISUPPORT
+   String ISUPPORTcodes = "";
 }
 
 /* Do not change these lines unless you know how they are used/referenced or
@@ -57,11 +62,11 @@ namespace Language {
    char const *L_RPL_YOURHOST =
      ":Your server is %s, running version %s";
    char const *L_RPL_YOURHOST_IRCII_KLUGE_NOTICE =
-     "NOTICE %s :*** Your host is %s, running version %s";
+     "NOTICE %s :*** Your host is %s, running version %s%s";
    char const *L_RPL_CREATED =
      ":This server was created %s";
-   char const *L_RPL_ISUPPORT_TAG =
-     " :are supported by this server";
+//   char const *L_RPL_ISUPPORT_TAG =
+//     " :are supported by this server";
    char const *L_RPL_TIMEONSERVERIS =
      "%lu %ld %s %s :time according to server";
 
@@ -523,7 +528,8 @@ namespace Language {
 /* loadLanguages - Seek and load language files in the given directory
  * Original 28/10/01, Simon Butcher <pickle@austnet.org>
  */
-bool Language::loadLanguages(String const &directory)
+bool Language::loadLanguages(String const &directory, 
+			     String const &defaultCode)
 {
 #ifdef DEBUG
    debug("Loading language files...");
@@ -538,7 +544,7 @@ bool Language::loadLanguages(String const &directory)
       debug(String("Error opening language file direcotry: ") +
 	    strerror(errno));
 #endif
-      return 1;
+      return false;
    }
    
    // Stuff we need
@@ -569,17 +575,12 @@ bool Language::loadLanguages(String const &directory)
 	    continue;
 	 }
 	 
-	 // Grab the language code from the filename
-	 String code = fileName.subString(LANG_FILE_PREFIX_LEN).toLower();
-
 #ifdef DEBUG_EXTENDED
-	 debug(String::printf("Loading language file %s (%s)",
-			      (char const *)fileName,
-			      (char const *)code));
+	 debug(String("Loading language file ") + fileName);
 #endif
 	 
 	 // Reset some variables
-	 LanguageData *lang = new LanguageData(code);
+	 LanguageData *lang = new LanguageData();
 	 langData.clear();
 	 line = "";
 	 tag = "";
@@ -681,7 +682,7 @@ bool Language::loadLanguages(String const &directory)
 	 }
 
 	 // Add this language to the map thingy
-       	 languages[code] = lang;
+	 languages[lang->get(LANGCODE)] = lang;
 
 	 // Clean out the map
 	 String *foo;
@@ -692,9 +693,38 @@ bool Language::loadLanguages(String const &directory)
 	 }
       }
    }
+
+   // Determine the default language
+   defaultLanguage = NULL;
+   if (defaultCode.length()) {
+      defaultLanguage = get(defaultCode);
+   }
+   
+   // Check the default language has been set, else make a dodgey presumption
+   if (!defaultLanguage) {
+      defaultLanguage = (*languages.begin()).second;
+   }
+   
+   // Generate the ISUPPORT info
+   ISUPPORTcodes = "";
+   for (languages_map_t::iterator it = languages.begin(); 
+	it != languages.end(); it++) {
+      // If there is already something in the line, add a comma before the code
+      if (ISUPPORTcodes.length()) {
+	 ISUPPORTcodes = ISUPPORTcodes + String(',');
+      }
+      
+      // If this is the default, add it with braces, otherwise add it normally
+      if ((*it).second == defaultLanguage) {
+	 ISUPPORTcodes = ISUPPORTcodes + "(" + (*it).first + ")";
+      } else {
+	 ISUPPORTcodes = ISUPPORTcodes + (*it).first;
+      }
+   }
+   
    
    // OK!
-   return 0;
+   return true;
 };
 
 
@@ -718,3 +748,5 @@ LanguageData *Language::get(String const &code)
 
    return NULL;
 }
+
+

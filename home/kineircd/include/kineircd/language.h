@@ -17,7 +17,7 @@
 
 
 // Number of language tags
-# define NUM_LANG_TAGS		5
+# define NUM_LANG_TAGS		7
 
 
 class LanguageData;
@@ -39,9 +39,11 @@ class Language {
    enum tag_t {
       REVISION,
       MAINTAINER,
+      LANGCODE,
       LANGNAME,
       LANGNOTE,
-      CHARSET
+      CHARSET,
+      E_RPL_ISUPPORT
    };
    
 // private:
@@ -53,12 +55,9 @@ class Language {
       bool const oneword;
    };
    static languageTagsStruct languageTags[NUM_LANG_TAGS];
-
-   // Languages installed! Lookup map for LanguageData:: pointers
-   static languages_map_t languages;
-
-   // Default language
-   static LanguageData *defaultLanguage;
+   static languages_map_t languages;		// Installed languages
+   static LanguageData *defaultLanguage;	// Default language
+   static String ISUPPORTcodes;			// ISUPPORT LANGUAGE= data
    
    Language(void) {};				// Constructor (cannot be run)
    virtual ~Language(void) {};			// Destructor
@@ -66,14 +65,16 @@ class Language {
 //   static void clear(void);			// Wipe the language lists
 
  public:
-   static bool loadLanguages(String const &);	// Load language files
+   static bool loadLanguages(String const &,
+			     String const &);	// Load language files
    
    static LanguageData *get(String const &);	// Find language dialogue data
    
-   virtual String get(tag_t n) { return ""; };	// Return languag dialogue
-
-   
-   
+   // Grab the ISUPPORT data for the LANGUAGE= tag
+   static String getISUPPORTcodes(void)
+     {
+	return ISUPPORTcodes;
+     };
    
    // Greeting lines sent when a user connects
    static char const *L_PINGPONG_NOTICE;
@@ -81,7 +82,7 @@ class Language {
    static char const *L_RPL_YOURHOST;
    static char const *L_RPL_YOURHOST_IRCII_KLUGE_NOTICE;
    static char const *L_RPL_CREATED;
-   static char const *L_RPL_ISUPPORT_TAG;
+//   static char const *L_RPL_ISUPPORT_TAG;
    static char const *L_RPL_TIMEONSERVERIS;
 
    // 'Spam' notification, rather server policy that demands to be read
@@ -326,13 +327,11 @@ class Language {
 // Language data class
 class LanguageData {
  private:
-   String const code;
    vector <String> dialogue;
    
  public:
    // Constructor
-   LanguageData(String const &c)
-     : code(c)
+   LanguageData(void)
      {
 	dialogue.clear();
      };
@@ -355,12 +354,6 @@ class LanguageData {
 	return (dialogue[n].length() > 0);
      };
    
-   // Return the code for this particular language
-   String getCode(void)
-     {
-	return code;
-     };
-
    friend class Language;
 };
 

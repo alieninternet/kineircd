@@ -486,7 +486,8 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			      Server::modeParamStr,
 			      Version::versionChars));
    sendNumeric(RPL_ISUPPORT, 
-	       Daemon::makeISUPPORT() + Language::L_RPL_ISUPPORT_TAG);
+	       Daemon::makeISUPPORT() + " :" + 
+	       user->getLocalInfo()->lang(Language::E_RPL_ISUPPORT));
    sendNumeric(RPL_TIMEONSERVERIS,
 	       String::printf((char *)Language::L_RPL_TIMEONSERVERIS,
 			      Daemon::getTime(),
@@ -498,9 +499,9 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
    if (!user->local->noLang()) {
       sendNumeric(RPL_YOURLANGUAGEIS,
 		  String::printf("%s %s * :%s",
-				 (char const *)user->local->getLang()->getCode(),
-				 (char const *)user->local->getLang()->get(Language::CHARSET),
-				 (char const *)user->local->getLang()->get(Language::LANGNAME)));
+				 (char const *)user->local->lang(Language::LANGCODE),
+				 (char const *)user->local->lang(Language::CHARSET),
+				 (char const *)user->local->lang(Language::LANGNAME)));
    } else {
       sendNumeric(RPL_YOURLANGUAGEIS, "none * * :None");
    }
@@ -2517,7 +2518,7 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
 					    (char const *)ld->get(Language::LANGNAME),
 					    (ld->has(Language::LANGNOTE) ?
 					     ((char const *)
-					      (String("(Note: ") +
+					      (String(" (Note: ") +
 					       ld->get(Language::LANGNOTE) + 
 					       ")")) :
 					     "")));
@@ -2541,7 +2542,10 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
    
    // Throw a LANGUAGE confirmation line at the user, if we have any
    if (languages.length()) {
-      handler->user->setLangInfo(languages, "fix-me");
+      handler->user->
+	setLangInfo(languages,
+		    (handler->user->local->noLang() ? String("") :
+		     handler->user->local->lang(Language::CHARSET)));
    }
 }
 
