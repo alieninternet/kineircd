@@ -206,7 +206,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/sender.h \
 	include/kineircd/server.h \
 	include/kineircd/service.h \
-	include/kineircd/todo.h \
 	include/kineircd/user.h \
 	include/kineircd/version.h \
 	src/lib/config/config.cpp \
@@ -242,9 +241,9 @@ libkineircd_la_SOURCES=\
 	src/lib/network.cpp \
 	src/lib/name.cpp \
 	src/lib/protocol.cpp \
+	src/lib/registry.h \
 	src/lib/registry.cpp \
 	src/lib/server.cpp \
-	src/lib/todo.cpp \
 	src/lib/user.cpp \
 	src/lib/version.cpp
 	
@@ -371,6 +370,7 @@ libkineircd_irc2_la_SOURCES=\
 	include/kineircd/libirc2/numerics.h \
 	include/kineircd/libirc2/output.h \
 	include/kineircd/libirc2/protocol.h \
+	include/kineircd/libirc2/user.h \
 	include/kineircd/libirc2/utility.h \
 	src/lib_irc2/common.cpp \
 	src/lib_irc2/input.cpp \
