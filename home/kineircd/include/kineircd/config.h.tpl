@@ -25,7 +25,7 @@
  *
 [+(dne " * ")+]
  */
-
+[+DEFINE output-variable-name+][+IF .variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+][+ENDDEF+]
 #ifndef _INCLUDE_KINEIRCD_CONFIG_H_
 # define _INCLUDE_KINEIRCD_CONFIG_H_ 1
 
@@ -66,9 +66,6 @@ namespace Kine {
     private:
       // The config file to use..
       std::string configFile;
-      
-      // Our top-level definition table, defining compiled in top level classes
-      static const AISutil::ConfigParser::defTable_type topDefs;
 [+DEFINE output-variables+][+FOR definition+][+IF .definition+][+IF .condition+]
 #ifdef [+condition+][+ENDIF+][+(pushPrefix (get "name"))+]
 
@@ -76,8 +73,10 @@ namespace Kine {
       static const AISutil::ConfigParser::defTable_type def[+(getPrefix)+];[+output-variables+][+(popPrefix)+][+IF .condition+]
 #endif[+ENDIF+][+ENDIF+][+IF .hasVariable+][+IF .varType+][+IF .condition+]
 #ifdef [+condition+][+ENDIF+]
-      [+varType+] def[+IF .variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+];[+IF .condition+]
-#endif[+ENDIF+][+ENDIF+][+ENDIF+][+ENDFOR+][+ENDDEF+][+output-variables+]
+      [+varType+] def[+output-variable-name+];[+IF .condition+]
+#endif[+ENDIF+][+ENDIF+][+ENDIF+][+ENDFOR+][+ENDDEF+]
+      // Our top-level definition table, defining compiled in top level classes
+      static const AISutil::ConfigParser::defTable_type topDefs;[+output-variables+]
 	
       // Additional handlers specific to data in this class
       static LIBAISUTIL_CONFIG_CLASS_HANDLER(classHandleModule);
@@ -117,8 +116,13 @@ namespace Kine {
 	   configFile = file;
 	   return configure();
 	};
-      
-[+# more defines here.+]
+[+DEFINE output-methods+][+FOR definition+][+IF .definition+][+IF .condition+]
+#ifdef [+condition+][+ENDIF+][+(pushPrefix (get "name"))+][+output-methods+][+(popPrefix)+][+IF .condition+]
+#endif[+ENDIF+][+ENDIF+][+IF .hasVariable+][+IF .varType+][+IF .condition+]
+#ifdef [+condition+][+ENDIF+]
+      [+varType+] get[+output-variable-name+](void) const
+         { return def[+output-variable-name+]; };[+IF .condition+]
+#endif[+ENDIF+][+ENDIF+][+ENDIF+][+ENDFOR+][+ENDDEF+][+output-methods+]
    }; // class Config
 
 
