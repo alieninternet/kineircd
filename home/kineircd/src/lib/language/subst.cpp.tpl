@@ -36,7 +36,7 @@ const LangTags::SubstitutionChar LangTags::substitutionMap[] = {
    { 's',	'\040' },		// Force a space
    { 't',	'\011' },		// Horizontal tab
    { '\\',	'\\' },			// Slash - copy directly[+FOR chars+]
-   { '[+langtag_code+]',	'[+char+]' },		// [+name+][+ENDFOR+]
+   { '[+langtag_code+]',	'\[+char+]' },		// [+name+][+ENDFOR+]
    { 0, 0 }
 };
 
