@@ -25,7 +25,7 @@
 [+(dne " * ")+]
  */
 
-[+(make-header-guard "kineircd")+]
+[+(make-header-guard "kine")+]
 
 namespace Kine {
    namespace Error {

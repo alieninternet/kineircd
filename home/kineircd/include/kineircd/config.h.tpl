@@ -26,8 +26,7 @@
 [+(dne " * ")+]
  */
 [+DEFINE output-variable-name+][+IF .variable+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+][+ENDDEF+]
-#ifndef _INCLUDE_KINEIRCD_CONFIG_H_
-# define _INCLUDE_KINEIRCD_CONFIG_H_ 1
+[+(make-header-guard "kine")+]
 
 # include <kineircd/kineircdconf.h>
  
@@ -150,5 +149,5 @@ namespace Kine {
      { return Config::getInstance(); };
 }; // namespace Kine
    
-#endif // _INCLUDE_KINEIRCD_CONFIG_H_
+#endif // [+(. header-guard)+]
 

@@ -27,8 +27,7 @@
 [+(dne " * ")+]
  */
 
-#ifndef _INCLUDE_KINEIRCD_LOGGER_H_
-# define _INCLUDE_KINEIRCD_LOGGER_H_ 1
+[+(make-header-guard "kine")+]
 
 # include <string>
 # include <aisutil/config/data.h>
@@ -125,5 +124,5 @@ namespace Kine {
    }; // class Logger
 }; // namespace Kine
    
-#endif // _INCLUDE_KINEIRCD_LOGGER_H_
+#endif // [+(. header-guard)+]
 

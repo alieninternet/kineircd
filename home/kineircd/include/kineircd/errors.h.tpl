@@ -25,8 +25,7 @@
 [+(dne " * ")+]
  */
 
-#ifndef _INCLUDE_KINEIRCD_ERRORS_H_
-# define _INCLUDE_KINEIRCD_ERRORS_H_ 1
+[+(make-header-guard "kine")+]
 
 namespace Kine {
    namespace Error {
@@ -40,5 +39,5 @@ namespace Kine {
    }; // namespace Error
 }; // namespace Kine
 
-#endif // _INCLUDE_KINEIRCD_ERRORS_H_
+#endif // [+(. header-guard)+]
 

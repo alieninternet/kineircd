@@ -142,7 +142,7 @@ rfc%.txt:
 
 
 
-# Stuff we really need, but automake is too stupid to work out for itself
+# Pre-dependency building dependancies... ? :)
 BUILT_SOURCES=\
 	include/kineircd/irc2/numerics.h \
 	include/kineircd/config.h \
@@ -151,7 +151,10 @@ BUILT_SOURCES=\
 	include/kineircd/logger.h \
 	include/kineircd/server.h \
 	install/.lang \
-	src/ircd/options.h
+	src/ircd/options.h \
+	src/mod_irc2registrar/language.h \
+	src/mod_irc2user/language.h \
+	src/mod_irc2user/protocol.h
 
 
 

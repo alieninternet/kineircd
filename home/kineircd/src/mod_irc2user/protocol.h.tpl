@@ -26,8 +26,7 @@
 [+(dne " * ")+]
  */
 
-#ifndef _SRC_MOD_IRC2USER_PROTOCOL_H_
-# define _SRC_MOD_IRC2USER_PROTOCOL_H_ 1
+[+(make-header-guard "kine")+]
 
 # include <sstream>
 # include <kineircd/config.h>
@@ -182,5 +181,5 @@ namespace Kine {
                  ##__VA_ARGS__)
 
 
-#endif // _SRC_MOD_IRC2USER_PROTOCOL_H_
+#endif // [+(. header-guard)+]
    

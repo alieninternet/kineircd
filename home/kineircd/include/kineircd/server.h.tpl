@@ -26,8 +26,7 @@
 [+(dne " * ")+]
  */
 
-#ifndef _INCLUDE_KINEIRCD_SERVER_H_
-# define _INCLUDE_KINEIRCD_SERVER_H_ 1
+[+(make-header-guard "kine")+]
 
 # include <kineircd/entity.h>
 # include <kineircd/sender.h>
@@ -73,4 +72,4 @@ namespace Kine {
    }; // class Server
 }; // namespace Kine
 
-#endif // _INCLUDE_KINEIRCD_SERVER_H_
+#endif // [+(. header-guard)+]
