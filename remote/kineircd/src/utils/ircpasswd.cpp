@@ -28,11 +28,21 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <locale>
 #ifdef HAVE_TERMIOS_H
 # include <termios.h>
 #endif
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
+#endif
+#ifdef HAVE_ICONV_H
+# include <iconv.h>
+#endif
+#ifdef HAVE_LANGINFO_H
+# include <langinfo.h>
+#endif
+#ifdef HAVE_WCHAR_H
+# include <wchar.h>
 #endif
 #include <kineircd/password.h>
 #include <kineircd/config.h>
@@ -48,6 +58,9 @@ int main(int argc, char **argv)
 {
    std::string nickname, password;
 
+   // Try to grab the current locale..
+   (void)setlocale(LC_CTYPE, "");
+   
    // Check if we are being called in script form or not
    if (argc > 2) {
       // Grab the two variables
@@ -58,64 +71,108 @@ int main(int argc, char **argv)
       if (!nickname.length() || !password.length()) {
 	 return 1;
       }
-      
-      // Simply convert it and pipe it to std output
-      std::cout <<
-	Password(nickname,
-		 password).toStr(Config::operPasswordStrBase,
-				 Config::operPasswordStrBaseLongPad) <<
+   } else { 
+      // Welcome the user, since this is 'interactive' mode
+      std::cout << Version::versionFull << "\nPassword Generation Utility\n" <<
 	std::endl;
       
-      // Done.
-      return 0;
-   } 
-   
-   // Welcome the user, since this is 'interactive' mode
-   std::cout << Version::versionFull << "\nPassword Generation Utility\n" << 
-     std::endl;
+      // Ask for the nickname
+      std::cout << "Nickname: ";
+      
+      // Was a nickname specified?
+      if (argc > 1) {
+	 // Set, and output the given nickname and continue on
+	 std::cout << (nickname = argv[1]) << std::endl;
+      } else {
+	 // Okay, read in the nickname
+	 std::cout << std::flush;
+	 std::cin >> nickname;
+      }
 
-   // Ask for the nickname
-   std::cout << "Nickname: ";
+#ifdef HAVE_TCGETATTR
+      /* Stop the standard input echo, just in case someone is reading over
+       * the users shoulder :)
+       */
+      struct termios stdinOrigIOS, stdinNewIOS;
+      tcgetattr(0, &stdinOrigIOS);
+      stdinNewIOS = stdinOrigIOS;
+      stdinNewIOS.c_lflag &= ~ECHO;
+      tcsetattr(0, TCSANOW, &stdinNewIOS);
+#endif
    
-   // Was a nickname specified?
-   if (argc > 1) {
-      // Set, and output the given nickname and continue on
-      std::cout << (nickname = argv[1]) << std::endl;
-   } else {
-      // Okay, read in the nickname
-      std::cout << std::flush;
-      std::cin >> nickname;
+      // Read in the password
+      std::cout << "Password: " << std::flush;
+      std::cin >> password;
+      
+#ifdef HAVE_TCGETATTR
+      // Restore the standard input IOS modes (some TTYs may appreciate this)
+      tcsetattr(0, TCSANOW, &stdinOrigIOS);
+#endif
    }
-
-#ifdef HAVE_TCGETATTR
-   /* Stop the standard input echo, just in case someone is reading over
-    * the users shoulder :)
+   
+   /* Since we need to convert the name/password into our internal charset,
+    * we need to open an iconv() conversion descriptor.. Let's try to do that
+    * using information from the locale (hopefully)
     */
-   struct termios stdinOrigIOS, stdinNewIOS;
-   tcgetattr(0, &stdinOrigIOS);
-   stdinNewIOS = stdinOrigIOS;
-   stdinNewIOS.c_lflag &= ~ECHO;
-   tcsetattr(0, TCSANOW, &stdinNewIOS);
-#endif
-   
-   // Read in the password
-   std::cout << "Password: " << std::flush;
-   std::cin >> password;
+   iconv_t convDesc = iconv_open(KINE_INTERNAL_CHARSET,
+				 nl_langinfo(CODESET));
 
-#ifdef HAVE_TCGETATTR
-   // Restore the standard input IOS modes (some TTYs may appreciate this)
-   tcsetattr(0, TCSANOW, &stdinOrigIOS);
-#endif
-   
-   // Output what to add to the configuration file
-   std::cout << "\n\nConfiguration data for OPERATORS class:\n\t" << 
-     nickname << " {\n\t   password = \"" << 
-     Password(nickname, password).toStr(Config::operPasswordStrBase,
-					Config::operPasswordStrBaseLongPad) <<
-     "\";\n\t}\n\nDon't forget to add the 'name' and 'type' variables, and "
-     "the 'hosts' sub-class\nto complete the configuration of this "
-     "operator." << std::endl;
+   wchar_t buffer[1024]; // = ~4kbytes, should be enough?
 
+   // Make sure the descriptor opened okay, otherwise we will have problems..
+   if (convDesc == (iconv_t)(-1)) {
+      std::cout << "Cannot convert from your character set to "
+	KINE_INTERNAL_CHARSET << std::endl;
+      return 1;
+   }
+   
+   // Convert the nickname
+   char* inPtr = (char*)nickname.data();
+   char* outPtr = (char*)buffer;
+   size_t inBytes = nickname.length();
+   size_t outBytes = sizeof(buffer) * sizeof(wchar_t);
+   (void)iconv(convDesc, NULL, NULL, &outPtr, &outBytes);
+   
+   if (iconv(convDesc, &inPtr, &inBytes, &outPtr, &outBytes) == (size_t)(-1)) {
+      std::cout << "Unable to convert nickname to " KINE_INTERNAL_CHARSET <<
+	std::endl;
+      return 1;
+   }
+   
+   std::wstring nick(buffer, (((int)outPtr - (int)buffer) / sizeof(wchar_t)));
+   
+   // Convert the password
+   inPtr = (char*)password.data();
+   outPtr = (char*)buffer;
+   inBytes = password.length();
+   outBytes = sizeof(buffer) * sizeof(wchar_t);
+   (void)iconv(convDesc, NULL, NULL, &outPtr, &outBytes);
+
+   if (iconv(convDesc, &inPtr, &inBytes, &outPtr, &outBytes) == (size_t)(-1)) {
+      std::cout << "Unable to convert password to " KINE_INTERNAL_CHARSET <<
+	std::endl;
+      return 1;
+   }
+   
+   std::wstring pass(buffer, (((int)outPtr - (int)buffer) / sizeof(wchar_t)));
+   
+   // Generate the password
+   std::string pwdhash =
+     Password(nick, pass).toStr(Config::operPasswordStrBase,
+				Config::operPasswordStrBaseLongPad);
+   
+   // Depending on how we were called, output the hashed password
+   if (argc > 2) {
+      std::cout << pwdhash << std::endl;
+   } else {
+      // Output what to add to the configuration file
+      std::cout << "\n\nConfiguration data for OPERATORS class:\n\t" << 
+	nickname << " {\n\t   password = \"" << pwdhash <<
+	"\";\n\t}\n\nDon't forget to add the 'name' and 'type' variables, and "
+	"the 'hosts' sub-class\nto complete the configuration of this "
+	"operator." << std::endl;
+   }
+      
    return 0;
 }
 
