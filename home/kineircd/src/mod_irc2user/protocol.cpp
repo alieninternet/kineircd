@@ -189,7 +189,11 @@ void Protocol::parseMessage(const std::string& origin,
 
 /* sendISUPPORT - Send ISUPPORT information to the user
  * Original 24/08/2001 simonb
- * Note: This *must* be cached, when the events system is written
+ * Note: This *must* be cached, when the events system is written. It should be
+ *       rewritten to store data in a std::map to be more flexible for
+ *       parameter number and message length changes, too, but for now this
+ *       will do, as currently there are no standard methods for such changes 
+ *       to be made.
  */
 void Protocol::sendISUPPORT(void)
 {
@@ -213,7 +217,18 @@ void Protocol::sendISUPPORT(void)
      "CHIDLEN=5 "
      "CHANMODES=beI,k,l,imnpsta "
      "SILENCE=" << config().getLimitsUsersMaxSilences() << " "
-     "CALLERID=" << config().getLimitsUsersMaxAccepts() << " "
+     "CALLERID=" << config().getLimitsUsersMaxAccepts();
+   
+   // Send this chunk (13 params + text = 14 params)
+   sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
+	       output.str(),
+	       suffix);
+   
+   // New output ostringstream (how can we clean/reuse the old one?)
+   std::ostringstream output2;
+   
+   // Next section..
+   output2 <<
      "STATUSMSG=+%@ "
      "MODES=" << (int)0 << " "
      "CASEMAPPING=rfc1459 "
@@ -225,32 +240,32 @@ void Protocol::sendISUPPORT(void)
    
    // If there's a network name, output that too
    if (!config().getNetworkName().empty()) {
-      output << " "
+      output2 << " "
 	"NETWORK=" << config().getNetworkName();
    }
 
    // Compile the language information
-   output << " "
+   output2 << " "
      "LANGUAGE=" << (int)config().getLimitsUsersMaxLanguages();
 
    for (Languages::languageDataMap_type::const_iterator it = 
 	languages().getLanguageDataMap().begin();
 	it != languages().getLanguageDataMap().end();
 	++it) {
-      output << ',';
+      output2 << ',';
       
       // Is this language the default one?
       if (it->second == languages().getDefaultLanguage()) {
-	 output << '*';
+	 output2 << '*';
       }
       
       // Output the code
-      output << it->second->getLanguageCode();
+      output2 << it->second->getLanguageCode();
    }
    
-   // Send this chunk
+   // Send this chunk (~ 10 parameters)
    sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
-	       output.str(),
+	       output2.str(),
 	       suffix);
 }
 
