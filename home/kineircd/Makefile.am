@@ -191,6 +191,8 @@ libkineircd_la_SOURCES=\
 	include/kineircd/protocol.h \
 	include/kineircd/protocolinfo.h \
 	include/kineircd/receiver.h \
+	include/kineircd/registrant.h \
+	include/kineircd/registry.h \
 	include/kineircd/sender.h \
 	include/kineircd/server.h \
 	include/kineircd/service.h \
@@ -217,6 +219,7 @@ libkineircd_la_SOURCES=\
 	$(KINEIRCD_SOURCE_LIB_DEBUG_H) \
 	src/libkineircd/logger.cpp \
 	src/libkineircd/name.cpp \
+	src/libkineircd/registry.cpp \
 	src/libkineircd/signals.cpp \
 	src/libkineircd/version.cpp
 	
