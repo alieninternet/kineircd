@@ -101,20 +101,6 @@ namespace Kine {
 #ifdef [+ifdef+]
 				"[+char+]"
 #endif[+ENDFOR+]
-     
-// Transport protocol phrases
-#ifdef LIBAISUTIL_HAVE_SOCKET_IPV4_TCP
-     				",IPv4"
-#endif
-#ifdef LIBAISUTIL_HAVE_SOCKET_IPV6_TCP
-     				",IPv6"
-#endif
-#ifdef LIBAISUTIL_HAVE_SOCKET_UNIX
-     				",Unix"
-#endif
-#ifdef LIBAISUTIL_HAVE_SOCKET_IPX_SPX
-     				",IPX"
-#endif
 					; // The end, phew!
    }; // namespace Version
 }; // namespace Kine
