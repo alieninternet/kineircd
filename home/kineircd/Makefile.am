@@ -467,6 +467,8 @@ mod_irc2user_la_SOURCES=\
 	src/mod_irc2user/commands.cpp \
 	src/mod_irc2user/commands.h \
 	src/mod_irc2user/handlers.cpp \
+	src/mod_irc2user/isupport.cpp \
+	src/mod_irc2user/isupport.h \
 	src/mod_irc2user/lang.h \
 	src/mod_irc2user/language.cpp \
 	src/mod_irc2user/language.h \

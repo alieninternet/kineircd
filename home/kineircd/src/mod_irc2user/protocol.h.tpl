@@ -52,6 +52,7 @@ namespace Kine {
 	 User user;				// The user for this instance
 
 	 messageSize_type maxMessageSize;	// Maximum message size
+	 static const unsigned int maxParams = 15; // Maxinum parameter count
 
 	 // Appropriately parse a protocol message
 	 void parseMessage(const std::string& origin,

@@ -35,6 +35,7 @@
 #include "mod_irc2user/protocol.h"
 #include "mod_irc2user/lang.h"
 #include "mod_irc2user/commands.h"
+#include "mod_irc2user/isupport.h"
 
 using namespace Kine::mod_irc2user;
 using AISutil::String;
@@ -211,72 +212,48 @@ void Protocol::sendISUPPORT(void)
    std::string suffix = GETLANG(irc2_RPL_ISUPPORT);
    
    // Our output buffer
-   std::ostringstream output;
+   std::string output;
 
-   // Put the ISUPPORT string together
-   output <<
-     "NICKLEN=" << (int)config().getLimitsUsersMaxNickNameLength() << " "
-     "TOPICLEN=" << config().getLimitsChannelsMaxTopicLength() << " "
-     "KICKLEN=" << config().getLimitsMaxKickReasonLength() << " "
-     "CHANNELLEN=" << config().getLimitsChannelsMaxNameLength() << " "
-     "MAXCHANNELS=" << config().getLimitsUsersMaxChannels() << " "
-     "MAXBANS=" << config().getLimitsChannelsMaxBans() << " "
-     "MAXTARGETS=" << (int)config().getLimitsMaxTargets() << " "
-     "PREFIX=(.ohv).@%+ "
-     "CHANTYPES=&#!+.~ "
-     "CHIDLEN=5 "
-     "CHANMODES=beI,k,l,imnpsta "
-     "SILENCE=" << config().getLimitsUsersMaxSilences() << " "
-     "CALLERID=" << config().getLimitsUsersMaxAccepts();
+   // Number of parameters have left before it is necessary to purge the buffer
+   unsigned int params = 0;
    
-   // Send this chunk (13 params + text = 14 params)
-   sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
-	       output.str(),
-	       suffix);
+   // Determine the maximum number of octets we can send (the 10 is 'safe')
+   const unsigned int maxOutputLength = 
+     maxMessageSize - suffix.length() - user.getNickname().length() -
+     config().getOptionsServerName().length() - 10;
    
-   // New output ostringstream (how can we clean/reuse the old one?)
-   std::ostringstream output2;
-   
-   // Next section..
-   output2 <<
-     "STATUSMSG=+%@ "
-     "MODES=" << (int)0 << " "
-     "CASEMAPPING=rfc1459 "
-     "CHARSET=UTF-8 "
-     "FNC "
-     "PENALTY "
-     "INVEX "
-     "EXCEPTS";
-   
-   // If there's a network name, output that too
-   if (!config().getNetworkName().empty()) {
-      output2 << " "
-	"NETWORK=" << config().getNetworkName();
-   }
-
-   // Compile the language information
-   output2 << " "
-     "LANGUAGE=" << (int)config().getLimitsUsersMaxLanguages();
-
-   for (Languages::languageDataMap_type::const_iterator it = 
-	languages().getLanguageDataMap().begin();
-	it != languages().getLanguageDataMap().end();
+   // Iterate over the information
+   for (ISupport::info_type::const_iterator it = isupport().getInfo().begin();
+	it != isupport().getInfo().end();
 	++it) {
-      output2 << ',';
-      
-      // Is this language the default one?
-      if (it->second == languages().getDefaultLanguage()) {
-	 output2 << '*';
+      // Do we need to purge the buffer (too many parameters or too long?)
+      if ((++params > (maxParams - 2)) ||
+	  ((output.length() + it->length()) > maxOutputLength)) {
+	 // Send this chunk
+	 sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
+		     output,
+		     suffix);
+	 
+	 // Reset the buffer and the parameter count
+	 output.clear();
+	 params = 0;
       }
       
-      // Output the code
-      output2 << it->second->getLanguageCode();
+      // Do we need to prefix the output with a space (delimiter)
+      if (!output.empty()) {
+	 output += ' ';
+      }
+      
+      // Add this tag to the output
+      output += *it;
    }
    
-   // Send this chunk (~ 10 parameters)
-   sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
-	       output2.str(),
-	       suffix);
+   // If there is something in the buffer, send it..
+   if (!output.empty()) {
+      sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
+		  output,
+		  suffix);
+   }
 }
 
 

@@ -32,6 +32,7 @@
 
 #include "mod_irc2user/module.h"
 #include "mod_irc2user/protocolinfo.h"
+#include "mod_irc2user/isupport.h"
 #include "mod_irc2user/commands.h"
 #include "mod_irc2user/language.h"
 
@@ -74,6 +75,9 @@ namespace {
 	 // Deregister the protocol itself
 	 Kine::daemon().deregisterProtocol(protocolInfo);
 	 
+	 // Destroy the ISUPPORT information
+	 delete &Kine::mod_irc2user::isupport();
+	 
 	 // Destroy the dynamic commands table thingy
 	 delete &Kine::mod_irc2user::commands();
 	 
@@ -96,6 +100,9 @@ namespace {
 	 if (!Kine::LibIRC2::init()) {
 	    return false;
 	 }
+	 
+	 // Initialise the ISUPPORT information
+	 Kine::mod_irc2user::ISupport::initInstance();
 	 
 	 // Attempt to register our protocol to the daemon
 	 if (!Kine::daemon().registerProtocol(protocolInfo)) {
