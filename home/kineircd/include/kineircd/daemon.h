@@ -131,6 +131,11 @@ class Daemon {
    String adminName;				// Administrator name
    String adminEmail;				// Administrator e-mail
    String adminLocation;			// Admin location (optional)
+
+   unsigned short confMaxWatchesPerUser;	// Max watches per user
+   unsigned short confMaxSilencesPerUser;	// Max silences per user
+   unsigned short confMaxAcceptsPerUser;	// Max accepts per user
+   unsigned short confMaxBansPerChannel;	// Max +b/+e/+I per channel
    
    relationmask_list_t failNicknames;		// Invalid nicks
    relationmask_list_t failChannels;		// Invalid channels
@@ -164,6 +169,8 @@ class Daemon {
    String networkName;				// Name of 'network'
    
    struct timeval currentTime;			// Current time
+   String timeZone;				// Local timezone string (TOSI)
+   TYPE_RPL_TIMEONSERVERIS_FLAGS timeFlags;	// TOSI flags
    const time_t startTime;			// Time the server started
 
 # ifdef HAVE_OPENSSL
@@ -178,6 +185,8 @@ class Daemon {
    bool configCopy(bool, ConfigData *);		// Copy configuration data over
    
    void garbo(bool = false);			// Garbage collector
+
+   void checkClock(void);			// Check the time information
    
    String onRelationMaskList(relationmask_list_t *,
 			     String const &);	// Check for a bad channel name
@@ -244,7 +253,18 @@ class Daemon {
      {
 	return currentTime.tv_usec;
      };
+   
+   // Get the local timezone
+   String getTimeZone(void) const 
+     {
+	return "+1000";
+     };
 
+   unsigned char getTimeFlags(void) const
+     {
+	return 1;
+     };
+   
    // Get the server start time
    time_t getStartTime(void) const
      {

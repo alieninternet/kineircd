@@ -473,47 +473,12 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
    sendNumeric(RPL_ISUPPORT, 
 	       connection->getDaemon()->makeISUPPORT() +
 	       Language::L_RPL_ISUPPORT_TAG);
-   
-   // Assemble and send the current time on the server to the client
-   TYPE_RPL_TIMEONSERVERIS_FLAGS tosiFlags = 0;
-   bool GMTdiffEast = true; // We working east or west of GMT?
-   unsigned short GMTdiffHours = 0;
-   unsigned short GMTdiffMins = 0;
-   
-#ifdef HAVE_STRUCT_TM_TM_ZONE
-   time_t timeNow = getConnection()->getDaemon()->getTime();
-   struct tm *timeinfo;
-   timeinfo = localtime(&timeNow);
-   
-   // Daylight savings mode?
-   if(timeinfo->tm_isdst) {
-      tosiFlags |= TIMEONSERVERFLAG_DST;
-   }
-   
-   // Work out the GMT offset
-   GMTdiffEast = (timeinfo->tm_gmtoff > 0);
-   GMTdiffHours = (unsigned short)(timeinfo->tm_gmtoff / 3600);
-   GMTdiffMins = (unsigned short)((timeinfo->tm_gmtoff % 3600) / 60);
-#else
-   // Are we *POSSIBLY* in DST mode? This posix variable is half-accurate..
-   if (daylight) {
-      tosiFlags |= TIMEONSERVERFLAG_DST;
-   }
-   
-   // Work out the timezone (this does not seem to work too well)
-   GMTdiffEast = (timezone > 0);
-   GMTdiffHours = (unsigned short)(timezone / 3600);
-   GMTdiffMins = (unsigned short)((timezone % 3600) / 60);
-#endif
-   
    sendNumeric(RPL_TIMEONSERVERIS,
 	       String::printf((char *)Language::L_RPL_TIMEONSERVERIS,
 			      getConnection()->getDaemon()->getTime(),
 			      getConnection()->getDaemon()->getTimeUsecs(),
-			      ((GMTdiffEast) ? '+' : '-'),
-			      GMTdiffHours,
-			      GMTdiffMins,
-			      tosiFlags));
+			      (char const *)getConnection()->getDaemon()->getTimeZone(),
+			      getConnection()->getDaemon()->getTimeFlags()));
 
    // Send some stuff that clients seem to rely on being sent... (urgh)
    doLUSERS(this, user, 0);
@@ -1504,7 +1469,14 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
       
       // Add the nick
       if (TO_DAEMON->addUserAccept(handler->user, u)) {
-	 // Done! Apparently we do not send any confirmation of this...
+	 // Done! Send confirmation to the remote party
+	 TO_DAEMON->routeTo(u)->
+	   sendNumeric(TO_DAEMON->myServer(),
+		       RPL_ACCEPTED, handler->user,
+		       String::printf((char *)Language::L_RPL_ACCEPTED,
+				      (char const *)handler->user->getNickname(),
+				      (char const *)handler->user->getUsername(),
+				      (char const *)handler->user->getHost(u)));
 	 continue;
       }
       
@@ -1642,7 +1614,13 @@ void irc2userHandler::parseGLOBOPS(irc2userHandler *handler, StringTokens *token
    String message = tokens->rest();
    
    // Check that we have been given something
-   if (message.length()) {
+   if (
+#ifdef MINLEN_OP_BROADCAST
+       message.length() >= MINLEN_OP_BROADCAST
+#else
+       message.length()
+#endif
+       ) {
       // Strip the colon if it is there (smart client if it is :)
       if (message[0] == ':') {
 	 message = message.subString(1);
@@ -1658,8 +1636,13 @@ void irc2userHandler::parseGLOBOPS(irc2userHandler *handler, StringTokens *token
    }
    
    // Complain bitterly!
+#ifdef MINLEN_OP_BROADCAST
+   handler->sendNumeric(ERR_NOTEXTTOSEND, 
+			LNG_ERR_NOTEXTTOSEND_NEEDMORE " (GLOBOPS)");
+#else
    handler->sendNumeric(ERR_NOTEXTTOSEND, 
 			LNG_ERR_NOTEXTTOSEND " (GLOBOPS)");
+#endif
 }
 
 
@@ -1775,7 +1758,13 @@ void irc2userHandler::parseHELPME(irc2userHandler *handler, StringTokens *tokens
    String message = tokens->rest();
 
    // Check that we have been given something
-   if (message.length()) {
+   if (
+#ifdef MINLEN_OP_BROADCAST
+       message.length() >= MINLEN_OP_BROADCAST
+#else
+       message.length()
+#endif
+       ) {
       // Strip the colon if it is there (smart client if it is :)
       if (message[0] == ':') {
 	 message = message.subString(1);
@@ -1790,8 +1779,13 @@ void irc2userHandler::parseHELPME(irc2userHandler *handler, StringTokens *tokens
    }
    
    // Complain bitterly!
-   handler->sendNumeric(ERR_NEEDMOREPARAMS,
-			"HELPME" LNG_ERR_NEEDMOREPARAMS);
+#ifdef MINLEN_OP_BROADCAST
+   handler->sendNumeric(ERR_NOTEXTTOSEND, 
+			LNG_ERR_NOTEXTTOSEND_NEEDMORE " (HELPME)");
+#else
+   handler->sendNumeric(ERR_NOTEXTTOSEND,
+			LNG_ERR_NOTEXTTOSEND " (HELPME)");
+#endif
 }
 
 
@@ -2479,7 +2473,13 @@ void irc2userHandler::parseLOCOPS(irc2userHandler *handler, StringTokens *tokens
    String message = tokens->rest();
    
    // Check that we have been given something
-   if (message.length()) {
+   if (
+#ifdef MINLEN_OP_BROADCAST
+       message.length() >= MINLEN_OP_BROADCAST
+#else
+       message.length()
+#endif
+       ) {
       // Strip the colon if it is there (smart client if it is :)
       if (message[0] == ':') {
 	 message = message.subString(1);
@@ -2495,8 +2495,13 @@ void irc2userHandler::parseLOCOPS(irc2userHandler *handler, StringTokens *tokens
    }
    
    // Complain bitterly!
+#ifdef MINLEN_OP_BROADCAST
    handler->sendNumeric(ERR_NOTEXTTOSEND, 
+			LNG_ERR_NOTEXTTOSEND_NEEDMORE " (LOCOPS)");
+#else
+   handler->sendNumeric(ERR_NOTEXTTOSEND,
 			LNG_ERR_NOTEXTTOSEND " (LOCOPS)");
+#endif
 }
 
 
@@ -3293,7 +3298,9 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 		       sendNumeric(TO_DAEMON->myServer(),
 				   RPL_ACCEPTNOTICE, handler->user,
 				   String::printf((char *)Language::L_RPL_ACCEPTNOTICE,
-						  (char const *)handler->user->getNickname()));
+						  (char const *)handler->user->getNickname(),
+						  (char const *)handler->user->getUsername(),
+						  (char const *)handler->user->getHost(u)));
 #ifdef FLOODLOCK_ACCEPT_MSG
 		  }
 #endif
@@ -3424,7 +3431,8 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
 	      param = param.subString(1);
 	      
 	      // Check if their silence list is too big
-	      if (handler->user->silences.size() > MAX_SILENCES_PER_USER) {
+	      if (handler->user->silences.size() > 
+		  DEFAULT_MAX_SILENCES_PER_USER) {
 		 handler->sendNumeric(ERR_SILELISTFULL,
 				      param + 
 				      Language::L_ERR_SILELISTFULL);
@@ -3799,14 +3807,25 @@ void irc2userHandler::parseWALLOPS(irc2userHandler *handler, StringTokens *token
    String message = tokens->nextColonToken();
    
    // Check that we have been given something
-   if (message.length()) {
+   if (
+# ifdef MINLEN_OP_BROADCAST
+       message.length() >= MINLEN_OP_BROADCAST
+# else
+       message.length()
+# endif
+       ) {
       TO_DAEMON->broadcastWallops(handler->user, message);
       return;
    }
    
    // Complain bitterly!
+# ifdef MINLEN_OP_BROADCAST
    handler->sendNumeric(ERR_NOTEXTTOSEND, 
+			LNG_ERR_NOTEXTTOSEND_NEEDMORE " (WALLOPS)");
+# else
+   handler->sendNumeric(ERR_NOTEXTTOSEND,
 			LNG_ERR_NOTEXTTOSEND " (WALLOPS)");
+# endif
 }
 #endif
 
@@ -3973,13 +3992,13 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	      
 	      // Make sure the watch list is not too long
 	      if (handler->user->local->watches.size() > 
-		  MAX_WATCHES_PER_USER) {
+		  DEFAULT_MAX_WATCHES_PER_USER) {
 		 // Complain
 		 handler->
 		   sendNumeric(ERR_TOOMANYWATCH,
 			       String::printf((char *)Language::L_ERR_TOOMANYWATCH,
 					      (char const *)param,
-					      MAX_WATCHES_PER_USER));
+					      DEFAULT_MAX_WATCHES_PER_USER));
 		 
 		 // Stop any more warnings being sent (no flood)
 		 noAdd = true;

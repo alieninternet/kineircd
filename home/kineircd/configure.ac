@@ -689,17 +689,14 @@ AC_ARG_ENABLE(max-accepts-per-user,[  --enable-max-accepts-per-user  maximum num
  [
    if test "$enableval" -gt 0 -a "$enableval" -lt 10000000; then
      AC_MSG_RESULT([$enableval seconds])
-     AC_DEFINE_UNQUOTED(MAX_ACCEPTS_PER_USER, $enableval)
-     AC_DEFINE(MAX_ACCEPTS_PER_USER_STR, "$enableval")
+     AC_DEFINE_UNQUOTED(DEFAULT_MAX_ACCEPTS_PER_USER, $enableval)
    else
      AC_MSG_RESULT([100 (default, fixed)])
-     AC_DEFINE(MAX_ACCEPTS_PER_USER, 100)
-     AC_DEFINE(MAX_ACCEPTS_PER_USER_STR, "100")
+     AC_DEFINE(DEFAULT_MAX_ACCEPTS_PER_USER, 100)
    fi
  ],[
    AC_MSG_RESULT([100 (default)])
-   AC_DEFINE(MAX_ACCEPTS_PER_USER, 100)
-   AC_DEFINE(MAX_ACCEPTS_PER_USER_STR, "100")
+   AC_DEFINE(DEFAULT_MAX_ACCEPTS_PER_USER, 100)
  ])
 
 AC_MSG_CHECKING([max-bans-per-channel parameter])
@@ -707,17 +704,14 @@ AC_ARG_ENABLE(max-bans-per-channel,[  --enable-max-bans-per-channel  maximum num
  [
    if test "$enableval" -gt 0 -a "$enableval" -lt 10000000; then
      AC_MSG_RESULT([$enableval seconds])
-     AC_DEFINE_UNQUOTED(MAX_BANS_PER_CHANNEL, $enableval)
-     AC_DEFINE(MAX_BANS_PER_CHANNEL_STR, "$enableval")
+     AC_DEFINE_UNQUOTED(DEFAULT_MAX_BANS_PER_CHANNEL, $enableval)
    else
      AC_MSG_RESULT([50 (default, fixed)])
-     AC_DEFINE(MAX_BANS_PER_CHANNEL, 50)
-     AC_DEFINE(MAX_BANS_PER_CHANNEL_STR, "50")
+     AC_DEFINE(DEFAULT_MAX_BANS_PER_CHANNEL, 50)
    fi
  ],[
    AC_MSG_RESULT([50 (default)])
-   AC_DEFINE(MAX_BANS_PER_CHANNEL, 50)
-   AC_DEFINE(MAX_BANS_PER_CHANNEL_STR, "50")
+   AC_DEFINE(DEFAULT_MAX_BANS_PER_CHANNEL, 50)
  ])
 
 AC_MSG_CHECKING([max-modes-per-command parameter])
@@ -726,16 +720,13 @@ AC_ARG_ENABLE(max-modes-per-command,[  --enable-max-modes-per-command maximum nu
    if test "$enableval" -gt 0 -a "$enableval" -lt 100; then
      AC_MSG_RESULT([$enableval seconds])
      AC_DEFINE_UNQUOTED(MAX_MODES_PER_COMMAND, $enableval)
-     AC_DEFINE(MAX_MODES_PER_COMMAND_STR, "$enableval")
    else
      AC_MSG_RESULT([6 (default, fixed)])
      AC_DEFINE(MAX_MODES_PER_COMMAND, 6)
-     AC_DEFINE(MAX_MODES_PER_COMMAND_STR, "6")
    fi
  ],[
    AC_MSG_RESULT([6 (default)])
    AC_DEFINE(MAX_MODES_PER_COMMAND, 6)
-   AC_DEFINE(MAX_MODES_PER_COMMAND_STR, "6")
  ])
 
 AC_MSG_CHECKING([max-silences-per-user parameter])
@@ -743,17 +734,14 @@ AC_ARG_ENABLE(max-silences-per-user,[  --enable-max-silences-per-user maximum nu
  [
    if test "$enableval" -gt 0 -a "$enableval" -lt 10000000; then
      AC_MSG_RESULT([$enableval seconds])
-     AC_DEFINE_UNQUOTED(MAX_SILENCES_PER_USER, $enableval)
-     AC_DEFINE(MAX_SILENCES_PER_USER_STR, "$enableval")
+     AC_DEFINE_UNQUOTED(DEFAULT_MAX_SILENCES_PER_USER, $enableval)
    else
      AC_MSG_RESULT([20 (default, fixed)])
-     AC_DEFINE(MAX_SILENCES_PER_USER, 20)
-     AC_DEFINE(MAX_SILENCES_PER_USER_STR, "20")
+     AC_DEFINE(DEFAULT_MAX_SILENCES_PER_USER, 20)
    fi
  ],[
    AC_MSG_RESULT([20 (default)])
-   AC_DEFINE(MAX_SILENCES_PER_USER, 20)
-   AC_DEFINE(MAX_SILENCES_PER_USER_STR, "20")
+   AC_DEFINE(DEFAULT_MAX_SILENCES_PER_USER, 20)
  ])
 
 AC_MSG_CHECKING([max-watches-per-user parameter])
@@ -761,17 +749,14 @@ AC_ARG_ENABLE(max-watches-per-user,[  --enable-max-watches-per-user  maximum num
  [
    if test "$enableval" -gt 0 -a "$enableval" -lt 10000000; then
      AC_MSG_RESULT([$enableval seconds])
-     AC_DEFINE_UNQUOTED(MAX_WATCHES_PER_USER, $enableval)
-     AC_DEFINE(MAX_WATCHES_PER_USER_STR, "$enableval")
+     AC_DEFINE_UNQUOTED(DEFAULT_MAX_WATCHES_PER_USER, $enableval)
    else
      AC_MSG_RESULT([128 (default, fixed)])
-     AC_DEFINE(MAX_WATCHES_PER_USER, 128)
-     AC_DEFINE(MAX_WATCHES_PER_USER_STR, "128")
+     AC_DEFINE(DEFAULT_MAX_WATCHES_PER_USER, 128)
    fi
  ],[
    AC_MSG_RESULT([128 (default)])
-   AC_DEFINE(MAX_WATCHES_PER_USER, 128)
-   AC_DEFINE(MAX_WATCHES_PER_USER_STR, "128")
+   AC_DEFINE(DEFAULT_MAX_WATCHES_PER_USER, 128)
  ])
 
 AC_MSG_CHECKING([oper-wallops parameter])

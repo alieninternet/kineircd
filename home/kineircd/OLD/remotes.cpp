@@ -436,9 +436,7 @@ void Handler::doTIME(Handler *handler, User *from)
 
 /* doVERSION
  * Original 24/08/01, Simon Butcher <pickle@austnet.org>
- * Note: This is messy :) Check doc/VersionChars for more info. If you are
- *       updating this, update the VersionChars file too! Don't let the
- *       documentation go stale :(
+ * 24/10/01 simonb - Added ISUPPORT output
  */
 void Handler::doVERSION(Handler *handler, User *from)
 {
@@ -447,6 +445,8 @@ void Handler::doVERSION(Handler *handler, User *from)
 				       getVersion,
 				       (char const *)TO_DAEMON->server->getHostname(),
 				       getVersionChars));
+   handler->sendNumeric(TO_DAEMON->server, RPL_ISUPPORT, from,
+			TO_DAEMON->makeISUPPORT());
 }
 
 

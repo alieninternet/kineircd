@@ -102,6 +102,7 @@
 # define MAXLEN_SERVERDESC		80
 # define MAXLEN_TOPIC			300	/* Keep these under 350 */
 # define MAXLEN_KICK_REASON		300
+# define MINLEN_OP_BROADCAST		20
 # define MAX_CHANNELS_PER_USER		10
 # define MIN_INVITE_TIMEOUT		30	/* 30 second min timeout */
 
@@ -268,17 +269,15 @@
 
 
 
-/* Maximums for various things - see the INSTALL file for more info */
-# undef MAX_ACCEPTS_PER_USER
-# undef MAX_ACCEPTS_PER_USER_STR
-# undef MAX_BANS_PER_CHANNEL
-# undef MAX_BANS_PER_CHANNEL_STR
+/* Default maximums for various things - see the INSTALL file for more info */
+# undef DEFAULT_MAX_ACCEPTS_PER_USER
+# undef DEFAULT_MAX_BANS_PER_CHANNEL
+# undef DEFAULT_MAX_SILENCES_PER_USER
+# undef DEFAULT_MAX_WATCHES_PER_USER
+
+
+/* Constant maximums for various things - see the INSTALL file for more info */
 # undef MAX_MODES_PER_COMMAND
-# undef MAX_MODES_PER_COMMAND_STR
-# undef MAX_SILENCES_PER_USER
-# undef MAX_SILENCES_PER_USER_STR
-# undef MAX_WATCHES_PER_USER
-# undef MAX_WATCHES_PER_USER_STR
 
   
 /* Define these depending on what connections you want to allow/disallow */

@@ -31,7 +31,7 @@ namespace Language {
    char const *L_RPL_ISUPPORT_TAG =
      " :are supported by this server";
    char const *L_RPL_TIMEONSERVERIS =
-     "%lu %ld %c%02u%02u %u :time according to server";
+     "%lu %ld %s %u :time according to server";
 
    // 'Spam' notification, rather server policy that demands to be read
    char const *L_RPL_SPAM_LINE1 =
@@ -293,8 +293,10 @@ namespace Language {
      " :is in server side ignore mode (+g) but has been notified you wish to "
      "talk to them";
    char const *L_RPL_ACCEPTNOTICE =
-     ":%s is messaging you. You are in server side ignore mode (+g). Use "
-     "the ACCEPT command if you want to talk to them";
+     "%s %s %s :is messaging you. You are in server side ignore mode (+g). "
+     "Use the ACCEPT command if you want to talk to them";
+   char const *L_RPL_ACCEPTED =
+     "%s %s %s :has put you on their ACCEPT list";
 
    // SILENCE list replies
    char const *L_RPL_ENDOFSILELIST =

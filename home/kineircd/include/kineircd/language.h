@@ -21,6 +21,10 @@
    "*** Help -- from %s: %s"
 # define LNG_ERR_NOTEXTTOSEND \
    ":No text to send"
+# ifdef MINLEN_OP_BROADCAST
+#  define LNG_ERR_NOTEXTTOSEND_NEEDMORE \
+   ":No text to send, or a larger message is required for this command"
+# endif
 # define LNG_RPL_LOGOFF_SERVER \
    ":has net-split"
 # define LNG_RPL_LOGOFF_CHANNEL \
@@ -203,6 +207,7 @@ class Language {
    static char const *L_ERR_ACCEPTNOT;
    static char const *L_RPL_NOTACCEPTED;
    static char const *L_RPL_ACCEPTNOTICE;
+   static char const *L_RPL_ACCEPTED;
    
    // SILENCE list replies
    static char const *L_RPL_ENDOFSILELIST;

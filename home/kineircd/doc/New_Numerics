@@ -283,8 +283,8 @@ _______________________________________________________________________________
 
 
 824 - RPL_ACCEPTNOTICE
-      :<nick> is messaging you. You are in server side ignore mode (+g). Use 
-       the ACCEPT command if you wish to talk to them.
+      <nick> <user> <host> :is messaging you. You are in server side ignore 
+       mode (+g). Use the ACCEPT command if you wish to talk to them.
       Like above, this is a replacement for hybrid's notice version of someone
       trying to message you. More-so than the above numeric, this is designed
       for clients that are smart enough so that they can either set up
@@ -297,6 +297,13 @@ _______________________________________________________________________________
 825 - RPL_KNOCKING
       <channel> :has received your knocking
       Confirmation that a /KNOCK is being sent
+
+
+826 - RPL_ACCEPTED
+      <nick> <user> <host> :has added you to their ACCEPT list
+      Indicate that a user has added you to their accept list. See
+      RPL_ACCEPTNOTICE for information on the fields, as this works in 
+      the same way.
 
 
 880 - ERR_NOKNOCK

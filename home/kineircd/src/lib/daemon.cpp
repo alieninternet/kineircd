@@ -27,6 +27,9 @@ Daemon::Daemon(String const &conf)
   adminName(DEFAULT_CONFIG_ADMIN_NAME),
   adminEmail(DEFAULT_CONFIG_ADMIN_EMAIL),
   adminLocation(DEFAULT_CONFIG_ADMIN_LOCATION),
+  confMaxWatchesPerUser(DEFAULT_MAX_WATCHES_PER_USER),
+  confMaxSilencesPerUser(DEFAULT_MAX_SILENCES_PER_USER),
+  confMaxBansPerChannel(DEFAULT_MAX_BANS_PER_CHANNEL),
   maxDescriptors(0),
   lastGarboRun(0),
   sentBytes(0),
@@ -35,6 +38,8 @@ Daemon::Daemon(String const &conf)
   lastDataMarkTime(0),
   dataRate(0),
   stage(INIT),
+  timeZone("+0000"), // Presume UTC upon initialisation, just in case
+  timeFlags(0),
   startTime(time(NULL)),
 #ifdef HAVE_OPENSSL
   sslContext(0),
@@ -136,6 +141,9 @@ Daemon::Daemon(String const &conf)
 						      exit(0);
    }
 #endif
+
+   // Fire up the extended clock information
+   checkClock();
    
    // Load config!
    if (!configure(true)) {
@@ -359,6 +367,34 @@ check_connections:
 }
 
 
+/* checkClock - Check the extended clock information (for RPL_TIMEONSERVERIS)
+ * Original 25/10/01, Simon Butcher <pickle@austnet.org>
+ */
+void Daemon::checkClock(void)
+{
+//   TYPE_RPL_TIMEONSERVERIS_FLAGS tosiFlags = 0;
+   
+   // Are we *POSSIBLY* in DST mode? This posix variable is half-accurate..
+//   if (daylight) {
+//      tosiFlags |= TIMEONSERVERFLAG_DST;
+//   }
+   
+   // Work out the timezone (this does not seem to work too well)
+//   GMTdiffEast = (timezone > 0);
+//   GMTdiffHours = (unsigned short)(timezone / 3600);
+//   GMTdiffMins = (unsigned short)((timezone % 3600) / 60);
+   
+   // Update the timezone string
+//   timeZone = String::printf("%c%02u%02u",
+//			      ((GMTdiffEast) ? '+' : '-'),
+//			      GMTdiffHours,
+//			      GMTdiffMins);
+   
+   // Update the TOSI flags
+//   timeFlags = tosiFlags;
+}
+
+
 /* rehash - Rehash the server
  * Original 19/09/01, Simon Butcher <pickle@austnet.org>
  */
@@ -380,6 +416,9 @@ void Daemon::rehash(Handler *handler, User *user)
 					    user->nickname)));
    }
 
+   // Check the extended clock information (hey, you never know!)
+   checkClock();
+   
    // Clean things up
    garbo(true);
    
@@ -402,14 +441,14 @@ String Daemon::makeISUPPORT(void)
 //			 " USERIP"				// (7chrs)
 			 " LANGUAGE=(en)"			// (12chrs)
 			 " KNOCK"				// (6chrs)
-			 " WATCH=" MAX_WATCHES_PER_USER_STR	// (~10chrs)
-			 " SILENCE=" MAX_SILENCES_PER_USER_STR	// (~11chrs)
-			 " ACCEPT=" MAX_ACCEPTS_PER_USER_STR	// (~12chrs)
+			 " WATCH=%u"				// (~10chrs)
+			 " SILENCE=%u"				// (~11chrs)
+			 " ACCEPT=%u"				// (~12chrs)
 			 " CHANTYPES=%s"			// (~15chrs)
 			 " MAXCHANNELS=%d" 			// (~16chrs)
-			 " MAXBANS=" MAX_BANS_PER_CHANNEL_STR	// (~11chrs)
+			 " MAXBANS=%u"				// (~11chrs)
 			 " CHARSET=rfc1459" 			// (16chrs)
-			 " MODES=" MAX_MODES_PER_COMMAND_STR	// (~9chrs)
+			 " MODES=%u"				// (~9chrs)
 			 " PREFIX=%s",				// (~20chrs)
 			 	// (=~226chrs + tag)
 			 MAXLEN_NICKNAME,
@@ -419,8 +458,13 @@ String Daemon::makeISUPPORT(void)
 			  ((char const *)
 			   (String(" NETWORK=") + getNetworkName())) :
 			  ""),
+			 confMaxWatchesPerUser,
+			 confMaxSilencesPerUser,
+			 confMaxAcceptsPerUser,
 			 CHANNEL_TYPES,
-			 MAX_CHANNELS_PER_USER, 
+			 MAX_CHANNELS_PER_USER,
+			 confMaxBansPerChannel,
+			 MAX_MODES_PER_COMMAND,
 			 Channel::prefixStr);
 }
 
