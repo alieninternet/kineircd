@@ -48,9 +48,9 @@ const Commands::preInitCommand_type Commands::preInitCommands[] = {[+FOR command
  (string-upcase
     (get "access"))
  +][+ELSE+]0[+ENDIF+],
-	  [+defaultPenalty+], [+minimumParams+],
+	  [+IF (exist? "disabled")+]false[+ELSE+]true[+ENDIF+], [+defaultPenalty+], [+minimumParams+],
 	  &Language::tagMap[Language::irc2_HELP_CMD_[+command+]_USAGE].tagID,
 	  &Language::tagMap[Language::irc2_HELP_CMD_[+command+]].tagID
      },[+ENDFOR+]
-     { 0, 0, 0, 0, 0, 0, 0 }
+     { 0, 0, false, 0, 0, 0, 0, 0 }
 };

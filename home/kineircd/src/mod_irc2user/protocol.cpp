@@ -128,28 +128,37 @@ void Protocol::parseMessage(const std::string& origin,
    
    // Did we find it? (most of the time we will find it
    if (commandInfo != 0) {
-      // Does this user have access to this command?
-      if (commandInfo->hasAccess(user)) {
-	 // Do we have enough parameters?
-	 if (parameters.size() >= commandInfo->minimumParams) {
-	    // Okay, I guess we can run it
-	    (this->*(commandInfo->handler))(parameters);
+      // Is this command enabled?
+      if (commandInfo->enabled) {
+	 // Does this user have access to this command?
+	 if (commandInfo->hasAccess(user)) {
+	    // Do we have enough parameters?
+	    if (parameters.size() >= commandInfo->minimumParams) {
+	       // Okay, I guess we can run it
+	       (this->*(commandInfo->handler))(parameters);
+	       
+	       // We're done!
+	       return;
+	    }
 	    
-	    // We're done!
+	    // Complain about not having enough parameters, and return
+	    sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS,
+			command,
+			GETLANG(irc2_ERR_NEEDMOREPARAMS));
 	    return;
 	 }
 	 
-	 // Complain about not having enough parameters, and return
-	 sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS,
+	 // Complain about not having access to this command
+	 sendNumeric(LibIRC2::Numerics::ERR_NOPRIVILEGES,
 		     command,
-		     GETLANG(irc2_ERR_NEEDMOREPARAMS));
+		     GETLANG(irc2_ERR_NOPRIVILEGES));
 	 return;
       }
       
-      // Complain about not having access to this command
-      sendNumeric(LibIRC2::Numerics::ERR_NOPRIVILEGES,
+      // Complain about the command being disabled...
+      sendNumeric(LibIRC2::Numerics::ERR_DISABLED,
 		  command,
-		  GETLANG(irc2_ERR_NOPRIVILEGES));
+		  GETLANG(irc2_ERR_DISABLED));
       return;
    }
 

@@ -47,6 +47,7 @@ namespace Kine {
 	    Protocol::handler_type Protocol::* const
 	      handler;					// Handler function
 	    Access::function_type* const accessChecker;	// Access checker
+	    const bool enabledByDefault;		// Enabled from init?
 	    const unsigned char defaultPenalty;		// Initial penalty rate
 	    const unsigned char minimumParams;		// Minimum param count
 	    const Kine::Languages::tagID_type* const 
@@ -61,6 +62,7 @@ namespace Kine {
 	    Protocol::handler_type Protocol::* const
 	      handler;					// Handler function
 	    Access::function_type* accessChecker;	// Access checker
+	    bool enabled;				// Is enabled?
 	    unsigned char penalty;			// Set penalty rate
 	    const unsigned char minimumParams;		// Minimum param count
 	    const Kine::Languages::tagID_type* const
@@ -73,6 +75,7 @@ namespace Kine {
 	    CommandInfo(const preInitCommand_type& info)
 	      : handler(info.handler),
 	        accessChecker(info.accessChecker),
+	        enabled(info.enabledByDefault),
 	        penalty(info.defaultPenalty),
 	        minimumParams(info.minimumParams),
 	        helpUsage(info.helpUsage),

@@ -53,6 +53,7 @@ commands = {
    defaultPenalty	= 0;
    minimumParams	= 0;
    access		= "oper";
+   disabled;
 };
 
 commands = {
@@ -227,6 +228,7 @@ commands = {
    defaultPenalty	= 0;
    minimumParams	= 0;
    access		= "oper";
+   disabled;
 };
 
 commands = {
@@ -327,6 +329,7 @@ commands = {
    defaultPenalty	= 0;
    minimumParams	= 1;
    access		= "oper";
+   disabled;
 };
 
 commands = {
