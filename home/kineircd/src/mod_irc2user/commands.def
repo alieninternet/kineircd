@@ -172,11 +172,11 @@ commands = {
 //   minimumParams	= 1;
 //};
 
-//commands = {
-//   command		= "NOTICE";
-//   defaultPenalty	= 4;
-//   minimumParams	= 2;
-//};
+commands = {
+   command		= "NOTICE";
+   defaultPenalty	= 4;
+   minimumParams	= 0;
+};
 
 //commands = {
 //   command		= "OPER";
@@ -202,12 +202,12 @@ commands = {
 //   minimumParams	= 1;
 //};
 
-//commands = {
-//   command		= "PRIVMSG";
-//   defaultPenalty	= 4;
-//   minimumParams	= 2;
-//   changeIdleTime;
-//};
+commands = {
+   command		= "PRIVMSG";
+   defaultPenalty	= 4;
+   minimumParams	= 0;
+   changeIdleTime;
+};
 
 commands = {
    command		= "QUIT";

@@ -312,6 +312,7 @@ libkineircd_irc2_la_SOURCES=\
 	src/libkineircd_irc2/language.cpp \
 	src/libkineircd_irc2/language.h \
 	src/libkineircd_irc2/library.cpp \
+	src/libkineircd_irc2/messaging.cpp \
 	src/libkineircd_irc2/protocol.cpp \
 	src/libkineircd_irc2/servermodes.cpp \
 	src/libkineircd_irc2/stats.cpp \

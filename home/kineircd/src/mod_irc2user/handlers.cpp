@@ -442,6 +442,17 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 #endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_NOTICE
+/* handleNOTICE
+ * Original 01/09/2001 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleNOTICE)
+{
+   doMessage(user, parameters, true);
+}
+#endif
+
+
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_PING
 /* handlePING
  * Original 25/08/2001 simonb
@@ -460,6 +471,17 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
    // Umm, return a complaint as per standards, even if it is kinda wrong
    sendNumeric(LibIRC2::Numerics::ERR_NOORIGIN,
 	       GETLANG(irc2_ERR_NOORIGIN));
+}
+#endif
+
+
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_PRIVMSG
+/* handlePRIVMSG
+ * Original 01/09/2001 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handlePRIVMSG)
+{
+   doMessage(user, parameters, false);
 }
 #endif
 

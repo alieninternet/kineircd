@@ -332,6 +332,11 @@ namespace Kine {
 	 // Send RPL_TIMEONSERVERIS to the given client
 	 void sendTimeOnServer(const User& user);
 	 
+	 // Handle sending a message (PRIVMSG or NOTICE) to someone
+	 void doMessage(const User& user,
+			const parameters_type& parameters,
+	                const bool isNotice);
+
 	 // Handle the various commands which are quite common in IRC-2 modules
 	 void doADMIN(const User& user);
 	 void doINFO(const User& user);
