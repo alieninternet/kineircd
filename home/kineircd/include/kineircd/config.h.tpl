@@ -2,8 +2,8 @@
 /* $Id$
  * Configuration file stuff
  *
- * Copyright (c) 2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2002 KineIRCd Development Team 
+ * Copyright (c) 2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2002,2003 KineIRCd Development Team 
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -66,15 +66,25 @@ namespace Kine {
     private:
       // The config file to use..
       std::string configFile;
-[+DEFINE output-variables+][+FOR definition+][+IF .definition+][+IF .condition+]
+[+DEFINE output-variables+][+FOR definition+][+
+ IF (or
+       (exist? ".definition")
+       (shadowTable?))+][+IF (exist? ".condition")+]
 #ifdef [+condition+][+ENDIF+][+(pushPrefix (get "name"))+]
 
-      // '[+(getPrefix)+]' section...
-      static const AISutil::ConfigParser::defTable_type defClass[+(getPrefix)+];[+output-variables+][+(popPrefix)+][+IF .condition+]
-#endif[+ENDIF+][+ENDIF+][+IF .hasVariable+][+IF .varType+][+IF .condition+]
+      // '[+(getPrefix)+]' table...
+      static const AISutil::ConfigParser::defTable_type defClass[+(getPrefix)+];[+IF (not (shadowTable?))+][+output-variables+][+ELSE+][+
+ IF (not (and 
+            ;; more checks than this??
+            (exist? ".hasVariable")))+]
+[+ENDIF+][+ENDIF+][+(popPrefix)+][+IF (exist? ".condition")+]
+#endif[+ENDIF+][+ENDIF+][+IF (exist? ".hasVariable")+][+IF (exist? ".varType")+][+IF (exist? ".condition")+]
 #ifdef [+condition+][+ENDIF+]
-      [+varType+] def[+output-variable-name+];[+IF .condition+]
-#endif[+ENDIF+][+ENDIF+][+ENDIF+][+ENDFOR+][+ENDDEF+]
+      [+varType+] def[+output-variable-name+];[+IF (exist? ".condition")+]
+#endif[+ENDIF+][+ENDIF+][+ENDIF+][+IF (and
+                                         (exist? "defaultDefinition.varType")
+					 (exist? "defaultDefinition.variable"))+]
+      [+defaultDefinition.varType+] def[+defaultdefinition.variable+];[+ENDIF+][+ENDFOR+][+ENDDEF+]
       // Our top-level definition table, defining compiled in top level classes
       static const AISutil::ConfigParser::defTable_type topDefs;[+output-variables+]
 	
@@ -116,13 +126,17 @@ namespace Kine {
 	   configFile = file;
 	   return configure();
 	};
-[+DEFINE output-methods+][+FOR definition+][+IF .definition+][+IF .condition+]
-#ifdef [+condition+][+ENDIF+][+(pushPrefix (get "name"))+][+output-methods+][+(popPrefix)+][+IF .condition+]
-#endif[+ENDIF+][+ENDIF+][+IF .hasVariable+][+IF .varType+][+IF .condition+]
+[+DEFINE output-methods+][+FOR definition+][+IF (exist? ".definition")+][+IF (exist? ".condition")+]
+#ifdef [+condition+][+ENDIF+][+(pushPrefix (get "name"))+][+output-methods+][+(popPrefix)+][+IF (exist? ".condition")+]
+#endif[+ENDIF+][+ENDIF+][+IF (exist? ".hasVariable")+][+IF (exist? ".varType")+][+IF (exist? ".condition")+]
 #ifdef [+condition+][+ENDIF+]
       [+IF .varTypeProtected+][+varTypeProtected+][+ELSE+]const [+varType+]&[+ENDIF+] get[+output-variable-name+](void)[+IF (not (exist? "varPublicModify"))+] const[+ENDIF+]
-         { return def[+output-variable-name+]; };[+IF .condition+]
-#endif[+ENDIF+][+ENDIF+][+ENDIF+][+ENDFOR+][+ENDDEF+][+output-methods+]
+         { return def[+output-variable-name+]; };[+IF (exist? ".condition")+]
+#endif[+ENDIF+][+ENDIF+][+ENDIF+][+IF (and
+                                         (exist? "defaultDefinition.varType")
+					 (exist? "defaultDefinition.variable"))+]
+      [+IF defaultDefinition.varTypeProtected+][+defaultDefinition.varTypeProtected+][+ELSE+]const [+defaultDefinition.varType+]&[+ENDIF+] get[+defaultDefinition.variable+](void)[+IF (not (exist? "defaultDefinition.varPublicModify"))+] const[+ENDIF+]
+         { return def[+defaultDefinition.variable+]; };[+ENDIF+][+ENDFOR+][+ENDDEF+][+output-methods+]
    }; // class Config
 
 

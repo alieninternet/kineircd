@@ -32,6 +32,7 @@
 #include "kineircd/kineircdconf.h"
 
 #include "kineircd/config.h"
+#include "libkineircd/language/config.h"
 #include "libkineircd/listener/config.h"
 
 using namespace Kine;
@@ -101,39 +102,58 @@ using namespace Kine;
 	 ;; Return the char count we found..
 	 charCount))
       
- +][+DEFINE output-class-definition-table+]const AISutil::ConfigParser::defTable_type Config::[+tableClass+] = {[+(clearDefList)+][+FOR definition+][+(addDef (string-upcase (get "name")))+][+ENDFOR+][+FOR definition+]
+ +][+DEFINE output-class-definition-table+]const AISutil::ConfigParser::defTable_type Config::[+tableClass+] = {[+(clearDefList)+][+FOR definition+][+(addDef (string-upcase (get "name")))+][+ENDFOR+][+IF
+   (string-ci=?
+      (get "recurse")
+      "yes")+][+FOR definition+]
 [+IF (exist? ".condition")+]#ifdef [+condition+]
 [+ENDIF+]     {
 	"[+(string-upcase (get "name"))+]", [+(calcDefChars (string-upcase (get "name")))+],
 	  [+IF (exist? ".hasVariable")+](void*)&Config::def[+IF (exist? ".variable")+][+variable+][+ELSE+][+(getPrefix)+][+name+][+ENDIF+][+ELSE+]0[+ENDIF+],
 	  [+IF (exist? ".varHandler")+]&[+varHandler+][+ELSE+]0[+ENDIF+],
-	  [+IF (exist? ".definition")+]&defClass[+(getPrefix)+][+name+][+ELSE+]0[+ENDIF+],
+	  [+IF (or
+	          (exist? ".definition")
+		  (shadowTable?))+]&defClass[+(getPrefix)+][+name+][+ELSE+]0[+ENDIF+],
 	  [+IF (exist? ".classHandler")+]&[+classHandler+][+ELSE+]0[+ENDIF+]
      },[+IF .condition+]
-#endif // [+condition+][+ENDIF+][+ENDFOR+]
+#endif // [+condition+][+ENDIF+][+ENDFOR+][+ENDIF+]
      {
 	0, 0,
-	  [+IF (exist? ".defaultDefinition.variable")+](void*)&Config::[+defaultDefinition.variable+][+ELSE+]0[+ENDIF+],
-	  0,
+	  [+IF (exist? "defaultDefinition.variable")+](void*)&Config::def[+defaultDefinition.variable+][+ELSE+]0[+ENDIF+],
+	  [+IF (exist? "defaultDefinition.varHandler")+]&[+defaultDefinition.varHandler+][+ELSE+]0[+ENDIF+],
 	  0,
 	  0
      }
 };
 
-[+FOR definition+][+IF (exist? ".definition")+]
-// "[+(getPrefix)+][+name+]" section (nested [+
+[+IF (string-ci=? 
+        (get "recurse")
+	"yes")+][+FOR definition+][+IF (or
+                                          (exist? ".definition")
+			                  (shadowTable?))+]
+// "[+(getPrefix)+][+name+]" [+IF (shadowTable?)+]shadow [+ENDIF+]table (nested [+
    (length tablePrefixStack)
  +] level[+
    (if (> (length tablePrefixStack) 1)
       "s")
- +] deep)[+(pushPrefix (get "name"))+]
+ +] deep)[+IF (shadowTable?)+][+(pushPrefix (get "name"))+]
 [+output-class-definition-table
    tableClass=(string-append
 	         "defClass"
 		 (getPrefix))
- +][+(popPrefix)+][+ENDIF+][+ENDFOR+][+ENDDEF+]
+   recurse=no
+ +][+(popPrefix)+][+ELSE+][+(pushPrefix (get "name"))+]
+[+output-class-definition-table
+   tableClass=(string-append
+	         "defClass"
+		 (getPrefix))
+   recurse=yes
+ +][+(popPrefix)+][+ENDIF+][+ENDIF+][+ENDFOR+][+ENDIF+][+ENDDEF+]
 // Top definitions
-[+output-class-definition-table tableClass=topDefs+]
+[+output-class-definition-table
+   tableClass=topDefs
+   recurse=yes
+ +]
 
 // Configuration class constructor (mainly to load defaults, if any)[+
    ; This is a variable to help us determine what iteration we are at
