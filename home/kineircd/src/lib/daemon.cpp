@@ -182,6 +182,27 @@ bool Daemon::deregisterProtocol(const ProtocolName& name)
 }
 
 
+/* findProtocol - Find a protocol matching the given criteria
+ * Original 04/10/2001 simonb
+ * Note: This needs optimisation :)
+ */
+ProtocolInfo* const Daemon::findProtocol(const ProtocolName::Type::type type,
+					 const std::string& name) const
+{
+   // Find the protocol, maybe (this is ugly IMHO)
+   protocols_type::const_iterator proto =
+     protocols.find(ProtocolName(name.c_str(), type));
+   
+   // Check if we found the protocol, more often we will have
+   if (proto != protocols.end()) {
+      return proto->second;
+   }
+   
+   // We must not have found it, return a null pointer
+   return 0;
+};
+
+
 /* run - The main loop
  * Original 11/08/2001 simonb
  * Note: Unfortuantely not a very nice looking routine.. Much of this code is

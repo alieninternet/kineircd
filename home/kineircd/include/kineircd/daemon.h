@@ -141,8 +141,7 @@ namespace Kine {
       bool registerProtocol(const ProtocolName& name, ProtocolInfo& info);
       bool deregisterProtocol(const ProtocolName& name);
       ProtocolInfo* const findProtocol(const ProtocolName::Type::type type,
-				       const std::string& name)
-	{ return protocols.find(ProtocolName(name.c_str(), type))->second; };
+				       const std::string& name) const;
       
       // Main loop
       Exit::status_type run(void);
