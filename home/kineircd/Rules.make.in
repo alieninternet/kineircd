@@ -13,7 +13,7 @@ LDFLAGS=@LDFLAGS@
 
 
 # First rule (link into the 'all' rule)
-_top_: all
+all: _top_
 
 
 # How to make object files from .cpp files rule
