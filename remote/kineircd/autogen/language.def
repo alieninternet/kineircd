@@ -410,6 +410,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_WASNOSUCHNICK";
+   components	= "libkineircd_irc2";
    data_en	= "There was no such nickname, or they signed off too long "
                   "ago";
    data_tr	= "Böyle bir nick bulunamadı";
@@ -581,6 +582,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFSTATS";
+   components	= "libkineircd_irc2 mod_irc2user";
    data_en	= "End of STATS report";
    data_tr	= "STATS raporunun sonu";
 };
@@ -606,6 +608,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFWHOWAS";
+   components	= "libkineircd_irc2";
    data_en	= "End of WHOWAS";
    data_tr	= "WHOWAS komutunun sonu";
 };
@@ -717,6 +720,13 @@ tag = {
    name		= "irc2_RPL_SERVLISTEND";
    data_en	= "End of service listing";
    data_tr	= "Servis listesinin sonu";
+};
+
+tag = {
+   name		= "irc2_RPL_STATSUPTIME";
+   fields	= "0 = days up, 1 = hours/mins/secs up (HH:MM:SS)";
+   components	= "libkineircd_irc2";
+   data_en	= "Server up %p0 days, %p1";
 };
 
 tag = {
