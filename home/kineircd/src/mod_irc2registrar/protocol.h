@@ -67,23 +67,27 @@ namespace Kine {
       // Send a numeric
       void sendNumeric(const LibIRC2::Numerics::numeric_type numeric)
 	{
-	   sendMessage(config().getOptionsServerName(),
-		       (registrantData.name.empty() ? '*' :
-			registrantData.name),
-		       numeric, ':');
+	   sendMessageTo(config().getOptionsServerName(),
+			 (registrantData.name.empty() ? 
+			  '*' : registrantData.name),
+			 numeric, "");
 	};
       
       void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 		       const char* const data)
 	{
-	   sendMessage(config().getOptionsServerName(),
-		       (registrantData.name.empty() ? '*' :
-			registrantData.name),
-		       numeric, data);
+	   sendMessageTo(config().getOptionsServerName(),
+			 (registrantData.name.empty() ? 
+			  '*' : registrantData.name),
+			 numeric, data);
 	};
 
       // Send an error message and disconnect
-      void sendError(const char* const error);
+      void sendError(const char* const error)
+	{
+	   sendMessage("ERROR", error);
+	   connection.goodbye();
+	};
       
       // Send a ping with some unpredictable data
       void sendPing(void);

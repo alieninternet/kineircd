@@ -56,28 +56,6 @@ const Registrar::commandTable_type Registrar::commandTable[] = {
 };
 
 
-/* sendError - Send an error and disconnect
- * Original 12/08/2001 simonb
- */
-void Registrar::sendError(const char* const error)
-{
-   std::ostringstream output;
-   
-   // Assemble the line, neatly terminated..
-   output << "ERROR :" << error << "\r\n";
-   
-   // Throw the line onto the output queue
-   outputQueue.push(output.str());
-   
-#ifdef KINE_DEBUG_PSYCHO
-   debug("Registrar::sendError() - " + output.str());
-#endif
-   
-   // Disconnect..
-   connection.goodbye();
-}
-
-
 /* sendPing - Send a ping with some unpredictable data
  * Original 12/08/2001 simonb
  */

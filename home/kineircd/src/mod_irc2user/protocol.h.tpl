@@ -75,35 +75,35 @@ namespace Kine {
 	 void sendNumeric(const LibIRC2::Numerics::numeric_type numeric)
 	   {
 	      LibIRC2::Protocol::
-	        sendNumeric(config().getOptionsServerName(),
-			    user.getNickname(), numeric);
+	        sendMessageTo(config().getOptionsServerName(),
+			      user.getNickname(), numeric);
 	   };
 	 template <class Ta>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa)
 	     {
 		LibIRC2::Protocol::
-		  sendNumeric(config().getOptionsServerName(),
-			      user.getNickname(), numeric,
-					       pa);
+		  sendMessageTo(config().getOptionsServerName(),
+			        user.getNickname(), numeric,
+				pa);
 	     };
 	 template <class Ta, class Tb>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa, const Tb& pb)
 	     {
 		LibIRC2::Protocol::
-		  sendNumeric(config().getOptionsServerName(),
-			      user.getNickname(), numeric,
-			      pa, pb);
+		  sendMessageTo(config().getOptionsServerName(),
+			        user.getNickname(), numeric,
+			        pa, pb);
 	     };
 	 template <class Ta, class Tb, class Tc>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa, const Tb& pb, const Tc& pc)
 	     {
 		LibIRC2::Protocol::
-		  sendNumeric(config().getOptionsServerName(),
-			      user.getNickname(), numeric,
-			      pa, pb, pc);
+		  sendMessageTo(config().getOptionsServerName(),
+			        user.getNickname(), numeric,
+			        pa, pb, pc);
 	     };
 	 template <class Ta, class Tb, class Tc, class Td>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
@@ -111,9 +111,9 @@ namespace Kine {
 			    const Td& pd)
 	     {
 		LibIRC2::Protocol::
-		  sendNumeric(config().getOptionsServerName(),
-			      user.getNickname(), numeric,
-			      pa, pb, pc, pd);
+		  sendMessageTo(config().getOptionsServerName(),
+			        user.getNickname(), numeric,
+			        pa, pb, pc, pd);
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
@@ -121,9 +121,9 @@ namespace Kine {
 			    const Td& pd, const Te& pe)
 	     {
 		LibIRC2::Protocol::
-		  sendNumeric(config().getOptionsServerName(),
-			      user.getNickname(), numeric,
-			      pa, pb, pc, pd, pe);
+		  sendMessageTo(config().getOptionsServerName(),
+			        user.getNickname(), numeric,
+			        pa, pb, pc, pd, pe);
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
@@ -131,9 +131,9 @@ namespace Kine {
 			    const Td& pd, const Te& pe, const Tf& pf)
 	     {
 		LibIRC2::Protocol::
-		  sendNumeric(config().getOptionsServerName(),
-			      user.getNickname(), numeric,
-			      pa, pb, pc, pd, pe, pf);
+		  sendMessageTo(config().getOptionsServerName(),
+			        user.getNickname(), numeric,
+			        pa, pb, pc, pd, pe, pf);
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
 	           class Tg>
@@ -143,9 +143,9 @@ namespace Kine {
 			    const Tg& pg)
 	     {
 		LibIRC2::Protocol::
-		  sendNumeric(config().getOptionsServerName(),
-			      user.getNickname(), numeric,
-			      pa, pb, pc, pd, pe, pf, pg);
+		  sendMessageTo(config().getOptionsServerName(),
+			        user.getNickname(), numeric,
+			        pa, pb, pc, pd, pe, pf, pg);
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
 	           class Tg, class Th>
@@ -155,9 +155,9 @@ namespace Kine {
 			    const Tg& pg, const Th& ph)
 	     {
 		LibIRC2::Protocol::
-		  sendNumeric(config().getOptionsServerName(),
-			      user.getNickname(), numeric,
-			      pa, pb, pc, pd, pe, pf, pg, ph);
+		  sendMessageTo(config().getOptionsServerName(),
+			        user.getNickname(), numeric,
+			        pa, pb, pc, pd, pe, pf, pg, ph);	
 	     };
 	 
 	 // Command handlers[+FOR commands+]

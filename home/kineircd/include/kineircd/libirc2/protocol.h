@@ -87,26 +87,6 @@ namespace Kine {
 	 bool moreOutput(void) const
 	   { return (!outputQueue.empty()); };
 	 
-	 // Send an appropriately formatted message
-	 template <class To, class Td, class Tc>
-	   void sendMessage(const To& origin, const Td& destination,
-			    const Tc& command)
-	   {
-	      std::ostringstream output;
-	      output << ':' << origin << ' ' << command << ' ' <<
-		destination << lineTerminator;
-	      outputQueue.push(output.str());
-	   };
-	 template <class To, class Td, class Tc, class Tp>
-	   void sendMessage(const To& origin, const Td& destination,
-			    const Tc& command, const Tp& parameters)
-	   {
-	      std::ostringstream output;
-	      output << ':' << origin << ' ' << command << ' ' <<
-		destination << ' ' << parameters << lineTerminator;
-	      outputQueue.push(output.str());
-	   };
-	 
 	 // Send an appropriately formatted message, without TO/FROM fields
 	 template <class Tc, class Tp>
 	   void sendMessage(const Tc& command)
@@ -123,100 +103,120 @@ namespace Kine {
 	      outputQueue.push(output.str());
 	   };
 
-	 // Send a numeric with TO/FROM (this could probably be done better)
-	 template <class To, class Td>
-	   void sendNumeric(const To& origin, const Td& destination,
-			    const LibIRC2::Numerics::numeric_type numeric)
-	     {
-		sendMessage(origin, destination, numeric);
-	     };
-	 template <class To, class Td, class Tpa>
-	   void sendNumeric(const To& origin, const Td& destination,
-			    const LibIRC2::Numerics::numeric_type numeric,
-			    const Tpa& pa)
+	 // Send a properly formatted message with TO/FROM (I don't like this)
+	 template <class To, class Td, class Tc>
+	   void sendMessageTo(const To& origin, const Td& destination,
+			      const Tc& command)
 	     {
 		std::ostringstream output;
-		output << ':' << pa;
-		sendMessage(origin, destination, numeric, output.str());
+		output << ':' << origin << ' ' << command << ' ' << 
+		  destination << lineTerminator;
+		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tpa, class Tpb>
-	   void sendNumeric(const To& origin, const Td& destination,
-			    const LibIRC2::Numerics::numeric_type numeric,
-			    const Tpa& pa, const Tpb& pb)
+	 template <class To, class Td, class Tc,
+	           class Tpa>
+	   void sendMessageTo(const To& origin, const Td& destination,
+			      const Tc& command,
+			      const Tpa& pa)
 	     {
 		std::ostringstream output;
-		output << pa << " :" << pb;
-		sendMessage(origin, destination, numeric, output.str());
+		output << ':' << origin << ' ' << command << ' ' << 
+		  destination << " :" << pa << lineTerminator;
+		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tpa, class Tpb, class Tpc>
-	   void sendNumeric(const To& origin, const Td& destination,
-			    const LibIRC2::Numerics::numeric_type numeric,
-			    const Tpa& pa, const Tpb& pb, const Tpc& pc)
+	 template <class To, class Td, class Tc,
+	           class Tpa, class Tpb>
+	   void sendMessageTo(const To& origin, const Td& destination,
+			      const Tc& command,
+			      const Tpa& pa, const Tpb& pb)
 	     {
 		std::ostringstream output;
-		output << pa << ' ' << pb << " :" << pc;
-		sendMessage(origin, destination, numeric, output.str());
+		output << ':' << origin << ' ' << command << ' ' << 
+		  destination << pa << " :" << pb << lineTerminator;
+		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tpa, class Tpb, class Tpc,
-	           class Tpd>
-	   void sendNumeric(const To& origin, const Td& destination,
-			    const LibIRC2::Numerics::numeric_type numeric,
-			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
-			    const Tpd& pd)
+	 template <class To, class Td, class Tc,
+	           class Tpa, class Tpb, class Tpc>
+	   void sendMessageTo(const To& origin, const Td& destination,
+			      const Tc& command,
+			      const Tpa& pa, const Tpb& pb, const Tpc& pc)
 	     {
 		std::ostringstream output;
-		output << pa << ' ' << pb << ' ' << pc << " :" << pd;
-		sendMessage(origin, destination, numeric, output.str());
+		output << ':' << origin << ' ' << command << ' ' << 
+		  destination << pa << ' ' << pb << " :" << pc <<
+		  lineTerminator;
+		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tpa, class Tpb, class Tpc,
-	           class Tpd, class Tpe>
-	   void sendNumeric(const To& origin, const Td& destination,
-			    const LibIRC2::Numerics::numeric_type numeric,
-			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
-			    const Tpd& pd, const Tpe& pe)
+	 template <class To, class Td, class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd>
+	   void sendMessageTo(const To& origin, const Td& destination,
+			      const Tc& command,
+			      const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			      const Tpd& pd)
 	     {
 		std::ostringstream output;
-		output << pa << ' ' << pb << ' ' << pc << ' ' << pd << 
-		  " :" << pe;
-		sendMessage(origin, destination, numeric, output.str());
+		output << ':' << origin << ' ' << command << ' ' << 
+		  destination << pa << ' ' << pb << ' ' << pc << " :" << pd <<
+		  lineTerminator;
+		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tpa, class Tpb, class Tpc,
-	           class Tpd, class Tpe, class Tpf>
-	   void sendNumeric(const To& origin, const Td& destination,
-			    const LibIRC2::Numerics::numeric_type numeric,
-			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
-			    const Tpd& pd, const Tpe& pe, const Tpf& pf)
+	 template <class To, class Td, class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe>
+	   void sendMessageTo(const To& origin, const Td& destination,
+			      const Tc& command,
+			      const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			      const Tpd& pd, const Tpe& pe)
 	     {
 		std::ostringstream output;
-		output << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
-		  ' ' << pe << " :" << pf;
-		sendMessage(origin, destination, numeric, output.str());
+		output << ':' << origin << ' ' << command << ' ' << 
+		  destination << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  " :" << pe << lineTerminator;
+		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tpa, class Tpb, class Tpc,
-	           class Tpd, class Tpe, class Tpf, class Tpg>
-	   void sendNumeric(const To& origin, const Td& destination,
-			    const LibIRC2::Numerics::numeric_type numeric,
-			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
-			    const Tpd& pd, const Tpe& pe, const Tpf& pf,
-			    const Tpg& pg)
+	 template <class To, class Td, class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
+	           class Tpf>
+	   void sendMessageTo(const To& origin, const Td& destination,
+			      const Tc& command,
+			      const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			      const Tpd& pd, const Tpe& pe, const Tpf& pf)
 	     {
 		std::ostringstream output;
-		output << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
-		  ' ' << pe << ' ' << pf << " :" << pg;
-		sendMessage(origin, destination, numeric, output.str());
+		output << ':' << origin << ' ' << command << ' ' << 
+		  destination << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  ' ' << pe << " :" << pf << lineTerminator;
+		outputQueue.push(output.str());
 	     };
-	 template <class To, class Td, class Tpa, class Tpb, class Tpc,
-	           class Tpd, class Tpe, class Tpf, class Tpg, class Tph>
-	   void sendNumeric(const To& origin, const Td& destination,
-			    const LibIRC2::Numerics::numeric_type numeric,
-			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
-			    const Tpd& pd, const Tpe& pe, const Tpf& pf,
-			    const Tpg& pg, const Tph& ph)
+	 template <class To, class Td, class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
+	           class Tpf, class Tpg>
+	   void sendMessageTo(const To& origin, const Td& destination,
+			      const Tc& command,
+			      const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			      const Tpd& pd, const Tpe& pe, const Tpf& pf,
+			      const Tpg& pg)
 	     {
 		std::ostringstream output;
-		output << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
-		  ' ' << pe << ' ' << pf << ' ' << pg << " :" << ph;
-		sendMessage(origin, destination, numeric, output.str());
+		output << ':' << origin << ' ' << command << ' ' << 
+		  destination << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  ' ' << pe << ' ' << pf << " :" << pg << lineTerminator;
+		outputQueue.push(output.str());
+	     };
+	 template <class To, class Td, class Tc,
+	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
+	           class Tpf, class Tpg, class Tph>
+	   void sendMessageTo(const To& origin, const Td& destination,
+			      const Tc& command,
+			      const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			      const Tpd& pd, const Tpe& pe, const Tpf& pf,
+			      const Tpg& pg, const Tph& ph)
+	     {
+		std::ostringstream output;
+		output << ':' << origin << ' ' << command << ' ' << 
+		  destination << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  ' ' << pe << ' ' << pf << ' ' << pg << " :" << ph <<
+		  lineTerminator;
+		outputQueue.push(output.str());
 	     };
 	 
 	 // Some common information stuff which the user may want..

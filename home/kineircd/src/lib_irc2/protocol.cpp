@@ -182,9 +182,9 @@ std::string Protocol::withdrawOutput(AISutil::Socket::blockSize_type amount)
  */
 void Protocol::sendISUPPORT(const Kine::User& user)
 {
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_ISUPPORT,
-	       "isupport");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_ISUPPORT,
+		 "isupport");
 }
 
 
@@ -193,35 +193,35 @@ void Protocol::sendISUPPORT(const Kine::User& user)
  */
 void Protocol::sendLUSERS(const Kine::User& user)
 {
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_LUSERCLIENT,
-	       "Stuff..");
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_LUSEROP,
-	       0,
-	       "luserop");
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_LUSERSTAFF,
-	       0,
-	       "luserstaff");
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_LUSERUNKNOWN,
-	       0,
-	       "luserunknown");
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_LUSERCHANNELS,
-	       0,
-	       0,
-	       "luserchannels");
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_LUSERME,
-	       "luserme");
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_LOCALUSERS,
-	       "localusers");
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_GLOBALUSERS,
-	       "globalusers");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_LUSERCLIENT,
+		 "Stuff..");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_LUSEROP,
+		 0,
+		 "luserop");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_LUSERSTAFF,
+		 0,
+		 "luserstaff");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_LUSERUNKNOWN,
+		 0,
+		 "luserunknown");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_LUSERCHANNELS,
+		 0,
+		 0,
+		 "luserchannels");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_LUSERME,
+		 "luserme");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_LOCALUSERS,
+		 "localusers");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_GLOBALUSERS,
+		 "globalusers");
 }
 
 
@@ -232,19 +232,19 @@ void Protocol::sendMOTD(const Kine::User& user,
 			const bool justConnected)
 {
    // Send the MOTD header
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_MOTDSTART,
-	       "start motd");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_MOTDSTART,
+		 "start motd");
 
    // Send this line
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_MOTD,
-	       "- This is MOTD data");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_MOTD,
+		 "- This is MOTD data");
    
    // Send the MOTD footer
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_ENDOFMOTD,
-	       "end motd");
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_ENDOFMOTD,
+		 "end motd");
 }
 
 
@@ -254,11 +254,11 @@ void Protocol::sendMOTD(const Kine::User& user,
 void Protocol::sendVERSION(const Kine::User& user)
 {
    // Send the RPL_VERSION reply
-   sendNumeric(config().getOptionsServerName(), user.getNickname(),
-	       Numerics::RPL_VERSION,
-	       config().getOptionsServerName(),
-	       Version::version,
-	       Version::versionChars);
+   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
+		 Numerics::RPL_VERSION,
+		 config().getOptionsServerName(),
+		 Version::version,
+		 Version::versionChars);
    
    // Also send the RPL_ISUPPORT stuff
    sendISUPPORT(user);
