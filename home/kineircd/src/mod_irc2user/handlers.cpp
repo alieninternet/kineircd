@@ -50,6 +50,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleADMIN)
    }
    
    // Look up the server?
+   const std::string& serverName = parameters[0];
+   
+   // We didn't find the server..
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
+	       serverName,
+	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
 
 
@@ -240,6 +246,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
    }
    
    // Look up the server?
+   const std::string& serverName = parameters[0];
+   
+   // We didn't find the server..
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
+	       serverName,
+	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
 
 
@@ -256,6 +268,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
    }
    
    // Look up the server?
+   const std::string& serverName = parameters[0];
+   
+   // We didn't find the server..
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
+	       serverName,
+	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
 
 
@@ -307,6 +325,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSUMMON)
    }
    
    // Look up the server?
+   const std::string& serverName = parameters[1];
+   
+   // We didn't find the server..
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
+	       serverName,
+	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
 
 
@@ -323,6 +347,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
    }
    
    // Look up the server?
+   const std::string& serverName = parameters[0];
+   
+   // We didn't find the server..
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
+	       serverName,
+	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
 
 
@@ -338,6 +368,12 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERS)
    }
    
    // Look up the server?
+   const std::string& serverName = parameters[0];
+   
+   // We didn't find the server..
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
+	       serverName,
+	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
 
 
@@ -354,4 +390,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
    }
    
    // Look up the server?
+   const std::string& serverName = parameters[0];
+   
+   // We didn't find the server..
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
+	       serverName,
+	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
