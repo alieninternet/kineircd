@@ -79,7 +79,7 @@ namespace Kine {
 
       // Send a ping with some unpredictable data
       void sendPing(void);
-      
+
       // Appropriately parse a line of protocol
       void parseLine(const AISutil::String& line);
 

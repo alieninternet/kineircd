@@ -156,6 +156,32 @@ void Registrar::parseLine(const String& line)
 	 break;
       }
    }
+   
+   /* That command could have been the completion of registration.. The first
+    * sign of that being true would be the registration type would have been
+    * set. Let's check that to see what we need to do next..
+    */
+   switch (registrationType) {
+    case RegistrationType::NONE:
+      // There is nothing to do - registration has not been completed yet.
+      return;
+      
+    case RegistrationType::CLIENT:
+      connection.goodbye();
+      return;
+      
+    case RegistrationType::IIRCN:
+      connection.goodbye();
+      return;
+      
+    case RegistrationType::SERVER:
+      connection.goodbye();
+      return;
+      
+    case RegistrationType::SERVICE:
+      connection.goodbye();
+      return;
+   }
 }
 
 
@@ -228,7 +254,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
    // Check the linkstamp, it must be greater than 0..
    if (registrantData.linkStamp <= 0) {
 #ifdef KINE_DEBUG_PSYCHO
-      debug("Registrar::parseIIRCN() - linkStamp <= 0");
+      debug("Registrar::parseIIRCN() - timestamp <= 0");
 #endif
       connection.goodbye();
       return;
