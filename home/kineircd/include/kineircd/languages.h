@@ -282,7 +282,7 @@ namespace Kine {
 	{
 	   std::wstring output;
 	   output.reserve(str.length());
-	   std::copy(str.begin(), str.end(), output.begin());
+	   (void)std::copy(str.begin(), str.end(), output.begin());
 	   return output;
 	};
       
