@@ -29,7 +29,6 @@
 #include <cctype>
 
 #include "kineircd/server.h"
-#include "kineircd/registry.h"
 #include "kineircd/config.h"
 #include "lib/debug.h"
 
@@ -119,9 +118,8 @@ const Error::error_type Server::addUser(User& user)
 # warning "ICK!"
 #endif
    // For now, fob this off to the registry - ick ick ICK ICK.
-   return registry().addUser(user);
-/*   
+//   return registry().addUser(user);
+
    // All is well!
    return Error::NO_ERROR;
- */
 }

@@ -188,7 +188,7 @@ void Protocol::doLUSERS(const User& user)
    sendNumeric(user, Numerics::RPL_GLOBALUSERS,
 	       GETLANG(irc2_RPL_GLOBALUSERS,
 		       Languages::toWideStr(String::convert(myNetwork().getUserCount())),
-		       Languages::toWideStr(String::convert(myNetwork().getUserCount().getPeak))));
+		       Languages::toWideStr(String::convert(myNetwork().getUserCount().getPeak()))));
 }
 
 
