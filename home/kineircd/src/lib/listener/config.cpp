@@ -126,7 +126,8 @@ bool ListenerConfig::setupSocket(Socket& socket, String& errString, int port)
    if (!varAddress.empty()) {
       if (!socket.setLocalAddress(varAddress)) {
 	 // Delete the socket and complain
-	 errString = "Invalid socket address '" + varAddress + '\'';
+	 errString = "Invalid socket address '" + varAddress + "': " +
+	   socket.getErrorMessage();
 	 delete &socket;
 	 return false;
       }
@@ -136,7 +137,8 @@ bool ListenerConfig::setupSocket(Socket& socket, String& errString, int port)
    if (port != 0) {
       if (!socket.setLocalPort(port)) {
 	 // Delete the socket and complain
-	 errString = "Invalid port number '" + varPort + '\'';
+	 errString = "Invalid port number '" + varPort + "': " +
+	   socket.getErrorMessage();
 	 delete &socket;
 	 return false;
       }
@@ -145,8 +147,8 @@ bool ListenerConfig::setupSocket(Socket& socket, String& errString, int port)
    // Bind
    if (!socket.bind()) {
       // Delete the socket and complain
-      errString = "Unable to bind on '" + socket.getLocalAddressStr() + '\'';
-cout << " ****** port = " << strerror(errno) << endl;
+      errString = "Unable to bind on '" + socket.getLocalAddressStr() + "': " +
+	socket.getErrorMessage();
       delete &socket;
       return false;
    }
