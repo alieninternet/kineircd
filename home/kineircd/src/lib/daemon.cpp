@@ -131,7 +131,7 @@ void Daemon::initInstance(void)
 #endif
    
    // Also create our server thingy
-   MyServer::initInstance();
+   Internal::MyServer::initInstance();
 }
 
 

@@ -28,34 +28,36 @@
 # include "kineircd/config.h"
 
 namespace Kine {
-   class MyServer : public Server {
-    private:
-      // Our instance
-      static MyServer* instance;
-      
-      // Constructor
-      MyServer(void);
-
-    public:
-      // Destructor
-      ~MyServer(void)
-	{};
-
-      // Create the single instance of this class
-      static void initInstance(void);
-      
-      // Return our instance
-      static MyServer& getInstance(void)
-	{ return *instance; };
-      
-      // Return the server's description
-      const std::string& getDescription(void) const
-	{ return config().getServerDescription(); };
-      
-      // Return the server we're connected to (technically, that's us)
-      Server& getServer(void) const
-	{ return const_cast<MyServer&>(*this); };
-   }; // class MyServer
+   namespace Internal {
+      class MyServer : public Server {
+       private:
+	 // Our instance
+	 static MyServer* instance;
+	 
+	 // Constructor
+	 MyServer(void);
+	 
+       public:
+	 // Destructor
+	 ~MyServer(void)
+	   {};
+	 
+	 // Create the single instance of this class
+	 static void initInstance(void);
+	 
+	 // Return our instance
+	 static MyServer& getInstance(void)
+	   { return *instance; };
+	 
+	 // Return the server's description
+	 const std::string& getDescription(void) const
+	   { return config().getServerDescription(); };
+	 
+	 // Return the server we're connected to (technically, that's us)
+	 Server& getServer(void) const
+	   { return const_cast<MyServer&>(*this); };
+      }; // class MyServer
+   }; // namespace Internal
 }; // namespace Kine
    
 #endif // _SRC_LIBKINEIRCD_MYSERVER_H_

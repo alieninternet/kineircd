@@ -30,7 +30,7 @@
 #include "lib/myserver.h"
 #include "lib/debug.h"
 
-using namespace Kine;
+using namespace Kine::Internal;
 
 
 // Our instance...
