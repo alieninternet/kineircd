@@ -146,9 +146,6 @@ namespace Version {
 #ifdef HAVE_OPENSSL
 				"S"
 #endif
-#ifdef CONVERT_MOTD_TABS
-				"t"
-#endif
 #ifdef HAVE_CMD_TRACEROUTE
 				"T"
 #endif

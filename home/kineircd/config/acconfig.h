@@ -335,15 +335,6 @@
 # undef WARN_UNKNOWN_COMMANDS_IN_REGISTRATION
 
   
-/* Define this if you want our configuration parser to convert TAB characters
- * in your MOTD into several spaces to simulate a TAB. This is a kluge, really,
- * to work around clients that for some rediculous reason do not understand
- * what the TAB character is supposed to do. Hopefully one day this will not
- * be necessary!
- */
-# undef CONVERT_MOTD_TABS
-
-
 /* Define this if you want to allow IRC operators to use the WALLOPS command.
  * Usually it's ok to allow this, but some networks do not like this very much
  * as it is often abused. Many clients/scripts turn +w on automatically like

@@ -624,27 +624,6 @@ AC_ARG_ENABLE(command-die,[
    AC_DEFINE(ALLOW_COMMAND_DIE)
  ])
 
-AC_MSG_CHECKING([convert-motd-tabs parameter])
-AC_ARG_ENABLE(convert-motd-tabs,[
-  --enable-convert-motd-tabs                 (Default is enabled)
-    When this is enabled, TAB characters in your MOTD file will be converted
-    to a series of spaces upon loading into memory to 'simulate' a TAB. Some
-    text editors use tabs to shrink the size of large spaces (jed for example)
-    and this can effect some IRC clients (especially GUI clients) which do
-    not translate the TAB character properly resulting in a messy looking
-    MOTD. Disabling this will only effect the MOTD loading process.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(CONVERT_MOTD_TABS)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(CONVERT_MOTD_TABS)
- ])
-
 AC_MSG_CHECKING([default-config-file parameter])
 AC_ARG_ENABLE(default-config-file,[
   --enable-default-config-file=file          (Default is "ircd.conf")
