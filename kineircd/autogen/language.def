@@ -1044,8 +1044,8 @@ tag = {
    fields	= "0 = totalram, 1 = freeram, 2 = totalswap, 3 = freeswap, "
                   "4 = sharedram, 5 = bufferedram";
    components	= "libkineircd_irc2";
-   data_en	= "Free RAM: %p1MiB / %p0MiB; Free swap: %p3MiB/%p2MiB); "
-                  "Shared RAM: %p4MiB; Buffered RAM: %p5MiB";
+   data_en	= "Free RAM: %p1 MiB / %p0 MiB; Free swap: %p3 MiB/%p2MiB); "
+                  "Shared RAM: %p4 MiB; Buffered RAM: %p5 MiB";
 };
 
 tag = {
