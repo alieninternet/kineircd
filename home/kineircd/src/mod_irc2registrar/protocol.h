@@ -38,7 +38,7 @@ namespace Kine {
    namespace mod_irc2registrar {
       class Protocol : public LibIRC2::Protocol {
        private:
-	 Listener& listener;			// The listener who invoked us
+	 const Listener& listener;		// The listener who invoked us
 	 
 	 Registrant registrantData;		// Collected registrant info
 	 
@@ -114,7 +114,7 @@ namespace Kine {
 	 
        public:
 	 // Constructor
-	 Protocol(Connection& c, Listener& l)
+	 Protocol(Connection& c, const Listener& l)
 	   : LibIRC2::Protocol(c),
 	     listener(l),
 	     registrationType(RegistrationType::NONE),

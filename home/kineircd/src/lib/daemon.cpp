@@ -162,9 +162,18 @@ void Daemon::newConnection(Listener& listener)
       maxDescriptors = newSocket->getFD() + 1;
    }
    
-   // Add the socket to the connections list
+   // Find a registrar (This should be configurable per listener, SIMON??)
+   ProtocolInfo* protocolInfo = findProtocol(ProtocolInfo::Type::PRIMARY,
+					     "IRC/2");
+   
+   // Create this new connection
    Connection* newConnection = new Connection(*newSocket);
-//   newConnection->setProtocol(*(new Registrar(*newConnection, listener)));
+
+   // Create a new instance of the primary protocol for this connection
+   newConnection->setProtocol(*protocolInfo->createProtocol(*newConnection,
+							    listener));
+
+   // Add the socket to the connections list
    connections.push_front(newConnection);
 }
 

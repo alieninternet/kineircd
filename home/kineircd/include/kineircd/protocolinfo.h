@@ -110,7 +110,7 @@ namespace Kine {
        * a new connection.
        */
       virtual Protocol* const createProtocol(Connection& connection,
-					     Listener& listener)
+					     const Listener& listener)
 	{ return 0; };
       
       /* This function returns a brand new (inherited) protocol class which
