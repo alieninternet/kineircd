@@ -744,7 +744,9 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
    handler->username = tokens->nextToken();
    handler->modes = tokens->nextToken();
    (void)tokens->nextToken(); // We ignore this one, we will get our own host
-   handler->realname = tokens->nextColonToken().substr(0, MAXLEN_REALNAME);
+   handler->realname = 
+     tokens->nextColonToken().substr(0, 
+				     Daemon::getConfig().getOptionsLimitsUsersMaxRealNameLength());
 
 # ifdef DEBUG_EXTENDED
    // Output what we got for debugging purposes

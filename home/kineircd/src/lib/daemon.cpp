@@ -44,12 +44,6 @@
 namespace Daemon {
    Config *config = 0;
    
-   unsigned short confMaxAcceptsPerUser = DEFAULT_MAX_ACCEPTS_PER_USER;
-   unsigned short confMaxBansPerChannel = DEFAULT_MAX_BANS_PER_CHANNEL;
-   unsigned char confMaxLangsPerUser = DEFAULT_MAX_LANGS_PER_USER;
-   unsigned short confMaxSilencesPerUser = DEFAULT_MAX_SILENCES_PER_USER;
-   unsigned short confMaxWatchesPerUser = DEFAULT_MAX_WATCHES_PER_USER;
-   
    Daemon::relationmask_list_t failNicknames;
    Daemon::relationmask_list_t failChannels;
    
@@ -73,8 +67,6 @@ namespace Daemon {
    unsigned long dataRate = 0;
    
    Daemon::stages stage = Daemon::STAGE_INIT;
-   
-   String networkName;
    
    struct timeval currentTime;
    String timeZone = "+0000"; // Assume GMT to start with..
@@ -462,30 +454,30 @@ String Daemon::makeISUPPORT(void)
 //			 " USERIP"				// (7chrs)
 			 " LANGUAGE=%u,%s"			// (12chrs)
 			 " KNOCK"				// (6chrs)
-			 " WATCH=%u"				// (~10chrs)
-			 " SILENCE=%u"				// (~11chrs)
-			 " ACCEPT=%u"				// (~12chrs)
+			 " WATCH=%lu"				// (~10chrs)
+			 " SILENCE=%lu"				// (~11chrs)
+			 " ACCEPT=%lu"				// (~12chrs)
 			 " CHANTYPES=%s"			// (~15chrs)
-			 " MAXCHANNELS=%d" 			// (~16chrs)
-			 " MAXBANS=%u"				// (~11chrs)
+			 " MAXCHANNELS=%lu" 			// (~16chrs)
+			 " MAXBANS=%lu"				// (~11chrs)
 			 " CHARSET=rfc1459" 			// (16chrs)
 			 " MODES=%u"				// (~9chrs)
 			 " PREFIX=%s",				// (~20chrs)
 			 	// (=~226chrs + tag)
-			 MAXLEN_NICKNAME,
-			 MAXLEN_TOPIC,
-			 MAXLEN_KICK_REASON,
-			 (haveNetworkName() ?
-			  String(" NETWORK=" + getNetworkName()).c_str() :
-			  ""),
-			 confMaxLangsPerUser,
+			 getConfig().getOptionsLimitsChannelsMaxNameLength(),
+			 getConfig().getOptionsLimitsChannelsMaxTopicLength(),
+			 getConfig().getOptionsLimitsMaxKickReasonLength(),
+			 (getConfig().getNetworkName().empty() ? "" :
+			  String(" NETWORK=" + 
+				 getConfig().getNetworkName()).c_str()),
+			 getConfig().getOptionsLimitsUsersMaxLanguages(),
 			 (char const *)Lang::getISUPPORTcodes().c_str(),
-			 confMaxWatchesPerUser,
-			 confMaxSilencesPerUser,
-			 confMaxAcceptsPerUser,
+			 getConfig().getOptionsLimitsUsersMaxWatches(),
+			 getConfig().getOptionsLimitsUsersMaxSilences(),
+			 getConfig().getOptionsLimitsUsersMaxAccepts(),
 			 CHANNEL_TYPES,
-			 MAX_CHANNELS_PER_USER,
-			 confMaxBansPerChannel,
+			 getConfig().getOptionsLimitsUsersMaxChannels(),
+			 getConfig().getOptionsLimitsChannelsMaxBans(),
 			 MAX_MODES_PER_COMMAND,
 			 Channel::prefixStr);
 }
@@ -1337,7 +1329,8 @@ void Daemon::kickChannelMember(Channel *c, User *kicker, User *kickee,
 			       String const &reason)
 {
    // Trim this if we need to
-   String newReason = reason.substr(0, MAXLEN_KICK_REASON);
+   String newReason = 
+     reason.substr(0, getConfig().getOptionsLimitsMaxKickReasonLength());
    
    // Broadcast the kick to anyone locally connected
    for (Channel::member_map_t::iterator it = c->members.begin();
@@ -1366,7 +1359,8 @@ void Daemon::changeChannelTopic(Channel *c, User *from, String const &topic)
 #endif
 
    // Trim this if we need to
-   String newTopic = topic.substr(0, MAXLEN_TOPIC);
+   String newTopic = 
+     topic.substr(0, getConfig().getOptionsLimitsChannelsMaxTopicLength());
    
    // Check if this topic is already set (dumb to reset it)
    if (newTopic == c->topic) {
@@ -1399,7 +1393,8 @@ void Daemon::changeChannelTopic(Channel *c, Server *from,
 #endif
 
    // Trim this if we need to
-   String newTopic = topic.substr(0, MAXLEN_TOPIC);
+   String newTopic = 
+     topic.substr(0, getConfig().getOptionsLimitsChannelsMaxTopicLength());
    
    // Set the new topic stuff
    c->topic = newTopic;

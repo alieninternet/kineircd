@@ -438,21 +438,21 @@ namespace Config {
 	{
 	   "MAXBANS",
 	     (void *)&Config::defOptionsLimitsChannelsMaxBans,
-	     &varHandleUnsignedIntNoZero,
+	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
 	{
 	   "MAXBANEXCEPTIONS",
 	     (void *)&Config::defOptionsLimitsChannelsMaxBanExceptions,
-	     &varHandleUnsignedIntNoZero,
+	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
 	{
 	   "MAXINVITEEXCEPTIONS",
 	     (void *)&Config::defOptionsLimitsChannelsMaxInviteExceptions,
-	     &varHandleUnsignedIntNoZero,
+	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
@@ -484,14 +484,14 @@ namespace Config {
 	{
 	   "MAXACCEPTS",
 	     (void *)&Config::defOptionsLimitsUsersMaxAccepts,
-	     &varHandleUnsignedIntNoZero,
+	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
 	{
 	   "MAXCHANNELS",
 	     (void *)&Config::defOptionsLimitsUsersMaxChannels,
-	     &varHandleUnsignedIntNoZero,
+	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
@@ -519,14 +519,14 @@ namespace Config {
 	{
 	   "MAXSILENCES",
 	     (void *)&Config::defOptionsLimitsUsersMaxSilences,
-	     &varHandleUnsignedIntNoZero,
+	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
 	{
 	   "MAXWATCHES",
 	     (void *)&Config::defOptionsLimitsUsersMaxWatches,
-	     &varHandleUnsignedIntNoZero,
+	     &varHandleUnsignedLongNoZero,
 	     0,
 	     0
 	},
@@ -648,9 +648,19 @@ CONFIG_VARIABLE_HANDLER(Config::varHandleNetworkName)
    assert(dataVariable != 0);
 #endif
 
+   // Check if the first value is empty
+   if (values.front().empty()) {
+      // Clear it (turn it off)
+      dataClass.*((String ConfigData::*)dataVariable) = "";
+      return true;
+   }
+   
    const char *name = values.front().c_str();
    
    for (; *name != '\0'; name++) {
+      /* Check the network name - basically only look for nasties which will
+       * break the ISUPPORT numeric for IRC2 clients *sigh*
+       */
       if ((*name == ',') ||
 	  (*name == '=') ||
 	  isspace(*name) ||
@@ -660,7 +670,7 @@ CONFIG_VARIABLE_HANDLER(Config::varHandleNetworkName)
 	    errString = String("Unfriendly character found ('") + *name + 
 	      "\')";
 	 } else {
-	    errString = String("Unfriendly character found (#") +
+	    errString = "Unfriendly character found (#" +
 	      String::convert((int)*name) + ')';
 	 }
 	 return false;

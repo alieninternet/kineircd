@@ -47,11 +47,6 @@
 # define DEFAULT_CONFIG_WHOWAS_DECAY		3600 /* 10 minutes */
 # define DEFAULT_CONFIG_WHOWAS_MAX_ENTRIES	50
 # define DEFAULT_CONFIG_MOTD_FILE		"@MOTD_FILE@"
-# define DEFAULT_MAX_ACCEPTS_PER_USER		100
-# define DEFAULT_MAX_BANS_PER_CHANNEL		50
-# define DEFAULT_MAX_LANGS_PER_USER		6
-# define DEFAULT_MAX_SILENCES_PER_USER		20
-# define DEFAULT_MAX_WATCHES_PER_USER		128
 
 /* Stuff that should be in the Config class. */
 # define MAX_WHO_LIST_LINES			20 /* opers are not constricted by this. */
@@ -60,16 +55,9 @@
 /* Stuff that COULD/SHOULD be in the config file, but can break things.
  * (maybe some of these could be for tuning sub-classes in the config file)
  */
-# define MAXLEN_NICKNAME	15
-# define MAXLEN_CHANNELNAME	40
-# define MAXLEN_REALNAME	50
 # define MAXLEN_SERVERNAME	63	/* from RFC */
 # define MAXLEN_SERVERDESC	80
-# define MAXLEN_TOPIC		300	/* Keep these under 350 */
-# define MAXLEN_KICK_REASON	300
 # define MAXLEN_LANGCODE	10	// Keep small..
-# define MINLEN_OP_BROADCAST	15
-# define MAX_CHANNELS_PER_USER	10
 # define MIN_INVITE_TIMEOUT	30	/* 30 second min timeout */
 # define MAX_GARBO_DELAY_TIME	30	/* max delay per garbo run */
 # define MAX_GARBO_RUN_ITEMS	100	/* number of garbo items before breaking garbo run - this is 'low' */

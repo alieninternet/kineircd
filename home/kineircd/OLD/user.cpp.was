@@ -168,7 +168,8 @@ bool User::isSilencing(User *target)
 bool User::okName(String const &nick)
 {
    // Check that the nickname is within limits
-   if (nick.length() > MAXLEN_NICKNAME) {
+   if (nick.length() > 
+       Daemon::getConfig().getOptionsLimitsUsersMaxNickNameLength()) {
       return false;
    }
 

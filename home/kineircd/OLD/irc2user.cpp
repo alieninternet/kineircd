@@ -2076,7 +2076,8 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
       }
 	    
       // Make sure joining this channel does not go over our limit
-      if (handler->user->channels.size() >= MAX_CHANNELS_PER_USER) {
+      if (handler->user->channels.size() >= 
+	  Daemon::getConfig().getOptionsLimitsUsersMaxChannels()) {
 	 handler->sendNumeric(Numerics::ERR_TOOMANYCHANNELS,
 			      chan + " :" +
 			      handler->lang(LangTags::L_ERR_TOOMANYCHANNELS));
@@ -2543,12 +2544,13 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
       lang = lang.toLower().substr(0, MAXLEN_LANGCODE);
       
       // Check if we have taken too many languages
-      if (++langCount > DEFAULT_MAX_LANGS_PER_USER) {
+      if (++langCount > 
+	  Daemon::getConfig().getOptionsLimitsUsersMaxLanguages()) {
 	 // Complain!
 	 handler->
 	   sendNumeric(Numerics::ERR_NOMORELANGS,
-		       String::convert(DEFAULT_MAX_LANGS_PER_USER) + " :" +
-		       handler->lang(LangTags::L_ERR_NOMORELANGS));
+		       String::convert(Daemon::getConfig().getOptionsLimitsUsersMaxLanguages()) + 
+		       " :" + handler->lang(LangTags::L_ERR_NOMORELANGS));
 	 break;
       }
 
@@ -3744,7 +3746,7 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
 	      
 	      // Check if their silence list is too big
 	      if (handler->user->silences.size() > 
-		  DEFAULT_MAX_SILENCES_PER_USER) {
+		  Daemon::getConfig().getOptionsLimitsUsersMaxSilences()) {
 		 handler->
 		   sendNumeric(Numerics::ERR_SILELISTFULL,
 			       param + " :" +
@@ -4326,14 +4328,14 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	      
 	      // Make sure the watch list is not too long
 	      if (handler->user->local->watches.size() > 
-		  DEFAULT_MAX_WATCHES_PER_USER) {
+		  Daemon::getConfig().getOptionsLimitsUsersMaxWatches()) {
 		 // Complain
 		 handler->
 		   sendNumeric(Numerics::ERR_TOOMANYWATCH,
 			       param + " :" +
 			       handler->lang(LangTags::B_ERR_TOOMANYWATCH) +
 			       ' ' + 
-			       String::convert(DEFAULT_MAX_WATCHES_PER_USER) +
+			       String::convert(Daemon::getConfig().getOptionsLimitsUsersMaxWatches()) +
 			       ' ' + 
 			       handler->lang(LangTags::E_ERR_TOOMANYWATCH));
 		 

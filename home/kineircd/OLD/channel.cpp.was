@@ -166,7 +166,8 @@ ChannelMember *Channel::getMember(User *u)
 bool Channel::okName(String const &channel)
 {
    // Check that the nickname is within limits
-   if (channel.length() > MAXLEN_CHANNELNAME) {
+   if (channel.length() > 
+       Daemon::getConfig().getOptionsLimitsChannelsMaxNameLength()) {
       return false;
    }
 

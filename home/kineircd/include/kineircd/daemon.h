@@ -121,12 +121,6 @@ class Daemon {
  private:
    static Config *config;			// Configuration
    
-   static unsigned short confMaxAcceptsPerUser;	// Max accepts per user
-   static unsigned short confMaxBansPerChannel;	// Max +b/+e/+I per channel
-   static unsigned char confMaxLangsPerUser;	// Max languages per user
-   static unsigned short confMaxSilencesPerUser;// Max silences per user
-   static unsigned short confMaxWatchesPerUser;	// Max watches per user
-   
    static relationmask_list_t failNicknames;	// Invalid nicks
    static relationmask_list_t failChannels;	// Invalid channels
 
@@ -152,8 +146,6 @@ class Daemon {
 
    static stages stage;				// What stage are we running at
 
-   static String networkName;			// Name of 'network'
-   
    static struct timeval currentTime;		// Current time
    static String timeZone;			// Local timezone string (TOSI)
    static String timeFlags;			// TOSI flags
@@ -219,57 +211,31 @@ class Daemon {
 
    // Get the configuration class
    static const Config &getConfig(void)
-     {
-	return *config;
-     };
-   
-   // Do we have a network name?
-   static bool haveNetworkName(void)
-     {
-	return (networkName.length() > 0);
-     };
-   
-   // Return the name of the network this server is configured for
-   static String getNetworkName(void)
-     {
-	return networkName;
-     };
+     { return *config; };
    
    // Get the current time (simple time_t)
    static time_t getTime(void)
-     {
-	return (time_t)currentTime.tv_sec;
-     };
+     { return (time_t)currentTime.tv_sec; };
    
    // Get the current time (timeval style)
    static long getTimeUsecs(void)
-     {
-	return currentTime.tv_usec;
-     };
+     { return currentTime.tv_usec; };
    
    // Get the local timezone
    static String getTimeZone(void)
-     {
-	return timeZone;
-     };
+     { return timeZone; };
 
    // Get time on server flags
    static String getTimeFlags(void)
-     {
-	return timeFlags;
-     };
+     { return timeFlags; };
    
    // Get the server start time
    static time_t getStartTime(void)
-     {
-	return startTime;
-     };
+     { return startTime; };
 
    // Return our server record
    static Server *myServer(void)
-     {
-	return server;
-     };
+     { return server; };
    
    static void rehash(Handler *, User *);	// Rehash the server
    static void restart(Handler *, User *);	// Restart the server
@@ -282,9 +248,7 @@ class Daemon {
 				String const &);// Broadcast a wallops message
    static void broadcastWallops(User *, String const &);
    static void broadcastWallops(String const &message) 
-     {
-	broadcastWallops(server, message);
-     };
+     { broadcastWallops(server, message); };
    
    static void addInputFD(int);			// Add an input fd
    static void delInputFD(int);			// Delete an input fd
@@ -353,21 +317,15 @@ class Daemon {
    
    // Check if a channel is bad
    static String failedChannel(String const &channel)
-     {
-	return onRelationMaskList(&failChannels, channel.IRCtoLower());
-     };
+     { return onRelationMaskList(&failChannels, channel.IRCtoLower()); };
      
    // Check if a nickname is bad
    static String failedNickname(String const &nickname)
-     {
-	return onRelationMaskList(&failNicknames, nickname.IRCtoLower());
-     };
+     { return onRelationMaskList(&failNicknames, nickname.IRCtoLower()); };
    
    // Check for channel redirects
    static String redirectedChannel(String const &channel)
-     {
-	return onRelationMaskList(&redirectChannels, channel.IRCtoLower());
-     };
+     { return onRelationMaskList(&redirectChannels, channel.IRCtoLower()); };
 
    // Little macro to get to the logger, in a neat way
    static void logger(const String &s, Logger::mask_type m)
@@ -378,7 +336,7 @@ class Daemon {
 
    friend class Handler;
    friend class Connection;
-   friend class statsFunctions;
+   friend class statsFunctions; // in remotes.cpp
 };
 
 #endif
