@@ -42,6 +42,7 @@ using namespace Kine::LibIRC2;
  */
 Protocol::Protocol(Kine::Connection& c, std::string& iq, std::string& oq)
   : Kine::Protocol(c),
+    lineTerminator("\r\n"),
     inputQueue(iq)
 {
    // Push the old output queue onto the new one..

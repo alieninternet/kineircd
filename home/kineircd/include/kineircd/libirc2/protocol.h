@@ -40,6 +40,7 @@ namespace Kine {
       class Protocol : public Kine::Protocol {
        public:
 	 typedef unsigned int messageSize_type;
+	 const char* lineTerminator;
 	 
        protected:
 	 // The type of a 'parameter list'
@@ -64,7 +65,8 @@ namespace Kine {
        protected:
 	 // Constructor
 	 Protocol(Kine::Connection& c)
-	   : Kine::Protocol(c)
+	   : Kine::Protocol(c),
+	     lineTerminator("\r\n")
 	   {};
 
 	 // Constructor (for migrating I/O queues)
@@ -92,7 +94,7 @@ namespace Kine {
 	   {
 	      std::ostringstream output;
 	      output << ':' << origin << ' ' << command << ' ' <<
-		destination << "\r\n";
+		destination << lineTerminator;
 	      outputQueue.push(output.str());
 	   };
 	 template <class To, class Td, class Tc, class Tp>
@@ -101,7 +103,7 @@ namespace Kine {
 	   {
 	      std::ostringstream output;
 	      output << ':' << origin << ' ' << command << ' ' <<
-		destination << ' ' << parameters << "\r\n";
+		destination << ' ' << parameters << lineTerminator;
 	      outputQueue.push(output.str());
 	   };
 	 
@@ -110,14 +112,14 @@ namespace Kine {
 	   void sendMessage(const Tc& command)
 	   {
 	      std::ostringstream output;
-	      output << command << "\r\n";
+	      output << command << lineTerminator;
 	      outputQueue.push(output.str());
 	   };
 	 template <class Tc, class Tp>
 	   void sendMessage(const Tc& command, const Tp& parameters)
 	   {
 	      std::ostringstream output;
-	      output << command << ' ' << parameters << "\r\n";
+	      output << command << ' ' << parameters << lineTerminator;
 	      outputQueue.push(output.str());
 	   };
 
