@@ -52,22 +52,34 @@ using AIS::Util::StringTokens;
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_ADMIN
 /* handleADMIN
  * Original 27/08/2001 simonb
- * Note: Incomplete
+ * Note: Needs to be turned into a template for all the requests
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleADMIN)
 {
+   Server* server = 0;
+   
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
-      doADMIN(user);
+      server = &myServer();
+   } else {
+      // Look up the server
+      server = LibIRC2::Utility::findServerTarget(localiseStr(parameters[0]));
+   }
+   
+   // If we found a server, send the request to that server
+   if (server != 0) {
+      const Error::error_type requestError = server->requestAdminInfo(user);
+      if (requestError != Error::NO_ERROR) {
+	 sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
+		     delocaliseStr(server->getName()),
+		     GETLANG(irc2_ERR_UNKNOWNERROR));
+      }
       return;
    }
    
-   // Look up the server?
-   const std::string& serverName = parameters[0];
-   
-   // We didn't find the server..
+   // If we got here, we didn't find the server..
    sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
-	       serverName,
+	       parameters[0],
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
 #endif
@@ -736,22 +748,28 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 {
    // Make the user quit (we can't help but ignore the error values)
    if (parameters.empty()) {
+# ifdef KINE_DEBUG_ASSERT
+      assert(user.quit() == Error::NO_ERROR);
+# else
       (void)user.quit();
+# endif
       if (true) {
 	 /* Say goodbye to the client. RFC1459 makes us send an ERROR, despite
 	  * it being somewhat of a misnomer!
-	  */
-	 sendError(GETLANG(irc2user_ERROR_CLOSING_LINK_QUIT,
+	  */	
+         sendError(GETLANG(irc2user_ERROR_CLOSING_LINK_QUIT,
 			   user.getNickname(),
 			   user.getUsername(),
 			   user.getHostname()));
       }
    } else {
+# ifdef KINE_DEBUG_ASSERT
+      assert(user.quit(localiseStr(parameters[0])) == Error::NO_ERROR);
+# else
       (void)user.quit(localiseStr(parameters[0]));
+# endif
       if (true) {
-	 /* Say goodbye to the client. RFC1459 makes us send an ERROR, despite
-	  * it being somewhat of a misnomer!
-	  */
+	 // Likewise with above, however including the reason the user gave
 	 sendError(GETLANG(irc2user_ERROR_CLOSING_LINK_QUIT_WITH_REASON,
 			   user.getNickname(),
 			   user.getUsername(),
