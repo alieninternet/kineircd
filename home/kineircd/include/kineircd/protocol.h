@@ -25,6 +25,7 @@
 # define _INCLUDE_KINEIRCD_PROTOCOL_H_ 1
 
 # include <iostream>
+# include <string>
 
 # include "kineircd/connection.h"
 
@@ -38,7 +39,7 @@ namespace Kine {
       // Constructor
       Protocol(Connection& c)
 	: connection(c)
-	  {};
+        {};
       
       // Destructor
       virtual ~Protocol(void)
@@ -46,6 +47,12 @@ namespace Kine {
       
       // Handle incoming data
       virtual void handleInput(std::stringstream& data) = 0;
+      
+      // Remove up to the amount of octets given from the output queue
+      virtual std::string withdrawOutput(unsigned int amount) = 0;
+      
+      // Return true should there be anything in the output queue to send
+      virtual bool moreOutput(void) const = 0;
    };
 };
    

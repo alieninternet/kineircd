@@ -23,6 +23,8 @@
 
 #include "config.h"
 
+#include <sstream>
+
 #include "registrar.h"
 #include "regnumerics.h"
 #include "debug.h"
@@ -52,22 +54,27 @@ const Registrar::commandTable_type Registrar::commandTable[] = {
  */
 void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric)
 {
+   std::ostringstream output;
+   
    /* Output the server name and the numeric (note, we do not pre-pad the
     * numeric because all registration numerics are over 100 anyway!
     */
-   std::cout <<
+   output <<
      ':' << connection.getDaemon().getConfig().getOptionsServerName() <<
      ' ' << (int)numeric;
    
    // Determine the appropriate nickname.
    if (nickname.empty()) {
-      std::cout << " *";
+      output << " *";
    } else {
-      std::cout << ' ' << nickname;
+      output << ' ' << nickname;
    }
 
    // Terminate the line according to RFC1459
-   std::cout << "\r\n";
+   output << "\r\n";
+   
+   // Throw the line onto the output queue
+   outputQueue.push(output.str());
 }
 
 
@@ -77,22 +84,27 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric)
 void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
 			    const char* data)
 {
+   std::ostringstream output;
+   
    /* Output the server name and the numeric (note, we do not pre-pad the
     * numeric because all registration numerics are over 100 anyway!
     */
-   std::cout <<
+   output <<
      ':' << connection.getDaemon().getConfig().getOptionsServerName() <<
      ' ' << (int)numeric;
    
    // Determine the appropriate nickname.
    if (nickname.empty()) {
-      std::cout << " * ";
+      output << " * ";
    } else {
-      std::cout << ' ' << nickname << ' ';
+      output << ' ' << nickname << ' ';
    }
 
    // Output the payload and terminate the line
-   std::cout << data << "\r\n";
+   output << data << "\r\n";
+   
+   // Throw the line onto the output queue
+   outputQueue.push(output.str());
 }
 
 
@@ -527,13 +539,30 @@ void Registrar::handleInput(std::stringstream& data)
 }
 
 
-/* Registrar - Constructor for the registration mini-protocol class
- * Original 12/08/2001 simonb
+/* withdrawOutput - Remove up to the amount given of octets from the queue
+ * Original 28/09/2002 simonb
+ * Note: This could be more efficient :(
  */
-Registrar::Registrar(Connection& c, Listener& l)
-  : Protocol(c),
-    listener(l),
-    registrationType(RegistrationType::NONE),
-    pongsLeft(0)
+std::string Registrar::withdrawOutput(unsigned int amount)
 {
+   std::string output;
+   
+   /* Append as much data as we can to the output without breaking the amount
+    * limit we were given
+    */
+   while (outputQueue.front().size() <= amount) {
+      output += outputQueue.front();
+      amount -= outputQueue.front().size();
+      outputQueue.pop();
+   }
+   
+   // Is there anything left we might also be able to send?
+   if (amount > 0) {
+      amount--;
+      output += outputQueue.front().substr(0, amount);
+      outputQueue.front().erase(0, amount);
+   }
+   
+   // Return the output
+   return output;
 }

@@ -100,7 +100,12 @@ namespace Kine {
       
     public:
       // Constructor
-      Registrar(Connection& c, Listener& l);
+      Registrar(Connection& c, Listener& l)
+	: Protocol(c),
+          listener(l),
+          registrationType(RegistrationType::NONE),
+          pongsLeft(0)
+	{};
       
       // Destructor
       ~Registrar(void)
@@ -108,6 +113,13 @@ namespace Kine {
       
       // Handle incoming data
       void handleInput(std::stringstream& data);
+      
+      // Remove up to the amount of octets given from the output queue
+      std::string withdrawOutput(unsigned int amount);
+      
+      // Return true should there be anything in the output queue to send
+      bool moreOutput(void) const
+	{ return (!outputQueue.empty()); };
    };
 };
    
