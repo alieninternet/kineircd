@@ -4,103 +4,103 @@
             -------------------------------------------------------
 
 
-    Warning! This server is DEVELOPMENT software, that means: Anything
-    that can go wrong, WILL go wrong. You run this software at YOUR OWN
-    RISK (or peril, whichever sounds worse :). If something goes wrong
-    then it's your own fault! Yes, even if your cat catches on fire.
+    Warning! This server is DEVELOPMENT software, that means this software
+    is most likely not of the quality you may want it to be. You may run
+    this software AT YOUR OWN RISK.
 
 
- 1. What is all this about?
-    -----------------------
+
+ 1. What is AustHex? What does it do? What's so special about it?
+    -------------------------------------------------------------
     
-    Don't ask me, I just work here.
+    AustHex is an IRC (Internet Relay Chat) Daemon used to link thousands of
+    people so they can chat to each other.
     
-    Oh, you want a real answer? Well, maybe one day I'll write this file
-    up properly :) Until then, shhh.
-
-
-
- 2. For those who just can't be bothered
-    ------------------------------------
- 
-    Ok, so you're too lazy to read this file? Here's how you can get around
-    any serious thinking to make and install this package. Lucky for you,
-    this will be easy for you :)
+    Unlike other IRC daemons, AustHex is NOT based on the original IRC daemon
+    written over a decade ago. It has been rewritten from scratch with
+    considerable planning in the hope that many of the scalability issues
+    the original IRC daemons suffered from can be avoided, as well as allowing
+    as much future-proofing as possible.
     
-    If you want to make and install the package, after untarring the package
-    simply type:
+    AustHex also has the ability to save people "reinventing the wheel". Many
+    networks run servers which serve special purposes, such as channel and
+    nickname retention services, and open-proxy testers. In the event that a
+    new server-to-server protocol becomes available, the developer would have
+    to rewrite that protocol again. The developer could simply migrate his/her
+    software to become a "service module" for AustHex, and never have to 
+    worry about the protocols again, or the internal workings of an IRC
+    server.
+    
+    AustHex also allows for "protocol modules". If a new protocol is written
+    (a user, server or service protocol), or an existing protocol is updated,
+    the server administrator can simply load the new module without having to
+    restart the IRC server. This avoids unnecessary disconnections and gives
+    a much more professional look to your service.
+
+    AustHex has a goal to remain portable (taking advantage of some special
+    features some systems have), however at this stage a win32 version is not
+    planned.
 
 
-       $ make install
 
-
-    Lucky for you, this will automatically invoke the configuration
-    script, compile, and install the package in the default location.
-    
-    If you wish to just make the package, omit the 'install' parameter.
-    
-    
-    
- 3. Package requirements
+ 1. Package requirements
     --------------------
     
     The following requirements need to be forfilled for this package to work
     correctly:
 
-     - Disk space:
-     
-       Compilation of the package will normally take up around 5Mb (more
-       if compiled for debugging). The package will take up about 1.5Mb
-       after installation.
-
-
-     - C++ Standard Template Library:
+     - C++ Compiler with Standard Template Library (STL)
       
-       You will need a current copy of the C++ STL. All C++ compilers will
-       have this these days. Location of the latest STL is below. The latest
-       standard template library from SGI includes capabilities which will
-       enhance the performance of the daemon immensely, especially under high
-       load.
+       You will need a current C++ compiler with a comliant Standard Template
+       Library. All C++ compilers come with a compliant STL these days,
+       however some are more efficient than others. Silicon Graphics (SGI)
+       have a version of the STL which includes capabilities AustHex will
+       take advantage of which will dramatically enhance the performance
+       of the daemon, most noticeably in medium to heavy load.
        
+       Note that the GCC compiler suite comes with the SGI STL, but replaces
+       the string handling functions with a more efficient version. GCC users
+       are advised not to change their installation!
        
-     - Threading library (optional):
-       
-       More information later, probably looks like pthreads only though?
-       Without threading, some additional features may be unavailable.
+       The SGI STL can be found at http://www.sgi.com/tech/stl/download.html
 
+
+     - System support for shared objects/libraries (optional):
+      
+       If you wish to compile AustHex with module support, you will need
+       support on your system for shared libraries. Many systems support
+       this these days, so this shouldn't be an issue.
+       
 
      - OpenSSL (optional):
 
-       If you wish to use SSL for connections between servers, or even
-       from clients, then you will need OpenSSL. 
+       If you wish to use SSL for connections between servers, users or
+       services, then you will need OpenSSL. AustHex also takes advantage 
+       of the OpenSSL library by using some of its functions (which in many
+       cases can be quite superiour in speed) even if you do not compile
+       SSL support into the daemon.
+       
+       SSL support on IRC networks is rapidly becoming a sought after
+       feature.
+       
+       OpenSSL can be found at http://www.openssl.org/
 
      
      - NET-SNMP (optional): 
      
        If you wish to add SNMP capability to the daemon (eg. for 
-       statistical analysis) then you will need to install the NET-SNMP 
-       package. The daemon can be set up to work as an agent on its own,
-       or combine with another agent using the AgentX protocol (such as 
-       the agent that comes in the NET-SNMP package).
+       statistical analysis) then you will need to install the NET-SNMP
+       package. The daemon can be set up to work as an agent on its own, or 
+       combine with another agent using the AgentX protocol (such as the
+       agent that comes in the NET-SNMP package).
+       
+       Note that AustHex's SNMP development is currently stagnant due to
+       stability problems within the NET-SNMP AgentX code.
+       
+       NET-SNMP can be found at http://net-snmp.sourceforge.net/
        
        
-       
- 4. Recommended additions
-    ---------------------
-    
-    The following items are recommended
-
-     - OpenSSL:
-       
-       Adding SSL to the server will allow encrypted secure server to server
-       and server to client connections which can be enforced for different
-       connection classes or access levels. This can greatly secure your
-       server and protect important passwords which may be transmitted over
-       the network
-    
-    
-    
- 5. Configuration of the package
+ 2. Configuration of the package
     ----------------------------
     
     The configuration of the server's compilation time settings can be
@@ -110,23 +110,12 @@
     
     
     
- 6. Building of the package
-    -----------------------
+ 3. Building the package
+    --------------------
     
- 7. Installation of the package
-    ---------------------------
+ 4. Installation
+    ------------
     
- 8. Configuration of the server
+ 5. Configuration of the server
     ---------------------------
        
- A. Additional package download information
-    ---------------------------------------
-    
-    SGI's C++ Standard Template Library:
-       http://www.sgi.com/tech/stl
-       
-    OpenSSL
-       http://www.openssl.org/
-
-    NET-SNMP
-       http://net-snmp.sourceforge.net/
