@@ -389,11 +389,11 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	 }
 	 
 	 // If the user is an IRC operator, tell the world about it
-	 if (false /* u->isSet(something) */) {
+	 if (u->isGlobalOperator()) {
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISOPERATOR,
 			u->getNickname(),
 			GETLANG(irc2_RPL_WHOISOPERATOR));
-	 } else if (false /* u->isSet(local) */) {
+	 } else if (u->isLocalOperator()) {
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISOPERATOR,
 			u->getNickname(),
 			GETLANG(irc2_RPL_WHOISOPERATOR_LOCAL));
@@ -402,14 +402,14 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	 /* If this user is a network staff member (i.e. network services),
 	  * then we should also add this to the list
 	  */
-	 if (user.isStaff()) {
+	 if (u->isStaff()) {
 	    /* Try to locate an appropriate tag ID which describes this user's
 	     * job..
 	     */
 	    std::string text;
 	    Languages::tagID_type tagID;
 	    if ((tagID = languages().getTagID(WHOISSTAFF_TAG_PREFIX +
-					      user.getStaffStatus())) !=
+					      u->getStaffStatus())) !=
 		Languages::unknownTagID) {
 	       /* Output the data at the tag we found (and hope there is data
 		* for the user's selected language(s)!!)
