@@ -1953,6 +1953,13 @@ tag = {
  *****************************************************************************/
 
 tag = {
+   name		= "Kine_Error_CHANNEL_NAME_NONSTANDARD_PREFIX";
+   components	= "libkineircd";
+   data_en	= "The channel name given has a non-standard or invalid "
+                  "prefix character";
+};
+
+tag = {
    name		= "Kine_Error_CHANNEL_NAME_PREFIX_UNKNOWN";
    components	= "libkineircd";
    data_en	= "The channel name given has an unknown/non-standard prefix "

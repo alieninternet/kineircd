@@ -24,6 +24,11 @@ autogen definitions errors;
 
 
 errors = {
+   name		= "CHANNEL_NAME_NONSTANDARD_PREFIX";
+   reason	= "Channel name has a non-standard prefix";
+};
+
+errors = {
    name		= "CHANNEL_NAME_PREFIX_UNKNOWN";
    reason	= "Channel name has an unknown prefix";
 };
