@@ -30,14 +30,35 @@
 # include <kineircd/errors.h>
 
 namespace Kine {
-   //! A service (refinement of a client)
+   /*!
+    * \brief A service
+    * 
+    * A service is a special type of Client, designed for trusted, automated
+    * clients. Unlike ordinary \e bots or \e drones, which normally connect
+    * to the network as a User, services are allowed on the network by the
+    * network's administrators specifically.
+    * 
+    * Being automated, services only ever accept commands, or \e queries. They
+    * then reply to the requesting Client, normally with a \e notice (using 
+    * Kine::Client::sendNotice()) to avoid endless loop problems.
+    * 
+    * Services might connect using a restricted Protocol, similar to that used
+    * for User connections, but in %Kine it is common for the service to be
+    * provided by a loaded Module.
+    */
    class Service : public Client {
     private: 
       const ClientName nickname;		//!< Service's nickname
       const AIS::Util::StringMask scopeMask;	//!< Service server scope mask
       
     protected:
-      //! Constructor
+      /*!
+       * \brief Constructor
+       * 
+       * \param _nickname The service's \a nickname
+       * \param _hostname The host the service is connected from
+       * \param _signonTime The time the service connected to the network
+       */
       explicit Service(const ClientName& _nickname,
 		       const std::string& _hostname,
 		       const AIS::Util::Time& _signonTime)
@@ -71,9 +92,16 @@ namespace Kine {
 	{ return 0; /* replace this! */ };
       
       
-      //! Send a query to this service from a client
+      /*!
+       * \brief Send a query to this service from a client
+       *
+       * This is similar to Kine::Receiver::sendMessage(), except only
+       * clients can send queries to services.
+       * 
+       * \copydoc Kine::Receiver::sendMessage()
+       */
       virtual const Error::error_type
-	sendQuery(Client& from,
+	sendQuery(Client& sender,
 		  const std::string& message,
 		  const Receiver::Directivity directivity =
 		  Receiver::Directivity())

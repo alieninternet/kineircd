@@ -64,20 +64,28 @@ namespace Kine {
        * 
        * This returns the hostname that the denizen is connected from, which
        * may be resolved by \e DNS or some other means, but could also be a
-       * raw network address. If the hostname is a network address,
-       * represented as a human-readable string, then the address is dependant
-       * on the network protocol being used.
+       * raw network address.
+       *
+       * If the hostname is a network address, represented as a human-readable
+       * string, then the address is dependant on the network protocol being
+       * used:
+       *
+       *  - \e IPv4 addresses will look like <em>123.4.567.89</em>, or
+       *    <em>::ffff:123.4.567.89</em>, depending on the socket type used.
+       *    The latter form is an \e IPv4 connection to an \e IPv6 socket.
        * 
-       * \e IPv4 addresses will look like <em>123.4.567.89</em>, or
-       * <em>::ffff:123.4.567.89</em>, depending on the socket type used. The
-       * latter form is an \e IPv4 connection to an \e IPv6 socket.
+       *  - \e IPv6 addresses will look something like
+       *    <em>3ffe:124::4c01:53a1</em>, although it's more probable for
+       *    something longer, such as
+       *    <em>2001:470:1f00:193:1091:20:f3d9:ba8f</em>.
        * 
-       * \e IPv6 addresses will look something like
-       * <em>3ffe:124::4c01:53a1</em>, although it's more probable for
-       * something longer, such as
-       * <em>2001:470:1f00:193:1091:20:f3d9:ba8f</em>.
+       *  - \e IPX addresses will look like <em>00ABC123:004F4C91BA6C</em>.
        * 
-       * \e IPX addresses will look like <em>00ABC123:004F4C91BA6C</em>.
+       *  - \e UNIX or \e local socket addresses, which look like
+       *    <em>/tmp/ircd</em>, will in fact not be used. Instead, users
+       *    connected by a \e UNIX/local socket will have a hostname which
+       *    reflects either the machine the server is running on, and/or the
+       *    server's hostname (as returned by Kine::MyServer::getHostname()).
        * 
        * Addresses resolved from \e DNS will look something like
        * <em>some.hostname.foo.com</em>.

@@ -31,7 +31,7 @@ namespace Kine {
    class User;
    
    /*!
-    * \brief A generic <em>network entity</em>
+    * \brief A generic \e entity
     * 
     * This is a generic representation of an object which might exist on an
     * IRC network. Everything including users, servers, channels, etc, are

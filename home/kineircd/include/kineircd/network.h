@@ -38,7 +38,8 @@ namespace Kine {
       /*!
        * \brief Constructor
        * 
-       * \copydoc Kine::Denizen::Denizen()
+       * \param _signonTime The time the Network connected. For more
+       *    information, see Kine::Entity::signonTime.
        */
       explicit Network(const AIS::Util::Time& _signonTime)
 	: Entity(_signonTime)

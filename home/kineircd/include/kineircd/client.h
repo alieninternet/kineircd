@@ -36,23 +36,47 @@
 namespace Kine {
    class Channel;
    
-   //! An abstract class defining a client, since there are a few types
+   /*!
+    * \brief A client
+    *
+    * An abstract class defining a client. A client is a single Entity
+    * which normally connects to a server, but is not a server itself, since
+    * it cannot provide any additional entities other than itself.
+    *
+    * Clients may be real people, or automated programs (\e bots). In
+    * practise, though, the real people (\e users) outweigh the automated
+    * clients vastly. Automated clients which are considered trusted and/or
+    * have a specific purpose on the network are usually \e services.
+    *
+    * Clients have the ability to interact strongly with other entities, since
+    * they can query information from servers, become members of channels,
+    * and, of course, they have the ability to both send and receive messages
+    * (compare this to a Server or a Channel).
+    */
    class Client : public Denizen, public Sender, public Receiver {
     private:
       std::string hostname;			//!< Client's hostname
-      char attentionGlyph;			//!< Listen prefix while deaf
+
+      static const wchar_t notDeafGlyph = 0;	//!< Glyph for not being deaf
+      wchar_t attentionGlyph;			//!< Listen prefix while deaf
 
       // The channel list for this client
       typedef std::map < std::string, Channel* const > channels_type;
       channels_type channels;
       
     protected:
-      //! Constructor
+      /*!
+       * \brief Constructor
+       *
+       * \param _hostname The hostname the client is connected from
+       * \param _signonTime The time the client connected to the network. For
+       *    more information, see Kine::Entity::signonTime
+       */
       explicit Client(const std::string& _hostname,
 		      const AIS::Util::Time& _signonTime)
 	: Entity(_signonTime),
           hostname(_hostname),
-          attentionGlyph('\0')
+          attentionGlyph(notDeafGlyph)
 	{};
 
       //! An event called when someone (maybe us) has joined a channel
@@ -106,12 +130,12 @@ namespace Kine {
 
       
       //! Return the attention character used whilst being deaf
-      const char getAttentionGlyph(void) const
+      const wchar_t getAttentionGlyph(void) const
 	{ return attentionGlyph; };
       
       //! Are we 'deaf' to normal (un-prefixed) channel messages?
-      const char hasSelectiveHearing(void) const
-	{ return (attentionGlyph != '\0'); };
+      const bool hasSelectiveHearing(void) const
+	{ return (attentionGlyph != notDeafGlyph); };
       
       
       //! Make a user@host string
