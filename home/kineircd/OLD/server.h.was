@@ -64,8 +64,8 @@ class Server {
    static modes_t const MODE_USERSFULL		= 0x0000000000000040; // +F
 
    // Server mode stuff
-   static const char *modeStr;			// Chars of modes
-   static const char *modeParamStr;		// Chars of modes with params
+   static char const *modeStr;			// Chars of modes
+   static char const *modeParamStr;		// Chars of modes with params
 
    // Constructors
    Server(void)

@@ -112,8 +112,8 @@ class User {
    static modes_t const MODE_IGNORING		= 0x0000000000080000; // +g
    
    // User mode stuff
-   static const char *modeStr;
-   static const char *modeParamStr;
+   static char const *modeStr;
+   static char const *modeParamStr;
 
    // Constructor
    User(String const &nick, String const &user, String ip, String host, 
@@ -213,6 +213,16 @@ class User {
    Server *getServer(void) const		// Get the server we are on
      {
 	return server;
+     };
+   
+   bool const isLocal(void) const		// Are we a local user?
+     {
+	return local;
+     };
+   
+   LocalUser *getLocalInfo(void) const		// Get LocalUser info (maybe)
+     {
+	return local;
      };
    
    void markAway(String const &);		// Set/Unset away message

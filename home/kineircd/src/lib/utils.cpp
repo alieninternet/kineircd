@@ -17,7 +17,7 @@
 #define MAXBASE 84
 String Utils::baseXStr(unsigned long n, unsigned short base)
 {
-   const char baseChrs[MAXBASE + 1] =
+   char const baseChrs[MAXBASE + 1] =
      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" // 62
      "!?$#%&*+/-~[(<])>|';=";
    
@@ -76,13 +76,13 @@ StringMask Utils::fixToIdentityMask(String const &inMask)
    // Make the fixed mask
    StringMask retval(String::printf("%s!%s@%s",
 				    (nick.length() ?
-				     (const char *)nick :
+				     (char const *)nick :
 				     "*"),
 				    (user.length() ?
-				     (const char *)user :
+				     (char const *)user :
 				     "*"),
 				    (host.length() ?
-				     (const char *)host :
+				     (char const *)host :
 				     "*")));
 
    return retval;

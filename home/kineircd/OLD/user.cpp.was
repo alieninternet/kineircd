@@ -8,6 +8,7 @@
 
 #include "daemon.h"
 #include "user.h"
+#include "localuser.h"
 #include "channel.h"
 #include "numerics.h"
 #include "language.h"
@@ -532,3 +533,48 @@ String User::makeVWorld(String const &hostname)
 {
    return String("vw1234.") + hostname;
 }
+
+
+/* addInvitation - Invite us to a channel!
+ * Original 19/10/01, Simon Butcher <pickle@austnet.org>
+ */
+void LocalUser::addInvitation(Channel *channel, User *inviter, time_t expiry)
+{
+   // Only add it if it is not already there
+   if (!invitedTo(channel)) {
+      invitations[channel->getName()] =
+	new LocalUserInvitation(inviter->getNickname(), expiry);
+   }
+}
+
+
+/* invitedTo - Check if we are invited to a specific channel
+ * Original 19/10/01, Simon Butcher <pickle@austnet.org>
+ */
+bool LocalUser::invitedTo(Channel *channel)
+{
+   // Look up the invitation
+   LocalUserInvitation *invite = invitations[channel->getName()];
+   
+   // Check that we got it
+   if (invite) {
+      // Check the timeout
+      if (!invite->getTimeout() ||
+	  (invite->getTimeout() >
+	   handler->getConnection()->getDaemon()->getTime())) {
+	 // Yes, we are invited to this channel
+	 return true;
+      } else {
+	 // The record has timed out! Delete it and return false
+	 invitations.erase(channel->getName());
+	 delete invite;
+	 
+	 return false;
+      }
+   }
+   
+   // If we got here we did not get it, and we have to delete what we just made
+   invitations.erase(channel->getName());
+   
+   return false;
+};

@@ -14,8 +14,34 @@
 class LocalUser;
 
 # include "user.h"
+# include "channel.h"
 # include "handler.h"
 # include "str.h"
+
+
+// An 'invitation' (for channel invites)
+class LocalUserInvitation {
+ private:
+   String const inviter;			// Sender of the invitation
+   int const timeout;				// Seconds this is valid or -1
+
+ public:
+   LocalUserInvitation(String const &i, long t)
+     : inviter(i),
+       timeout(t)
+     {};
+   
+   // Variable access
+   String const &getInviter(void) const
+     {
+	return inviter;
+     };
+   
+   long const getTimeout(void) const
+     {
+	return timeout;
+     };
+};
 
 
 // Locally connected user class
@@ -26,6 +52,8 @@ class LocalUser {
 # else
    typedef set <String> watch_set_t;
 # endif
+   // The invitations list should never get long enough to warrant hashing
+   typedef map <String, LocalUserInvitation *> invitation_map_t;
 
  public:
    User *user;					// Link into main user class
@@ -34,7 +62,8 @@ class LocalUser {
    snotice_bitmask_t serverNotices;		// Server notices to receive
    
    watch_set_t watches;				// Watching these nicknames
- 
+   invitation_map_t invitations;		// Invitations to channels
+   
  public:
    // Constructor
    LocalUser(User *u, Handler *h)
@@ -43,12 +72,14 @@ class LocalUser {
        serverNotices(0)
      {
 	watches.clear();
+	invitations.clear();
      };
    
    // Destructor
    ~LocalUser(void)
      {
 	watches.clear();
+	invitations.clear();
      };
 
    // Add to the watch list
@@ -74,6 +105,18 @@ class LocalUser {
      {
 	return ((watches.find(target) != watches.end()) ? true : false);
      };
+
+   
+   void addInvitation(Channel *, User *, 
+		      time_t);			// Invite us to a channel
+   
+   // Delete a channel invitation
+   void delInvitation(Channel *channel)
+     {
+	invitations.erase(channel->getName());
+     };
+
+   bool invitedTo(Channel *);			// Check an invitation
 };
 
 #endif

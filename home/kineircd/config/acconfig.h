@@ -233,6 +233,7 @@
 # define MAX_MODES_PER_COMMAND		6
 # define MAX_SILENCES_PER_USER		20
 # define MAX_WATCHES_PER_USER		128
+# define MIN_INVITE_TIMEOUT		30	// 30 second min timeout
 
 
 /* Number of descriptors off the max to stop incoming user connections */

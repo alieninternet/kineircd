@@ -84,10 +84,13 @@ struct irc2userHandler::functionTableStruct const
 	  "regarding the server you are locally connected to."
      }, 
      { "INVITE",	parseINVITE,		3,	0,
-	  "<nickname>  <channel>",
+	  "[ <nickname>  <channel>  [ <timeout> ]",
 	  "Invite the person under the given nickname to the specified "
-	  "channel. For this to work, you must currently be on the given "
-	  "channel and be of either 'Operator' or 'Half-Operator' status."
+	  "channel. You must be on the given channel for this to work. If "
+	  "the channel is invite-only, you must also currently be either "
+	  "an 'Operator' or 'Half-Operator' on that channel. If a timeout "
+	  "value is given, it is the number of seconds the invitation is "
+	  "valid for."
      }, 
      { "ISON",		parseISON,		2,	0,
 	  "<nickname> ( SPACE <nickname> )",
@@ -725,6 +728,21 @@ void irc2userHandler::sendGoodbye(String const &reason) const
 			    (reason.length() ?
 			     (char const *)reason :
 			     LNG_ERROR_CLOSING_LINK_DEFAULT_REASON)));
+}
+
+
+/* sendInvite - Send an invitation to a channel
+ * Original 19/10/01, Simon Butcher <pickle@austnet.org>
+ */
+void irc2userHandler::sendInvite(User *user, Channel *channel, User *from,
+				 time_t expiry) const
+{
+   getConnection()->
+     sendRaw(String::printf(":%s INVITE %s %s %lu" IRC2USER_EOL_CHARS,
+			    (char const *)from->getAddress(user),
+			    (char const *)user->getNickname(),
+			    (char const *)channel->getName(),
+			    expiry));
 }
 
 
@@ -1505,22 +1523,44 @@ void irc2userHandler::parseHELP(irc2userHandler *handler, StringTokens *tokens)
    }
 
    // Send the end of help numeric
+   if (extended) {
 #ifdef DO_MATCH_COUNTING
-   handler->sendNumeric(RPL_ENDOFHELP,
-			((matches > 0) ?
-			 ((matches == 1) ?
-			  String::printf(LNG_RPL_ENDOFHELP,
-					 (char const *)maskStr) :
-			  String::printf(LNG_RPL_ENDOFHELP_MATCHES,
-					 (char const *)maskStr,
-					 matches)) :
-			 String::printf(LNG_RPL_ENDOFHELP_NOMATCH,
-					(char const *)maskStr)));
+      handler->sendNumeric(RPL_ENDOFHELP,
+			   ((matches > 0) ?
+			    ((matches == 1) ?
+			     String::printf(LNG_RPL_ENDOFHELP,
+					    (char const *)maskStr) :
+			     String::printf(LNG_RPL_ENDOFHELP_MATCHES,
+					    (char const *)maskStr,
+					    matches)) :
+			    String::printf(LNG_RPL_ENDOFHELP_NOMATCH,
+					   (char const *)maskStr)));
 #else
-   handler->sendNumeric(RPL_ENDOFHELP,
-			String::printf(LNG_RPL_ENDOFHELP,
-				       (char const *)maskStr));
+      handler->sendNumeric(RPL_ENDOFHELP,
+			   String::printf(LNG_RPL_ENDOFHELP,
+					  (char const *)maskStr));
 #endif
+   } else {
+#ifdef DO_MATCH_COUNTING
+      handler->sendNumeric(RPL_ENDOFHELP,
+			   ((matches > 0) ?
+			    ((matches == 1) ?
+			     String::printf(LNG_RPL_ENDOFHELP_SIMPLE,
+					    (char const *)maskStr,
+					    (char const *)maskStr) :
+			     String::printf(LNG_RPL_ENDOFHELP_SIMPLE_MATCHES,
+					    (char const *)maskStr,
+					    matches,
+					    (char const *)maskStr)) :
+			    String::printf(LNG_RPL_ENDOFHELP_NOMATCH,
+					   (char const *)maskStr)));
+#else
+      handler->sendNumeric(RPL_ENDOFHELP,
+			   String::printf(LNG_RPL_ENDOFHELP_SIMPLE,
+					  (char const *)maskStr,
+					  (char const *)maskStr));
+#endif
+   }
 }
 
 
@@ -1585,11 +1625,97 @@ void irc2userHandler::parseINFO(irc2userHandler *handler, StringTokens *tokens)
 
 
 /* parseINVITE
- * Original , Simon Butcher <pickle@austnet.org>
+ * Original 19/10/01, Simon Butcher <pickle@austnet.org>
  */
 void irc2userHandler::parseINVITE(irc2userHandler *handler, StringTokens *tokens)
 {
-   handler->sendNumeric(999, ":Oops, sorry, havn't coded this yet :(");
+   // Check we have at least two parameters
+   if (tokens->countTokens() < 3) {
+      handler->sendNumeric(ERR_NEEDMOREPARAMS,
+			   "INVITE" LNG_ERR_NEEDMOREPARAMS);
+      return;
+   }
+
+   // Assemble variables
+   String nick = tokens->nextToken();
+   String chan = tokens->nextToken();
+   long timeout = tokens->nextToken().toLong();
+
+   // Work out the invitation expiry time
+   time_t expiry;
+   if (!timeout) {
+      timeout = 0;
+   }
+   
+   // The expiry is the current time plus the timeout length...
+   expiry = (time_t)(TO_DAEMON->getTime() + timeout);
+   
+   // .. But this might be in the past due to an overload, so check
+   if (expiry < (TO_DAEMON->getTime() + MIN_INVITE_TIMEOUT)) {
+      expiry = 0;
+   }
+   
+   // Try to look up the given user
+   User *u = TO_DAEMON->getUser(nick);
+   
+   // Check
+   if (!u) {
+      handler->sendNumeric(ERR_NOSUCHNICK,
+			   nick + LNG_ERR_NOSUCHNICK_NICK);
+      return;
+   }
+   
+   // Look up the channel
+   Channel *c = TO_DAEMON->getChannel(chan);
+   
+   // Check
+   if (!c) {
+      handler->sendNumeric(ERR_NOSUCHCHANNEL,
+			   chan + LNG_ERR_NOSUCHCHANNEL);
+      return;
+   }
+
+   // look up our channel member record
+   ChannelMember *cm = c->getMember(handler->user);
+   
+   // Check
+   if (!cm) {
+      handler->sendNumeric(ERR_NOTONCHANNEL,
+			   chan + LNG_ERR_NOTONCHANNEL);
+      return;
+   }
+   
+   // Make sure the person we are looking for is not already on the channel
+   if (c->getMember(u)) {
+      handler->sendNumeric(ERR_USERONCHANNEL,
+			   String::printf(LNG_ERR_USERONCHANNEL,
+					  (char const *)nick, 
+					  (char const *)chan));
+      return;
+   }
+   
+   // If this channel is invite only, we must be a full op or half op..
+   if (c->isModeSet(Channel::MODE_INVITE) && 
+       !cm->isChanOper()) {
+      handler->sendNumeric(ERR_CHANOPRIVSNEEDED,
+			   chan + LNG_ERR_CHANOPRIVSNEEDED); 
+     return;
+   }
+
+   // Check if this user is local
+   if (u->isLocal()) {
+      // Add the invitation to this user record
+      u->getLocalInfo()->addInvitation(c, handler->user, expiry);
+   }
+   
+   // Do the invitation
+   TO_DAEMON->routeTo(u)->sendInvite(u, c, handler->user, expiry);
+   
+   // Tell the user the invitation is happening
+   handler->sendNumeric(RPL_INVITING,
+			String::printf("%s %s 0",
+				       (char const *)nick,
+				       (char const *)chan));
 }
 
 
@@ -1719,13 +1845,19 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
 	    }
 	 }
 	 
-	 // Check if this channel is set invite only
-	 if (c->modes & Channel::MODE_INVITE) {
-	    // check if this user has an auto-invite mask set
-	    if (!c->onInvite(handler->user)) {
-	       handler->sendNumeric(ERR_INVITEONLYCHAN,
-				    chan + LNG_ERR_INVITEONLYCHAN);
-	       continue;
+	 // Has this user been invited here?
+	 if (handler->user->local->invitedTo(c)) {
+	    // Remove the invitation as it has been accepted
+	    handler->user->local->delInvitation(c);
+	 } else {
+	    // Check if this channel is set invite only
+	    if (c->isModeSet(Channel::MODE_INVITE)) {
+	       // Check this user is not invited or not on the invite list
+	       if (!c->onInvite(handler->user)) {
+		  handler->sendNumeric(ERR_INVITEONLYCHAN,
+				       chan + LNG_ERR_INVITEONLYCHAN);
+		  continue;
+	       }
 	    }
 	 }
 
@@ -1878,7 +2010,6 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       if (!u) {
 	 handler->sendNumeric(ERR_NOSUCHNICK,
 			      target + LNG_ERR_NOSUCHNICK_NICK);
-			      
 	 continue;
       }
 
@@ -3801,20 +3932,20 @@ void irc2userHandler::parseWHOWAS(irc2userHandler *handler, StringTokens *tokens
 	    // Send the entry for this iteration
 	    handler->sendNumeric(RPL_WHOWASUSER,
 				 String::printf("%s %s %s * :%s",
-						(const char *)(*it).getNickname(),
-						(const char *)(*it).getUsername(),
-						(const char *)(*it).getHostname(handler->user),
-						(const char *)(*it).getRealname()));
+						(char const *)(*it).getNickname(),
+						(char const *)(*it).getUsername(),
+						(char const *)(*it).getHostname(handler->user),
+						(char const *)(*it).getRealname()));
 	    handler->sendNumeric(RPL_WHOISSERVER,
 				 String::printf("%s %s :%lu",
-						(const char *)(*it).getNickname(),
-						(const char *)(*it).getServer(handler->user),
+						(char const *)(*it).getNickname(),
+						(char const *)(*it).getServer(handler->user),
 						(*it).getSignoffTime()));
 	    // If this user was away, send their old away message too (sigh)
 	    if ((*it).hasAwayMessage()) {
 	       handler->sendNumeric(RPL_AWAY,
 				    String::printf(":%s",
-						   (const char *)(*it).getAwayMessage()));
+						   (char const *)(*it).getAwayMessage()));
 	    }
 	 }
       }

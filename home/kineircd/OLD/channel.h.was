@@ -226,9 +226,9 @@ class Channel {
    static modes_t const MODE_REGNICKSONLY	= 0x0000000000000400; // +R
 
    // Channel mode stuff
-   static const char *modeStr;			// Chars of modes
-   static const char *modeParamStr;		// Chars of modes with params
-   static const char *prefixStr;		// Modes vs Prefixes (ISUPPORT)
+   static char const *modeStr;			// Chars of modes
+   static char const *modeParamStr;		// Chars of modes with params
+   static char const *prefixStr;		// Modes vs Prefixes (ISUPPORT)
 
    // Constructor
    Channel(String const &n, time_t ct, Daemon *d)
@@ -250,6 +250,22 @@ class Channel {
 
    ~Channel(void);   				// Destructor
 
+   // Variable access
+   String getName(void) const			// Grab the name of the channel
+     {
+	return name;
+     };
+   
+   modes_t getModes(void) const			// Grab the modes
+     {
+	return modes;
+     };
+   
+   bool isModeSet(modes_t mode) const		// Is the given mode set?
+     {
+	return (modes & mode);
+     };
+   
    // Access checking
    bool isHidden(void) const
      {

@@ -58,8 +58,8 @@ class Operator {
 	return Utils::generateSHA1(String::printf("%s" 
 						  MAGIC_OPER_PASSWD_STRING 
 						  "%s",
-						  (const char *)nickname.IRCtoLower(),
-						  (const char *)password));
+						  (char const *)nickname.IRCtoLower(),
+						  (char const *)password));
      };
 };
 

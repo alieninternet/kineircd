@@ -5,8 +5,8 @@
 #ifndef __VERSION_H_
 # define __VERSION_H_
 
-extern const char *getBuild;
-extern const char *getVersion;
-extern const char *getVersionChars;
+extern char const *getBuild;
+extern char const *getVersion;
+extern char const *getVersionChars;
 
 #endif

@@ -445,7 +445,7 @@ bool PlainSocketIO::write(String str)
    // Sanity check...
    if (socket->fd >= 0) {
       // Send the data
-      return (::write(socket->fd, (const char *)str, str.length()) == 
+      return (::write(socket->fd, (char const *)str, str.length()) == 
 	      str.length());
    }
 
@@ -583,7 +583,7 @@ bool SSLSocketIO::write(String str)
    // Sanity check...
    if (socket->fd >= 0) {
       // Send the data
-      return (SSL_write(ssl, (const char *)str, str.length()) == 
+      return (SSL_write(ssl, (char const *)str, str.length()) == 
 	      str.length());
    }
 

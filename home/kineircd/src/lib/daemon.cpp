@@ -1225,7 +1225,7 @@ void Daemon::changeChannelTopic(Channel *c, User *from, String const &topic)
    debug(String::printf("changeChannelTopic() <- %s, %s (%s)",
 			(char const *)c->name,
 			(char const *)from->nickname,
-			(const char *)topic));
+			(char const *)topic));
 #endif
 
    // Trim this if we need to
@@ -1260,7 +1260,7 @@ void Daemon::changeChannelTopic(Channel *c, Server *from,
    debug(String::printf("changeChannelTopic() <- %s, %s (%s)",
 			(char const *)c->name,
 			(char const *)from->hostname,
-			(const char *)topic));
+			(char const *)topic));
 #endif
 
    // Trim this if we need to

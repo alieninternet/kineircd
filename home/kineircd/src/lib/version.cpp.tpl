@@ -7,11 +7,11 @@
 
 
 // Strings
-const char *getBuild = BUILD_STRING;
+char const *getBuild = BUILD_STRING;
 
-const char *getVersion = PROGNAME_STRING VERSION_STRING;
+char const *getVersion = PROGNAME_STRING VERSION_STRING;
 
-const char *getVersionChars = 
+char const *getVersionChars = 
 #ifdef ALLOW_LOCALOP_CONNECT
 				"c"
 #endif

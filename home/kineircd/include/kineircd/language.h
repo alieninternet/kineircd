@@ -109,6 +109,8 @@
 	" :Cannot join channel (+b)"
 # define LNG_ERR_INVITEONLYCHAN \
 	" :Cannot join channel (+i)"
+# define LNG_ERR_USERONCHANNEL \
+   	"%s %s :is already on channel"
 # define LNG_ERR_CHANNELISFULL \
 	" :Cannot join channel (+l)"
 # define LNG_ERR_BADCHANNELKEY \
@@ -189,6 +191,10 @@
 	"%s :End of HELP (no match)"
 # define LNG_RPL_ENDOFHELP_MATCHES \
 	"%s :End of HELP (%d matches)"
+# define LNG_RPL_ENDOFHELP_SIMPLE \
+	"%s :End of HELP; Try 'HELP -%s' for more information"
+# define LNG_RPL_ENDOFHELP_SIMPLE_MATCHES \
+	"%s :End of HELP (%d matches); Try 'HELP -%s' for more information"
 # define LNG_RPL_NOWAWAY \
 	":You have been marked as being away"
 # define LNG_RPL_UNAWAY \
