@@ -40,10 +40,21 @@ using AISutil::String;
 const std::string::size_type User::maxStaffStatusLength = 32;
 
 
+/* changeNickname - Change this user's nickname
+ * Original 16/05/2003 simonb
+ */
+const Error::error_type User::changeNickname(const Entity& changer,
+					     const Name& newNickname)
+{
+   return Error::UNKNOWN_ERROR;
+}
+
+
 /* setAway - Mark the user as being away
  * Original 13/08/2001 simonb
  */
-const Error::error_type User::setAway(const std::string& reason)
+const Error::error_type User::setAway(const Entity& changer,
+				      const std::string& reason)
 {
    // Copy the message across (check it??)
    awayMessage = reason;
@@ -51,7 +62,7 @@ const Error::error_type User::setAway(const std::string& reason)
    // broadcast it.
 
    // Tell ourself about this, if we care
-   doEventAwayToggle();
+   doEventAwayToggle(changer);
 
    return Error::NO_ERROR;
 }
@@ -60,7 +71,7 @@ const Error::error_type User::setAway(const std::string& reason)
 /* setHere - Mark the user as returning from being away
  * Original 13/08/2001 simonb
  */
-const Error::error_type User::setHere(void)
+const Error::error_type User::setHere(const Entity& changer)
 {
    // Clear the away message
    awayMessage.clear();
@@ -68,7 +79,7 @@ const Error::error_type User::setHere(void)
    // broadcast it.
 
    // Tell ourself about this, if we care
-   doEventAwayToggle();
+   doEventAwayToggle(changer);
 
    return Error::NO_ERROR;
 }
@@ -78,7 +89,8 @@ const Error::error_type User::setHere(void)
  * Original 16/04/2003 simonb
  */
 const Error::error_type
-  User::setLanguageList(const Languages::languageDataList_type& languages,
+  User::setLanguageList(const Entity& changer,
+			const Languages::languageDataList_type& languages,
 			const bool secret)
 {
    // Okay, cheap.. We should verify the list here, really..
@@ -88,7 +100,7 @@ const Error::error_type
 
    // Tell ourself, if it's not a secret
    if (!secret) {
-      doEventLanguageChange();
+      doEventLanguageChange(changer);
    }
    
    return Error::NO_ERROR;
@@ -98,7 +110,8 @@ const Error::error_type
 /* changeStaffStatus - Change the staff status
  * Original 29/04/2003 simonb
  */
-const Error::error_type User::changeStaffStatus(const std::string& status)
+const Error::error_type User::changeStaffStatus(const Entity& changer,
+						const std::string& status)
 {
    // Naughty chars we consider a delimeter
    static const char* const naughtyChars =
@@ -118,21 +131,21 @@ const Error::error_type User::changeStaffStatus(const std::string& status)
       // broadcast it.
 
       // Tell ourself..
-      doEventStaffStatusChange();
+      doEventStaffStatusChange(changer);
       
       // No worries
       return Error::NO_ERROR;
    }
    
    // Okay, the status was empty - bounce into 'setStaffOff' then..
-   return setStaffOff();
+   return setStaffOff(changer);
 }
 
 
 /* setStaffOff - Remove the staff status
  * Original 29/04/2003 simonb
  */
-const Error::error_type User::setStaffOff(void)
+const Error::error_type User::setStaffOff(const Entity& changer)
 {
    // Clear the status..
    staffStatus.clear();
@@ -140,7 +153,7 @@ const Error::error_type User::setStaffOff(void)
    // broadcast it..
    
    // Tell ourself....
-   doEventStaffStatusChange();
+   doEventStaffStatusChange(changer);
    
    // Happy chappy..
    return Error::NO_ERROR;
