@@ -32,6 +32,7 @@
 #  include <list>
 # endif
 
+# include <map>
 # include <ctime>
 # include <aisutil/string/string.h>
 
@@ -46,10 +47,12 @@ namespace Kine {
    class Config;
    class Signals;
    class Connection;
+   class ProtocolInfo;
 };
 
 # include <kineircd/exit.h>
 # include <kineircd/listener.h>
+# include <kineircd/protocolname.h>
 
 namespace Kine {
    // The Daemon class
@@ -60,6 +63,8 @@ namespace Kine {
 	 RUNLEVEL_NORMAL,		// Running normally
          RUNLEVEL_SHUTDOWN		// The daemon is shutting down
       };
+      
+      typedef std::map <ProtocolName, ProtocolInfo* const> protocols_type;
       
     private:
       runlevel_type runlevel;			// What stage is the daemon in
@@ -80,6 +85,9 @@ namespace Kine {
       typedef std::list <Connection*> connections_type;
 # endif
       connections_type connections;
+
+      // The protocol list
+      protocols_type protocols;
       
     public: // <=- temporary      
       // For select()
@@ -128,6 +136,12 @@ namespace Kine {
       // Increase the sent bytes count
       void addReceivedBytes(const unsigned int bytes)
 	{ receivedBytes += bytes; };
+
+      // Protocol set manipulators, for the registrar and modules to tap into
+      bool registerProtocol(const ProtocolName& name, ProtocolInfo& info);
+      bool deregisterProtocol(const ProtocolName& name);
+      const protocols_type& getProtocols(void) const
+	{ return protocols; };
       
       // Main loop
       Exit::status_type run(void);
@@ -138,5 +152,6 @@ namespace Kine {
 # include <kineircd/config.h>
 # include <kineircd/signals.h>
 # include <kineircd/connection.h>
+# include <kineircd/protocolinfo.h>
 
 #endif // _INCLUDE_KINEIRCD_DAEMON_H_ 

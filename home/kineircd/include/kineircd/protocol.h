@@ -24,17 +24,17 @@
 #ifndef _INCLUDE_KINEIRCD_PROTOCOL_H_
 # define _INCLUDE_KINEIRCD_PROTOCOL_H_ 1
 
-# include <iostream>
 # include <string>
+# include <sstream>
 # include <aisutil/socket/socket.h>
 
 # include <kineircd/connection.h>
 
-
 namespace Kine {
    class Protocol {
     protected:
-      Connection& connection;			// Back up !
+      // The specific connection running this instance of the protocol
+      Connection& connection;
       
     public:
       // Constructor

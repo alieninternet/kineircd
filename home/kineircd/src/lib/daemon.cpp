@@ -137,6 +137,51 @@ void Daemon::newConnection(Listener& listener)
 }
 
 
+/* registerProtocol - Register a new protocol on the protocol list
+ * Original 02/10/2001 simonb
+ */
+bool Daemon::registerProtocol(const ProtocolName& name, ProtocolInfo& info)
+{
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream output;
+   output << "Daemon::registerProtocol() - Attemping to add protocol '" <<
+     name.name << "' of type " << name.type;
+   debug(output.str());
+#endif
+   
+   // Look for the protocol first - see if it is not already added
+   if (protocols.find(name) != protocols.end()) {
+#ifdef KINE_DEBUG_EXTENDED
+      debug("Daemon::registerProtocol() - Unable to register '" +
+	    String(name.name) + '\'');
+#endif
+      return false;
+   }
+
+   // Okay, add the protocol then
+   (void)protocols.insert(protocols_type::value_type(name, &info));
+   
+   return false;
+}
+
+
+/* deregisterProtocol - Remove a protocol from the protocol list
+ * Original 02/10/2001 simonb
+ * Note: This needs to scan the connections for any which are using this
+ *       protocol too.. Kinda important :)
+ */
+bool Daemon::deregisterProtocol(const ProtocolName& name)
+{
+#ifdef KINE_DEBUG_PSYCHO
+   debug("Daemon::deregisterProtocol() - Attempting to remove protocol '" +
+	 String(name.name) + '\'');
+#endif
+   
+   // Return false for now - we cannot safely deregister :(
+   return false;
+}
+
+
 /* run - The main loop
  * Original 11/08/2001 simonb
  * Note: Unfortuantely not a very nice looking routine.. Much of this code is
