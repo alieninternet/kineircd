@@ -52,10 +52,17 @@
  +]
 
 [+ FOR tags +][+ IF
-   (exist? 
-      (makeDataVariable)) 
+   ;; Make sure there is data for this tag
+   (or
+      (exist? "data")
+      (exist? 
+         (makeDataVariable)))
  +][+tagPrefix+][+name+] = [+
-   (get
-      (makeDataVariable))
+   ;; Grab the right data - some tags may not include language specific stuff
+   (if
+      (exist? "data")
+      (get "data")
+      (get
+         (makeDataVariable)))
  +]
 [+ ENDIF +][+ ENDFOR +][+ (out-pop) +][+ ENDFOR +]
