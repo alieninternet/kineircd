@@ -32,6 +32,7 @@
 
 # include "kineircd/protocol.h"
 # include "kineircd/listener.h"
+# include "kineircd/registrant.h"
 # include "regnumerics.h"
 
 # define KINE_LIB_REGISTRAR_FUNCTION(x) \
@@ -39,14 +40,14 @@
 
 namespace Kine {
    class Registrar : public Protocol {
-      typedef std::vector <std::string> capabilities_type;
-      
     private:
       Listener& listener;			// The listener who invoked us
+
+      Registrant registrantData;		// Collected registrant info
       
-      AISutil::String buffer;			// Our buffer..
+      AISutil::String buffer;			// Our input buffer..
       
-      std::queue <std::string> outputQueue;	// Output data queue
+      std::queue <std::string> outputQueue;	// The output data queue
       
       struct RegistrationType { // <=- Should be namespace?
 	 enum type {
@@ -59,19 +60,6 @@ namespace Kine {
       };
       RegistrationType::type registrationType;	// Type of registration
       
-      AISutil::String password;			// Logon password
-      AISutil::String passwordKludge;		// Extra info sent via PASS
-      AISutil::String nickname;			// Nickname (client/service)
-      AISutil::String username;			// Username (client)
-      AISutil::String hostname;			// Hostname (client/server)
-      AISutil::String realname;			// Realname/Description
-      AISutil::String distribution;		// Distribution range (service)
-      AISutil::String modes;			// Modes for next handler
-      AISutil::String protocol;			// Protocol details
-      capabilities_type capabilities;		// Capabilities
-      long startStamp;				// Received start time-stamp
-      long linkStamp;				// Received link time-stamp
-
       unsigned char pongsLeft;			// Number of pongs left
       std::string pongMatch;			// Pong string to match
       
@@ -112,8 +100,6 @@ namespace Kine {
 	: Protocol(c),
           listener(l),
           registrationType(RegistrationType::NONE),
-          startStamp(-1),
-          linkStamp(-1),
           pongsLeft(/*0*/ 1)
 	{};
       
@@ -131,7 +117,7 @@ namespace Kine {
       bool moreOutput(void) const
 	{ return (!outputQueue.empty()); };
    };
-};
+}; // namespace Kine
    
 #endif // _SRC_LIB_REGISTRAR_H_
    

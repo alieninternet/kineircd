@@ -66,10 +66,10 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric)
      ' ' << (int)numeric;
    
    // Determine the appropriate nickname.
-   if (nickname.empty()) {
+   if (registrantData.nickname.empty()) {
       output << " *";
    } else {
-      output << ' ' << nickname;
+      output << ' ' << registrantData.nickname;
    }
 
    /* Terminate the line according to RFC1459; The colon is to avoid any
@@ -98,10 +98,10 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
      ' ' << (int)numeric;
    
    // Determine the appropriate nickname.
-   if (nickname.empty()) {
+   if (registrantData.nickname.empty()) {
       output << " * ";
    } else {
-      output << ' ' << nickname << ' ';
+      output << ' ' << registrantData.nickname << ' ';
    }
 
    /* Output the payload and terminate the line according to RFC1459; The 
@@ -174,12 +174,12 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseCAPAB)
    }
 
    // Append the capability to the capabilities vector
-   capabilities.push_back(line.rest());
+   registrantData.capabilities.push_back(line.rest());
 
 #ifdef KINE_DEBUG_PSYCHO
    std::ostringstream out;
-   out << " -=>   Capability: " << capabilities.back() << 
-     " (@ " << capabilities.end() << ')';
+   out << " -=>   Capability: " << registrantData.capabilities.back() << 
+     " (@ " << registrantData.capabilities.end() << ')';
    debug(out.str());
 #endif
 }
@@ -258,9 +258,9 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
 //   }
    
    // If we got here, the nick was ok - allow it
-   nickname = nick;
+   registrantData.nickname = nick;
 # ifdef KINE_DEBUG_PSYCHO
-   debug(" -=>         Nick: " + nick);
+   debug(" -=>         Nick: " + registrantData.nickname);
 # endif
    
    // Do we need to send a ping out?
@@ -276,24 +276,24 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
 KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePASS)
 {
    // Have we already got the password?
-   if (!password.empty()) {
+   if (!registrantData.password.empty()) {
       // Drop this connection..
       connection.goodbye();
       return;
    }
    
    // Grab the password from the line (we do not care if it is blank)
-   password = line.nextColonToken();
+   registrantData.password = line.nextColonToken();
    
 #ifdef KINE_DEBUG_PSYCHO
-   debug(" -=>     Password: " + password);
+   debug(" -=>     Password: " + registrantData.password);
 #endif
    
    // Is there anything else on the line we should know about?
    if (line.hasMoreTokens()) {
-      passwordKludge = line.rest();
+      registrantData.passwordKludge = line.rest();
 #ifdef KINE_DEBUG_PSYCHO
-      debug(" -=>  PASS Kludge: " + passwordKludge);
+      debug(" -=>  PASS Kludge: " + registrantData.passwordKludge);
 #endif
    }
 }
@@ -376,9 +376,9 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
    }
 
    // Grab the first required value, the server name..
-   hostname = line.nextToken();
+   registrantData.hostname = line.nextToken();
 #ifdef KINE_DEBUG_PSYCHO
-   debug(" -=>       Server: " + hostname);
+   debug(" -=>       Server: " + registrantData.hostname);
 #endif
    
    // Grab the second required value - hop count
@@ -461,23 +461,23 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
    ///////////////////////////////////////////////////////////////////////
    
    // Ok, that name should be ok
-   username = name;
+   registrantData.username = name;
  
    // Rip out the rest of the variables
    (void)line.nextToken(); // ignored.. (RFC-2812: reserved)
-   distribution = line.nextToken();
+   registrantData.distribution = line.nextToken();
    (void)line.nextToken(); // ignored.. (RFC-2812: type)
    (void)line.nextToken(); // ignored (RFC-2812: reserved)
-   realname = 
+   registrantData.realname = 
      line.nextColonToken().substr(0, 
 				  connection.getDaemon().getConfig().
 				  getOptionsLimitsUsersMaxRealNameLength());
    
 #ifdef KINE_DEBUG_PSYCHO
    // Send what we got to the debugging output
-   debug(" -=>      Service: " + username);
-   debug(" -=> Distribution: " + distribution);
-   debug(" -=>  Description: " + realname);
+   debug(" -=>      Service: " + registrantData.username);
+   debug(" -=> Distribution: " + registrantData.distribution);
+   debug(" -=>  Description: " + registrantData.realname);
 #endif
    
    // Set the registration mode
@@ -511,19 +511,19 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
    }
    
    // Rip the command apart
-   username = line.nextToken();
-   modes = line.nextToken();
-   (void)line.nextToken(); // We ignore this one, we will get our own host
-   realname = 
+   registrantData.username = line.nextToken();
+   registrantData.modes = line.nextToken();
+   registrantData.hostname = line.nextToken();
+   registrantData.realname = 
      line.nextColonToken().substr(0, 
 				  connection.getDaemon().getConfig().
 				  getOptionsLimitsUsersMaxRealNameLength());
 
 #ifdef KINE_DEBUG_PSYCHO
    // Output what we got for debugging purposes
-   debug(" -=>         User: " + username);
-   debug(" -=>        Modes: " + modes);
-   debug(" -=>     Realname: " + realname);
+   debug(" -=>         User: " + registrantData.username);
+   debug(" -=>        Modes: " + registrantData.modes);
+   debug(" -=>     Realname: " + registrantData.realname);
 #endif
    
    // Set the registration mode
