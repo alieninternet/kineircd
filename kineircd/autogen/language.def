@@ -589,6 +589,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFUSERS";
+   components	= "libkineircd_irc2";
    data_en	= "End of USERS";
 };
 
@@ -700,6 +701,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_NOUSERS";
+   components	= "libkineircd_irc2";
    data_en	= "Nobody logged in";
 };
 
@@ -760,6 +762,7 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_USERSSTART";
+   components	= "libkineircd_irc2";
    data_en	= "UserID   Terminal  Host";
 };
 
