@@ -43,12 +43,16 @@ using namespace Kine;
 void ircd::printVersion(const unsigned int level)
 {
    // This bit always gets out.. it's important ;)
-   std::cout << 
-     Version::versionFull << " (" << Version::versionChars << ")\n";
+   std::cout << Version::versionFull << '\n';
 
    // More detail needed?
    if (level > 1) {
       std::cout << "\n"
+	"  Core build time:  " << Version::buildTimeFull << " (Build #" <<
+	Version::buildCount << ")\n"
+	"     Build traits:  " << Version::versionChars << "\n"
+	" Core source hash:  " << Version::sourceCodeHash << "\n"
+	"\n"
 	"Linked to the following libraries:\n"
 	"   KineIRCd Library API version " <<
 	(unsigned int)Version::libVersion << '.' << 
@@ -66,7 +70,7 @@ void ircd::printVersion(const unsigned int level)
 #endif
 	/* terminate the line cout line */ ;
       
-      // Even more detail - flush out the info data
+      // Even more detail - pump out the core's hard-coded INFO command data
       if (level > 2) {
 	 std::cout << 
 	   "\nCore /INFO command data (may contain UTF-8 characters):\n";
