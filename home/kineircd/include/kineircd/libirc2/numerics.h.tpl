@@ -25,8 +25,7 @@
 [+(dne " * ")+]
  */
 
-#ifndef _INCLUDE_KINEIRCD_IRC2_NUMERICS_H_
-# define _INCLUDE_KINEIRCD_IRC2_NUMERICS_H_ 1
+[+(make-header-guard "kine")+]
 
 namespace Kine {
    namespace LibIRC2 {
@@ -58,9 +57,9 @@ namespace Kine {
  +][+ENDIF+][+ENDFOR+]
             _HIGHEST_
          };
-      };
-   };
-};
+      }; // namespace Numerics
+   }; // namespace LibIRC2
+}; // namespace Kine
 
-#endif // _INCLUDE_KINEIRCD_IRC2_NUMERICS_H_
+#endif // [+(. header-guard)+]
 

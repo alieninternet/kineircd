@@ -150,6 +150,10 @@ namespace Kine {
          // Send a list of members on the given channel
 	 void sendNames(const Channel& channel);
 	 
+	 // Handle sending a message (PRIVMSG or NOTICE) to someone
+	 void doMessage(const parameters_type& parameters,
+	                const bool isNotice);
+
 	 // Command handlers[+FOR commands+]
 	 handler_type handle[+command+];[+ENDFOR+]
       }; // class Protocol

@@ -29,11 +29,12 @@
 #include <aisutil/string/mask.h>
 #include <aisutil/string/tokens.h>
 #include <kineircd/config.h>
+#include <kineircd/irc2/utility.h>
 
-#include "kineircd/irc2/protocol.h"
-#include "libkineircd_irc2/lang.h"
+#include "mod_irc2user/protocol.h"
+#include "mod_irc2user/lang.h"
 
-using namespace Kine::LibIRC2;
+using namespace Kine::mod_irc2user;
 using AISutil::String;
 using AISutil::StringMask;
 using AISutil::StringTokens;
@@ -41,35 +42,10 @@ using AISutil::StringTokens;
 
 /* doMessage
  * Original 01/09/2001 simonb
- * Note:
- *   This gets complicated, since there are many forms:
- *    nickname
- *    nickname@server
- *    nickname%hostname
- *    nickname%hostname@server
- *    nickname!username@hostname            <=- odd one out, the @ = hostname
- *    nickname!username%hostname@server
- *    nickname#network
- *    nickname@server#network
- *    nickname%hostname#network
- *    nickname%hostname@server#network
- *    nickname!username@hostname#network    <=- also odd one out..
- *    nickname!username%hostname@server#network
- * 
- *   Channels:
- *    <char>name
- * 
- *   And of course for opers:
- *    #*.tld (user host mask)
- *    $*.tld (server host mask)
- * 
- *   .. Try to stay with me :)
- * 
- *   Can someone one day do optimisation tests and see if it really is worth
- *   keeping PRIVMSG and NOTICE separated?
+ * Note: Can someone one day do optimisation tests and see if it really is
+ *       worth separating PRIVMSG and NOTICE?
  */
-void Protocol::doMessage(const User& user,
-			 const parameters_type& parameters,
+void Protocol::doMessage(const parameters_type& parameters,
 			 const bool isNotice)
 {
    // Make sure the command includes the required number of parameters
@@ -84,7 +60,7 @@ void Protocol::doMessage(const User& user,
       unsigned int targets = config().getLimitsMaxTargets();
       
       // Iterate over the parameters...
-      while (!recipients.hasMoreTokens()) {
+      while (recipients.hasMoreTokens()) {
 	 // Next token
 	 target = recipients.nextToken(',');
 	 
@@ -94,24 +70,30 @@ void Protocol::doMessage(const User& user,
 	    if (!target.empty()) {
 	       // Make sure this is not a mask
 	       if (!/* ?? */false) {
-		  // Okay, check if this is a channel!
-		  if (/* ?? */false) {
-		     // Find the channel..
-		     // something.
-
-		     // If we got here, the channel was not found
+		  // Find something of this name
+		  Receiver* const receiver =
+		    LibIRC2::Utility::findMessageTarget(target);
+		  
+		  // Did we find something?
+		  if (receiver != 0) {
+		     // Check if we can send to this target
+		     
+		     // Okay, send the message finally
+		     
 		     if (!isNotice) {
-			sendNumeric(user, Numerics::ERR_NOSUCHCHANNEL,
-				    target,
-				    GETLANG(irc2_ERR_NOSUCHCHANNEL));
+			Error::error_type error;
+			
+			if ((error = 
+			     receiver->sendMessage(user, parameters[1])) !=
+			    Error::NO_ERROR) {
+			   // something..
+			}
+		     } else {
+			// Send a notice, and we do not care if it worked
+			(void)receiver->sendNotice(user, parameters[1]);
 		     }
 		     continue;
 		  }
-		  
-		  /* Okay, then presume this is a nickname.. This is the bit
-		   * where it gets complicated :)
-		   */
-		  
 	       } else if (user.isOperator()) {
 		  /* Okay, we were given a mask and the caller is an IRC
 		   * operator. We need to make sure the mask is indeed valid
@@ -122,7 +104,7 @@ void Protocol::doMessage(const User& user,
 		     // Make sure there is a top level domain given
 		     if (true) {
 			if (!isNotice) {
-			   sendNumeric(user, Numerics::ERR_NOTOPLEVEL,
+			   sendNumeric(LibIRC2::Numerics::ERR_NOTOPLEVEL,
 				       target,
 				       GETLANG(irc2_ERR_NOTOPLEVEL));
 			}
@@ -132,7 +114,7 @@ void Protocol::doMessage(const User& user,
 		     // Make sure the oper isn't cheating by specifying a top
 		     if (true) {
 			if (!isNotice) {
-			   sendNumeric(user, Numerics::ERR_WILDTOPLEVEL,
+			   sendNumeric(LibIRC2::Numerics::ERR_WILDTOPLEVEL,
 				       target,
 				       GETLANG(irc2_ERR_WILDTOPLEVEL));
 			}
@@ -147,8 +129,8 @@ void Protocol::doMessage(const User& user,
 	    }
 	 } else {
 	    if (!isNotice) {
-	       sendNumeric(user, Numerics::ERR_TOOMANYTARGETS,
-			   GETLANG(irc2_ERR_TOOMANYTARGETS_TARGET_OVERFLOW,
+	       sendNumeric(LibIRC2::Numerics::ERR_TOOMANYTARGETS,
+			   GETLANG(irc2_ERR_TOOMANYTARGETS,
 				   String::convert(config().
 						   getLimitsMaxTargets())));
 	    }
@@ -157,7 +139,7 @@ void Protocol::doMessage(const User& user,
 	 
 	 // If we got here, the target was not found
 	 if (!isNotice) {
-	    sendNumeric(user, Numerics::ERR_NOSUCHNICK,
+	    sendNumeric(LibIRC2::Numerics::ERR_NOSUCHNICK,
 			target,
 			GETLANG(irc2_ERR_NOSUCHNICK_OR_CHANNEL));
 	 }
@@ -172,12 +154,12 @@ void Protocol::doMessage(const User& user,
       // Okay, what was missing that we need to complain about?
       if (parameters.empty()) {
 	 // The recipient was missing, complain about that
-	 sendNumeric(user, Numerics::ERR_NORECIPIENT,
+	 sendNumeric(LibIRC2::Numerics::ERR_NORECIPIENT,
 		     GETLANG(irc2_ERR_NORECIPIENT,
 			     "PRIVMSG"));
       } else {
 	 // Okay, the text was missing, complain about that then
-	 sendNumeric(user, Numerics::ERR_NOTEXTTOSEND,
+	 sendNumeric(LibIRC2::Numerics::ERR_NOTEXTTOSEND,
 		     GETLANG(irc2_ERR_NOTEXTTOSEND));
       }
    }

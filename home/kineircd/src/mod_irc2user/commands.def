@@ -249,6 +249,13 @@ commands = {
 //   minimumParams	= 0;
 //};
 
+commands = {
+   command		= "SQUERY";
+   defaultPenalty	= 4;
+   minimumParams	= 0;
+   changeIdleTime;
+};
+
 //commands = {
 //   command		= "SQUIT";
 //   defaultPenalty	= 1;

@@ -50,6 +50,7 @@ const char* const ISupport::preInitInfo[] = {
    "INVEX",				// Channel invite exception lists
    "EXCEPTS",				// Channel ban exception lists
    "PENALTY",				// Commands have different penalties
+   "RFC2812",				// We have RFC2812 features
    "IIRC",				// KineIRCd supports IIRC connections
    "CHARSET=UTF-8",			// We output using UTF-8 encoding
    "CASEMAPPING=rfc1459",

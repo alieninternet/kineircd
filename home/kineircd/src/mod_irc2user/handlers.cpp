@@ -33,6 +33,7 @@
 #include <algorithm>
 #include <aisutil/string.h>
 #include <kineircd/registry.h>
+#include <kineircd/irc2/utility.h>
 
 #include "mod_irc2user/protocol.h"
 #include "mod_irc2user/lang.h"
@@ -538,7 +539,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleNETWORKS)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleNOTICE)
 {
-   doMessage(user, parameters, true);
+   doMessage(parameters, true);
 }
 #endif
 
@@ -571,7 +572,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handlePRIVMSG)
 {
-   doMessage(user, parameters, false);
+   doMessage(parameters, false);
 }
 #endif
 
@@ -715,6 +716,98 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSERVLIST)
 #endif
   
   
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_SQUERY
+/* handleSQUERY
+ * Original 04/05/2003 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleSQUERY)
+{
+   static const char* const commandName = "SQUERY";
+   
+   // Make sure the command includes the required number of parameters
+   if (parameters.size() >= 2) {
+      // Tokenise the recipient list
+      StringTokens recipients(parameters[0]);
+      
+      // The number of targets left
+      unsigned int targets = config().getLimitsMaxTargets();
+      
+      // Iterate over the parameters...
+      while (recipients.hasMoreTokens()) {
+	 std::string target = recipients.nextToken(',');
+	 
+	 // Make sure this won't be too many targets for this user
+	 if ((--targets > 0) || user.isOperator()) {
+	    // Find something of this name
+	    Receiver* const receiver =
+	      LibIRC2::Utility::findMessageTarget(target);
+	    
+	    // Did we find something?
+	    if (receiver != 0) {
+	       // Try to down-cast this to a service
+	       Service* const service = dynamic_cast<Service* const>(receiver);
+	       
+	       // Is this really a service?
+	       if (service != 0) {
+		  // Pass the query onto the service
+		  Error::error_type error;
+		  if ((error = service->sendQuery(user, parameters[1])) ==
+		      Error::NO_ERROR) {
+		     // All is well, next target
+		     continue;
+		  }
+		  
+		  /* The service didn't accept the message for some reason.
+		   * For now, we don't care what the reason is, other than the
+		   * message was obviously not sent..
+		   */
+		  sendNumeric(LibIRC2::Numerics::ERR_CANNOTSENDTONICK,
+			      service->getName(),
+			      GETLANG(irc2_ERR_CANNOTSENDTONICK_UNRECEPTIVE));
+		  continue;
+	       }
+	       
+	       // If we got here, the target was found but it was not a service
+	       sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVICE,
+			   target,
+			   GETLANG(irc2_ERR_NOSUCHSERVICE_NOT_SERVICE));
+	       continue;
+	    }
+	    
+	    // If we got here, the target was not found
+	    sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVICE,
+			target,
+			GETLANG(irc2_ERR_NOSUCHSERVICE));
+	    continue;
+	 }
+
+	 // Too many targets - break the loop
+	 sendNumeric(LibIRC2::Numerics::ERR_TOOMANYTARGETS,
+		     GETLANG(irc2_ERR_TOOMANYTARGETS,
+			     String::convert(config().
+					     getLimitsMaxTargets())));
+	 return;
+      }
+      
+      // The end!
+      return;
+   }
+   
+   // Okay, what was missing that we need to complain about?
+   if (parameters.empty()) {
+      // The recipient was missing, complain about that
+      sendNumeric(LibIRC2::Numerics::ERR_NORECIPIENT,
+		  GETLANG(irc2_ERR_NORECIPIENT,
+			  commandName));
+   } else {
+      // Okay, the text was missing, complain about that then
+      sendNumeric(LibIRC2::Numerics::ERR_NOTEXTTOSEND,
+		  GETLANG(irc2_ERR_NOTEXTTOSEND));
+   }
+}
+#endif
+
+
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_STATS
 /* handleSTATS
  * Original 14/08/2001 simonb
