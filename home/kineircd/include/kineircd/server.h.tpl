@@ -97,29 +97,28 @@ namespace Kine {
       
       
       //! Request administrative information from this server
-      virtual const Error::error_type requestAdminInfo(const Client& who) const
+      virtual const Error::error_type requestAdminInfo(const Client& who)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
       
       //! Request the current message of the day from this server
-      virtual const Error::error_type requestMOTD(const Client& who) const
+      virtual const Error::error_type requestMOTD(const Client& who)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
       
       //! Request server/daemon information from this server
-      virtual const Error::error_type
-	requestDaemonInfo(const Client& who) const
+      virtual const Error::error_type requestDaemonInfo(const Client& who)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
 
       //! Request statistics information from this server
       virtual const Error::error_type
-	requestStatistics(const Client& who, const std::string& request) const
+	requestStatistics(const Client& who, const std::string& request)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
       
       //! Request the local time on this server
-      virtual const Error::error_type requestTime(const Client& who) const
+      virtual const Error::error_type requestTime(const Client& who)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
 
       //! Request the daemon's version from this server
-      virtual const Error::error_type requestVersion(const Client& who) const
+      virtual const Error::error_type requestVersion(const Client& who)
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
    }; // class Server
 }; // namespace Kine
