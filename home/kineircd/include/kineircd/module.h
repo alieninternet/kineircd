@@ -29,6 +29,7 @@ namespace Kine {
    class Daemon;
 };
 
+# include "kineircd/configparser.h"
 # include "kineircd/str.h"
 
 // Template for the function which initialises the module and returns the info
@@ -89,7 +90,8 @@ namespace Kine {
 	 // Flags to determine how this module needs to be configured
 	 enum flags_type {
 	    FLAG_NONE = 0,			      // No flags set
-            FLAG_UNIQUE_INSTANCE	= 0x00000001  // No multiple instances
+            FLAG_UNIQUE_INSTANCE	= 0x00000001, // No multiple instances
+	    FLAG_CONFIGURE_MANDATORY	= 0x00000002  // Must be configured
 	 };
 	 const int flags;
 	 
@@ -104,12 +106,20 @@ namespace Kine {
       
       // Basic information about this module
       const basicInfo_type &basicInfo;
+
+      // Configuration info (optional)
+      const ConfigData *configData;
+      const ConfigParser::defTable_type *configDefinitions;
       
     protected:
       // Constructor
-      Module(const type_type t, const basicInfo_type &mi)
+      Module(const type_type t, const basicInfo_type &bi,
+	     const ConfigData *cData = 0, 
+	     const void *cDefs = 0) // really configParser::defTable_type
 	: type(t),
-          basicInfo(mi)
+          basicInfo(bi),
+          configData(cData),
+      configDefinitions((ConfigParser::defTable_type *)cDefs)
         {};
       
     public:
