@@ -31,12 +31,16 @@
 # include <sstream>
 # include <aisutil/string/string.h>
 # include <kineircd/protocol.h>
+# include <kineircd/user.h>
 
 # include "libkineircd_irc2/numerics.h"
 
 namespace Kine {
    namespace LibIRC2 {
       class Protocol : public Kine::Protocol {
+       public:
+	 typedef unsigned int messageSize_type;
+	 
        protected:
 	 // The type of a 'parameter list'
 	 typedef std::vector <AISutil::String> parameters_type;
@@ -212,6 +216,11 @@ namespace Kine {
 		  ' ' << pe << ' ' << pf << ' ' << pg << " :" << ph;
 		sendMessage(origin, destination, numeric, output.str());
 	     };
+	 
+	 // Some common information stuff which the user may want..
+	 void sendLUSERS(const Kine::User& destination);
+	 void sendMOTD(const Kine::User& destination,
+		       const bool justConnected = false);
       };
    }; // namespace LibIRC2
 }; // namespace Kine

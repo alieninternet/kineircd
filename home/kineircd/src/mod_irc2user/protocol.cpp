@@ -49,9 +49,6 @@ Protocol::Protocol(const Kine::Registrant& registrant,
     user(registrant, connection.getSocket().getRemoteAddress()),
     maxMessageSize(512) // <=- should really be configurable
 {
-   // vv temporary :)
-   std::ostringstream output;
-
    // Welcome the user to the server (001)
    sendNumeric(LibIRC2::Numerics::RPL_WELCOME,
 	       GETLANG(irc2_RPL_WELCOME,
@@ -86,27 +83,11 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 	       /* stuff */
 	       GETLANG(irc2_RPL_ISUPPORT));
      
-   // Send the LUSER output, for some reason some clients want this??
-   output << ':' <<
-     config().getOptionsServerName() << " 251 " << registrant.name <<
-     " :?\r\n:" <<
-     config().getOptionsServerName() << " 252 0 " << registrant.name <<
-     " :?\r\n:" <<
-     config().getOptionsServerName() << " 253 0 " << registrant.name <<
-     " :?\r\n:" <<
-     config().getOptionsServerName() << " 254 0 " << registrant.name <<
-     " :?\r\n:" <<
-     config().getOptionsServerName() << " 255 " << registrant.name <<
-     " :?\r\n";
+   // Send the LUSERS output, for some reason some clients want this??
+   sendLUSERS(user);
    
    // Send an MOTD, of some sort..
-   output << ':' <<
-     config().getOptionsServerName() << " 375 " << registrant.name <<
-     " :?\r\n:" <<
-     config().getOptionsServerName() << " 376 " << registrant.name <<
-     " :?\r\n";
-
-   /* THIS IS TEMPORARY!! */ Protocol::outputQueue.push(output.str());
+   sendMOTD(user, true);
 }
 
 

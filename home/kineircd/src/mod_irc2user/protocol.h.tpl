@@ -52,7 +52,7 @@ namespace Kine {
        private:
 	 User user;				// The user for this instance
 
-	 unsigned int maxMessageSize;		// Maximum message size
+	 messageSize_type maxMessageSize;	// Maximum message size
 
 	 // Appropriately parse a protocol message
 	 void parseMessage(const std::string& origin,
