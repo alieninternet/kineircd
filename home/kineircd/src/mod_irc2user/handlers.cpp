@@ -125,9 +125,6 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
       }
    }
    
-   // Fix the mask up so it matches properly
-   mask = mask.toUpper();
-   
    // Run through the list of functions
    for (Commands::commandList_type::const_iterator it =
 	commands().getCommandList().begin();
