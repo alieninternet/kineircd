@@ -69,7 +69,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    if (user.
        setLanguageList(user,
 		       Languages::languageDataList_type(1,
-							langs().
+							languages().
 							getDefaultLanguage()),
 		       true) !=
        Error::NO_ERROR) {

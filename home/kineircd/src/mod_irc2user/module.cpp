@@ -75,7 +75,7 @@ namespace {
       // Destructor
       ~mod_irc2user(void) {
 	 // Deregister our language tag map
-	 Kine::langs().deregisterMap(Kine::mod_irc2user::Language::tagMap);
+	 Kine::languages().deregisterMap(Kine::mod_irc2user::Language::tagMap);
 	 
 	 // Deregister the protocol itself
 	 Kine::daemon().deregisterProtocol(protocolInfo);
@@ -117,7 +117,8 @@ namespace {
 	 }
 	 
 	 // Register our language tag map to the langtags engine..
-	 if (!Kine::langs().registerMap(Kine::mod_irc2user::Language::tagMap)) {
+	 if (!Kine::languages().
+	     registerMap(Kine::mod_irc2user::Language::tagMap)) {
 	    return false;
 	 }
 	 
