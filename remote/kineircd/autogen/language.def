@@ -264,6 +264,7 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOSUCHCHANNEL";
+   components	= "libkineircd_irc2";
    data_en	= "No such channel";
    data_tr	= "Böyle bir kanal bulunamadı";
 };
@@ -273,6 +274,12 @@ tag = {
    components	= "libkineircd_irc2";
    data_en	= "No such nick";
    data_tr	= "Böyle bir nick bulunamadi";
+};
+
+tag = {
+   name		= "irc2_ERR_NOSUCHNICK_OR_CHANNEL";
+   components	= "libkineircd_irc2";
+   data_en	= "No such nick/channel";
 };
 
 tag = {
