@@ -45,22 +45,19 @@ class Connection {
    ~Connection(void);			// Shutdown connection
 
    // Is this connection secure?
-   bool isSecure(void) const
-     {
-	return secure;
-     };
+   bool isSecure(void) const {
+      return secure;
+   };
    
    // Return the connection time
-   time_t getConnectedTime(void) const
-     {
-	return connectedTime;
-     };
+   time_t getConnectedTime(void) const {
+      return connectedTime;
+   };
    
    // Return the last time this connection 'spoke'
-   time_t getLastSpoke(void) const
-     {
-	return lastSpoke;
-     };
+   time_t getLastSpoke(void) const {
+      return lastSpoke;
+   };
 
    // Update the 'lastSpoke' variable (this should be inlined0)
    void touch(void);

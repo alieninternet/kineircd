@@ -34,30 +34,26 @@ class Operator {
      {};
    
    // Return the operator name (description)
-   String const &getName(void) const
-     {
-	return name;
-     };
+   String const &getName(void) const {
+      return name;
+   };
    
    // Return the password string
-   String const &getPassword(void) const
-     {
-	return password;
-     };
+   String const &getPassword(void) const {
+      return password;
+   };
    
    // Return whether or not this operator is global
-   bool isGlobal(void) const
-     {
-	return global;
-     };
+   bool isGlobal(void) const {
+      return global;
+   };
 
    // Transform the nickname and password pair into SHA1 output
    static String makeOperPassword(String const &nickname,
-				  String const &password)
-     {
-	return Utils::generateSHA1(nickname.IRCtoLower() +
-				   MAGIC_OPER_PASSWD_STRING + password);
-     };
+				  String const &password) {
+      return Utils::generateSHA1(nickname.IRCtoLower() +
+				 MAGIC_OPER_PASSWD_STRING + password);
+   };
 };
 
 #endif

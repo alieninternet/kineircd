@@ -55,10 +55,9 @@ class Lang {
    static LangData *get(String const &);	// Find language dialogue data
    
    // Grab the data for the LANGUAGE= 'ISUPPORT' tag
-   static String getISUPPORTcodes(void)
-     {
-	return ISUPPORTcodes;
-     };
+   static String getISUPPORTcodes(void) {
+      return ISUPPORTcodes;
+   };
    
    // Return language dialogue from the default language, if set
    static String lang(LangTags::tag_t const &);
@@ -85,28 +84,24 @@ class LangData {
    
  public:
    // Constructor
-   LangData(void)
-     {
-	dialogue.clear();
-     };
+   LangData(void) {
+      dialogue.clear();
+   };
    
    // Destructor
-   ~LangData(void)
-     {
-	dialogue.clear();
-     };
+   ~LangData(void) {
+      dialogue.clear();
+   };
 
    // Grab a string from the language dialogue data
-   String get(LangTags::tag_t const &n) const
-     { 
-	return dialogue[n]; 
-     };
+   String get(LangTags::tag_t const &n) const { 
+      return dialogue[n]; 
+   };
 
    // Check if something exists in the dialogue
-   bool has(LangTags::tag_t const &n) const
-     {
-	return (dialogue[n].length() > 0);
-     };
+   bool has(LangTags::tag_t const &n) const {
+      return (dialogue[n].length() > 0);
+   };
    
    friend class Lang;
 };

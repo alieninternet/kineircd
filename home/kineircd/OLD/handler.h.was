@@ -29,26 +29,23 @@ class Handler {
    virtual ~Handler(void) {};
 
    // Return the connection link
-   Connection *getConnection(void) const
-     {
-	return connection;
-     };
+   Connection *getConnection(void) const {
+      return connection;
+   };
 
    virtual void goodbye(String const &) {};	// Handle a goodbye
    virtual void kill(String const &, 
 		     String const &) {};	// Kill the connection (sharp)
    
    // Connection relevant stamp
-   virtual time_t getStamp(void)
-     {
-	return 0;
-     };
+   virtual time_t getStamp(void) {
+      return 0;
+   };
    
    // Server relevant stamp
-   virtual time_t returnStamp(time_t)
-     {
-	return 0;
-     };
+   virtual time_t returnStamp(time_t) {
+      return 0;
+   };
 
    // Protocol output routines
    virtual void sendAccept(User *, User *) const {};

@@ -66,84 +66,71 @@ class Whowas {
      {};
 
    // Grab the nickname
-   String getNickname(void) const
-     {
-	return nickname;
-     };
+   String getNickname(void) const {
+      return nickname;
+   };
 
    // Grab the username
-   String getUsername(void) const
-     {
-	return username;
-     };
+   String getUsername(void) const {
+      return username;
+   };
 
    // Grab the appropriate hostname, based on the given user
-   String getHostname(User *u)
-     {
-	return ((hideHostname && !User::isHelper(u)) ?
-		vwhostname : hostname);
-     };
+   String getHostname(User *u) {
+      return ((hideHostname && !User::isHelper(u)) ?
+	      vwhostname : hostname);
+   };
    
    // Grab the hostname
-   String getHostname(void) const
-     {
-	return hostname;
-     };
-
+   String getHostname(void) const {
+      return hostname;
+   };
+   
    // Grab the virtual-world hostname
-   String getVWHostname(void) const
-     {
-	return vwhostname;
-     };
+   String getVWHostname(void) const {
+      return vwhostname;
+   };
 
    // Grab the 'real name' field
-   String getRealname(void) const
-     {
-	return realname;
-     };
+   String getRealname(void) const {
+      return realname;
+   };
 
    // Grab the server, if it is not hidden or the user can see it
-   String getServer(User *u)
-     {
-	return ((hideServer && !User::isHelper(u)) ?
-		String('*') : server);
-     };
+   String getServer(User *u) {
+      return ((hideServer && !User::isHelper(u)) ?
+	      String('*') : server);
+   };
    
    // Grab the server
-   String getServer(void) const
-     {
-	return server;
-     };
+   String getServer(void) const {
+      return server;
+   };
 
    // Check if there is an away message available
-   bool hasAwayMessage(void) const
-     {
-	return awayMessage.length();
-     };
+   bool hasAwayMessage(void) const {
+      return awayMessage.length();
+   };
    
    // Get the away message (could be blank)
-   String getAwayMessage(void) const
-     {
-	return awayMessage;
-     };
+   String getAwayMessage(void) const {
+      return awayMessage;
+   };
    
    // Grab the details
-   String getDetails(void) const
-     {
-	return details;
-     };
+   String getDetails(void) const {
+      return details;
+   };
 
    // Grab the type of 'was' :)
-   type_t getType(void) const
-     {
-	return type;
-     };
+   type_t getType(void) const {
+      return type;
+   };
    
    // Grab the time this user 'signed off'
-   time_t getSignoffTime(void) const
-     {
-	return signoffTime;
-     };
+   time_t getSignoffTime(void) const {
+      return signoffTime;
+   };
 };
 
 #endif

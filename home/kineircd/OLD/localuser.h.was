@@ -34,15 +34,13 @@ class LocalUserInvitation {
      {};
    
    // Variable access
-   String const &getInviter(void) const
-     {
-	return inviter;
-     };
+   String const &getInviter(void) const {
+      return inviter;
+   };
    
-   long const getTimeout(void) const
-     {
-	return timeout;
-     };
+   long const getTimeout(void) const {
+      return timeout;
+   };
 };
 
 
@@ -105,54 +103,48 @@ class LocalUser {
      };
    
    // Destructor
-   ~LocalUser(void)
-     {
-	watches.clear();
-	invitations.clear();
+   ~LocalUser(void) {
+      watches.clear();
+      invitations.clear();
 # ifdef FLOODLOCK_ACCEPT_MSG
-	acceptFloodlocks.clear();
+      acceptFloodlocks.clear();
 # endif
 # ifdef FLOODLOCK_AWAY_REPLY
-	awayReplyFloodlocks.clear();
+      awayReplyFloodlocks.clear();
 # endif
 # ifdef FLOODLOCK_KNOCK_MSG
-	knockFloodlocks.clear();
+      knockFloodlocks.clear();
 # endif
-     };
+   };
 
    // Add to the watch list
-   void addWatch(const String &target)
-     {
-	watches.insert(target);
-     };
+   void addWatch(const String &target) {
+      watches.insert(target);
+   };
    
    // Remote from the watch list
-   void delWatch(const String &target)
-     {
-	watches.erase(target);
-     };
+   void delWatch(const String &target) {
+      watches.erase(target);
+   };
    
    // Wipe the watches list
-   void wipeWatches(void)
-     {
-	watches.clear();
-     };
+   void wipeWatches(void) {
+      watches.clear();
+   };
    
    // Check for a watched nick
-   bool watching(String const &target) const
-     {
-	return ((watches.find(target) != watches.end()) ? true : false);
-     };
+   bool watching(String const &target) const {
+      return ((watches.find(target) != watches.end()) ? true : false);
+   };
 
    
    void addInvitation(Channel *, User *, 
 		      time_t);			// Invite us to a channel
    
    // Delete a channel invitation
-   void delInvitation(Channel *channel)
-     {
-	invitations.erase(channel->getName());
-     };
+   void delInvitation(Channel *channel) {
+      invitations.erase(channel->getName());
+   };
 
    bool invitedTo(Channel *);			// Check an invitation
 
@@ -168,36 +160,32 @@ class LocalUser {
    
 # ifdef FLOODLOCK_KNOCK_MSG
    // Check if a channel is on our knock-request floodlock map
-   bool onKnockMessageFloodlock(Channel *c)
-     {
-	return onReplyFloodlockMap(knockFloodlocks, FLOODLOCK_KNOCK_MSG,
-				   c->getName().IRCtoLower());
-     };
+   bool onKnockMessageFloodlock(Channel *c) {
+      return onReplyFloodlockMap(knockFloodlocks, FLOODLOCK_KNOCK_MSG,
+				 c->getName().IRCtoLower());
+   };
 # endif
 
    // Set the language setting
-   void setLang(LangData *ld) 
-     {
-	language = ld;
-     };
+   void setLang(LangData *ld) {
+      language = ld;
+   };
    
    // Return true if there is no language
-   bool noLang(void)
-     {
-	return (language == NULL);
-     };
+   bool noLang(void) {
+      return (language == NULL);
+   };
    
    // Grab a language string
-   String lang(LangTags::tag_t const &t)
-     {
-	// Return it from the language dialogue data if we can
-	if (language) { 
-	   return language->get(t);
-	}
-	
-	// Oh well
-	return "-";
-     };
+   String lang(LangTags::tag_t const &t) {
+      // Return it from the language dialogue data if we can
+      if (language) { 
+	 return language->get(t);
+      }
+      
+      // Oh well
+      return "-";
+   };
 };
 
 #endif

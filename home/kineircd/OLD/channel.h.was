@@ -63,39 +63,33 @@ class ChannelMember {
      {};
    
    // Variable access
-   User *getUser(void) const
-     {
-	return user;
-     };
+   User *getUser(void) const {
+      return user;
+   };
    
-   modes_t getModes(void) const
-     {
-	return modes;
-     };
+   modes_t getModes(void) const {
+      return modes;
+   };
    
    // Mode macros
-   bool isModeSet(modes_t mode) const
-     {
-	return (modes & mode);
-     };
+   bool isModeSet(modes_t mode) const {
+      return (modes & mode);
+   };
    
-   bool isPrivileged(void) const			// Full/HalfOp/Voiced?
-     {
-	return ((modes & M_OPPED) ||
-		(modes & M_HALFOPPED) ||
-		(modes & M_VOICED));
-     };
+   bool isPrivileged(void) const {			// Full/HalfOp/Voiced?
+      return ((modes & M_OPPED) ||
+	      (modes & M_HALFOPPED) ||
+	      (modes & M_VOICED));
+   };
    
-   bool isChanOper(void) const				// Full/Half chan oper?
-     {
-	return ((modes & M_OPPED) ||
-		(modes & M_HALFOPPED));
-     };
+   bool isChanOper(void) const {			// Full/Half chan oper?
+      return ((modes & M_OPPED) ||
+	      (modes & M_HALFOPPED));
+   };
    
-   bool isFullChanOper(void) const			// Full chan oper?
-     {
-	return (modes & M_OPPED);
-     };
+   bool isFullChanOper(void) const {			// Full chan oper?
+      return (modes & M_OPPED);
+   };
    
    friend class Channel;
 };
@@ -117,20 +111,17 @@ class ChannelMask {
      {};
    
    // Variable access
-   StringMask getMask(void) const 
-     {
-	return mask;
-     };
+   StringMask getMask(void) const {
+      return mask;
+   };
    
-   String getWhoset(void) const
-     {
-	return whoset;
-     };
+   String getWhoset(void) const {
+      return whoset;
+   };
    
-   time_t getWhenset(void) const
-     {
-	return whenset;
-     };
+   time_t getWhenset(void) const {
+      return whenset;
+   };
    
    friend class Channel;
 };
@@ -248,42 +239,37 @@ class Channel {
    ~Channel(void);   				// Destructor
 
    // Variable access
-   String getName(void) const			// Grab the name of the channel
-     {
-	return name;
-     };
+   String getName(void) const {			// Grab the name of the channel
+      return name;
+   };
    
-   modes_t getModes(void) const			// Grab the modes
-     {
-	return modes;
-     };
+   modes_t getModes(void) const {		// Grab the modes
+      return modes;
+   };
    
-   bool isModeSet(modes_t mode) const		// Is the given mode set?
-     {
-	return (modes & mode);
-     };
+   bool isModeSet(modes_t mode) const {		// Is the given mode set?
+      return (modes & mode);
+   };
 
    // Access checking
-   bool isHidden(void) const
-     {
-	return ((modes & M_PRIVATE) ||
-		(modes & M_SECRET));
-     };
+   bool isHidden(void) const {
+      return ((modes & M_PRIVATE) ||
+	      (modes & M_SECRET));
+   };
    
    ChannelMember *getMember(User *);		// Grab a channel member record
    
    // Blunt check, is this name a channel name? (check first char)
-   static bool isChannel(String const &channel)
-     {
-	switch (channel[0]) {
-	 case '#':
-	 case '&':
-	 case '+':
-	 case '!':
-	   return true;
-	}
-	return false;
-     };
+   static bool isChannel(String const &channel) {
+      switch (channel[0]) {
+       case '#':
+       case '&':
+       case '+':
+       case '!':
+	 return true;
+      }
+      return false;
+   };
    
    static bool okName(String const &);		// Ok channel name?
 

@@ -162,155 +162,132 @@ class User {
      };
 
    // Access checking
-   bool showVW(User *destination) const
-     {
-	if (isOper(destination) ||
-	    !(modes & M_VWORLD) ||
-	    this == destination) {
-	   return false;
-	}
-	return true;
-     };
+   bool showVW(User *destination) const {
+      if (isOper(destination) ||
+	  !(modes & M_VWORLD) ||
+	  this == destination) {
+	 return false;
+      }
+      return true;
+   };
    
-   static bool const isOper(User *u)
-     {
-	return ((u->modes & M_GLOBALOPER) ||
-		(u->modes & M_LOCALOPER));
-     };
+   static bool const isOper(User *u) {
+      return ((u->modes & M_GLOBALOPER) ||
+	      (u->modes & M_LOCALOPER));
+   };
    
-   static bool const isGlobalOper(User *u)
-     {
-	return (u->modes & M_GLOBALOPER);
-     };
-   
-   static bool const isRoutingStaff(User *u)
-     {
-	return (u->modes & M_ROUTINGSTAFF);
-     };
+   static bool const isGlobalOper(User *u) {
+      return (u->modes & M_GLOBALOPER);
+   };
 
-   static bool const isHelper(User *u)
-     {
-	return ((u->modes & M_HELPER) ||
-		(u->modes & M_GLOBALOPER) ||
-		(u->modes & M_LOCALOPER));
-     };
+   static bool const isRoutingStaff(User *u) {
+      return (u->modes & M_ROUTINGSTAFF);
+   };
+
+   static bool const isHelper(User *u) {
+      return ((u->modes & M_HELPER) ||
+	      (u->modes & M_GLOBALOPER) ||
+	      (u->modes & M_LOCALOPER));
+   };
       
    // Grab the nickname
-   String getNickname(void) const
-     {
-	return nickname;
-     };
+   String getNickname(void) const {
+      return nickname;
+   };
 
    // Grab the username
-   String getUsername(void) const
-     {
-	return username;
-     };
+   String getUsername(void) const {
+      return username;
+   };
    
    // Return appropriate address
-   String getAddress(User *destination) const
-     { 
-	return (showVW(destination) ? getVWAddress() : getAddress());
-     };
+   String getAddress(User *destination) const { 
+      return (showVW(destination) ? getVWAddress() : getAddress());
+   };
    
    // Return address (x!y@z)
-   String getAddress(void) const
-     {
-	return (nickname + "!" + username + "@" + hostname);
-     };
+   String getAddress(void) const {
+      return (nickname + '!' + username + '@' + hostname);
+   };
    
    // Above, but w/ virtual-world
-   String getVWAddress(void) const
-     {
-	return (nickname + "!" + username + "@" + vwhostname);
-     };
+   String getVWAddress(void) const {
+      return (nickname + '!' + username + '@' + vwhostname);
+   };
 
    // Grab the appropriate hostname
-   String getHost(User *destination) const
-     {
-	return (showVW(destination) ? vwhostname : hostname);
-     };
+   String getHost(User *destination) const {
+      return (showVW(destination) ? vwhostname : hostname);
+   };
    
    // Return hostname
-   String getHost(void) const
-     {
-	return hostname;
-     };
+   String getHost(void) const {
+      return hostname;
+   };
    
    // Return vworld hostname
-   String getVWHost(void) const
-     {
-	return vwhostname;
-     };
+   String getVWHost(void) const {
+      return vwhostname;
+   };
    
    // Return the modes
-   modes_t getModes(void) const
-     {
-	return modes;
-     };
+   modes_t getModes(void) const {
+      return modes;
+   };
    
    // Is a mode set?
-   bool isModeSet(modes_t mode) const
-     {
-	return (modes & mode);
-     };
+   bool isModeSet(modes_t mode) const {
+      return (modes & mode);
+   };
    
    Channel *getChannel(String &);		// Return a channel
 
    // Get the server we are on
-   Server *getServer(void) const
-     {
-	return server;
-     };
+   Server *getServer(void) const {
+      return server;
+   };
    
    // Are we a local user?
-   bool const isLocal(void) const
-     {
-	return local;
-     };
+   bool const isLocal(void) const {
+      return local;
+   };
    
    // Get LocalUser info (maybe)
-   LocalUser *getLocalInfo(void) const
-     {
-	return local;
-     };
+   LocalUser *getLocalInfo(void) const {
+      return local;
+   };
 
    // Return the helper status variable
-   status_t getStatus(void) const
-     {
-	return status;
-     };
+   status_t getStatus(void) const {
+      return status;
+   };
    
    // Return the appropriate language information
-   String lang(LangTags::tag_t const &t) const
-     {
-	// If this user is local, this is easy
-	if (local) {
-	   return local->lang(t);
-	}
-	
-	return "woops--fix-me";
-     };
+   String lang(LangTags::tag_t const &t) const {
+      // If this user is local, this is easy
+      if (local) {
+	 return local->lang(t);
+      }
+      
+      return "woops--fix-me";
+   };
    
    void markAway(String const &);		// Set/Unset away message
    
    // Grab the language charset
-   String getLangCharset(void) const
-     {
-	return langCharset;
-     };
+   String getLangCharset(void) const {
+      return langCharset;
+   };
    
    // Grab the language charset
-   bool hasLangInfo(void) const
-     {
-	return (langList.length() > 0);
-     };
+   bool hasLangInfo(void) const {
+      return (langList.length() > 0);
+   };
 
    // Grab language list, formatted nicely for WHOIS (comma delimetered etc)
-   String getLangList(void) const
-     {
-	return langList;
-     };
+   String getLangList(void) const {
+      return langList;
+   };
    
    void setLangInfo(String const &, 
 		    String const &);		// Set the language information
@@ -318,23 +295,20 @@ class User {
    bool isSilencing(User *u);			// Silencing a user?
 
    // Add to the ACCEPT list
-   void addAccept(User *u)
-     {
-	accepts.insert(u->nickname.IRCtoLower());
-     };
+   void addAccept(User *u) {
+      accepts.insert(u->nickname.IRCtoLower());
+   };
    
    // Remote from the ACCEPT list
-   void delAccept(User *u)
-     {
-	accepts.erase(u->nickname.IRCtoLower());
-     };
+   void delAccept(User *u) {
+      accepts.erase(u->nickname.IRCtoLower());
+   };
 
    // Is this user 'accepted'?
-   bool isAccepting(User *u)
-     {
-	return ((accepts.find(u->nickname.IRCtoLower()) != accepts.end()) ?
-		true : false);
-     };
+   bool isAccepting(User *u) {
+      return ((accepts.find(u->nickname.IRCtoLower()) != accepts.end()) ?
+	      true : false);
+   };
      
    static bool okName(String const &);		// Ok nickname?
 

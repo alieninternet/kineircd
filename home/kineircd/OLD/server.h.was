@@ -129,69 +129,57 @@ class Server {
 //     {};
    
    // Variable access
-   String getHostname(void) const		// Return the hostname
-     {
-	return hostname;
-     };
+   String getHostname(void) const {		// Return the hostname
+      return hostname;
+   };
    
-   String getDescription(void) const		// Return the description/name
-     {
-	return description;
-     };
+   String getDescription(void) const {		// Return the description/name
+      return description;
+   };
    
-   flags_t getFlags(void) const			// Return the flags integer
-     {
-	return flags;
-     };
+   flags_t getFlags(void) const	{		// Return the flags integer
+      return flags;
+   };
 
-   void setFlag(flags_t flag)			// Set a server flag
-     {
-	flags |= flag;
-     };
+   void setFlag(flags_t flag) {			// Set a server flag
+      flags |= flag;
+   };
    
-   bool isModeSet(modes_t mode) const		// Is a mode set?
-     {
-	return (modes & mode);
-     };
+   bool isModeSet(modes_t mode) const {		// Is a mode set?
+      return (modes & mode);
+   };
    
-   modes_t getModes(void) const			// Return the modes integer
-     {
-	return modes;
-     };
+   modes_t getModes(void) const	{		// Return the modes integer
+      return modes;
+   };
    
-   bool isLocal(void) const			// Is the server local?
-     {
-	return (handler > 0);
-     };
+   bool isLocal(void) const {			// Is the server local?
+      return (handler > 0);
+   };
    
-   Handler *getHandler(void) const		// Return the handler (maybe)
-     {
-	return handler;
-     };
+   Handler *getHandler(void) const {		// Return the handler (maybe)
+      return handler;
+   };
    
-   bool resetHandler(Handler *h)		// Re-set the handler (maybe)
-     {
-	if (!handler) {
-	   handler = h;
-	   return true;
-	}
-	return false;
-     };
+   bool resetHandler(Handler *h) {		// Re-set the handler (maybe)
+      if (!handler) {
+	 handler = h;
+	 return true;
+      }
+      return false;
+   };
    
-   unsigned char getProtocol(void) const	// Grab protocol number
-     {
-	return protocol;
-     };
+   unsigned char getProtocol(void) const {	// Grab protocol number
+      return protocol;
+   };
    
-   unsigned char getNumHops(void) const		// Grab number of hops
-     {
-	return numHops;
-     };
+   unsigned char getNumHops(void) const {	// Grab number of hops
+      return numHops;
+   };
 
-   unsigned int getNumUsers(void) const		// Grab number of users there
-     {
-	return numUsers;
-     };
+   unsigned int getNumUsers(void) const {	// Grab number of users there
+      return numUsers;
+   };
    
    static String makeModes(Server *);		// Make a + server mode string
    
