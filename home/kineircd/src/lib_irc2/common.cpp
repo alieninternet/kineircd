@@ -398,7 +398,7 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	    // Output the idle time, and the time this user connected
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISIDLE,
 			u->getNickname(),
-			lu->getLastAwake().seconds,
+			(daemon().getTime() - lu->getLastAwake()).seconds,
 			u->getSignonTime().seconds,
 			GETLANG(irc2_RPL_WHOISIDLE));
 	 }
