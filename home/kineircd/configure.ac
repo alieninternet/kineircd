@@ -482,12 +482,10 @@ dnl
 dnl Misc feature settings
 dnl
 AC_MSG_CHECKING([default-config-file parameter])
-AC_ARG_ENABLE(default-config-file,[
-  --enable-default-config-file=file          (Default is "ircd.conf")
-    This is the default configuration file to load at runtime. It can be
-    overridden on the command line. This option cannot be disabled.
-
- ],[
+AC_ARG_ENABLE(default-config-file,
+              AC_HELP_STRING([--enable-default-config-file=<file>],
+                             [Default config file (default is "ircd.conf")]),
+ [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT([ircd.conf (default, fixed)])
      kineircd_test_default_config_file="ircd.conf"
@@ -562,10 +560,10 @@ dnl
 dnl Which transports do we require (this should move to libais)
 dnl
 AC_MSG_CHECKING([transport-tcp-ipv4 parameter])
-AC_ARG_ENABLE(transport-tcp-ipv4,[
-  --enable-transport-tcp-ipv4                (Default is enabled)
-    Enable TCP/IPv4 connectivity to the server.
- ],[
+AC_ARG_ENABLE(transport-tcp-ipv4,
+              AC_HELP_STRING([--disable-transport-tcp-ipv4],
+                             [Disable TCP/IPv4 sockets]),
+ [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -588,10 +586,10 @@ if test "$kineircd_test_compile_socket_ipv4_tcp" = "yes"; then
 fi
 
 AC_MSG_CHECKING([transport-tcp-ipv6 parameter])
-AC_ARG_ENABLE(transport-tcp-ipv6,[
-  --enable-transport-tcp-ipv6                (Default is disabled)
-    Enable TCP/IPv6 connectivity to the server.
- ],[
+AC_ARG_ENABLE(transport-tcp-ipv6,
+              AC_HELP_STRING([--enable-transport-tcp-ipv6],
+                             [Enable TCP/IPv6 sockets]),
+ [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -611,10 +609,10 @@ if test "$kineircd_test_compile_socket_ipv6_tcp" = "yes"; then
 fi
 
 AC_MSG_CHECKING([transport-ipx-spx parameter])
-AC_ARG_ENABLE(transport-ipx-spx,[
-  --enable-transport-ipx-spx                 (Default is disabled)
-    Enable IPX/SPX connectivity to the server.
- ],[
+AC_ARG_ENABLE(transport-ipx-spx,
+              AC_HELP_STRING([--enable-transport-ipx-spx],
+                             [Enable IPX/SPX sockets]),
+ [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -634,10 +632,10 @@ if test "$kineircd_test_compile_socket_ipx_spx" = "yes"; then
 fi
 
 AC_MSG_CHECKING([transport-unix parameter])
-AC_ARG_ENABLE(transport-unix,[
-  --enable-transport-unix                    (Default is disabled)
-    Enable UNIX socket connectivity to the server.
- ],[
+AC_ARG_ENABLE(transport-unix,
+              AC_HELP_STRING([--enable-transport-unix],
+                             [Enable UNIX sockets]),
+ [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
@@ -665,8 +663,8 @@ dnl Which modules shall we compile?
 dnl
 AC_MSG_CHECKING([which modules to compile])
 
-AC_ARG_ENABLE(module-mod-http,
-              AC_HELP_STRING([--disable-module-mod-http],
+AC_ARG_ENABLE(mod-http,
+              AC_HELP_STRING([--disable-mod-http],
                              [Disable the HTTP protocol module]),
  [
    if test "$enableval" \!= "yes"; then
@@ -680,8 +678,8 @@ AC_ARG_ENABLE(module-mod-http,
 AC_SUBST(kineircd_test_compile_mod_http)
 
 if test "$kineircd_test_netsnmp_broken" = "no"; then
-  AC_ARG_ENABLE(module-mod-snmp,
-                AC_HELP_STRING([--disable-module-mod-snmp],
+  AC_ARG_ENABLE(mod-snmp,
+                AC_HELP_STRING([--disable-mod-snmp],
 		               [Disable the SNMP extension module]),
    [
      if test "$enableval" \!= "yes"; then
@@ -704,13 +702,10 @@ dnl
 dnl Developer stuff
 dnl
 AC_MSG_CHECKING([debugging parameter])
-AC_ARG_ENABLE(debugging,[
-  --enable-debugging[=level]                 (Default is disabled)
-    Enable debugging/profile/sanity checking. This should NEVER be turned
-    on for a production IRC server, EVER! It is designed for developers.
-    If a level is specified, it increases the level of debugging, and
-    can either be 'extended' or 'psycho', both giving obvious results.
- ],[
+AC_ARG_ENABLE(debugging,
+              AC_HELP_STRING([--enable-debugging=<yes|extended|psycho>],
+                             [Enable debugging (for developers)]),
+ [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
      kineircd_test_have_debugging=no
