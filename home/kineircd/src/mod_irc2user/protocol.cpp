@@ -42,6 +42,35 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 		   std::string& outputQueue)
   : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue)
 {
+   // vv temporary :)
+   std::ostringstream output;
+   output <<
+     ':' << config().getOptionsServerName() << " 001 " << registrant.name <<
+     " :?\r\n:" <<
+     config().getOptionsServerName() << " 002 " << registrant.name <<
+     " :?\r\n:" <<
+     config().getOptionsServerName() << " 003 " << registrant.name <<
+     " :?\r\n:" <<
+     config().getOptionsServerName() << " 004 " << registrant.name <<
+     " :?\r\n:" <<
+     config().getOptionsServerName() << " 251 " << registrant.name <<
+     " :?\r\n:" <<
+     config().getOptionsServerName() << " 252 0 " << registrant.name <<
+     " :?\r\n:" <<
+     config().getOptionsServerName() << " 253 0 " << registrant.name <<
+     " :?\r\n:" <<
+     config().getOptionsServerName() << " 254 0 " << registrant.name <<
+     " :?\r\n:" <<
+     config().getOptionsServerName() << " 255 " << registrant.name <<
+     " :?\r\n:" <<
+     config().getOptionsServerName() << " 375 " << registrant.name <<
+     " :?\r\n:" <<
+     config().getOptionsServerName() << " 376 " << registrant.name <<
+     " :?\r\n:" <<
+     config().getOptionsServerName() << " NOTICE " << registrant.name <<
+     " :kludgey kludge kludge :(\r\n";
+   Protocol::outputQueue.push(output.str());
+   // ^^ temporary :)
 }
 
 
@@ -54,4 +83,6 @@ void Protocol::parseMessage(const std::string& origin,
 			    const Kine::LibIRC2::Protocol::parameters_type&
 			    parameters)
 {
+   std::cout << "COMMAND: " << command << "\nFrom: " << origin << "\nTo: " <<
+     destination << std::endl;
 }

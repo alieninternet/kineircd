@@ -1,5 +1,0 @@
-This is the top of the source directory, where binaries the user/administrator
-would run are compiled.
-
-The two here at the moment are 'ircpasswd' for creating IRC operator
-passwords ready for the configuration file, and 'ircd' - the daemon itself.
