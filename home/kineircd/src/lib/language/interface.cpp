@@ -477,6 +477,26 @@ void Languages::processMaps(void) const
 }
 
 
+/* findByCode - Find a language by the given language code
+ * Original 22/03/2003 simonb
+ */
+Languages::LanguageData* const
+  Languages::findByCode(const std::string& code) const
+{
+   // Find the given language..
+   const languageDataList_type::const_iterator it =
+     languageDataList.find(String(code).toLower());
+   
+   // Did we find the language?
+   if (it != languageDataList.end()) {
+      return (*it).second;
+   }
+   
+   // Could not find it..
+   return 0;
+}
+
+
 /* get - Return the given language data, from the given language
  * Original 15/03/2003 simonb
  */
@@ -503,18 +523,16 @@ const std::string
    const std::string* tagData = 0;
    
    // Find the given language..
-   const languageDataList_type::const_iterator it =
-     languageDataList.find(languageCode);
+   LanguageData* const langData = findByCode(languageCode);
    
    // Did we find the language?
-   if (it != languageDataList.end()) {
+   if (langData != 0) {
 #ifdef KINE_DEBUG_PSYCHO
-      debug("Languages::get() - Attempting to get data from " +
-	    (*it).first);
+      debug("Languages::get() - Attempting to get data from " + languageCode);
 #endif
 
       // Okay, try to grab it from the language data..
-      tagData = (*it).second->findTag(tagID);
+      tagData = langData->findTag(tagID);
    }
    
    // Did we get tag data? Can we try the default language?

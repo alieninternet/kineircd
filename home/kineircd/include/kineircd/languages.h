@@ -194,6 +194,9 @@ namespace Kine {
       bool registerMap(tagMap_type map);
       void deregisterMap(const tagMap_type map);
       void processMaps(void) const;
+
+      // Find the given language, by its code..
+      LanguageData* const findByCode(const std::string& code) const;
       
       // Return the given language data, from the given language
       const std::string
