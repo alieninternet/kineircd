@@ -143,8 +143,30 @@ LIBAISUTIL_CONFIG_VARIABLE_HANDLER(Logger::Config::varHandleLogMask)
 	 maskWord = values[i].toUpper();
       }
       
+      // Is this 'nothing' ?
+      if ((maskWord == "NOTHING") ||
+          (maskWord == "NONE")) {
+      	 if (toggleOn) {
+	    logMask |= Mask::Nothing;
+	 } else {
+	    logMask &= ~Mask::Nothing;
+	 }
+         continue;
+      }
+      
+      // Is this 'everything' ?
+      if ((maskWord == "EVERYTHING") ||
+          (maskWord == "ALL")) {
+      	 if (toggleOn) {
+	    logMask |= Mask::Everything;
+	 } else {
+	    logMask &= ~Mask::Everything;
+	 }
+         continue;
+      }
+      
       // Look for the word in the list..
-      for (unsigned int j = 0; j < [+(+ 2 (count "logger_masks"))+]; j++) {
+      for (unsigned int j = 0; j < [+(count "logger_masks")+]; j++) {
 	 // Does this match?
 	 if (maskWord == maskTable[j].nameUpper) {
 	    // Okay, do whatever was asked with this mask..
