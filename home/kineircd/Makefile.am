@@ -144,6 +144,10 @@ endif
 
 # Stuff we really need, but automake is too stupid to work out for itself
 BUILT_SOURCES=\
+	include/kineircd/config.h \
+	include/kineircd/errors.h \
+	include/kineircd/logger.h \
+	include/kineircd/servermodes.h \
 	src/libkineircd/regnumerics.h
 
 # Includes..
