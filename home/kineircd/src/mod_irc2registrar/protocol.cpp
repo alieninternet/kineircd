@@ -579,14 +579,12 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVER)
 #endif
       
       registrantData.description =
-	parameters[5]/*.substr(0,
-			     config().
-			     getOptionsLimitsServersMaxDescriptionLength())*/;
+	parameters[5].substr(0,
+			     config().getLimitsServersMaxDescriptionLength());
    } else {
       registrantData.description =
-	parameters[2]/*.substr(0, 
-			     config().
-			     getOptionsLimitsServersMaxDescriptionLength())*/;
+	parameters[2].substr(0, 
+			     config().getLimitsServersMaxDescriptionLength());
    }
    
 #ifdef KINE_DEBUG
