@@ -31,6 +31,7 @@
 #include <aisutil/string/string.h>
 #include <kineircd/config.h>
 #include <kineircd/languages.h>
+#include <kineircd/mynetwork.h>
 
 #include "mod_irc2user/isupport.h"
 #include "mod_irc2user/commands.h"
@@ -161,7 +162,9 @@ void ISupport::initInfo(void)
 #endif
 
    // If there's a network name, then append that too
-   if (!config().getNetworkName().empty()) {
+   if (myNetwork().isNamed()) {
+#warning "ISUPPORT is not localised - network name is from config().getNetworkName() and not myNetwork().getName()"
+//      info.push_back(L"NETWORK=" + myNetwork().getName());
       info.push_back("NETWORK=" + config().getNetworkName());
    }
 

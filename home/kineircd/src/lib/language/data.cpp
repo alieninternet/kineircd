@@ -34,6 +34,7 @@
 #include "kineircd/languages.h"
 #include "kineircd/config.h"
 #include "kineircd/myserver.h"
+#include "kineircd/mynetwork.h"
 #include "lib/debug.h"
 #include "lib/language/subst.h"
 
@@ -170,7 +171,12 @@ const std::wstring
 	    continue;
 	    
 	  case 'N': // The name of the network (if there is one)
-	    output += toWideStr(config().getNetworkName());
+	    if (myNetwork().isNamed()) {
+	       output += myNetwork().getName();
+	    } else {
+	       // No network name - ewps.. replacement char time!
+	       output += Internal::LangTags::replacementObjectGlyph;
+	    }
 	    continue;
 	    
 	  case 'p':

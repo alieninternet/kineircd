@@ -197,6 +197,7 @@ libkineircd_la_SOURCES=\
 	include/kineircd/module.h \
 	include/kineircd/moduledescriptor.h \
 	include/kineircd/modulelist.h \
+	include/kineircd/mynetwork.h \
 	include/kineircd/myserver.h \
 	include/kineircd/network.h \
 	include/kineircd/name.h \
@@ -236,6 +237,7 @@ libkineircd_la_SOURCES=\
 	src/lib/language.cpp \
 	src/lib/language.h \
 	src/lib/logger.cpp \
+	src/lib/mynetwork.cpp \
 	src/lib/myserver.cpp \
 	src/lib/name.cpp \
 	src/lib/registry.cpp \

@@ -34,6 +34,9 @@ namespace Kine {
     * This is literally an IRC network.
     */
    class Network : public Entity {
+    private:
+      std::wstring shortName;			//! The network's short name
+      
     protected:
       /*!
        * \brief Constructor
@@ -41,8 +44,10 @@ namespace Kine {
        * \param _signonTime The time the Network connected. For more
        *    information, see Kine::Entity::signonTime.
        */
-      explicit Network(const AIS::Util::Time& _signonTime)
-	: Entity(_signonTime)
+      explicit Network(const std::wstring& _shortName,
+		       const AIS::Util::Time& _signonTime)
+	: Entity(_signonTime),
+          shortName(_shortName)
 	{};
       
     public:
@@ -59,7 +64,8 @@ namespace Kine {
        * 
        * \return The short network name
        */
-      virtual const std::wstring& getNetworkName(void) const = 0;
+      const std::wstring& getNetworkName(void) const
+	{ return shortName; };
       
       // Return the 'name'
       const std::wstring& getName(void) const
