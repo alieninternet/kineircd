@@ -64,14 +64,14 @@ const std::string* const
    // Make sure the tag is valid..
    if ((tagID == 0) || (tagID > tagData.size())) {
 #ifdef KINE_DEBUG_PSYCHO
-      debug("LanguageData::findTag - Invalid TID given");
+      debug("LanguageData::findTag() - Invalid TID given");
 #endif
       return 0;
    }
    
 #ifdef KINE_DEBUG_PSYCHO
    std::ostringstream out;
-   out << "LanguageData::findTag - Returning data @ " << 
+   out << "LanguageData::findTag() - Returning data @ " << 
      (void *)tagData[tagID - 1];
    debug(out.str());
 #endif
