@@ -165,22 +165,60 @@ void Registrar::parseLine(const String& line)
     case RegistrationType::NONE:
       // There is nothing to do - registration has not been completed yet.
       return;
+       
+    case RegistrationType::CLIENT: {
+       // Make sure all required fields have been given..
+       if (registrantData.nickname.empty() ||
+	   registrantData.username.empty() ||
+	   registrantData.hostname.empty() ||
+	   (pongsLeft > 0)) {
+	  return;
+       }
+
+       // No support yet...
+       connection.goodbye();
+       return;
+    }
       
-    case RegistrationType::CLIENT:
-      connection.goodbye();
-      return;
+    case RegistrationType::IIRCN: {
+       // Make sure all required fields have been given..
+       if (registrantData.password.empty() ||
+	   registrantData.nickname.empty() ||
+	   registrantData.hostname.empty() ||
+	   registrantData.protocol.empty() ||
+	   registrantData.linkStamp <= 0) {
+	  return;
+       }
+
+       // No support yet...
+       connection.goodbye();
+       return;
+    }
       
-    case RegistrationType::IIRCN:
-      connection.goodbye();
-      return;
+    case RegistrationType::SERVER: {
+       // Make sure all required fields have been given..
+       if (registrantData.password.empty() ||
+	   registrantData.hostname.empty()) {
+	  return;
+       }
+       
+       // No support yet...
+       connection.goodbye();
+       return;
+    }
       
-    case RegistrationType::SERVER:
-      connection.goodbye();
-      return;
-      
-    case RegistrationType::SERVICE:
-      connection.goodbye();
-      return;
+    case RegistrationType::SERVICE: {
+       // Make sure all required fields have been given..
+       if (registrantData.password.empty() ||
+	   registrantData.nickname.empty() ||
+	   registrantData.distribution.empty()) {
+	  return;
+       }
+       
+       // No support yet...
+       connection.goodbye();
+       return;
+    }
    }
 }
 
