@@ -29,6 +29,19 @@
 using namespace Kine;
 
 
+/* ~ListenerList - Say bye bye to the existing listeners - go on, wave!
+ * Original 07/08/2002 simonb
+ */
+ListenerList::~ListenerList(void)
+{
+   // Run through the list and delete all the entries
+   while (!listeners.empty()) {
+      delete listeners.front();
+      listeners.pop_front();
+   }
+}
+
+
 /* startAll - Start all listeners listening
  * Original 07/08/2002 simonb
  */

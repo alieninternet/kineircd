@@ -48,8 +48,7 @@ namespace Kine {
 	{};
       
       // Destructor
-      ~ListenerList(void)
-	{};
+      ~ListenerList(void);
 
       // Start all listeners listening
       void startAll(void);
