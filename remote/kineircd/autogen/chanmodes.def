@@ -271,6 +271,17 @@ chanmodes = {
    irc2char	= "M";
    name		= "MODREG";
    origin	= "Bahamut";
+   conflict	= "yes";
+};
+
+chanmodes = {
+   irc2char	= "M";
+   name		= "REGONLY";
+   origin	= "Unreal";
+   comment	= "Channel only allows registered nicknames to talk. "
+                  "Since there is a much greater prevalence for +R for the "
+		  "same task, +R may be a better choice.";
+   conflict	= "yes";
 };
 
 chanmodes = {
@@ -435,6 +446,8 @@ chanmodes = {
    irc2char	= "u";
    name		= "AUDITORIUM";
    origin	= "Unreal";
+   comment	= "When set, makes /names and /who only show channel "
+                  "operators";
    conflict	= "yes";
 };
 
