@@ -60,7 +60,7 @@ ModuleDescriptor* const ModuleDescriptor::loadModule(const String& filename,
    
    // Try and load the given module
    lt_dlhandle handle;
-   if ((handle = lt_dlopen(filename.c_str())) == (void*)0) {
+   if ((handle = lt_dlopenext(filename.c_str())) == (void*)0) {
       // Set the error string
       errString = lt_dlerror();
 #ifdef KINE_DEBUG
