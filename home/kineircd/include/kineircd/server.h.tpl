@@ -27,6 +27,7 @@
 
 [+(make-header-guard "kine")+]
 
+# include <kineircd/entity.h>
 # include <kineircd/denizen.h>
 # include <kineircd/sender.h>
 # include <kineircd/user.h>
