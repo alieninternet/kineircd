@@ -489,21 +489,21 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSERVLIST)
    // Our mask for service names to match
    StringMask nameMask;
    
-   // Were we given a specific mask to match?
-   if (parameters.size() >= 1) {
-      nameMask = parameters[0];
-   } else {
-      // Presume everything (*)
-      nameMask = "*";
-   }
-   
    // The type bitmask to match..
    long type = 0;
    
-   // Were we provided a type bitmask?
-   if (parameters.size() >= 2) {
-      // Convert the type integer across
-      type = std::atol(parameters[1].c_str());
+   // Were we given a specific mask to match?
+   if (parameters.size() >= 1) {
+      nameMask = parameters[0];
+
+      // Were we provided a type bitmask?
+      if (parameters.size() >= 2) {
+	 // Convert the type integer across
+	 type = std::atol(parameters[1].c_str());
+      }
+   } else {
+      // Presume everything (*)
+      nameMask = "*";
    }
    
    // Iterate over the list of services
@@ -677,6 +677,61 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
    sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
+}
+#endif
+
+
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_WHO
+/* handleWHO
+ * Original 22/08/2001 simonb
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleWHO)
+{
+   static const char* const commandName = "WHO";
+   
+   // Mask of users to match
+   StringMask mask;
+   
+   // Were we given a mask?
+   if (parameters.size() >= 1) {
+      // Set the mask to the given mask
+      mask = parameters[0];
+      
+      // Options?
+      if (parameters.size() >= 2) {
+	 // something..
+      }
+   } else {
+      // Match 'everything'
+      mask = "*";
+   }
+   
+   // The number of lines left before we truncate the output
+   unsigned int linesLeft = 100; // <=- configuration variable?!
+   
+   for (;;) {
+      // Is the user is not allowed to match endlessly?
+      if (!user.isOperator()) {
+	 // Decrease and check the lines left counter..
+	 if (--linesLeft == 0) {
+	    // Break, so the end numeric can be sent for old clients
+	    break;
+	 }
+      }
+   }
+   
+   // Send the end of who numeric
+   sendNumeric(LibIRC2::Numerics::RPL_ENDOFWHO,
+	       mask,
+	       GETLANG(irc2_RPL_ENDOFWHO));
+
+   // If the output ended because it was truncated, say so now
+   if (linesLeft == 0) {
+      sendNumeric(LibIRC2::Numerics::ERR_TOOMANYMATCHES,
+		  commandName,
+		  mask,
+		  GETLANG(irc2_ERR_TOOMANYMATCHES));
+   }
 }
 #endif
 
