@@ -30,7 +30,7 @@ AM_INIT_AUTOMAKE([1.7 foreign no-installinfo no-installman nostdinc subdir-objec
 AC_COPYRIGHT([Portions Copyright (c) 2001,2002 KineIRCd Development Team])
 AC_PREREQ(2.57)
 AC_CONFIG_AUX_DIR(config)
-AC_CONFIG_SRCDIR(src/libkineircd/config/config.cpp)
+AC_CONFIG_SRCDIR(src/lib/config/config.cpp)
 AM_CONFIG_HEADER(include/autoconf.h)
 AC_REVISION([$Revision$])
 

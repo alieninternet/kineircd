@@ -89,7 +89,7 @@ EXTRA_DIST=\
 	doc/rfc2812.txt \
 	doc/rfc2813.txt \
 	include/kineircd/kineircdconf.h.in \
-	src/libkineircd/version.cpp.tpl
+	src/lib/version.cpp.tpl
 
 
 
@@ -143,7 +143,7 @@ BUILT_SOURCES=\
 	include/kineircd/server.h \
 	install/.lang \
 	src/ircd/options.h \
-	src/libkineircd_irc2/language.h \
+	src/lib_irc2/language.h \
 	src/mod_irc2registrar/language.h \
 	src/mod_irc2user/commands.h \
 	src/mod_irc2user/language.h \
@@ -155,11 +155,11 @@ BUILT_SOURCES=\
 # 'libkineircd' library
 ###############################################################################
 if KINEIRCD_COMPILE_LIB_CONFIG_OLDCONFIG
- KINEIRCD_SOURCE_LIB_CONFIG_OLDCONFIG_CPP=src/libkineircd/config/oldconfig.cpp
+ KINEIRCD_SOURCE_LIB_CONFIG_OLDCONFIG_CPP=src/lib/config/oldconfig.cpp
 endif
 if KINEIRCD_COMPILE_LIB_DEBUG
- KINEIRCD_SOURCE_LIB_DEBUG_CPP=src/libkineircd/debug.cpp
- KINEIRCD_SOURCE_LIB_DEBUG_H=src/libkineircd/debug.h
+ KINEIRCD_SOURCE_LIB_DEBUG_CPP=src/lib/debug.cpp
+ KINEIRCD_SOURCE_LIB_DEBUG_H=src/lib/debug.h
 endif
 
 # Includes..
@@ -204,36 +204,36 @@ libkineircd_la_SOURCES=\
 	include/kineircd/todo.h \
 	include/kineircd/user.h \
 	include/kineircd/version.h \
-	src/libkineircd/config/config.cpp \
-	src/libkineircd/config/handlers.cpp \
+	src/lib/config/config.cpp \
+	src/lib/config/handlers.cpp \
 	$(KINEIRCD_SOURCE_LIB_CONFIG_OLDCONFIG_CPP) \
-	src/libkineircd/language/subst.cpp \
-	src/libkineircd/language/subst.h \
-	src/libkineircd/language/config.cpp \
-	src/libkineircd/language/config.h \
-	src/libkineircd/language/data.cpp \
-	src/libkineircd/language/interface.cpp \
-	src/libkineircd/listener/listener.cpp \
-	src/libkineircd/listener/config.cpp \
-	src/libkineircd/listener/config.h \
-	src/libkineircd/listener/list.cpp \
-	src/libkineircd/modules/descriptor.cpp \
-	src/libkineircd/modules/list.cpp \
-	src/libkineircd/chantypes.cpp \
-	src/libkineircd/connection.cpp \
-	src/libkineircd/constants.h \
-	src/libkineircd/daemon.cpp \
+	src/lib/language/subst.cpp \
+	src/lib/language/subst.h \
+	src/lib/language/config.cpp \
+	src/lib/language/config.h \
+	src/lib/language/data.cpp \
+	src/lib/language/interface.cpp \
+	src/lib/listener/listener.cpp \
+	src/lib/listener/config.cpp \
+	src/lib/listener/config.h \
+	src/lib/listener/list.cpp \
+	src/lib/modules/descriptor.cpp \
+	src/lib/modules/list.cpp \
+	src/lib/chantypes.cpp \
+	src/lib/connection.cpp \
+	src/lib/constants.h \
+	src/lib/daemon.cpp \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_CPP) \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_H) \
-	src/libkineircd/logger.cpp \
-	src/libkineircd/myserver.cpp \
-	src/libkineircd/myserver.h \
-	src/libkineircd/name.cpp \
-	src/libkineircd/registry.cpp \
-	src/libkineircd/signals.cpp \
-	src/libkineircd/todo.cpp \
-	src/libkineircd/user.cpp \
-	src/libkineircd/version.cpp
+	src/lib/logger.cpp \
+	src/lib/myserver.cpp \
+	src/lib/myserver.h \
+	src/lib/name.cpp \
+	src/lib/registry.cpp \
+	src/lib/signals.cpp \
+	src/lib/todo.cpp \
+	src/lib/user.cpp \
+	src/lib/version.cpp
 	
 # Flags..
 libkineircd_la_LDFLAGS=\
@@ -261,46 +261,46 @@ include/kineircd/server.h: include/kineircd/server.h.tpl $(AUTOGEN_DIR)/servermo
 		-T include/kineircd/server.h.tpl \
 		$(AUTOGEN_DIR)/servermodes.def
 
-src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOGEN_DIR)/config.def $(AUTOGEN_DIR)/config.scm
+src/lib/config/config.cpp: src/lib/config/config.cpp.tpl $(AUTOGEN_DIR)/config.def $(AUTOGEN_DIR)/config.scm
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T src/libkineircd/config/config.cpp.tpl \
+		-T src/lib/config/config.cpp.tpl \
 		-S $(AUTOGEN_DIR)/config.scm \
 		$(AUTOGEN_DIR)/config.def
 
-src/libkineircd/language/subst.cpp: src/libkineircd/language/subst.cpp.tpl $(AUTOGEN_DIR)/attributes.def
+src/lib/language/subst.cpp: src/lib/language/subst.cpp.tpl $(AUTOGEN_DIR)/attributes.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T src/libkineircd/language/subst.cpp.tpl \
+		-T src/lib/language/subst.cpp.tpl \
 		$(AUTOGEN_DIR)/attributes.def
 
-src/libkineircd/chantypes.cpp: src/libkineircd/chantypes.cpp.tpl $(AUTOGEN_DIR)/chantypes.def
+src/lib/chantypes.cpp: src/lib/chantypes.cpp.tpl $(AUTOGEN_DIR)/chantypes.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T src/libkineircd/chantypes.cpp.tpl \
+		-T src/lib/chantypes.cpp.tpl \
 		$(AUTOGEN_DIR)/chantypes.def
 
 # Stop having to relink every module per build in maintainer mode..
 # Is this wise, though?
 if !MAINTAINER_MODE
-.PHONY: src/libkineircd/version.h
+.PHONY: src/lib/version.h
 endif
 
 # This is intentionally *not* in the sources list or it will fudge the checksum
-src/libkineircd/version.h:
+src/lib/version.h:
 	$(ECHO) \
 		"#define SOURCE_CODE_HASH \"` \
 			cat $(libkineircd_la_SOURCES) \
 				| md5sum \
 				| cut -d\  -f1 \
 			`\"" \
-		> src/libkineircd/version.h
+		> src/lib/version.h
 	$(ECHO) \
 		"#define BUILD_TIME \"`date -u +%Y%m%dT%H%MZ`\"" \
-		>> src/libkineircd/version.h
+		>> src/lib/version.h
 	$(ECHO) \
 		"#define BUILD_TIME_FULL \"`date`\"" \
-		>> src/libkineircd/version.h
+		>> src/lib/version.h
 	if \
 		test -e $(top_builddir)/.builds; then \
 			expr \
@@ -312,7 +312,7 @@ src/libkineircd/version.h:
 		fi
 	$(ECHO) \
 		"#define BUILD_COUNT `cat $(top_builddir)/.builds`" \
-		>> src/libkineircd/version.h
+		>> src/lib/version.h
 
 
 ###############################################################################
@@ -320,7 +320,7 @@ src/libkineircd/version.h:
 ###############################################################################
 libkineircd_clbp_la_SOURCES=\
 	include/kineircd/clbp/protocol.h \
-	src/libkineircd_clbp/protocol.cpp
+	src/lib_clbp/protocol.cpp
 
 libkineircd_clbp_la_LDFLAGS=\
 	-version-info @LIBKINEIRCD_CLBP_VERSION@:@LIBKINEIRCD_CLBP_REVISION@:@LIBKINEIRCD_CLBP_AGE@
@@ -338,15 +338,15 @@ libkineircd_irc2_la_SOURCES=\
 	include/kineircd/irc2/numerics.h \
 	include/kineircd/irc2/protocol.h \
 	include/kineircd/irc2/utility.h \
-	src/libkineircd_irc2/common.cpp \
-	src/libkineircd_irc2/lang.h \
-	src/libkineircd_irc2/language.cpp \
-	src/libkineircd_irc2/language.h \
-	src/libkineircd_irc2/library.cpp \
-	src/libkineircd_irc2/protocol.cpp \
-	src/libkineircd_irc2/stats.cpp \
-	src/libkineircd_irc2/stats.h \
-	src/libkineircd_irc2/utility.cpp
+	src/lib_irc2/common.cpp \
+	src/lib_irc2/lang.h \
+	src/lib_irc2/language.cpp \
+	src/lib_irc2/language.h \
+	src/lib_irc2/library.cpp \
+	src/lib_irc2/protocol.cpp \
+	src/lib_irc2/stats.cpp \
+	src/lib_irc2/stats.h \
+	src/lib_irc2/utility.cpp
 
 libkineircd_irc2_la_LDFLAGS=\
 	-version-info @LIBKINEIRCD_IRC2_VERSION@:@LIBKINEIRCD_IRC2_REVISION@:@LIBKINEIRCD_IRC2_AGE@
@@ -361,7 +361,7 @@ include/kineircd/irc2/numerics.h: include/kineircd/irc2/numerics.h.tpl $(AUTOGEN
 		-T include/kineircd/irc2/numerics.h.tpl \
 		$(AUTOGEN_DIR)/irc2numerics.def
 
-src/libkineircd_irc2/language.cpp src/libkineircd_irc2/language.h: $(AUTOGEN_DIR)/language.tpl $(AUTOGEN_DIR)/language.def
+src/lib_irc2/language.cpp src/lib_irc2/language.h: $(AUTOGEN_DIR)/language.tpl $(AUTOGEN_DIR)/language.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
 		-T $(AUTOGEN_DIR)/language.tpl \
