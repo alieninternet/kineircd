@@ -50,6 +50,16 @@ namespace Kine {
       // Load a module, hopefully. Returns 0 (null) if we failed
       static ModuleDescriptor *loadModule(const String &moduleFile,
 					  String &errorReturn);
+      
+      // Start a module
+      bool start(void) {
+	 return module->getBasicInfo().startFunction();
+      }
+
+      // Stop a module
+      void stop(void) {
+	 module->getBasicInfo().stopFunction();
+      }
    };
 };
    
