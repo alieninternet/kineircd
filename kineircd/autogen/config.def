@@ -101,16 +101,17 @@ definition = {
 
 definition = {
    name = "Languages";
-   hasVariable = yes;
-   varType = "LanguageList";
-   variable = "LanguageList";
    comment =
       "The languages section defines files we need to load to obtain language "
       "data. The list is ordered from most preferred to least preferred, with "
       "the first language being the default language for all output.";
    
    defaultDefinition = {
+      hasVariable = yes;
+      varType = "LanguageList";
+      variable = "LanguageList";
       varHandler = "LanguageConfig::varHandler";
+      exampleValue = "languages/*.lang";
    };
 };
    

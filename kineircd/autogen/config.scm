@@ -19,6 +19,7 @@
 ;;; You should have received a copy of the GNU General Public License
 ;;; along with KineIRCd; if not, write to the Free Software
 ;;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+;;;
 
 
 
@@ -72,7 +73,7 @@
 
 
 
-;;; shadowTable? - Determine if the table in scope has a shadow table
+;;; shadowTable? - Determine if the table in scope is a shadow table
 (define (shadowTable?)
    (and
       (not
