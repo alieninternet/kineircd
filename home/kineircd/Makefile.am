@@ -83,7 +83,10 @@ EXTRA_DIST=\
 	autogen/config.def \
 	autogen/config.scm \
 	autogen/errors.def \
+	autogen/events.def \
 	autogen/irc2numerics.def \
+	autogen/language.def \
+	autogen/language.tpl \
 	autogen/logger.def \
 	autogen/servermodes.def \
 	autogen/usermodes.def \
@@ -144,6 +147,7 @@ BUILT_SOURCES=\
 	include/kineircd/irc2/numerics.h \
 	include/kineircd/config.h \
 	include/kineircd/errors.h \
+	include/kineircd/events.h \
 	include/kineircd/logger.h \
 	include/kineircd/server.h \
 	install/.lang \
@@ -176,6 +180,7 @@ libkineircd_la_SOURCES=\
 	include/kineircd/denizen.h \
 	include/kineircd/entity.h \
 	include/kineircd/errors.h \
+	include/kineircd/events.h \
 	include/kineircd/kineircdconf.h \
 	include/kineircd/languages.h \
 	include/kineircd/listener.h \

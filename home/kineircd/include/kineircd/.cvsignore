@@ -1,5 +1,6 @@
 config.h
 errors.h
+events.h
 kineircdconf.h
 logger.h
 server.h
