@@ -91,7 +91,7 @@ namespace Kine {
 		' ' << std::setfill('0') << std::setw(3) << numeric <<
 		' ' << user.getNickname() << ' ' << parameters <<
 		lineTerminator;
-	      sendRawMessage(output.str());
+	      sendRawLine(output.str());
 	   };
 	   
 	   

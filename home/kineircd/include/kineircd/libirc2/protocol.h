@@ -84,7 +84,7 @@ namespace Kine {
 
 	 
 	 //! Insert a message into the output queue (raw)
-	 void sendRawMessage(const std::string& input)
+	 void sendRawLine(const std::string& input)
 	   {
 	      outputQueue.push(input);
 	      ++sentMessageCount;
@@ -111,14 +111,14 @@ namespace Kine {
 	   {
 	      std::ostringstream output;
 	      output << command << lineTerminator;
-	      sendRawMessage(output.str());
+	      sendRawLine(output.str());
 	   };
 	 template <class Tc, class Tp>
 	   void sendMessage(const Tc& command, const Tp& parameters)
 	   {
 	      std::ostringstream output;
 	      output << command << ' ' << parameters << lineTerminator;
-	      sendRawMessage(output.str());
+	      sendRawLine(output.str());
 	   };
 
 	 
@@ -128,7 +128,7 @@ namespace Kine {
 	     {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class To, class Tc,
 	           class Tpa>
@@ -138,7 +138,7 @@ namespace Kine {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << " :" << pa <<
 		  lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class To, class Tc,
 	           class Tpa, class Tpb>
@@ -148,7 +148,7 @@ namespace Kine {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << ' ' << pa <<
 		  " :" << pb << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc>
@@ -158,7 +158,7 @@ namespace Kine {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << ' ' << pa <<
 		  ' ' << pb << " :" << pc << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc, class Tpd>
@@ -169,7 +169,7 @@ namespace Kine {
 		std::ostringstream output;
 		output << ':' << origin << ' ' << command << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << " :" << pd << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe>
@@ -181,7 +181,7 @@ namespace Kine {
 		output << ':' << origin << ' ' << command << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << " :" << pe <<
 		  lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
@@ -194,7 +194,7 @@ namespace Kine {
 		output << ':' << origin << ' ' << command << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
 		  " :" << pf << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
@@ -208,7 +208,7 @@ namespace Kine {
 		output << ':' << origin << ' ' << command << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe << 
 		  ' ' << pf << " :" << pg << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
@@ -222,7 +222,7 @@ namespace Kine {
 		output << ':' << origin << ' ' << command << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
 		  ' ' << pf << ' ' << pg << " :" << ph << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class To, class Tc,
 	           class Tpa, class Tpb, class Tpc, class Tpd, class Tpe,
@@ -237,7 +237,7 @@ namespace Kine {
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
 		  ' ' << pf << ' ' << pg << ' ' << ph << " :" << pi <<
 		  lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 
 	 
@@ -335,7 +335,7 @@ namespace Kine {
 	      output << ':' << config().getServerName() << 
 		' ' << std::setfill('0') << std::setw(3) << numeric << 
 		' ' << destination.getNickname() << lineTerminator;
-	      sendRawMessage(output.str());
+	      sendRawLine(output.str());
 	   };
 	 template <class Ta>
 	   void sendNumeric(const Client& destination,
@@ -347,7 +347,7 @@ namespace Kine {
 		  ' ' << std::setfill('0') << std::setw(3) << numeric << 
 		  ' ' << destination.getNickname() << 
 		  " :" << pa << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb>
 	   void sendNumeric(const Client& destination,
@@ -359,7 +359,7 @@ namespace Kine {
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  " :" << pb << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc>
 	   void sendNumeric(const Client& destination,
@@ -371,7 +371,7 @@ namespace Kine {
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << " :" << pc << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td>
 	   void sendNumeric(const Client& destination,
@@ -384,7 +384,7 @@ namespace Kine {
 		  ' ' << std::setfill('0') << std::setw(3) << numeric <<
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << " :" << pd << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te>
 	   void sendNumeric(const Client& destination,
@@ -398,7 +398,7 @@ namespace Kine {
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << " :" << pe <<
 		  lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf>
 	   void sendNumeric(const Client& destination,
@@ -412,7 +412,7 @@ namespace Kine {
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
 		  " :" << pf << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
 	           class Tg>
@@ -428,7 +428,7 @@ namespace Kine {
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
 		  ' ' << pf << " :" << pg << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
 	           class Tg, class Th>
@@ -444,7 +444,7 @@ namespace Kine {
 		  ' ' << destination.getNickname() << ' ' << pa <<
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
 		  ' ' << pf << ' ' << pg << " :" << ph << lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
 	           class Tg, class Th, class Ti>
@@ -461,7 +461,7 @@ namespace Kine {
 		  ' ' << pb << ' ' << pc << ' ' << pd << ' ' << pe <<
 		  ' ' << pf << ' ' << pg << ' ' << ph << " :" << pi <<
 		  lineTerminator;
-		sendRawMessage(output.str());
+		sendRawLine(output.str());
 	     };
 
 
