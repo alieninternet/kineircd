@@ -60,6 +60,7 @@ class Logger {
    };
 
    enum logtype_type {
+      TYPE_OTHER,				// Other; eg. module extension
 # ifdef HAVE_SYSLOG_H
       TYPE_SYSLOG,				// Syslog interface
 # endif
