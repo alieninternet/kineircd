@@ -95,6 +95,10 @@ namespace Kine {
 	 };
 	 const int flags;
 	 
+	 // Configuration info (optional)
+	 const ConfigData *configData;
+	 const ConfigParser::defTable_type *configDefinitions;
+	 
 	 // The two required functions - start and stop
 	 const startFunction_type *startFunction;
 	 const stopFunction_type *stopFunction;
@@ -106,20 +110,12 @@ namespace Kine {
       
       // Basic information about this module
       const basicInfo_type &basicInfo;
-
-      // Configuration info (optional)
-      const ConfigData *configData;
-      const ConfigParser::defTable_type *configDefinitions;
       
     protected:
       // Constructor
-      Module(const type_type t, const basicInfo_type &bi,
-	     const ConfigData *cData = 0, 
-	     const void *cDefs = 0) // really configParser::defTable_type
+      Module(const type_type t, const basicInfo_type &bi)
 	: type(t),
-          basicInfo(bi),
-          configData(cData),
-      configDefinitions((ConfigParser::defTable_type *)cDefs)
+          basicInfo(bi)
         {};
       
     public:
