@@ -40,12 +40,15 @@
 # include <aisutil/string/string.h>
 # include <aisutil/time.h>
 
+# include <kineircd/errors.h>
 # include <kineircd/listener.h>
 # include <kineircd/logger.h>
 # include <kineircd/connection.h>
 # include <kineircd/protocolinfo.h>
 
 namespace Kine {
+   class User;
+   
    //! The Daemon class
    class Daemon {
     public:
@@ -154,6 +157,20 @@ namespace Kine {
       //! Return the data for the INFO command
       const info_type& getInfo(void) const
 	{ return info; };
+
+      //! Rehash (reload configuration, language files, etc)
+      const Error::error_type rehash(const User* const caller = 0)
+	{ return Error::UNKNOWN_ERROR; };
+      
+      //! Restart the server
+      const Error::error_type restart(const std::string& reason,
+				       const User* const caller = 0)
+	{ return Error::UNKNOWN_ERROR; };
+      
+      //! Shut down the server with the given reason
+      const Error::error_type shutdown(const std::string& reason,
+					const User* const caller = 0)
+	{ return Error::UNKNOWN_ERROR; };
       
       //! Main loop
       bool run(void);
@@ -164,5 +181,7 @@ namespace Kine {
    inline static Daemon& daemon(void)
      { return Daemon::getInstance(); };
 };
+
+# include <kineircd/user.h>
 
 #endif // _INCLUDE_KINEIRCD_DAEMON_H_ 
