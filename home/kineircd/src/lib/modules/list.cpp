@@ -78,7 +78,7 @@ ModuleDescriptor *ModuleList::loadModule(const String &moduleFile,
 }
 
 
-/* startAllModules - Start all modules
+/* startAll - Start all modules
  * Original 22/07/2002 simonb
  */
 void ModuleList::startAll(Daemon &daemon) const
