@@ -13,9 +13,12 @@
 
 
 // Channel modes -- IMPORTANT: Update the mode strings as you update the table!
-char const *Channel::modeStr		= "abdeEhiIklmnoOpqrRstv";
-char const *Channel::modeParamStr 	= "bdehIkloOv";
-char const *Channel::prefixStr		= "(ohv)@%+";
+char const *Channel::modeStr = 
+  "abdeEhiIklmnoOpqrRstv";
+char const *Channel::modeParamStr = 
+  "bdehIkloOv";
+char const *Channel::prefixStr = 
+  "(ohv)@%+";
 struct Channel::modeTableStruct const Channel::modeTable[] = {
      { 'a',	MODE_ANONYMOUS,		false,	false,	true,
 	Channel::toggleModeANONYMOUS 

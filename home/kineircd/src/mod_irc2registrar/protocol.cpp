@@ -244,11 +244,18 @@ void registerHandler::parseLine(String const &line)
 	    
 	    // Okay, try to find a direct link to the handler they need
 	    switch (protocol) {
+#ifdef HAVE_PROTOCOL_P13SERVER
 	     case 13: // P13
 	       // Create the new handler for this user
 	       newHandler = new p13serverHandler(getConnection(), server,
 						 startStamp, linkStamp);
 	       break;
+#endif
+#ifdef HAVE_PROTOCOL_P14SERVER
+	     case 14: // P14
+//	       newHandler = new p14serverHandler();
+	       break;
+#endif
 	     default: // Unknown protocol, terminate connection
 #ifdef DEBUG
 	       debug(String::printf("Unsupported protocol (%d), terminating!",

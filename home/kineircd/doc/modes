@@ -182,6 +182,9 @@ themselves and operators.
 w - Wallops
 See wallop messages.
 
+­ - Routing staff (character 0xA1, 241 octal)
+Allowed to use additional commands such as pings and traceroutes, and can
+connect and disconnect any server across the network
 
 ____________________________________________________________________________
 Server modes

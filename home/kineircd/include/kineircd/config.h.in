@@ -213,6 +213,14 @@
 # define MAX_OUTQUEUE_DUMP_SIZE		2048
 
 
+/* This is the mask used when a channel is set +a (anonymous). Change this
+ * only if you really need to, since the RFC says it should be set to
+ * "anonymous!anonymous@anonymous" but this is meaningless in some languages,
+ * or might conflict with a network policy or something *shrugs*
+ */
+# define ANONYMOUS_IDENT_MASK		"anonymous!anonymous@anonymous"
+
+
 /* Defaults :) Change at will, but be careful. */
 # define DEFAULT_CONFIG_SERVER_DESCRIPTION	"Mystery unconfigured server"
 # define DEFAULT_CONFIG_SERVER_MAX_TTL		64 /* 64 is the maximum */
@@ -243,7 +251,8 @@
  * +O/+o which is given to the user. Modes should be or'd together with the
  * '|' character.
  */
-# define GIVE_MODES_GLOBALOP		User::MODE_WALLOPS
+# define GIVE_MODES_GLOBALOP		User::MODE_WALLOPS | \
+					User::MODE_ROUTINGSTAFF
 /* # define GIVE_MODES_LOCALOP */
 
 
@@ -264,6 +273,11 @@
 
 
 
+/* Define these depending on what connections you want to allow/disallow */
+# undef ALLOW_CLIENT_CONNECTIONS
+# undef ALLOW_SERVER_CONNECTIONS
+# undef ALLOW_SERVICE_CONNECTIONS
+  
 /* Define this if you want the server to send a ping with a random value to
  * the client upon connection and wait until a responce is returned before
  * allowing them to continue registration. 
@@ -393,7 +407,7 @@
  * on this server. Sometimes this may 'clash' with network policies or it might
  * be abused; Whatever the reason, here is your chance to turn it off.
  */
-# undef ALLOW_OPER_TRACEROUTE
+# undef HAVE_CMD_TRACEROUTE
 
 
 /* Define this if you want helpers and operators to be able to 'see' user
@@ -409,14 +423,6 @@
 # undef HAVE_PROTOCOL_P13SERVER
 # undef HAVE_PROTOCOL_P14SERVER
   
-
-/* This is the mask used when a channel is set +a (anonymous). Change this
- * only if you really need to, since the RFC says it should be set to
- * "anonymous!anonymous@anonymous" but this is meaningless in some languages,
- * or might conflict with a network policy or something *shrugs*
- */
-# define ANONYMOUS_IDENT_MASK		"anonymous!anonymous@anonymous"
-
 
 /* Define it the C++ compiler has STL (Standard Template Library) support */
 # undef HAVE_CXX_STL
@@ -795,6 +801,5 @@
 # ifndef SERVER_NAME_MASK
 #  define SERVER_NAME_MASK		"*"
 # endif
-
   
 #endif

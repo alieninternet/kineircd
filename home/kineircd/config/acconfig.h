@@ -250,7 +250,8 @@
  * +O/+o which is given to the user. Modes should be or'd together with the
  * '|' character.
  */
-# define GIVE_MODES_GLOBALOP		User::MODE_WALLOPS
+# define GIVE_MODES_GLOBALOP		User::MODE_WALLOPS | \
+					User::MODE_ROUTINGSTAFF
 /* # define GIVE_MODES_LOCALOP */
 
 
@@ -271,6 +272,11 @@
 
 @TOP@
 
+/* Define these depending on what connections you want to allow/disallow */
+# undef ALLOW_CLIENT_CONNECTIONS
+# undef ALLOW_SERVER_CONNECTIONS
+# undef ALLOW_SERVICE_CONNECTIONS
+  
 /* Define this if you want the server to send a ping with a random value to
  * the client upon connection and wait until a responce is returned before
  * allowing them to continue registration. 
@@ -400,7 +406,7 @@
  * on this server. Sometimes this may 'clash' with network policies or it might
  * be abused; Whatever the reason, here is your chance to turn it off.
  */
-# undef ALLOW_OPER_TRACEROUTE
+# undef HAVE_CMD_TRACEROUTE
 
 
 /* Define this if you want helpers and operators to be able to 'see' user
@@ -511,6 +517,5 @@
 # ifndef SERVER_NAME_MASK
 #  define SERVER_NAME_MASK		"*"
 # endif
-
   
 #endif

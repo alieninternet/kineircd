@@ -20,29 +20,34 @@
  * broken down since a compiler would not be able to efficiently create a
  * structure multiplier for the CPU?
  */
+#define ANYONE 0 // little macro for the table -- shh! :)
 struct irc2userHandler::functionTableStruct const 
   irc2userHandler::functionsTable[] = {
-     { "ACCEPT",	parseACCEPT,		1,	0,
+     { "ACCEPT",	parseACCEPT,		1,
+	  ANYONE,
 	  "{ <nickname> | -<nickname> | * } ( SPACE { nickname | -nickname "
 	  "| * } )",
 	  "This command is only useful with the user mode '+g' set. When set, "
 	  "this command allows you to accept people, thus enabling them to "
 	  "talk to you while you are ignoring everyone with user-mode '+g'."
      },
-     { "ADMIN",		parseADMIN,		2,	0,
+     { "ADMIN",		parseADMIN,		2,
+	  ANYONE,
 	  "[ <server> ]",
 	  "Returns information about the administrators of the given server. "
 	  "If no server is specified, this returns information regarding "
 	  "the administrators of the server you are locally connected to."
      }, 
-     { "AWAY",		parseAWAY,		1,	0,
+     { "AWAY",		parseAWAY,		1,
+	  ANYONE,
 	  "[ <message> ]",
 	  "If a message is given, this will mark you as 'away', using the "
 	  "given message as your reason. If you do not give a message, this "
 	  "will mark you as 'unaway', or that you have returned, and will "
 	  "remove the given away message."
      }, 
-     { "CONNECT",	parseCONNECT,		0,	User::isOper,
+     { "CONNECT",	parseCONNECT,		0,
+	  User::isOper,
 	  "<target server>  [ <port>  [ <remote server> ] ]",
 	  "Instruct a server to connect to the target server on the default "
 	  "port found in the configuration file for that server. If a port is "
@@ -50,40 +55,46 @@ struct irc2userHandler::functionTableStruct const
 	  "server is given, that server will be instructed to connect to "
 	  "the target server rather than the local server forfilling the "
 	  "request."
-     }, 
-     { "DIE",		parseDIE,		0,	User::isOper,
+     },
+     { "DIE",		parseDIE,		0,
+	  User::isOper,
 	  "[ <reason> ]",
 	  "This command shuts down the server you are currently connected to. "
 	  "Optionally a reason can be specified which will be broadcast to "
 	  "other operators on the network as the reason for the server's "
 	  "disappearance."
      },
-     { "GLOBOPS",	parseGLOBOPS,		0,	User::isGlobalOper,
+     { "GLOBOPS",	parseGLOBOPS,		0,
+	  User::isGlobalOper,
 	  "<message>",
 	  "Sends the given message to all global operators online (provided "
 	  "they have their server-notices usermode set to receive them)."
      },
-     { "HELP",		parseHELP,		3,	0,
+     { "HELP",		parseHELP,		3,
+	  ANYONE,
 	  "[ '-' ] [ <command> | <command mask> ]",
 	  "Returns command parameters for the given command or mask. If no "
 	  "mask it specified, it is assuming you mean all commands (or a mask "
 	  "of '*'). When the '-' prefix is added to the command or mask, "
 	  "additional help will be returned, such as what you are reading now."
      },
-     { "HELPME",	parseHELPME,		4,	User::isHelper,
+     { "HELPME",	parseHELPME,		4,
+	  User::isHelper,
 	  "<message>",
 	  "Sends the given message to operators on-line for requesting help "
 	  "with something. This is usually used to ask for an operator's "
 	  "assistance with something a 'helper' cannot acheive on their own, "
 	  "such as a KILL or GLINE."
      }, 
-     { "INFO",		parseINFO,		1,	0,
+     { "INFO",		parseINFO,		1,
+	  ANYONE,
 	  "[ <server> ]",
 	  "Returns extended information about the version of the given "
 	  "server. If no server is specified, this returns information "
 	  "regarding the server you are locally connected to."
      }, 
-     { "INVITE",	parseINVITE,		3,	0,
+     { "INVITE",	parseINVITE,		3,
+	  ANYONE,
 	  "[ <nickname>  <channel>  [ <timeout> ]",
 	  "Invite the person under the given nickname to the specified "
 	  "channel. You must be on the given channel for this to work. If "
@@ -92,13 +103,15 @@ struct irc2userHandler::functionTableStruct const
 	  "value is given, it is the number of seconds the invitation is "
 	  "valid for."
      }, 
-     { "ISON",		parseISON,		2,	0,
+     { "ISON",		parseISON,		2,
+	  ANYONE,
 	  "<nickname> ( SPACE <nickname> )",
 	  "Check if the given nickname(s) are online. The server will "
 	  "compile a list of nicknames who are online now in the exact "
 	  "order of the list given."
      },
-     { "JOIN",		parseJOIN,		3,	0,
+     { "JOIN",		parseJOIN,		3,
+	  ANYONE,
 	  "{ <channel> ( ',' <channel> )  [ <key> ( ',' <key> ) ] } | '0'",
 	  "Join the given channels. If the channel(s) require a key, or "
 	  "keys, then the keys list (if it exists) will be checked for a "
@@ -107,18 +120,21 @@ struct irc2userHandler::functionTableStruct const
 	  "channel you are currently on. Any channels specified before the "
 	  "'0' on the list will not be joined."
      }, 
-     { "KICK",		parseKICK,		1,	0,
+     { "KICK",		parseKICK,		1,
+	  ANYONE,
 	  "<channel> ( ',' <channel> )  <user> ( ',' <user> )  [ <reason> ]",
 	  "Kick the given user(s) from the given channel(s), optionally "
 	  "with a reason for your actions."
      },
-     { "KILL",		parseKILL,		0,	User::isGlobalOper,
+     { "KILL",		parseKILL,		0,	
+	  User::isOper,
 	  "<nickname>  <reason>",
 	  "Kill the given nickname with the specified reason. The reason is "
 	  "manditory as you must have a reason for KILLing someone, "
 	  "naturally :)"
      },
-     { "LINKS",		parseLINKS,		2,	0,
+     { "LINKS",		parseLINKS,		2,
+	  ANYONE,
 	  "[ [ <remote server> ]  <server mask> ]",
 	  "Generate a list of server links. If a server mask is specified, "
 	  "only servers matching the mask will be shown. If a remote server "
@@ -126,13 +142,15 @@ struct irc2userHandler::functionTableStruct const
 	  "instead of this server. Only helpers and operators will see "
 	  "hidden servers."
      },
-     { "LIST",		parseLIST,		5,	0,
+     { "LIST",		parseLIST,		5,
+	  ANYONE,
 	  "[ <channel> ( ',' <channel> ) ]",
 	  "Return a list of channels currently created on the network. "
 	  "The information returned also includes the number of users on "
 	  "the channels, and the current topic."
      },
-     { "LOCOPS",	parseLOCOPS,		0,	User::isOper,
+     { "LOCOPS",	parseLOCOPS,		0,
+	  User::isOper,
 	  "<message>",
 	  "Sends a message to any operator connected to the same server as "
 	  "you are. This is not to be confused with 'local operators', as "
@@ -141,27 +159,32 @@ struct irc2userHandler::functionTableStruct const
 	  "the message will only be received by an operator who has their "
 	  "server-notices usermode set appropriately."
      },
-     { "LUSERS",	parseLUSERS,		2,	0,
+     { "LUSERS",	parseLUSERS,		2,
+	  ANYONE,
 	  "[ <mask>  [ <server> ] ]",
 	  "Show the current local-user status. This command has been "
 	  "extended to also include global users, and peak user counts."
      },
-     { "MODE",		parseMODE,		2,	0,
+     { "MODE",		parseMODE,		2,
+	  ANYONE,
 	  "{ <channel> | <nickname> | <server> }  ( [ '-' | '+' ] <mode> )  "
 	  "[ <modeparams> ]",
 	  0
      },
-     { "MOTD",		parseMOTD,		3,	0,
+     { "MOTD",		parseMOTD,		3,
+	  ANYONE,
 	  "[ <server> ]",
 	  "Display the MOTD (Message Of The Day). If a server is specified, "
 	  "the MOTD displayed will come from that server, provided the given "
 	  "server will allow you to receive it remotely."
      }, 
-     { "NAMES",		parseNAMES,		1,	0,
+     { "NAMES",		parseNAMES,		1,
+	  ANYONE,
 	  "[ <channel> ( ',' <channel> ) ]",
 	  0
      },
-     { "NICK",		parseNICK,		3,	0,
+     { "NICK",		parseNICK,		3,
+	  ANYONE,
 	  "<new nickname>",
 	  "Change your current nickname to the given nickname. This command "
 	  "will fail if the given nickname is already in use, the nickname is "
@@ -169,7 +192,8 @@ struct irc2userHandler::functionTableStruct const
 	  "channel which is holding an event (channel mode +E), or your "
 	  "connection is restricted."
      },
-     { "NOTICE",	parseNOTICE,		4,	0,
+     { "NOTICE",	parseNOTICE,		4,
+	  ANYONE,
 	  "{ <nickname> | <channel> } ( ',' { <nickname> | <channel> } )  "
 	  "<message>",
 	  "Send the given NOTICE message to the given channel(s)/"
@@ -179,31 +203,36 @@ struct irc2userHandler::functionTableStruct const
 	  "intentionally to avoid never-ending automated replies bouncing "
 	  "back and forth."
      },
-     { "OPER",		parseOPER,		5,	0,
+     { "OPER",		parseOPER,		5,
+	  ANYONE,
 	  "<nickname>  <password>",
 	  "This command allows you to become an IRC operator. You must give "
 	  "your operator nickname and password for this command to be "
 	  "successful."
      },
-     { "PART",		parsePART,		3,	0,
+     { "PART",		parsePART,		3,
+	  ANYONE,
 	  "<channel> ( ',' <channel> )  [ <reason> ]",
 	  "Leave the given channel(s), optionally giving a reason for your "
 	  "departure."
      },
-     { "PING",		parsePING,		1,	0,
+     { "PING",		parsePING,		1,
+	  ANYONE,
 	  "[ <text> ]",
 	  "Ping the server, optionally giving text. The server will reply "
 	  "with the given text, or just a PONG. Some clients use this "
 	  "for 'lag checking', to measure the lag between the client and "
 	  "the server."
      },
-     { "PONG",		parsePONG,		1,	0,
+     { "PONG",		parsePONG,		1,
+	  ANYONE,
 	  "[ <text> ]",
 	  "Used as a reply to a server ping, has no other purpose but for a "
 	  "client to automatically respond to prove to the server the client "
 	  "is still active."
      },
-     { "PRIVMSG",	parsePRIVMSG,		4,	0,
+     { "PRIVMSG",	parsePRIVMSG,		4,
+	  ANYONE,
 	  "{ <nickname> | <channel> } ( ',' { <nickname> | <channel> } )  "
 	  "<message>",
 	  "Send the given PRIVMSG message to the given channel(s)/"
@@ -211,27 +240,32 @@ struct irc2userHandler::functionTableStruct const
 	  "specified. Note that if you are being silenced by one of the "
 	  "given nicks, the message may simply be ignored without warning. "
      },
-     { "QUIT",		parseQUIT,		0,	0,
+     { "QUIT",		parseQUIT,		0,
+	  ANYONE,
 	  "[ <reason> ]",
 	  "Leave the IRC network, optionally giving a reason for "
 	  "disconnecting."
      },
-     { "REHASH",	parseREHASH,		0,	User::isOper,
+     { "REHASH",	parseREHASH,		0,
+	  User::isOper,
 	  "",
 	  "'Rehash' the server. This command (although incorrectly named) "
 	  "will reload and parse the configuration file, as well as perform "
 	  "some quick checks similar to start-up operation."
      },
-     { "RESTART",	parseRESTART,		0,	User::isOper,
+     { "RESTART",	parseRESTART,		0,
+	  User::isOper,
 	  "",
 	  "This will restart the server. This command will load an entirely "
 	  "new process for the IRC Daemon."
      },
-     { "SERVLIST",	parseSERVLIST,		2,	0,
+     { "SERVLIST",	parseSERVLIST,		2,	
+	  ANYONE,
 	  "[ <mask>  [ <type> ] ]",
 	  0
      },
-     { "SILENCE",	parseSILENCE,		1,	0,
+     { "SILENCE",	parseSILENCE,		1,
+	  ANYONE,
 	  "{ { '+' | '-' } { <mask> | <nickname } } | [ <nickname > ]",
 	  "Silence the given mask or nickname. This will stop any privage "
 	  "messages or notices being sent to you from anyone matching the "
@@ -241,60 +275,72 @@ struct irc2userHandler::functionTableStruct const
 	  "respectively. If only a nickname is given, and you are a helper "
 	  "or an operator, you will see that person's current silence list."
      }, // This help message may be too big?
-     { "SQUIT",		parseSQUIT,		0,	User::isOper,
+     { "SQUIT",		parseSQUIT,		0,
+	  User::isOper,
 	  "<server>  <reason>",
 	  "Force the given server to depart the network with the given "
 	  "reason. Warning: this command may cause a netsplit."
      },
-     { "STATS",		parseSTATS,		0,	User::isOper,
+     { "STATS",		parseSTATS,		0,
+	  User::isOper,
 	  "[ <query>  [ <server> ] ]",
 	  "Ask for a status/statistical report from the current server. If "
 	  "another server is given, the report will be generated there. If "
 	  "no query is given, a list of possible queries you can specify."
      },
-     { "TIME",		parseTIME,		1,	0,
+     { "TIME",		parseTIME,		1,
+	  ANYONE,
 	  "[ <nickname> | <service> | <server> ]",
 	  "Returns the current time on the given server, or the server the "
 	  "given user or service is connected to. This is useful when talking "
 	  "to people around the world, provided they are connected to a "
 	  "server that is geographically local to where they are situated."
      },
-     { "TOPIC",		parseTOPIC,		3,	0,
+     { "TOPIC",		parseTOPIC,		3,
+	  ANYONE,
 	  "<channel>  [ <topic> ]",
 	  "If no topic is specified, this returns the current topic on the "
 	  "given channel. If a topic is specified, this command will change "
 	  "the topic to the one given, provided you have access to do so."
      },
-     { "TRACE",		parseTRACE,		0,	User::isOper,
+     { "TRACE",		parseTRACE,		0,
+	  User::isRoutingStaff,
 	  "[ <nickname> | <service> | <server> ]",
 	  "Trace the path (internally on the network) if a given nickname, "
 	  "service or server. This is useful for locating lagging "
 	  "connections that need to be re-routed."
      },
-     { "TRACEROUTE",	parseTRACEROUTE,	0,	User::isOper,
-	  "<destination>  [ <server> ]",
+#ifdef HAVE_CMD_TRACEROUTE
+     { "TRACEROUTE",	parseTRACEROUTE,	0,
+	  User::isRoutingStaff,
+	  "<destination>  [ '-' <options> ]  [ <server> ]",
 	  "Trace the path of IP packets (externally to the network) of the "
 	  "given server. This is useful for finding better routes and should "
 	  "be used to confirm a better solution for a route."
-     }, // this command is planned...
-     { "USERHOST",	parseUSERHOST,		2,	0,
+     },
+#endif
+     { "USERHOST",	parseUSERHOST,		2,
+	  ANYONE,
 	  "<nickname> ( SPACE <nickname> )",
 	  "Returns the hosts of the nicknames on the given list. Note that "
 	  "the host may in fact be a virtual-world host rather than the "
 	  "real host. Also see USERIP."
      },
-     { "USERIP",	parseUSERIP,		2,	0,
+     { "USERIP",	parseUSERIP,		2,
+	  ANYONE,
 	  "<nickname> ( SPACE <nickname> )",
 	  "Returns the IP addresses of the nicknames on the given list. Note "
 	  "that the IP may in fact be a virtual-world IP rather than the "
 	  "real IP. Also see USERHOST."
      },
-     { "VERSION",	parseVERSION,		1,	0,
+     { "VERSION",	parseVERSION,		1,
+	  ANYONE,
 	  "[ <nickname> | <service> | <server> ]",
 	  "Returns the version of the given server, or the server the given "
 	  "user or service is connected to."
      },
-     { "WATCH",		parseWATCH,		3,	0,
+     { "WATCH",		parseWATCH,		3,
+	  ANYONE,
 	  "'C' | 'S' | 'L' | { '+' | '-' } { <nickname> | <channel> | <server> } ( SPACE { '+' | '-' } { <nickname> | <channel> | "
 	  "<server> } )",
 	  "Used as an alternative to ISON, WATCH sets up a list of "
@@ -302,31 +348,36 @@ struct irc2userHandler::functionTableStruct const
 	  "notified of their appearance and disappearances on the network. "
 	  "Note that only helpers and operators can watch a server."
      },
-     { "WALLCHOPS",	parseWALLCHOPS,		4,	0,
+     { "WALLCHOPS",	parseWALLCHOPS,		4,
+	  ANYONE,
 	  "*tba*",
 	  0
      },
 #ifdef ALLOW_OPER_WALLOPS
-     { "WALLOPS",	parseWALLOPS,		0,	User::isOper,
+     { "WALLOPS",	parseWALLOPS,		0,
+	  User::isOper,
 	  "<message>",
 	  "Broadcasts the given message to all users on the network with the "
 	  "user mode '+w' set."
      },
 #endif
-     { "WHO",		parseWHO,		2,	0,
+     { "WHO",		parseWHO,		2,
+	  ANYONE,
 	  "[ <channel> | <nickname mask> | '0' ]  "
 	  "[ 'H' / 'I' / 'N' / 'O' / 'R' / 'S' / 'U' / 'X' ] "
 	  "[ '%' { 'C' / 'D' / 'F' / 'H' / 'I' / 'N' / 'R' / 'S' / 'T' / "
 	  "'U' } [ ',' <query type> ] ]",
 	  0
      },
-     { "WHOIS",		parseWHOIS,		2,	0,
+     { "WHOIS",		parseWHOIS,		2,
+	  ANYONE,
 	  "[ <server> ]  <nickname> ( ',' <nickname> )",
 	  "Return information on who the given nickname(s) is/are. If a "
 	  "server is specified, that server will generate the reply. This is "
 	  "an extended version of the simplistic WHO command."
      },
-     { "WHOWAS",	parseWHOWAS,		2,	0,
+     { "WHOWAS",	parseWHOWAS,		2,
+	  ANYONE,
 	  "<nickname> ( ',' <nickname> )  [ <count> ]",
 	  "Return information on who the given nickname(s) was/were. The "
 	  "information on who somebody was is kept for a short amount of "
@@ -3332,6 +3383,7 @@ void irc2userHandler::parseTRACE(irc2userHandler *handler, StringTokens *tokens)
 }
 
 
+#ifdef HAVE_CMD_TRACEROUTE
 /* parseTRACEROUTE
  * Original , Simon Butcher <pickle@austnet.org>
  */
@@ -3339,6 +3391,7 @@ void irc2userHandler::parseTRACEROUTE(irc2userHandler *handler, StringTokens *to
 {
    handler->sendNumeric(999, ":Oops, sorry, havn't coded this yet :(");
 }
+#endif
 
 
 /* parseUSERHOST

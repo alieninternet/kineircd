@@ -15,7 +15,7 @@ class Handler;
 # include "user.h"
 
 // Little macro to make life easier
-#define TO_DAEMON		handler->getConnection()->getDaemon()
+# define TO_DAEMON		handler->getConnection()->getDaemon()
 
 class Handler {
  protected:
@@ -119,6 +119,7 @@ class Handler {
 };
 
 
+# ifdef HAVE_PROTOCOL_IRC2USER
 // IRC-2 User-handler sub-class
 class irc2userHandler : public Handler {
  private:
@@ -187,15 +188,17 @@ class irc2userHandler : public Handler {
    static void parseTIME(irc2userHandler *handler, StringTokens *tokens);
    static void parseTOPIC(irc2userHandler *handler, StringTokens *tokens);
    static void parseTRACE(irc2userHandler *handler, StringTokens *tokens);
+#  ifdef HAVE_CMD_TRACEROUTE
    static void parseTRACEROUTE(irc2userHandler *handler, StringTokens *tokens);
+#  endif
    static void parseUSERHOST(irc2userHandler *handler, StringTokens *tokens);
    static void parseUSERIP(irc2userHandler *handler, StringTokens *tokens);
    static void parseVERSION(irc2userHandler *handler, StringTokens *tokens);
    static void parseWATCH(irc2userHandler *handler, StringTokens *tokens);
    static void parseWALLCHOPS(irc2userHandler *handler, StringTokens *tokens);
-# ifdef ALLOW_OPER_WALLOPS
+#  ifdef ALLOW_OPER_WALLOPS
    static void parseWALLOPS(irc2userHandler *handler, StringTokens *tokens);
-# endif
+#  endif
    static void parseWHO(irc2userHandler *handler, StringTokens *tokens);
    static void parseWHOIS(irc2userHandler *handler, StringTokens *tokens);
    static void parseWHOWAS(irc2userHandler *handler, StringTokens *tokens);
@@ -247,8 +250,10 @@ class irc2userHandler : public Handler {
    // Protocol input
    void parseLine(String const &);
 };
+# endif
 
 
+# ifdef HAVE_PROTOCOL_P13SERVER
 // P13-handler sub-class
 class p13serverHandler : public Handler {
  private:
@@ -340,8 +345,10 @@ class p13serverHandler : public Handler {
    // Protocol input
    void parseLine(String const &);
 };
+# endif
 
 
+//# ifdef HAVE_PROTOCOL_P14SERVER
 // P14-handler sub-class
 class p14serverHandler : public Handler {
  private:
@@ -358,6 +365,7 @@ class p14serverHandler : public Handler {
    p14serverHandler(Connection *, Server *);	// Constructor
    ~p14serverHandler(void);			// Destructor
 };
+//# endif
 
 
 // Register-handler sub-class

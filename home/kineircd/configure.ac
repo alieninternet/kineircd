@@ -3,9 +3,9 @@ dnl AutoConf configuration script for austhex
 dnl Simon Butcher <pickle@austnet.org>
 
 
-dnl  ------------------------------------
+dnl  -------------------------------------------------------------------------
 echo " -=> Getting ready to configure..."
-dnl  ------------------------------------
+dnl  -------------------------------------------------------------------------
 AC_PREREQ(2.52)
 AC_INIT(src/Makefile.in)
 AC_CONFIG_AUX_DIR(autoconf)
@@ -22,9 +22,9 @@ LDFLAGS_SAVE="$LDFLAGS"
 INCDIRS=""
 
 
-dnl  -------------------------------------
+dnl  -------------------------------------------------------------------------
 echo " -=> Checking 'default' definitions"
-dnl  -------------------------------------
+dnl  -------------------------------------------------------------------------
 AC_MSG_CHECKING([what to set CXXFLAGS to])
 if test "$CXXFLAGS" = ""; then
   CXXFLAGS="-Wall -O2 -fomit-frame-pointer -finline-functions"
@@ -34,9 +34,9 @@ else
 fi
 
 
-dnl  ------------------------------------
+dnl  -------------------------------------------------------------------------
 echo " -=> Checking for programs we need"
-dnl  ------------------------------------
+dnl  -------------------------------------------------------------------------
 AC_PROG_CC
 AC_PROG_GCC_TRADITIONAL
 AC_PROG_CXX
@@ -47,9 +47,9 @@ AC_CHECK_PROG(RM, rm, rm -f, del)
 AC_CACHE_SAVE
 
 
-dnl  ---------------------------------------------------
+dnl  -------------------------------------------------------------------------
 echo " -=> Checking compiler and system characteristics"
-dnl  ---------------------------------------------------
+dnl  -------------------------------------------------------------------------
 AC_AIX
 AC_MINIX
 AC_ISC_POSIX
@@ -214,9 +214,9 @@ AC_DEFINE_UNQUOTED(SELECT_FDSET_NUMFDS, $austhex_cv_sys_fdset_numfds)
 AC_CACHE_SAVE
 
 
-dnl  ------------------------------------
+dnl  -------------------------------------------------------------------------
 echo " -=> Checking structures and types"
-dnl  ------------------------------------
+dnl  -------------------------------------------------------------------------
 AC_DECL_SYS_SIGLIST
 AC_STRUCT_TM
 AC_STRUCT_TIMEZONE
@@ -228,9 +228,9 @@ AC_TYPE_SIGNAL
 AC_CACHE_SAVE
 
 
-dnl  --------------------------------
+dnl  -------------------------------------------------------------------------
 echo " -=> Checking for header files"
-dnl  --------------------------------
+dnl  -------------------------------------------------------------------------
 AC_TIME_WITH_SYS_TIME
 AC_HEADER_STDC
 AC_HEADER_STAT
@@ -254,9 +254,9 @@ AC_CHECK_HEADERS( \
 AC_CACHE_SAVE
 
 
-dnl  ------------------------------------------------------------
+dnl  -------------------------------------------------------------------------
 echo " -=> Checking for libraries and specific library functions"
-dnl  ------------------------------------------------------------
+dnl  -------------------------------------------------------------------------
 AC_CHECK_LIB(pthread, pthread_self,,[
   AC_MSG_RESULT(no)
   dnl should check for other threads libraries here. For now, just complain
@@ -417,112 +417,54 @@ fi
 AC_CACHE_SAVE
 
 
-dnl  -------------------------------------------------------
+dnl  -------------------------------------------------------------------------
 echo " -=> Determining compilation configuration parameters"
-dnl  -------------------------------------------------------
-AC_MSG_CHECKING([user-conn-ping parameter])
-AC_ARG_ENABLE(user-conn-ping,[  --enable-user-conn-ping       enable anti-spoof connection ping requirement],
+dnl  -------------------------------------------------------------------------
+AC_MSG_CHECKING([allow-clients parameter])
+AC_ARG_ENABLE(allow-clients,[  --enable-allow-clients        allow connections from users (clients)],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT(yes)
-     AC_DEFINE(USER_CONNECTION_PINGPONG)
+     AC_DEFINE(ALLOW_CLIENT_CONNECTIONS)
+
+     dnl This uses user protocols so we need this
+     austhex_test_enable_user_protocols="yes"
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(USER_CONNECTION_PINGPONG)
+   AC_DEFINE(ALLOW_CLIENT_CONNECTIONS)
+
+   dnl This uses user protocols so we need this
+   austhex_test_enable_user_protocols="yes"
  ])
 
-AC_MSG_CHECKING([paranoid-opers parameter])
-AC_ARG_ENABLE(paranoid-opers,[  --enable-paranoid-opers       operators need to know when they are /whois'd],
+AC_MSG_CHECKING([allow-servers parameter])
+AC_ARG_ENABLE(allow-servers,[  --enable-allow-servers        allow connections from servers],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT(yes)
-     AC_DEFINE(NOTIFY_PARANOID_OPERS_ON_WHOIS)
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
- ])
-
-AC_MSG_CHECKING([ircii-kluge parameter])
-AC_ARG_ENABLE(ircii-kluge,[  --enable-ircii-kluge          kluge to allow old ircII clients to work],
- [
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(BLOODY_IRCII_KLUGE)
+     AC_DEFINE(ALLOW_SERVER_CONNECTIONS)
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(BLOODY_IRCII_KLUGE)
+   AC_DEFINE(ALLOW_SERVER_CONNECTIONS)
  ])
 
-AC_MSG_CHECKING([drop-lame-servers parameter])
-AC_ARG_ENABLE(drop-lame-servers,[  --enable-drop-lame-servers    drop out of sync (lame) servers],
+AC_MSG_CHECKING([allow-services parameter])
+AC_ARG_ENABLE(allow-services,[  --enable-allow-services       allow connections from services (clients)],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT(yes)
-     AC_DEFINE(DROP_BRAINDEAD_SERVERS)
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
- ])
-
-AC_MSG_CHECKING([strict-chan-names parameter])
-AC_ARG_ENABLE(strict-chan-names,[  --enable-strict-chan-names    enforce strict channel names to avoid spoofs],
- [
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(STRICT_CHANNEL_NAMES)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(STRICT_CHANNEL_NAMES)
- ])
-
-AC_MSG_CHECKING([strict-registration parameter])
-AC_ARG_ENABLE(strict-registration,[  --enable-strict-registration  enforce strict connection registration],
- [
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(STRICT_REGISTRATIONS)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(STRICT_REGISTRATIONS)
- ])
-
-AC_MSG_CHECKING([passive-registration parameter])
-AC_ARG_ENABLE(passive-registration,[  --enable-passive-registration report no errors on connection registrations],
- [
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(PASSIVE_REGISTRATION)
-   fi
- ],[
-   AC_MSG_RESULT([no (default)])
- ])
-
-AC_MSG_CHECKING([warn-bad-reg-cmds parameter])
-AC_ARG_ENABLE(warn-bad-reg-cmds,[  --enable-warn-bad-reg-cmds    complain about unknown registration commands],
- [
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
-     AC_DEFINE(WARN_UNKNOWN_COMMANDS_IN_REGISTRATION)
+     AC_DEFINE(ALLOW_SERVICE_CONNECTIONS)
+     
+     dnl This uses user protocols so we need this
+     austhex_test_enable_user_protocols="yes"
    fi
  ],[
    AC_MSG_RESULT([no (default)])
@@ -540,6 +482,47 @@ AC_ARG_ENABLE(convert-motd-tabs,[  --enable-convert-motd-tabs    fix motd tabs i
  ],[
    AC_MSG_RESULT([yes (default)])
    AC_DEFINE(CONVERT_MOTD_TABS)
+ ])
+
+AC_MSG_CHECKING([drop-lame-servers parameter])
+AC_ARG_ENABLE(drop-lame-servers,[  --enable-drop-lame-servers    drop out of sync (lame) servers],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(DROP_BRAINDEAD_SERVERS)
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+ ])
+
+AC_MSG_CHECKING([helpers-see-umodes parameter])
+AC_ARG_ENABLE(helpers-see-umodes,[  --enable-helpers-see-umodes   allow helpers/opers to see other users' modes],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(HELPERS_CAN_SEE_USER_MODES)
+   fi
+ ],[
+   AC_MSG_RESULT([yes (default)])
+   AC_DEFINE(HELPERS_CAN_SEE_USER_MODES)
+ ])
+
+AC_MSG_CHECKING([ircii-kluge parameter])
+AC_ARG_ENABLE(ircii-kluge,[  --enable-ircii-kluge          kluge to allow old ircII clients to work],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(BLOODY_IRCII_KLUGE)
+   fi
+ ],[
+   AC_MSG_RESULT([yes (default)])
+   AC_DEFINE(BLOODY_IRCII_KLUGE)
  ])
 
 AC_MSG_CHECKING([match-counting parameter])
@@ -570,47 +553,121 @@ AC_ARG_ENABLE(oper-wallops,[  --enable-oper-wallops         allow operators to u
    AC_DEFINE(ALLOW_OPER_WALLOPS)
  ])
 
-AC_MSG_CHECKING([oper-traceroute parameter])
-AC_ARG_ENABLE(oper-traceroute,[  --enable-oper-traceroute      allow operators to TRACEROUTE (can be abused)],
+AC_MSG_CHECKING([paranoid-opers parameter])
+AC_ARG_ENABLE(paranoid-opers,[  --enable-paranoid-opers       operators need to know when they are /whois'd],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT(yes)
-     AC_DEFINE(ALLOW_OPER_TRACEROUTE)
+     AC_DEFINE(NOTIFY_PARANOID_OPERS_ON_WHOIS)
    fi
  ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(ALLOW_OPER_TRACEROUTE)
+   AC_MSG_RESULT([no (default)])
  ])
 
-AC_MSG_CHECKING([helpers-see-umodes parameter])
-AC_ARG_ENABLE(helpers-see-umodes,[  --enable-helpers-see-umodes   allow helpers/opers to see other users' modes],
+AC_MSG_CHECKING([passive-registration parameter])
+AC_ARG_ENABLE(passive-registration,[  --enable-passive-registration report no errors on connection registrations],
  [
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT(yes)
-     AC_DEFINE(HELPERS_CAN_SEE_USER_MODES)
+     AC_DEFINE(PASSIVE_REGISTRATION)
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+ ])
+
+AC_MSG_CHECKING([strict-channel-names parameter])
+AC_ARG_ENABLE(strict-channel-names,[  --enable-strict-channel-names enforce strict channel names to avoid spoofs],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(STRICT_CHANNEL_NAMES)
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(HELPERS_CAN_SEE_USER_MODES)
+   AC_DEFINE(STRICT_CHANNEL_NAMES)
  ])
 
+AC_MSG_CHECKING([strict-registration parameter])
+AC_ARG_ENABLE(strict-registration,[  --enable-strict-registration  enforce strict connection registration],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(STRICT_REGISTRATIONS)
+   fi
+ ],[
+   AC_MSG_RESULT([yes (default)])
+   AC_DEFINE(STRICT_REGISTRATIONS)
+ ])
+
+AC_MSG_CHECKING([traceroute parameter])
+AC_ARG_ENABLE(traceroute,[  --enable-traceroute           allow the TRACEROUTE command (can be abused)],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(HAVE_CMD_TRACEROUTE)
+   fi
+ ],[
+   AC_MSG_RESULT([yes (default)])
+   AC_DEFINE(HAVE_CMD_TRACEROUTE)
+ ])
+
+AC_MSG_CHECKING([user-conn-ping parameter])
+AC_ARG_ENABLE(user-conn-ping,[  --enable-user-conn-ping       enable anti-spoof connection ping requirement],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(USER_CONNECTION_PINGPONG)
+   fi
+ ],[
+   AC_MSG_RESULT([yes (default)])
+   AC_DEFINE(USER_CONNECTION_PINGPONG)
+ ])
+
+AC_MSG_CHECKING([warn-bad-reg-cmds parameter])
+AC_ARG_ENABLE(warn-bad-reg-cmds,[  --enable-warn-bad-reg-cmds    complain about unknown registration commands],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     AC_DEFINE(WARN_UNKNOWN_COMMANDS_IN_REGISTRATION)
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+ ])
+
+dnl
+dnl Protocol toggles
+dnl
 AC_MSG_CHECKING([protocol-irc2user parameter])
-AC_ARG_ENABLE(protocol-irc2user,[  --enable-protocol-irc2user    allow the irc2 user/client protocol],
- [
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   else
-     AC_MSG_RESULT(yes)
+if test "$austhex_test_enable_user_protocols" = "yes"; then
+  AC_ARG_ENABLE(protocol-irc2user,[  --enable-protocol-irc2user    allow the irc2 user/client protocol],
+   [
+     if test "$enableval" = "no"; then
+       AC_MSG_RESULT(no)
+     else
+       AC_MSG_RESULT(yes)
+       AC_DEFINE(HAVE_PROTOCOL_IRC2USER)
+     fi
+   ],[
+     AC_MSG_RESULT([yes (default)])
      AC_DEFINE(HAVE_PROTOCOL_IRC2USER)
-   fi
- ],[
-   AC_MSG_RESULT([yes (default)])
-   AC_DEFINE(HAVE_PROTOCOL_IRC2USER)
- ])
+   ])
+else
+  AC_MSG_RESULT([no (clients disallowed)])
+fi
 
 AC_MSG_CHECKING([protocol-p13server parameter])
 AC_ARG_ENABLE(protocol-p13server,[  --enable-protocol-p13server   allow the P13 server protocol],
@@ -640,15 +697,15 @@ AC_ARG_ENABLE(protocol-p14server,[  --enable-protocol-p14server   allow the P14 
  ]) 
 
 
-dnl  -------------------------------------------
+dnl  -------------------------------------------------------------------------
 echo " -=> Determining installation information"
-dnl  -------------------------------------------
+dnl  -------------------------------------------------------------------------
 dnl stuff goes here, would like to do it 'apache style' tho :)
 
 
-dnl  ---------------------
+dnl  -------------------------------------------------------------------------
 echo " -=> Creating files"
-dnl  ---------------------
+dnl  -------------------------------------------------------------------------
 LDFLAGS="$LDFLAGS_SAVE"
 AC_SUBST(INCDIRS)
 AC_OUTPUT([

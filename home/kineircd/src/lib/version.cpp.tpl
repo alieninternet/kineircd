@@ -87,7 +87,7 @@ char const *getVersionChars =
 #ifdef CONVERT_MOTD_TABS
 				"t"
 #endif
-#ifdef ALLOW_OPER_TRACEROUTE
+#ifdef HAVE_CMD_TRACEROUTE
 				"T"
 #endif
 #ifdef ALLOW_OPER_WALLOPS

@@ -16,8 +16,10 @@
 
 
 // User modes -- IMPORTANT: Update the mode strings as you update the table!
-char const *User::modeStr 		= "dghkiInoOrRsSvw";
-char const *User::modeParamStr 		= "s";
+char const *User::modeStr = 
+  "dghkiInoOrRsSvw\241";
+char const *User::modeParamStr = 
+  "s";
 struct User::modeTableStruct const User::modeTable[] = {
      { 'd',	MODE_DEAF,		false,	false,	true,
 	User::toggleModeDEAF
@@ -63,6 +65,9 @@ struct User::modeTableStruct const User::modeTable[] = {
      },
      { 'w',	MODE_WALLOPS,		false,	false,	true,
 	User::toggleModeWALLOPS
+     },
+     { '\241',	MODE_ROUTINGSTAFF,	false,	false,	false,
+	User::toggleModeROUTINGSTAFF
      },
      { 0 }
 };
@@ -426,6 +431,23 @@ bool User::toggleModeRESTRICTED(bool setting, Handler *handler, Daemon *daemon, 
       return true;
    } else if (!setting && (user->modes & User::MODE_RESTRICTED)) {
       user->modes &= ~User::MODE_RESTRICTED;
+      return true;
+   }
+   
+   return false;
+}
+
+
+/* User::toggleModeROUTINGSTAFF
+ * Original 21/10/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::toggleModeROUTINGSTAFF(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param)
+{
+   if (setting && !(user->modes & User::MODE_ROUTINGSTAFF)) {
+      user->modes |= User::MODE_ROUTINGSTAFF;
+      return true;
+   } else if (!setting && (user->modes & User::MODE_ROUTINGSTAFF)) {
+      user->modes &= ~User::MODE_ROUTINGSTAFF;
       return true;
    }
    

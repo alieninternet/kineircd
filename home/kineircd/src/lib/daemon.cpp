@@ -1771,8 +1771,8 @@ void Daemon::run(void)
       outFDtemp = outFDSET;
       
       // Poll select()
-      selectOut = select(maxDescriptors, &inFDtemp, &outFDtemp, NULL, 
-			 &timeout);
+      selectOut = select(maxDescriptors, &inFDtemp, &outFDtemp, 
+			 SELECT_TYPE_ARG234 NULL, &timeout);
       
       // Update the clock
       gettimeofday(&currentTime, NULL);

@@ -83,6 +83,7 @@ class User {
    static bool toggleModeOPER(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
    static bool toggleModeREGNICKSMSG(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
    static bool toggleModeRESTRICTED(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
+   static bool toggleModeROUTINGSTAFF(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
    static bool toggleModeSECURE(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
    static bool toggleModeSERVNOTICES(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
    static bool toggleModeVWORLD(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);
@@ -110,6 +111,7 @@ class User {
    static modes_t const MODE_GOT_IDENTD		= 0x0000000000020000; // +n
    static modes_t const MODE_REGNICKSMSG	= 0x0000000000040000; // +R
    static modes_t const MODE_IGNORING		= 0x0000000000080000; // +g
+   static modes_t const MODE_ROUTINGSTAFF	= 0x0000000000100000; // +­
    
    // User mode stuff
    static char const *modeStr;
@@ -163,6 +165,11 @@ class User {
    static bool const isGlobalOper(User *u)
      {
 	return (u->modes & MODE_GLOBALOPER);
+     };
+   
+   static bool const isRoutingStaff(User *u)
+     {
+	return (u->modes & MODE_ROUTINGSTAFF);
      };
 
    static bool const isHelper(User *u)
