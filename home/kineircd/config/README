@@ -1,0 +1,4 @@
+This directory is used to keep autoconf related files including the autoconf
+template itself, the autoconf header file template, macros and script
+versions of utilities the system may not have available (and may be used in
+their place).

@@ -1,0 +1,4 @@
+This is the include directory, where header files which are necessary to be
+included by the ENTIRE package are placed. However, this does not include
+header files related to the AustHex Library, they live in the 'austhex'
+sub-directory herein.

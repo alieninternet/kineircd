@@ -1,0 +1,10 @@
+This is the lib directory, where the austhex library (the main core of the
+daemon) is kept. The core of the daemon is a library to facilitate complex
+modular code using shared libraries to save on duplication of code. It would
+also allow the facilitation of 'virtual hosted' IRC servers, however that's
+not recommended.
+
+Parts of the library have been broken down into categories and placed into
+sub-directories. This was done to organise the code in a neater fashion
+(without enormous long file names) and also due to certain parts of the
+library being comprised of several small classes (such as the socket code).

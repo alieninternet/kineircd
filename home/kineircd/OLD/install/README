@@ -1,0 +1,10 @@
+This is the install directory. The files in here are copied (some of them
+generated prior to copying) into their respective locations upon
+installation of the daemon. These include files such as language data,
+example configuration files, man pages etc.
+
+Anything which isn't generally installed but fits into similar categories
+should be places into either the doc or contrib directories as this
+directory is only for files which need to be installed.
+
+Should this change?

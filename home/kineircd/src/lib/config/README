@@ -1,0 +1,13 @@
+This is the configuration parsing and configuration variable assignment
+handling code for the core of the IRC daemon. It's left modular so modules
+may assign additional configuration variables if they need to. 
+
+In reality, two configuration parsers exist here. The first and primary
+parser is designed to parse the modern and flexible C-style configuration
+files. Additionally, an old-style parser is available which can be used as
+well.
+
+Note to developers: The old-style parser needs FINISHING. It's time
+consuming and brain numbing to complete, however if you get the time and
+feel like you want to please feel free to talk to me about it -
+pickle@austnet.org
