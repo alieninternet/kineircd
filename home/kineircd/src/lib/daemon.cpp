@@ -229,10 +229,10 @@ bool Daemon::init(Config &conf)
    // Throw our starting up line at the logger
 #ifdef DEBUG
    logger(String("Starting ") + Version::version + " (debugging)",
-	  Logger::PRI_INFO);
+	  Logger::MASK_AUSTHEX);
 #else
    logger(String("Starting ") + Version::version,
-	  Logger::PRI_INFO);
+	  Logger::MASK_AUSTHEX);
 #endif
    
 #ifdef HAVE_OPENSSL
@@ -270,7 +270,7 @@ bool Daemon::init(Config &conf)
    if (listens.empty()) {
       logger("AustHex IRC Daemon not started: No listening sockets - "
 	     "Nobody can connect!",
-	     Logger::PRI_ERROR);
+	     Logger::MASK_ERROR_LOCAL);
       return false;
    }
 
@@ -1873,7 +1873,7 @@ void Daemon::shutdown(String const &reason)
 		     String("Shutting down"));
    
    // Log our nice message
-   logger(message, Logger::PRI_INFO);
+   logger(message, Logger::MASK_AUSTHEX);
 
    // Kill any ports we are listening on - we are no longer accepting ppl
    wipeListens();

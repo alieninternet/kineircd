@@ -62,13 +62,13 @@ LoggerFile::~LoggerFile(void)
  * 04/04/2002 simonb - Added debugging info
  * Note: This logging output sucks.
  */
-void LoggerFile::log(const String &line, const priority_type priority)
+void LoggerFile::log(const String &line, const mask_type mask)
 {
    if (ok()) {
 #ifdef DEBUG_PSYCHO
       debug("LoggerFile::log(" + line + ')');
 #endif
 
-      logFile << '[' << time(NULL) << ':' << priority << "] " << line << endl;
+      logFile << '[' << time(NULL) << ':' << mask << "] " << line << endl;
    }
 }

@@ -3323,7 +3323,7 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    if (oper->isGlobal()) {
       // Log this action
       Daemon::logger(handler->user->nickname + " is now a global operator",
-		     Logger::PRI_NOTICE);
+		     Logger::MASK_OPER_GLOBAL);
 
       // Count this oper in on the number of global opers/helpers on-line
       Daemon::numOpers++;
@@ -3338,7 +3338,7 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    } else {
       // Log this action
       Daemon::logger(handler->user->nickname + " is now a local operator",
-		     Logger::PRI_NOTICE);
+		     Logger::MASK_OPER_LOCAL);
       
       // Fix the modes
 #ifdef GIVE_MODES_LOCALOP

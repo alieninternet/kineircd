@@ -371,8 +371,8 @@ class Daemon {
      };
 
    // Little macro to get to the logger, in a neat way
-   static void logger(const String &s, Logger::priority_type p)
-     { config->getLoggingLog().log(s, p); };
+   static void logger(const String &s, Logger::mask_type m)
+     { config->getLoggingLog().log(s, m); };
 
    static void shutdown(String const & = "");	// Start the shutdown sequence
    static void run(void);			// The main loop

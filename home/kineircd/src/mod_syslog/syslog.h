@@ -43,8 +43,8 @@ class LoggerSyslog : public Logger {
    bool ok(void) const
      { return true; };
    
-   void log(const String &,
-	    const priority_type = PRI_NOTICE);		// Log a string of text
+   void log(const String &, 
+	    const mask_type = MASK_HOUSEKEEPING);	// Log a string of text
 };
 
 # endif

@@ -36,7 +36,7 @@ Config::Config(const String &f)
     defAdminName(DEFAULT_ADMIN_NAME),
     defLoggingLog(0)
 {
-   defLoggingLog = new LoggerFile("/dev/stderr");  // temporary
+   defLoggingLog = new Log();  // temporary
 };
 
 

@@ -8,17 +8,42 @@ FIND=find
 CXX=@CXX@
 LD=@LD@
 
+AUTOGEN=autogen
+
 CXXFLAGS=@CXXFLAGS@
 LDFLAGS=@LDFLAGS@
+
+
+# Stuff that really won't exist
+.PHONY: all autogen clean
 
 
 # First rule (link into the 'all' rule)
 all: _top_
 
 
-# How to make object files from .cpp files rule
+# .cpp to .o
 %.@OBJEXT@: %.cpp
 	$(CXX) $(CXXFLAGS) $(DEFS) $(INCDIRS) -c $<
+
+
+# Generate file(s)
+autogen: $(AUTOGEN_OUT)
+ifneq ("$(SUB_DIRS)","")
+	for d in $(SUB_DIRS); \
+		do $(MAKE) -C $$d $@; \
+	done
+endif
+
+
+# .tpl to .h
+%.h: %.h.tpl $(AUTOGEN_DEF_DIR)/$(basename $@)
+	$(AUTOGEN) -T $< $(AUTOGEN_DEF_DIR)/$(basename $@).def
+
+
+# .tpl to .cpp
+%.cpp: %.cpp.tpl $(AUTOGEN_DEF_DIR)/$(basename $@)
+	$(AUTOGEN) -T $< $(AUTOGEN_DEF_DIR)/$(basename $@).def
 
 
 # Our generic clean function (cleans sub-directories as an added bonus)

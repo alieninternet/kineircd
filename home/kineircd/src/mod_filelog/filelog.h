@@ -42,7 +42,7 @@ class LoggerFile : public Logger {
      { return logFile.good(); };
    
    void log(const String &, 
-	    const priority_type = PRI_NOTICE);		// Log a string of text
+	    const mask_type = MASK_HOUSEKEEPING);	// Log a string of text
 };
 
 #endif

@@ -53,6 +53,9 @@ Char | Description/Format
   D  | Debugging notices
      | (no specific format)
      |
+  e  | Local error (usually fatal)
+     | <error message...>
+     |
   E  | Received an ERROR (or similar) from a server link
      | <from_server> <to_server> <error message...>
      |
@@ -116,7 +119,7 @@ Char | Description/Format
   x  | Someone used the STATS command on this server
      | <stats_code>
      |
-  z  | Server stuff (critical stuff like the DIE command etc)
+  z  | AustHex/Server stuff (critical stuff like the DIE command etc)
      | <calling_nick>
      |
   Z  | Housekeeping notices (configuration etc)

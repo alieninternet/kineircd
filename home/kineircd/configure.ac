@@ -1556,6 +1556,7 @@ AC_SUBST(INCDIRS)
 AC_OUTPUT([
 	Rules.make
 	Makefile
+	include/Makefile
 	install/Makefile
 	src/Makefile
 	src/lib/Makefile
