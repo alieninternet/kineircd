@@ -57,11 +57,11 @@ namespace Kine {
       const unsigned short versionMinor = KINEIRCD_VERSION_MINOR;
 
       // Version information (program name and version number, in its entirity)
-      const char* const version = PACKAGE KINEIRCD_VERSION_STRING;
+      const char* const version = PACKAGE "-" KINEIRCD_VERSION_STRING;
       
       // Full version identity (includes build time)
       const char* const versionFull = 
-	PACKAGE KINEIRCD_VERSION_STRING "-" BUILD_TIME;
+	PACKAGE "-" KINEIRCD_VERSION_STRING "-" BUILD_TIME;
       
       // Library version information (raw)
       const unsigned char libVersion = KINEIRCD_LIB_VERSION;
