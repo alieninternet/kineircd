@@ -101,8 +101,8 @@ _______________________________________________________________________________
       <nick> <type> [:is connected via a secure connection]
 
 
-678 - RPL_LUSERHELPERS
-      <number of helpers online> :helper(s) online
+678 - RPL_LUSERSTAFF
+      <number of staff online> :staff(s) online
       
       This is complimentary of RPL_LUSEROP, however this is to count the
       number of network staff currently on the network. This could be of
