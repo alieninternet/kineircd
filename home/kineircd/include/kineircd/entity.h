@@ -56,6 +56,10 @@ namespace Kine {
       virtual const unsigned int getHopCount(void) const
 	{ return 0; };
       
+      //! Is this entity hidden from normal users?
+      virtual const bool isHidden(void) const
+	{ return false; };
+      
       //! Return the time this entity initially connected to the network
       const AISutil::Time& getSignonTime(void) const
 	{ return signonTime; };
