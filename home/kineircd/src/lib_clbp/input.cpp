@@ -64,19 +64,6 @@ void Input::handleInput(std::stringstream& data)
 	    inputQueue.clear();
 	 }
       } else {
-	 /* If the buffer has grown too large. For strict compatibility, we
-	  * must refer to RFC1459 which states the maximum message length
-	  * must be 512 octets or smaller, including the \r\n termination.
-	  * We don't look for the \r\n termination, we look for \r\n, \r,
-	  * or \n. Since this is the case, we make sure lines are under 512
-	  * octets, or rather 511 octets is our threashold. To avoid people
-	  * pumping inordinate amount of data our way, we will disconnect them
-	  * should they break this limit.
-	  */
-	 if (inputQueue.length() > 510) {
-	    connection.goodbye();
-	 }
-	 
 	 // Just add the char to the buffer
 	 inputQueue += (char)data.get();
       }
