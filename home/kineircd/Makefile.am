@@ -91,7 +91,6 @@ EXTRA_DIST=\
 	doc/rfc2812.txt \
 	doc/rfc2813.txt \
 	include/kineircd/kineircdconf.h.in \
-	src/libkineircd/loggerconfig.cpp.tpl \
 	src/libkineircd/version.cpp.tpl \
 	src/libkineircd/numerics.h.tpl
 
@@ -173,7 +172,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/listenerlist.h \
 	include/kineircd/localuser.h \
 	include/kineircd/logger.h \
-	include/kineircd/loggerconfig.h \
 	include/kineircd/module.h \
 	include/kineircd/moduledescriptor.h \
 	include/kineircd/modulelist.h \
@@ -209,7 +207,6 @@ libkineircd_la_SOURCES=\
 	$(KINEIRCD_SOURCE_LIB_DEBUG_CPP) \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_H) \
 	src/libkineircd/logger.cpp \
-	src/libkineircd/loggerconfig.cpp \
 	src/libkineircd/nickname.cpp \
 	src/libkineircd/registrar.cpp \
 	src/libkineircd/registrar.h \
@@ -254,12 +251,6 @@ src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOG
 		-T src/libkineircd/config/config.cpp.tpl \
 		-S $(AUTOGEN_DEF_DIR)/config.scm \
 		$(AUTOGEN_DEF_DIR)/config.def
-		
-src/libkineircd/loggerconfig.cpp: src/libkineircd/loggerconfig.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
-	$(AUTOGEN) \
-		-b $(basename $@) \
-		-T src/libkineircd/loggerconfig.cpp.tpl \
-		$(AUTOGEN_DEF_DIR)/logger.def
 		
 
 

@@ -47,7 +47,7 @@ using namespace Kine::mod_syslog;
  * 04/04/2002 simonb - Added PID boolean option
  * 04/04/2002 simonb - Added debugging info
  */
-Syslog::Syslog(Config& c)
+Syslog::Syslog(mod_syslog::Config& c)
   : Kine::Logger(c.getLogMask()),
     config(c)
 {

@@ -37,7 +37,7 @@ namespace Kine {
       class FileLog : public Kine::Logger {
        private:
 	 // The configuration
-	 Config& config;
+	 mod_filelog::Config& config;
 
 	 // The log file
 	 std::ofstream logFile;
@@ -48,7 +48,7 @@ namespace Kine {
 	 
        public:
 	 // Constructor
- 	 FileLog(Config& c);
+	 FileLog(mod_filelog::Config& c);
 	 
 	 // Destructor
 	 ~FileLog(void);				

@@ -25,12 +25,12 @@
 #ifndef _SRC_MOD_CHANNELLOG_CONFIG_H_
 # define _SRC_MOD_CHANNELLOG_CONFIG_H_ 1
 
-# include <kineircd/loggerconfig.h>
+# include <kineircd/logger.h>
 # include <aisutil/string/string.h>
 
 namespace Kine {
    namespace mod_channellog {
-      class Config : public Kine::LoggerConfig {
+      class Config : public Kine::Logger::Config {
        public:
 	 // The definition table, given to Kine's config parserr
 	 static const AISutil::ConfigParser::defTable_type definitionTable;

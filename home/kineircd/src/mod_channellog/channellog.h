@@ -36,7 +36,7 @@ namespace Kine {
       class ChannelLog : public Kine::Logger {
        private:
 	 // The configuration
-	 Config& config;
+	 mod_channellog::Config& config;
 	 
 	 // Log a string of text
 	 void logLine(const std::string& str,
@@ -44,7 +44,7 @@ namespace Kine {
 	 
        public:
 	 // Constructor
- 	 ChannelLog(Config& c);
+	 ChannelLog(mod_channellog::Config& c);
 	 
 	 // Destructor
 	 ~ChannelLog(void);				

@@ -106,3 +106,64 @@ const Logger::MaskMapper& Logger::getMaskMapper(const char* const n)
    // Argh!!
    return maskTable[0];
 }
+
+
+/* varHandleLogMask - Convert logging names into a mask value
+ * Original 01/11/2002 simonb
+ */
+LIBAISUTIL_CONFIG_VARIABLE_HANDLER(Logger::Config::varHandleLogMask)
+{
+   // If the parameters list is empty, log everything..
+   if (values.empty()) {
+      dataClass.*((Logger::Mask::lazy_type ConfigData::*)dataVariable) = 
+	Logger::Mask::Everything;
+      return true;
+   }
+
+   Logger::Mask::lazy_type logMask = Logger::Mask::Nothing;
+   std::string maskWord;
+   bool toggleOn;
+   
+   // Run through the parameters..
+   for (unsigned int i = 0; i < values.size(); i++) {
+      // Check the prefix char, and work out how we need to copy the word over
+      switch (values[i][0]) {
+       case '-':
+	 toggleOn = false;
+	 maskWord = values[i].toUpper().substr(1);
+	 break;
+	 
+       case '+':
+	 toggleOn = true;	
+	 maskWord = values[i].toUpper().substr(1);
+	 break;
+	 
+       default:
+	 toggleOn = true;
+	 maskWord = values[i].toUpper();
+      }
+      
+      // Look for the word in the list..
+      for (unsigned int j = 0; j < [+(+ 2 (count "logger_masks"))+]; j++) {
+	 // Does this match?
+	 if (maskWord == maskTable[j].nameUpper) {
+	    // Okay, do whatever was asked with this mask..
+	    if (toggleOn) {
+	       logMask |= maskTable[j].mask;
+	    } else {
+	       logMask &= ~maskTable[j].mask;
+	    }
+	    
+	    // Break out of this loop, since we got a match..
+	    break;
+	 }
+      }
+   }
+
+   // Assign the new value
+   dataClass.*((Logger::Mask::lazy_type ConfigData::*)dataVariable) =
+     logMask;
+   
+   // All done - smile :)
+   return true;
+}

@@ -31,6 +31,7 @@
 # define _INCLUDE_KINEIRCD_LOGGER_H_ 1
 
 # include <string>
+# include <aisutil/config/data.h>
 
 namespace Kine {
    // The top Logger class the actual loggers are derived from
@@ -69,6 +70,30 @@ namespace Kine {
       static const MaskMapper& getMaskMapper(const char c);
       static const MaskMapper& getMaskMapper(const char* const n);
 
+      // Config class
+      class Config : public AISutil::ConfigData {
+       protected:
+         // The logging mask
+         Logger::Mask::lazy_type defLogMask;
+      
+       public:
+         // Constructor
+         Config(void)
+	   : defLogMask(Logger::Mask::Nothing)
+	   {};
+      
+         // Destructor
+         virtual ~Config(void)
+	   {};
+      
+         // Grab the mask
+         const Logger::Mask::lazy_type getLogMask(void) const
+	   { return defLogMask; };
+
+         // Variable handler to process text for the log mask
+         static LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varHandleLogMask);
+      };
+   
     protected:
       const Mask::lazy_type logMask;			//!< OK log message types
       

@@ -46,7 +46,7 @@ namespace Kine {
       class Syslog : public Kine::Logger {
        private:
 	 // The configuration
-	 Config& config;
+	 mod_syslog::Config& config;
 	 
 	 // Log a string of text
 	 void logLine(const std::string& str,
@@ -54,7 +54,7 @@ namespace Kine {
 	 
        public:
 	 // Constructor
-	 Syslog(Config& c);
+	 Syslog(mod_syslog::Config& c);
 	 
 	 // Destructor
 	 ~Syslog(void);

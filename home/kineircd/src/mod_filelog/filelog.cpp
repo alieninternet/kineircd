@@ -40,7 +40,7 @@ using namespace Kine::mod_filelog;
  * Original 18/02/2000 simonb
  * 04/04/2002 simonb - Added debugging info
  */
-FileLog::FileLog(Config& c)
+FileLog::FileLog(mod_filelog::Config& c)
   : Kine::Logger(c.getLogMask()),
     config(c)
 {

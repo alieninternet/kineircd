@@ -36,7 +36,7 @@ using namespace Kine::mod_channellog;
 /* ChannelLog - Constructor
  * Original 01/11/2002 simonb
  */
-ChannelLog::ChannelLog(Config& c)
+ChannelLog::ChannelLog(mod_channellog::Config& c)
   : Kine::Logger(c.getLogMask()),
     config(c)
 {
