@@ -24,11 +24,6 @@
 #ifndef _INCLUDE_KINEIRCD_MODULE_H_
 # define _INCLUDE_KINEIRCD_MODULE_H_ 1
 
-// Forwarded declarations (completed after class)
-namespace Kine {
-   class Daemon;
-};
-
 # include <aisutil/config/parser.h>
 # include <aisutil/string/string.h>
 
@@ -115,7 +110,7 @@ namespace Kine {
 	{ return 0; };
       
       // Start the module
-      virtual bool start(Kine::Daemon& daemon) = 0;
+      virtual bool start(void) = 0;
       
       // Return the name (from the information) in full version format
       const AISutil::String getVersionString(void) const;
@@ -126,8 +121,5 @@ namespace Kine {
    };
 };
    
-// Complete forwarded declarations
-# include <kineircd/daemon.h>
-
 #endif // _INCLUDE_KINEIRCD_MODULE_H_
    

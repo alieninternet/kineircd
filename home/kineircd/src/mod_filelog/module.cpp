@@ -26,6 +26,7 @@
 #endif
 
 #include <kineircd/module.h>
+#include <kineircd/daemon.h>
 
 #include "mod_filelog/module.h"
 #include "mod_filelog/config.h"
@@ -56,14 +57,12 @@ namespace {
    class mod_filelog : public Kine::Module {
     private:
       Kine::mod_filelog::Config config;
-      Kine::Daemon* daemon;
       Kine::mod_filelog::FileLog* logger;
       
     public:
       // Constructor
       mod_filelog(void)
-	: daemon(0),
-          logger(0)
+	: logger(0)
 	{};
       
       // Destructor
@@ -71,9 +70,7 @@ namespace {
 	{
 	   // If the logger has been created, deregister/delete it
 	   if (logger != 0) {
-	      if (daemon != 0) {
-		 (void)daemon->deregisterLogger(*logger);
-	      }
+	      (void)Kine::daemon().deregisterLogger(*logger);
 	      delete logger;
 	   }
 	};
@@ -89,10 +86,7 @@ namespace {
       /* moduleStart - Fire up the module
        * Original 15/10/2002 simonb
        */
-      bool start(Kine::Daemon& d) {
-	 // Set the location for the daemon..
-	 daemon = &d;
-	 
+      bool start(void) {
 	 // Make our logging class
 	 logger = new Kine::mod_filelog::FileLog(config);
 
@@ -102,7 +96,7 @@ namespace {
 	 }
 
 	 // Register the logger
-	 return daemon->registerLogger(*logger);
+	 return Kine::daemon().registerLogger(*logger);
       };
    }; // class mod_filelog
 }; // namespace {anonymous}

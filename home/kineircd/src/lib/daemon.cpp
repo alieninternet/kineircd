@@ -52,6 +52,10 @@ using namespace Kine;
 using AISutil::String;
 
 
+// Our instance...
+Daemon* Daemon::instance = 0;
+
+
 /* Daemon - Init the server
  * Original 11/08/2001 simonb
  */
@@ -72,12 +76,6 @@ Daemon::Daemon(void)
    // Seed the random thingy for rand() - this is kinda dodgey
    srand(getTime().tv_sec);
    
-   // Fire-up the modules we have loaded!
-   config().getModuleList().startAll(*this);
-
-   // Start listening on all listeners.
-   config().getListenerList().startAll();
-
    // We are ready to go, go into normal running runlevel
    runlevel = RUNLEVEL_NORMAL;
 }
@@ -89,7 +87,7 @@ Daemon::Daemon(void)
 Daemon::~Daemon(void)
 {
 #ifdef KINE_DEBUG
-   debug("Shutting down server");
+   debug("Daemon::~Daemon() - Shutting down server");
 #endif
 
    // Run through any connections that might be lingering
@@ -97,6 +95,37 @@ Daemon::~Daemon(void)
       delete connections.front();
       connections.erase(connections.begin());
    }
+}
+
+
+/* initInstance - Create the single instance of this class
+ * Original 28/10/2002 simonb
+ * Note: This is separated from the getInstance() since doing the if for every
+ *       reference call is damned wasteful, don't you think? :)
+ */
+void Daemon::initInstance(void)
+{
+#ifdef KINE_DEBUG_ASSERT
+   // We should only ever be called to init the first instance..
+   assert(instance == 0);
+#else
+   // Well, since we are not debugging I suppose we should quietly ignore this
+   if (instance != 0) {
+# ifdef KINE_DEBUG
+      debug("Daemon::initInstance() - Called when an instance already exists");
+# endif
+      return;
+   }
+#endif
+   
+   // Create the new instance, then!
+   instance = new Daemon();
+   
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream debugOut;
+   debugOut << "Daemon::initInstance() - Created new instance @ " << instance;
+   debug(debugOut.str());
+#endif
 }
 
 
@@ -134,7 +163,7 @@ void Daemon::newConnection(Listener& listener)
    }
    
    // Add the socket to the connections list
-   Connection* newConnection = new Connection(*this, *newSocket);
+   Connection* newConnection = new Connection(*newSocket);
    newConnection->setProtocol(*(new Registrar(*newConnection, listener)));
    connections.push_front(newConnection);
 }
@@ -292,6 +321,12 @@ Exit::status_type Daemon::run(void)
       return Exit::ERR_DAEMON_INIT;
    }
    
+   // Fire-up the modules we have loaded!
+   config().getModuleList().startAll();
+
+   // Start listening on all listeners..
+   config().getListenerList().startAll();
+
 #ifdef KINE_DEBUG_EXTENDED
    debug("Daemon::run() - Initialising main loop");
 #endif

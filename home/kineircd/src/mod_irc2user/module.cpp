@@ -69,7 +69,7 @@ namespace {
       /* moduleStart - Fire up the module
        * Original 05/10/2002 simonb
        */
-      bool start(Kine::Daemon& daemon) {
+      bool start(void) {
 #ifdef KINE_DEBUG
 	 std::cerr << "Hello, my name is mod_irc2user ;)" << std::endl;
 #endif

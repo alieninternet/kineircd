@@ -69,7 +69,7 @@ namespace {
       /* moduleStart - Fire up the module
        * Original 15/10/2002 simonb
        */
-      bool start(Kine::Daemon& daemon) {
+      bool start(void) {
 	 return true;
       };
    }; // class mod_syslog

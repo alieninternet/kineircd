@@ -96,7 +96,7 @@ ModuleDescriptor* const ModuleList::loadModule(const String& filename,
 /* startAll - Start all modules
  * Original 22/07/2002 simonb
  */
-void ModuleList::startAll(Daemon& daemon) const
+void ModuleList::startAll(void) const
 {
 #ifdef KINE_DEBUG_EXTENDED
    debug("ModuleList::startAll() - Starting " + 
@@ -110,7 +110,7 @@ void ModuleList::startAll(Daemon& daemon) const
       debug("ModuleList::startAll() - Starting: " +
 	    (*it).second->getModule().getVersionString());
 #endif
-      (*it).second->start(daemon);
+      (*it).second->start();
    }
 }
 

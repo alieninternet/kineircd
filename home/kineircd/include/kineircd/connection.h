@@ -28,16 +28,13 @@
 
 # include <aisutil/socket/socket.h>
 
-namespace Kine {
-   class Protocol;
-};
-
 # include <kineircd/daemon.h>
 
 namespace Kine {
+   class Protocol;
+   
    class Connection {
     private:
-      Daemon& daemon;			// Call-back to the daemon
       AISutil::Socket& socket;		// The connected socket
       Protocol* protocol;		// The protocol we are running
       
@@ -51,19 +48,15 @@ namespace Kine {
       
       // Fix the lastSpoke variable to 'now'
       void touch(void)
-	{ lastSpoke = daemon.getTime().tv_sec; };
+	{ lastSpoke = daemon().getTime().tv_sec; };
       
     public:
       // Class constructor
-      Connection(Daemon& d, AISutil::Socket& s);
+      Connection(AISutil::Socket& s);
       
       // Shutdown connection
       ~Connection(void);
 
-      // Return the daemon
-      Daemon& getDaemon(void)
-	{ return daemon; };
-      
       // Return the socket
       const AISutil::Socket& getSocket(void) const
 	{ return socket; };

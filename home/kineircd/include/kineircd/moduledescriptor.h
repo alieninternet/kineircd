@@ -24,11 +24,6 @@
 #ifndef _INCLUDE_KINEIRCD_MODULEDESCRIPTOR_H_
 # define _INCLUDE_KINEIRCD_MODULEDESCRIPTOR_H_ 1
 
-// Forwarded declarations (completed after class)
-namespace Kine {
-   class Daemon;
-};
-
 # include <aisutil/string/string.h>
 
 # include <kineircd/module.h>
@@ -59,13 +54,10 @@ namespace Kine {
 		   AISutil::String& errString);
       
       // Start a module
-      bool start(Daemon& daemon)
-	{ return module.start(daemon); }
+      bool start(void)
+	{ return module.start(); }
    };
 };
-
-// Complete forwarded declarations
-# include <kineircd/daemon.h>
 
 #endif // _INCLUDE_KINEIRCD_MODULEDESCRIPTOR_H_
    

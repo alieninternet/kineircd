@@ -215,9 +215,8 @@ void Registrar::parseLine(const String& line)
        * the appropriate protocol is easy.
        */
       if ((protocolInfo = 
-	   connection.getDaemon().
-	   findProtocol(ProtocolName::Type::NETWORK,
-			registrantData.protocol.toUpper())) == 0) {
+	   daemon().findProtocol(ProtocolName::Type::NETWORK,
+				 registrantData.protocol.toUpper())) == 0) {
 	 // Complain
 	 sendError("Requested IIRC protocol unavailable");
 	 return;

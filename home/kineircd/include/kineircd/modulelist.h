@@ -27,7 +27,6 @@
 // Forwarded declarations (completed after class)
 namespace Kine {
    class ModuleDescriptor;
-   class Daemon;
 };
 
 # include <map>
@@ -54,7 +53,7 @@ namespace Kine {
 					 AISutil::String &errString);
       
       // Start all modules
-      void startAll(Daemon& daemon) const;
+      void startAll(void) const;
       
       // Stop and unload all modules
       void stopAll(void);
@@ -63,7 +62,6 @@ namespace Kine {
 
 // Complete forwarded declarations
 # include <kineircd/moduledescriptor.h>
-# include <kineircd/daemon.h>
 
 #endif // _INCLUDE_KINEIRCD_MODULELIST_H_
    

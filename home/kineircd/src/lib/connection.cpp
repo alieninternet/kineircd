@@ -36,13 +36,12 @@ using AISutil::String;
 /* Connection - Initialise new connection
  * Original 12/08/2001 simonb
  */
-Connection::Connection(Daemon& d, AISutil::Socket& s)
-: daemon(d),
-  socket(s),
+Connection::Connection(AISutil::Socket& s)
+: socket(s),
   protocol(0),
   sentBytes(0),
   receivedBytes(0),
-  connectedTime(d.getTime().tv_sec),
+  connectedTime(daemon().getTime().tv_sec),
   lastSpoke(connectedTime),
   connected(socket.isOkay())
 {
@@ -93,7 +92,7 @@ bool Connection::handleInput(void)
    if (!line.str().empty()) {
       // Increment our input counters
       receivedBytes += line.str().length();
-      daemon.addReceivedBytes(line.str().length());
+      daemon().addReceivedBytes(line.str().length());
 
       // Throw the data at the protocol routines
       protocol->handleInput(line);
@@ -102,7 +101,7 @@ bool Connection::handleInput(void)
    // If there is something wanting to be outputted, tell the poller
    if (protocol->moreOutput()) {
       // this is temporary, until the poller code comes into play
-      FD_SET(socket.getFD(), &daemon.outFDSET);
+      FD_SET(socket.getFD(), &daemon().outFDSET);
    }
    
    // All is well!
@@ -121,7 +120,7 @@ void Connection::sendOutput(void)
    // If there is nothing else left in the queue, stop output-okay checks
    if (!protocol->moreOutput()) {
       // this is temporary, until the poller code comes into play
-      FD_CLR(socket.getFD(), &daemon.outFDSET);
+      FD_CLR(socket.getFD(), &daemon().outFDSET);
    }
 }
 

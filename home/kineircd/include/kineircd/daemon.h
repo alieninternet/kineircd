@@ -91,7 +91,7 @@ namespace Kine {
       // The protocol list
       protocols_type protocols;
       
-    public: // <=- temporary, pre-poller class code
+    public: // <=- temporary, for crappy pre-poller class code :(
       // For select()
       fd_set inFDSET, outFDSET;			// Input/Output descriptor sets
     private: // <=- temporary
@@ -104,13 +104,23 @@ namespace Kine {
       // Process a new connection
       void newConnection(Listener& listener);
 
-    public:
+      // Our single instance :)
+      static Daemon* instance;
+      
       // Constructor
       Daemon(void);
-
+      
+    public:
       // Destructor
       ~Daemon(void);
 
+      // Create the single instance of this class
+      static void initInstance(void);
+      
+      // Get the single instance of this class (this class 'always' exists)
+      static Daemon& getInstance(void)
+	{ return *instance; };
+      
       // Return the run-level or stage the daemon is running in
       runlevel_type const getRunlevel(void) const
 	{ return runlevel; };
@@ -146,6 +156,11 @@ namespace Kine {
       // Main loop
       Exit::status_type run(void);
    };
+
+   
+   // Lazy reference function :)
+   inline static Daemon& daemon(void)
+     { return Daemon::getInstance(); };
 };
 
 // Complete forwarded declarations
