@@ -376,6 +376,13 @@ namespace Config {
 	     0
 	},
 	{
+	   "REGISTRAR", 3,
+	     0,
+	     0,
+	     &defClassOptionsRegistrar,
+	     0
+	},
+	{
 	   "SERVERNAME", 6,
 	     (void *)&Config::defOptionsServerName,
 	     &varHandleHostName,
@@ -547,6 +554,25 @@ namespace Config {
    };
 
 
+   // "OPTIONS.REGISTRAR" class
+   const AISutil::ConfigParser::defTable_type
+     Kine::Config::defClassOptionsRegistrar = {
+	{
+	   "CLIENTPINGPROBECOUNT", 10,
+	     (void *)&Config::defOptionsRegistrarClientPingProbeCount,
+	     &varHandleUnsignedChar,
+	     0,
+	     0
+	},
+	{
+	   0, 0,
+	     0,
+	     0,
+	     0,
+	     0
+	}
+   };
+	
    // "REDIRECTION" class
    const AISutil::ConfigParser::defTable_type
      Kine::Config::defClassRedirection = {
@@ -645,7 +671,10 @@ Kine::Config::Config(const String &f)
     defOptionsLimitsUsersMaxNickNameLength(DEFAULT_OPTIONS_LIMITS_USERS_MAX_NICK_NAME_LENGTH),
     defOptionsLimitsUsersMaxRealNameLength(DEFAULT_OPTIONS_LIMITS_USERS_MAX_REAL_NAME_LENGTH),
     defOptionsLimitsUsersMaxSilences(DEFAULT_OPTIONS_LIMITS_USERS_MAX_SILENCES),
-    defOptionsLimitsUsersMaxWatches(DEFAULT_OPTIONS_LIMITS_USERS_MAX_WATCHES)
+    defOptionsLimitsUsersMaxWatches(DEFAULT_OPTIONS_LIMITS_USERS_MAX_WATCHES),
+
+    // "OPTIONS.REGISTRAR" class
+    defOptionsRegistrarClientPingProbeCount(DEFAULT_OPTIONS_REGISTRAR_CLIENT_PING_PROBE_COUNT)
   
 #ifdef KINE_WITH_SSL
   , // <=- here to continue the list properly

@@ -100,7 +100,8 @@ namespace Kine {
 	: Protocol(c),
           listener(l),
           registrationType(RegistrationType::NONE),
-          pongsLeft(/*0*/ 1)
+          pongsLeft(connection.getDaemon().getConfig().
+		    getOptionsRegistrarClientPingProbeCount())
 	{};
       
       // Destructor
