@@ -58,35 +58,30 @@ languages = {
 
 tag = {
    name		= "irc2_ERR_ALREADYREGISTERED";
-   components	= "mod_irc2user";
    data_en	= "Unauthorised command (already registered)";
    data_tr	= "Bu komutu uygulamaya yetkiniz yok (önceden kaydedildi)";
 };
 
 tag = {
    name		= "irc2_ERR_BADCHANMASK";
-   components	= "mod_irc2user";
    data_en	= "Bad channel mask";
    data_tr	= "Yanlıž^_ CHANNEL MASK";
 };
 
 tag = {
    name		= "irc2_ERR_BADCHANNELKEY";
-   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+k)";
    data_tr	= "Kanala girilmiyor (+k)";
 };
 
 tag = {
    name		= "irc2_ERR_BADCHARENCODING";
-   components	= "mod_irc2user";
    data_en	= "Given text contained one or more incorrectly encoded "
                   "characters and as been modified.";
 };
 
 tag = {
    name		= "irc2_ERR_BADMASK";
-   components	= "mod_irc2user";
    data_en	= "Bad server/host mask";
    data_tr	= "Yanlıž^_ server/host mask";
 };
@@ -94,28 +89,24 @@ tag = {
 tag = {
    name		= "irc2_ERR_BANLISTFULL";
    fields	= "0 = max # list";
-   components	= "mod_irc2user";
    data_en	= "Channel list is full (%p0)";
    data_tr	= "Kanal listesi doldu (%p0)";
 };
 
 tag = {
    name		= "irc2_ERR_BANNEDFROMCHAN";
-   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+b)";
    data_tr	= "Kanala girilmiyor (+b)";
 };
 
 tag = {
    name		= "irc2_ERR_CANNOTSENDTOCHAN";
-   components	= "mod_irc2user";
    data_en	= "Cannot send to channel";
    data_tr	= "Kanala gonderilemedi";
 };
 
 tag = {
    name		= "irc2_ERR_CANNOTSENDTONICK";
-   components	= "mod_irc2user";
    data_en	= "You cannot send to this nickname";
 };
 
@@ -126,14 +117,12 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_CHANNELISFULL";
-   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+l)";
    data_tr	= "Kanala girilmiyor (+l)";
 };
 
 tag = {
    name		= "irc2_ERR_CHANOPRIVSNEEDED";
-   components	= "mod_irc2user";
    data_en	= "You're not a channel operator";
    data_tr	= "Kanal operatoru deľ^_ilsiniz";
 };
@@ -146,7 +135,6 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_ERRONEUSNICKNAME";
-   components	= "mod_irc2user";
    data_en	= "Erroneous nickname";
    data_tr	= "Yanlıž^_ nickname";
 };
@@ -159,14 +147,12 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_INVITEONLYCHAN";
-   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+i)";
    data_tr	= "Kanala girilmiyor (+i)";
 };
 
 tag = {
    name		= "irc2_ERR_KEYSET";
-   components	= "mod_irc2user";
    data_en	= "Channel key already set (to change it, unset it first)";
    data_tr	= "Kanal KEYsi zaten yerlež^_tirilmiž^_tir (deľ^_istirmek "
                   "için lütfen önce KEYyi kaldırın)";
@@ -182,14 +168,13 @@ tag = {
 tag = {
    name		= "irc2_ERR_NICKCOLLISION";
    fields	= "0 = user, 1 = host";
-   components	= "mod_irc2user";
    data_en	= "Nickname collision from %p0@%p1";
    data_tr	= "%p0@%p1 den nick çarpıž^_ması";
 };
 
 tag = {
    name		= "irc2_ERR_NICKNAMEINUSE";
-   components	= "mod_irc2user";
+   components	= "mod_irc2registrar mod_irc2user";
    data_en	= "Nickname is already in use";
    data_tr	= "Bu nickname kullanılmaktadır";
 };
@@ -203,7 +188,6 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOCHANMODES";
-   components	= "mod_irc2user";
    data_en	= "Channel doesn't support modes or mode changes";
    data_tr	= "Kanal MODElari ve MODE deľ^_iž^_imlerini kabul etmiyor";
 };
@@ -227,21 +211,19 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOMOTD";
-   components	= "mod_irc2user";
+   components	= "libkineircd_irc2";
    data_en	= "MOTD File is missing";
    data_tr	= "MOTD bulunamadı";
 };
 
 tag = {
    name		= "irc2_ERR_NONICKNAMEGIVEN";
-   components	= "mod_irc2user";
    data_en	= "No nickname given";
    data_tr	= "Nickname belirtilmedi";
 };
 
 tag = {
    name		= "irc2_ERR_NOOPERHOST";
-   components	= "mod_irc2user";
    data_en	= "Your host is not configured to allow the OPER command";
    data_tr	= "HOSTunuz OPER komutunu kullanmak için konfigüre edilmedi";
 };
@@ -255,7 +237,6 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOPERMFORHOST";
-   components	= "mod_irc2user";
    data_en	= "Your host isn't among the privileged";
    data_tr	= "HOSTunuz ayrıcalıklılar arasinda deľ^_il";
 };
@@ -270,21 +251,19 @@ tag = {
 tag = {
    name		= "irc2_ERR_NORECIPIENT";
    fields	= "0 = command";
-   components	= "mod_irc2user";
    data_en	= "No recipient given (%p0)";
    data_tr	= "Alicı belirtilmedi (%p0)";
 };
 
 tag = {
    name		= "irc2_ERR_NOSUCHCHANNEL";
-   components	= "mod_irc2user";
    data_en	= "No such channel";
    data_tr	= "Böyle bir kanal bulunamadı";
 };
 
 tag = {
    name		= "irc2_ERR_NOSUCHNICK";
-   components	= "mod_irc2user";
+   components	= "libkineircd_irc2";
    data_en	= "No such nick";
    data_tr	= "Böyle bir nick bulunamadi";
 };
@@ -298,28 +277,24 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_NOSUCHSERVICE";
-   components	= "mod_irc2user";
    data_en	= "No such service";
    data_tr	= "Böyle bir servis yok";
 };
 
 tag = {
    name		= "irc2_ERR_NOTEXTTOSEND";
-   components	= "mod_irc2user";
    data_en	= "No text to send";
    data_tr	= "Gönderilecek text yok";
 };
 
 tag = {
    name		= "irc2_ERR_NOTONCHANNEL";
-   components	= "mod_irc2user";
    data_en	= "You're not on that channel";
    data_tr	= "O kanalda deľ^_ilsiniz";
 };
 
 tag = {
    name		= "irc2_ERR_NOTOPLEVEL";
-   components	= "mod_irc2user";
    data_en	= "No toplevel domain specified";
    data_tr	= "Toplevel domain belirtilmedi";
 };
@@ -331,21 +306,18 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_PASSWDMISMATCH";
-   components	= "mod_irc2user";
    data_en	= "Password incorrect";
    data_tr	= "Yanlıž^_ ž^_ifre";
 };
 
 tag = {
    name		= "irc2_ERR_RESTRICTED";
-   components	= "mod_irc2user";
    data_en	= "Your connection is restricted";
    data_tr	= "Baglantınız kısıtlanmıž^_tır";
 };
 
 tag = {
    name		= "irc2_ERR_SERVERMODELOCK";
-   components	= "mod_irc2user";
    data_en	= "Cannot change server modes (+L)";
 };
 
@@ -358,7 +330,6 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_TOOMANYCHANNELS";
-   components	= "mod_irc2user";
    data_en	= "You have joined too many channels (%p0 is the limit)";
    data_tr	= "Fazla kanala girdiniz (limit %p0 dir)";
 };
@@ -371,14 +342,12 @@ tag = {
 tag = {
    name		= "irc2_ERR_UMODEUNKNOWNFLAG";
    fields	= "0 = the mode itself";
-   components	= "mod_irc2user";
    data_en	= "Unknown MODE flag (%p0)";
    data_tr	= "Bilinmeyen MODE FLAG (%p0)";
 };
 
 tag = {
    name		= "irc2_ERR_UNAVAILRESOURCE";
-   components	= "mod_irc2user";
    data_en	= "Resource is temporarily unavailable";
    data_tr	= "Kaynak geçici olarak servis dıž^_ı";
 };
@@ -399,34 +368,29 @@ tag = {
 tag = {
    name		= "irc2_ERR_UNKNOWNMODE";
    fields	= "0 = channel";
-   components	= "mod_irc2user";
    data_en	= "is unknown mode char to me (%p0)";
    data_tr	= "%p0 için bilinmeyen MODE CHAR";
 };
 
 tag = {
    name		= "irc2_ERR_UNKNOWNSERVERMODE";
-   components	= "mod_irc2user";
    data_en	= "One or more given server modes are unknown";
 };
 
 tag = {
    name		= "irc2_ERR_UNIQOPPRIVSNEEDED";
-   components	= "mod_irc2user";
    data_en	= "You're not the original channel operator";
    data_tr	= "Kanal öperatörü deľ^_ilsiniz";
 };
 
 tag = {
    name		= "irc2_ERR_USERNOTINCHANNEL";
-   components	= "mod_irc2user";
    data_en	= "They aren't on that channel";
    data_tr	= "Aradıľ^_ınız kiž^_i bu kanalda deľ^_ildir";
 };
 
 tag = {
    name		= "irc2_ERR_USERONCHANNEL";
-   components	= "mod_irc2user";
    data_en	= "is already on channel";
    data_tr	= "zaten kanaldalar";
 };
@@ -440,14 +404,12 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_USERSDONTMATCH";
-   components	= "mod_irc2user";
    data_en	= "Cannot change mode for other users";
    data_tr	= "Baž^_ka kullanıcı için MODE deľ^_iž^_tiremezsiniz";
 };
 
 tag = {
    name		= "irc2_ERR_WASNOSUCHNICK";
-   components	= "mod_irc2user";
    data_en	= "There was no such nickname, or they signed off too long "
                   "ago";
    data_tr	= "Böyle bir nick bulunamadı";
@@ -455,14 +417,12 @@ tag = {
 
 tag = {
    name		= "irc2_ERR_WILDTOPLEVEL";
-   components	= "mod_irc2user";
    data_en	= "Wildcard in toplevel domain";
    data_tr	= "Yanlıž^_ gTLD belirtildi";
 };
 
 tag = {
    name		= "irc2_ERR_YOUREBANNEDCREEP";
-   components	= "mod_irc2user";
    data_en	= "You are banned from this server";
    data_tr	= "Bu serverdan banlandınız";
 };
@@ -470,47 +430,40 @@ tag = {
 tag = {
    name		= "irc2_QUIT_BUGGY";
    fields	= "0 = error message";
-   components	= "mod_irc2user";
    data_en	= "Bug? Error: %p0";
 };
 
 tag = {
    name		= "irc2_QUIT_ECONNRESET";
-   components	= "mod_irc2user";
    data_en	= "Connection reset by peer";
    data_tr	= "Baglantiniz ež^_düzey tarafindan sonlandirilmistir";
 };
 
 tag = {
    name		= "irc2_QUIT_EHOSTUNREACH";
-   components	= "mod_irc2user";
    data_en	= "No route to host";
 };
 
 tag = {
    name		= "irc2_QUIT_ENETUNREACH";
-   components	= "mod_irc2user";
    data_en	= "Network is unreachable";
    data_tr	= "Networke baglanilamadi";
 };
 
 tag = {
    name		= "irc2_QUIT_EPIPE";
-   components	= "mod_irc2user";
    data_en	= "Broken pipe";
    data_tr	= "Data hatti sorunu";
 };
 
 tag = {
    name		= "irc2_QUIT_ETIMEDOUT";
-   components	= "mod_irc2user";
    data_en	= "Connection timed out";
    data_tr	= "Zaman až^_imina ugradi";
 };
 
 tag = {
    name		= "irc2_QUIT_FLOODING";
-   components	= "mod_irc2user";
    data_en	= "Excess flood";
    data_tr	= "Bilgi až^_ırılıľ^_ı";
 };
@@ -518,40 +471,34 @@ tag = {
 tag = {
    name		= "irc2_QUIT_NORMAL";
    fields	= "0 = the user's quit message";
-   components	= "mod_irc2user";
    data_en	= "Quit: %p0";
    data_tr	= "Kullanici ƫikiž^_i: %p0";
 };
 
 tag = {
    name		= "irc2_QUIT_NO_REASON";
-   components	= "mod_irc2user";
    data_en	= "Client quit IRC";
    data_tr	= "Kullanici IRC çikisi";
 };
 
 tag = {
    name		= "irc2_QUIT_PINGED_OUT";
-   components	= "mod_irc2user";
    data_en	= "Ping timeout";
    data_tr	= "PING zaman asimina ugradi";
 };
 
 tag = {
    name		= "irc2_QUIT_READ_FAIL";
-   components	= "mod_irc2user";
    data_en	= "Read error";
 };
 
 tag = {
    name		= "irc2_QUIT_SENDQ_OVERFLOW";
-   components	= "mod_irc2user";
    data_en	= "Send queue overflow";
 };
 
 tag = {
    name		= "irc2_QUIT_WRITE_FAIL";
-   components	= "mod_irc2user";
    data_en	= "Write error";
 };
 
@@ -565,7 +512,6 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_CHANREDIR";
-   components	= "mod_irc2user";
    data_en	= "Note: You are being redirected";
 };
 
@@ -579,14 +525,12 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFBANLIST";
-   components	= "mod_irc2user";
    data_en	= "End of channel ban list";
    data_tr	= "Kanal banlarının listesinin sonu";
 };
 
 tag = {
    name		= "irc2_RPL_ENDOFEXCEPTLIST";
-   components	= "mod_irc2user";
    data_en	= "End of channel exception list";
    data_tr	= "Kanal eksepsiyonlar listensinin sonu";
 };
@@ -605,21 +549,19 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFINFO";
-   components	= "mod_irc2user";
+   components	= "libkineircd_irc2";
    data_en	= "End of INFO list";
    data_tr	= "INFO listensinin sonu";
 };
 
 tag = {
    name		= "irc2_RPL_ENDOFINVITELIST";
-   components	= "mod_irc2user";
    data_en	= "End of channel invite list";
    data_tr	= "Kanal invite listesinin sonu";
 };
 
 tag = {
    name		= "irc2_RPL_ENDOFLINKS";
-   components	= "mod_irc2user";
    data_en	= "End of LINKS list";
    data_tr	= "LINKler listensinin sonu";
 };
@@ -633,14 +575,12 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFNAMES";
-   components	= "mod_irc2user";
    data_en	= "End of NAMES list";
    data_tr	= "NAMES (isimler) listesinin sonu";
 };
 
 tag = {
    name		= "irc2_RPL_ENDOFSTATS";
-   components	= "mod_irc2user";
    data_en	= "End of STATS report";
    data_tr	= "STATS raporunun sonu";
 };
@@ -659,14 +599,13 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_ENDOFWHOIS";
-   components	= "mod_irc2user";
+   components	= "libkineircd_irc2";
    data_en	= "End of WHOIS list";
    data_tr	= "WHOIS listesinin sonu";
 };
 
 tag = {
    name		= "irc2_RPL_ENDOFWHOWAS";
-   components	= "mod_irc2user";
    data_en	= "End of WHOWAS";
    data_tr	= "WHOWAS komutunun sonu";
 };
@@ -687,7 +626,6 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_LISTEND";
-   components	= "mod_irc2user";
    data_en	= "End of LIST";
    data_tr	= "LIST komutunun sonu";
 };
@@ -753,7 +691,6 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_NOTOPIC";
-   components	= "mod_irc2user";
    data_en	= "No topic is set";
    data_tr	= "Hiç bir topic yoktur";
 };
@@ -772,14 +709,12 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_REHASHING";
-   components	= "mod_irc2user";
    data_en	= "Rehashing";
    data_tr	= "Rehash komutu uygulanıyor";
 };
 
 tag = {
    name		= "irc2_RPL_SERVLISTEND";
-   components	= "mod_irc2user";
    data_en	= "End of service listing";
    data_tr	= "Servis listesinin sonu";
 };
@@ -797,7 +732,6 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_TRACEEND";
-   components	= "mod_irc2user";
    data_en	= "End of TRACE";
    data_tr	= "TRACE komutunun sonu";
 };
@@ -829,40 +763,56 @@ tag = {
 
 tag = {
    name		= "irc2_RPL_WHOISIDLE";
-   components	= "mod_irc2user";
+   components	= "libkineircd_irc2";
    data_en	= "seconds idle, signon time";
    data_tr	= "saniye idle, baľ^_lanma zamanı";
 };
 
 tag = {
    name		= "irc2_RPL_WHOISLANGUAGE";
-   components	= "mod_irc2user";
+   components	= "libkineircd_irc2";
    data_en	= "speaks these language(s)";
 };
 
 tag = {
    name		= "irc2_RPL_WHOISOPERATOR";
-   components	= "mod_irc2user";
+   components	= "libkineircd_irc2";
    data_en	= "is an IRC operator";
    data_tr	= "bir IRC Operator";
 };
 
 tag = {
+   name		= "irc2_RPL_WHOISOPERATOR_LOCAL";
+   components	= "libkineircd_irc2";
+   data_en	= "is a local IRC operator";
+};
+
+tag = {
    name		= "irc2_RPL_WHOISSECURE";
-   components	= "mod_irc2user";
+   components	= "libkineircd_irc2";
    data_en	= "is connected via a secure connection";
 };
 
 tag = {
+   name		= "irc2_RPL_WHOISSTAFF";
+   components	= "libkineircd_irc2";
+   data_en	= "is a staff member";
+};
+
+tag = {
+   name		= "irc2_RPL_WHOIS_HIDDEN";
+   components	= "libkineircd_irc2";
+   data_en	= "is hidden behind a fake hostname";
+};
+
+tag = {
    name		= "irc2_RPL_YOUREOPER";
-   components	= "mod_irc2user";
    data_en	= "You are now an IRC operator";
    data_tr	= "IRC Operator statüsüne geçtiniz";
 };
 
 tag = {
    name		= "irc2_RPL_YOURESERVICE";
-   components	= "mod_irc2user";
    data_en	= "You are service %p0";
    data_tr	= "ž^^u an %p0 servissiniz";
 };
