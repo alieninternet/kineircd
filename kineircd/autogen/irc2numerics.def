@@ -1942,6 +1942,15 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "ERR_UNKNOWN_ERROR";
+   numeric	= "400";
+   format	= "<command> [<?>] :<info>";
+   comment	= "Sent when an error occured executing a command, but it is "
+                  "not specifically known why the command could not be "
+		  "executed.";
+};
+
+irc2numerics = {
    name		= "ERR_NOSUCHNICK";
    numeric	= "401";
    origin	= "RFC1459";
@@ -3212,7 +3221,7 @@ irc2numerics = {
    numeric	= "666";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   format	= "<command> <parameter(s)> :<info>";
+   format	= "<command> [<parameter> ...] :<info>";
    comment	= "Generic response for new lists to save numerics.";
 };
 
