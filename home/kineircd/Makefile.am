@@ -14,8 +14,13 @@ SUBDIRS=\
 
 
 
+# The place where the include files should go
+includedir=@includedir@/kineircd
+
+
+
 # KineIRCd library header files
-nobase_include_HEADERS=\
+include_HEADERS=\
 	include/kineircd/channel.h \
 	include/kineircd/config.h \
 	include/kineircd/connection.h \
