@@ -1,5 +1,14 @@
 (last edited 24/02/2002)
 
+=============================================================================
+=============================================================================
+ 
+   THIS FILE IS OBSOLETE! Please refer to the autogen definition files for
+   the real list of modes..
+
+=============================================================================
+=============================================================================
+
 OK OK! Finally I've written this to compile a list of modes that KineIRCd
 knows and some descriptions of what they do, how they work. Hopefully this
 should make more sense to the bitwise illiterate :)
