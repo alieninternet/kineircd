@@ -107,7 +107,7 @@ void registerHandler::sendGeneric(char const *command,
 #ifdef ALLOW_CLIENT_CONNECTIONS
 			    ' ' + (nickname.empty() ? '*' : nickname) + ' ' +
 #else
-			    " * " +
+			    ' * ' +
 #endif
 			    line + REGISTRATION_EOL_CHARS);
 }
