@@ -24,6 +24,8 @@
 #ifndef _INCLUDE_KINEIRCD_LANGUAGELIST_H_
 # define _INCLUDE_KINEIRCD_LANGUAGELIST_H_ 1
 
+# include "kineircd/kineircdconf.h"
+
 # ifdef KINE_STL_HAS_HASH
 #  include <hash_map>
 # else
@@ -37,27 +39,33 @@ namespace Kine {
    class LanguageList {
     private:
 # ifdef KINE_STL_HAS_HASH
-      typedef std::hash_map <const char* const, const LanguageData::tagID_type>
+      typedef std::hash_map <String, LanguageData::tagID_type>
 	tagDictionary_type;
 # else
-      typedef std::map <const char* const, const LanguageData::tagID_type>
+      typedef std::map <String, LanguageData::tagID_type>
 	tagDictionary_type;
 # endif
 
       /* Our "Tag Dictionary". As language files are loaded, tags are thrown
-       * into the tag dictionary with a unique descriptor for easier reference.
-       * Later, tag tables can discover their unique descriptors for their tags
+       * into the tag dictionary with a unique identifier for easier reference.
+       * Later, tag tables can discover their unique identifier for their tags
        * to find the appropriate data within the language data vectors.
        */
       tagDictionary_type tagDictionary;
 
+      /* The highest identifier within the tag dictionary, for checking etc..
+       * Note that the ID '0' is used for a special purpose (no data)..
+       */
+      LanguageData::tagID_type highestTagID;
+      
       // Our default language, to use if all else fails..
       LanguageData* defaultLanguage;
       
     public:
       // Constructor
       LanguageList()
-	: defaultLanguage(0)
+	: highestTagID(0),
+          defaultLanguage(0)
 	{};
       
       // Load a new language data file

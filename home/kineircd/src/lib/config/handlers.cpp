@@ -208,10 +208,10 @@ namespace Config {
      Kine::Config::defClassLanguages = {
 	{
 	   0,
-	     0,
+	     (void *)&Config::defLanguageList,
 	     &LanguageConfig::varHandler,
 	     0,
-	  0
+	     0
 	}
    };
 

@@ -95,10 +95,23 @@ bool LanguageList::loadFile(const String& filename, String& errString)
 	       ": Got control tag '" + tag + '\'');
 #endif
       } else {
-      
 #ifdef KINE_DEBUG_PSYCHO
 	 debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
 	       ": Got tag '" + tag + '\'');
+#endif
+
+	 // Look for this tag in the dictionary
+	 LanguageData::tagID_type tagID = tagDictionary[tag];
+
+	 // Check the ID, if it is 0 then we must add this new ID
+	 if (tagID == 0) {
+	    // Since the ID would have been made (and set to 0), fix it
+	    tagID = tagDictionary[tag] = ++highestTagID;
+	 }
+	 
+#ifdef KINE_DEBUG_PSYCHO
+	 debug("LanguageList::loadFile() - " + tag + ": TUID# " +
+	       String::convert(tagID));
 #endif
       }
    }
