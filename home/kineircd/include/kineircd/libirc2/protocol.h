@@ -24,12 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_IRC2_PROTOCOL_H_
 # define _INCLUDE_KINEIRCD_IRC2_PROTOCOL_H_ 1
 
-# include <queue>
-# include <vector>
 # include <string>
-# include <sstream>
-# include <iomanip>
-# include <aisutil/string/string.h>
 # include <kineircd/libirc2/input.h>
 # include <kineircd/libirc2/output.h>
 
@@ -44,13 +39,6 @@ namespace Kine {
       class Protocol : public Input, public Output {
        public:
 	 typedef unsigned int messageSize_type;
-
-	 //! A replacement parameter (literally a '*', used in many places)
-	 static const char* const replacementParameter;
-	 static const char replacementCharacter;
-
-	 //! The 'ERROR' command name
-	 static const char* const errorCommandName;
 	 
        protected:
 	 // Constructor
@@ -70,32 +58,13 @@ namespace Kine {
 	 //! Destructor
 	 virtual ~Protocol(void)
 	   {};
-	 
-	 
-	 //! Send an appropriately formatted message with raw data (no TO/FROM)
-	 template <class Tc, class Tp>
-	   void sendRawMessage(const Tc& command, const Tp& parameters)
-	   {
-	      std::ostringstream output;
-	      output << command << ' ' << parameters;
-	      sendRawLine(output.str());
-	   };
-
-
-	 //! Send an error message and disconnect
-	 template <class Tp>
-	   void sendError(const Tp& error)
-	     {
-		sendMessage(errorCommandName, error);
-		connection.goodbye();
-	     };
 
 
 	 //! Send RPL_TIMEONSERVERIS to the given client
 	 void sendTimeOnServer(const User& user);
-	 
-	 
-	 //! Handle the various commands which are quite common in IRC-2 modules
+
+
+	 //! Handle the various commands which are common in IRC-2 modules
 	 void doADMIN(const User& user);
 	 void doINFO(const User& user);
 	 void doLUSERS(const User& user);

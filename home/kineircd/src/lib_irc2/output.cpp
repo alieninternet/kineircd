@@ -1,7 +1,7 @@
 /* $Id$
  * 
- * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002,2003 KineIRCd Development Team
+ * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -25,22 +25,18 @@
 # include "autoconf.h"
 #endif
 
-#include <aisutil/string/tokens.h>
-#include <kineircd/config.h>
+#include "kineircd/libirc2/output.h"
 
-#include "kineircd/libirc2/protocol.h"
-
-using AIS::Util::StringTokens;
 using namespace Kine::LibIRC2;
 
 
 // Replacement characters
-const char* const Protocol::replacementParameter = 
+const char* const Output::replacementParameter = 
   "*";
-const char Protocol::replacementCharacter =
+const char Output::replacementCharacter =
   '*';
 
 
 // Error command name (put here so there aren't *heaps* per template use)
-const char* const Protocol::errorCommandName =
+const char* const Output::errorCommandName =
   "ERROR";

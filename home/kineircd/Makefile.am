@@ -376,7 +376,7 @@ libkineircd_irc2_la_SOURCES=\
 	src/lib_irc2/language.cpp \
 	src/lib_irc2/language.h \
 	src/lib_irc2/library.cpp \
-	src/lib_irc2/protocol.cpp \
+	src/lib_irc2/output.cpp \
 	src/lib_irc2/stats.cpp \
 	src/lib_irc2/stats.h \
 	src/lib_irc2/utility.cpp

@@ -25,6 +25,8 @@
 # define _INCLUDE_KINEIRCD_IRC2_OUTPUT_H_ 1
 
 # include <string>
+# include <sstream>
+# include <iomanip>
 # include <kineircd/libclbp/output.h>
 # include <kineircd/libirc2/numerics.h>
 # include <kineircd/libirc2/utility.h>
@@ -39,6 +41,14 @@ namespace Kine {
        * \ingroup LibIRC2
        */
       class Output : public Kine::LibCLBP::Output {
+       public:
+	 //! A replacement parameter (literally a '*', used in many places)
+	 static const char* const replacementParameter;
+	 static const char replacementCharacter;
+	 
+	 //! The 'ERROR' command name
+	 static const char* const errorCommandName;
+
        private:
 	 //! Sent message counter
 	 messageCount_type messageCount;
@@ -78,6 +88,25 @@ namespace Kine {
 	 // Return the number of messages sent through this protocol
 	 const messageCount_type getSentMessageCount(void) const
 	   { return messageCount; };
+
+
+	 //! Send an appropriately formatted message with raw data (no TO/FROM)
+	 template <class Tc, class Tp>
+	   void sendRawMessage(const Tc& command, const Tp& parameters)
+	   {
+	      std::ostringstream output;
+	      output << command << ' ' << parameters;
+	      sendRawLine(output.str());
+	   };
+
+
+	 //! Send an error message and disconnect
+	 template <class Tp>
+	   void sendError(const Tp& error)
+	     {
+		sendMessage(errorCommandName, error);
+		connection.goodbye();
+	     };
 
 
 	 //! Send an appropriately formatted message, without TO/FROM fields

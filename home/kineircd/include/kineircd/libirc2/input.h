@@ -25,6 +25,8 @@
 # define _INCLUDE_KINEIRCD_IRC2_INPUT_H_ 1
 
 # include <string>
+# include <vector>
+# include <aisutil/string/string.h>
 # include <kineircd/libclbp/input.h>
 
 namespace Kine {
