@@ -315,6 +315,19 @@ tag = {
 };
 
 tag = {
+   name		= "irc2_ERR_NOSUCHCHANNEL_UNSUPPORTED_TYPE";
+   components	= "mod_irc2user";
+   data_en	= "No such channel - the channel type is unsupported";
+};
+
+tag = {
+   name		= "irc2_ERR_NOSUCHCHANNEL_DOES_NOT_EXIST";
+   components	= "mod_irc2user";
+   data_en	= "No such channel - it must be created for you to join (this "
+		  "type of channel does not allow you to create it yourself)";
+};
+
+tag = {
    name		= "irc2_ERR_NOSUCHNICK";
    components	= "libkineircd_irc2";
    data_en	= "No such nick";
