@@ -622,6 +622,10 @@ if test "$kineircd_test_compile_socket_unix" = "yes"; then
             [Define if you want UNIX sockets transport])
 fi
 
+dnl Now fix up the socket types...
+AC_SUBST(kineircd_test_compile_socket_type_stream)
+AC_SUBST(kineircd_test_compile_socket_type_seqpacket)
+
 dnl
 dnl Which modules shall we compile?
 dnl
