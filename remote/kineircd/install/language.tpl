@@ -27,6 +27,8 @@
 # Copyright (c) 2003 KineIRCd Development Team
 # (See DEV-TEAM file for details)
 #
+# Please see ../[+(def-file)+] for full copyright information.
+#
 # This file is a part of KineIRCd.
 #
 # KineIRCd is free software; you can redistribute it and/or modify
