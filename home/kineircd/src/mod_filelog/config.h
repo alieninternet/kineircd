@@ -39,12 +39,14 @@ namespace Kine {
 	 // Variables..
 	 AISutil::String defFilename;
 	 AISutil::String defPrefixFormat;
+	 bool defUTC;
 	 
        public:
 	 // Constructor
 	 Config(void)
 	   : defFilename("./ircd.log"),
-	     defPrefixFormat("%Y%m%d%H%M%S ")
+	     defPrefixFormat("%Y%m%d%H%M%S%!%$%n"),
+	     defUTC(false)
 	   {};
 	 
 	 // Destructor
@@ -56,6 +58,8 @@ namespace Kine {
 	   { return defFilename; };
 	 const AISutil::String& getPrefixFormat(void) const
 	   { return defPrefixFormat; };
+	 const bool getUTC(void) const
+	   { return defUTC; };
       };
    }; // namespace mod_filelog
 }; // namespace Kine

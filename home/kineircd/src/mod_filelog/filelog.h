@@ -34,17 +34,11 @@ namespace Kine {
       // The generic file logging class
       class FileLog : public Kine::Logger {
        private:
-	 // The length of the strftime() buffer
-	 static const size_t bufferLength = 64;
-
 	 // The configuration
 	 Config& config;
 
 	 // The log file
 	 std::ofstream logFile;
-	 
-	 // The buffer for strftime
-	 char* buffer[bufferLength + 1];
 	 
 	 // Log a string of text
 	 void logLine(const std::string& str,

@@ -36,7 +36,7 @@ const AISutil::ConfigParser::defTable_type Config::definitionTable = {
      {
 	"FILENAME", 4,
 	  (void*)&Config::defFilename,
-	  0,
+	  &varHandleString,
 	  0,
 	  0
      },
@@ -51,6 +51,13 @@ const AISutil::ConfigParser::defTable_type Config::definitionTable = {
 	"PREFIXFORMAT", 3,
 	  (void*)&Config::defPrefixFormat,
 	  &varHandleString,
+	  0,
+	  0
+     },
+     {
+	"UTC", 3,
+	  (void*)&Config::defUTC,
+	  &varHandleBoolean,
 	  0,
 	  0
      },
