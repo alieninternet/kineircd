@@ -679,6 +679,20 @@ else
 fi
 AC_SUBST(kineircd_test_compile_emod_snmp)
 
+AC_ARG_ENABLE(module-pmod-http,
+              AC_HELP_STRING([--disable-module-pmod-http],
+                             [Disable the HTTP protocol module]),
+ [
+   if test "$enableval" \!= "yes"; then
+     echo -n "pmod_http "
+     kineircd_test_compile_pmod_http=yes
+   fi
+ ],[
+   echo -n "pmod_http "
+   kineircd_test_compile_pmod_http=yes
+ ])
+AC_SUBST(kineircd_test_compile_pmod_http)
+
 dnl finish off the line
 echo
 
@@ -750,6 +764,7 @@ AC_OUTPUT([
 	src/lib/socket/Makefile
 	src/modules/Makefile
 	src/modules/emod_snmp/Makefile
+	src/modules/pmod_http/Makefile
 	])
 
 
