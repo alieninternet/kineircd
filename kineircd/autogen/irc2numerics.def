@@ -988,7 +988,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_FEATURE";
    numeric	= "284";
-   origin	= "QuakeNet";
+   origin	= "ircu";
    conflict	= "yes";
 };
 
