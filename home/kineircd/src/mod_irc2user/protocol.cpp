@@ -290,5 +290,6 @@ void Protocol::sendLanguageList(void)
    // Send the language list to the client
    sendNumeric(LibIRC2::Numerics::RPL_YOURLANGUAGEIS,
 	       langs.str(),
-	       (user.getLanguageList()[0])->getLanguageName());
+	       GETLANG(irc2_RPL_YOURLANGUAGEIS,
+		       (user.getLanguageList()[0])->getLanguageName()));
 }
