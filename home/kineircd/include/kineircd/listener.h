@@ -24,7 +24,7 @@
 #ifndef _INCLUDE_KINEIRCD_LISTENER_H_
 # define _INCLUDE_KINEIRCD_LISTENER_H_ 1
 
-# include <aisutil/socket/socket.h>
+# include <aisutil/socket/stateful-type.h>
 
 namespace Kine {
    //! Listener class (a listener is a 'connection' with one purpose: listening :)
@@ -42,7 +42,7 @@ namespace Kine {
       
     private:
       //! The socket
-      AIS::Util::Socket& socket;
+      AIS::Util::Socket::StatefulType& socket;
       
       //! The pending acceptance backlog for this socket (for when we listen())
       unsigned short listenBacklog;
@@ -58,7 +58,7 @@ namespace Kine {
       
     public:
       //! Constructor
-      explicit Listener(AIS::Util::Socket& s,
+      explicit Listener(AIS::Util::Socket::StatefulType& s,
 			const unsigned short lb,
 			const flags_type f = 0)
 	: socket(s),
@@ -96,7 +96,7 @@ namespace Kine {
 	{ return socket.getFD(); };
       
       //! Accept a new connection from the socket
-      AIS::Util::Socket* const accept(void)
+      AIS::Util::Socket::StatefulType* const accept(void)
 	{
 	   ++acceptCount;
 	   return socket.accept();

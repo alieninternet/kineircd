@@ -34,29 +34,29 @@ using namespace Kine::LibCLBP;
 /* handleInput - Handle incoming data
  * Original 11/08/2001 simonb
  */
-void Input::handleInput(std::stringstream& data)
+void Input::handleInput(const std::string& data)
 {
    std::string::size_type pos = 0;
    
    for (;;) {
       // Find the next \r or \n
       std::string::size_type eolPos = 
-	data.str().find_first_of(Output::EOL_CR_LF, pos);
+	data.find_first_of(Output::EOL_CR_LF, pos);
       
       // Is this an incomplete line? (no termination in the given input)
       if (eolPos == std::string::npos) {
 	 // Buffer what we were given and simply return
-	 inputQueue += data.str();
+	 inputQueue += data;
 	 return;
       }
       
       // If the input queue is empty, we can skip throwing the string around
       if (inputQueue.empty()) {
 	 // Throw it to the line parser..
-	 parseLine(data.str().substr(pos, eolPos - pos));
+	 parseLine(data.substr(pos, eolPos - pos));
       } else {
 	 // Throw the input queue *and* the broken apart data to the parser
-	 parseLine(inputQueue + data.str().substr(pos, eolPos - pos));
+	 parseLine(inputQueue + data.substr(pos, eolPos - pos));
 	 
 	 // Clear the input queue
 	 inputQueue.clear();
@@ -66,14 +66,14 @@ void Input::handleInput(std::stringstream& data)
       pos = eolPos + 1;
       
       // Check if this is a \r\n sequence
-      if ((data.str()[pos - 1] == '\r') &&
-	  (data.str()[pos] == '\n')) {
+      if ((data[pos - 1] == '\r') &&
+	  (data[pos] == '\n')) {
 	 // Skip the next char too!
 	 ++pos;
       }
       
       // If the position is at the end of the string, break
-      if (pos >= data.str().length()) {
+      if (pos >= data.length()) {
 	 return;
       }
    }

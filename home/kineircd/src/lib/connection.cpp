@@ -37,7 +37,7 @@ using AIS::Util::String;
 /* Connection - Initialise new connection
  * Original 12/08/2001 simonb
  */
-Connection::Connection(AIS::Util::Socket& s)
+Connection::Connection(AIS::Util::Socket::Socket& s)
 : socket(s),
   protocol(0),
   sentBytes(0),
@@ -80,7 +80,7 @@ bool Connection::handleInput(void)
    }
    
    // Read a line from the socket buffer (this should change)
-   std::stringstream line;
+   std::string line;
    if (!socket.read(line)) {
 #ifdef KINE_DEBUG
       debug("Connection::handleInput() - Read failed on fd " + 
@@ -90,10 +90,10 @@ bool Connection::handleInput(void)
    }
 
    // Make sure we read something - no point passing nothing to the protocol!
-   if (!line.str().empty()) {
+   if (!line.empty()) {
       // Increment our input counters
-      receivedBytes += line.str().length();
-      daemon().addReceivedBytes(line.str().length());
+      receivedBytes += line.length();
+      daemon().addReceivedBytes(line.length());
 
       // Update the 'last spoke' variable
       lastSpoke = daemon().getTime();

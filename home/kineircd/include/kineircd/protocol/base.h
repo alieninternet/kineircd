@@ -51,11 +51,12 @@ namespace Kine {
 	   {};
 	 
 	 // Handle incoming data
-	 virtual void handleInput(std::stringstream& data) = 0;
+	 virtual void handleInput(const std::string& data) = 0;
 	 
 	 // Remove up to the amount of octets given from the output queue
 	 virtual const std::string 
-	   withdrawOutput(const AIS::Util::Socket::blockSize_type amount) = 0;
+	   withdrawOutput(const AIS::Util::Socket::Socket::blockSize_type
+			  amount) = 0;
 	 
 	 // Return true should there be anything in the output queue to send
 	 virtual const bool moreOutput(void) const = 0;

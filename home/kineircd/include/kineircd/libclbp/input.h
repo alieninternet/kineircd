@@ -57,7 +57,7 @@ namespace Kine {
 
        public:
 	 //! Handle incoming data
-	 void handleInput(std::stringstream& data);
+	 void handleInput(const std::string& data);
 	 
        protected:
 	 //! Grab a read-only version of the input queue

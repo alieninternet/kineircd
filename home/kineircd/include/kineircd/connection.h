@@ -35,7 +35,7 @@ namespace Kine {
       typedef unsigned long long byteCount_type;
       
     private:
-      AIS::Util::Socket& socket;		//!< The connected socket
+      AIS::Util::Socket::Socket& socket;	//!< The connected socket
       Protocol::Base* protocol;			//!< The protocol we are running
       
       byteCount_type sentBytes;			//!< Number of bytes sent
@@ -48,13 +48,13 @@ namespace Kine {
       
     public:
       //! Class constructor
-      explicit Connection(AIS::Util::Socket& s);
+      explicit Connection(AIS::Util::Socket::Socket& s);
       
       //! Shutdown connection
       ~Connection(void);
 
       //! Return the socket
-      const AIS::Util::Socket& getSocket(void) const
+      const AIS::Util::Socket::Socket& getSocket(void) const
 	{ return socket; };
 
       

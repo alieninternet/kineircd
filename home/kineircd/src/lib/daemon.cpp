@@ -41,9 +41,9 @@
 
 #include "kineircd/daemon.h"
 #include "kineircd/config.h"
+#include "kineircd/myserver.h"
 #include "kineircd/version.h"
 #include "lib/debug.h"
-#include "lib/myserver.h"
 
 using namespace Kine;
 using AIS::Util::String;
@@ -131,7 +131,7 @@ void Daemon::initInstance(void)
 #endif
    
    // Also create our server thingy
-   Internal::MyServer::initInstance();
+   MyServer::initInstance();
 }
 
 
@@ -165,7 +165,7 @@ void Daemon::newConnection(Listener& listener)
 #endif
    
    // Accept the connection
-   AIS::Util::Socket* const newSocket = listener.accept();
+   AIS::Util::Socket::StatefulType* const newSocket = listener.accept();
    
    // Check if that worked..
    if (newSocket == 0) {

@@ -43,7 +43,8 @@ const char* const Output::EOL_LF	= "\n";
  * Note: This could be more efficient :(
  */
 const std::string
-  Output::withdrawOutput(const AIS::Util::Socket::blockSize_type amount)
+  Output::withdrawOutput(const AIS::Util::Socket::Socket::blockSize_type
+			 amount)
 {
    // How much do we need to send?
    const std::string::size_type length =

@@ -59,7 +59,8 @@ namespace Kine {
       bool varSecure;
 
       // A helper to set the socket up
-      bool setupSocket(AIS::Util::Socket& socket, AIS::Util::String& errString,
+      bool setupSocket(AIS::Util::Socket::StatefulType& socket,
+		       AIS::Util::String& errString,
 		       int port = 0);
       
     public:

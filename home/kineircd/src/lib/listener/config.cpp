@@ -133,7 +133,7 @@ ListenerConfig::ListenerConfig(void)
 /* classHandleListen
  * Original 18/08/2002 simonb
  */
-bool ListenerConfig::setupSocket(AIS::Util::Socket& socket, 
+bool ListenerConfig::setupSocket(AIS::Util::Socket::StatefulType& socket,
 				 AIS::Util::String& errString, int port)
 {
    // Set its address
@@ -318,7 +318,8 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
       debug("ListenerConfig::classHandler() - Creating a UNIX socket...");
 # endif
       // Create the socket and set it up
-      AIS::Util::SocketUNIX *socket = new AIS::Util::SocketUNIX();
+      AIS::Util::Socket::SocketUNIX *socket = 
+	new AIS::Util::Socket::SocketUNIX();
       if (!config.setupSocket(*socket, errString)) {
 	 return false;
       }
@@ -418,20 +419,20 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(ListenerConfig::classHandler)
        * will only need to create ONE instance of this listener, rather than
        * look up the port(s) and potentially create multiple instances.
        */
-      AIS::Util::Socket *socket = 0;
+      AIS::Util::Socket::StatefulType *socket = 0;
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPV4_TCP
       if (domainType == DOMAIN_IPV4) {
-	 socket = new AIS::Util::SocketIPv4TCP();
+	 socket = new AIS::Util::Socket::SocketIPv4TCP();
       } else
 #endif   
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPV6_TCP
       if (domainType == DOMAIN_IPV6) {
-         socket = new AIS::Util::SocketIPv6TCP();
+         socket = new AIS::Util::Socket::SocketIPv6TCP();
       } else
 #endif
 #ifdef LIBAISUTIL_HAVE_SOCKET_IPX_SPX
       if (domainType == DOMAIN_IPX) {
-         socket = new AIS::Util::SocketIPXSPX();
+         socket = new AIS::Util::Socket::SocketIPXSPX();
       } else
 #endif
       { 
