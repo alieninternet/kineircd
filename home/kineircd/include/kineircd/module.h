@@ -24,6 +24,18 @@
 #ifndef _INCLUDE_KINEIRCD_MODULE_H_
 # define _INCLUDE_KINEIRCD_MODULE_H_ 1
 
+// Template for the function which initialises the module and returns the info
+# define KINE_MODULE_INIT_PROTOTYPE(x) \
+   const Kine::Module::basicInfo_type &x(void)
+
+// The correct name of the symbol which is searched for by dlopen()
+# define KINE_MODULE_INIT_SYMBOL_NAME_STR \
+   "KineIRCdModuleInit"
+
+// Template for the above, which you should use in your modules (correct name)
+# define KINE_MODULE_INIT \
+   static KINE_MODULE_INIT_PROTOTYPE(KineIRCdModuleInit)
+
 // Template for the function which triggers a module to start
 # define KINE_MODULE_START(x) \
    bool x(void)
