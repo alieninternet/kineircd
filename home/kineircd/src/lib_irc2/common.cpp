@@ -29,6 +29,9 @@
 #include <sstream>
 #include <iomanip>
 #include <cstring>
+#ifdef KINE_DEBUG_ASSERT
+# include <cassert>
+#endif
 #include <algorithm>
 #include <utmpx.h>
 #include <aisutil/string/string.h>

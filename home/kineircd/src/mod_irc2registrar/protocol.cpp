@@ -27,6 +27,9 @@
 
 #include <sstream>
 #include <iomanip>
+#ifdef KINE_DEBUG_ASSERT
+# include <cassert>
+#endif
 #include <aisutil/string/string.h>
 #include <aisutil/utils.h>
 #include <kineircd/protocolinfo.h>
@@ -196,7 +199,7 @@ void Protocol::parseMessage(const std::string& origin,
    }
    
    // If we got here, we are likely to switch to the newly created protocol.
-#ifdef KINE_DEBUG
+#ifdef KINE_DEBUG_ASSERT
    assert(protocolInfo != 0);
 #endif
     

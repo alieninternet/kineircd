@@ -26,6 +26,9 @@
 #endif
 
 #include <sstream>
+#ifdef KINE_DEBUG_ASSERT
+# include <cassert>
+#endif
 #include <kineircd/config.h>
 #include <kineircd/languages.h>
 #include <kineircd/registry.h>
