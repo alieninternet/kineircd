@@ -107,7 +107,7 @@ namespace Kine {
 
 	 
 	 // Send an appropriately formatted message, without TO/FROM fields
-	 template <class Tc, class Tp>
+	 template <class Tc>
 	   void sendMessage(const Tc& command)
 	   {
 	      std::ostringstream output;
