@@ -138,7 +138,7 @@ namespace Kine {
       virtual const Name& getNickname(void) const = 0;
 
       // Return the client's nickname (which is also its unique 'name')
-      const std::wstring& getName(void) const
+      const Kine::Name& getName(void) const
 	{ return getNickname(); };
 
 

@@ -91,7 +91,7 @@ namespace Kine {
 	{ return shortName; };
       
       // Return the 'name'
-      const std::wstring& getName(void) const
+      const Kine::Name& getName(void) const
 	{ return getNetworkName(); };
    }; // class Network
 }; // namespace Kine

@@ -104,7 +104,7 @@ namespace Kine {
         { return getServerName(); };
 	
       // Return the 'name' (a server's hostname is normally its name)
-      const std::wstring& getName(void) const
+      const Kine::Name& getName(void) const
 	{ return getServerName(); };
 
 

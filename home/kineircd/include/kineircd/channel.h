@@ -152,7 +152,7 @@ namespace Kine {
 	{ return name; };
 
       // Return the 'name' (generic form)
-      const std::wstring& getName(void) const
+      const Kine::Name& getName(void) const
 	{ return getChannelName(); };
 
       //! Return the name of the channel, without the prefix character

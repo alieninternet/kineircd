@@ -26,6 +26,7 @@
 
 # include <string>
 # include <aisutil/time.h>
+# include <kineircd/name.h>
 
 namespace Kine {
    class User;
@@ -104,7 +105,7 @@ namespace Kine {
        * 
        * \return The \e unique name for this entity
        */
-      virtual const std::wstring& getName(void) const = 0;
+      virtual const Name& getName(void) const = 0;
 
 
       /*!
