@@ -662,6 +662,8 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseUSER)
 	 registrantData.username);
    debug("mod_irc2registrar: -=>        Modes: " +
 	 registrantData.modes);
+   debug("mod_irc2registrar: -=>     Hostname: " +
+	 registrantData.hostname);
    debug("mod_irc2registrar: -=>  Description: " +
 	 registrantData.description);
 #endif
