@@ -31,6 +31,7 @@
 
 #include "kineircd/user.h"
 #include "kineircd/registry.h"
+#include "kineircd/myserver.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
@@ -211,4 +212,13 @@ const Error::error_type
    doEventReceivePrivateNotice(from, message);
 
    return Error::NO_ERROR;
+}
+
+
+/* getServer - Return the server local users are connected to (ie. 'my server')
+ * Original 20/06/2003 simonb
+ */
+Server& LocalUser::getServer(void) 
+{
+   return myServer();
 }

@@ -223,6 +223,8 @@ libkineircd_la_SOURCES=\
 	$(KINEIRCD_SOURCE_LIB_DEBUG_CPP) \
 	$(KINEIRCD_SOURCE_LIB_DEBUG_H) \
 	src/libkineircd/logger.cpp \
+	src/libkineircd/myserver.cpp \
+	src/libkineircd/myserver.h \
 	src/libkineircd/name.cpp \
 	src/libkineircd/registry.cpp \
 	src/libkineircd/signals.cpp \

@@ -1,5 +1,5 @@
 /* $Id$
- * 
+ *
  * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
@@ -21,42 +21,41 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_KINEIRCD_DENIZEN_H_
-# define _INCLUDE_KINEIRCD_DENIZEN_H_ 1
+#ifndef _SRC_LIBKINEIRCD_MYSERVER_H_
+# define _SRC_LIBKINEIRCD_MYSERVER_H_ 1
 
-# include <kineircd/entity.h>
+# include "kineircd/server.h"
+# include "kineircd/config.h"
 
 namespace Kine {
-   class Server;
-   
-   //! Base class for denizens, things that hang off servers
-   class Denizen : public Entity {
-    protected:
-      //! Constructor
-      Denizen(const AISutil::Time& _signonTime)
-	: Entity(_signonTime)
-	{};
+   class MyServer : public Server {
+    private:
+      // Our instance
+      static MyServer* instance;
       
+      // Constructor
+      MyServer(void);
+
     public:
-      //! Destructor
-      virtual ~Denizen(void)
+      // Destructor
+      ~MyServer(void)
 	{};
 
-      //! Return the hostname
-      virtual const std::string& getHostname(void) const = 0;
+      // Create the single instance of this class
+      static void initInstance(void);
       
-      //! Return the denizen's description/real name/gecos field
-      virtual const std::string& getDescription(void) const = 0;
-
-      //! Return the number of hops from us to this denizen
-      virtual const unsigned int getHopCount(void) const
-	{ return 0; };
+      // Return our instance
+      static MyServer& getInstance(void)
+	{ return *instance; };
       
-      //! Return a pointer to the server this denizen is connected to/through
-      virtual Server& getServer(void) = 0;
-   }; // class Denizen
+      // Return the server's description
+      const std::string& getDescription(void) const
+	{ return config().getServerDescription(); };
+      
+      // Return the server we're connected to (technically, that's us)
+      Server& getServer(void)
+	{ return *this; };
+   }; // class MyServer
 }; // namespace Kine
-
-# include <kineircd/server.h>
-
-#endif // _INCLUDE_KINEIRCD_DENIZEN_H_
+   
+#endif // _SRC_LIBKINEIRCD_MYSERVER_H_

@@ -33,6 +33,7 @@
 
 #include "kineircd/languages.h"
 #include "kineircd/config.h"
+#include "kineircd/myserver.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
@@ -152,7 +153,7 @@ const std::string
 	    continue;
 	    
 	  case 'd': // The description of the server
-	    output += config().getServerDescription();
+	    output += myServer().getDescription();
 	    continue;
 	    
 	  case 'L': // The location of the server
@@ -160,7 +161,7 @@ const std::string
 	    continue;
 	    
 	  case 'n': // The name of the server (its hostname)
-	    output += config().getServerName();
+	    output += myServer().getName();
 	    continue;
 	    
 	  case 'N': // The name of the network (if there is one)

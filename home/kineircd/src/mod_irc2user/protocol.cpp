@@ -87,7 +87,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    // Tell the user about ourselves - hostname and version (002)
    sendNumeric(LibIRC2::Numerics::RPL_YOURHOST,
 	       GETLANG(irc2_RPL_YOURHOST,
-		       config().getServerName(),
+		       myServer().getName(),
 		       Kine::Version::version));
    
    // Tell the user when the server was created, not that they'd care (003)
@@ -97,7 +97,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    
    // Tell the user a little bit about what we know.. (004)
    sendNumeric(LibIRC2::Numerics::RPL_MYINFO,
-	       config().getServerName(),
+	       myServer().getName(),
 	       Kine::Version::version,
 	       "umodes",
 	       "cmodes",
@@ -241,7 +241,7 @@ void Protocol::sendISUPPORT(void)
    // Determine the maximum number of octets we can send (the 10 is 'safe')
    const unsigned int maxOutputLength = 
      maxMessageSize - suffix.length() - user.getNickname().length() -
-     config().getServerName().length() - 10;
+     myServer().getName().length() - 10;
    
    // Iterate over the information
    for (ISupport::info_type::const_iterator it = isupport().getInfo().begin();
@@ -330,7 +330,7 @@ void Protocol::sendNames(const Channel& channel)
    // Determine the maximum number of octets we can send (the 15 is 'safe')
    const unsigned int maxOutputLength = 
      maxMessageSize - user.getNickname().length() -
-     config().getServerName().length() - 15;
+     myServer().getName().length() - 15;
 
    // Our reply buffer..
    std::string reply;

@@ -43,6 +43,7 @@
 #include <aisutil/string/string.h>
 #include <aisutil/string/tokens.h>
 #include <kineircd/config.h>
+#include <kineircd/myserver.h>
 #include <kineircd/daemon.h>
 #include <kineircd/registry.h>
 #include <kineircd/version.h>
@@ -103,16 +104,16 @@ void Protocol::doADMIN(const User& user)
        Kine::config().getAdministratorLocation().empty() &&
        Kine::config().getAdministratorContact().empty()) {
       sendNumeric(user, LibIRC2::Numerics::ERR_NOADMININFO,
-		  Kine::config().getServerName(),
+		  Kine::myServer().getName(),
 		  GETLANG(irc2_ERR_NOADMININFO));
       return;
    }
    
    // Send the admin header
    sendNumeric(user, LibIRC2::Numerics::RPL_ADMINME,
-	       Kine::config().getServerName(),
+	       Kine::myServer().getName(),
 	       GETLANG(irc2_RPL_ADMINME,
-		       Kine::config().getServerName()));
+		       Kine::myServer().getName()));
    
    // Send the administrator's name
    if (!Kine::config().getAdministratorName().empty()) {
@@ -198,7 +199,7 @@ void Protocol::doMOTD(const User& user, const bool justConnected)
    // Send the MOTD header
    sendNumeric(user, Numerics::RPL_MOTDSTART,
 	       GETLANG(irc2_RPL_MOTDSTART,
-		       Kine::config().getServerName()));
+		       Kine::myServer().getName()));
 
    // Send this line
    sendNumeric(user, Numerics::RPL_MOTD,
@@ -294,7 +295,7 @@ void Protocol::doTIME(const User& user)
    
    // Send the RPL_TIME reply
    sendNumeric(user, LibIRC2::Numerics::RPL_TIME,
-	       config().getServerName(),
+	       myServer().getName(),
 	       text.str());
 }
 
@@ -370,7 +371,7 @@ void Protocol::doVERSION(const User& user)
    // Send the RPL_VERSION reply
    sendNumeric(user, LibIRC2::Numerics::RPL_VERSION,
 	       Version::version,
-	       config().getServerName(),
+	       myServer().getName(),
 	       Version::versionChars);
 }
 
@@ -389,17 +390,17 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
       std::string target = st.nextToken(',');
 
       // Find this target.. First look to see if it is a user
-      const User* const foundUser = registry().findUser(target);
+      User* const foundUser = registry().findUser(target);
       
       // If we did not find a user, look for this as a service
-      const Service* const foundService = 
+      Service* const foundService = 
 	((foundUser == 0) ? registry().findService(target) : 0);
       
       // Whatever it is, it's a client, and we want to keep the code simple :)
-      const Client* const foundClient =
+      Client* const foundClient =
 	((foundUser != 0) ? 
-	 static_cast<const Client* const>(foundUser) : 
-	 static_cast<const Client* const>(foundService));
+	 static_cast<Client* const>(foundUser) : 
+	 static_cast<Client* const>(foundService));
       
       // Make sure we found that client
       if (foundClient != 0) {
@@ -450,13 +451,13 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
 	 }
 	 
 	 // If the server the client is on is not hidden, send that too
-	 if ((true/*!foundClient->getServer().isHidden()*/ && 
+	 if ((!foundClient->getServer().isHiddenFrom(user) &&
 	      (foundService == 0)) ||
 	     user.isStaff()) {
 	    sendNumeric(user, LibIRC2::Numerics::RPL_WHOISSERVER,
 			foundClient->getNickname(),
-			"server.host.name",
-			"server description here");
+			foundClient->getServer().getName(),
+			foundClient->getServer().getDescription());
 	 }
 	 
 	 // If this is a user, we have lots more we can say

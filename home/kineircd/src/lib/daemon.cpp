@@ -43,6 +43,7 @@
 #include "kineircd/config.h"
 #include "kineircd/version.h"
 #include "libkineircd/debug.h"
+#include "libkineircd/myserver.h"
 
 using namespace Kine;
 using AISutil::String;
@@ -128,6 +129,9 @@ void Daemon::initInstance(void)
    debugOut << "Daemon::initInstance() - Created new instance @ " << instance;
    debug(debugOut.str());
 #endif
+   
+   // Also create our server thingy
+   MyServer::initInstance();
 }
 
 

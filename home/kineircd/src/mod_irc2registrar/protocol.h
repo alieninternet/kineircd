@@ -28,6 +28,7 @@
 # include <kineircd/listener.h>
 # include <kineircd/registrant.h>
 # include <kineircd/config.h>
+# include <kineircd/myserver.h>
 # include <kineircd/irc2/protocol.h>
 # include <kineircd/irc2/numerics.h>
 
@@ -73,7 +74,7 @@ namespace Kine {
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa)
 	     {
-		sendMessageFrom(config().getServerName(), numeric,
+		sendMessageFrom(myServer().getName(), numeric,
 				(registrantData.name.empty() ?
 				 replacementParameter :
 				 registrantData.name),
@@ -83,7 +84,7 @@ namespace Kine {
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa, const Tb& pb)
 	     {
-		sendMessageFrom(config().getServerName(), numeric,
+		sendMessageFrom(myServer().getName(), numeric,
 				(registrantData.name.empty() ?
 				 replacementParameter :
 				 registrantData.name),
