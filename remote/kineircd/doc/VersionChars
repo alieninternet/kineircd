@@ -15,12 +15,13 @@ These are used to see what options this IRCd has compiled in, and what needs
 a recompilation to change. It also shows which modules are active.
 
 Configuration (first section):
- D = DEBUG
- H = KINE_STL_HAS_HASH
- N = KINE_STRICT_CHANNEL_NAMES
- S = KINE_WITH_SSL
+ D = Compiled in debugging mode
+ H = Hash capability was detected in the C++ STL
+ N = Strict channel names will be enforced
+ S = Configured to have SSL available
 
-Transport Phrases (second section)
- IPv4 = HAVE_TRANSPORT_TCP_IPV4
- IPv6 = HAVE_TRANSPORT_TCP_IPV6
- IPX = HAVE_TRANSPORT_SPX_IPX
+Transport Phrases (parameters after the characters, comma delimetered):
+ IPv4 - TCP/IPv4 connections
+ IPv6 - TCP/IPv6 connections
+ IPX  - IPX/SPX connections
+ Unix - Unix socket connections
