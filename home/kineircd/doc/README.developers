@@ -193,6 +193,10 @@ and code formatting information. Last updated 200203252022
   and this will cause issues.
 
 
+* Don't check pointers with a simple if (!pointer). Do it with 
+  if (pointer != 0) -- it's safer.
+
+
 * Only use integers of the size you *NEED*. Leave word length
   optimisations, if any, to the compiler. Eg. 'int i' is a waste if
   you are only using a value between -3 and 3.
