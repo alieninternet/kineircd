@@ -48,6 +48,7 @@ typedef unsigned long snotice_bitmask_t;
 // This is for the RPL_RIMEONSERVERIS reply. Only one byte, as you can see
 typedef unsigned char TYPE_RPL_TIMEONSERVERIS_FLAGS;
 # define TIMEONSERVERFLAG_DST		0x01	// Daylight Saving Time
+# define TIMEONSERVERFLAG_BADCLOCKZONE	0x02	// Bad clock or zone (inaccuracy)
 
 
 // Phew, finally onto our local header files!
