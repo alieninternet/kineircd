@@ -69,3 +69,10 @@
 ;;; topPrefix - Get the top prefix from the prefix stack
 (define (topPrefix)
    (car tablePrefixStack))
+
+
+
+;;; shadowTable? - Determine if the table in scope has a shadow table
+(define (shadowTable?)
+   ;; for now, cheat.
+   (exist? ".defaultDefinition"))
