@@ -47,19 +47,19 @@ languages = {
 
 languages = {
    langCode		= "fr";
-   langName		= "Français";
+   langName		= "Français"; // French
    langMaintainer	= "idil@users.sf.net";
 };
 
 languages = {
    langCode		= "ja";
-   langName		= "日本語";
+   langName		= "日本語"; // Japanese
 //   langMaintainer	= ""; // There is currently no maintainer for this language
 };
 
 languages = {
    langCode		= "tr";
-   langName		= "Türkçe";
+   langName		= "Türkçe"; // Turkish
    langMaintainer	= "idil@users.sf.net";
 };
 
