@@ -608,64 +608,95 @@ AC_ARG_ENABLE(transport-tcp-ipv4,[
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     kineircd_test_have_tcp_ipv4_transport=no
    else
      AC_MSG_RESULT(yes)
-     kineircd_test_have_tcp_ipv4_transport=yes
+     kineircd_test_compile_socket_domain_ipv4=yes
+     kineircd_test_compile_socket_type_stream=yes
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
-   kineircd_test_have_tcp_ipv4_transport=yes
+   kineircd_test_compile_socket_domain_ipv4=yes
+   kineircd_test_compile_socket_type_stream=yes
  ])
-AC_SUBST(kineircd_test_have_tcp_ipv4_transport)
-if test "$kineircd_test_have_tcp_ipv4_transport" = "yes"; then
-  AC_DEFINE(HAVE_TRANSPORT_TCP_IPV4, 1,
-            [Define if you want TCP/IPv4 transport])
+AC_SUBST(kineircd_test_compile_socket_domain_ipv4)
+if test "$kineircd_test_compile_socket_domain_ipv4" = "yes"; then
+  AC_DEFINE(HAVE_SOCKET_DOMAIN_IPV4, 1,
+            [Define if you want IPv4 transport])
 fi
 
 AC_MSG_CHECKING([transport-tcp-ipv6 parameter])
 AC_ARG_ENABLE(transport-tcp-ipv6,[
   --enable-transport-tcp-ipv6                (Default is disabled)
-    Enable TCP/IPv6 connectivity to the server. The implementation is
-    currently incomplete.
+    Enable TCP/IPv6 connectivity to the server.
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     kineircd_test_have_tcp_ipv6_transport=no
    else
      AC_MSG_RESULT(yes)
-     kineircd_test_have_tcp_ipv6_transport=yes
+     kineircd_test_compile_socket_domain_ipv6=yes
+     kineircd_test_compile_socket_type_stream=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
-   kineircd_test_have_tcp_ipv6_transport=no
  ])
-AC_SUBST(kineircd_test_have_tcp_ipv6_transport)
-if test "$kineircd_test_have_tcp_ipv6_transport" = "yes"; then
-  AC_DEFINE(HAVE_TRANSPORT_TCP_IPV6, 1,
-            [Define if you want TCP/IPv6 transport])
+AC_SUBST(kineircd_test_compile_socket_domain_ipv6)
+if test "$kineircd_test_compile_socket_domain_ipv6" = "yes"; then
+  AC_DEFINE(HAVE_SOCKET_DOMAIN_IPV6, 1,
+            [Define if you want IPv6 transport])
 fi
 
-AC_MSG_CHECKING([transport-spx-ipx parameter])
-AC_ARG_ENABLE(transport-spx-ipx,[
-  --enable-transport-spx-ipx                 (Default is disabled)
-    Enable SPX/IPX connectivity to the server.
+AC_MSG_CHECKING([transport-ipx-spx parameter])
+AC_ARG_ENABLE(transport-ipx-spx,[
+  --enable-transport-ipx-spx                 (Default is disabled)
+    Enable IPX/SPX connectivity to the server.
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     kineircd_test_have_spx_ipx_transport=no
    else
      AC_MSG_RESULT(yes)
-     kineircd_test_have_spx_ipx_transport=yes
+     kineircd_test_compile_socket_domain_ipx=yes
+     kineircd_test_compile_socket_type_seqpacket=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
-   kineircd_test_have_spx_ipx_transport=no
  ])
-AC_SUBST(kineircd_test_have_spx_ipx_transport)
-if test "$kineircd_test_have_spx_ipx_transport" = "yes"; then
-  AC_DEFINE(HAVE_TRANSPORT_SPX_IPX, 1,
-            [Define if you want IPX/SPX transport])
+AC_SUBST(kineircd_test_compile_socket_domain_ipx)
+if test "$kineircd_test_compile_socket_domain_ipx" = "yes"; then
+  AC_DEFINE(HAVE_SOCKET_DOMAIN_IPX, 1,
+            [Define if you want IPX transport])
+fi
+
+AC_MSG_CHECKING([transport-unix parameter])
+AC_ARG_ENABLE(transport-unix,[
+  --enable-transport-unix                    (Default is disabled)
+    Enable UNIX socket connectivity to the server.
+ ],[
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(no)
+   else
+     AC_MSG_RESULT(yes)
+     kineircd_test_compile_socket_domain_unix=yes
+     kineircd_test_compile_socket_type_stream=yes
+   fi
+ ],[
+   AC_MSG_RESULT([no (default)])
+ ])
+AC_SUBST(kineircd_test_compile_socket_domain_unix)
+if test "$kineircd_test_compile_socket_domain_unix" = "yes"; then
+  AC_DEFINE(HAVE_SOCKET_DOMAIN_UNIX, 1,
+            [Define if you want UNIX sockets])
+fi
+
+dnl Now fix up the socket types...
+AC_SUBST(kineircd_test_compile_socket_type_stream)
+if test "$kineircd_test_compile_socket_type_stream" = "yes"; then
+  AC_DEFINE(HAVE_SOCKET_TYPE_STREAM, 1,
+            [Define if you want streaming sockets like TCP])
+fi
+AC_SUBST(kineircd_test_compile_socket_type_seqpacket)
+if test "$kineircd_test_compile_socket_type_seqpacket" = "yes"; then
+  AC_DEFINE(HAVE_SOCKET_TYPE_SEQPACKET, 1,
+            [Define if you want sequential datagram sockets like SPX])
 fi
 
 dnl
