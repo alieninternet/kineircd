@@ -366,82 +366,59 @@ AC_ARG_WITH(openssl,[  --with-openssl=DIR      location of OpenSSL library/inclu
    dnl Just run with the given path.. we will check it soon
    ssl_dir="$withval"
    ssl_libs="$withval/lib"
- ],[
-   dnl Say it is required
-   kineircd_test_need_openssl_required=yes
  ])
-dnl Check that we are not being told to skip this...
-if test "$kineircd_test_need_openssl" = "yes"; then
-  dnl We are forced to try and get it..
-  kineircd_test_need_openssl_required=yes
-  dnl Do they not want the support?
-  if test "$ssl_dir" = "no"; then
-    kineircd_test_openssl_not_wanted=yes   
-  fi
-else
-  if test "$ssl_dir" = "no"; then
-    dnl They do not want it and we do not need it - ignore it
-    AC_MSG_RESULT(ignoring)
-    kineircd_test_need_openssl=no
-  else
-    dnl They want it, try and get it
-    kineircd_test_need_openssl=yes
-  fi
-fi
-if test "$kineircd_test_need_openssl" = "yes"; then
-  dnl Check that the 'ssl_dir' environment variable is not empty
-  if test -n "$ssl_dir"; then
-    dnl Check for files in numerous different paths :-/
-    for dirA in /usr/local /usr/lib /var/lib /usr /var /opt . ~; do
-      for dirB in $dirA $dirA/openssl $dirA/ssl; do
-        if test -f "$dirB/include/openssl/ssl.h"; then
-	  ssl_dir="$dirB"
-	  ssl_libs="$dirB/lib"
-	  break 2
-        fi
-      done
-    done
-  fi
-  dnl Check that the 'ssl_dir' environment variable is not still empty
-  if test -n "$ssl_dir"; then
-    dnl Check that the 'ssl_libs' environment is a directory
-    if test -d "$ssl_libs"; then
-      dnl Check if they do not want SSL support
-      if test "$kineircd_test_openssl_not_wanted" = "yes"; then 
-        AC_MSG_RESULT([$ssl_dir (support turned off though)])
-      else
-        AC_MSG_RESULT($ssl_dir)
-        INCDIRS="$INCDIRS -I$ssl_dir/include"
+dnl Check that the 'ssl_dir' environment variable is not empty
+if test -z "$ssl_dir"; then
+  dnl Check for files in numerous different paths :-/
+  for dirA in /usr/local /usr/lib /var/lib /usr /var /opt .. . ~; do
+    for dirB in $dirA $dirA/openssl $dirA/ssl; do
+      if test -f "$dirB/include/openssl/ssl.h"; then
+        ssl_dir="$dirB"
+        ssl_libs="$dirB/lib"
+        break 2
       fi
-      ssl_lib="-lssl -lcrypto"
-      ssl_ldflags="-L$ssl_libs"
-      LDFLAGS="$LDFLAGS $ssl_ldflags"
-      AC_CHECK_LIB(ssl,SSL_accept,[
-        AC_MSG_RESULT(yes)
-        AC_DEFINE(HAVE_OPENSSL, 1,
-	          [Define if the OpenSSL library is available])
-        AC_DEFINE(WITH_SSL, 1,
-	          [Define if SSL support is requested in the daemon])
-      ],[
-        AC_MSG_RESULT(no)
-        AC_MSG_WARN([Your OpenSSL installation seems incomplete!])
-        kineircd_test_openssl_broken=yes
-       ])
+    done
+  done
+fi
+dnl Check that the 'ssl_dir' environment variable is not still empty
+if test -n "$ssl_dir"; then
+  dnl Check that the 'ssl_libs' environment is a directory
+  if test -d "$ssl_libs"; then
+    dnl Check if they do not want SSL support
+    if test "$kineircd_test_openssl_not_wanted" = "yes"; then 
+      AC_MSG_RESULT([$ssl_dir (support turned off though)])
     else
-      AC_MSG_RESULT(unknown)
-      AC_MSG_WARN([Only found half of an OpenSSL installation!])
-      echo "  It appears your OpenSSL installation does not contain a library directory!"
-      echo "  Use --with-openssl=DIRECTORY to corret this if you beleive this is wrong."
-      echo "  Without this library you will not be able to use secured SSL connections."
-      kineircd_test_openssl_broken=yes
+      AC_MSG_RESULT($ssl_dir)
+      INCDIRS="$INCDIRS -I$ssl_dir/include"
     fi
+    ssl_lib="-lssl -lcrypto"
+    ssl_ldflags="-L$ssl_libs"
+    LDFLAGS="$LDFLAGS $ssl_ldflags"
+    AC_CHECK_LIB(ssl,SSL_accept,[
+      AC_MSG_RESULT(yes)
+      AC_DEFINE(HAVE_OPENSSL, 1,
+	        [Define if the OpenSSL library is available])
+      AC_DEFINE(WITH_SSL, 1,
+	        [Define if SSL support is requested in the daemon])
+    ],[
+      AC_MSG_RESULT(no)
+      AC_MSG_WARN([Your OpenSSL installation seems incomplete!])
+      kineircd_test_openssl_broken=yes
+     ])
   else
     AC_MSG_RESULT(unknown)
-    AC_MSG_WARN([Could not find your OpenSSL installation])
-    echo "  Use --with-openssl=DIRECTORY to correct this if you beleive this is wrong."
+    AC_MSG_WARN([Only found half of an OpenSSL installation!])
+    echo "  It appears your OpenSSL installation does not contain a library directory!"
+    echo "  Use --with-openssl=DIRECTORY to corret this if you beleive this is wrong."
     echo "  Without this library you will not be able to use secured SSL connections."
     kineircd_test_openssl_broken=yes
   fi
+else
+  AC_MSG_RESULT(unknown)
+  AC_MSG_WARN([Could not find your OpenSSL installation])
+  echo "  Use --with-openssl=DIRECTORY to correct this if you beleive this is wrong."
+  echo "  Without this library you will not be able to use secured SSL connections."
+  kineircd_test_openssl_broken=yes
 fi
 dnl Make sure we got it OK if we desparately need it
 if test "$kineircd_test_need_openssl_required" = "yes"; then
@@ -541,17 +518,17 @@ AC_ARG_ENABLE(default-config-file,[
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT([ircd.conf (default, fixed)])
-     kineircd_test_default_config_file = "ircd.conf"
+     kineircd_test_default_config_file="ircd.conf"
    else
      AC_MSG_RESULT(yes)
-     kineircd_test_default_config_file = $enableval
+     kineircd_test_default_config_file=$enableval
    fi
  ],[
    AC_MSG_RESULT([ircd.conf (default)])
-   kineircd_test_default_config_file = "ircd.conf"
+   kineircd_test_default_config_file="ircd.conf"
  ])
-AC_DEFINE(DEFAULT_CONFIG_FILE, $kineircd_test_default_config_file,
-          [This is the default file to use when loading the config file])
+AC_DEFINE_UNQUOTED(DEFAULT_CONFIG_FILE, "$kineircd_test_default_config_file",
+                   [The default file to use when loading the config file])
 
 dnl
 dnl Should any developer pick up the old-style ircd.conf configuration
@@ -601,7 +578,7 @@ AC_ARG_ENABLE(pid-file,[
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT($enableval)
-     AC_DEFINE(PID_FILE, $enableval,
+     AC_DEFINE_UNQUOTED(PID_FILE, "$enableval",
                [If defined, the daemon will write its PID to this file])
    fi
  ],[
@@ -632,8 +609,8 @@ AC_ARG_ENABLE(syslog-logging,[
    AC_MSG_RESULT([yes, identity: ircd (default)])
    kineircd_test_syslog_ident = "ircd"
  ])
-AC_DEFINE(SYSLOG_IDENT, $kineircd_test_syslog_ident,
-          [This is the identity to use when sending messages to syslog])
+AC_DEFINE_UNQUOTED(SYSLOG_IDENT, "$kineircd_test_syslog_ident",
+                   [The identity to use when sending messages to syslog])
 
 AC_MSG_CHECKING([transport-tcp-ipv4 parameter])
 AC_ARG_ENABLE(transport-tcp-ipv4,[
