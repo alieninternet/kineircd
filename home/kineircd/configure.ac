@@ -509,10 +509,10 @@ AC_CACHE_CHECK([for a working C++ Standard Template Library],
 	
 	int main(void)
 	{
-	   list < int > l;
+	   std::list <int> l;
 	   l.clear();
 	   
-	   map < int, int > m;
+	   std::map <int, int> m;
 	   m.clear();
 	}
    ],[
@@ -535,7 +535,7 @@ AC_CACHE_CHECK([for an SGI compliant hash capability in your STL],
 
 	int main(void)
  	{
-	   hash_map < int, int > hm;
+	   std::hash_map <int, int> hm;
 	   hm.clear();
 	}
    ],[
@@ -556,7 +556,7 @@ AC_CACHE_CHECK([for an SGI compliant single list template in your STL],
 
 	int main(void)
  	{
-	   slist < int > sl;
+	   std::slist <int> sl;
 	   sl.clear();
 	   
 	   exit(0);
