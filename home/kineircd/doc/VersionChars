@@ -17,7 +17,7 @@ a recompilation to change. It also shows which modules are active.
 Configuration (first section):
  D = DEBUG
  H = STL_HAS_HASH
- N = STRICT_CHANNEL_NAMES
+ N = KINE_STRICT_CHANNEL_NAMES
  S = HAVE_OPENSSL
 
 Transport Phrases (second section)

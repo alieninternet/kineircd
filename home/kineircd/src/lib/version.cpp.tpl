@@ -93,7 +93,7 @@ namespace Kine {
 #ifdef STL_HAS_HASH
 				"H"
 #endif
-#ifdef STRICT_CHANNEL_NAMES
+#ifdef KINE_STRICT_CHANNEL_NAMES
 				"N"
 #endif
 #ifdef HAVE_OPENSSL

@@ -63,9 +63,9 @@ LDFLAGS_SAVE="$LDFLAGS"
 INCDIRS=""
 
 dnl I am lazy, these should be configurable but for now they are constants
-AC_DEFINE(CONFIG_FILE_ENV_VAR, "KINEIRCD_CONF",
+AC_DEFINE(KINE_CONFIG_FILE_ENV_VAR, "KINEIRCD_CONF",
           [Environment variable to check for a location of the config file])
-AC_DEFINE(STRICT_CHANNEL_NAMES, 1,
+AC_DEFINE(KINE_STRICT_CHANNEL_NAMES, 1,
           [
     Define this if you want strict channel names to be allowed. This means
     channel names are not allowed to have any control characters in them, nor
@@ -218,7 +218,7 @@ AC_CACHE_CHECK([current select() file fd_set bit-size],
      echo "  It is recommended that you edit autoconf.h manually to correct this"
    ])
  ])
-AC_DEFINE_UNQUOTED(SELECT_FDSET_NUMFDS, $kineircd_cv_sys_fdset_numfds,
+AC_DEFINE_UNQUOTED(KINE_SELECT_FDSET_NUMFDS, $kineircd_cv_sys_fdset_numfds,
                    [Number of file descriptors safely usable with select()])
 
 AC_CACHE_CHECK([for tzset() and timezone/daytime variables],
@@ -246,7 +246,7 @@ AC_CACHE_CHECK([for tzset() and timezone/daytime variables],
    ])
  ])
 if test "$kineircd_cv_sys_tzset" = "yes"; then
-  AC_DEFINE(HAVE_TZSET, 1,
+  AC_DEFINE(KINE_HAVE_TZSET, 1,
             [Define if the function tzset() and its variables exist])
 fi
 
@@ -575,33 +575,6 @@ AC_ARG_ENABLE(pid-file,[
    AC_MSG_RESULT([no (default)])
  ])
 
-dnl this really should check if syslog is AVAILABLE!! .. right? :(
-AC_MSG_CHECKING([syslog-logging parameter])
-AC_ARG_ENABLE(syslog-logging,[
-  --enable-syslog-logging[=identity]         (Default is on, 'ircd')
-    When enabled, this enables logging to the syslog device (if it is
-    available on your system). If an optional identity is specified, this
-    will be used to identify the process in the log file (eg. you may wish
-    to use 'kineircd' instead of 'ircd'). When disabled, no logging will
-    occur. This software does not output much to the log, so it won't hurt
-    if you leave this on.
- ],[
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT(no)
-   elif test "$enableval" = "yes"; then
-     AC_MSG_RESULT([yes, identity: ircd])
-     kineircd_test_syslog_ident = "ircd"
-   else
-     AC_MSG_RESULT([yes, identity: $enableval])
-     kineircd_test_syslog_ident = $enableval
-   fi
- ],[
-   AC_MSG_RESULT([yes, identity: ircd (default)])
-   kineircd_test_syslog_ident = "ircd"
- ])
-AC_DEFINE_UNQUOTED(SYSLOG_IDENT, "$kineircd_test_syslog_ident",
-                   [The identity to use when sending messages to syslog])
-
 AC_MSG_CHECKING([transport-tcp-ipv4 parameter])
 AC_ARG_ENABLE(transport-tcp-ipv4,[
   --enable-transport-tcp-ipv4                (Default is enabled)
@@ -716,8 +689,8 @@ AC_MSG_CHECKING([which modules to compile])
 
 if test "$kineircd_test_netsnmp_broken" = "no"; then
   AC_ARG_ENABLE(module-mod-snmp,
-                AC_HELP_STRING([--disable-mod-snmp],
-		               [Enable the SNMP module]),
+                AC_HELP_STRING([--disable-module-mod-snmp],
+		               [Disable the SNMP module]),
    [
      if test "$enableval" \!= "yes"; then
        echo -n "mod_snmp "
