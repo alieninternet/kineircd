@@ -28,6 +28,7 @@
 #include <cerrno>
 #include <cstring>
 #include <ctime>
+#include <cstdlib>
 
 extern "C" {
 #include <unistd.h>
@@ -64,6 +65,9 @@ Daemon::Daemon(Config& conf, Signals& sigs)
    
    // Set up the current time variable for the first time
    setTime();
+
+   // Seed the random thingy for rand() - this is kinda dodgey
+   srand(getTime().tv_sec);
    
    // Fire-up the modules we have loaded!
    config.getModuleList().startAll(*this);
