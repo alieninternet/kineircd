@@ -87,11 +87,12 @@ int Kine::Daemon::run(void)
 
    for (;;) {
       // Do stuff here with the poller :)
+      sleep(10); // temporary
       
       // Check if we are in shutdown mode
       if (stage == STAGE_SHUTDOWN) {
 	 // check queues here..
-
+	 
 	 // If we get here the queues must be all dry
 #ifdef DEBUG
 	 debug("Output queues exhausted - Breaking main loop");
