@@ -114,13 +114,68 @@ namespace Kine {
       //! Remove the given user
       Error::error_type removeUser(const User& entity);
 
-      //! Find the given local user, by its name
+      //! Find the given user, by its name
       User* const findUser(const Name& name) const;
+      
+
+      //! Add the given service
+      Error::error_type addService(Service& entity)
+	{ return Error::UNKNOWN_ERROR; /* temporary */ };
+      
+      //! Remove the given service
+      Error::error_type removeService(const Service& entity)
+	{ return Error::UNKNOWN_ERROR; /* temporary */ };
+
+      //! Find the given service, by its name
+      Service* const findService(const Name& name) const
+	{ return 0; /* temporary */ };
       
       
       //! Find the given client, by its name
       Client* const findClient(const Name& name) const
-	{ return findUser(name); /* <=- temporary */ };
+	{
+	   Client* const client = findUser(name);
+	   return ((client != 0) ? client : findService(name));
+	};
+      
+      
+      //! Add the given server
+      Error::error_type addServer(Server& entity)
+	{ return Error::UNKNOWN_ERROR; /* temporary */ };
+      
+      //! Remove the given server
+      Error::error_type removeServer(const Server& entity)
+	{ return Error::UNKNOWN_ERROR; /* temporary */ };
+
+      //! Find the given server, by its name
+      Server* const findServer(const Name& name) const
+	{ return 0; /* temporary */ };
+      
+      
+      //! Add the given network
+      Error::error_type addNetwork(Network& entity)
+	{ return Error::UNKNOWN_ERROR; /* temporary */ };
+      
+      //! Remove the given network
+      Error::error_type removeNetwork(const Network& entity)
+	{ return Error::UNKNOWN_ERROR; /* temporary */ };
+
+      //! Find the given network, by its name
+      Network* const findNetwork(const Name& name) const
+	{ return 0; /* temporary */ };
+      
+      
+      //! Add the given channel
+      Error::error_type addChannel(Channel& entity)
+	{ return Error::UNKNOWN_ERROR; /* temporary */ };
+      
+      //! Remove the given channel
+      Error::error_type removeChannel(const Channel& entity)
+	{ return Error::UNKNOWN_ERROR; /* temporary */ };
+
+      //! Find the given channel, by its name
+      Channel* const findChannel(const Name& name) const
+	{ return 0; /* temporary */ };
       
       
       //! Return the user list (read only)
