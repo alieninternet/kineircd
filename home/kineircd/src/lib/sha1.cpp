@@ -18,6 +18,7 @@
 #include <string>
 #include <cstring>
 #include <cstdlib>
+#include <aisutil/utils.h>
 
 extern "C" {
 #ifdef KINE_HAVE_OPENSSL
@@ -346,7 +347,8 @@ std::string Utils::SHA1::digestToStr(const digest_type &digest,
    std::string output;
    
    for (unsigned char i = 5; i--;) {
-      output += Utils::baseXStr(digest.u_long[i], base).prepad(pad, '0');
+      output += 
+	AISutil::Utils::baseXStr(digest.u_long[i], base).prepad(pad, '0');
    }
    
    return output;

@@ -33,10 +33,10 @@
 #include <cctype>
 #include <cstdlib>
 #include <aisutil/string/tokens.h>
+#include <aisutil/utils.h>
 
 #include "kineircd/languages.h"
 #include "kineircd/config.h"
-#include "kineircd/utils.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
@@ -313,7 +313,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 
 #ifdef KINE_SECURITY_CONSCIOUS
       // Make sure the data contains valid UTF-8 sequences..
-      if (!Utils::validateUTF8(line)) {
+      if (!AISutil::Utils::validateUTF8(line)) {
 	 // Wuss out - this is not a nice file to have loaded
 	 errString = 
 	   "File contains invalid UTF-8 sequence(s) and poses a potential "

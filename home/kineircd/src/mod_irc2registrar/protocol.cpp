@@ -30,6 +30,7 @@
 #include <sstream>
 #include <iomanip>
 #include <aisutil/string/string.h>
+#include <aisutil/utils.h>
 
 #include "kineircd/protocolinfo.h"
 #include "kineircd/daemon.h"
@@ -85,8 +86,9 @@ void Registrar::sendPing(void)
 {
    // Set the expectant pong result string appropriately
    pongMatch = 
-     Utils::baseXStr((unsigned long)(((0xFFFFFFFE + 1.0) * rand()) / RAND_MAX),
-		     36);
+     AISutil::Utils::baseXStr((unsigned long)
+			      (((0xFFFFFFFE + 1.0) * rand()) / RAND_MAX),
+			      36);
 
    // Output the ping
    outputQueue.push("PING :" + pongMatch + "\r\n");
