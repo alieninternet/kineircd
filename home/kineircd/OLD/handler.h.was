@@ -125,6 +125,11 @@ class irc2userHandler : public Handler {
  private:
    User *user;					// Link to the user data
 
+#  ifdef FLOODLOCK_AWAY_SET
+   time_t lastAwaySet;				// Time the away msg was set
+   bool lastAwaySetGrace;			// Grace to allow an extra set
+#  endif
+   
    struct functionTableStruct {
       char const *command;			// Command name
       void (*function)(irc2userHandler *handler, 
@@ -135,7 +140,7 @@ class irc2userHandler : public Handler {
       char const *help;				// Plain-text line for HELP
    }; 
    static struct functionTableStruct const functionsTable[];
-   
+
    String processUserModes(String &, StringTokens *,
 			   bool = false);	// Process a usermode request
    
@@ -259,14 +264,14 @@ class p13serverHandler : public Handler {
  private:
    Server *server;				// Server data
 
+   time_t stampDiff;				// Timestamp difference
+
    struct functionTableStruct {
       char const *command;			// Command name
       void (*function)(p13serverHandler *handler, String const &origin,
 		       StringTokens *tokens);	// Parsing handler function
    }; 
    static struct functionTableStruct const functionsTable[];
-
-   time_t stampDiff;				// Timestamp difference
 
    static String modeWrapper(User *);		// Fix up user modes
    
@@ -413,8 +418,15 @@ class registerHandler : public Handler {
    static void parsePASS(registerHandler *handler, StringTokens *tokens);
    static void parsePONG(registerHandler *handler, StringTokens *tokens);
    static void parseQUIT(registerHandler *handler, StringTokens *tokens);
+# ifdef ALLOW_SERVER_CONNECTIONS
    static void parseSERVER(registerHandler *handler, StringTokens *tokens);
+# endif
+# ifdef ALLOW_SERVICE_CONNECTIONS
+   static void parseSERVICE(registerHandler *handler, StringTokens *tokens);
+# endif
+# ifdef ALLOW_CLIENT_CONNECTIONS
    static void parseUSER(registerHandler *handler, StringTokens *tokens);
+# endif
 
  public:
    registerHandler(Connection *);		// Constructor

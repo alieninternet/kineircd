@@ -20,9 +20,16 @@ struct registerHandler::functionTableStruct const
      { "PONG",		parsePONG },
 #endif
      { "QUIT",		parseQUIT },
+#ifdef ALLOW_SERVER_CONNECTIONS
      { "SERVER",	parseSERVER },
+#endif
+#ifdef ALLOW_SERVICE_CONNECTIONS
+     { "SERVICE",	parseSERVICE },
+#endif
      { "SQUIT",		parseQUIT }, // an alias, essentially
+#ifdef ALLOW_CLIENT_CONNECTIONS
      { "USER",		parseUSER },
+#endif
      { 0 }
 };
 
@@ -469,33 +476,34 @@ void registerHandler::parseQUIT(registerHandler *handler, StringTokens *tokens)
 }
 
 
+#ifdef ALLOW_SERVER_CONNECTIONS
 /* parseSERVER
  * Original 12/08/01, Simon Butcher <pickle@austnet.org>
  */
 void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens)
 {
-#ifdef STRICT_REGISTRATIONS
+# ifdef STRICT_REGISTRATIONS
    // Make sure this connection has not already been given a registration mode
    if (handler->regmode > IN_PROGRESS) {
-# ifdef PASSIVE_REGISTRATION      	 
+#  ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
-# else
+#  else
       handler->sendNumeric(ERR_ALREADYREGISTERED, 0,
 			   LNG_ERR_ALREADYREGISTERED);
       handler->getConnection()->goodbye();
-# endif
+#  endif
       return;
    }
-#endif
+# endif
    
    // Check there are enough tokens
    if (!(tokens->countTokens() >= 10)) {
-#ifdef PASSIVE_REGISTRATION      	 
+# ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
-#else
+# else
       handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
 			   "SERVER" LNG_ERR_NEEDMOREPARAMS);
-#endif
+# endif
       return;
    }
 
@@ -508,7 +516,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
    handler->realname = tokens->nextColonToken().subString(0, 
 							  MAXLEN_SERVERDESC);
    
-#ifdef DEBUG_EXTENDED
+# ifdef DEBUG_EXTENDED
    // Send what we got to the debugging output
    debug(String::printf(" -=>     Server: %s",
 			(char const *)handler->username));
@@ -523,15 +531,15 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
 			handler->protocol));
    debug(String::printf(" -=>       Name: %s",
 			(char const *)handler->realname));
-#endif
+# endif
    
    // Check the integers variables are ok
    if ((hops != 1) ||
        (handler->startStamp == 0) ||
        (handler->linkStamp == 0)) {
-#ifdef DEBUG_EXTENDED
+# ifdef DEBUG_EXTENDED
       debug("Variables are invalid!");
-#endif
+# endif
       handler->getConnection()->goodbye();
       return;
    }
@@ -539,35 +547,37 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
    // Set the registration mode
    handler->regmode = SERVER;
 }
+#endif
 
 
+#ifdef ALLOW_CLIENT_CONNECTIONS
 /* parseUSER
  * Original 12/08/01, Simon Butcher <pickle@austnet.org>
  */
 void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
 {
-#ifdef STRICT_REGISTRATIONS
+# ifdef STRICT_REGISTRATIONS
    // Make sure this connection has not already been given a registration mode
    if (handler->regmode > IN_PROGRESS) {
-# ifdef PASSIVE_REGISTRATION      	 
+#  ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
-# else
+#  else
       handler->sendNumeric(ERR_ALREADYREGISTERED, 0,
 			   LNG_ERR_ALREADYREGISTERED);
       handler->getConnection()->goodbye();
-# endif
+#  endif
       return;
    }
-#endif
+# endif
    
    // Check there are enough tokens
    if (!(tokens->countTokens() >= 5)) {
-#ifdef PASSIVE_REGISTRATION      	 
+# ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
-#else
+# else
       handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
 			   "USER" LNG_ERR_NEEDMOREPARAMS);
-#endif
+# endif
       return;
    }
    
@@ -577,7 +587,7 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
    (void)tokens->nextToken(); // We ignore this one.
    handler->realname = tokens->nextColonToken().subString(0, MAXLEN_REALNAME);
 
-#ifdef DEBUG_EXTENDED
+# ifdef DEBUG_EXTENDED
    // Output what we got for debugging purposes
    debug(String::printf(" -=>       User: %s",
 			(char const *)handler->username));
@@ -585,8 +595,9 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
 			(char const *)handler->modes));
    debug(String::printf(" -=>   Realname: %s",
 			(char const *)handler->realname));
-#endif
+# endif
    
    // Set the registration mode
    handler->regmode = USER;
 }
+#endif

@@ -393,7 +393,9 @@ struct irc2userHandler::functionTableStruct const
  */
 irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 : Handler(c),
-  user(u)
+  user(u),
+  lastAwaySet(0),
+  lastAwaySetGrace(true)
 {
 #ifdef DEBUG
    debug("New Handler: irc2userHandler");
@@ -1438,14 +1440,42 @@ void irc2userHandler::parseAWAY(irc2userHandler *handler, StringTokens *tokens)
    // Grab the away message
    String message = tokens->nextColonToken();
    
-   // Do the change
-   handler->user->markAway(message);
-   
    // If we have a message, the user is going away, otherwise they are 'unaway'
    if (message.length()) {
+#ifdef FLOODLOCK_AWAY_SET
+      // Check they can change this, first look at the time...
+      if ((handler->lastAwaySet + FLOODLOCK_AWAY_SET) >
+	  TO_DAEMON->getTime()) {
+	 // Ok... maybe they have a grace period then?
+	 if (!handler->lastAwaySetGrace) {
+	    // Tell them they have to be a little more patient :)
+	    handler->sendNumeric(999, ":reply undecided");
+	    return;
+	 } else {
+	    // Chew up the grace setting
+	    handler->lastAwaySetGrace = false;
+	 }
+      } else {
+	 // Give them a grace setting after this one
+	 handler->lastAwaySetGrace = true;
+      }
+      
+#endif
+
+      // Do the change
+      handler->user->markAway(message);
+	 
+      // Mark the change down..
+      handler->lastAwaySet = TO_DAEMON->getTime();
+      
+      // Tell them it worked
       handler->sendNumeric(RPL_NOWAWAY,
 			   LNG_RPL_NOWAWAY);
    } else {
+      // Do the change
+      handler->user->markAway(message);
+
+      // Tell them it worked
       handler->sendNumeric(RPL_UNAWAY,
 			   LNG_RPL_UNAWAY);
    }
@@ -3014,10 +3044,17 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 	       
 	       // If this user is 'away', tell the user
 	       if (u->awayMessage.length()) {
-		  handler->sendNumeric(RPL_AWAY,
-				       String::printf("%s :%s",
-						      (char const *)u->nickname,
-						      (char const *)u->awayMessage));
+#ifdef FLOODLOCK_AWAY_REPLY
+		  if (!handler->user->local->onAwayReplyFloodlock(u)) {
+#endif
+		     handler->
+		       sendNumeric(RPL_AWAY,
+				   String::printf("%s :%s",
+						  (char const *)u->nickname,
+						  (char const *)u->awayMessage));
+#ifdef FLOODLOCK_AWAY_REPLY
+		  }
+#endif
 	       }
 	       continue;
 	    }
@@ -3996,9 +4033,10 @@ void irc2userHandler::parseWHOWAS(irc2userHandler *handler, StringTokens *tokens
 						(*it).getSignoffTime()));
 	    // If this user was away, send their old away message too (sigh)
 	    if ((*it).hasAwayMessage()) {
-	       handler->sendNumeric(RPL_AWAY,
-				    String::printf(":%s",
-						   (char const *)(*it).getAwayMessage()));
+	       handler->
+		 sendNumeric(RPL_AWAY,
+			     String::printf(":%s",
+					    (char const *)(*it).getAwayMessage()));
 	    }
 	 }
       }

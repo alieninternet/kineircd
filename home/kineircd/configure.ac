@@ -497,6 +497,44 @@ AC_ARG_ENABLE(drop-lame-servers,[  --enable-drop-lame-servers    drop out of syn
    AC_MSG_RESULT([no (default)])
  ])
 
+AC_MSG_CHECKING([floodlock-away-reply parameter])
+AC_ARG_ENABLE(floodlock-away-reply,[  --enable-floodlock-away-reply set the away-reply floodlock timeout],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(off)
+   else
+     if test "$enableval" -gt 0; then
+       AC_MSG_RESULT([$enableval seconds])
+       AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, $enableval)
+     else
+       AC_MSG_RESULT([30 seconds (default)])
+       AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, 30)
+     fi
+   fi
+ ],[
+   AC_MSG_RESULT([30 seconds (default)])
+   AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_REPLY, 30)
+ ])
+
+AC_MSG_CHECKING([floodlock-away-set parameter])
+AC_ARG_ENABLE(floodlock-away-set,[  --enable-floodlock-away-set   set the away-setting floodlock timeout],
+ [
+   if test "$enableval" = "no"; then
+     AC_MSG_RESULT(off)
+   else
+     if test "$enableval" -gt 0; then
+       AC_MSG_RESULT([$enableval seconds])
+       AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_SET, $enableval)
+     else
+       AC_MSG_RESULT([45 seconds (default)])
+       AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_SET, 45)
+     fi
+   fi
+ ],[
+   AC_MSG_RESULT([45 seconds (default)])
+   AC_DEFINE_UNQUOTED(FLOODLOCK_AWAY_SET, 45)
+ ])
+
 AC_MSG_CHECKING([helpers-see-umodes parameter])
 AC_ARG_ENABLE(helpers-see-umodes,[  --enable-helpers-see-umodes   allow helpers/opers to see other users' modes],
  [

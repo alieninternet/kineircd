@@ -125,7 +125,35 @@
        having this on is a good idea, but may become a disasterous nightmare
        on large networks, especially networks based on a star-topology.
        
-       
+
+     --enable-floodlock-away-reply (default = 30)
+     --disable-floodlock-away-reply
+     
+       This enables the away-reply flood-lock. When talking to someone who's
+       away, this makes the server only send a 'user is away' reply to the
+       message-sending user upon the first message, and then only after a
+       flood-lock timeout of the given value in seconds has expired. This
+       reduces the amount of traffic leaving the server, but does use a
+       tiny bit more memory. Disabling this feature follows traditional
+       functionality -- an away message reply per message sent.
+     
+     
+     --enable-floodlock-away-set (default = 45)
+     --disable-floodlock-away-set
+
+       This enables the away-set flood-lock, which reduces the amount of time
+       between setting /AWAY. The user will be able to change their away
+       message twice before having to wait the amount of time given (in
+       seconds) to change their away message. The flood-lock remains in
+       effect if they unset their away message, and they can unset it
+       anytime during the floodlock. This is to reduce server traffic since
+       the away message is broadcast over the network -- some scripts will
+       change the away message every two seconds or so to have an 'idle 
+       time' in their away message. This uses a slight bit more memory. 
+       Disabling this will allow anyone to change their away message whenever 
+       they like.
+     
+
      --enable-helpers-see-umodes (default)
      --disable-helpers-see-umodes
     

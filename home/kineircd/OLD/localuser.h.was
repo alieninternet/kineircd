@@ -52,9 +52,12 @@ class LocalUser {
 # else
    typedef set <String> watch_set_t;
 # endif
+   
    // The invitations list should never get long enough to warrant hashing
    typedef map <String, LocalUserInvitation *> invitation_map_t;
-
+   
+   typedef map <String, time_t> floodlock_reply_map_t;
+   
  public:
    User *user;					// Link into main user class
    Handler *handler;				// Link into user handler
@@ -64,6 +67,13 @@ class LocalUser {
    watch_set_t watches;				// Watching these nicknames
    invitation_map_t invitations;		// Invitations to channels
    
+# ifdef FLOODLOCK_AWAY_REPLY
+   floodlock_reply_map_t awayReplyFloodlocks;	// Timeout on 'x is away' msgs
+# endif
+
+   bool onReplyFloodlockMap(floodlock_reply_map_t &,
+			    User *);		// Check an away-reply lock
+
  public:
    // Constructor
    LocalUser(User *u, Handler *h)
@@ -73,6 +83,9 @@ class LocalUser {
      {
 	watches.clear();
 	invitations.clear();
+# ifdef FLOODLOCK_AWAY_REPLY
+	awayReplyFloodlocks.clear();
+# endif
      };
    
    // Destructor
@@ -80,6 +93,9 @@ class LocalUser {
      {
 	watches.clear();
 	invitations.clear();
+# ifdef FLOODLOCK_AWAY_REPLY
+	awayReplyFloodlocks.clear();
+# endif
      };
 
    // Add to the watch list
@@ -117,6 +133,14 @@ class LocalUser {
      };
 
    bool invitedTo(Channel *);			// Check an invitation
+
+# ifdef FLOODLOCK_AWAY_REPLY
+   // Check if a user is on our away-reply floodlock map
+   bool onAwayReplyFloodlock(User *u)
+     {
+	return onReplyFloodlockMap(awayReplyFloodlocks, u);
+     }
+# endif
 };
 
 #endif

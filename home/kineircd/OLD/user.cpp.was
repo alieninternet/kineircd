@@ -600,3 +600,35 @@ bool LocalUser::invitedTo(Channel *channel)
    
    return false;
 };
+
+
+/* onReplyFloodlockMap - Check for someone on a reply floodlock map
+ * Original 21/10/01, Simon Butcher <pickle@austnet.org>
+ */
+bool LocalUser::onReplyFloodlockMap(LocalUser::floodlock_reply_map_t &lockmap,
+				    User *user)
+{
+   // Fix up the target
+   String target = user->getNickname();
+   
+   // Try and look them up on the map
+   time_t timeout = lockmap[target];
+   
+   // Check if that worked
+   if (!timeout) {
+      // Add them to the floodlock list
+      lockmap[target] = handler->getConnection()->getDaemon()->getTime();
+      return false;
+   }
+   
+   // If we got here, check that if the floodlock has timed out
+   if ((timeout + FLOODLOCK_AWAY_REPLY) >
+       handler->getConnection()->getDaemon()->getTime()) {
+      // Timeout is still in effect
+      return true;
+   }
+
+   // Remove them from the set, the timeout is ineffective now
+   lockmap.erase(target);
+   return false;
+}
