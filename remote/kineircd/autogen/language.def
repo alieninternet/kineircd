@@ -67,6 +67,13 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_ACCEPT_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "{ [ '+' | '-' ] <mask> ( ',' [ '+' | '-' ] <mask> ) } | "
+                  "'*'";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_ADMIN";
    component	= "mod_irc2user";
    data_en	= "Returns information about the administrators of the given "
@@ -76,12 +83,24 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_ADMIN_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <target> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_AWAY";
    component	= "mod_irc2user";
    data_en	= "If a message is given, this will mark you as 'away', using "
                   "the given message as your reason. If you do not give a "
 		  "message, this will mark you as 'unaway', and will remove "
 		  "the given away message.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_AWAY_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ ':' <reason> ]";
 };
 
 tags = {
@@ -96,6 +115,12 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_CONNECT_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<target server>  [ <port>  [ <remote server> ] ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_DIE";
    component	= "mod_irc2user";
    data_en	= "This command shuts down the server you are currently "
@@ -105,11 +130,23 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_DIE_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ ':' <reason> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_GLOBOPS";
    component	= "mod_irc2user";
    data_en	= "Sends the given message to all global operators online "
                   "(provided they have their server-notices user mode set to "
 		  "receive them).";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_GLOBOPS_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "':' <message>";
 };
 
 tags = {
@@ -123,12 +160,24 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_HELP_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ '-' ] [ <command> | <command mask> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_INFO";
    component	= "mod_irc2user";
    data_en	= "Returns extended information about the version of the "
                   "given server. If no server is specified, this returns "
 		  "information regarding the server you are locally connected "
 		  "to.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_INFO_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <target> ]";
 };
 
 tags = {
@@ -144,11 +193,23 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_INVITE_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<nickname>  <channel>  [ <timeout> ]  [ ':' <reason> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_ISON";
    component	= "mod_irc2user";
    data_en	= "Check if the given nickname(s) are online. The server will "
                   "compile a list of nickname(s) who are online now in the "
 		  "exact order of the given list.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_ISON_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<nickname> ( SPACE <nickname> )";
 };
 
 tags = {
@@ -164,10 +225,24 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_JOIN_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "{ <channel> ( ',' <channel> )  [ <key> ( ',' <key> ) ] } "
+                  "| '0'";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_KICK";
    component	= "mod_irc2user";
    data_en	= "Kick the given user(s) from the given channel(s), "
                   "optionally with a reason for your actions.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_KICK_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<channel> ( ',' <channel> )  <user> ( ',' <user> )  "
+                  "[ ':' <reason> ]";
 };
 
 tags = {
@@ -176,6 +251,12 @@ tags = {
    data_en	= "Kill the given nickname with the specified reason. The "
                   "reason is mandatory as you must have a reason for KILLing "
 		  "someone, naturally. Well, unless you're just homicidal :-)";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_KILL_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<nickname>  [ ':' <reason> ]";
 };
 
 tags = {
@@ -188,6 +269,12 @@ tags = {
 		  "an invitation to join, however the reason would not be "
 		  "sent to the channel if the channel is set '+n' (no outside "
 		  "messages) to avoid spamming.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_KNOCK_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<channel>  [ ':' <reason> ]";
 };
 
 tags = {
@@ -205,6 +292,12 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_LANGUAGE_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <language code> ( ',' <language code> ) ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_LINKS";
    component	= "mod_irc2user";
    data_en	= "Generate a list of server links. If a server mask is "
@@ -215,11 +308,23 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_LINKS_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <target> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_LIST";
    component	= "mod_irc2user";
    data_en	= "Return a list of channels currently created on the "
                   "network. The information returned also includes the number "
 		  "of users on the channels, and the current topic.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_LIST_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <channel> ( ',' <channel> ) ]";
 };
 
 tags = {
@@ -235,11 +340,23 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_LOCOPS_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "':' <message>";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_LUSERS";
    component	= "mod_irc2user";
    data_en	= "Show the current local user status. This command has been "
                   "extended to also include global users, server, service and "
 		  "channel information.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_LUSERS_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <mask>  [ <target> ] ]";
 };
 
 tags = {
@@ -251,10 +368,23 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_MAP_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <target> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_MODE";
    component	= "mod_irc2user";
    data_en	= "Change the mode setting of the given channel, nickname or "
                   "server.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_MODE_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "{ <channel> | <nickname> | <server> }  ( [ '-' | '+' ] "
+                  "<mode> )  [ <modeparams> ]";
 };
 
 tags = {
@@ -267,10 +397,22 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_MOTD_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <target> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_NAMES";
    component	= "mod_irc2user";
    data_en	= "Return the names of the clients within the given channel "
                   "or channels.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_NAMES_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <channel> ( ',' <channel> ) ]";
 };
 
 tags = {
@@ -282,6 +424,12 @@ tags = {
 		  "or network administration, you are in a channel which is "
 		  "holding an event (channel mode '+E'), or your connection "
 		  "is restricted.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_NICK_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<new nickname>";
 };
 
 tags = {
@@ -297,11 +445,24 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_NOTICE_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "{ <nickname> | <channel> } "
+                  "( ',' { <nickname> | <channel> } )  ':' <message>";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_OPER";
    component	= "mod_irc2user";
    data_en	= "This command allows you to become an IRC operator. You "
                   "must give your operator nickname and password for this "
 		  "command to be successful";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_OPER_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<nickname>  <password>";
 };
 
 tags = {
@@ -312,12 +473,24 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_PART_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<channel> ( ',' <channel> )  [ ':' <reason> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_PING";
    component	= "mod_irc2user";
    data_en	= "Ping the server, optionally giving text. The server will "
                   "reply with the given text, or just PONG. Some clients use "
 		  "this for 'lag checking', to measure the lag between the "
 		  "client and the server.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_PING_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ [ ':' ] <data> ]";
 };
 
 tags = {
@@ -331,6 +504,12 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_PONG_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "':' <data>";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_PRIVMSG";
    component	= "mod_irc2user";
    data_en	= "Send the given PRIVMSG message to the given channel(s) "
@@ -341,9 +520,22 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_PRIVMSG_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "{ <nickname> | <channel> } "
+                  "( ',' { <nickname> | <channel> } )  ':' <message>";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_QUIT";
    component	= "mod_irc2user";
    data_en	= "Leave IRC, optionally giving a reason for disconnecting.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_QUIT_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ ':' <reason> ]";
 };
 
 tags = {
@@ -355,10 +547,22 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_REHASH_USAGE";
+   component	= "mod_irc2user";
+   // no data (no parameters)
+};
+
+tags = {
    name		= "irc2_HELP_CMD_RESTART";
    component	= "mod_irc2user";
    data_en	= "This will restart the server. This command will load an "
                   "entirely new process for the IRC Daemon.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_RESTART_USAGE";
+   component	= "mod_irc2user";
+   // no data (no parameters)
 };
 
 tags = {
@@ -368,6 +572,12 @@ tags = {
                   "is specified, only services matching the given mask will "
 		  "be shown. If a type is given, only services matching the "
 		  "mask and the type will be listed.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_SERVLIST_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <mask>  [ <type> ] ]";
 };
 
 tags = {
@@ -384,11 +594,23 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_SILENCE_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "{ { '+' | '-' } { <mask> | <nickname> } } | [ <nickname> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_SQUIT";
    component	= "mod_irc2user";
    data_en	= "Force the given server to depart the network with the "
                   "given reason. Be aware that this command may cause a "
 		  "netsplit.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_SQUIT_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<server>  [ ':' <reason> ]";
 };
 
 tags = {
@@ -401,10 +623,22 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_STATS_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <query>  [ <target> ] ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_SUMMON";
    component	= "mod_irc2user";
    data_en	= "Summon to IRC the given username of a user locally "
                   "connected to the machine running this server.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_SUMMON_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<user> [ <target> ]";
 };
 
 tags = {
@@ -419,6 +653,12 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_TIME_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <target> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_TOPIC";
    component	= "mod_irc2user";
    data_en	= "If no topic is specified, this returns the current topic "
@@ -428,11 +668,23 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_TOPIC_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<channel>  [ ':' <topic> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_TRACE";
    component	= "mod_irc2user";
    data_en	= "Trace the path (internally, via the network) of a given "
                   "nickname, service or server. This is useful for locating "
 		  "lagging connections that need to be investigated further.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_TRACE_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <target> ]";
 };
 
 tags = {
@@ -445,11 +697,23 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_TRACEROUTE_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<destination>  [ '-' <options> ]  [ <target> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_USERHOST";
    component	= "mod_irc2user";
    data_en	= "Returns the host(s) of the nickname(s) on the given list. "
                   "Note that the host may in fact be a virtual-world host "
 		  "rather than the real host. Also see USERIP.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_USERHOST_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<nickname> ( SPACE <nickname> )";
 };
 
 tags = {
@@ -461,6 +725,12 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_USERIP_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<nickname> ( SPACE <nickname> )";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_USERS";
    component	= "mod_irc2user";
    data_en	= "Return a list of users connected to the machine running "
@@ -468,10 +738,22 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_USERS_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <target> ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_VERSION";
    component	= "mod_irc2user";
    data_en	= "Returns the version of the given server, or the server the "
                   "given user or service is connected to.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_VERSION_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <target> ]";
 };
 
 tags = {
@@ -485,6 +767,13 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_WATCH_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "'C' | 'S' | 'L' | { '+' | '-' } <name> "
+                  "( SPACE { '+' | '-' } <name> )";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_WALLCHOPS";
    component	= "mod_irc2user";
    data_en	= "Send the given message to all operators and half operators "
@@ -492,10 +781,22 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_WALLCHOPS_USAGE";
+   component	= "mod_irc2user";
+   // no data, I need to confirm this first..
+};
+
+tags = {
    name		= "irc2_HELP_CMD_WALLOPS";
    component	= "mod_irc2user";
    data_en	= "Broadcasts the given message to all users on the network "
                   "with the user mode '+w' set.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_WALLOPS_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "':' <message>";
 };
 
 tags = {
@@ -507,11 +808,26 @@ tags = {
 };
 
 tags = {
+   name		= "irc2_HELP_CMD_WHO_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "{ <channel> | <nickname mask> | '0' }  "
+                  "[ 'H' | 'I' | 'N' | 'O' | 'R' | 'S' | 'U' | 'X' ] "
+		  "[ '%' { 'C' | 'D' | 'F' | 'H' | 'I' | 'N' | 'R' | 'S' | "
+		  "'T' | 'U' } [ ',' <query type> ] ]";
+};
+
+tags = {
    name		= "irc2_HELP_CMD_WHOIS";
    component	= "mod_irc2user";
    data_en	= "Return information on who the given nickname(s) are. If a "
                   "server is specified, that server will generate the reply. "
 		  "This is an extended version of the simplistic WHO command.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_WHOIS_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "[ <target> ]  <nickname> ( ',' <nickname> )";
 };
 
 tags = {
@@ -524,6 +840,12 @@ tags = {
 		  "entires will be shown. Optionally, WHOWAS information can "
 		  "be received from another server, using the 'server' "
 		  "field.";
+};
+
+tags = {
+   name		= "irc2_HELP_CMD_WHOWAS_USAGE";
+   component	= "mod_irc2user";
+   data_en	= "<nickname> ( ',' <nickname> )  [ <count> ]";
 };
 
 tags = {
