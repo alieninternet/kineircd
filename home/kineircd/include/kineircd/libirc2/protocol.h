@@ -33,7 +33,9 @@
 # include <kineircd/protocol.h>
 # include <kineircd/client.h>
 # include <kineircd/user.h>
+# include <kineircd/config.h>
 # include <kineircd/irc2/numerics.h>
+
 
 namespace Kine {
    namespace LibIRC2 {
@@ -62,7 +64,7 @@ namespace Kine {
 
 	 // Break up a protocol message into its components
 	 virtual void parseLine(const std::string& line);
-
+	 
        protected:
 	 // Constructor
 	 Protocol(Kine::Connection& c)
@@ -335,6 +337,7 @@ namespace Kine {
 	 void doINFO(const User& user);
 	 void doLUSERS(const User& user);
 	 void doMOTD(const User& user, const bool justConnected = false);
+	 void doSTATS(const User& user, const std::string& request);
 	 void doSUMMON(const User& user, const std::string& username);
 	 void doTIME(const User& user);
 	 void doUSERS(const User& user);

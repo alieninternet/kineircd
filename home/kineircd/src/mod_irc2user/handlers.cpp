@@ -435,6 +435,37 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
 }
 
 
+/* handleSTATS
+ * Original 14/08/2001 simonb
+ * 23/04/2003 simonb - Imported from old code (incompleted)
+ */
+IRC2USER_COMMAND_HANDLER(Protocol::handleSTATS)
+{
+   // If there is no server parameter, we have to reply
+   if (parameters.size() < 2) {
+      /* We may have a specific or over-rided method to handle this and we
+       * should check. One perfect example is stats 'm' - libkineircd_irc2 is
+       * unable to tell the user how many times commands within mod_irc2user
+       * have been used, so we are obviously the only ones who can respond.
+       * 
+       * Check it here, simon?
+       */
+
+      // We don't know about it, maybe the library knows it (a generic query)
+      doSTATS(user, parameters[0]);
+      return;
+   }
+   
+   // Look up the server?
+   const std::string& serverName = parameters[1];
+   
+   // We didn't find the server..
+   sendNumeric(LibIRC2::Numerics::ERR_NOSUCHSERVER,
+	       serverName,
+	       GETLANG(irc2_ERR_NOSUCHSERVER));
+}
+
+
 /* handleSUMMON
  * Original 10/04/2003 simonb
  */

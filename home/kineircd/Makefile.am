@@ -307,11 +307,14 @@ libkineircd_irc2_la_SOURCES=\
 	include/kineircd/irc2/numerics.h \
 	include/kineircd/irc2/protocol.h \
 	src/libkineircd_irc2/common.cpp \
+	src/libkineircd_irc2/lang.h \
 	src/libkineircd_irc2/language.cpp \
 	src/libkineircd_irc2/language.h \
 	src/libkineircd_irc2/library.cpp \
 	src/libkineircd_irc2/protocol.cpp \
-	src/libkineircd_irc2/servermodes.cpp
+	src/libkineircd_irc2/servermodes.cpp \
+	src/libkineircd_irc2/stats.cpp \
+	src/libkineircd_irc2/stats.h
 
 libkineircd_irc2_la_LDFLAGS=\
 	-version-info @LIBKINEIRCD_IRC2_VERSION@:@LIBKINEIRCD_IRC2_REVISION@:@LIBKINEIRCD_IRC2_AGE@

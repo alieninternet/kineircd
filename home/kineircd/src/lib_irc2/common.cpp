@@ -28,6 +28,8 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include <cstring>
+#include <algorithm>
 #include <aisutil/string/string.h>
 #include <aisutil/string/tokens.h>
 #include <kineircd/config.h>
@@ -36,18 +38,12 @@
 #include <kineircd/version.h>
 
 #include "kineircd/irc2/protocol.h"
-#include "libkineircd_irc2/language.h"
+#include "libkineircd_irc2/lang.h"
+#include "libkineircd_irc2/stats.h"
 
 using namespace Kine::LibIRC2;
 using AISutil::String;
 using AISutil::StringTokens;
-
-
-// Dodgey macro to grab language stuff
-# define GETLANG(n,...) \
-   Kine::languages().get(user.getLanguageList(), \
-			 Language::tagMap[Language::n].tagID, \
-                         ##__VA_ARGS__)
 
 
 /* sendTimeOnServer - Send RPL_TIMEONSERVERIS
@@ -201,6 +197,39 @@ void Protocol::doMOTD(const User& user, const bool justConnected)
    // Send the MOTD footer
    sendNumeric(user, Numerics::RPL_ENDOFMOTD,
 	       GETLANG(irc2_RPL_ENDOFMOTD));
+}
+
+
+/* handleSTATS
+ * Original 14/08/2001 simonb
+ */
+void Protocol::doSTATS(const User& user, const std::string& request)
+{
+   // Fix up the request for easy searching (note the down-cast)
+   std::string req(static_cast<const String&>(request).toLower());
+   
+   // Run through the list of stats commands
+   for (unsigned int i = 0; Stats::statsCommands[i].request != 0; ++i) {
+      // Check for a match (only the require chars are needed)
+      if (!strncmp(req.data(),
+		   Stats::statsCommands[i].request,
+		   std::max(req.length(),
+			    Stats::statsCommands[i].minChars))) {
+#ifdef KINE_DEBUG_ASSERT
+	 // The handler should not be null!
+	 assert(Stats::statsCommands[i].handler != 0);
+#endif
+	 
+	 // Run the function and break out of the loop
+	 Stats::statsCommands[i].handler(*this, user);
+	 break;
+      }
+   }
+   
+   // Send the footer
+   sendNumeric(user, Numerics::RPL_ENDOFSTATS,
+	       request,
+	       GETLANG(irc2_RPL_ENDOFSTATS));
 }
 
 

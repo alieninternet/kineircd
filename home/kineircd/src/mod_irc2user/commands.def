@@ -251,11 +251,11 @@ commands = {
 //   changeIdleTime;
 //};
 
-//commands = {
-//   command		= "STATS";
-//   defaultPenalty	= 1;
-//   minimumParams	= 1;
-//};
+commands = {
+   command		= "STATS";
+   defaultPenalty	= 1;
+   minimumParams	= 1;
+};
 
 commands = {
    command		= "SUMMON";
