@@ -25,8 +25,9 @@
 #ifndef _INCLUDE_KINEIRCD_PASSWORD_H_
 # define _INCLUDE_KINEIRCD_PASSWORD_H_ 1
 
-# include <aisutil/string/string.h>
+# include <string>
 # include <aisutil/sha1.h>
+# include <kineircd/nickname.h>
 
 namespace Kine {
    class Password {
@@ -55,8 +56,8 @@ namespace Kine {
       };
       
       // Transform the nickname and password pair into SHA1 output
-      static digest_type makePassword(const AISutil::String& nickname,
-				      const AISutil::String& password) {
+      static digest_type makePassword(const Nickname& nickname,
+				      const std::string& password) {
 	 return AISutil::SHA1::generate(nickname.IRCtoLower() + delim + 
 					password);
       };

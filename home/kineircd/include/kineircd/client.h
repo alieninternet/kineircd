@@ -35,6 +35,7 @@ extern "C" {
 # include <kineircd/denizen.h>
 # include <kineircd/sender.h>
 # include <kineircd/receiver.h>
+# include <kineircd/nickname.h>
 
 namespace Kine {
    class Channel;
@@ -59,7 +60,7 @@ namespace Kine {
 	{};
       
       //! Return the client's nickname
-      virtual const std::string& getNickname(void) const = 0;
+      virtual const Nickname& getNickname(void) const = 0;
 
       //! Return the client's user name
       virtual const std::string& getUsername(void) const = 0;
