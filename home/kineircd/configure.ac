@@ -24,7 +24,7 @@ dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 dnl -------------------------------------------------------------------------
 dnl  Getting ready to configure...
 dnl -------------------------------------------------------------------------
-dnl Initialise the autoconf thingamebobs
+dnl Initialise the thingamebobs
 AC_INIT([KineIRCd], [ ], [kineircd@alien.net.au])
 AM_INIT_AUTOMAKE([1.7 foreign no-installinfo no-installman nostdinc subdir-objects])
 AC_COPYRIGHT([Portions Copyright (c) 2001,2002 KineIRCd Development Team])
@@ -78,9 +78,7 @@ dnl Save LDFLAGS since we will be making a mess of it soon..
 LDFLAGS_SAVE="$LDFLAGS"
 INCDIRS=""
 
-dnl I am lazy, these should be configurable but for now they are constants
-AC_DEFINE(KINE_CONFIG_FILE_ENV_VAR, "KINEIRCD_CONF",
-          [Environment variable to check for a location of the config file])
+dnl I am lazy, this should be configurable but for now they are 'constants'
 AC_DEFINE(KINE_STRICT_CHANNEL_NAMES, 1,
           [
     Define this if you want strict channel names to be allowed. This means
@@ -108,6 +106,7 @@ dnl -------------------------------------------------------------------------
 dnl  Checking for programs we need
 dnl -------------------------------------------------------------------------
 AC_PROG_CC
+AM_PROG_CC_C_O
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
@@ -453,29 +452,6 @@ AC_CACHE_SAVE
 dnl -------------------------------------------------------------------------
 dnl  Determining compilation configuration parameters
 dnl -------------------------------------------------------------------------
-dnl
-dnl Misc feature settings
-dnl
-AC_MSG_CHECKING([default-config-file parameter])
-AC_ARG_ENABLE(default-config-file,
-              AC_HELP_STRING([--enable-default-config-file=<file>],
-                             [Default config file (default is "ircd.conf")]),
- [
-   if test "$enableval" = "no"; then
-     AC_MSG_RESULT([ircd.conf (default, fixed)])
-     kineircd_test_default_config_file="ircd.conf"
-   else
-     AC_MSG_RESULT(yes)
-     kineircd_test_default_config_file=$enableval
-   fi
- ],[
-   AC_MSG_RESULT([ircd.conf (default)])
-   kineircd_test_default_config_file="ircd.conf"
- ])
-AC_DEFINE_UNQUOTED(KINE_DEFAULT_CONFIG_FILE, 
-                   "$kineircd_test_default_config_file",
-                   [The default file to use when loading the config file])
-
 dnl
 dnl Should any developer pick up the old-style ircd.conf configuration
 dnl sub-parser code and complete it (please please please!!) this would

@@ -62,10 +62,11 @@ includedir=@includedir@/kineircd
 
 
 
-# Include dirs (referential)
+# Include dirs (referential); the last one is a hack for autoopts :(
 INCLUDES=\
 	-I$(top_builddir)/include \
-	-I$(top_builddir)/src
+	-I$(top_builddir)/src \
+	-I$(top_builddir)
 
 
 
@@ -468,10 +469,18 @@ ircd_SOURCES=\
 	src/ircd/bits.cpp \
 	src/ircd/bits.h \
 	src/ircd/exit.h \
-	src/ircd/ircd.cpp
+	src/ircd/ircd.cpp \
+	src/ircd/options.c \
+	src/ircd/options.h
 
 ircd_LDADD=\
-	libkineircd.la
+	libkineircd.la \
+	-lopts
+	
+src/ircd/options.c src/ircd/options.h: src/ircd/options.def
+	$(AUTOGEN) \
+		-b $(basename $@) \
+		src/ircd/options.def
 
 
 
