@@ -117,6 +117,11 @@ install/example.conf: install/example.conf.tpl $(AUTOGEN_DEF_DIR)/config.def $(A
 		-S $(AUTOGEN_DEF_DIR)/config.scm \
 		$(AUTOGEN_DEF_DIR)/config.def
 
+install/.lang: install/language.tpl $(AUTOGEN_DEF_DIR)/language.def
+	$(AUTOGEN) \
+		-b install/ \
+		-T install/language.tpl \
+		$(AUTOGEN_DEF_DIR)/language.def
 
 
 # A rule to download RFCs :)
