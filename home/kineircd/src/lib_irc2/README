@@ -1,0 +1,5 @@
+This is a tiny library which is used exclusively by any protocol module
+utilising the IRC-2 protocol. Instead of reinventing the wheel in each
+protocol that traditionally uses the same parser, we are able to emulate
+somewhat the traditional IRC daemon structure by using one single and
+complete parser.

@@ -1,0 +1,2 @@
+This is where the IRC-2 server to user protocol module code is. It relies
+heavily on the IRC-2 library.
