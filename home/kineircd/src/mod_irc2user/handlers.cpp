@@ -319,9 +319,11 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleKILL)
 	  * of feedback on the command if the user is not listening to
 	  * kill notices or can see the client directly.
 	  */
-//	 sendNumeric(LibIRC2::Numerics::RPL_KILLDONE,
-//		     victim->getName(),
-//		     GETLANG(irc2_RPL_KILLDONE));
+//	 if (true /* config */) {
+//	    sendNumeric(LibIRC2::Numerics::RPL_KILLDONE,
+//			victim->getName(),
+//			GETLANG(irc2_RPL_KILLDONE));
+//	 }
 	 return;
       } else if (error == Error::PERMISSION_DENIED) {
 	 // Complain about not having access to this command
@@ -614,7 +616,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleNICK)
 	 return;
       }
       
-      // Check if the nickname is on a fail list somewher
+      // Check if the nickname is on a fail list somewhere
       if (false) {
 	 sendNumeric(LibIRC2::Numerics::ERR_ERRONEUSNICKNAME,
 		     parameters[0],
