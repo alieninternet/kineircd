@@ -90,13 +90,6 @@ namespace Kine {
 				pa, pb);
 	     };
 	 
-	 // Send an error message and disconnect
-	 void sendError(const std::string& error)
-	   {
-	      sendMessage("ERROR", error);
-	      connection.goodbye();
-	   };
-	 
 	 // Send a ping with some unpredictable data
 	 void sendPing(void);
 	 

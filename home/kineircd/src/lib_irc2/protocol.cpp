@@ -41,6 +41,11 @@ const char Protocol::replacementCharacter =
   '*';
 
 
+// Error command name (put here so there aren't *heaps* per template use)
+const char* const Protocol::errorCommandName =
+  "ERROR";
+
+
 /* parseLine - Break up a protocol message into its components, and pass it on
  * Original 12/08/2001 simonb
  * Note: This is shockingly inefficient

@@ -47,6 +47,9 @@ namespace Kine {
 	 //! A replacement parameter (literally a '*', used in many places)
 	 static const char* const replacementParameter;
 	 static const char replacementCharacter;
+
+	 //! The 'ERROR' command name
+	 static const char* const errorCommandName;
 	 
        protected:
 	 // The type of a 'parameter list'
@@ -569,6 +572,15 @@ namespace Kine {
 		  ' ' << pf << ' ' << pg << ' ' << ph << " :" << pi <<
 		  lineTerminator;
 		sendRawLine(output.str());
+	     };
+
+
+	 //! Send an error message and disconnect
+	 template <class Tp>
+	   void sendError(const Tp& error)
+	     {
+		sendMessage(errorCommandName, error);
+		connection.goodbye();
 	     };
 
 
