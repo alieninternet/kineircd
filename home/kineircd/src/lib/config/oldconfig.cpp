@@ -1,34 +1,34 @@
 /* oldconfig.cpp
  * Parser for old style ircd.conf files - Data put into the 'Config' class
  *
- * Copyright (c) 2002 AustHex Development Team
+ * Copyright (c) 2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
- * This file is a part of AustHex.
+ * This file is a part of KineIRCd.
  *
- * AustHex is free software; you can redistribute it and/or modify
+ * KineIRCd is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * AustHex is distributed in the hope that it will be useful,
+ * KineIRCd is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with AustHex; if not, write to the Free Software
+ * along with KineIRCd; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "austhex/austhexconf.h"
+#include "kineircd/kineircdconf.h"
 
 #include <fstream>
 #include <utility>
 #include <stack>
 
-#include "austhex/config.h"
-#include "austhex/debug.h"
+#include "kineircd/config.h"
+#include "kineircd/debug.h"
 
 // Are we compiled properly?
 #ifndef OLD_CONFIG_SUBPARSER
@@ -50,7 +50,7 @@
  * At the moment it will read the file, you just need to do the definitions
  * and set the Config class appropriately. You will need to download a more
  * traditional IRC daemon though for reference. I took the formatting rules
- * from both AustHex but primarily the ircd found in 
+ * from both KineIRCd but primarily the ircd found in 
  * ftp://coombs.anu.edu.au/pub/irc
  * Cheers, and good luck if you do take this on!
  */
@@ -258,10 +258,10 @@ CONFIG_VARIABLE_HANDLER(Config::varHandleOldConfig)
 	  */
        case 'P':
 
-	 /* Q-line -- Quarantine servers (and users + channels in AustHex)..
+	 /* Q-line -- Quarantine servers (and users + channels in KineIRCd)..
 	  * Investigate the first field '*'??
 	  * 
-	  * Developer note: In AustHex this would have to "work out" what
+	  * Developer note: In KineIRCd this would have to "work out" what
 	  * type of object it is (server/user/channel). Unfortunately this
 	  * is just how it works :( :( :(
 	  *
@@ -315,9 +315,9 @@ CONFIG_VARIABLE_HANDLER(Config::varHandleOldConfig)
 	 
 	 /* Y-line -- Connection classes. These define certain parameters
 	  * for a client/service/server connection. Note that the number will
-	  * be converted into a string as connection classes in AustHex now
-	  * have proper names, not useless numbers. Times are always in 
-	  * seconds.
+	  * be converted into a string as connection classes in kine have 
+	  * proper strings (for names instead of obscure numbers). Times are 
+	  * always in seconds.
 	  * 
 	  * Format:
 	  * Y:<class #>:<ping freq>:<connect freq>:<max links>:<send-q>::

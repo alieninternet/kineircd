@@ -1,4 +1,4 @@
 This is the include directory for any header files which are necessary to be
-included externally AND internally for proper use of the AustHex Library.
+included externally AND internally for proper use of the KineIRCd Library.
 Note that header files which do not need to be visible on such a "global"
 scale should be within the library directories itself.

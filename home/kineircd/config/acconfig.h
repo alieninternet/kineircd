@@ -1,25 +1,25 @@
-/* autoconf.h
+/* kineircdconf.h
  * Compile-time configuration settings
  * 
  * This file needs major organisational work :) 
  * 
- * Copyright (c) 2001,2002 AustHex Development Team
+ * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
- * This file is a part of AustHex.
+ * This file is a part of KineIRCd.
  * 
- * AustHex is free software; you can redistribute it and/or modify
+ * KineIRCd is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  * 
- * AustHex is distributed in the hope that it will be useful,
+ * KineIRCd is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with AustHex; if not, write to the Free Software
+ * along with KineIRCd; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -39,7 +39,7 @@
  */
 
 /* This is the environment variable we may need to check for a config file */
-# define CONFIG_FILE_ENV_VAR			"AUSTHEX_CONF"
+# define CONFIG_FILE_ENV_VAR			"KINEIRCD_CONF"
 
 /* Stuff that will be in the Config Class, just not yet. */
 # define DEFAULT_CONFIG_SERVER_DESCRIPTION	"Mystery unconfigured server"
@@ -81,10 +81,7 @@
  * to include at least one decimal point, eg #*.au for all users from 
  * Australia. With modern networks this is pretty wasteful global broadcasts
  * are often the case sometimes and most networks have their servers on the
- * same domain name (*.austnet.org, *.dal.net etc). In the case of austnet,
- * for example, to send to everyone the minimum you would have to send to
- * would be $*.org -- pretty wasteful since that's everyone anyway!
- * Undefining this will allow $* and #* to work perfectly.
+ * same domain name. Undefining this will allow $* and #* to work perfectly.
  * 
  * Ok, enough of my rambling, I hope that made sense. :)
  */
@@ -408,7 +405,7 @@
 /* Define if we want to compile the old-style configuration subparser. When
  * compiled in, users will be able to add a line like this to their config
  * file to include an old-style configuration file of the same format used by
- * older AustHex versions:
+ * other/older IRC daemons:
  *
  * includeOldConfig "oldircd.conf";
  * 

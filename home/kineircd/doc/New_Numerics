@@ -130,7 +130,7 @@ _______________________________________________________________________________
 674 - RPL_YOURHELPER
       :You are now a network helper
       
-      (From original austhex prior to version 8, this was #380. Moved to
+      (From original aust hex prior to version 8, this was #380. Moved to
        avoid possible conflict)
       Similar function to YOUREOPER, except for the 'helper' status.
 
@@ -138,7 +138,7 @@ _______________________________________________________________________________
 675 - RPL_YOURVREMOVER
       :You are not a network virus remover
       
-      (From original austhex prior to version 8, this was #386. Moved to
+      (From original aust hex prior to version 8, this was #386. Moved to
        avoid possible conflict)
       Same as above -- Virus Remover status.
 
@@ -150,8 +150,8 @@ _______________________________________________________________________________
       number of network staff currently on the network. This could be of
       benefit to other networks such as dalnet as well since AFAIK they also
       have users which have administrative roles but are not operators. On
-      AustNet this means people who help maintain the network channel/nickname
-      services and help users. This is encouraged to be used!
+      some networks this means people who help maintain the network 
+      channel/nickname services and help users. This is encouraged to be used!
 
 
 679 - RPL_TIMEONSERVERIS
@@ -379,12 +379,12 @@ Extensions:
 004 - RPL_MYINFO
       <server hostname> <server version> <user modes> <channel modes>
        <channel modes with parameters> <user modes with parameters>
-       <server modes> <server modes with parameters> <version chars>
+       <server modes> <server modes with parameters>
 
       ircu started adding 'channel modes with parameters' to the string, this
-      has been further extended to contain the server modes (and austnet
+      has been further extended to contain the server modes (a kineircd
       addition) and user modes with parameters since the '+s' user mode in
-      ircu and in austhex8 takes a parameter.
+      ircu and in kineircd takes a parameter.
       If any field needs to be blank, it can be replaced with a '*'. This may
       be needed on servers that do not have user modes with parameters, or
       server modes/server modes with parameters. The out-of-order sequence

@@ -1,9 +1,8 @@
 
 Server notices are rather different to the old server notices from
-austhex.servd7, and previous version of ircd. These days most (if not all)
-operators are using scripts to re-interpret generated server notices and
-output them in whatever form is comfortable to them (eg. a different window
-etc). 
+previous version of irc daemons. These days most (if not all) operators are 
+using scripts to re-interpret generated server notices and output them in 
+whatever form is comfortable to them (eg. a different window etc). 
 
 The new server notice format, while being totally incompatible with the old
 format, aims to reduce the traffic produced by the generated server notices,
@@ -12,17 +11,15 @@ is not much of an issue anymore, it is still important).
 
 Take for example the difference between the following server notices:
 
- -pacific.nsw.au.austnet.org- *** Notice -- Received KILL message for
-   FoBbY. From sprint.austnet.org Path: netspace.vic.au.austnet.org!
-   iinet.wa.au.austnet.org!services.hub.austnet.org!sprint.austnet.org
-   (Banned from AustNet: No Clones.)
+ -serverA.foo.org- *** Notice -- Received KILL message for FoBbY. From 
+   services.foo.org Path: serverA.foo.org!serverB.foo.org!services.foo.org
+   (Banned: No Clones.)
 
 In that line, most of which is generated for readability and for backwards
 compatibility to a client (the compatibility was only a formatting thing
 anyway), 171 chars are removed. The new line would look like this:
 
- -pacific.nsw.au.austnet.org- Ksprint.austnet.org FoBbY Banned from AustNet: 
-   No Clones.
+ -server.foo.org- Kservices.foo.org FoBbY Banned: No Clones.
 
 Each server notice comes via the 'NOTICE' command ('SNOTICE' event in mIRC). 
 Each notice begins with a single character (which will have to be stripped 
@@ -119,7 +116,7 @@ Char | Description/Format
   x  | Someone used the STATS command on this server
      | <stats_code>
      |
-  z  | AustHex/Server stuff (critical stuff like the DIE command etc)
+  z  | Server stuff (critical stuff like the DIE command etc)
      | <calling_nick>
      |
   Z  | Housekeeping notices (configuration etc)

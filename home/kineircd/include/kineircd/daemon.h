@@ -1,28 +1,28 @@
 /* daemon.h
  * The main class
  * 
- * Copyright (c) 2001,2002 AustHex Development Team
+ * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
- * This file is a part of AustHex.
+ * This file is a part of KineIRCd.
  * 
- * AustHex is free software; you can redistribute it and/or modify
+ * KineIRCd is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  * 
- * AustHex is distributed in the hope that it will be useful,
+ * KineIRCd is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with AustHex; if not, write to the Free Software
+ * along with KineIRCd; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INCLUDE_AUSTHEX_DAEMON_H_
-# define _INCLUDE_AUSTHEX_DAEMON_H_
+#ifndef _INCLUDE_KINEIRCD_DAEMON_H_
+# define _INCLUDE_KINEIRCD_DAEMON_H_
 
 # include <ctime>
 # include <sys/time.h>
@@ -47,15 +47,15 @@
 class Daemon;
 
 
-# include "austhex/config.h"
-# include "austhex/user.h"
-# include "austhex/connection.h"
-# include "austhex/socket.h"
-# include "austhex/server.h"
-# include "austhex/channel.h"
-# include "austhex/str.h"
-# include "austhex/operator.h"
-# include "austhex/whowas.h"
+# include "kineircd/config.h"
+# include "kineircd/user.h"
+# include "kineircd/connection.h"
+# include "kineircd/socket.h"
+# include "kineircd/server.h"
+# include "kineircd/channel.h"
+# include "kineircd/str.h"
+# include "kineircd/operator.h"
+# include "kineircd/whowas.h"
 
 
 // A 'Listen' record

@@ -1,12 +1,12 @@
 .\" ./src/doc/ircd.8.in
-.\" AustHex IRC Daemon Manual Page
-.\" Author: Simon Butcher <pickle@austnet.org>
+.\" KineIRCd IRC Daemon Manual Page
+.\" Author: Simon Butcher <pickle@alien.net.au>
 .\" 
 .TH ircd 8 "10 Sep 2001" ""
 .\" -----------------------------------------------------------------
 .SH NAME
 .B ircd
-- AustHex Internet Relay Chat Daemon (server)
+- KineIRCd Internet Relay Chat Daemon (server)
 .\" -----------------------------------------------------------------
 .SH SYNOPSIS
 .B ircd
@@ -30,7 +30,7 @@ MOTD (Message Of The Day) file, displayed upon user connection
 .\" -----------------------------------------------------------------
 .SH BUGS
 Please report all bugs, abnormal behaviour or feature requests to
-.SB dev@austnet.org
+.SB pickle@alien.net.au
 .\" -----------------------------------------------------------------
 .SH COPYING
 Copyright information here :)

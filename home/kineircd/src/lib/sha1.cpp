@@ -10,13 +10,13 @@
  *   Steve Reid, Scott Mackenzie, and Simon Butcher.
  */
 
-#include "austhex/austhexconf.h"
+#include "kineircd/kineircdconf.h"
 
 #include <cstring>
 #include <cstdlib>
 
-#include "austhex/utils.h"
-#include "austhex/str.h"
+#include "kineircd/utils.h"
+#include "kineircd/str.h"
 
 // If we have OpenSSL, we can just use their SHA1 function -- YAY!
 #ifdef HAVE_OPENSSL
@@ -186,7 +186,7 @@ void SHA1transform(unsigned long state[5], unsigned char buffer[64])
 /* init - Initialize new context
  * Original unknown (Steve Reid <steve@edmweb.com>, ported by scottm)
  * 22/01/2001 scottm - Modified for evolution game engine use
- * 12/08/2001 simonb - Modified for AustHex use
+ * 12/08/2001 simonb - Modified for KineIRCd use
  * 07/04/2002 simonb - Cleaned up a bit, made it a little safer..
  */
 void SHA1init(context_type &context)
@@ -203,7 +203,7 @@ void SHA1init(context_type &context)
 /* update - Add a string to the SHA1 checksum
  * Original unknown (Steve Reid <steve@edmweb.com>, ported by scottm)
  * 22/01/2001 scottm - Modified for evolution game engine use
- * 12/08/2001 simonb - Modified for AustHex use
+ * 12/08/2001 simonb - Modified for KineIRCd use
  * 06/04/2002 simonb - Fixed char -> unsigned char flaw
  * 07/04/2002 simonb - Cleaned up a bit, made it a little safer..
  */
@@ -240,7 +240,7 @@ void SHA1update(context_type &context, unsigned char *data, unsigned int len)
 /* final - Finalise the SHA code
  * Original unknown (Steve Reid <steve@edmweb.com>, ported by scottm)
  * 22/01/2001 scottm - Modified for evolution game engine use
- * 12/08/2001 simonb - Modified for AustHex use
+ * 12/08/2001 simonb - Modified for KineIRCd use
  * 06/04/2002 simonb - Fixed char -> unsigned char flaw
  * 07/04/2002 simonb - Cleaned up a bit, made it a little safer..
  * 07/04/2002 simonb - Fixed word order endian reversal, eek!
@@ -291,7 +291,7 @@ const Utils::SHA1::digest_type Utils::SHA1::nullDigest = {
 /* generate - Wrapper for SHA1 generation
  * Original 22/01/2001 scottm
  * 19/07/2001 simonb - Modified for DumbOP use
- * 16/08/2001 simonb - Modified for austhex use
+ * 16/08/2001 simonb - Modified for KineIRCd use
  * 18/03/2002 simonb - Fixed char -> unsigned char flaw
  * 06/04/2002 simonb - Outputting digest (string generation migrated out)
  * 07/04/2002 simonb - Removed string output, now returns the digest itself.

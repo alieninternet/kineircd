@@ -1,7 +1,7 @@
 
-            -------------------------------------------------------
-              AustHex IRC Server Daemon Installation Instructions
-            -------------------------------------------------------
+              ----------------------------------------------------
+                Kine IRC Server Daemon Installation Instructions
+              ----------------------------------------------------
 
 
     Warning! This server is DEVELOPMENT software, that means this software
@@ -10,34 +10,34 @@
 
 
 
- 1. What is AustHex? What does it do? What's so special about it?
+ 1. What is KineIRCd? What does it do? What's so special about it?
     -------------------------------------------------------------
     
-    AustHex is an IRC (Internet Relay Chat) Daemon used to link thousands of
+    KineIRCd is an IRC (Internet Relay Chat) Daemon used to link thousands of
     people so they can chat to each other.
     
-    Unlike other IRC daemons, AustHex is NOT based on the original IRC daemon
+    Unlike other IRC daemons, KineIRCd is NOT based on the original IRC daemon
     written over a decade ago. It has been rewritten from scratch with
     considerable planning in the hope that many of the scalability issues
     the original IRC daemons suffered from can be avoided, as well as allowing
     as much future-proofing as possible.
     
-    AustHex also has the ability to save people "reinventing the wheel". Many
+    KineIRCd also has the ability to save people "reinventing the wheel". Many
     networks run servers which serve special purposes, such as channel and
     nickname retention services, and open-proxy testers. In the event that a
     new server-to-server protocol becomes available, the developer would have
     to rewrite that protocol again. The developer could simply migrate his/her
-    software to become a "service module" for AustHex, and never have to 
+    software to become a "service module" for KineIRCd, and never have to 
     worry about the protocols again, or the internal workings of an IRC
     server.
     
-    AustHex also allows for "protocol modules". If a new protocol is written
+    KineIRCd also allows for "protocol modules". If a new protocol is written
     (a user, server or service protocol), or an existing protocol is updated,
     the server administrator can simply load the new module without having to
     restart the IRC server. This avoids unnecessary disconnections and gives
     a much more professional look to your service.
 
-    AustHex has a goal to remain portable (taking advantage of some special
+    KineIRCd has a goal to remain portable (taking advantage of some special
     features some systems have), however at this stage a win32 version is not
     planned.
 
@@ -54,7 +54,7 @@
        You will need a current C++ compiler with a comliant Standard Template
        Library. All C++ compilers come with a compliant STL these days,
        however some are more efficient than others. Silicon Graphics (SGI)
-       have a version of the STL which includes capabilities AustHex will
+       have a version of the STL which includes capabilities KineIRCd will
        take advantage of which will dramatically enhance the performance
        of the daemon, most noticeably in medium to heavy load.
        
@@ -67,7 +67,7 @@
 
      - System support for shared objects/libraries (optional):
       
-       If you wish to compile AustHex with module support, you will need
+       If you wish to compile KineIRCd with module support, you will need
        support on your system for shared libraries. Many systems support
        this these days, so this shouldn't be an issue.
 
@@ -99,7 +99,7 @@
      - OpenSSL (optional):
 
        If you wish to use SSL for connections between servers, users or
-       services, then you will need OpenSSL. AustHex also takes advantage 
+       services, then you will need OpenSSL. KineIRCd also takes advantage 
        of the OpenSSL library by using some of its functions (which in many
        cases can be quite superiour in speed) even if you do not compile
        SSL support into the daemon.
@@ -118,7 +118,7 @@
        combine with another agent using the AgentX protocol (such as the
        agent that comes in the NET-SNMP package).
        
-       Note that AustHex's SNMP development is currently stagnant due to
+       Note that KineIRCd's SNMP development is currently stagnant due to
        stability problems within the NET-SNMP AgentX code.
        
        NET-SNMP can be found at http://net-snmp.sourceforge.net/

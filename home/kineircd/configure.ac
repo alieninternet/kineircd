@@ -1,24 +1,24 @@
 dnl ./configure.in
-dnl AutoConf configuration script for austhex
-dnl Simon Butcher <pickle@austnet.org>
-dnl 
-dnl Copyright (c) 2001,2002 AustHex Development Team
+dnl AutoConf configuration script for KineIRCd
+dnl Simon Butcher <pickle@alien.net.au>
+dnl
+dnl Copyright (c) 2001,2002 KineIRCd Development Team
 dnl (See DEV-TEAM file for details)
 dnl
-dnl This file is a part of AustHex.
+dnl This file is a part of KineIRCd.
 dnl 
-dnl AustHex is free software; you can redistribute it and/or modify
+dnl KineIRCd is free software; you can redistribute it and/or modify
 dnl it under the terms of the GNU General Public License as published by
 dnl the Free Software Foundation; either version 2 of the License, or
 dnl (at your option) any later version.
 dnl 
-dnl AustHex is distributed in the hope that it will be useful,
+dnl KineIRCd is distributed in the hope that it will be useful,
 dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
 dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 dnl GNU General Public License for more details.
 dnl 
 dnl You should have received a copy of the GNU General Public License
-dnl along with AustHex; if not, write to the Free Software
+dnl along with KineIRCd; if not, write to the Free Software
 dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
@@ -28,7 +28,7 @@ dnl -------------------------------------------------------------------------
 AC_PREREQ(2.52)
 AC_INIT(src/Makefile.in)
 AC_CONFIG_AUX_DIR(autoconf)
-AC_CONFIG_HEADER(include/austhex/austhexconf.h)
+AC_CONFIG_HEADER(include/kineircd/kineircdconf.h)
 
 dnl Determine our version information.
 dnl These should not be touched as they define the version of this software
@@ -37,11 +37,11 @@ dnl them .. uhh.. should touch them :)
 VERSION_MAJOR=8
 VERSION_MINOR=0
 VERSION_EXTRA=.prealpha
-PACKAGE_NAME=austhex.servd
+PACKAGE_NAME=kineircd
 PACKAGE_TARNAME=
 PACKAGE_VERSION=$VERSION_MAJOR.$VERSION_MINOR$VERSION_EXTRA
 PACKAGE_STRING=
-PACKAGE_BUGREPORT=dev@austnet.org
+PACKAGE_BUGREPORT=kineircd@alien.net.au
 
 dnl Export our version information
 AC_SUBST(VERSION_MAJOR)
@@ -96,7 +96,7 @@ AC_EXEEXT
 AC_OBJEXT
 
 AC_CACHE_CHECK([whether signal SIGCHLD is brain-damaged],
- austhex_cv_sys_sigchld_braindamaged,[
+ kineircd_cv_sys_sigchld_braindamaged,[
   AC_LANG_C
   AC_TRY_RUN([
 	#include <signal.h>
@@ -133,12 +133,12 @@ AC_CACHE_CHECK([whether signal SIGCHLD is brain-damaged],
 	   exit(0);
 	}
    ],[
-     austhex_cv_sys_sigchld_braindamaged=no
+     kineircd_cv_sys_sigchld_braindamaged=no
    ],[
-     austhex_cv_sys_sigchld_braindamaged=yes
+     kineircd_cv_sys_sigchld_braindamaged=yes
    ])
  ])
-if test "$austhex_cv_sys_sigchld_braindamaged" = "yes"; then
+if test "$kineircd_cv_sys_sigchld_braindamaged" = "yes"; then
   AC_DEFINE(SIGCHLD_BRAIN_DAMAGE) 
 fi
 
@@ -169,7 +169,7 @@ if test "$ac_cv_sizeof_long_long" -eq 0; then
 fi
 
 AC_CACHE_CHECK([maximum number of files I can open at once],
- austhex_cv_sys_maxfds,[
+ kineircd_cv_sys_maxfds,[
   dnl Try a brute-force method
   AC_LANG_C
   AC_TRY_RUN([
@@ -204,17 +204,17 @@ AC_CACHE_CHECK([maximum number of files I can open at once],
 	   exit(0);
 	}
    ],[
-     austhex_cv_sys_maxfds=`cat conftestval`
+     kineircd_cv_sys_maxfds=`cat conftestval`
    ],[
-     austhex_cv_sys_maxfds=256
+     kineircd_cv_sys_maxfds=256
      AC_MSG_WARN([Making the assumption of 256 bits could be wrong.])
      echo "  It is recommended that you edit autoconf.h manually to correct this"
    ])
  ])
-AC_DEFINE_UNQUOTED(MAX_FD_PER_PROCESS, $austhex_cv_sys_maxfds)
+AC_DEFINE_UNQUOTED(MAX_FD_PER_PROCESS, $kineircd_cv_sys_maxfds)
 
 AC_CACHE_CHECK([default select() file fd_set bit-size],
- austhex_cv_sys_fdset_numfds,[
+ kineircd_cv_sys_fdset_numfds,[
   AC_LANG_C
   AC_TRY_RUN([
 	#include <sys/time.h>
@@ -239,17 +239,17 @@ AC_CACHE_CHECK([default select() file fd_set bit-size],
 	   exit(0);
 	}
    ],[
-     austhex_cv_sys_fdset_numfds=`cat conftestval`
+     kineircd_cv_sys_fdset_numfds=`cat conftestval`
    ],[
-     austhex_cv_sys_fdset_numfds=256
+     kineircd_cv_sys_fdset_numfds=256
      AC_MSG_WARN([Making the assumption of 256 bits could be wrong.])
      echo "  It is recommended that you edit autoconf.h manually to correct this"
    ])
  ])
-AC_DEFINE_UNQUOTED(SELECT_FDSET_NUMFDS, $austhex_cv_sys_fdset_numfds)
+AC_DEFINE_UNQUOTED(SELECT_FDSET_NUMFDS, $kineircd_cv_sys_fdset_numfds)
 
 AC_CACHE_CHECK([for tzset() and timezone/daytime variables],
- austhex_cv_sys_tzset_and_friends,[
+ kineircd_cv_sys_tzset_and_friends,[
   AC_LANG_CPLUSPLUS
   AC_TRY_RUN([
 	#include <time.h>
@@ -267,12 +267,12 @@ AC_CACHE_CHECK([for tzset() and timezone/daytime variables],
 	   exit(0);
 	}
    ],[
-     austhex_cv_sys_tzset_and_friends=yes
+     kineircd_cv_sys_tzset_and_friends=yes
    ],[
-     austhex_cv_sys_tzset_and_friends=no
+     kineircd_cv_sys_tzset_and_friends=no
    ])
  ])
-if test "$austhex_cv_sys_tzset_and_friends" = "yes"; then
+if test "$kineircd_cv_sys_tzset_and_friends" = "yes"; then
   AC_DEFINE(HAVE_TZSET_AND_FRIENDS) 
 fi
 
@@ -364,7 +364,7 @@ AC_ARG_ENABLE(snmp-agent,[
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     austhex_test_have_snmp_agent=no
+     kineircd_test_have_snmp_agent=no
    else
      dnl "Master or agentx?"
      if test "$enableval" = "master"; then
@@ -379,21 +379,21 @@ AC_ARG_ENABLE(snmp-agent,[
      dnl We want to know if we have a valid snmp library here..
 dnl     AC_CHECK_LIB(ucdagent, init_agent,[
        AC_DEFINE(HAVE_SNMP_AGENT)
-       austhex_test_have_snmp_agent=yes
+       kineircd_test_have_snmp_agent=yes
        snmp_lib="-lucdagent -lucdmibs -lsnmp -ldl"
        snmp_ldflags="-L/usr/local/lib -L/usr/lib"
-       austhex_test_need_openssl=yes
+       kineircd_test_need_openssl=yes
 dnl      ],[
 dnl       AC_MSG_WARN([Could not find the appropriate SNMP libraries --
 dnl                    SNMP disabled])
-dnl       austhex_test_have_snmp_agent=no
+dnl       kineircd_test_have_snmp_agent=no
 dnl      ])
    fi
  ],[
    AC_MSG_RESULT([no (default)])
-   austhex_test_have_snmp_agent=no
+   kineircd_test_have_snmp_agent=no
  ]) 
-AC_SUBST(austhex_test_have_snmp_agent)
+AC_SUBST(kineircd_test_have_snmp_agent)
 AC_SUBST(snmp_lib)
 AC_SUBST(snmp_ldflags)
 
@@ -405,27 +405,27 @@ AC_ARG_ENABLE(ssl,[  --enable-ssl=DIRECTORY * * * * location of SSL library/incl
    ssl_libs="$enableval/lib"
  ],[
    dnl Say it is required
-   austhex_test_need_openssl_required=yes
+   kineircd_test_need_openssl_required=yes
  ])
 dnl Check that we are not being told to skip this...
-if test "$austhex_test_need_openssl" = "yes"; then
+if test "$kineircd_test_need_openssl" = "yes"; then
   dnl We are forced to try and get it..
-  austhex_test_need_openssl_required=yes
+  kineircd_test_need_openssl_required=yes
   dnl Do they not want the support?
   if test "$ssl_dir" = "no"; then
-    austhex_test_openssl_not_wanted=yes   
+    kineircd_test_openssl_not_wanted=yes   
   fi
 else
   if test "$ssl_dir" = "no"; then
     dnl They do not want it and we do not need it - ignore it
     AC_MSG_RESULT(ignoring)
-    austhex_test_need_openssl=no
+    kineircd_test_need_openssl=no
   else
     dnl They want it, try and get it
-    austhex_test_need_openssl=yes
+    kineircd_test_need_openssl=yes
   fi
 fi
-if test "$austhex_test_need_openssl" = "yes"; then
+if test "$kineircd_test_need_openssl" = "yes"; then
   dnl Check that the 'ssl_dir' environment variable is not empty
   if test -n "$ssl_dir"; then
     dnl Check for files in numerous different paths :-/
@@ -444,7 +444,7 @@ if test "$austhex_test_need_openssl" = "yes"; then
     dnl Check that the 'ssl_libs' environment is a directory
     if test -d "$ssl_libs"; then
       dnl Check if they do not want SSL support
-      if test "$austhex_test_openssl_not_wanted" = "yes"; then 
+      if test "$kineircd_test_openssl_not_wanted" = "yes"; then 
         AC_MSG_RESULT([$ssl_dir (support turned off though)])
       else
         AC_MSG_RESULT($ssl_dir)
@@ -466,7 +466,7 @@ if test "$austhex_test_need_openssl" = "yes"; then
       ],[
         AC_MSG_RESULT(unknown)
         AC_MSG_WARN([Your OpenSSL installation seems incomplete!])
-        austhex_test_openssl_broken=yes
+        kineircd_test_openssl_broken=yes
        ])
     else
       AC_MSG_RESULT(unknown)
@@ -474,19 +474,19 @@ if test "$austhex_test_need_openssl" = "yes"; then
       echo "  It appears your OpenSSL installation does not contain a library directory!"
       echo "  Use --with-ssl=DIRECTORY to corret this if you beleive this is wrong."
       echo "  Without this library you will not be able to use secured SSL connections."
-      austhex_test_openssl_broken=yes
+      kineircd_test_openssl_broken=yes
     fi
   else
     AC_MSG_RESULT(unknown)
     AC_MSG_WARN([Could not find your OpenSSL installation])
     echo "  Use --with-ssl=DIRECTORY to correct this if you beleive this is wrong."
     echo "  Without this library you will not be able to use secured SSL connections."
-    austhex_test_openssl_broken=yes
+    kineircd_test_openssl_broken=yes
   fi
 fi
 dnl Make sure we got it OK if we desparately need it
-if test "$austhex_test_need_openssl_required" = "yes"; then
-  if test "$austhex_test_openssl_broken" = "yes"; then
+if test "$kineircd_test_need_openssl_required" = "yes"; then
+  if test "$kineircd_test_openssl_broken" = "yes"; then
     AC_MSG_ERROR([Something you have included requires OpenSSL and I cannot find it.])
   fi
 fi
@@ -494,7 +494,7 @@ AC_SUBST(ssl_lib)
 AC_SUBST(ssl_ldflags)
 
 AC_CACHE_CHECK([for a working C++ Standard Template Library],
- austhex_cv_lib_stl_ok,[
+ kineircd_cv_lib_stl_ok,[
   AC_LANG_CPLUSPLUS
   AC_TRY_RUN([
 	#include <list>
@@ -509,19 +509,19 @@ AC_CACHE_CHECK([for a working C++ Standard Template Library],
 	   m.clear();
 	}
    ],[
-     austhex_cv_lib_stl_ok=yes
+     kineircd_cv_lib_stl_ok=yes
    ],[
-     austhex_cv_lib_stl_ok=no
+     kineircd_cv_lib_stl_ok=no
    ])
  ])
-if test "$austhex_cv_lib_stl_ok" = "yes"; then
+if test "$kineircd_cv_lib_stl_ok" = "yes"; then
   AC_DEFINE(HAVE_CXX_STL) 
 else
   AC_MSG_ERROR([Sorry, you need a working Standard Template Library])
 fi
 
 AC_CACHE_CHECK([for an SGI compliant hash capability in your STL],
- austhex_cv_lib_stl_sgi_hash,[
+ kineircd_cv_lib_stl_sgi_hash,[
   AC_LANG_CPLUSPLUS
   AC_TRY_RUN([
 	#include <hash_map>
@@ -532,17 +532,17 @@ AC_CACHE_CHECK([for an SGI compliant hash capability in your STL],
 	   hm.clear();
 	}
    ],[
-     austhex_cv_lib_stl_sgi_hash=yes
+     kineircd_cv_lib_stl_sgi_hash=yes
    ],[
-     austhex_cv_lib_stl_sgi_hash=no
+     kineircd_cv_lib_stl_sgi_hash=no
    ])
  ])
-if test "$austhex_cv_lib_stl_sgi_hash" = "yes"; then
+if test "$kineircd_cv_lib_stl_sgi_hash" = "yes"; then
   AC_DEFINE(STL_HAS_HASH)
 fi
 
 AC_CACHE_CHECK([for an SGI compliant single list template in your STL],
- austhex_cv_lib_stl_sgi_slist,[
+ kineircd_cv_lib_stl_sgi_slist,[
   AC_LANG_CPLUSPLUS
   AC_TRY_RUN([
 	#include <slist>
@@ -555,12 +555,12 @@ AC_CACHE_CHECK([for an SGI compliant single list template in your STL],
 	   exit(0);
 	}
    ],[
-     austhex_cv_lib_stl_sgi_slist=yes
+     kineircd_cv_lib_stl_sgi_slist=yes
    ],[
-     austhex_cv_lib_stl_sgi_slist=no
+     kineircd_cv_lib_stl_sgi_slist=no
    ])
  ])
-if test "$austhex_cv_lib_stl_sgi_slist" = "yes"; then
+if test "$kineircd_cv_lib_stl_sgi_slist" = "yes"; then
   AC_DEFINE(STL_HAS_SLIST)
 fi
 
@@ -584,7 +584,7 @@ AC_ARG_ENABLE(lower-cpu,[
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT(yes)
-     austhex_test_lower_cpu="yes"
+     kineircd_test_lower_cpu="yes"
    fi
  ],[
    AC_MSG_RESULT([no (default)])
@@ -603,7 +603,7 @@ AC_ARG_ENABLE(lower-memory,[
      AC_MSG_RESULT(no)
    else
      AC_MSG_RESULT(yes)
-     austhex_test_lower_memory="yes"
+     kineircd_test_lower_memory="yes"
    fi
  ],[
    AC_MSG_RESULT([no (default)])
@@ -674,14 +674,14 @@ AC_ARG_ENABLE(allow-clients,[
      AC_DEFINE(ALLOW_CLIENT_CONNECTIONS)
 
      dnl This uses user protocols so we need this
-     austhex_test_enable_client_protocols="yes"
+     kineircd_test_enable_client_protocols="yes"
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
    AC_DEFINE(ALLOW_CLIENT_CONNECTIONS)
 
    dnl This uses user protocols so we need this
-   austhex_test_enable_client_protocols="yes"
+   kineircd_test_enable_client_protocols="yes"
  ])
 
 AC_MSG_CHECKING([allow-servers parameter])
@@ -721,7 +721,7 @@ AC_ARG_ENABLE(allow-services,[
      AC_DEFINE(ALLOW_SERVICE_CONNECTIONS)
      
      dnl This uses user protocols so we need this
-     austhex_test_enable_client_protocols="yes"
+     kineircd_test_enable_client_protocols="yes"
    fi
  ],[
    AC_MSG_RESULT([no (default)])
@@ -744,7 +744,7 @@ AC_ARG_ENABLE(convert-motd-tabs,[
      AC_DEFINE(CONVERT_MOTD_TABS)
    fi
  ],[
-   if test "$austhex_test_lower_cpu" = "yes"; then
+   if test "$kineircd_test_lower_cpu" = "yes"; then
      AC_MSG_RESULT([no (lower-cpu default)])
    else
      AC_MSG_RESULT([yes (default)])
@@ -813,7 +813,7 @@ AC_ARG_ENABLE(floodlock-accept-msg,[
      fi
    fi
  ],[
-   if test "$austhex_test_lower_cpu" = "yes"; then
+   if test "$kineircd_test_lower_cpu" = "yes"; then
      AC_MSG_RESULT([off (lower-cpu default)])
    else
      AC_MSG_RESULT([120 seconds (default)])
@@ -845,9 +845,9 @@ AC_ARG_ENABLE(floodlock-away-reply,[
      fi
    fi
  ],[
-   if test "$austhex_test_lower_cpu" = "yes"; then
+   if test "$kineircd_test_lower_cpu" = "yes"; then
      AC_MSG_RESULT([off (lower-cpu default)])
-   elif test "$austhex_test_lower_memory" = "yes"; then
+   elif test "$kineircd_test_lower_memory" = "yes"; then
      AC_MSG_RESULT([off (lower-memory default)])
    else
      AC_MSG_RESULT([60 seconds (default)])
@@ -884,7 +884,7 @@ AC_ARG_ENABLE(floodlock-away-set,[
      fi
    fi
  ],[
-   if test "$austhex_test_lower_memory" = "yes"; then
+   if test "$kineircd_test_lower_memory" = "yes"; then
      AC_MSG_RESULT([off (lower-memory default)])
    else
      AC_MSG_RESULT([45 seconds (default)])
@@ -913,7 +913,7 @@ AC_ARG_ENABLE(floodlock-knock-msg,[
      fi
    fi
  ],[
-   if test "$austhex_test_lower_cpu" = "yes"; then
+   if test "$kineircd_test_lower_cpu" = "yes"; then
      AC_MSG_RESULT([off (lower-cpu default)])
    else
      AC_MSG_RESULT([300 seconds (default)])
@@ -999,17 +999,17 @@ dnl     of an IRC server using the traditional ircd.conf line-by-line file forma
 dnl  ],[
 dnl    if test "$enableval" = "no"; then
 dnl      AC_MSG_RESULT(no)
-dnl      austhex_test_old_config_subparser=no
+dnl      kineircd_test_old_config_subparser=no
 dnl    else
 dnl      AC_MSG_RESULT(yes)
 dnl      AC_DEFINE(OLD_CONFIG_SUBPARSER)
-dnl      austhex_test_old_config_subparser=yes
+dnl      kineircd_test_old_config_subparser=yes
 dnl    fi
 dnl  ],[
 dnl    AC_MSG_RESULT([no (default)])
-   austhex_test_old_config_subparser=no
+   kineircd_test_old_config_subparser=no
 dnl  ])
-AC_SUBST(austhex_test_old_config_subparser)
+AC_SUBST(kineircd_test_old_config_subparser)
 
 AC_MSG_CHECKING([oper-wallops parameter])
 AC_ARG_ENABLE(oper-wallops,[
@@ -1141,7 +1141,7 @@ AC_ARG_ENABLE(syslog-logging,[
     When enabled, this enables logging to the syslog device (if it is
     available on your system). If an optional identity is specified, this
     will be used to identify the process in the log file (eg. you may wish
-    to use 'austhex' instead of 'ircd'). When disabled, no logging will
+    to use 'kineircd' instead of 'ircd'). When disabled, no logging will
     occur. This software does not output much to the log, so it won't hurt
     if you leave this on.
  ],[
@@ -1180,7 +1180,7 @@ AC_ARG_ENABLE(time-to-be-idle,[
      fi
    fi
  ],[
-   if test "$austhex_test_lower_cpu" = "yes"; then
+   if test "$kineircd_test_lower_cpu" = "yes"; then
      AC_MSG_RESULT([off (lower-cpu default)])
    else
      AC_MSG_RESULT([30 seconds (default)])
@@ -1217,18 +1217,18 @@ AC_ARG_ENABLE(transport-tcp-ipv4,[
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     austhex_test_have_tcp_ipv4_transport=no
+     kineircd_test_have_tcp_ipv4_transport=no
    else
      AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_TRANSPORT_TCP_IPV4)
-     austhex_test_have_tcp_ipv4_transport=yes
+     kineircd_test_have_tcp_ipv4_transport=yes
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
    AC_DEFINE(HAVE_TRANSPORT_TCP_IPV4)
-   austhex_test_have_tcp_ipv4_transport=yes
+   kineircd_test_have_tcp_ipv4_transport=yes
  ])
-AC_SUBST(austhex_test_have_tcp_ipv4_transport)
+AC_SUBST(kineircd_test_have_tcp_ipv4_transport)
 
 AC_MSG_CHECKING([transport-tcp-ipv6 parameter])
 AC_ARG_ENABLE(transport-tcp-ipv6,[
@@ -1238,17 +1238,17 @@ AC_ARG_ENABLE(transport-tcp-ipv6,[
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     austhex_test_have_tcp_ipv6_transport=no
+     kineircd_test_have_tcp_ipv6_transport=no
    else
      AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_TRANSPORT_TCP_IPV6)
-     austhex_test_have_tcp_ipv6_transport=yes
+     kineircd_test_have_tcp_ipv6_transport=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
-   austhex_test_have_tcp_ipv6_transport=no
+   kineircd_test_have_tcp_ipv6_transport=no
  ])
-AC_SUBST(austhex_test_have_tcp_ipv6_transport)
+AC_SUBST(kineircd_test_have_tcp_ipv6_transport)
 
 AC_MSG_CHECKING([transport-spx-ipx parameter])
 AC_ARG_ENABLE(transport-spx-ipx,[
@@ -1257,17 +1257,17 @@ AC_ARG_ENABLE(transport-spx-ipx,[
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     austhex_test_have_spx_ipx_transport=no
+     kineircd_test_have_spx_ipx_transport=no
    else
      AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_TRANSPORT_SPX_IPX)
-     austhex_test_have_spx_ipx_transport=yes
+     kineircd_test_have_spx_ipx_transport=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
-   austhex_test_have_spx_ipx_transport=no
+   kineircd_test_have_spx_ipx_transport=no
  ])
-AC_SUBST(austhex_test_have_spx_ipx_transport)
+AC_SUBST(kineircd_test_have_spx_ipx_transport)
 
 AC_MSG_CHECKING([user-conn-ping parameter])
 AC_ARG_ENABLE(user-conn-ping,[
@@ -1315,7 +1315,7 @@ dnl
 dnl Protocol toggles
 dnl
 AC_MSG_CHECKING([irc2user-protocol parameter])
-if test "$austhex_test_enable_client_protocols" = "yes"; then
+if test "$kineircd_test_enable_client_protocols" = "yes"; then
   AC_ARG_ENABLE(irc2user-protocol,[
   --enable-irc2user-protocol                 (Default is enabled)
     The IRC-2 protocol is used with every irc client these days. Unless the
@@ -1324,20 +1324,20 @@ if test "$austhex_test_enable_client_protocols" = "yes"; then
    ],[
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)
-       austhex_test_have_irc2user_protocol=no
+       kineircd_test_have_irc2user_protocol=no
      else
        AC_MSG_RESULT(yes)
        AC_DEFINE(HAVE_IRC2USER_PROTOCOL)
-       austhex_test_have_irc2user_protocol=yes
+       kineircd_test_have_irc2user_protocol=yes
      fi
    ],[
      AC_MSG_RESULT([yes (default)])
      AC_DEFINE(HAVE_IRC2USER_PROTOCOL)
-     austhex_test_have_irc2user_protocol=yes
+     kineircd_test_have_irc2user_protocol=yes
    ])
 
   dnl If we are using the protocol, we may need some more stuff...
-  if test "$austhex_test_have_irc2user_protocol" = "yes"; then
+  if test "$kineircd_test_have_irc2user_protocol" = "yes"; then
     AC_MSG_CHECKING([irc2user-ircii-kluge parameter])
     AC_ARG_ENABLE(irc2user-ircii-kluge,[
   --enable-irc2user-ircii-kluge              (Default is enabled)
@@ -1378,7 +1378,7 @@ if test "$austhex_test_enable_client_protocols" = "yes"; then
          AC_DEFINE(HAVE_IRC2USER_MATCH_COUNTING)
        fi
      ],[
-       if test "$austhex_test_lower_cpu" = "yes"; then
+       if test "$kineircd_test_lower_cpu" = "yes"; then
          AC_MSG_RESULT([no (lower-cpu default)])
        else
          AC_MSG_RESULT([yes (default)])
@@ -1388,12 +1388,12 @@ if test "$austhex_test_enable_client_protocols" = "yes"; then
   fi
 else
   AC_MSG_RESULT([no (clients disallowed)])
-  austhex_test_have_irc2user_protocol=no
+  kineircd_test_have_irc2user_protocol=no
 fi
-AC_SUBST(austhex_test_have_irc2user_protocol)
+AC_SUBST(kineircd_test_have_irc2user_protocol)
 
 AC_MSG_CHECKING([irc3user-protocol parameter])
-if test "$austhex_test_enable_client_protocols" = "yes"; then
+if test "$kineircd_test_enable_client_protocols" = "yes"; then
   AC_ARG_ENABLE(irc3user-protocol,[
   --enable-irc3user-protocol                 (Default is disabled)
     The IRC-3 protocol is currently highly experimental and is not used
@@ -1402,45 +1402,43 @@ if test "$austhex_test_enable_client_protocols" = "yes"; then
    ],[
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)
-       austhex_test_have_irc3user_protocol=no
+       kineircd_test_have_irc3user_protocol=no
      else
        AC_MSG_RESULT(yes)
        AC_DEFINE(HAVE_IRC3USER_PROTOCOL)
-       austhex_test_have_irc3user_protocol=yes
+       kineircd_test_have_irc3user_protocol=yes
      fi
    ],[
      AC_MSG_RESULT([no (default)])
-     austhex_test_have_irc3user_protocol=no
+     kineircd_test_have_irc3user_protocol=no
    ])
 else
   AC_MSG_RESULT([no (clients disallowed)])
-  austhex_test_have_irc3user_protocol=no
+  kineircd_test_have_irc3user_protocol=no
 fi
-AC_SUBST(austhex_test_have_irc3user_protocol)
+AC_SUBST(kineircd_test_have_irc3user_protocol)
  
 AC_MSG_CHECKING([p13server-protocol parameter])
 AC_ARG_ENABLE(p13server-protocol,[
   --enable-p13server-protocol                (Default is enabled)
-    The P13 protocol is the last textual AustNet server the server protocol.
-    The protocol is very bulky, and only handles star-topology based
-    networks. This protocol mains for compatibility back to austhex.servd7.x.
+    This protocol is obsolete and may be removed soon, depending on demand.
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     austhex_test_have_p13server_protocol=no
+     kineircd_test_have_p13server_protocol=no
    else
      AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_P13SERVER_PROTOCOL)
-     austhex_test_have_p13server_protocol=yes
+     kineircd_test_have_p13server_protocol=yes
    fi
  ],[
    AC_MSG_RESULT([yes (default)])
    AC_DEFINE(HAVE_P13SERVER_PROTOCOL)
-   austhex_test_have_p13server_protocol=yes
+   kineircd_test_have_p13server_protocol=yes
  ])
-AC_SUBST(austhex_test_have_p13server_protocol)
+AC_SUBST(kineircd_test_have_p13server_protocol)
 
-if test "$austhex_test_have_p13server_protocol" = "yes"; then
+if test "$kineircd_test_have_p13server_protocol" = "yes"; then
   AC_MSG_CHECKING([p13server-compress parameter])
   AC_ARG_ENABLE(p13server-compress,[
   --enable-p13server-compress                (Default is enabled)
@@ -1453,16 +1451,16 @@ if test "$austhex_test_have_p13server_protocol" = "yes"; then
    ],[
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)
-       austhex_test_have_p13server_compress=no
+       kineircd_test_have_p13server_compress=no
      else
        AC_MSG_RESULT(yes)
        AC_DEFINE(HAVE_P13SERVER_COMPRESS)
-       austhex_test_have_p13server_compress=yes
+       kineircd_test_have_p13server_compress=yes
      fi
    ],[
      AC_MSG_RESULT([yes (default)])
      AC_DEFINE(HAVE_P13SERVER_COMPRESS)
-     austhex_test_have_p13server_compress=yes
+     kineircd_test_have_p13server_compress=yes
    ])
 
   AC_MSG_CHECKING([p13server-extended parameter])
@@ -1489,9 +1487,9 @@ if test "$austhex_test_have_p13server_protocol" = "yes"; then
      AC_DEFINE(HAVE_P13SERVER_EXTENDED)
    ])
 else
-  austhex_test_have_p13server_compress=no
+  kineircd_test_have_p13server_compress=no
 fi
-AC_SUBST(austhex_test_have_p13server_compress)
+AC_SUBST(kineircd_test_have_p13server_compress)
  
 AC_MSG_CHECKING([p14server-protocol parameter])
 AC_ARG_ENABLE(p14server-protocol,[
@@ -1507,19 +1505,19 @@ AC_ARG_ENABLE(p14server-protocol,[
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     austhex_test_have_p14server_protocol=no
+     kineircd_test_have_p14server_protocol=no
    else
      AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_P14SERVER_PROTOCOL)
-     austhex_test_have_p14server_protocol=yes
+     kineircd_test_have_p14server_protocol=yes
    fi
  ],[
    AC_MSG_RESULT([no (default)])
-   austhex_test_have_p14server_protocol=no
+   kineircd_test_have_p14server_protocol=no
  ]) 
-AC_SUBST(austhex_test_have_p14server_protocol)
+AC_SUBST(kineircd_test_have_p14server_protocol)
 
-if test "$austhex_test_have_p14server_protocol" = "yes"; then
+if test "$kineircd_test_have_p14server_protocol" = "yes"; then
   AC_MSG_CHECKING([p14server-compress parameter])
   AC_ARG_ENABLE(p14server-compress,[
   --enable-p14server-compress                (Default is enabled)
@@ -1530,21 +1528,21 @@ if test "$austhex_test_have_p14server_protocol" = "yes"; then
    ],[
      if test "$enableval" = "no"; then
        AC_MSG_RESULT(no)
-       austhex_test_have_p14server_compress=no
+       kineircd_test_have_p14server_compress=no
      else
        AC_MSG_RESULT(yes)
        AC_DEFINE(HAVE_P14SERVER_COMPRESS)
-       austhex_test_have_p14server_compress=yes
+       kineircd_test_have_p14server_compress=yes
      fi
    ],[
      AC_MSG_RESULT([yes (default)])
      AC_DEFINE(HAVE_P14SERVER_COMPRESS)
-     austhex_test_have_p14server_compress=yes
+     kineircd_test_have_p14server_compress=yes
    ])
 else
-  austhex_test_have_p14server_compress=no
+  kineircd_test_have_p14server_compress=no
 fi
-AC_SUBST(austhex_test_have_p14server_compress)
+AC_SUBST(kineircd_test_have_p14server_compress)
 
 AC_MSG_CHECKING([debugging parameter])
 AC_ARG_ENABLE(debugging,[
@@ -1556,30 +1554,30 @@ AC_ARG_ENABLE(debugging,[
  ],[
    if test "$enableval" = "no"; then
      AC_MSG_RESULT(no)
-     austhex_test_have_debugging=no
+     kineircd_test_have_debugging=no
    else
      if test "$enableval" = "psycho"; then
        AC_MSG_RESULT([yes (psycho)])
        AC_DEFINE(DEBUG_PSYCHO)
        AC_DEFINE(DEBUG_EXTENDED)
        AC_DEFINE(DEBUG)
-       austhex_test_debugging=yes
+       kineircd_test_debugging=yes
      elif test "$enableval" = "extended"; then
        AC_MSG_RESULT([yes (extended)])
        AC_DEFINE(DEBUG_EXTENDED)
        AC_DEFINE(DEBUG)
-       austhex_test_debugging=yes
+       kineircd_test_debugging=yes
      else
        AC_MSG_RESULT(yes)
        AC_DEFINE(DEBUG)
-       austhex_test_debugging=yes
+       kineircd_test_debugging=yes
      fi
    fi
  ],[
    AC_MSG_RESULT([no (default)])
-   austhex_test_debugging=no
+   kineircd_test_debugging=no
  ]) 
-AC_SUBST(austhex_test_debugging)
+AC_SUBST(kineircd_test_debugging)
 
 
 dnl -------------------------------------------------------------------------
@@ -1596,7 +1594,7 @@ AC_SUBST(INCDIRS)
 AC_OUTPUT([
 	Makefile
 	include/Makefile
-	include/austhex/Makefile
+	include/kineircd/Makefile
 	install/Makefile
 	make/defs
 	make/rules

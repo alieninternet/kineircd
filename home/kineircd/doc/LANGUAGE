@@ -141,7 +141,7 @@ the language is selected for server text output and is the default.
 
  Note that the name of the language, the revision and the maintainer fields are
 totally up to your own policies. The only limitation is that the revision
-and the maintainer fields must be one word. With AustHex 8, as an example, the
+and the maintainer fields must be one word. With KineIRCd, as an example, the
 revision is a number since it is used to update the language files via remote
 to keep the entire network syncronised and up-to-date by centralising it
 (rather than e-mailing them to server administrators).

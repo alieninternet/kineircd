@@ -1,27 +1,27 @@
 /* daemon.cpp
  * The main class (IRC daemon) constructors and destructors
  * 
- * Copyright (c) 2001,2002 AustHex Development Team
+ * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
- * This file is a part of AustHex.
+ * This file is a part of KineIRCd.
  * 
- * AustHex is free software; you can redistribute it and/or modify
+ * KineIRCd is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  * 
- * AustHex is distributed in the hope that it will be useful,
+ * KineIRCd is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with AustHex; if not, write to the Free Software
+ * along with KineIRCd; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "austhex/austhexconf.h"
+#include "kineircd/kineircdconf.h"
 
 #include <unistd.h>
 #include <cstdio>
@@ -33,11 +33,11 @@
 # include <openssl/ssl.h>
 #endif
 
-#include "austhex/daemon.h"
-#include "austhex/debug.h"
-#include "austhex/version.h"
-#include "austhex/lang.h"
-#include "austhex/numerics.h"
+#include "kineircd/daemon.h"
+#include "kineircd/debug.h"
+#include "kineircd/version.h"
+#include "kineircd/lang.h"
+#include "kineircd/numerics.h"
 
 
 // Variables
@@ -224,10 +224,10 @@ bool Daemon::init(Config &conf)
    // Throw our starting up line at the logger
 #ifdef DEBUG
    logger(String("Starting ") + Version::version + " (debugging)",
-	  Logger::MASK_AUSTHEX);
+	  Logger::MASK_KINEIRCD);
 #else
    logger(String("Starting ") + Version::version,
-	  Logger::MASK_AUSTHEX);
+	  Logger::MASK_KINEIRCD);
 #endif
    
 #ifdef HAVE_OPENSSL
@@ -284,7 +284,7 @@ bool Daemon::init(Config &conf)
     * else we aren't going to be very useful at all
     */
    if (listens.empty()) {
-      logger("AustHex IRC Daemon not started: No listening sockets - "
+      logger("IRC Daemon not started: No listening sockets - "
 	     "Nobody can connect!",
 	     Logger::MASK_ERROR_LOCAL);
       return false;
@@ -1887,7 +1887,7 @@ void Daemon::shutdown(String const &reason)
 		     String("Shutting down"));
    
    // Log our nice message
-   logger(message, Logger::MASK_AUSTHEX);
+   logger(message, Logger::MASK_KINEIRCD);
 
    // Kill any ports we are listening on - we are no longer accepting ppl
    wipeListens();

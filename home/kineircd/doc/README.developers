@@ -82,11 +82,11 @@ and code formatting information. Last updated 200203252022
   
 * Always head up header files with an #ifndef to avoid conflicting
   reiterations cropping up in a compilation (yes, this is important!). Say
-  the header file is include/austhex/foo.h, you should wrap the code in this 
+  the header file is include/kineircd/foo.h, you should wrap the code in this 
   manner:
   
-   #ifndef _INCLUDE_AUSTHEX_FOO_H_
-   # define _INCLUDE_AUSTHEX_FOO_H_
+   #ifndef _INCLUDE_KINEIRCD_FOO_H_
+   # define _INCLUDE_KINEIRCD_FOO_H_
      <stuff>
    #endif
 
@@ -99,7 +99,7 @@ and code formatting information. Last updated 200203252022
      #include <map>
      #include <openssl/openssl.h>
     but
-     #include "austhex/daemon.h"
+     #include "kineircd/daemon.h"
 
 
 * Following the head of the .cpp files, included files should be
@@ -109,16 +109,16 @@ and code formatting information. Last updated 200203252022
     3. Header file relating to the content of this file
     4. Other local header files.
    eg.
-    #include "austhex/austhexconf.h"
+    #include "kineircd/kineircdconf.h"
     
     #include <cstdlib>
     #include <cerrno>
     #include <list>
     
-    #include "austhex/foo.h"
-    #include "austhex/str.h"
-    #include "austhex/user.h"
-    #include "austhex/server.h"
+    #include "kineircd/foo.h"
+    #include "kineircd/str.h"
+    #include "kineircd/user.h"
+    #include "kineircd/server.h"
     #include "something.h"
 
 
@@ -272,20 +272,19 @@ and code formatting information. Last updated 200203252022
   modifications to version.cpp should go into doc/VersionChars.
 
 
-* Just on numerics, austnet use numerics for replies between 800 and
-  899 (inclusive). However, check the numerics.h file as it is the
-  'ultimate' registry (compiled from other ircd's). If you find another
+* Just on numerics, check the irc2numerics.tpl file as it is the
+  'ultimate' registry (compiled from other ircd's) for us. If you find another
   numeric from another ircd, ADD IT, and find out as much as you can
   about it incase it might be something we might like to implement.
   Before creating a new numeric, check if it has not already been done
-  either in austhex or another ircd. Make sure another numeric cannot
+  either in KineIRCd or another ircd. Make sure another numeric cannot
   simply be extended (RPL_ISUPPORT for example) to acheive the same
   effect. If you do add a new numeric, check it in all major clients 
   (ircII/epic, bitchx, mirc, etc). mirc especially has a LOT of bugs with 
   numerics, including numerics that are undefined that suddenly do things 
   like open up channel list boxes or crash the client. Try old and new 
   versions of mirc too. If you have ANY doubt, please contact me
-  (pickle@austnet.org) since I've spent quite some time (too much IMHO) 
+  (pickle@alien.net.au) since I've spent quite some time (too much IMHO) 
   dealing with numeric conflicts.
 
 
@@ -311,7 +310,7 @@ and code formatting information. Last updated 200203252022
 
 
 * It is very highly recommended (read: People will get angry if you don't
-  do this) that you are subscribed to the development list (dev@austnet.org). 
+  do this) that you are subscribed to the development list.
   CVS commits notifications and logs are sent there so that the entire 
   development team can be aware of the actions. Make sure you submit 
   detailed logs of your changes. Logs which are simplistic such as "fixed foo"

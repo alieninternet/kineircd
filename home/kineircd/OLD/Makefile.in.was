@@ -1,7 +1,7 @@
 #
 #
 # src/lib/Makefile
-# Main make rules for AustHex sources
+# Main make rules for KineIRCd sources
 
 srcdir=@srcdir@
 VPATH=@srcdir@
@@ -43,7 +43,7 @@ VER_FLG=-DBUILD_STRING="\"`date -u +%04Y%02m%02d%02H%02M%02S`\"" \
 	-DPACKAGE_VERSION="\"@PACKAGE_VERSION@\"" \
 	-DPACKAGE_BUGREPORT="\"@PACKAGE_BUGREPORT@\""
 
-# austhex library sources that are required
+# libkineircd library sources that are required
 SOURCES=\
 	channel.cpp \
 	connection.cpp \
@@ -59,22 +59,22 @@ SOURCES=\
 	utils.cpp
 
 # Are we debugging?
-ifeq (@austhex_test_debugging@,yes)
+ifeq (@kineircd_test_debugging@,yes)
 SOURCES+=debug.cpp
 endif
 
 # Work out which protocols are needed to be compiled in; DO NOT EDIT THIS!!
 # Change the --enable-protocol-x/--disable-protocol-x settings on configure
 # instead!
-ifeq (@austhex_test_have_irc2user_protocol@,yes)
+ifeq (@kineircd_test_have_irc2user_protocol@,yes)
 SOURCES+=irc2user.cpp
 endif
-ifeq (@austhex_test_have_p13server_protocol@,yes)
+ifeq (@kineircd_test_have_p13server_protocol@,yes)
 SOURCES+=p13server.cpp
 endif
 
 # Work out anything else that is needed to be shoved in here too
-ifeq (@austhex_test_have_snmp_agent@,yes)
+ifeq (@kineircd_test_have_snmp_agent@,yes)
 SOURCES+=snmp.cpp
 endif
 

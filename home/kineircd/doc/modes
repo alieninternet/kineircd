@@ -1,6 +1,6 @@
 (last edited 24/02/2002)
 
-OK OK! Finally I've written this to compile a list of modes that austhex
+OK OK! Finally I've written this to compile a list of modes that KineIRCd
 knows and some descriptions of what they do, how they work. Hopefully this
 should make more sense to the bitwise illiterate :)
 
@@ -37,13 +37,13 @@ Note: this only accepts ONE WORD - this means /mode #channel +d clone bot* is
 invalid. Unfortunately this is yet another flaw with the irc2user protocol :(
 
 e - Ban Exception (has parameter - identity mask to make exempt ban)
-New to austnet, this is a ban exception identity mask. Say you did /mode
-#channel +b *!*@*, this bans everyone. You can then do /mode #channel +e
-mymate!*@* to allow someone with the name 'mymate' into the channel,
-essentially an exception to the original ban rule.. Get it? :)
+This is a ban exception identity mask. Say you did /mode #channel +b *!*@*, 
+this bans everyone. You can then do /mode #channel +e mymate!*@* to allow 
+someone with the name 'mymate' into the channel, essentially an exception to
+the original ban rule.. Get it? :)
 
 E - Channel Event
-Original austnet feature. When set, people in the channel who are not
+Originally an AustNet feature. When set, people in the channel who are not
 opped/halfopped/voiced cannot change their nickname. It's rumoured to set
 off fireworks in some middle-eastern country when the mode is set, but no
 firm reports have come in..
@@ -135,7 +135,7 @@ Magic ircd-hybrid ignoring thing. Hybrid call it caller id because that's
 how it works. With +g you ignore EVERYONE (except services/opers/channels etc)
 and to listen to certain people you just use the ACCEPT command to add a
 nick name. This is a reverse of dalnet/undernet's command 'SILENCE' which
-also exists in austhex8.
+also exists in KineIRCd.
 
 h - Helper
 Cannot be set, can be unset. Designates a user as a 'helper' on the network.
@@ -148,8 +148,7 @@ i - Invisible
 umm.. invisible :)
 
 I - Identified
-Cannot be set, cannot be unset. Can only be changed by a server (eg.
-services.austnet.org)
+Cannot be set, cannot be unset. Can only be changed by an arbiter server
 
 n - No IDENTD reply
 Cannot be toggled, set upon connection determined by identd responce.
@@ -203,7 +202,7 @@ writing, however, all opers receive +­ upon their /oper identification.
 ____________________________________________________________________________
 Server modes
 
-YES! I said server modes. These are new, an austnet first. I didn't like the
+YES! I said server modes. These are new, an KineIRCd first. I didn't like the
 set command, so I just decided to use server modes. Operators can set modes
 on their server, or if they are global on other servers. There are only a
 handful at the moment though, but no doubt this will grow very quickly.
@@ -275,7 +274,7 @@ servers or in the configuration file. Once set, operators (local and remote)
 will NOT be able to change ANY server modes. Use this if you are setting up
 a server you don't want people to fiddle with, or if the server modes on
 your network are to be controlled by a centralised services server or
-something similar (eg. Sprint on AustNet perhaps?).
+something similar..
 
 m - Short MOTD
 In periods of high-traffic it might be necessary to toggle this on to avoid
@@ -291,8 +290,7 @@ Allows the MOTD to be viewed remotely on the network (via '/motd
 server.name'). Since this is an obvious attack point to chew down the
 network it might be a wise security idea to turn this off, however some
 servers might need it (eg. a motd file for a specific country in a specific
-language, or an overall network motd file like '/motd austnet.org' on
-austnet returns).
+language, or an overall network motd file).
 
 n - NOOP replacement
 "Look to the future!"

@@ -1,37 +1,37 @@
 /* irc2user.cpp
  * Handle USER connection data using the IRC-3 server<->user protocol
  * 
- * Copyright (c) 2001,2002 AustHex Development Team
+ * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
- * This file is a part of AustHex.
+ * This file is a part of KineIRCd.
  * 
- * AustHex is free software; you can redistribute it and/or modify
+ * KineIRCd is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  * 
- * AustHex is distributed in the hope that it will be useful,
+ * KineIRCd is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with AustHex; if not, write to the Free Software
+ * along with KineIRCd; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "austhex/austhexconf.h"
+#include "kineircd/kineircdconf.h"
 
 #include <cctype>
 
-#include "austhex/irc2user.h"
-#include "austhex/daemon.h"
-#include "austhex/debug.h"
-#include "austhex/lang.h"
-#include "austhex/version.h"
-#include "austhex/utils.h"
-#include "austhex/operator.h"
+#include "kineircd/irc2user.h"
+#include "kineircd/daemon.h"
+#include "kineircd/debug.h"
+#include "kineircd/lang.h"
+#include "kineircd/version.h"
+#include "kineircd/utils.h"
+#include "kineircd/operator.h"
 
 
 /* Functions table. In the interests of efficiency should this table be 
@@ -1683,7 +1683,7 @@ void irc2userHandler::parseDIE(irc2userHandler *handler, StringTokens *tokens)
    String reason = tokens->rest();
 
    // Send out a server notice
-   Daemon::logger(handler->user->nickname, Logger::MASK_AUSTHEX);
+   Daemon::logger(handler->user->nickname, Logger::MASK_KINEIRCD);
    
    // Check if we have a reason
    if (reason.length()) {
@@ -2661,9 +2661,8 @@ void irc2userHandler::parseLINKS(irc2userHandler *handler, StringTokens *tokens)
  * Original 15/08/01 simonb
  * Note: This should be a 'remote', but since the content is so large nobody
  *       really needs to list channels remotely, unless of course they wanted
- *       local channels. Bah, local channels are *LOCAL* anyway! Many other
- *       networks (including austnet) already have this as a 'local only'
- *       command in any case.
+ *       local channels. Bah, local channels are *LOCAL* anyway! Many 
+ *       networks already have this as a 'local only' command in any case.
  */
 void irc2userHandler::parseLIST(irc2userHandler *handler, StringTokens *tokens)
 {
@@ -3713,9 +3712,9 @@ void irc2userHandler::parseSERVLIST(irc2userHandler *handler, StringTokens *toke
    String type = "0";
    
    handler->sendNumeric(Numerics::RPL_SERVLIST,
-			"ChanOP services.austnet.org * 0 1 :ChanOP service (test)");
+			"ChanOP services.foo.org * 0 1 :ChanOP service (test)");
    handler->sendNumeric(Numerics::RPL_SERVLIST,
-			"NickOP services.austnet.org * 0 1 :NickOP service (test)");
+			"NickOP services.foo.org * 0 1 :NickOP service (test)");
    
    // Send the end of services list numerics
    handler->sendNumeric(Numerics::RPL_SERVLISTEND,

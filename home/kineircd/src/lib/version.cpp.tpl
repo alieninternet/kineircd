@@ -1,29 +1,29 @@
 /* version.cpp
  * Version and Compile information
  * 
- * Copyright (c) 2001,2002 AustHex Development Team
+ * Copyright (c) 2001,2002 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
- * This file is a part of AustHex.
+ * This file is a part of KineIRCd.
  * 
- * AustHex is free software; you can redistribute it and/or modify
+ * KineIRCd is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  * 
- * AustHex is distributed in the hope that it will be useful,
+ * KineIRCd is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with AustHex; if not, write to the Free Software
+ * along with KineIRCd; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "austhex/austhexconf.h"
+#include "kineircd/kineircdconf.h"
 
-#include "austhex/version.h"
+#include "kineircd/version.h"
 
 namespace Version {
    // Build information
@@ -62,12 +62,12 @@ namespace Version {
 "          \026                                                  \026",
 "",
 "Copyright \251 1996,1998,1999,2000,2001,2002 Alien Internet Services",
-"Copyright \251 2001,2002 AustHex Development Team",
+"Copyright \251 2001,2002 KineIRCd Development Team",
 "This is free software; see the source for copying conditions. There",
 "is NO WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A",
 "PARTICULAR PURPOSE.",
 "",	
-" AustHex Development Team:",
+" KineIRCd Development Team:",
 "  to be done.. hehe shh, it will come before release :)",
       0
    };
