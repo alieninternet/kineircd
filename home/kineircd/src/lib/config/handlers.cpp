@@ -27,7 +27,7 @@
 
 #include "kineircd/config.h"
 #include "kineircd/debug.h"
-#include "configdefault.h"
+#include "config/defaults.h"
 
 using namespace Kine;
 

@@ -32,7 +32,7 @@
 #endif
 
 #include "kineircd/debug.h"
-#include "loggersyslog.h"
+#include "logger/syslog.h"
 
 using namespace Kine;
 

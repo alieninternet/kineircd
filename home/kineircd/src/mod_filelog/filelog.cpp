@@ -25,7 +25,7 @@
 #include <ctime>
 
 #include "kineircd/debug.h"
-#include "loggerfile.h"
+#include "logger/file.h"
 
 using namespace Kine;
 
