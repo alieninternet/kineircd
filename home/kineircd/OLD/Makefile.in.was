@@ -104,7 +104,7 @@ $(SUB_DIRS):
 	$(MAKE) -C $@
 
 
-$(TARGET): $(OBJECTS) subdirs $(ROBJECTS)
+$(TARGET): subdirs $(OBJECTS) $(ROBJECTS)
 	$(CXX) $(CXXFLAGS) $(VER_FLG) $(DEFS) $(INCDIRS) -c $(VER_SRC)
 	$(LD) -r $(LDFLAGS) $(LIBS) -o $@ $(VER_OBJ) $(OBJECTS) $(ROBJECTS)
 
