@@ -278,9 +278,7 @@ chanmodes = {
    irc2char	= "M";
    name		= "REGONLY";
    origin	= "Unreal";
-   comment	= "Channel only allows registered nicknames to talk. "
-                  "Since there is a much greater prevalence for +R for the "
-		  "same task, +R may be a better choice.";
+   comment	= "Channel only allows registered nicknames to talk.";
    conflict	= "yes";
 };
 
@@ -403,16 +401,14 @@ chanmodes = {
    irc2char	= "r";
    name		= "REGONLY";
    origin	= "QuakeNet";
-   comment	= "Channel only allows registered nicknames to join/talk. "
-                  "Since there is a much greater prevalence for +R for the "
-		  "same task, +R may be a better choice.";
+   comment	= "Channel only allows registered nicknames to join/talk.";
    conflict	= "yes";
 };
 
 chanmodes = {
    irc2char	= "R";
    name		= "REGONLY";
-   origin	= "Bahamut, KineIRCd, tr-ircd";
+   origin	= "Bahamut, tr-ircd";
    comment	= "Channel only allows registered nicknames to join/talk";
 };
 
