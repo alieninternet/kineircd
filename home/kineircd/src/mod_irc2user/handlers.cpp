@@ -43,6 +43,7 @@ using AISutil::StringMask;
 using AISutil::StringTokens;
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_ADMIN
 /* handleADMIN
  * Original 27/08/2001 simonb
  * 10/04/2003 simonb - Imported from old code (incomplete)
@@ -63,8 +64,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleADMIN)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_AWAY
 /* handleAWAY
  * Original 13/08/2001 simonb
  * 18/04/2003 simonb - Imported from old code (incomplete)
@@ -91,8 +94,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
 	       commandName,
 	       GETLANG(irc2_ERR_UNKNOWNERROR));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_HELP
 /* handleHELP
  * Original 13/08/2001 simonb
  * 02/04/2003 simonb - Imported from old code
@@ -195,8 +200,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 	       commandName, mask,
 	       GETLANG(irc2_RPL_ENDOF_GENERIC_HELP));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_INFO
 /* handleINFO
  * Original 14/08/2001 simonb
  * 21/04/2003 simonb - Imported from old code (incompleted)
@@ -217,8 +224,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleINFO)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_LANGUAGE
 /* handleLANGUAGE
  * Original 26/10/2001 simonb
  * 03/04/2003 simonb - Imported from old code
@@ -356,8 +365,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 	       commandName,
 	       GETLANG(irc2_ERR_UNKNOWNERROR));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_LUSERS
 /* handleLUSERS
  * Original 27/08/2001 simonb
  * 03/04/2003 simonb - Imported from old code (incompleted)
@@ -378,8 +389,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_MOTD
 /* handleMOTD
  * Original 13/08/2001 simonb
  * 03/04/2003 simonb - Imported from old code (incompleted)
@@ -400,8 +413,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_PING
 /* handlePING
  * Original 25/08/2001 simonb
  * 03/04/2003 simonb - Imported from old code
@@ -421,8 +436,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
    sendNumeric(LibIRC2::Numerics::ERR_NOORIGIN,
 	       GETLANG(irc2_ERR_NOORIGIN));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_QUIT
 /* handleQUIT
  * Original 14/08/2001 simonb
  * 08/04/2003 simonb - Imported from old code (incompleted)
@@ -436,8 +453,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleQUIT)
    // Close the connection
    connection.goodbye();
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_STATS
 /* handleSTATS
  * Original 14/08/2001 simonb
  * 23/04/2003 simonb - Imported from old code (incompleted)
@@ -488,8 +507,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSTATS)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_SUMMON
 /* handleSUMMON
  * Original 10/04/2003 simonb
  */
@@ -509,8 +530,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSUMMON)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_TIME
 /* handleTIME
  * Original 27/08/2001 simonb
  * 14/04/2003 simonb - Imported from old code (incompleted; needs config stuff)
@@ -531,8 +554,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleTIME)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_USERS
 /* handleUSERS
  * Original 10/04/2003 simonb
  */
@@ -552,8 +577,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERS)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_VERSION
 /* handleVERSION
  * Original 24/08/2001 simonb
  * 03/04/2003 simonb - Imported from old code (incompleted)
@@ -575,8 +602,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_WHOIS
 /* handleWHOIS
  * Original 23/08/2001 simonb
  * 20/04/2003 simonb - Imported from old code (incompleted)
@@ -597,8 +626,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHOIS)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+#endif
 
 
+#ifdef KINE_MOD_IRC2USER_HAVE_CMD_WHOWAS
 /* handleWHOWAS
  * Original 09/10/2001 simonb
  * 20/04/2003 simonb - Imported from old code (incompleted)
@@ -627,3 +658,4 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleWHOWAS)
 	       serverName,
 	       GETLANG(irc2_ERR_NOSUCHSERVER));
 }
+#endif
