@@ -1,0 +1,284 @@
+/* $Id$
+ *
+ * Copyright (c) 2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2003 KineIRCd Development Team
+ * (See DEV-TEAM file for details)
+ *
+ * This file is a part of KineIRCd.
+ * 
+ * KineIRCd is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * KineIRCd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with KineIRCd; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+autogen definitions commands;
+
+
+commands = {
+   command		= "ACCEPT";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "ADMIN";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "AWAY";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "CONNECT";
+   defaultPenalty	= 0;
+};
+
+commands = {
+   command		= "DIE";
+   defaultPenalty	= 0;
+};
+
+commands = {
+   command		= "GLOBOPS";
+   defaultPenalty	= 0;
+};
+
+commands = {
+   command		= "HELP";
+   defaultPenalty	= 3;
+};
+
+commands = {
+   command		= "INFO";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "INVITE";
+   defaultPenalty	= 3;
+};
+
+commands = {
+   command		= "ISON";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "JOIN";
+   defaultPenalty	= 3;
+};
+
+commands = {
+   command		= "KICK";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "KILL";
+   defaultPenalty	= 0;
+};
+
+commands = {
+   command		= "KNOCK";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "LANGUAGE";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "LINKS";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "LIST";
+   defaultPenalty	= 5;
+};
+
+commands = {
+   command		= "LOCOPS";
+   defaultPenalty	= 0;
+};
+
+commands = {
+   command		= "LUSERS";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "MAP";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "MODE";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "MOTD";
+   defaultPenalty	= 3;
+};
+
+commands = {
+   command		= "NAMES";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "NICK";
+   defaultPenalty	= 3;
+};
+
+commands = {
+   command		= "NOTICE";
+   defaultPenalty	= 4;
+};
+
+commands = {
+   command		= "OPER";
+   defaultPenalty	= 5;
+};
+
+commands = {
+   command		= "PART";
+   defaultPenalty	= 3;
+};
+
+commands = {
+   command		= "PING";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "PONG";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "PRIVMSG";
+   defaultPenalty	= 4;
+};
+
+commands = {
+   command		= "QUIT";
+   defaultPenalty	= 0;
+};
+
+commands = {
+   command		= "REHASH";
+   defaultPenalty	= 0;
+};
+
+commands = {
+   command		= "RESTART";
+   defaultPenalty	= 0;
+};
+
+commands = {
+   command		= "SERVLIST";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "SILENCE";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "SQUIT";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "STATS";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "SUMMON";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "TIME";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "TOPIC";
+   defaultPenalty	= 3;
+};
+
+commands = {
+   command		= "TRACE";
+   defaultPenalty	= 0;
+};
+
+commands = {
+   command		= "TRACEROUTE";
+   defaultPenalty	= 0;
+};
+
+commands = {
+   command		= "USERHOST";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "USERIP";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "USERS";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "VERSION";
+   defaultPenalty	= 1;
+};
+
+commands = {
+   command		= "WATCH";
+   defaultPenalty	= 3;
+};
+
+commands = {
+   command		= "WALLCHOPS";
+   defaultPenalty	= 4;
+};
+
+commands = {
+   command		= "WALLOPS";
+   defaultPenalty	= 0;
+};
+
+commands = {
+   command		= "WHO";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "WHOIS";
+   defaultPenalty	= 2;
+};
+
+commands = {
+   command		= "WHOWAS";
+   defaultPenalty	= 2;
+};
