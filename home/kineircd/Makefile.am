@@ -229,8 +229,7 @@ libkineircd_la_SOURCES=\
 	src/libkineircd/name.cpp \
 	src/libkineircd/registry.cpp \
 	src/libkineircd/signals.cpp \
-	src/libkineircd/version.cpp \
-	src/libkineircd/version.h
+	src/libkineircd/version.cpp
 	
 # Flags..
 libkineircd_la_LDFLAGS=\
@@ -265,11 +264,19 @@ src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOG
 		-S $(AUTOGEN_DIR)/config.scm \
 		$(AUTOGEN_DIR)/config.def
 
+# This is intentionally *not* in the sources list or it will fudge the checksum
 .PHONY: src/libkineircd/version.h
 src/libkineircd/version.h:
 	$(ECHO) \
-		"#define BUILD_TIME \"`date -u +%Y%m%dT%H%MZ`\"" \
+		"#define SOURCE_CODE_HASH \"` \
+			cat $(libkineircd_la_SOURCES) \
+				| md5sum \
+				| cut -d\  -f1 \
+			`\"" \
 		> src/libkineircd/version.h
+	$(ECHO) \
+		"#define BUILD_TIME \"`date -u +%Y%m%dT%H%MZ`\"" \
+		>> src/libkineircd/version.h
 	$(ECHO) \
 		"#define BUILD_TIME_FULL \"`date`\"" \
 		>> src/libkineircd/version.h
@@ -284,9 +291,6 @@ src/libkineircd/version.h:
 		fi
 	$(ECHO) \
 		"#define BUILD_COUNT `cat $(top_builddir)/.builds`" \
-		>> src/libkineircd/version.h
-	$(ECHO) \
-		"#define SOURCE_CODE_HASH \"na\"" \
 		>> src/libkineircd/version.h
 
 
