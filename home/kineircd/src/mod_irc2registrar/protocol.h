@@ -1,8 +1,8 @@
 /* $Id$
  * Handle registration (before handling a real protocol)
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -22,108 +22,111 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIBKINEIRCD_REGISTRAR_H_
-# define _SRC_LIBKINEIRCD_REGISTRAR_H_ 1
+#ifndef _SRC_MOD_IRC2REGISTRAR_PROTOCOL_H_
+# define _SRC_MOD_IRC2REGISTRAR_PROTOCOL_H_ 1
 
-# include "kineircd/listener.h"
-# include "kineircd/registrant.h"
-# include "kineircd/config.h"
+# include <kineircd/listener.h>
+# include <kineircd/registrant.h>
+# include <kineircd/config.h>
 # include "libkineircd_irc2/protocol.h"
 # include "libkineircd_irc2/numerics.h"
 
-# define KINE_LIB_REGISTRAR_FUNCTION(x) \
+# define KINE_MOD_REGISTRAR_FUNCTION(x) \
      void x(const Kine::LibIRC2::Protocol::parameters_type& parameters)
 
 namespace Kine {
-   class Registrar : public LibIRC2::Protocol {
-    private:
-      Listener& listener;			// The listener who invoked us
-
-      Registrant registrantData;		// Collected registrant info
-      
-      struct RegistrationType { // <=- Should be namespace?
-	 enum type {
-	    NONE = 0,				// No type, yet
-	    IIRCN,				// An IIRC network connection
-	    SERVER,				// A server connection
-	    SERVICE,				// A service connection
-	    USER				// A client or user connection
+   namespace mod_irc2registrar {
+      class Protocol : public LibIRC2::Protocol {
+       private:
+	 Listener& listener;			// The listener who invoked us
+	 
+	 Registrant registrantData;		// Collected registrant info
+	 
+	 struct RegistrationType { // <=- Should be namespace?
+	    enum type {
+	       NONE = 0,			// No type, yet
+	       IIRCN,				// An IIRC network connection
+	       SERVER,				// A server connection
+	       SERVICE,				// A service connection
+	       USER				// A client or user connection
+	    };
 	 };
-      };
-      RegistrationType::type registrationType;	// Type of registration
+	 RegistrationType::type
+	   registrationType;	// Type of registration
+	 
+	 unsigned char pongsLeft;		// Number of pongs left
+	 std::string pongMatch;			// Pong string to match
+	 
+	 // The type of a handler, for handy use later..
+	 typedef KINE_MOD_REGISTRAR_FUNCTION(handler_type);
       
-      unsigned char pongsLeft;			// Number of pongs left
-      std::string pongMatch;			// Pong string to match
+	 // A list of command parsing functions
+	 struct commandTable_type {
+	    const char* const command;			// Command name
+	    handler_type Protocol::* const handler;	// Parser/Handler
+	 } static const commandTable[];
+	 
+	 // Send a numeric
+	 void sendNumeric(const LibIRC2::Numerics::numeric_type numeric)
+	   {
+	      sendMessageTo(config().getOptionsServerName(),
+			    (registrantData.name.empty() ? 
+			     '*' : registrantData.name),
+			    numeric, "");
+	   };
+	 
+	 void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
+			  const char* const data)
+	   {
+	      sendMessageTo(config().getOptionsServerName(),
+			    (registrantData.name.empty() ? 
+			     '*' : registrantData.name),
+			    numeric, data);
+	   };
+	 
+	 // Send an error message and disconnect
+	 void sendError(const char* const error)
+	   {
+	      sendMessage("ERROR", error);
+	      connection.goodbye();
+	   };
+	 
+	 // Send a ping with some unpredictable data
+	 void sendPing(void);
+	 
+	 // Appropriately parse a protocol message
+	 void parseMessage(const std::string& origin, 
+			   const std::string& destination,
+			   const std::string& command,
+			   const Kine::LibIRC2::Protocol::parameters_type&
+			   parameters);
+	 
+	 // Protocol commands
+	 handler_type parseCAPAB;
+	 handler_type parseIIRCN;
+	 handler_type parseNICK;
+	 handler_type parsePASS;
+	 handler_type parsePONG;
+	 handler_type parseQUIT;
+	 handler_type parseSERVER;
+	 handler_type parseSERVICE;
+	 handler_type parseUSER;
+	 
+       public:
+	 // Constructor
+	 Protocol(Connection& c, Listener& l)
+	   : LibIRC2::Protocol(c),
+	     listener(l),
+	     registrationType(RegistrationType::NONE),
+	     pongsLeft(config().getOptionsRegistrarUserPingProbeCount())
+	   {};
       
-      // The type of a handler, for handy use later..
-      typedef KINE_LIB_REGISTRAR_FUNCTION(handler_type);
-      
-      // A list of command parsing functions
-      struct commandTable_type {
-	 const char* const command;			// Command name
-	 handler_type Registrar::* const handler;	// Parser/Handler
-      } static const commandTable[];
-
-      // Send a numeric
-      void sendNumeric(const LibIRC2::Numerics::numeric_type numeric)
-	{
-	   sendMessageTo(config().getOptionsServerName(),
-			 (registrantData.name.empty() ? 
-			  '*' : registrantData.name),
-			 numeric, "");
-	};
-      
-      void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
-		       const char* const data)
-	{
-	   sendMessageTo(config().getOptionsServerName(),
-			 (registrantData.name.empty() ? 
-			  '*' : registrantData.name),
-			 numeric, data);
-	};
-
-      // Send an error message and disconnect
-      void sendError(const char* const error)
-	{
-	   sendMessage("ERROR", error);
-	   connection.goodbye();
-	};
-      
-      // Send a ping with some unpredictable data
-      void sendPing(void);
-
-      // Appropriately parse a protocol message
-      void parseMessage(const std::string& origin, 
-			const std::string& destination,
-			const std::string& command,
-			const Kine::LibIRC2::Protocol::parameters_type&
-			parameters);
-
-      // Protocol commands
-      handler_type parseCAPAB;
-      handler_type parseIIRCN;
-      handler_type parseNICK;
-      handler_type parsePASS;
-      handler_type parsePONG;
-      handler_type parseQUIT;
-      handler_type parseSERVER;
-      handler_type parseSERVICE;
-      handler_type parseUSER;
-      
-    public:
-      // Constructor
-      Registrar(Connection& c, Listener& l)
-	: Protocol(c),
-          listener(l),
-          registrationType(RegistrationType::NONE),
-          pongsLeft(config().getOptionsRegistrarUserPingProbeCount())
-	{};
-      
-      // Destructor
-      ~Registrar(void)
-	{};
-   };
+	 // Destructor
+	 ~Protocol(void)
+	   {};
+      }; // class Protocol
+   }; // namespace mod_irc2registrar
 }; // namespace Kine
    
-#endif // _SRC_LIBKINEIRCD_REGISTRAR_H_
+#endif // _SRC_MOD_PROTOCOL_REGISTRAR_H_
 

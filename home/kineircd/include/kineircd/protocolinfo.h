@@ -27,6 +27,7 @@
 
 # include <cstring>
 # include <kineircd/protocol.h>
+# include <kineircd/listener.h>
 # include <kineircd/registrant.h>
 
 
@@ -59,7 +60,7 @@ namespace Kine {
       struct Type { // <=- should be namespace?
 	 enum type {
 	    REGISTRAR_EXTENSION = 1,	//!< Protocol extends the registrar
-	    STANDALONE_EXTENSION,	//!< Protocol has its own registrar
+	    PRIMARY,			//!< Starts connections / a registrar
 	    NETWORK,			//!< A network<->network protocol
 	    SERVER,			//!< A server<->server protocol
 	    SERVICE,			//!< A server<->service protocol
@@ -104,11 +105,26 @@ namespace Kine {
       /* This function returns a brand new (inherited) protocol class which
        * matches the protocol described and checked here. This also passes
        * pending input and output queues, and connection information on.
+       * 
+       * This is only used when creating a new protocol to associate against
+       * a new connection.
+       */
+      virtual Protocol* const createProtocol(Connection& connection,
+					     Listener& listener)
+	{ return 0; };
+      
+      /* This function returns a brand new (inherited) protocol class which
+       * matches the protocol described and checked here. This also passes
+       * pending input and output queues, and connection information on.
+       * 
+       * This is only used for a 'replacement' protocol, when it's being
+       * handed a connection over from a registrar protocol.
        */
       virtual Protocol* const createProtocol(const Registrant& registrant,
 					     Connection& connection,
 					     std::string& inputQueue,
-					     std::string& outputQueue) = 0;
+					     std::string& outputQueue)
+	{ return 0; };
    };
 }; // namespace Kine
    

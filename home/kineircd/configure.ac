@@ -544,6 +544,7 @@ AC_KINE_MODULE_CHECK(mod-channellog, [the channel based logging module])
 AC_KINE_MODULE_CHECK(mod-filelog, [the simple file based logging module])
 AC_KINE_MODULE_CHECK(mod-http, [the HTTP protocol module])
 AC_KINE_MODULE_CHECK(mod-iirc1, [the IIRC/1 inter-network protocol module])
+AC_KINE_MODULE_CHECK(mod-irc2registrar, [the IRC/2 based registrar module])
 AC_KINE_MODULE_CHECK(mod-irc2user, [the IRC/2 user protocol module])
 if test "$kineircd_test_netsnmp_broken" = "no"; then
   AC_KINE_MODULE_CHECK(mod-snmp, [the SNMP statistics module])

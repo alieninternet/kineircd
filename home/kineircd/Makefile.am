@@ -23,6 +23,9 @@ endif
 if KINEIRCD_COMPILE_MOD_IIRC1
  KINEIRCD_TARGET_MOD_IIRC1=mod_iirc1.la
 endif
+if KINEIRCD_COMPILE_MOD_IRC2REGISTRAR
+ KINEIRCD_TARGET_MOD_IRC2REGISTRAR=mod_irc2registrar.la
+endif
 if KINEIRCD_COMPILE_MOD_IRC2USER
  KINEIRCD_TARGET_MOD_IRC2USER=mod_irc2user.la
 endif
@@ -44,6 +47,7 @@ lib_LTLIBRARIES=\
 	$(KINEIRCD_TARGET_MOD_FILELOG) \
 	$(KINEIRCD_TARGET_MOD_HTTP) \
 	$(KINEIRCD_TARGET_MOD_IIRC1) \
+	$(KINEIRCD_TARGET_MOD_IRC2REGISTRAR) \
 	$(KINEIRCD_TARGET_MOD_IRC2USER) \
 	$(KINEIRCD_TARGET_MOD_SNMP) \
 	$(KINEIRCD_TARGET_MOD_SYSLOG)
@@ -212,8 +216,6 @@ libkineircd_la_SOURCES=\
 	$(KINEIRCD_SOURCE_LIB_DEBUG_H) \
 	src/libkineircd/logger.cpp \
 	src/libkineircd/nickname.cpp \
-	src/libkineircd/registrar.cpp \
-	src/libkineircd/registrar.h \
 	src/libkineircd/signals.cpp \
 	src/libkineircd/version.cpp
 	
@@ -225,7 +227,6 @@ libkineircd_la_LDFLAGS=\
 	
 # Libraries..
 libkineircd_la_LIBADD=\
-	libkineircd_irc2.la \
 	$(LIBLTDL) \
 	-laisutil \
 	@ssl_lib@
@@ -271,7 +272,7 @@ libkineircd_irc2_la_LDFLAGS=\
 	-version-info @LIBKINEIRCD_IRC2_VERSION@:@LIBKINEIRCD_IRC2_REVISION@:@LIBKINEIRCD_IRC2_AGE@
 
 libkineircd_irc2_la_LIBADD=\
-	# libkineircd.la
+	libkineircd.la
 		
 src/libkineircd_irc2/numerics.h: src/libkineircd_irc2/numerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
 	$(AUTOGEN) \
@@ -365,6 +366,27 @@ mod_iirc1_la_LDFLAGS=\
 	-module
 
 mod_iirc1_la_LIBADD=\
+	libkineircd.la \
+	libkineircd_irc2.la
+
+
+
+###############################################################################
+# 'mod_irc2registrar' module
+###############################################################################
+mod_irc2registrar_la_SOURCES=\
+	src/mod_irc2registrar/debug.h \
+	src/mod_irc2registrar/module.cpp \
+	src/mod_irc2registrar/module.h \
+	src/mod_irc2registrar/protocol.cpp \
+	src/mod_irc2registrar/protocol.h \
+	src/mod_irc2registrar/protocolinfo.h
+
+mod_irc2registrar_la_LDFLAGS=\
+	-avoid-version \
+	-module
+
+mod_irc2registrar_la_LIBADD=\
 	libkineircd.la \
 	libkineircd_irc2.la
 

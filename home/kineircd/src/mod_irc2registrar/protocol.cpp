@@ -1,8 +1,8 @@
 /* $Id$
  * Handle registration (before handling a real protocol)
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -25,33 +25,35 @@
 #ifdef HAVE_CONFIG_H
 # include "autoconf.h"
 #endif
-#include "kineircd/kineircdconf.h"
 
 #include <sstream>
 #include <iomanip>
 #include <aisutil/string/string.h>
 #include <aisutil/utils.h>
+#include <kineircd/protocolinfo.h>
+#include <kineircd/daemon.h>
 
-#include "kineircd/protocolinfo.h"
-#include "kineircd/daemon.h"
-#include "libkineircd/registrar.h"
-#include "libkineircd/debug.h"
+#include "mod_irc2registrar/protocol.h"
 
-using namespace Kine;
+#ifdef KINE_DEBUG
+# include "mod_irc2registrar/debug.h"
+#endif
+
+using namespace Kine::mod_irc2registrar;
 using AISutil::String;
 
 
 // Master command table (zero terminated, ordered alphabetically)
-const Registrar::commandTable_type Registrar::commandTable[] = {
-     { "CAPAB",		&Registrar::parseCAPAB },
-     { "IIRCN",		&Registrar::parseIIRCN },
-     { "NICK",		&Registrar::parseNICK },
-     { "PASS",		&Registrar::parsePASS },
-     { "PONG",		&Registrar::parsePONG },
-     { "QUIT",		&Registrar::parseQUIT },
-     { "SERVER",	&Registrar::parseSERVER },
-     { "SERVICE",	&Registrar::parseSERVICE },
-     { "USER",		&Registrar::parseUSER },
+const Protocol::commandTable_type Protocol::commandTable[] = {
+     { "CAPAB",		&Protocol::parseCAPAB },
+     { "IIRCN",		&Protocol::parseIIRCN },
+     { "NICK",		&Protocol::parseNICK },
+     { "PASS",		&Protocol::parsePASS },
+     { "PONG",		&Protocol::parsePONG },
+     { "QUIT",		&Protocol::parseQUIT },
+     { "SERVER",	&Protocol::parseSERVER },
+     { "SERVICE",	&Protocol::parseSERVICE },
+     { "USER",		&Protocol::parseUSER },
      { 0, 0 }
 };
 
@@ -59,7 +61,7 @@ const Registrar::commandTable_type Registrar::commandTable[] = {
 /* sendPing - Send a ping with some unpredictable data
  * Original 12/08/2001 simonb
  */
-void Registrar::sendPing(void)
+void Protocol::sendPing(void)
 {
    // Set the expectant pong result string appropriately
    pongMatch = 
@@ -75,11 +77,11 @@ void Registrar::sendPing(void)
 /* parseMessage - Appropriately parse a protocol message
  * Original 12/08/2001 simonb
  */
-void Registrar::parseMessage(const std::string& origin,
-			     const std::string& destination,
-			     const std::string& command,
-			     const Kine::LibIRC2::Protocol::parameters_type&
-			     parameters)
+void Protocol::parseMessage(const std::string& origin,
+			    const std::string& destination,
+			    const std::string& command,
+			    const Kine::LibIRC2::Protocol::parameters_type&
+			    parameters)
 {
    bool found = false;
 
@@ -189,7 +191,7 @@ void Registrar::parseMessage(const std::string& origin,
    }
    
    // If we got here, we are likely to switch to the newly created protocol.
-#ifdef KINE_DEBUG_ASSERT
+#ifdef KINE_DEBUG
    assert(protocolInfo != 0);
 #endif
     
@@ -205,9 +207,9 @@ void Registrar::parseMessage(const std::string& origin,
      protocolInfo->createProtocol(registrantData, connection, inputQueue,
 				  output);
       
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream out;
-   out << "Registrar::parseLine() - Attempting protocol hand-over (" << this <<
+   out << "Protocol::parseLine() - Attempting protocol hand-over (" << this <<
      " to " << newProtocol << ')';
    debug(out.str());
 #endif
@@ -235,7 +237,7 @@ void Registrar::parseMessage(const std::string& origin,
  *       don't deal with it here but rather just give it to the protocol
  *       handler upon initialisation for it to grok.
  */
-KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseCAPAB)
+KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseCAPAB)
 {
    // Make sure we were given at least one parameter
    if (parameters.empty()) {
@@ -246,7 +248,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseCAPAB)
 //   // Append the capability to the capabilities vector
 //   registrantData.capabilities.push_back(line.rest());
 
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    std::ostringstream out;
    out << " -=>   Capability: " << registrantData.capabilities.back();
    debug(out.str());
@@ -257,7 +259,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseCAPAB)
 /* parseIIRCN
  * Original 05/08/2002 simonb
  */
-KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
+KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseIIRCN)
 {
    // Does the port this person connected to accept this type of connection?
    if (!listener.isFlagSet(Listener::Flags::ALLOW_NETWORKS)) {
@@ -281,8 +283,8 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
    
    // Check that the 'from network' field is * - it must be during registration
    if (parameters[1] != "*") {
-#ifdef KINE_DEBUG_PSYCHO
-      debug("Registrar::parseIIRCN() - Invalid: from network != \"*\"");
+#ifdef KINE_DEBUG
+      debug("Protocol::parseIIRCN() - Invalid: from network != \"*\"");
 #endif
       connection.goodbye();
       return;
@@ -294,7 +296,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
    registrantData.protocol = parameters[3].toUpper();
    registrantData.linkStamp = parameters[4].toLong();
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    // Output debugging info
    debug(" -=>      Network: " + registrantData.name);
    debug(" -=> Gateway Host: " + registrantData.hostname);
@@ -304,8 +306,8 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
    
    // Check the linkstamp, it must be greater than 0..
    if (registrantData.linkStamp <= 0) {
-#ifdef KINE_DEBUG_PSYCHO
-      debug("Registrar::parseIIRCN() - Invalid: timestamp <= 0");
+#ifdef KINE_DEBUG
+      debug("Protocol::parseIIRCN() - Invalid: timestamp <= 0");
 #endif
       connection.goodbye();
       return;
@@ -313,7 +315,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
    
    if (parameters.size() > 5) {
       registrantData.description = parameters[5];
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
       debug(" -=>  Description: " + registrantData.description);
 #endif
    }
@@ -326,7 +328,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
 /* parseNICK
  * Original 12/08/2001 simonb
  */
-KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
+KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
 {
    // Check the parameter list, there must be one parameter at least..
    if (parameters.empty()) {
@@ -370,9 +372,9 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
    
    // If we got here, the nick was ok - allow it
    registrantData.name = parameters[0];
-# ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug(" -=>         Nick: " + registrantData.name);
-# endif
+#endif
    
    // Do we need to send a ping out?
    if ((pongsLeft > 0) && (pongMatch.empty())) {
@@ -384,7 +386,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
 /* parsePASS
  * Original 31/08/2001 simonb
  */
-KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePASS)
+KINE_MOD_REGISTRAR_FUNCTION(Protocol::parsePASS)
 {
    // Have we already got the password?
    if (!registrantData.password.empty()) {
@@ -402,14 +404,14 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePASS)
    // Grab the password from the line (we do not care if it is blank)
    registrantData.password = parameters[0];
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug(" -=>     Password: " + registrantData.password);
 #endif
    
    // Is there anything else on the line we should know about?
    if (parameters.size() > 1) {
 //      registrantData.passwordKludge = line.rest();
-//#ifdef KINE_DEBUG_PSYCHO
+//#ifdef KINE_DEBUG
 //      debug(" -=>  PASS Kludge: " + registrantData.passwordKludge);
 //#endif
    }
@@ -419,7 +421,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePASS)
 /* parsePONG
  * Original 16/08/2001 simonb
  */
-KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePONG)
+KINE_MOD_REGISTRAR_FUNCTION(Protocol::parsePONG)
 {
    // Were we expecting a pong reply? Is this pong empty?
    if ((pongsLeft == 0) || (parameters.empty())) {
@@ -438,7 +440,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePONG)
    // Lower the pong count
    pongsLeft--;
    
-# ifdef KINE_DEBUG_PSYCHO
+# ifdef KINE_DEBUG
    debug(" -=>   Pong match: " + pongMatch);
 # endif
    
@@ -453,7 +455,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePONG)
 /* parseQUIT
  * Original 12/08/2001 simonb
  */
-KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseQUIT)
+KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseQUIT)
 {
    /* Close the connection. No goodbye or anything to prevent abuse. It is
     * very rare for a connection to use the QUIT command during registration,
@@ -468,7 +470,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseQUIT)
  * Note: Due to the nature of the diversity assosicated with this command, we
  *       must parse this in a careful nature
  */
-KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
+KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVER)
 {
    // Does the port this person connected to accept this type of connection?
    if (!listener.isFlagSet(Listener::Flags::ALLOW_SERVERS)) {
@@ -494,13 +496,13 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
 
    // Grab the first required value, the server name..
    registrantData.hostname = parameters[0];
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug(" -=>       Server: " + registrantData.hostname);
 #endif
    
    // Grab the second required value - hop count
    int hops = parameters[1].toInt();
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    debug(" -=>         Hops: " + parameters[1]);
 #endif
    
@@ -521,7 +523,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
 //				  config().
 //				  getOptionsLimitsServersMaxDescriptionLength());
    
-//#ifdef KINE_DEBUG_PSYCHO
+//#ifdef KINE_DEBUG
 //   // Send what we got to the debugging output
 //   debug(" -=>   startStamp: " + String::convert(startStamp));
 //   debug(" -=>    linkStamp: " + String::convert(linkStamp));
@@ -537,7 +539,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
 /* parseSERVICE
  * Original 28/10/2001 simonb
  */
-KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
+KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVICE)
 {
    // Does the port this person connected to accept this type of connection?
    if (!listener.isFlagSet(Listener::Flags::ALLOW_SERVICES)) {
@@ -585,7 +587,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
 	parameters[5].substr(0, config().getLimitsUsersMaxRealNameLength());
    }
    
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    // Send what we got to the debugging output
    debug(" -=>      Service: " + registrantData.username);
    debug(" -=> Distribution: " + registrantData.distribution);
@@ -600,7 +602,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
 /* parseUSER
  * Original 12/08/2001 simonb
  */
-KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
+KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseUSER)
 {
    // Does the port this person connected to accept this type of connection?
    if (!listener.isFlagSet(Listener::Flags::ALLOW_USERS)) {
@@ -633,7 +635,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
 	parameters[3].substr(0, config().getLimitsUsersMaxRealNameLength());
    }
 
-#ifdef KINE_DEBUG_PSYCHO
+#ifdef KINE_DEBUG
    // Output what we got for debugging purposes
    debug(" -=>         User: " + registrantData.username);
    debug(" -=>        Modes: " + registrantData.modes);

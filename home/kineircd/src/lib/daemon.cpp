@@ -1,8 +1,8 @@
 /* $Id$
  * The main class (IRC daemon) constructors and destructors
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -46,7 +46,6 @@ extern "C" {
 #include "kineircd/daemon.h"
 #include "kineircd/config.h"
 #include "kineircd/version.h"
-#include "libkineircd/registrar.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
@@ -165,7 +164,7 @@ void Daemon::newConnection(Listener& listener)
    
    // Add the socket to the connections list
    Connection* newConnection = new Connection(*newSocket);
-   newConnection->setProtocol(*(new Registrar(*newConnection, listener)));
+//   newConnection->setProtocol(*(new Registrar(*newConnection, listener)));
    connections.push_front(newConnection);
 }
 
