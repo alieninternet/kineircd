@@ -96,7 +96,6 @@ namespace Kine {
 	 const int flags;
 	 
 	 // Configuration info (optional, set to 0 if you don't want it)
-	 const ConfigData *configData;
 	 const ConfigParser::defTable_type *configDefinitions;
 	 
 	 // The two required functions - start and stop
@@ -104,7 +103,7 @@ namespace Kine {
 	 const stopFunction_type *stopFunction;
 	 
 	 // Padding, for future use (ignore this, or fill it with 0's)
-	 char _padding[24];
+	 char _padding[28];
 	 
 	 // This little function checks if the stuff above is valid
 	 const bool isOkay(void) const {
@@ -119,12 +118,16 @@ namespace Kine {
       
       // Basic information about this module
       const basicInfo_type &basicInfo;
-      
+
+      // The configuration data class (optional)
+      const ConfigData *configData;
+
     protected:
       // Constructor
-      Module(const type_type t, const basicInfo_type &bi)
+      Module(const type_type t, const basicInfo_type &bi, const ConfigData *cd)
 	: type(t),
-          basicInfo(bi)
+          basicInfo(bi),
+          configData(cd)
         {};
       
     public:

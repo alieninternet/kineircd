@@ -30,8 +30,9 @@ namespace Kine {
    class ModuleExtension : public Module {
     public:
       // Constructor
-      ModuleExtension(const Module::basicInfo_type &mi)
-	: Module(Module::TYPE_EXTENSION, mi)
+      ModuleExtension(const Module::basicInfo_type &mi,
+		      const ConfigData *cd = 0)
+	: Module(Module::TYPE_EXTENSION, mi, cd)
 	{};
 	  
       // Destructor
