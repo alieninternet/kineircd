@@ -260,7 +260,4 @@ void Protocol::doVERSION(const User& user)
 	       config().getOptionsServerName(),
 	       Version::version,
 	       Version::versionChars);
-   
-   // Also send the RPL_ISUPPORT stuff
-//   sendISUPPORT();
 }
