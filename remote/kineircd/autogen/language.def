@@ -2110,6 +2110,14 @@ tag = {
                   "entity";
 };
 
+tag = {
+   name		= "Kine_Notice_IRC_OPERATOR_TIMEOUT";
+   fields	= "0 = hours idle, 1 = minutes idle, 2 = seconds idle";
+   components	= "libkineircd";
+   data_en	= "Your IRC Operator priviledges have been removed for "
+                  "security reasons. You have been idle %p0:%p1:%p2.";
+};
+
 
 
 /*****************************************************************************
