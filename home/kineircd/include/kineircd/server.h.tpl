@@ -109,6 +109,11 @@ namespace Kine {
 	requestDaemonInfo(const Client& who) const
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
 
+      //! Request statistics information from this server
+      virtual const Error::Error_type
+	requestStatistics(const Client& who, const std::string& request) const
+	{ return Error::UNSUPPORTED_BY_ENTITY; };
+      
       //! Request the local time on this server
       virtual const Error::error_type requestTime(const Client& who) const
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
