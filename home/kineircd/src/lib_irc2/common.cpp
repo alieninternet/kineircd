@@ -255,7 +255,7 @@ void Protocol::doTIME(const User& user)
    
    // Make up the "human readable" time string for the old RPL_TIME..
    struct tm currentTime;
-   currentTime = *gmtime((const time_t*)&daemon().getTime());
+   currentTime = *localtime((const time_t*)&daemon().getTime());
    
    /* Stuff used to make a human readable time string which confirms
     * relatively strictly to what traditional IRC daemons output.
