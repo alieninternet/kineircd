@@ -2949,6 +2949,15 @@ irc2numerics = {
 };
 
 irc2numerics = {
+   name		= "ERR_CHANOWNPRIVNEEDED";
+   numeric	= "499";
+   origin	= "Unreal";
+   comment	= "Works just like ERR_CHANOPRIVSNEEDED except it indicates "
+		  "that owner status (+q) is needed.";
+   seealso	= "482";
+};
+
+irc2numerics = {
    name		= "ERR_UMODEUNKNOWNFLAG";
    numeric	= "501";
    origin	= "RFC1459";
@@ -3008,8 +3017,10 @@ irc2numerics = {
    name		= "ERR_BADPING";
    numeric	= "513";
    origin	= "ircu";
-   comment	= "Any relation to ERR_BADPONG (Unreal, Ultimate) of the "
-                  "same number?";
+   comment	= "Also known as ERR_NEEDPONG (Unreal/Ultimate) for use "
+   		  "during registration, however it's not used in Unreal "
+		  "(and might not be used in Ultimate either).";
+   registration	= "yes";
 };
 
 irc2numerics = {
@@ -3022,7 +3033,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "ERR_TOOMANYDCC";
    numeric	= "514";
-   origin	= "Bahamut";
+   origin	= "Bahamut"; # + Unreal
    conflict	= "yes";
 };
 
@@ -3290,7 +3301,8 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_DCCSTATUS";
    numeric	= "617";
-   origin	= "Bahamut";
+   origin	= "Bahamut"; # + Unreal
+   conflict	= "yes";
 };
 
 irc2numerics = {
@@ -3303,13 +3315,13 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_DCCLIST";
    numeric	= "618";
-   origin	= "Bahamut";
+   origin	= "Bahamut"; # + Unreal
 };
 
 irc2numerics = {
    name		= "RPL_ENDOFDCCLIST";
    numeric	= "619";
-   origin	= "Bahamut";
+   origin	= "Bahamut"; # + Unreal
    conflict	= "yes";
 };
 
@@ -3323,7 +3335,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "RPL_DCCINFO";
    numeric	= "620";
-   origin	= "Bahamut";
+   origin	= "Bahamut"; # + Unreal
    conflict	= "yes";
 };
 
@@ -3389,18 +3401,30 @@ irc2numerics = {
    name		= "RPL_DUMPING";
    numeric	= "640";
    origin	= "Unreal";
+   comment	= "Never actually used by Unreal - was defined however the "
+   		  "feature that would have used this numeric was never "
+		  "created.";
+   obsolete	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_DUMPRPL";
    numeric	= "641";
    origin	= "Unreal";
+   comment	= "Never actually used by Unreal - was defined however the "
+   		  "feature that would have used this numeric was never "
+		  "created.";
+   obsolete	= "yes";
 };
 
 irc2numerics = {
    name		= "RPL_EODUMP";
    numeric	= "642";
    origin	= "Unreal";
+   comment	= "Never actually used by Unreal - was defined however the "
+   		  "feature that would have used this numeric was never "
+		  "created.";
+   obsolete	= "yes";
 };
 
 irc2numerics = {
@@ -3667,6 +3691,16 @@ irc2numerics = {
 // 900-999, errors
 
 irc2numerics = {
+   name		= "ERR_CANNOTDOCOMMAND";
+   numeric	= "972";
+   origin	= "Unreal";
+   comment	= "Works similarly to all of KineIRCd's CANNOT* numerics. "
+		  "This one indicates that a command could not be performed "
+		  "for an arbitrary reason. For example, a halfop trying to "
+		  "kick an op.";
+};
+
+irc2numerics = {
    name		= "ERR_CANNOTCHANGEUMODE";
    numeric	= "973";
    origin	= "KineIRCd";
@@ -3678,7 +3712,7 @@ irc2numerics = {
 irc2numerics = {
    name		= "ERR_CANNOTCHANGECHANMODE";
    numeric	= "974";
-   origin	= "KineIRCd";
+   origin	= "KineIRCd"; # + Unreal
    contact	= "kineircd@alien.net.au";
    format	= "<mode_char> :<reason>";
    comment	= "Reply to MODE when a user cannot change a channel mode";
