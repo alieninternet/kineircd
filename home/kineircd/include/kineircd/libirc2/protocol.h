@@ -32,6 +32,8 @@
 # include <aisutil/string/string.h>
 # include <kineircd/protocol.h>
 
+# include "libkineircd_irc2/numerics.h"
+
 namespace Kine {
    namespace LibIRC2 {
       class Protocol : public Kine::Protocol {
@@ -114,6 +116,102 @@ namespace Kine {
 	      output << command << ' ' << parameters << "\r\n";
 	      outputQueue.push(output.str());
 	   };
+
+	 // Send a numeric with TO/FROM (this could probably be done better)
+	 template <class To, class Td>
+	   void sendNumeric(const To& origin, const Td& destination,
+			    const LibIRC2::Numerics::numeric_type numeric)
+	     {
+		sendMessage(origin, destination, numeric);
+	     };
+	 template <class To, class Td, class Tpa>
+	   void sendNumeric(const To& origin, const Td& destination,
+			    const LibIRC2::Numerics::numeric_type numeric,
+			    const Tpa& pa)
+	     {
+		std::ostringstream output;
+		output << ':' << pa;
+		sendMessage(origin, destination, numeric, output.str());
+	     };
+	 template <class To, class Td, class Tpa, class Tpb>
+	   void sendNumeric(const To& origin, const Td& destination,
+			    const LibIRC2::Numerics::numeric_type numeric,
+			    const Tpa& pa, const Tpb& pb)
+	     {
+		std::ostringstream output;
+		output << pa << " :" << pb;
+		sendMessage(origin, destination, numeric, output.str());
+	     };
+	 template <class To, class Td, class Tpa, class Tpb, class Tpc>
+	   void sendNumeric(const To& origin, const Td& destination,
+			    const LibIRC2::Numerics::numeric_type numeric,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc)
+	     {
+		std::ostringstream output;
+		output << pa << ' ' << pb << " :" << pc;
+		sendMessage(origin, destination, numeric, output.str());
+	     };
+	 template <class To, class Td, class Tpa, class Tpb, class Tpc,
+	           class Tpd>
+	   void sendNumeric(const To& origin, const Td& destination,
+			    const LibIRC2::Numerics::numeric_type numeric,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			    const Tpd& pd)
+	     {
+		std::ostringstream output;
+		output << pa << ' ' << pb << ' ' << pc << " :" << pd;
+		sendMessage(origin, destination, numeric, output.str());
+	     };
+	 template <class To, class Td, class Tpa, class Tpb, class Tpc,
+	           class Tpd, class Tpe>
+	   void sendNumeric(const To& origin, const Td& destination,
+			    const LibIRC2::Numerics::numeric_type numeric,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			    const Tpd& pd, const Tpe& pe)
+	     {
+		std::ostringstream output;
+		output << pa << ' ' << pb << ' ' << pc << ' ' << pd << 
+		  " :" << pe;
+		sendMessage(origin, destination, numeric, output.str());
+	     };
+	 template <class To, class Td, class Tpa, class Tpb, class Tpc,
+	           class Tpd, class Tpe, class Tpf>
+	   void sendNumeric(const To& origin, const Td& destination,
+			    const LibIRC2::Numerics::numeric_type numeric,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			    const Tpd& pd, const Tpe& pe, const Tpf& pf)
+	     {
+		std::ostringstream output;
+		output << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  ' ' << pe << " :" << pf;
+		sendMessage(origin, destination, numeric, output.str());
+	     };
+	 template <class To, class Td, class Tpa, class Tpb, class Tpc,
+	           class Tpd, class Tpe, class Tpf, class Tpg>
+	   void sendNumeric(const To& origin, const Td& destination,
+			    const LibIRC2::Numerics::numeric_type numeric,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			    const Tpd& pd, const Tpe& pe, const Tpf& pf,
+			    const Tpg& pg)
+	     {
+		std::ostringstream output;
+		output << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  ' ' << pe << ' ' << pf << " :" << pg;
+		sendMessage(origin, destination, numeric, output.str());
+	     };
+	 template <class To, class Td, class Tpa, class Tpb, class Tpc,
+	           class Tpd, class Tpe, class Tpf, class Tpg, class Tph>
+	   void sendNumeric(const To& origin, const Td& destination,
+			    const LibIRC2::Numerics::numeric_type numeric,
+			    const Tpa& pa, const Tpb& pb, const Tpc& pc,
+			    const Tpd& pd, const Tpe& pe, const Tpf& pf,
+			    const Tpg& pg, const Tph& ph)
+	     {
+		std::ostringstream output;
+		output << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
+		  ' ' << pe << ' ' << pf << ' ' << pg << " :" << ph;
+		sendMessage(origin, destination, numeric, output.str());
+	     };
       };
    }; // namespace LibIRC2
 }; // namespace Kine

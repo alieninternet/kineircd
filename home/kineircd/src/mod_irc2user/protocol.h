@@ -55,70 +55,62 @@ namespace Kine {
 	 ~Protocol(void)
 	   {};
 
-	 // Send a numeric (various forms, this could probably be done better)
+	 // Send a numeric (ick)
 	 void sendNumeric(const LibIRC2::Numerics::numeric_type numeric)
 	   {
-	      sendMessage(config().getOptionsServerName(),
+	      sendNumeric(config().getOptionsServerName(),
 			  user.getNickname(), numeric);
 	   };
 	 template <class Ta>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa)
 	     {
-		std::ostringstream output;
-		output << ':' << pa;
-		sendMessage(config().getOptionsServerName(),
-			    user.getNickname(), numeric, output.str());
+		sendNumeric(config().getOptionsServerName(),
+			    user.getNickname(), numeric,
+			    pa);
 	     };
 	 template <class Ta, class Tb>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa, const Tb& pb)
 	     {
-		std::ostringstream output;
-		output << pa << " :" << pb;
-		sendMessage(config().getOptionsServerName(),
-			    user.getNickname(), numeric, output.str());
+		sendNumeric(config().getOptionsServerName(),
+			    user.getNickname(), numeric,
+			    pa, pb);
 	     };
 	 template <class Ta, class Tb, class Tc>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa, const Tb& pb, const Tc& pc)
 	     {
-		std::ostringstream output;
-		output << pa << ' ' << pb << " :" << pc;
-		sendMessage(config().getOptionsServerName(),
-			    user.getNickname(), numeric, output.str());
+		sendNumeric(config().getOptionsServerName(),
+			    user.getNickname(), numeric,
+			    pa, pb, pc);
 	     };
 	 template <class Ta, class Tb, class Tc, class Td>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa, const Tb& pb, const Tc& pc,
 			    const Td& pd)
 	     {
-		std::ostringstream output;
-		output << pa << ' ' << pb << ' ' << pc << " :" << pd;
-		sendMessage(config().getOptionsServerName(),
-			    user.getNickname(), numeric, output.str());
+		sendNumeric(config().getOptionsServerName(),
+			    user.getNickname(), numeric,
+			    pa, pb, pc, pd);
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa, const Tb& pb, const Tc& pc,
 			    const Td& pd, const Te& pe)
 	     {
-		std::ostringstream output;
-		output << pa << ' ' << pb << ' ' << pc << ' ' << pd << 
-		  " :" << pe;
-		sendMessage(config().getOptionsServerName(),
-			    user.getNickname(), numeric, output.str());
+		sendNumeric(config().getOptionsServerName(),
+			    user.getNickname(), numeric,
+			    pa, pb, pc, pd, pe);
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf>
 	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
 			    const Ta& pa, const Tb& pb, const Tc& pc,
 			    const Td& pd, const Te& pe, const Tf& pf)
 	     {
-		std::ostringstream output;
-		output << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
-		  ' ' << pe << " :" << pf;
-		sendMessage(config().getOptionsServerName(),
-			    user.getNickname(), numeric, output.str());
+		sendNumeric(config().getOptionsServerName(),
+			    user.getNickname(), numeric,
+			    pa, pb, pc, pd, pe, pf);
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
 	           class Tg>
@@ -127,11 +119,9 @@ namespace Kine {
 			    const Td& pd, const Te& pe, const Tf& pf,
 			    const Tg& pg)
 	     {
-		std::ostringstream output;
-		output << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
-		  ' ' << pe << ' ' << pf << " :" << pg;
-		sendMessage(config().getOptionsServerName(),
-			    user.getNickname(), numeric, output.str());
+		sendNumeric(config().getOptionsServerName(),
+			    user.getNickname(), numeric,
+			    pa, pb, pc, pd, pe, pf, pg);
 	     };
 	 template <class Ta, class Tb, class Tc, class Td, class Te, class Tf,
 	           class Tg, class Th>
@@ -140,11 +130,9 @@ namespace Kine {
 			    const Td& pd, const Te& pe, const Tf& pf,
 			    const Tg& pg, const Th& ph)
 	     {
-		std::ostringstream output;
-		output << pa << ' ' << pb << ' ' << pc << ' ' << pd <<
-		  ' ' << pe << ' ' << pf << ' ' << pg << " :" << ph;
-		sendMessage(config().getOptionsServerName(),
-			    user.getNickname(), numeric, output.str());
+		sendNumeric(config().getOptionsServerName(),
+			    user.getNickname(), numeric,
+			    pa, pb, pc, pd, pe, pf, pg, ph);
 	     };
       }; // class Protocol
    }; // namespace mod_irc2user
