@@ -141,8 +141,13 @@ namespace Kine {
 	 const commandList_type& getCommandList(void) const
 	   { return commandList; };
       };
+      
+      
+      // Lazy handy function to return the instance of the above singleton
+      static inline Commands& commands(void)
+	{ return Commands::getInstance(); };
    }; // namespace mod_irc2user
 }; // namespace Kine
-   
+
 #endif // _SRC_MOD_IRC2USER_COMMANDS_H_
    

@@ -75,7 +75,7 @@ namespace {
 	 Kine::daemon().deregisterProtocol(protocolInfo);
 	 
 	 // Destroy the dynamic commands table thingy
-	 delete &Kine::mod_irc2user::Commands::getInstance();
+	 delete &Kine::mod_irc2user::commands();
 	 
 	 // Deinitialise the IRC-2 library
 	 Kine::LibIRC2::deinit();

@@ -27,8 +27,10 @@
 
 #include <ctime>
 #include <cstdlib>
+#include <cstring>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 #include <aisutil/string.h>
 
 #include "mod_irc2user/protocol.h"
@@ -37,6 +39,7 @@
 
 using namespace Kine::mod_irc2user;
 using AISutil::String;
+using AISutil::StringMask;
 using AISutil::StringTokens;
 
 
@@ -122,8 +125,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
    
    // Run through the list of functions
    for (Commands::commandList_type::const_iterator it =
-	Commands::getInstance().getCommandList().begin();
-	it != Commands::getInstance().getCommandList().end();
+	commands().getCommandList().begin();
+	it != commands().getCommandList().end();
 	++it)
      {
 	/* Check if this is the command our user was looking for, whether the
@@ -448,8 +451,29 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleSTATS)
        * unable to tell the user how many times commands within mod_irc2user
        * have been used, so we are obviously the only ones who can respond.
        * 
-       * Check it here, simon?
+       * The 'm' command is the only additional one we know about, so this ugly
+       * and not very flexible code will do for now.
        */
+      if (!strncmp(static_cast<const String&>(parameters[0]).toLower().data(),
+		   "messages",
+		   std::max(parameters[0].length(),
+			    (std::string::size_type)1))) {
+	 // Iterate over the commands and output their call counters
+	 for (Commands::commandList_type::const_iterator it =
+	      commands().getCommandList().begin();
+	      it != commands().getCommandList().end();
+	      ++it) {
+	    // Send information about this command
+	    sendNumeric(LibIRC2::Numerics::RPL_STATSCOMMANDS,
+			(*it).first,
+			(*it).second.callCount);
+	 }
+	 
+	 // Send the footer
+	 sendNumeric(LibIRC2::Numerics::RPL_ENDOFSTATS,
+		     parameters[0],
+		     GETLANG(irc2_RPL_ENDOFSTATS));
+      }
 
       // We don't know about it, maybe the library knows it (a generic query)
       doSTATS(user, parameters[0]);
