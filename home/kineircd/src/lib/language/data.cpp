@@ -79,7 +79,10 @@ void Languages::LanguageData::mergeWith(const Languages::LanguageData& newData)
 	 debug("Languages::LanguageData::mergeWith() - TID #" +
 	       String::convert(i) + " has new data");
 #endif	
- 
+	 
+	 // Mmm - new data, increase the real tag counter then
+	 ++tagCount;
+	 
 	 // Okay, it has data. Do we have data at this point?
 	 if (tagData[i] != 0) {
 #ifdef KINE_DEBUG
