@@ -22,9 +22,9 @@ dnl along with AustHex; if not, write to the Free Software
 dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-dnl  -------------------------------------------------------------------------
-echo " -=> Getting ready to configure..."
-dnl  -------------------------------------------------------------------------
+dnl -------------------------------------------------------------------------
+dnl  Getting ready to configure...
+dnl -------------------------------------------------------------------------
 AC_PREREQ(2.52)
 AC_INIT(src/Makefile.in)
 AC_CONFIG_AUX_DIR(autoconf)
@@ -58,9 +58,9 @@ LDFLAGS_SAVE="$LDFLAGS"
 INCDIRS=""
 
 
-dnl  -------------------------------------------------------------------------
-echo " -=> Checking 'default' definitions"
-dnl  -------------------------------------------------------------------------
+dnl -------------------------------------------------------------------------
+dnl  Checking 'default' definitions
+dnl -------------------------------------------------------------------------
 AC_MSG_CHECKING([what to set CXXFLAGS to])
 if test "$CXXFLAGS" = ""; then
   CXXFLAGS="-Wall -O2 -fomit-frame-pointer -finline-functions"
@@ -70,9 +70,9 @@ else
 fi
 
 
-dnl  -------------------------------------------------------------------------
-echo " -=> Checking for programs we need"
-dnl  -------------------------------------------------------------------------
+dnl -------------------------------------------------------------------------
+dnl  Checking for programs we need
+dnl -------------------------------------------------------------------------
 AC_PROG_CC
 AC_PROG_GCC_TRADITIONAL
 AC_PROG_CXX
@@ -85,9 +85,9 @@ AC_CHECK_PROG(LD, ld, ld)
 AC_CACHE_SAVE
 
 
-dnl  -------------------------------------------------------------------------
-echo " -=> Checking compiler and system characteristics"
-dnl  -------------------------------------------------------------------------
+dnl -------------------------------------------------------------------------
+dnl  Checking compiler and system characteristics
+dnl -------------------------------------------------------------------------
 dnl AC_AIX
 dnl AC_MINIX
 dnl AC_ISC_POSIX
@@ -280,9 +280,9 @@ fi
 AC_CACHE_SAVE
 
 
-dnl  -------------------------------------------------------------------------
-echo " -=> Checking structures and types"
-dnl  -------------------------------------------------------------------------
+dnl -------------------------------------------------------------------------
+dnl  Checking structures and types
+dnl -------------------------------------------------------------------------
 AC_DECL_SYS_SIGLIST
 AC_STRUCT_TM
 AC_STRUCT_TIMEZONE
@@ -294,9 +294,9 @@ AC_TYPE_SIGNAL
 AC_CACHE_SAVE
 
 
-dnl  -------------------------------------------------------------------------
-echo " -=> Checking for header files"
-dnl  -------------------------------------------------------------------------
+dnl -------------------------------------------------------------------------
+dnl  Checking for header files
+dnl -------------------------------------------------------------------------
 AC_TIME_WITH_SYS_TIME
 AC_HEADER_STDC
 AC_HEADER_STAT
@@ -321,9 +321,9 @@ AC_CHECK_HEADERS( \
 AC_CACHE_SAVE
 
 
-dnl  -------------------------------------------------------------------------
-echo " -=> Checking for libraries and specific library functions"
-dnl  -------------------------------------------------------------------------
+dnl -------------------------------------------------------------------------
+dnl  Checking for libraries and specific library functions
+dnl -------------------------------------------------------------------------
 AC_CHECK_LIB(resolv, res_init)
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
@@ -559,9 +559,9 @@ fi
 AC_CACHE_SAVE
 
 
-dnl  -------------------------------------------------------------------------
-echo " -=> Determining compilation configuration parameters"
-dnl  -------------------------------------------------------------------------
+dnl -------------------------------------------------------------------------
+dnl  Determining compilation configuration parameters
+dnl -------------------------------------------------------------------------
 dnl
 dnl Stuff that effects the following arguments
 dnl
@@ -1543,15 +1543,15 @@ AC_ARG_ENABLE(debugging,[
 AC_SUBST(austhex_test_debugging)
 
 
-dnl  -------------------------------------------------------------------------
-echo " -=> Determining installation information"
-dnl  -------------------------------------------------------------------------
+dnl -------------------------------------------------------------------------
+dnl  Determining installation information
+dnl -------------------------------------------------------------------------
 dnl stuff goes here, would like to do it 'apache style' tho :)
 
 
-dnl  -------------------------------------------------------------------------
-echo " -=> Creating files"
-dnl  -------------------------------------------------------------------------
+dnl -------------------------------------------------------------------------
+dnl  Creating files
+dnl -------------------------------------------------------------------------
 LDFLAGS="$LDFLAGS_SAVE"
 AC_SUBST(INCDIRS)
 AC_OUTPUT([
