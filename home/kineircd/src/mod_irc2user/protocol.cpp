@@ -43,7 +43,8 @@ using namespace Kine::mod_irc2user;
 Protocol::Protocol(const Kine::Registrant& registrant,
 		   Kine::Connection& connection, std::string& inputQueue,
 		   std::string& outputQueue)
-  : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue)
+  : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue),
+    user(registrant)
 {
    // vv temporary :)
    std::ostringstream output;

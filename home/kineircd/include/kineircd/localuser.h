@@ -25,27 +25,30 @@
 #ifndef _INCLUDE_KINEIRCD_LOCALUSER_H_
 # define _INCLUDE_KINEIRCD_LOCALUSER_H_ 1
 
-# include <ctime>
+extern "C" {
+# include <sys/time.h>
+}
 
 # include <kineircd/user.h>
+# include <kineircd/daemon.h>
 
 namespace Kine {
    class LocalUser : public User {
     public:
       //! Constructor
-      LocalUser(std::string& _nickname)
-	: User(_nickname)
-	{};
+      LocalUser(const std::string& _nickname,
+		const std::string& _username,
+		const std::string& _hostname,
+		const timeval& _signonTime = daemon().getTime())
+	: User(_nickname, _username, _hostname, _signonTime)
+        {};
       
       //! Destructor
       virtual ~LocalUser(void)
 	{};
       
-      //! Return the last time this nickname was changed by the user
-      virtual const time_t& getLastNickChange(void) const = 0;
-      
       //! Return the last time this user was known to be not idle
-      virtual const time_t& getLastAwake(void) const = 0;
+      virtual const timeval& getLastAwake(void) const = 0;
    }; // class LocalUser
 }; // namespace Kine
 

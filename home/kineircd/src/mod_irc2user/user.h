@@ -25,20 +25,42 @@
 #ifndef _SRC_MOD_IRC2USER_USER_H_
 # define _SRC_MOD_IRC2USER_USER_H_ 1
 
+# include <string>
 # include <kineircd/localuser.h>
+# include <kineircd/registrant.h>
 
 namespace Kine {
    namespace mod_irc2user {
       class User : public Kine::LocalUser {
+       private:
+	 std::string description;		// Description/real name field
+	 timeval lastAwake;			// Time user was last awake
+	 
        public:
 	 // Constructor
-	 User(std::string& _nickname)
-	   : LocalUser(_nickname)
+	 User(const Kine::Registrant& _registrant)
+	   : LocalUser(_registrant.name,
+		       _registrant.username,
+		       _registrant.hostname),
+	     description(_registrant.description),
+	     lastAwake(Kine::daemon().getTime())
 	   {};
 	 
 	 // Destructor
 	 ~User(void)
 	   {};
+	 
+	 // Return the description string
+	 const std::string& getDescription(void) const
+	   { return description; };
+	 
+	 // Return the time the user was last 'awake'
+	 const timeval& getLastAwake(void) const
+	   { return lastAwake; };
+	 
+	 // Prod the last awake field with the current time
+	 void updateLastAwake(void)
+	   { lastAwake = Kine::daemon().getTime(); };
       }; // class User
    }; // namespace mod_irc2user
 }; // namespace Kine

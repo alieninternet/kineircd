@@ -50,7 +50,7 @@ namespace Kine {
       AISutil::String hostname;
       
       // The 'real name' or description, via USER, SERVER, SERVICE, and IIRCN
-      AISutil::String realname;
+      AISutil::String description;
       
       // The distribution field, given via SERVICE
       AISutil::String distribution;

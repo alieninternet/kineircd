@@ -41,7 +41,7 @@ namespace Kine {
 	{};
 
       //! Return a pointer to the server this denizen is connected to/through
-      virtual const Server& getServer(void) const = 0;
+//      virtual const Server& getServer(void) const = 0;
    }; // class Denizen
 }; // namespace Kine
 

@@ -26,7 +26,10 @@
 # define _INCLUDE_KINEIRCD_ENTITY_H_ 1
 
 # include <string>
+
+extern "C" {
 # include <sys/time.h>
+}
 
 namespace Kine {
    class Entity {

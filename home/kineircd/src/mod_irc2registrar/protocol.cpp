@@ -334,9 +334,9 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
    }
    
    if (parameters.size() > 5) {
-      registrantData.realname = parameters[5];
+      registrantData.description = parameters[5];
 #ifdef KINE_DEBUG_PSYCHO
-      debug(" -=>  Description: " + registrantData.realname);
+      debug(" -=>  Description: " + registrantData.description);
 #endif
    }
    
@@ -603,7 +603,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
    
    // If there's a real-name field, we should grab that one too
    if (parameters.size() > 5) {
-      registrantData.realname = 
+      registrantData.description = 
 	parameters[5].substr(0, config().getLimitsUsersMaxRealNameLength());
    }
    
@@ -611,7 +611,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
    // Send what we got to the debugging output
    debug(" -=>      Service: " + registrantData.username);
    debug(" -=> Distribution: " + registrantData.distribution);
-   debug(" -=>  Description: " + registrantData.realname);
+   debug(" -=>  Description: " + registrantData.description);
 #endif
    
    // Set the registration mode
@@ -651,7 +651,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
    
    // If there's a real-name field, grab it too
    if (parameters.size() > 3) {
-      registrantData.realname =
+      registrantData.description =
 	parameters[3].substr(0, config().getLimitsUsersMaxRealNameLength());
    }
 
@@ -659,7 +659,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
    // Output what we got for debugging purposes
    debug(" -=>         User: " + registrantData.username);
    debug(" -=>        Modes: " + registrantData.modes);
-   debug(" -=>     Realname: " + registrantData.realname);
+   debug(" -=>  Description: " + registrantData.description);
 #endif
    
    // Set the registration mode

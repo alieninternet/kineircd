@@ -25,8 +25,6 @@
 #ifndef _SRC_MOD_IRC2USER_PROTOCOL_H_
 # define _SRC_MOD_IRC2USER_PROTOCOL_H_ 1
 
-# include <kineircd/registrant.h>
-
 # include "libkineircd_irc2/protocol.h"
 # include "libkineircd_irc2/numerics.h"
 # include "mod_irc2user/user.h"
@@ -35,6 +33,8 @@ namespace Kine {
    namespace mod_irc2user {
       class Protocol : public Kine::LibIRC2::Protocol {
        private:
+	 User user;				// The user for this instance
+	 
 	 // Appropriately parse a protocol message
 	 void parseMessage(const std::string& origin,
 			   const std::string& destination,
