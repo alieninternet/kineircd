@@ -252,6 +252,7 @@ libkineircd_la_LDFLAGS=\
 # Libraries..
 libkineircd_la_LIBADD=\
 	$(LIBLTDL) \
+	$(LTLIBICONV) \
 	-laisutil \
 	@ssl_lib@
 
