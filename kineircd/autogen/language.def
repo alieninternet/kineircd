@@ -52,7 +52,7 @@ languages = {
 
 /*****************************************************************************
  **                                                                         **
- **                        Tag data for mod_irc2user                        **
+ **        Tag data for libkineircd_irc2 (and modules based on it)          **
  **                                                                         **
  *****************************************************************************/
 
@@ -1014,6 +1014,14 @@ tag = {
    data_en	= "Your primary language is set to '%p0'";
 };
 
+
+
+/*****************************************************************************
+ **                                                                         **
+ **                    Tag data for mod_irc2registrar                       **
+ **                                                                         **
+ *****************************************************************************/
+
 tag = {
    name		= "irc2registrar_ERROR_BAD_PONG";
    components	= "mod_irc2registrar";
@@ -1089,6 +1097,14 @@ tag = {
    components	= "mod_irc2registrar";
    data_en	= "Registration timed out";
 };
+
+
+
+/*****************************************************************************
+ **                                                                         **
+ **                       Tag data for mod_irc2user                         **
+ **                                                                         **
+ *****************************************************************************/
 
 tag = {
    name		= "irc2user_ERROR_CLOSING_LINK";
