@@ -25,6 +25,7 @@
 # define _INCLUDE_KINEIRCD_SERVICE_H_ 1
 
 # include <aisutil/string/mask.h>
+# include <kineircd/user.h>
 # include <kineircd/client.h>
 # include <kineircd/errors.h>
 
