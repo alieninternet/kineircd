@@ -129,8 +129,9 @@ void Protocol::parseMessage(const std::string& origin,
       if (registrantData.protocol.empty()) {
 	 protocolInfo =
 	   daemon().findProtocol(ProtocolInfo::Type::USER,
+				 "IRC-2"/*
 				 config().
-				 getOptionsRegistrarUserProtocolDefault());
+				 getOptionsRegistrarUserProtocolDefault()*/);
       } else {
 	 protocolInfo = 
 	   daemon().findProtocol(ProtocolInfo::Type::USER,

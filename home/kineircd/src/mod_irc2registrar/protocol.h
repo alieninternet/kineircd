@@ -31,6 +31,7 @@
 # include <kineircd/myserver.h>
 # include <kineircd/libirc2/protocol.h>
 # include <kineircd/libirc2/numerics.h>
+# include "mod_irc2registrar/config.h"
 
 # define KINE_MOD_REGISTRAR_FUNCTION(x) \
      void x(const Kine::LibIRC2::Protocol::parameters_type& parameters)
@@ -117,7 +118,7 @@ namespace Kine {
 	   : Kine::LibIRC2::Protocol(c),
 	     listener(l),
 	     registrationType(RegistrationType::NONE),
-	     pongsLeft(config().getOptionsRegistrarUserPingProbeCount())
+	     pongsLeft(1/*config().getOptionsRegistrarUserPingProbeCount()*/)
 	   {
 	      (void)changeInputCharset("UTF-8"); // temporary
 	      (void)changeOutputCharset("UTF-8"); // also.. temporary..

@@ -30,6 +30,7 @@
 #include <kineircd/libirc2/library.h>
 
 #include "mod_irc2registrar/module.h"
+#include "mod_irc2registrar/config.h"
 #include "mod_irc2registrar/protocolinfo.h"
 #include "mod_irc2registrar/language.h"
 
