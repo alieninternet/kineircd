@@ -102,7 +102,7 @@ namespace Kine {
        */
       virtual const Error::error_type
 	sendQuery(Client& sender,
-		  const std::string& message,
+		  const std::wstring& message,
 		  const Receiver::Directivity directivity =
 		  Receiver::Directivity())
 	{ return Error::UNSUPPORTED_BY_ENTITY; };

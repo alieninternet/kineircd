@@ -98,7 +98,7 @@ namespace Kine {
        */
       virtual const Error::error_type
 	sendMessage(Sender& sender,
-		    const std::string& message,
+		    const std::wstring& message,
 		    const Directivity directivity = Directivity())
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
 
@@ -110,7 +110,7 @@ namespace Kine {
        */
       virtual const Error::error_type
 	sendNotice(Sender& sender,
-		   const std::string& message,
+		   const std::wstring& message,
 		   const Directivity directivity = Directivity())
 	{ return Error::UNSUPPORTED_BY_ENTITY; };
    }; // class Receiver
