@@ -8,25 +8,25 @@ include $(top_builddir)/config/automake.inc
 
 
 # Work out which additional libraries we need to compile...
-#if KINEIRCD_COMPILE_MODULES_LIB_IRC2
+#if KINEIRCD_COMPILE_LIB_IRC2
 # KINEIRCD_TARGET_LIB_IRC2=libkineircd_irc2.la
  KINEIRCD_TARGET_LIB_IRC2=
 #endif
 
 # Work out which modules we need to compile...
-if KINEIRCD_COMPILE_MODULES_MOD_FILELOG
+if KINEIRCD_COMPILE_MOD_FILELOG
  KINEIRCD_TARGET_MOD_FILELOG=mod_filelog.la
 endif
-if KINEIRCD_COMPILE_MODULES_MOD_HTTP
+if KINEIRCD_COMPILE_MOD_HTTP
  KINEIRCD_TARGET_MOD_HTTP=mod_http.la
 endif
-if KINEIRCD_COMPILE_MODULES_MOD_IRC2USER
+if KINEIRCD_COMPILE_MOD_IRC2USER
  KINEIRCD_TARGET_MOD_IRC2USER=mod_irc2user.la
 endif
-if KINEIRCD_COMPILE_MODULES_MOD_SNMP
+if KINEIRCD_COMPILE_MOD_SNMP
  KINEIRCD_TARGET_MOD_SNMP=mod_snmp.la
 endif
-if KINEIRCD_COMPILE_MODULES_MOD_SYSLOG
+if KINEIRCD_COMPILE_MOD_SYSLOG
  KINEIRCD_TARGET_MOD_SYSLOG=mod_syslog.la
 endif
 
@@ -67,10 +67,9 @@ INCLUDES=\
 ###############################################################################
 # 'libkineircd_irc2' library
 ###############################################################################
-noinst_libkineircd_irc2_la_HEADERS=\
-	lib_irc2/protocol.h
 libkineircd_irc2_la_SOURCES=\
-	lib_irc2/parser.cpp
+	lib_irc2/parser.cpp \
+	lib_irc2/protocol.h
 libkineircd_irc2_la_LDFLAGS=\
 	-avoid-version
 libkineircd_irc2_la_LIBADD=\
@@ -81,11 +80,10 @@ libkineircd_irc2_la_LIBADD=\
 ###############################################################################
 # 'mod_filelog' module
 ###############################################################################
-noinst_mod_filelog_la_HEADERS=\
-	mod_filelog/file.h \
-	mod_filelog/module.h
 mod_filelog_la_SOURCES=\
-	mod_filelog/module.cpp
+	mod_filelog/file.h \
+	mod_filelog/module.cpp \
+	mod_filelog/module.h
 mod_filelog_la_LDFLAGS=\
 	-avoid-version \
 	-module
@@ -97,10 +95,9 @@ mod_filelog_la_LIBADD=\
 ###############################################################################
 # 'mod_http' module
 ###############################################################################
-noinst_mod_http_la_HEADERS=\
-	mod_http/module.h
 mod_http_la_SOURCES=\
-	mod_http/module.cpp
+	mod_http/module.cpp \
+	mod_http/module.h
 mod_http_la_LDFLAGS=\
 	-avoid-version \
 	-module
@@ -112,10 +109,9 @@ mod_http_la_LIBADD=\
 ###############################################################################
 # 'mod_irc2user' module
 ###############################################################################
-noinst_mod_irc2user_la_HEADERS=\
-	mod_irc2user/module.h
 mod_irc2user_la_SOURCES=\
-	mod_irc2user/module.cpp
+	mod_irc2user/module.cpp \
+	mod_irc2user/module.h
 mod_irc2user_la_LDFLAGS=\
 	-avoid-version \
 	-module
@@ -128,11 +124,11 @@ mod_irc2user_la_LIBADD=\
 ###############################################################################
 # 'mod_snmp' module
 ###############################################################################
-noinst_mod_snmp_la_HEADERS=\
-	mod_snmp/module.h
 mod_snmp_la_SOURCES=\
 	mod_snmp/module.cpp \
-	mod_snmp/snmp.cpp
+	mod_snmp/module.h \
+	mod_snmp/snmp.cpp \
+	mod_snmp/snmp.h
 mod_snmp_la_LDFLAGS=\
 	-avoid-version \
 	-module
@@ -144,11 +140,10 @@ mod_snmp_la_LIBADD=\
 ###############################################################################
 # 'mod_syslog' module
 ###############################################################################
-noinst_mod_syslog_la_HEADERS=\
-	mod_syslog/syslog.h \
-	mod_syslog/module.h
 mod_syslog_la_SOURCES=\
-	mod_syslog/module.cpp
+	mod_syslog/module.cpp \
+	mod_syslog/module.h \
+	mod_syslog/syslog.h
 mod_syslog_la_LDFLAGS=\
 	-avoid-version \
 	-module

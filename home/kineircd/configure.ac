@@ -547,8 +547,8 @@ AC_DEFUN([AC_KINE_MODULE_CHECK],[
     echo -n "$1 "
     AS_TR_SH(kineircd_test_compile_$1)=yes
    ])
-  AM_CONDITIONAL(AS_TR_CPP(KINEIRCD_COMPILE_MODULES_$1),
-	         [test x$kineircd_test_compile_$1 = xyes])
+  AM_CONDITIONAL(AS_TR_CPP(KINEIRCD_COMPILE_$1),
+	         [test x$AS_TR_SH(kineircd_test_compile_$1) = xyes])
  ])
 
 AC_KINE_MODULE_CHECK(mod-bovini1, [the BOVINI/1 server protocol module])
@@ -575,17 +575,8 @@ if test \
   echo -n "lib_irc2 "
   kineircd_test_compile_lib_irc2=yes;
 fi
-AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_LIB_IRC2,
+AM_CONDITIONAL(KINEIRCD_COMPILE_LIB_IRC2,
 	       [test x$kineircd_test_compile_lib_irc2 = xyes])
-
-if test \
-	"$kineircd_test_compile_mod_filelog" = "yes" -o \
-	"$kineircd_test_compile_mod_syslog" = "yes"; then
-  echo -n "lib_logger "
-  kineircd_test_compile_lib_logger=yes;
-fi
-AM_CONDITIONAL(KINEIRCD_COMPILE_MODULES_LIB_LOGGER,
-	       [test x$kineircd_test_compile_lib_logger = xyes])
 
 dnl finish off the line
 echo
