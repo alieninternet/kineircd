@@ -24,58 +24,43 @@
 #ifndef _INCLUDE_KINEIRCD_MODULE_H_
 # define _INCLUDE_KINEIRCD_MODULE_H_ 1
 
-// Template for the information structure YOU SHOULD USE in your module
-# define KINE_MODULE_INFORMATION \
-   static const struct Kine::Module::modInfo_type moduleInfo
-
 // Template for the function which triggers a module to start
 # define KINE_MODULE_START(x) \
    bool x(void)
 
-// Template for the above which YOU SHOULD USE in your modules
-# define KINE_MODULE_START_FUNCTION \
-   static KINE_MODULE_START(moduleStart)
-
-// Template for the function which triggers a module to start
+// Template for the function which triggers a module to stop
 # define KINE_MODULE_STOP(x) \
    void x(void)
-
-// Template for the above which YOU SHOULD USE in your modules
-# define KINE_MODULE_STOP_FUNCTION \
-   static KINE_MODULE_STOP(moduleStop)
-
-// Template for the optional function which hands modules a time-slice
-# define KINE_MODULE_TIMESLICE(x) \
-   int x(int)
-
-// Template for the above which YOU SHOULD USE in your modules
-# define KINE_MODULE_TIMESLICE_FUNCTION \
-   static KINE_MODULE_TIMESLICE(moduleTimeSlice)
-
 
 namespace Kine {
    class Module {
     public:
+      // The functions all modules are required to have - start and stop
+      typedef KINE_MODULE_START(startFunction_type);
+      typedef KINE_MODULE_STOP(stopFunction_type);
+      
+      // Type of the module, so we know how to install it correctly
+      enum type_type {
+	 TYPE_PROTOCOL,			// Protocol module (pmod)
+	 TYPE_SERVICE,			// Service module (smod)
+	 TYPE_EXTENSION			// Core extension module (emod)
+      } const type;
+      
       /* This structure defines information about the module itself. Each 
        * module must have one of these present to define parameters about the 
-       * module so that the server has some idea of how to handle it, what 
-       * version it is and so on.
+       * module so that the server has some idea of how to handle it, what
+       * version it is and so on. This is only the basic information necessary
+       * for the module, and hense every module needs this information.
        */
-      struct modInfo_type {
-	 // Type of the module, so we know how to install it correctly
-	 enum type_type {
-	    PROTOCOL,			// Protocol module (pmod)
-	    SERVICE,			// Service module (smod)
-	    EXTENSION			// Core extension module (emod)
-	 } const type;
-	 
+      struct basicInfo_type {
 	 /* Name and version information of the module.
 	  * Note that the full module version will be seen as follows:
-	  * <name>-<versionMajor>.<versionMinor>.<versionPatchLevel>
+	  * <nameShort>-<versionMajor>.<versionMinor>.<versionPatchLevel>
 	  *  <versionExtra>
 	  * Eg. FooMod-1.2.3b
 	  */
-	 const char *name;
+	 const char *nameShort;
+	 const char *nameLong;
 	 const char *copyright;
 	 const unsigned char versionMajor;
 	 const unsigned char versionMinor;
@@ -88,18 +73,16 @@ namespace Kine {
 	    FLAG_NEEDS_ROOT_RUN = 0x00000002	// Needs root to run
 	 } const flags;
 	 
-	 // Check that the details are okay
-	 const bool isOkay(void) const
-	   {
-	      return (((type == PROTOCOL) || (type == SERVICE) || 
-		       (type == EXTENSION)) &&
-		      (name != 0) && (copyright != 0));
-	   };
+	 // The two required functions - start and stop
+	 const startFunction_type *startFunction;
+	 const stopFunction_type *stopFunction;
       } const &moduleInfo;
-      
+
+    protected:
       // Constructor
-      Module(const modInfo_type &mi)
-	: moduleInfo(mi)
+      Module(const type_type t, const basicInfo_type &mi)
+	: type(t),
+          moduleInfo(mi)
         {};
       
       // Destructor
