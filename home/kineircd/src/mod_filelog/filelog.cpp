@@ -3,6 +3,8 @@
  * 
  * Copyright (c) 2000,2002 Simon Butcher <pickle@alien.net.au>
  * Copyright (c) 2000,2002 Alien Internet Services
+ * Copyright (c) 2002 KineIRCd Development Team
+ * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
  * 
@@ -59,7 +61,6 @@ FileLog::~FileLog(void)
 /* logLine - Log a line to the file
  * Original 18/02/2000 simonb
  * 04/04/2002 simonb - Added debugging info
- * Note: This logging output sucks.
  */
 void FileLog::logLine(const std::string& str,
 		      const Kine::Logger::Mask::type mask)
