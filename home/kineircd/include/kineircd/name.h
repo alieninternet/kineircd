@@ -24,7 +24,6 @@
 #ifndef _INCLUDE_KINEIRCD_NAME_H_
 # define _INCLUDE_KINEIRCD_NAME_H_ 1
 
-# include <algorithm> // <=- TEMPORARY
 # include <aisutil/string/string.h>
 # include <kineircd/errors.h>
 
@@ -38,7 +37,7 @@ namespace Kine {
     * 
     * Real Entity names are derived from this abstract class.
     */
-   class Name : public std::wstring /* AIS::Util::String */ {
+   class Name : public std::wstring {
     protected:
       //! Constructor
       Name(void)
@@ -51,7 +50,6 @@ namespace Kine {
        */
       template <class T>
 	Name(const T& string)
-//	  : AIS::Util::String(string)
 	  : std::wstring(string)
 	  {};
       
@@ -80,16 +78,6 @@ namespace Kine {
        *    The name is considered to be valid
        */
       virtual const Error::error_type checkValidity(void) const = 0;
-
-/* TEMPORARY */
-      operator std::wstring(void) const
-	{
-	   std::wstring output;
-	   output.reserve(length());
-	   (void)std::copy(begin(), end(), output.begin());
-	   return output;
-	};
-/* TEMPORARY */
    }; // class Name
 }; // namespace Kine
 
