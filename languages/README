@@ -203,6 +203,7 @@ Substitutions within tag data
         \b	- Toggle bold (same as \002)
 	\c	- Beginning of colour sequence (not recommended; Same as \003)
 	\g	- Beep (only supported on some IRC clients; same as \007)
+	\n	- New section (only useful on tags used for multi-call output)
 	\r	- Toggle reversed (same as \026)
 	\s	- A space (same as \040 or ' ')
 	\t	- A horizontal tab (not supported on all clients; same as \011)
