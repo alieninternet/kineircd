@@ -177,7 +177,7 @@ namespace Kine {
 # endif
       
       //! The language data list type (as used for preferential language lists)
-      typedef std::vector < LanguageData* > languageDataList_type;
+      typedef std::vector < const LanguageData* > languageDataList_type;
       
       //! The ID of the 'unknown tag'
       static const tagID_type unknownTagID = 0;

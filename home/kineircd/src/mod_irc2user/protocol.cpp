@@ -55,6 +55,12 @@ Protocol::Protocol(const Kine::Registrant& registrant,
       // Deal with this in a nice way.. but we don't, yet, do we?
       return;
    };
+
+   // Cheat. Add language info which doesn't yet get fed from the registrar
+   user.
+     setLanguageList(Languages::languageDataList_type(1,
+						      langs().
+						      getDefaultLanguage()));
    
    // Welcome the user to the server (001)
    sendNumeric(LibIRC2::Numerics::RPL_WELCOME,

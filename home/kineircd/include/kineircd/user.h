@@ -83,6 +83,9 @@ namespace Kine {
       //! Return the languages list
       const Languages::languageDataList_type& getLanguageList(void) const
 	{ return languageList; };
+      
+      //! Set the language list to the given list (replaces the list)
+      void setLanguageList(const Languages::languageDataList_type& languages);
    }; // class User
 }; // namespace Kine
 

@@ -232,6 +232,7 @@ libkineircd_la_SOURCES=\
 	src/libkineircd/registry.cpp \
 	src/libkineircd/signals.cpp \
 	src/libkineircd/todo.cpp \
+	src/libkineircd/user.cpp \
 	src/libkineircd/version.cpp
 	
 # Flags..
