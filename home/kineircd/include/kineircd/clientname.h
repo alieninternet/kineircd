@@ -27,7 +27,7 @@
 # include <kineircd/name.h>
 
 namespace Kine {
-   //! A name, conforming to IRC rules (a specially modified form of a string)
+   //! A client's nickname, conforming to IRC rules
    class ClientName : public Name {
     public:
       // Constructor
