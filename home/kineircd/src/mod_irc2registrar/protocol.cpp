@@ -54,7 +54,7 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric)
     * numeric because all registration numerics are over 100 anyway!
     */
    std::cout <<
-     ':' << connection.getDaemon().getConfig().getOptionsServername() <<
+     ':' << connection.getDaemon().getConfig().getOptionsServerName() <<
      ' ' << (int)numeric;
    
    // Determine the appropriate nickname.
@@ -79,7 +79,7 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
     * numeric because all registration numerics are over 100 anyway!
     */
    std::cout <<
-     ':' << connection.getDaemon().getConfig().getOptionsServername() <<
+     ':' << connection.getDaemon().getConfig().getOptionsServerName() <<
      ' ' << (int)numeric;
    
    // Determine the appropriate nickname.
