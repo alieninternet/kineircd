@@ -35,6 +35,9 @@
 #include <aisutil/string.h>
 #include <kineircd/registry.h>
 #include <kineircd/libirc2/utility.h>
+#ifdef KINE_DEBUG_ASSERT
+# include <cassert>
+#endif
 
 #include "mod_irc2user/protocol.h"
 #include "mod_irc2user/lang.h"
@@ -118,8 +121,18 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleDIE)
 		     commandName,
 		     GETLANG(irc2_ERR_NOPRIVILEGES_SPECIFIC));
 	 return;
+      } else if (error == Error::TEXT_TOO_SHORT) {
+	 // Complain about the reason being too short..
+	 sendNumeric(LibIRC2::Numerics::ERR_TEXTTOOSHORT,
+		     commandName,
+		     GETLANG(irc2_ERR_TEXTTOOSHORT));
+	 return;
       } 
       
+# ifdef KINE_DEBUG_ASSERT
+      assert(error != Error::UNREGISTERED_ENTITY);
+# endif
+
       // Unknown error
       sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
 		  commandName,
@@ -732,6 +745,10 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleREHASH)
       return;
    }
    
+# ifdef KINE_DEBUG_ASSERT
+      assert(error != Error::UNREGISTERED_ENTITY);
+# endif
+
    // No idea what the error is
    sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
 	       commandName,
@@ -758,8 +775,18 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleRESTART)
 		     commandName,
 		     GETLANG(irc2_ERR_NOPRIVILEGES_SPECIFIC));
 	 return;
-      } 
+      } else if (error == Error::TEXT_TOO_SHORT) {
+	 // Complain about the reason being too short..
+	 sendNumeric(LibIRC2::Numerics::ERR_TEXTTOOSHORT,
+		     commandName,
+		     GETLANG(irc2_ERR_TEXTTOOSHORT));
+	 return;
+      }
 	
+# ifdef KINE_DEBUG_ASSERT
+      assert(error != Error::UNREGISTERED_ENTITY);
+# endif
+
       // Unknown error
       sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
 		  commandName,
