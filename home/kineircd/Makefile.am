@@ -114,7 +114,7 @@ SUBDIRS=\
 install/example.conf: install/example.conf.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T $< \
+		-T install/example.conf.tpl \
 		-S $(AUTOGEN_DEF_DIR)/config.scm \
 		$(AUTOGEN_DEF_DIR)/config.def
 
@@ -226,27 +226,27 @@ libkineircd_la_LIBADD=\
 include/kineircd/config.h: include/kineircd/config.h.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T $< \
+		-T include/kineircd/config.h.tpl \
 		-S $(AUTOGEN_DEF_DIR)/config.scm \
 		$(AUTOGEN_DEF_DIR)/config.def
 
 src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOGEN_DEF_DIR)/config.def $(AUTOGEN_DEF_DIR)/config.scm
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T $< \
+		-T src/libkineircd/config/config.cpp.tpl \
 		-S $(AUTOGEN_DEF_DIR)/config.scm \
 		$(AUTOGEN_DEF_DIR)/config.def
 		
 src/libkineircd/loggerconfig.cpp: src/libkineircd/loggerconfig.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T $< \
+		-T src/libkineircd/loggerconfig.cpp.tpl \
 		$(AUTOGEN_DEF_DIR)/logger.def
 		
 src/libkineircd/regnumerics.h: src/libkineircd/regnumerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T $< \
+		-T src/libkineircd/regnumerics.h.tpl \
 		$(AUTOGEN_DEF_DIR)/irc2numerics.def
 		
 
@@ -417,7 +417,7 @@ mod_syslog_la_LIBADD=\
 src/mod_syslog/syslog.cpp: src/mod_syslog/syslog.cpp.tpl $(AUTOGEN_DEF_DIR)/logger.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T $< \
+		-T src/mod_syslog/syslog.cpp.tpl \
 		$(AUTOGEN_DEF_DIR)/logger.def
 
 
