@@ -2100,6 +2100,86 @@ tag = {
    data_en	= "Command has no parameters";
 };
 
+tag = {
+   name		= "irc2user_SNOTICE_CLIENT_LOCAL";
+   fields	= "0 = nick, 1 = username, 2 = hostname, 3 = masked hostname, "
+                  "4 = address, 5 = class";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Client connecting: %p0 (%p1@%p2) [%p3] <%p4> "
+                  "(%n; %p5)";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_CLIENT_REMOTE";
+   fields	= "0 = nick, 1 = username, 2 = hostname, 3 = masked hostname, "
+                  "4 = address, 5 = server";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Client connecting: %p0 (%p1@%p2) [%p3] <%p4> "
+                  "(%p5)";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_DEBUG";
+   fields	= "0 = debug text";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Debug: %p0";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_FAILED_OPER";
+   fields	= "0 = wanted oper nick, 1 = nick, 2 = username, 3 = hostname";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Failed OPER attempt for %p0 by %p1 (%p2@%p3)";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_KILL_LOCAL";
+   fields	= "0 = killer, 1 = victim, 2 = reason";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Local KILL for %p1 by %p0 (%p2\\o)";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_KILL_REMOTE";
+   fields	= "0 = killer, 1 = victim, 2 = reason";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Received KILL for %p1 by %p0 (%p2\\o)";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_OPER_LOCAL";
+   fields	= "0 = nick, 1 = username, 2 = hostname, 3 = oper type, "
+                  "4 = oper's real nick";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- %p0 (%p1@%p2) is now an IRC operator (%p3: "
+                  "as %p4 on %n)";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_OPER_REMOTE";
+   fields	= "0 = nick, 1 = username, 2 = hostname, 3 = oper type, "
+                  "4 = server";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- %p0 (%p1@%p3) is now an IRC operator (O: on "
+                  "%p4)";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_PARANOIA";
+   fields	= "0 = nick, 1 = username, 2 = hostname, 3 = did what";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- %p0 (%p1@%p2) did '%p3' on you";
+};
+
+tag = {
+   name		= "irc2user_SNOTICE_STAFF_CHANGE";
+   fields	= "0 = nick, 1 = username, 2 = hostname, 3 = old status, "
+                  "4 = new status";
+   components	= "mod_irc2user";
+   data_en	= "*** Notice -- Staff status change for %p0 (%p1@%p2): "
+                  "%p3 → %p4 ";
+};
+
 
 
 /*****************************************************************************
