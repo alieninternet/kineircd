@@ -539,7 +539,7 @@ AC_DEFUN([AC_KINE_MODULE_CHECK],[
                 AC_HELP_STRING([--disable-$1],
                                [Disable $2]),
    [
-    if test "$enableval" \!= "yes"; then
+    if test "$enableval" \!= "no"; then
       echo -n "$1 "
       AS_TR_SH(kineircd_test_compile_$1)=yes
     fi
