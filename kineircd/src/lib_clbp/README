@@ -1,0 +1,4 @@
+This is where the Command Line Based Protocol (CLBP) library is kept. It's
+designed for protocols (like IRC-2) which operate on a line-by-line basis.
+Each protocol message and its payload is separated by a \n, \r\n, or \r
+(i.e. each message is on its own logical line).

@@ -1,0 +1,16 @@
+This is a relatively small library which is used exclusively by any protocol
+module utilising the IRC-2 protocol. Instead of reinventing the wheel in each
+protocol that traditionally uses the same parser, we are able to emulate
+somewhat the traditional IRC daemon structure by using one single and
+mostly complete parser.
+
+The library includes rudimentary entities, protocol support functions (such
+as breaking down/forming identity strings), and of course a parser. The parser
+simply breaks down each protocol message into a set of data including the
+origin (if any), the command and any parameters, according to basic protocol
+rules set out in RFC1459.
+
+I would like to point out to anyone reading the code that the term 'message'
+used through-out this section of the code (and anything which uses this
+library) relates to a message of protocol data, and not a message passed with
+a command on IRC through a command such as PRIVMSG.

@@ -1,0 +1,13 @@
+This is the lib directory, where the kineircd library (the main core of the
+daemon) is kept.
+
+Parts of the library have been broken down into categories and placed into
+sub-directories. This was done to organise the code in a neater fashion
+(without messy long file names).
+
+The version 'INFO' information is created from the version.txt file, also
+located in this directory. Please note that it is a violation of the license
+agreement to remove the copyright information from this file, including the
+names of the KineIRCd developers. You a strongly recommended against editing
+the version.txt file. Please see the 'COPYING' file in the top directory of
+the KineIRCd package for more information.
