@@ -91,18 +91,11 @@ Protocol::Protocol(const Kine::Registrant& registrant,
      config().getOptionsServerName() << " 376 " << registrant.name <<
      " :?\r\n";
 
-   Languages::parameterList_type params;
-   std::string foo("foo");
-   params.push_back(&foo);
-   std::string bah("bah");
-   params.push_back(&bah);
-   std::string baz("baz");
-   params.push_back(&baz);
-
    for (int i = 0; i <= 15; i++) {
-   output2 << ':' <<
-     config().getOptionsServerName() << " NOTICE " << registrant.name <<
-     " :Tag  " << i << ": " << langs().get("en", i, &params) << "\r\n";
+      output2 << ':' <<
+	config().getOptionsServerName() << " NOTICE " << registrant.name <<
+	" :Tag  " << i << ": " << 
+	langs().get("en", i, "foo", "bah", "baz") << "\r\n";
    }
    
    Protocol::outputQueue.push(output.str());

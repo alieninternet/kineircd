@@ -361,7 +361,8 @@ const std::string Languages::get(const std::string& languageCode,
 { 
    parameterList_type parameters;
    parameters.push_back(&p0);
-   return get(languageCode, tagID, &parameters);
+   std::string output(get(languageCode, tagID, &parameters));
+   return output;
 }
 
 const std::string Languages::get(const std::string& languageCode,
@@ -372,7 +373,8 @@ const std::string Languages::get(const std::string& languageCode,
    parameterList_type parameters;
    parameters.push_back(&p0);
    parameters.push_back(&p1);
-   return get(languageCode, tagID, &parameters);
+   std::string output(get(languageCode, tagID, &parameters));
+   return output;
 }
 
 const std::string Languages::get(const std::string& languageCode,
@@ -385,7 +387,8 @@ const std::string Languages::get(const std::string& languageCode,
    parameters.push_back(&p0);
    parameters.push_back(&p1);
    parameters.push_back(&p2);
-   return get(languageCode, tagID, &parameters);
+   std::string output(get(languageCode, tagID, &parameters));
+   return output;
 }
 
 const std::string Languages::get(const std::string& languageCode,
@@ -400,7 +403,8 @@ const std::string Languages::get(const std::string& languageCode,
    parameters.push_back(&p1);
    parameters.push_back(&p2);
    parameters.push_back(&p3);
-   return get(languageCode, tagID, &parameters);
+   std::string output(get(languageCode, tagID, &parameters));
+   return output;
 }
 
 const std::string Languages::get(const std::string& languageCode,
@@ -417,5 +421,6 @@ const std::string Languages::get(const std::string& languageCode,
    parameters.push_back(&p2);
    parameters.push_back(&p3);
    parameters.push_back(&p4);
-   return get(languageCode, tagID, &parameters);
+   std::string output(get(languageCode, tagID, &parameters));
+   return output;
 }
