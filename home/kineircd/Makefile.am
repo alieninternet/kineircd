@@ -8,17 +8,11 @@ include $(top_builddir)/config/automake.inc
 
 
 # Work out which modules we need to compile...
-if KINEIRCD_COMPILE_MOD_BOVINI1
- KINEIRCD_TARGET_MOD_BOVINI1=mod_bovini1.la
-endif
 if KINEIRCD_COMPILE_MOD_CHANNELLOG
  KINEIRCD_TARGET_MOD_CHANNELLOG=mod_channellog.la
 endif
 if KINEIRCD_COMPILE_MOD_FILELOG
  KINEIRCD_TARGET_MOD_FILELOG=mod_filelog.la
-endif
-if KINEIRCD_COMPILE_MOD_IIRC1
- KINEIRCD_TARGET_MOD_IIRC1=mod_iirc1.la
 endif
 if KINEIRCD_COMPILE_MOD_IRC2REGISTRAR
  KINEIRCD_TARGET_MOD_IRC2REGISTRAR=mod_irc2registrar.la
@@ -28,9 +22,6 @@ if KINEIRCD_COMPILE_MOD_IRC2USER
 endif
 if KINEIRCD_COMPILE_MOD_PALLADIUM
  KINEIRCD_TARGET_MOD_PALLADIUM=mod_palladium.la
-endif
-if KINEIRCD_COMPILE_MOD_SNMP
- KINEIRCD_TARGET_MOD_SNMP=mod_snmp.la
 endif
 if KINEIRCD_COMPILE_MOD_SYSLOG
  KINEIRCD_TARGET_MOD_SYSLOG=mod_syslog.la
@@ -43,14 +34,11 @@ lib_LTLIBRARIES=\
 	libkineircd.la \
 	libkineircd_clbp.la \
 	libkineircd_irc2.la \
-	$(KINEIRCD_TARGET_MOD_BOVINI1) \
 	$(KINEIRCD_TARGET_MOD_CHANNELLOG) \
 	$(KINEIRCD_TARGET_MOD_FILELOG) \
-	$(KINEIRCD_TARGET_MOD_IIRC1) \
 	$(KINEIRCD_TARGET_MOD_IRC2REGISTRAR) \
 	$(KINEIRCD_TARGET_MOD_IRC2USER) \
 	$(KINEIRCD_TARGET_MOD_PALLADIUM) \
-	$(KINEIRCD_TARGET_MOD_SNMP) \
 	$(KINEIRCD_TARGET_MOD_SYSLOG)
 
 
@@ -373,22 +361,6 @@ src/libkineircd_irc2/language.cpp src/libkineircd_irc2/language.h: $(AUTOGEN_DIR
 
 
 ###############################################################################
-# 'mod_bovini1' module
-###############################################################################
-mod_bovini1_la_SOURCES=\
-	src/mod_bovini1/module.cpp \
-	src/mod_bovini1/module.h
-
-mod_bovini1_la_LDFLAGS=\
-	-avoid-version \
-	-module
-
-mod_bovini1_la_LIBADD=\
-	libkineircd.la
-
-
-
-###############################################################################
 # 'mod_channellog' module
 ###############################################################################
 mod_channellog_la_SOURCES=\
@@ -425,23 +397,6 @@ mod_filelog_la_LDFLAGS=\
 
 mod_filelog_la_LIBADD=\
 	libkineircd.la
-
-
-
-###############################################################################
-# 'mod_iirc1' module
-###############################################################################
-mod_iirc1_la_SOURCES=\
-	src/mod_iirc1/module.cpp \
-	src/mod_iirc1/module.h
-
-mod_iirc1_la_LDFLAGS=\
-	-avoid-version \
-	-module
-
-mod_iirc1_la_LIBADD=\
-	libkineircd.la \
-	libkineircd_irc2.la
 
 
 
@@ -578,24 +533,6 @@ mod_palladium_la_LDFLAGS=\
 	-module
 
 mod_palladium_la_LIBADD=\
-	libkineircd.la
-
-
-
-###############################################################################
-# 'mod_snmp' module
-###############################################################################
-mod_snmp_la_SOURCES=\
-	src/mod_snmp/module.cpp \
-	src/mod_snmp/module.h \
-	src/mod_snmp/snmp.cpp \
-	src/mod_snmp/snmp.h
-
-mod_snmp_la_LDFLAGS=\
-	-avoid-version \
-	-module
-
-mod_snmp_la_LIBADD=\
 	libkineircd.la
 
 

@@ -293,40 +293,6 @@ else
   kineircd_cv_libguile_ok=no
 fi
 
-AC_MSG_CHECKING([for Net-SNMP library/include path])
-AC_ARG_WITH(net-snmp,
-            AC_HELP_STRING([--with-net-snmp=DIR],
-	                   [location of Net-SNMP library/include files]),
- [
-   dnl Just run with the given path.. we will check it soon
-   snmp_dir="$withval"
- ])
-dnl Check that the 'snmp_dir' environment variable is not empty
-if test -z "$snmp_dir"; then
-  dnl Check for files in numerous different paths :-/
-  for dirA in /usr/local /usr/lib /var/lib /usr /var /opt .. . ~; do
-    for dirB in $dirA $dirA/net-snmp; do
-      if test -f "$dirB/include/net-snmp/net-snmp-config.h"; then
-        snmp_dir="$dirB"
-        break 2
-      fi
-    done
-  done
-fi
-dnl Check that we have an snmp_dir variable, and the lib directory exist
-if test -n "$snmp_dir" -a -d "$snmp_dir/lib"; then
-    dnl Blindly agree on that basis. How stupid is that..
-    AC_MSG_RESULT($snmp_dir)
-    MOD_SNMP_INCDIRS="`net-snmp-config --cflags`"
-    MOD_SNMP_LIBS="`net-snmp-config --agent-libs`"
-    kineircd_test_netsnmp_broken=no
-else
-  AC_MSG_RESULT(not found)
-  kineircd_test_netsnmp_broken=yes
-fi
-AC_SUBST(MOD_SNMP_INCDIRS)
-AC_SUBST(MOD_SNMP_LIBS)
-
 AC_MSG_CHECKING([for OpenSSL library/include path])
 AC_ARG_WITH(openssl,
             AC_HELP_STRING([--with-openssl=DIR],
@@ -563,18 +529,11 @@ AC_DEFUN([AC_KINE_MODULE_CHECK],[
 	         [test x$AS_TR_SH(kineircd_test_compile_$1) = xyes])
  ])
 
-AC_KINE_MODULE_CHECK(mod-bovini1, [the BOVINI/1 server protocol module])
 AC_KINE_MODULE_CHECK(mod-channellog, [the channel based logging module])
 AC_KINE_MODULE_CHECK(mod-filelog, [the simple file based logging module])
-AC_KINE_MODULE_CHECK(mod-iirc1, [the IIRC/1 inter-network protocol module])
 AC_KINE_MODULE_CHECK(mod-irc2registrar, [the IRC/2 based registrar module])
 AC_KINE_MODULE_CHECK(mod-irc2user, [the IRC/2 user protocol module])
 AC_KINE_MODULE_CHECK(mod-palladium, [the Palladium operator service module])
-if test "$kineircd_test_netsnmp_broken" = "no"; then
-  AC_KINE_MODULE_CHECK(mod-snmp, [the SNMP statistics module])
-else
-  AM_CONDITIONAL(KINEIRCD_COMPILE_MOD_SNMP, [false])
-fi
 if test "$ac_cv_header_syslog_h" = "yes"; then
   AC_KINE_MODULE_CHECK(mod-syslog, [the syslog logging module])
 else
