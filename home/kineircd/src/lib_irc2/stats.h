@@ -51,6 +51,7 @@ namespace Kine {
 	 extern handler_type handleLanguages;
 	 extern handler_type handleListConnections;
 	 extern handler_type handleOperators;
+	 extern handler_type handleResources;
 	 extern handler_type handleUptime;
       };
    }; // namespace LibIRC2

@@ -28,6 +28,11 @@
 #include <sstream>
 #include <iomanip>
 #include <cmath>
+#include <sys/utsname.h>
+#include <sys/sysinfo.h>
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <unistd.h>
 #include <aisutil/time.h>
 #include <aisutil/string/string.h>
 #include <kineircd/daemon.h>
@@ -46,6 +51,7 @@ const Stats::statsCommand_type Stats::statsCommands[] = {
      { "languages",		2,	handleLanguages },
      { "listconnections",	1,	handleListConnections },
      { "operators",		1,	handleOperators },
+     { "resources",		1,	handleResources },
      { "uptime",		1,	handleUptime },
      { 0, 0, 0 }
 };
@@ -130,6 +136,84 @@ KINE_IRC2_STATS_HANDLER(Stats::handleOperators)
 			"*", // <=- use for flags, but RFC says '*'
 			"nickname",
 			"This is a description field");
+}
+
+
+/* handleResources - List a bunch of resource info about us and the system
+ * Original 19/05/2003 simonb
+ */
+KINE_IRC2_STATS_HANDLER(Stats::handleResources)
+{
+   // Try to output uname() info
+   struct utsname unameinfo;
+   if (uname(&unameinfo) == 0) {
+      // Send cpu/kernel information
+      protocol.sendNumeric(user, Numerics::RPL_NONE,
+			   GETLANG(irc2_STATS_RESOURCES_UNAME,
+				   unameinfo.machine,
+				   unameinfo.sysname,
+				   unameinfo.release,
+				   unameinfo.version));
+   }
+   
+   // Try to output sysinfo() stuff
+   struct sysinfo systeminfo;
+   if (sysinfo(&systeminfo) == 0) {
+      // Memory info
+      protocol.sendNumeric(user, Numerics::RPL_NONE,
+			   GETLANG(irc2_STATS_RESOURCES_SYSINFO_MEMORY,
+				   String::convert((float)
+						   (systeminfo.totalram /
+						    1048576)),
+				   String::convert((float)
+						   (systeminfo.freeram /
+						    1048576)),
+				   String::convert((float)
+						   (systeminfo.totalswap /
+						    1048576)),
+				   String::convert((float)
+						   (systeminfo.freeswap /
+						    1048576)),
+				   String::convert((float)
+						   (systeminfo.sharedram /
+						    1048576)),
+				   String::convert((float)
+						   (systeminfo.bufferram /
+						    1048576))));
+      
+      // Process information
+      protocol.sendNumeric(user, Numerics::RPL_NONE,
+			   GETLANG(irc2_STATS_RESOURCES_SYSINFO_PROCESSES,
+				   String::convert(systeminfo.procs)));
+      
+      // Uptime info is probably important for testlink applications..
+      protocol.sendNumeric(user, Numerics::RPL_NONE,
+			   GETLANG(irc2_STATS_RESOURCES_SYSINFO_UPTIME,
+				   String::convert(systeminfo.uptime / 86400),
+				   String::convert((systeminfo.uptime % 
+						    86400) / 3600),
+				   String::convert((systeminfo.uptime % 
+						    3600) / 60),
+				   String::convert(systeminfo.uptime % 60)));
+   }
+
+   // Try to output rusage() details
+   struct rusage rusageinfo;
+   if (getrusage(RUSAGE_SELF, &rusageinfo) == 0) {
+      // Send faults info + number of swaps
+      protocol.sendNumeric(user, Numerics::RPL_NONE,
+			   GETLANG(irc2_STATS_RESOURCES_RUSAGE_FAULTS_SWAP,
+				   String::convert(rusageinfo.ru_majflt),
+				   String::convert(rusageinfo.ru_minflt),
+				   String::convert(rusageinfo.ru_nswap)));
+      
+      // Send context switch info
+      protocol.sendNumeric(user, Numerics::RPL_NONE,
+			   GETLANG(irc2_STATS_RESOURCES_RUSAGE_CONTEXT,
+				   String::convert(rusageinfo.ru_nvcsw),
+				   String::convert(rusageinfo.ru_nivcsw)));
+      
+   }
 }
 
 
