@@ -704,11 +704,11 @@ void Daemon::changeUserNick(User *user, String const &newnick,
 	 localUsers[nn] = user->local;
       }
    }
-   
+
    map <String, bool> messages;
    messages.clear();
    ChannelMember *self = 0;
-      
+
    /* Check locally connected users for if they were watching the old 
     * nickname, and if they are watching the new one too.
     */
@@ -744,17 +744,17 @@ void Daemon::changeUserNick(User *user, String const &newnick,
       for (Channel::member_map_t::iterator it2 = (*it).second->members.begin();
 	   it2 != (*it).second->members.end(); it2++) {
 	 // Is this the user changing the nick or someone else?
-	 if ((*it2).second->user != user) {
+	 if ((*it2).second->getUser() != user) {
 	    // If we have not already done so, send the change to this use
-	    if (!messages[(*it2).second->user->nickname]) {
+	    if (!messages[(*it2).second->getUser()->nickname]) {
 	       // Mark this user down as being touched upon
-	       messages[(*it2).second->user->nickname] = true;
+	       messages[(*it2).second->getUser()->nickname] = true;
 	       
 	       // Check if the user is local
-	       if ((*it2).second->user->local) {
+	       if ((*it2).second->getUser()->local) {
 		  // Send it
-		  (*it2).second->user->local->handler->sendNickChange(user, 
-								      newnick);
+		  (*it2).second->getUser()->local->handler->
+		    sendNickChange(user, newnick);
 	       }
 	    }
 	 } else {
@@ -874,20 +874,21 @@ void Daemon::quitUser(User *user, String const &reason, bool broadcast)
       for (Channel::member_map_t::iterator it = chan->members.begin();
 	   it != chan->members.end(); it++) {
 	 // If this user is themselves, ignore this
-	 if ((*it).second->user == user) {
+	 if ((*it).second->getUser() == user) {
 	    continue;
 	 }
 	 
 	 // Check if this user is local (easy!)
-	 if ((*it).second->user->local) {
+	 if ((*it).second->getUser()->local) {
 	    // If we have not already done so, send a message to this user
-	    if (!messages[(*it).second->user->nickname]) {
+	    if (!messages[(*it).second->getUser()->nickname]) {
 	       // Send a quit if the channel is not marked anonymous
 	       if (!(chan->modes & Channel::MODE_ANONYMOUS)) {
 		  // Mark this user down as being touched upon
-		  messages[(*it).second->user->nickname] = true;
+		  messages[(*it).second->getUser()->nickname] = true;
 
-		  (*it).second->user->local->handler->sendQuit(user, reason);
+		  (*it).second->getUser()->local->handler->sendQuit(user, 
+								    reason);
 		  continue;
 	       } 
 	       
@@ -901,7 +902,7 @@ void Daemon::quitUser(User *user, String const &reason, bool broadcast)
 		* with are in other non-anonymous channels too since they
 		* are capable of seeing a REAL quit message in some situations
 		*/
-	       (*it).second->user->local->handler->sendPart(chan, user, 0);
+	       (*it).second->getUser()->local->handler->sendPart(chan, user, 0);
 	    }
 	    continue;
 	 }
@@ -1103,8 +1104,8 @@ void Daemon::joinChannel(Channel *c, User *u)
    // Broadcast the join to anyone locally connected
    for (Channel::member_map_t::iterator it = c->members.begin();
 	it != c->members.end(); it++) {
-      if ((*it).second->user->local) {
-	 (*it).second->user->local->handler->sendJoin(c, u);
+      if ((*it).second->getUser()->local) {
+	 (*it).second->getUser()->local->handler->sendJoin(c, u);
       }
    }
    
@@ -1178,8 +1179,8 @@ void Daemon::partChannel(Channel *c, User *u, String const &reason)
    // Broadcast the join to anyone locally connected
    for (Channel::member_map_t::iterator it = c->members.begin();
 	it != c->members.end(); it++) {
-      if ((*it).second->user->local) {
-	 (*it).second->user->local->handler->sendPart(c, u, reason);
+      if ((*it).second->getUser()->local) {
+	 (*it).second->getUser()->local->handler->sendPart(c, u, reason);
       }
    }
    
@@ -1202,9 +1203,9 @@ void Daemon::kickChannelMember(Channel *c, User *kicker, User *kickee,
    // Broadcast the kick to anyone locally connected
    for (Channel::member_map_t::iterator it = c->members.begin();
 	it != c->members.end(); it++) {
-      if ((*it).second->user->local) {
-	 (*it).second->user->local->handler->sendKick(c, kicker, kickee, 
-						      newReason);
+      if ((*it).second->getUser()->local) {
+	 (*it).second->getUser()->local->handler->sendKick(c, kicker, kickee, 
+							   newReason);
       }
    }
    
@@ -1243,8 +1244,8 @@ void Daemon::changeChannelTopic(Channel *c, User *from, String const &topic)
    // Run through the list of channel members and send them the new topic
    for (Channel::member_map_t::iterator it = c->members.begin();
 	it != c->members.end(); it++) {
-      if ((*it).second->user->local) {
-	 (*it).second->user->local->handler->sendTopic(c, from, newTopic);
+      if ((*it).second->getUser()->local) {
+	 (*it).second->getUser()->local->handler->sendTopic(c, from, newTopic);
       }
    }
    
@@ -1273,8 +1274,8 @@ void Daemon::changeChannelTopic(Channel *c, Server *from,
    // Run through the list of channel members and send them the new topic
    for (Channel::member_map_t::iterator it = c->members.begin();
 	it != c->members.end(); it++) {
-      if ((*it).second->user->local) {
-	 (*it).second->user->local->handler->sendTopic(c, from, newTopic);
+      if ((*it).second->getUser()->local) {
+	 (*it).second->getUser()->local->handler->sendTopic(c, from, newTopic);
       }
    }
    

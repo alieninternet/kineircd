@@ -215,12 +215,17 @@ class User {
 	return server;
      };
    
-   void markAway(String &);			// Set/Unset away message
+   void markAway(String const &);		// Set/Unset away message
    
    bool isSilencing(User *);			// Silencing a user?
 
+   static bool okName(String const &);		// Ok nickname?
+
    static String makeModes(modes_t);		// Make a + user mode string
    static String makeModes(User *);		// Above, but includes params
+
+   static String makeVWorld(String const &);	// vworld host from a host/ip
+
 };
 
 #endif

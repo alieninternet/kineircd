@@ -189,7 +189,7 @@ void registerHandler::parseLine(String const &line)
 	    
 	    // Create a new user
 	    User *user = new User(nickname, username, "", hostname, 
-				  generateVWorld(hostname), realname,
+				  User::makeVWorld(hostname), realname,
 				  getConnection()->getDaemon()->getTime(),
 				  getConnection()->getDaemon()->myServer());
 
@@ -348,7 +348,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    }
    
    // Firstly, make sure the nickname is within acceptable limits (size/chars)
-   if (!okNickname(nick)) {
+   if (!User::okName(nick)) {
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else
@@ -394,8 +394,9 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
    // Make up some dodgey random stuff with xor!
    handler->pingpong = 
      String::printf("%08lX",
-		    ((unsigned int)TO_DAEMON->getTime() ^
-		     getRandom(0xFFFFFFFE)));
+		    ((unsigned long)TO_DAEMON->getTime() ^
+		     (unsigned long)(((0xFFFFFFFE + 1.0) * rand()) / 
+				     RAND_MAX)));
 
    // Send a PING out to make sure we are dealing with a 'real' client
 # ifndef PASSIVE_REGISTRATION      	 

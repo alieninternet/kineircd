@@ -500,11 +500,11 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 	    if (cm) {
 	       channels = channels + (String(((u->modes & User::MODE_DEAF) ?
 					      "-" : "")) +
-				      ((cm->modes & ChannelMember::MODE_OPPED) ?
+				      (cm->isModeSet(ChannelMember::MODE_OPPED) ?
 				       "@" : 
-				       ((cm->modes & ChannelMember::MODE_HALFOPPED) ?
+				       (cm->isModeSet(ChannelMember::MODE_HALFOPPED) ?
 					"%" :
-					((cm->modes & ChannelMember::MODE_VOICED) ?
+					(cm->isModeSet(ChannelMember::MODE_VOICED) ?
 					 "+" : ""))) +
 				      // channel op/voice here?!
 				      (*it).second->name + " ");

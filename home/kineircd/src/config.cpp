@@ -691,12 +691,12 @@ void Daemon::configCONF(Daemon *daemon, ConfigData *conf, String *line, String::
 
 	 // Work out what to do with this. This is ugly, but oh well..
 	 if (command == "AUTOBONE") {
-	    conf->confAutobone = toBool(parameter, conf->confAutobone);
+	    conf->confAutobone = Utils::toBool(parameter, conf->confAutobone);
 	 } else if ((command == "DESCRIPTION") ||
 		    (command == "DESC")) {
 	    conf->confDescription = parameter;
 	 } else if (command == "HIDDEN") {
-	    conf->confHidden = toBool(parameter, conf->confHidden);
+	    conf->confHidden = Utils::toBool(parameter, conf->confHidden);
 	 } else if (command == "MOTD") {
 	    conf->confMOTD = parameter;
 	 } else if ((command == "NETWORK") ||
@@ -706,7 +706,7 @@ void Daemon::configCONF(Daemon *daemon, ConfigData *conf, String *line, String::
 	    conf->confNetwork = paramTokens.nextToken();
 	 } else if ((command == "NOOP") ||
 		    (command == "NOOPER")) {
-	    conf->confNoop = toBool(parameter, conf->confNoop);
+	    conf->confNoop = Utils::toBool(parameter, conf->confNoop);
 	 } else if (command == "SERVERNAME") {
 	    conf->confServername = parameter;
 	 } else {

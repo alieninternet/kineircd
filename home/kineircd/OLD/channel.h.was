@@ -61,12 +61,49 @@ class ChannelMember {
      : user(u),
        modes(m)
      {};
+   
+   // Variable access
+   User *getUser(void) const
+     {
+	return user;
+     };
+   
+   modes_t getModes(void) const
+     {
+	return modes;
+     };
+   
+   // Mode macros
+   bool isModeSet(modes_t mode) const
+     {
+	return (modes & mode);
+     };
+   
+   bool isPrivileged(void) const			// Full/HalfOp/Voiced?
+     {
+	return ((modes & MODE_OPPED) ||
+		(modes & MODE_HALFOPPED) ||
+		(modes & MODE_VOICED));
+     };
+   
+   bool isChanOper(void) const				// Full/Half chan oper?
+     {
+	return ((modes & MODE_OPPED) ||
+		(modes & MODE_HALFOPPED));
+     };
+   
+   bool isFullChanOper(void) const			// Full chan oper?
+     {
+	return (modes & MODE_OPPED);
+     };
+   
+   friend class Channel;
 };
 
 
 // A channel mask (+b/+d/+e/+I etc)
 class ChannelMask {
- public:
+ private:
    StringMask mask;				// The actual mask
    String whoset;				// Nick/server who set this
    time_t whenset;				// Time this was set
@@ -78,6 +115,24 @@ class ChannelMask {
        whoset(who),
        whenset(when)
      {};
+   
+   // Variable access
+   StringMask getMask(void) const 
+     {
+	return mask;
+     };
+   
+   String getWhoset(void) const
+     {
+	return whoset;
+     };
+   
+   time_t getWhenset(void) const
+     {
+	return whenset;
+     };
+   
+   friend class Channel;
 };
 
 
@@ -204,6 +259,21 @@ class Channel {
    
    ChannelMember *getMember(User *);		// Grab a channel member record
    
+   // Blunt check, is this name a channel name? (check first char)
+   static bool isChannel(String const &channel)
+     {
+	switch (channel[0]) {
+	 case '#':
+	 case '&':
+	 case '+':
+	 case '!':
+	   return true;
+	}
+	return false;
+     };
+   
+   static bool okName(String const &);		// Ok channel name?
+
    void processModes(Handler *, User *, 
 		     String &, StringTokens *); // Process a MODE change
    

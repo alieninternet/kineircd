@@ -13,6 +13,7 @@
 #include "utils.h"
 #include "user.h"
 #include "channel.h"
+#include "operator.h"
 
 
 /* Functions table. In the interests of efficiency should this table be 
@@ -1085,11 +1086,11 @@ void irc2userHandler::sendWhoReply(User *u, Channel *c,
 			       (String(User::isOper(u) ?
 				       "*" : "") +
 				(cm ?
-				 ((cm->modes & ChannelMember::MODE_OPPED) ?
+				 (cm->isModeSet(ChannelMember::MODE_OPPED) ?
 				  "@" :
-				  ((cm->modes & ChannelMember::MODE_HALFOPPED) ?
+				  (cm->isModeSet(ChannelMember::MODE_HALFOPPED) ?
 				   "%" :
-				   ((cm->modes & ChannelMember::MODE_VOICED) ?
+				   (cm->isModeSet(ChannelMember::MODE_VOICED) ?
 				    "+" : ""))) : ""))),
 			      u->server->getNumHops(),
 			      (char const *)u->realname));
@@ -1242,13 +1243,13 @@ void irc2userHandler::doNAMES(String const &param)
 	    }
 	    
 	    reply = reply +
-	      (((*it).second->modes & ChannelMember::MODE_OPPED) ?
+	      ((*it).second->isModeSet(ChannelMember::MODE_OPPED) ?
 	       "@" : 
-	       (((*it).second->modes & ChannelMember::MODE_HALFOPPED) ?
+	       ((*it).second->isModeSet(ChannelMember::MODE_HALFOPPED) ?
 		"%" : 
-		(((*it).second->modes & ChannelMember::MODE_VOICED) ?
+		((*it).second->isModeSet(ChannelMember::MODE_VOICED) ?
 		 "+" : ""))) +
-	      (*it).second->user->nickname + " ";
+	      (*it).second->getUser()->nickname + " ";
 	    
 	    // Check if we are close to breaking a limit here
 	    if (reply.length() > 400) {
@@ -1681,7 +1682,7 @@ void irc2userHandler::parseJOIN(irc2userHandler *handler, StringTokens *tokens)
       }
       
       // Make sure the channel name is acceptable
-      if (!okChannel(chan)) {
+      if (!Channel::okName(chan)) {
 	 handler->sendNumeric(ERR_BADCHANNAME,
 			      chan + LNG_ERR_BADCHANNAME);
 	 continue;
@@ -1864,8 +1865,7 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       }
       
       // Does this fella have the rights to even contemplate kicking someone?
-      if (!(kicker->modes & ChannelMember::MODE_OPPED) &&
-	  !(kicker->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (!kicker->isChanOper()) {
 	 handler->sendNumeric(ERR_CHANOPRIVSNEEDED,
 			      chan + LNG_ERR_CHANOPRIVSNEEDED);
 	 continue;
@@ -1904,9 +1904,9 @@ void irc2userHandler::parseKICK(irc2userHandler *handler, StringTokens *tokens)
       }
       
       // Check that the kickee is not an op while this guy is just a half op
-      if ((kickee->modes & ChannelMember::MODE_OPPED) &&
-	  (kicker->modes & ChannelMember::MODE_HALFOPPED) &&
-	  !(kicker->modes & ChannelMember::MODE_OPPED)) {
+      if (kickee->isModeSet(ChannelMember::MODE_OPPED) &&
+	  kicker->isModeSet(ChannelMember::MODE_HALFOPPED) &&
+	  !kicker->isModeSet(ChannelMember::MODE_OPPED)) {
 	 handler->sendNumeric(ERR_CHANOPRIVSNEEDED,
 			      chan + LNG_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER);
 	 continue;
@@ -2116,7 +2116,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    String modes = tokens->nextToken();
    
    // Is the target a user or a channel
-   if (isChannel(target)) {
+   if (Channel::isChannel(target)) {
       // Grab the channel
       Channel *c = TO_DAEMON->getChannel(target);
       
@@ -2301,7 +2301,7 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
    }
    
    // Check the nickname for an acceptable length and ok characters
-   if (!okNickname(nick)) {
+   if (!User::okName(nick)) {
       handler->sendNumeric(ERR_ERRONEUSNICKNAME,
 			   nick + LNG_ERR_ERRONEUSNICKNAME);
       return;
@@ -2336,9 +2336,7 @@ void irc2userHandler::parseNICK(irc2userHandler *handler, StringTokens *tokens)
 
 	 // Sanity check
 	 if (cm) {
-	    if (!((cm->modes & ChannelMember::MODE_OPPED) ||
-		  (cm->modes & ChannelMember::MODE_HALFOPPED) ||
-		  (cm->modes & ChannelMember::MODE_VOICED)) &&
+	    if (!cm->isPrivileged() &&
 		((*it).second->modes & Channel::MODE_EVENT)) {
 	       handler->sendNumeric(ERR_EVENTNICKCHANGE,
 				    (*it).second->name + 
@@ -2396,7 +2394,7 @@ void irc2userHandler::parseNOTICE(irc2userHandler *handler, StringTokens *tokens
    for (String iter = targets.nextToken(','); iter.length();
 	iter = targets.nextToken(',')) {
       // Is this a channel or a user?
-      if (isChannel(iter)) {
+      if (Channel::isChannel(iter)) {
 	 Channel *c = 0;
 	 
 	 // Most of the time the user will be on the channel. Check their list
@@ -2423,9 +2421,7 @@ void irc2userHandler::parseNOTICE(irc2userHandler *handler, StringTokens *tokens
 		* can bypass these checks since they are obviously given the 
 		* right to talk
 		*/
-	       if (!(cm->modes & ChannelMember::MODE_OPPED) &&
-		   !(cm->modes & ChannelMember::MODE_HALFOPPED) &&
-		   !(cm->modes & ChannelMember::MODE_VOICED)) {
+	       if (!cm->isPrivileged()) {
 		  // Check if this channel is moderated
 		  if (c->modes & Channel::MODE_MODERATED) {
 		     continue;
@@ -2565,7 +2561,8 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
    }
    
    // Try this password against this operator
-   if (oper->getPassword() != makeOperPassword(nickname, password)) {
+   if (oper->getPassword() != 
+       Operator::makeOperPassword(nickname, password)) {
       handler->sendNumeric(ERR_PASSWDMISMATCH, LNG_ERR_PASSWDMISMATCH);
       return;
    }
@@ -2708,7 +2705,7 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
    for (String iter = targets.nextToken(','); iter.length();
 	iter = targets.nextToken(',')) {
       // Is this a channel or a user?
-      if (isChannel(iter)) {
+      if (Channel::isChannel(iter)) {
 	 Channel *c = 0;
 	 
 	 // Most of the time the user will be on the channel. Check their list
@@ -2737,9 +2734,7 @@ void irc2userHandler::parsePRIVMSG(irc2userHandler *handler, StringTokens *token
 		* can bypass these checks since they are obviously given the 
 		* right to talk
 		*/
-	       if (!(cm->modes & ChannelMember::MODE_OPPED) &&
-		   !(cm->modes & ChannelMember::MODE_HALFOPPED) &&
-		   !(cm->modes & ChannelMember::MODE_VOICED)) {
+	       if (!cm->isPrivileged()) {
 		  // Check if this channel is moderated
 		  if (c->modes & Channel::MODE_MODERATED) {
 		     handler->sendNumeric(ERR_CANNOTSENDTOCHAN,
@@ -2955,7 +2950,7 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
 	      }
 	      
 	      // Grab the mask
-	      mask = fixToIdentityMask(param);
+	      mask = Utils::fixToIdentityMask(param);
 
 	      // Check if the user is trying to ignore themselves (stupid)
 	      if (mask.matches(handler->user->getAddress()) ||
@@ -2976,7 +2971,7 @@ void irc2userHandler::parseSILENCE(irc2userHandler *handler, StringTokens *token
 	      param = param.subString(1);
 	      
 	      // Grab the mask
-	      mask = fixToIdentityMask(param);
+	      mask = Utils::fixToIdentityMask(param);
 	      
 	      // Add the mask
 	      if (TO_DAEMON->delUserSilence(handler->user, mask)) {
@@ -3185,8 +3180,7 @@ void irc2userHandler::parseTOPIC(irc2userHandler *handler, StringTokens *tokens)
    // Check the access, is the channel +t?
    if (c->modes & Channel::MODE_TOPICLOCK) {
       // Check if this user is an operator
-      if (!(cm->modes & ChannelMember::MODE_OPPED) &&
-	  !(cm->modes & ChannelMember::MODE_HALFOPPED)) {
+      if (!cm->isChanOper()) {
 	 handler->sendNumeric(ERR_CHANOPRIVSNEEDED,
 			      channel + LNG_ERR_CHANOPRIVSNEEDED);
 	 return;
@@ -3400,7 +3394,7 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	    String watch = *it;
 	    
 	    // Ok, maybe this is a channel? If not, it barely dints cpu..
-	    if (isChannel(watch)) {
+	    if (Channel::isChannel(watch)) {
 	       // Look for this channel
 	       Channel *c = TO_DAEMON->getChannel(watch);
 	       
@@ -3507,7 +3501,7 @@ void irc2userHandler::parseWATCH(irc2userHandler *handler, StringTokens *tokens)
 	       * channel? If not, it barely dints cpu since it's a basic 
 	       * check. 
 	       */
-	      if (isChannel(param)) {
+	      if (Channel::isChannel(param)) {
 		 // Look for this channel
 		 Channel *c = TO_DAEMON->getChannel(param);
 		 
@@ -3606,7 +3600,7 @@ void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
    String maskStr = tokens->nextToken();
 
    // Are we looking for a channel, or a mask/nickname?
-   if (isChannel(maskStr)) {
+   if (Channel::isChannel(maskStr)) {
       Channel *chan = TO_DAEMON->getChannel(maskStr);
 
       // Make sure we got that channel record, and this user is a member
@@ -3614,7 +3608,7 @@ void irc2userHandler::parseWHO(irc2userHandler *handler, StringTokens *tokens)
 	 for (Channel::member_map_t::iterator it = chan->members.begin();
 	      it != chan->members.end(); it++) {
 	    // Send the who line
-	    handler->sendWhoReply((*it).second->user, chan, (*it).second);
+	    handler->sendWhoReply((*it).second->getUser(), chan, (*it).second);
 	 }
       }
    } else {

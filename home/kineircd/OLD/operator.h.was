@@ -6,6 +6,7 @@
 # define __OPERATOR_H_
 
 # include "str.h"
+# include "utils.h"
 
 /* Note that the nickname of the operator is stored as the key of the map
  * that uses this structure
@@ -48,6 +49,17 @@ class Operator {
    bool isGlobal(void) const
      {
 	return global;
+     };
+
+   // Transform the nickname and password pair into SHA1 output
+   static String makeOperPassword(String const &nickname, 
+				  String const &password)
+     {
+	return Utils::generateSHA1(String::printf("%s" 
+						  MAGIC_OPER_PASSWD_STRING 
+						  "%s",
+						  (const char *)nickname.IRCtoLower(),
+						  (const char *)password));
      };
 };
 

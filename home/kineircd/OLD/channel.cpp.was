@@ -138,6 +138,55 @@ ChannelMember *Channel::getMember(User *u)
 }
 
 
+/* okName - Check if a channel name is ok
+ * Original 20/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool Channel::okName(String const &channel)
+{
+   // Check that the nickname is within limits
+   if (channel.length() > MAXLEN_CHANNELNAME) {
+      return false;
+   }
+
+   // Check the first char of the channel (duh!)
+   if (!isChannel(channel)) {
+      return false;
+   }
+
+   // Run through the nickname and look for nasty characters
+   for (String::length_t i = channel.length(); i--;) {
+#ifdef STRICT_CHANNEL_NAMES
+      /* Check for nasty chars. Notice the second check is for a blank char
+       * ("No-Break Space" according to the ISO), and people use it especially
+       * as an alternative to ordinary space to get around protocol limitations
+       * and to spoof channels, eg. "#Foo " in a channel list can look like 
+       * "#Foo" in many, if not all clients.
+       */
+      if (channel[i] < 33) {
+	 return false;
+      }
+#endif
+      
+      switch (channel[i]) {
+#ifdef STRICT_CHANNEL_NAMES
+       case char(0xA0): // Used by a lot of people as an alternative space
+#else
+       case '\0': // Nasty chars less than char 33
+       case '\a':
+       case '\r':
+       case '\n':
+       case ' ':
+#endif
+       case ',': // Chars used in the protocol
+       case ':':
+	 return false;
+      }
+   }
+
+   return true;
+}
+
+
 /* processModes - Grab a channel member record
  * Original 30/08/01, Simon Butcher <pickle@austnet.org>
  */
@@ -529,9 +578,10 @@ bool Channel::toggleModeBAN(bool setting, Handler *handler, Channel *channel, Ch
       }
 
       // Create a new mask and add it to the list
-      channel->bans.push_front(new ChannelMask(fixToIdentityMask(*param),
-					       *setter,
-					       channel->daemon->getTime()));
+      channel->
+	bans.push_front(new ChannelMask(Utils::fixToIdentityMask(*param),
+					*setter,
+					channel->daemon->getTime()));
 
       return true;
    } else {
@@ -565,13 +615,14 @@ bool Channel::toggleModeBANEXCEPT(bool setting, Handler *handler, Channel *chann
 	 for (Channel::mask_list_t::iterator it = 
 	      channel->exceptions.begin();
 	      it != channel->exceptions.end(); it++) {
-	    handler->sendNumeric(TO_DAEMON->myServer(),
-				 RPL_EXCEPTLIST, 0,
-				 String::printf("%s %s %s %lu",
-						(char const *)channel->name,
-						(char const *)(*it)->mask.getMask(),
-						(char const *)(*it)->whoset,
-						(*it)->whenset));
+	    handler->
+	      sendNumeric(TO_DAEMON->myServer(),
+			  RPL_EXCEPTLIST, 0,
+			  String::printf("%s %s %s %lu",
+					 (char const *)channel->name,
+					 (char const *)(*it)->mask.getMask(),
+					 (char const *)(*it)->whoset,
+					 (*it)->whenset));
 	 }
 
 	 handler->sendNumeric(TO_DAEMON->myServer(),
@@ -606,9 +657,10 @@ bool Channel::toggleModeBANEXCEPT(bool setting, Handler *handler, Channel *chann
       }
 
       // Create a new mask and add it to the list
-      channel->exceptions.push_front(new ChannelMask(fixToIdentityMask(*param),
-						     *setter,
-						     channel->daemon->getTime()));
+      channel->
+	exceptions.push_front(new ChannelMask(Utils::fixToIdentityMask(*param),
+					      *setter,
+					      channel->daemon->getTime()));
 
       return true;
    } else {
@@ -906,13 +958,14 @@ bool Channel::toggleModeINVITEALLOW(bool setting, Handler *handler, Channel *cha
       if (handler) {
 	 for (Channel::mask_list_t::iterator it = channel->invites.begin();
 	      it != channel->invites.end(); it++) {
-	    handler->sendNumeric(TO_DAEMON->myServer(),
-				 RPL_INVITELIST, 0,
-				 String::printf("%s %s %s %lu",
-						(char const *)channel->name,
-						(char const *)(*it)->mask.getMask(),
-						(char const *)(*it)->whoset,
-						(*it)->whenset));
+	    handler->
+	      sendNumeric(TO_DAEMON->myServer(),
+			  RPL_INVITELIST, 0,
+			  String::printf("%s %s %s %lu",
+					 (char const *)channel->name,
+					 (char const *)(*it)->mask.getMask(),
+					 (char const *)(*it)->whoset,
+					 (*it)->whenset));
 	 }
 
 	 handler->sendNumeric(TO_DAEMON->myServer(),
@@ -947,9 +1000,10 @@ bool Channel::toggleModeINVITEALLOW(bool setting, Handler *handler, Channel *cha
       }
 
       // Create a new mask and add it to the list
-      channel->invites.push_front(new ChannelMask(fixToIdentityMask(*param),
-						  *setter,
-						  channel->daemon->getTime()));
+      channel->
+	invites.push_front(new ChannelMask(Utils::fixToIdentityMask(*param),
+					   *setter,
+					   channel->daemon->getTime()));
 
       return true;
    } else {

@@ -161,7 +161,7 @@ class Server {
    
    static String makeModes(Server *);		// Make a + server mode string
    
-   friend Daemon;
+   friend class Daemon;
 };
 
 #endif

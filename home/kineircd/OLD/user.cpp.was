@@ -4,6 +4,8 @@
 
 #include "config.h"
 
+#include <ctype.h>
+
 #include "daemon.h"
 #include "user.h"
 #include "channel.h"
@@ -91,7 +93,7 @@ Channel *User::getChannel(String &channel)
 /* markAway - Toggle the user's away 
  * Original 11/09/01, Simon Butcher <pickle@austnet.org
  */
-void User::markAway(String &message)
+void User::markAway(String const &message)
 {
    // Set the away message
    awayMessage = message;
@@ -118,6 +120,37 @@ bool User::isSilencing(User *target)
    
    // Must not be on the list..
    return false;
+}
+
+
+/* okName - Check if a nickname contains ok characters and is short enough
+ * Original 12/08/01, Simon Butcher <pickle@austnet.org>
+ */
+bool User::okName(String const &nick)
+{
+   // Check that the nickname is within limits
+   if (nick.length() > MAXLEN_NICKNAME) {
+      return false;
+   }
+
+   // Check the first char, it cannot be a number
+   if (isdigit(nick[0])) {
+      return false;
+   }
+   
+   // Run through the nickname and look for nasty characters
+   for (String::length_t i = nick.length(); i--;) {
+      char c = nick[i];
+
+      if (!(isalnum(c) || 
+	    (((c > 0x5A) && (c < 0x61)) || // check 'special' (see RFC2812)
+	     ((c > 0x7A) && (c < 0x7E))) ||
+	    (c == '-'))) {
+	 return false;
+      }
+   }
+
+   return true;
 }
 
 
@@ -489,4 +522,13 @@ bool User::toggleModeWALLOPS(bool setting, Handler *handler, Daemon *daemon, Use
    }
    
    return false;
+}
+
+
+/* makeVWorld - Generate a virtual world hash on the given hostname
+ * Original , Simon Butcher <pickle@austnet.org>
+ */
+String User::makeVWorld(String const &hostname)
+{
+   return String("vw1234.") + hostname;
 }
