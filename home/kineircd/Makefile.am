@@ -20,9 +20,6 @@ endif
 if KINEIRCD_COMPILE_MOD_IRC2USER
  KINEIRCD_TARGET_MOD_IRC2USER=mod_irc2user.la
 endif
-if KINEIRCD_COMPILE_MOD_PALLADIUM
- KINEIRCD_TARGET_MOD_PALLADIUM=mod_palladium.la
-endif
 if KINEIRCD_COMPILE_MOD_SYSLOG
  KINEIRCD_TARGET_MOD_SYSLOG=mod_syslog.la
 endif
@@ -38,7 +35,6 @@ lib_LTLIBRARIES=\
 	$(KINEIRCD_TARGET_MOD_FILELOG) \
 	$(KINEIRCD_TARGET_MOD_IRC2REGISTRAR) \
 	$(KINEIRCD_TARGET_MOD_IRC2USER) \
-	$(KINEIRCD_TARGET_MOD_PALLADIUM) \
 	$(KINEIRCD_TARGET_MOD_SYSLOG)
 
 
@@ -524,25 +520,6 @@ src/mod_irc2user/schemesubs.cpp src/mod_irc2user/schemesubs.h: src/mod_irc2user/
 		-b $(basename $@) \
 		-T src/mod_irc2user/schemesubs.tpl \
 		src/mod_irc2user/schemesubs.def
-
-
-
-###############################################################################
-# 'mod_palladium' module
-###############################################################################
-mod_palladium_la_SOURCES=\
-	src/mod_palladium/ctcp.cpp \
-	src/mod_palladium/module.cpp \
-	src/mod_palladium/module.h \
-	src/mod_palladium/service.cpp \
-	src/mod_palladium/service.h
-
-mod_palladium_la_LDFLAGS=\
-	-avoid-version \
-	-module
-
-mod_palladium_la_LIBADD=\
-	libkineircd.la
 
 
 

@@ -534,7 +534,6 @@ AC_KINE_MODULE_CHECK(mod-channellog, [the channel based logging module])
 AC_KINE_MODULE_CHECK(mod-filelog, [the simple file based logging module])
 AC_KINE_MODULE_CHECK(mod-irc2registrar, [the IRC/2 based registrar module])
 AC_KINE_MODULE_CHECK(mod-irc2user, [the IRC/2 user protocol module])
-AC_KINE_MODULE_CHECK(mod-palladium, [the Palladium operator service module])
 if test "$ac_cv_header_syslog_h" = "yes"; then
   AC_KINE_MODULE_CHECK(mod-syslog, [the syslog logging module])
 else
