@@ -2,8 +2,6 @@
  *
  * Copyright © 2002,2003 Simon Butcher <pickle@alien.net.au>
  * Copyright © 2003 İdil Jans <idil@users.sf.net>
- * Copyright © 2002,2003 KineIRCd Development Team
- * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
  * 
@@ -92,6 +90,8 @@ languages = {
    langCode		= "en";
    langName		= "English";
    langMaintainer	= "pickle@alien.net.au";
+   copyright =
+      "Copyright © 2002,2003 Simon Butcher <pickle@alien.net.au>";
 
    dialects = { // American English
       dialect	= "US";
@@ -103,6 +103,8 @@ languages = {
    langCode		= "fr";
    langName		= "Français"; // French
    langMaintainer	= "idil@users.sf.net";
+   copyright =
+      "Copyright © 2003 İdil Jans <idil@users.sf.net>";
 };
 
 languages = {
@@ -115,6 +117,8 @@ languages = {
    langCode		= "tr";
    langName		= "Türkçe"; // Turkish
    langMaintainer	= "idil@users.sf.net";
+   copyright =
+      "Copyright © 2003 İdil Jans <idil@users.sf.net>";
 };
 
 
