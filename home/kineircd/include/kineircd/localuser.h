@@ -33,7 +33,8 @@ namespace Kine {
    class LocalUser : public User {
     public:
       //! Constructor
-      LocalUser(void)
+      LocalUser(std::string& _nickname)
+	: User(_nickname)
 	{};
       
       //! Destructor

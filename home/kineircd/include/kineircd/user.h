@@ -29,24 +29,30 @@
 
 namespace Kine {
    class User : public Client {
-    public:
+    private:
+      std::string awayMessage;			//!< Away message (empty = off)
+      
+    protected:
       //! Constructor
-      User(void)
+      User(std::string& _nickname)
+	: Client(_nickname)
 	{};
 
+    public:
       //! Destructor
       virtual ~User(void)
 	{};
       
       //! Return the virtual hostname of this user
-      virtual const std::string& getVirtualHostname(void) const = 0;
-	{ return virtualHostname; };
+      virtual const std::string& getVirtualHostname(void) const
+	{ return getHostname(); };
       
       //! Return the away message for this user. If blank, there is none set
-      virtual const std::string& getAwayMessage(void) const = 0;
+      const std::string& getAwayMessage(void) const
+	{ return awayMessage; };
       
       //! Check if this user is away
-      const bool isAway(void) const;
+      const bool isAway(void) const
 	{ return (!getAwayMessage().empty()); };
    }; // class User
 }; // namespace Kine

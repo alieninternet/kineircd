@@ -31,7 +31,8 @@ namespace Kine {
    class Service : public Client {
     public:
       //! Constructor
-      Service(void)
+      Service(std::string& _nickname)
+	: Client(_nickname)
 	{};
       
       //! Destructor
