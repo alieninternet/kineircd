@@ -25,6 +25,7 @@
 #include "kineircd/kineircdconf.h"
 
 #include <sstream>
+#include <iomanip>
 
 #include "registrar.h"
 #include "regnumerics.h"
@@ -71,8 +72,10 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric)
       output << ' ' << nickname;
    }
 
-   // Terminate the line according to RFC1459
-   output << "\r\n";
+   /* Terminate the line according to RFC1459; The colon is to avoid any
+    * potential problems with really brain-dead clients...
+    */
+   output << " :\r\n";
    
    // Throw the line onto the output queue
    outputQueue.push(output.str());
@@ -90,7 +93,7 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
    /* Output the server name and the numeric (note, we do not pre-pad the
     * numeric because all registration numerics are over 100 anyway!
     */
-   output <<
+   output << 
      ':' << connection.getDaemon().getConfig().getOptionsServerName() <<
      ' ' << (int)numeric;
    
@@ -101,11 +104,36 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
       output << ' ' << nickname << ' ';
    }
 
-   // Output the payload and terminate the line
-   output << data << "\r\n";
+   /* Output the payload and terminate the line according to RFC1459; The 
+    * colon is to avoid any potential problems with really brain-dead 
+    * clients...
+    */
+   output << data << " :\r\n";
    
    // Throw the line onto the output queue
    outputQueue.push(output.str());
+}
+
+
+/* sendPing - Send a ping with some unpredictable data
+ * Original 12/08/2001 simonb
+ */
+void Registrar::sendPing(void)
+{
+   // Make up some dodgey random stuff
+//   handler->pingpong = 
+//     String::printf("%08lX",
+//		    ((unsigned long)Daemon::getTime() ^
+//		     (unsigned long)(((0xFFFFFFFE + 1.0) * rand()) / 
+//				     RAND_MAX)));
+
+   // Set the expectant pong result string appropriately
+   pongMatch = 
+     Utils::baseXStr((unsigned long)(((0xFFFFFFFE + 1.0) * rand()) / RAND_MAX),
+		     36);
+
+   // Output the ping
+   outputQueue.push("PING :" + pongMatch + "\r\n");
 }
 
 
@@ -115,7 +143,7 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
 void Registrar::parseLine(const String& line)
 {
    bool found = false;
-   
+cout << "Rx:" << line << endl;   
    // Tokenise the line, and grab the command
    StringTokens st(line);
    String command = st.nextToken().toUpper();
@@ -142,23 +170,21 @@ void Registrar::parseLine(const String& line)
  */
 KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseCAPAB)
 {
-//   // Make sure we were given at least one parameter
-//   if (!(tokens->countTokens() >= 2)) {
-//      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-//			   "CAPAB :" + 
-//			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
-//      return;
-//   }
-//
-//   /* Run through the requested capabilities list and look for stuff we can
-//    * recognise
-//    */
-//   for (String ability = tokens->nextToken(); ability.length();
-//	ability = tokens->nextToken()) {
-//#ifdef KINE_DEBUG_EXTENDED
-//      debug(" -=>  Capability: " + ability);
-//#endif
-//   }
+   // Make sure we were given at least one parameter
+   if (line.countTokens() < 2) {
+      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "CAPAB");
+      return;
+   }
+
+   // Append the capability to the capabilities vector
+   capabilities.push_back(line.rest());
+
+#ifdef KINE_DEBUG_PSYCHO
+   std::ostringstream out;
+   out << " -=>   Capability: " << capabilities.back() << 
+     " (@ " << capabilities.end() << ')';
+   debug(out.str());
+#endif
 }
 
 
@@ -240,28 +266,10 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
    debug(" -=>         Nick: " + nick);
 # endif
    
-//# ifdef USER_CONNECTION_PINGPONG
-//   // Make up some dodgey random stuff with xor!
-//   handler->pingpong = 
-//     String::printf("%08lX",
-//		    ((unsigned long)Daemon::getTime() ^
-//		     (unsigned long)(((0xFFFFFFFE + 1.0) * rand()) / 
-//				     RAND_MAX)));
-   
-   // Send a PING out to make sure we are dealing with a 'real' client
-//   handler->
-//     sendGeneric("NOTICE",
-//		 String::printf((char *)Lang::L_PINGPONG_NOTICE,
-//				handler->pingpong.c_str(), 
-//				handler->pingpong.c_str(),
-//				Daemon::myServer()->getHostname().c_str()));
-//   handler->getConnection()->sendRaw("PING :" + handler->pingpong + "\r\n");
-//# endif
-//#else
-//   // We are not allowed to accept client connections, so bye bye!
-//   handler->getConnection()->goodbye();
-//   // ... maybe we should have been a little friendlier?
-//#endif
+   // Do we need to send a ping out?
+   if ((pongsLeft > 0) && (pongMatch.empty())) {
+      sendPing();
+   }
 }
 
 
@@ -283,6 +291,14 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePASS)
 #ifdef KINE_DEBUG_PSYCHO
    debug(" -=>     Password: " + password);
 #endif
+   
+   // Is there anything else on the line we should know about?
+   if (line.hasMoreTokens()) {
+      passwordKludge = line.nextColonToken();
+#ifdef KINE_DEBUG_PSYCHO
+      debug(" -=> Pass' Kludge: " + passwordKludge);
+#endif
+   }
 }
 
 
@@ -299,13 +315,23 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePONG)
    }
    
    // Make sure this pong is valid
-   if (line.nextColonToken() == pongMatch) {
-      pongsLeft--;
+   if (line.nextColonToken() != pongMatch) {
+      // They tried to trick us - drop them off for being naughty
+      connection.goodbye();
+      return;
    }
+
+   // Lower the pong count
+   pongsLeft--;
    
-   // Do we need to send another pong?
+# ifdef KINE_DEBUG_PSYCHO
+   debug(" -=>   Pong match: " + pongMatch);
+# endif
+   
+   // Do we need to send another ping?
    if (pongsLeft > 0) {
-      // Send another pong.
+      // Send another ping out
+      sendPing();
    }
 }
 

@@ -25,6 +25,7 @@
 # define _SRC_LIB_REGISTRAR_H_ 1
 
 # include <queue>
+# include <vector>
 # include <string>
 # include <aisutil/string/string.h>
 # include <aisutil/string/tokens.h>
@@ -38,6 +39,8 @@
 
 namespace Kine {
    class Registrar : public Protocol {
+      typedef std::vector <std::string> capabilities_type;
+      
     private:
       Listener& listener;			// The listener who invoked us
       
@@ -57,6 +60,7 @@ namespace Kine {
       RegistrationType::type registrationType;	// Type of registration
       
       AISutil::String password;			// Logon password
+      AISutil::String passwordKludge;		// Extra info sent via PASS
       AISutil::String nickname;			// Nickname (client/service)
       AISutil::String username;			// Username (client/server)
       AISutil::String hostname;			// Hostname
@@ -64,11 +68,12 @@ namespace Kine {
       AISutil::String distribution;		// Distribution range (service)
       AISutil::String modes;			// Modes for next handler
       AISutil::String protocol;			// Protocol details
+      capabilities_type capabilities;		// Capabilities
       long startStamp;				// Received start time-stamp
       long linkStamp;				// Received link time-stamp
 
       unsigned char pongsLeft;			// Number of pongs left
-      AISutil::String pongMatch;		// Pong string to match
+      std::string pongMatch;			// Pong string to match
       
       // The type of a handler, for handy use later..
       typedef KINE_LIB_REGISTRAR_FUNCTION(handler_type);
@@ -83,6 +88,9 @@ namespace Kine {
       void sendNumeric(const RegistrationNumerics::numeric_type numeric);
       void sendNumeric(const RegistrationNumerics::numeric_type numeric,
 		       const char* data);
+
+      // Send a ping with some unpredictable data
+      void sendPing(void);
       
       // Appropriately parse a line of protocol
       void parseLine(const AISutil::String& line);
@@ -104,7 +112,7 @@ namespace Kine {
 	: Protocol(c),
           listener(l),
           registrationType(RegistrationType::NONE),
-          pongsLeft(0)
+          pongsLeft(/*0*/ 1)
 	{};
       
       // Destructor
