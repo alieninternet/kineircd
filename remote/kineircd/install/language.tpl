@@ -1,20 +1,25 @@
-[+ AutoGen5 template lang +][+ FOR languages +][+
+[+ AutoGen5 template lang +][+
+   ;; Our tag counting variable
+   (define tagCount 0)
+ +][+ FOR languages +][+
    ;; Tell the console what we're up to
    (for-each
       display
       (list
-         " -=> Generating langtags file for '"
+         "-=> Generating langtags file for '"
          (get "langName")
          "' ("
          (get "langCode")
-         ")"
-	 #\nl))
+         ")..."))
 
    ;; Switch over to a new language file, using the language code in its name
    (out-push-new
       (sprintf "%s%s.lang" 
          (base-name)
 	 (get "langCode")))
+
+   ;; Reset the tag count
+   (set! tagCount 0)
  +]# $Id$
 # Language file for the KineIRCd package [+langName+]
 #
@@ -66,6 +71,10 @@
       (exist? "data")
       (exist? 
          (makeDataVariable)))
+ +][+
+   ;; Increase the tag count
+   (set! tagCount
+      (+ tagCount 1))
  +][+tagPrefix+][+name+] = [+
    ;; Grab the right data - some tags may not include language specific stuff
    (if
@@ -74,4 +83,16 @@
       (get
          (makeDataVariable)))
  +]
-[+ ENDIF +][+ ENDFOR +][+ (out-pop) +][+ ENDFOR +]
+[+ ENDIF +][+ ENDFOR +][+
+   ;; Output the number of tags generated and end the line on the console
+   (for-each
+      display
+      (list
+         #\space
+	 tagCount
+         " tags"
+	 #\nl))
+
+   ;; Write to this language file
+   (out-pop)
+ +][+ ENDFOR +]
