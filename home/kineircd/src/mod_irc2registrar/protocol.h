@@ -148,9 +148,10 @@ namespace Kine {
 
 
 // Language related macros
-# define GETLANG(n) \
+# define GETLANG(n,...) \
    Kine::languages().get("en", \
-			 Language::tagMap[Language::n].tagID)
+			 Language::tagMap[Language::n].tagID, \
+			 ##__VA_ARGS__)
 
 
 #endif // _SRC_MOD_PROTOCOL_REGISTRAR_H_

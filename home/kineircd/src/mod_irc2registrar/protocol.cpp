@@ -141,7 +141,8 @@ void Protocol::parseMessage(const std::string& origin,
       // Check if we found something..
       if (protocolInfo == 0) {
 	 // Complain
-	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_USER));
+	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_USER,
+			   registrantData.protocol));
 	 return;
       }
 
@@ -166,7 +167,8 @@ void Protocol::parseMessage(const std::string& origin,
 	   daemon().findProtocol(ProtocolInfo::Type::NETWORK,
 				 registrantData.protocol.toUpper())) == 0) {
 	 // Complain
-	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_IIRC));
+	 sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_IIRC,
+			   registrantData.protocol));
 	 return;
       }
 
@@ -181,7 +183,8 @@ void Protocol::parseMessage(const std::string& origin,
       }
       
       // No support yet...
-      sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVER));
+      sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVER,
+			registrantData.protocol));
       return;
       
       
@@ -194,7 +197,8 @@ void Protocol::parseMessage(const std::string& origin,
       }
        
       // No support yet...
-      sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVICE));
+      sendError(GETLANG(irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVICE,
+			registrantData.protocol));
       return;
    }
    
@@ -227,7 +231,7 @@ void Protocol::parseMessage(const std::string& origin,
       // Do the protocol hand-over
       connection.setProtocol(*newProtocol);
       
-      // Delete ourself.. (suicide? ;)
+      // Delete ourself.. (felo de se)
       delete this;
       
       // Bye bye!
