@@ -341,6 +341,7 @@ dnl -------------------------------------------------------------------------
 AC_CHECK_LIB(resolv, res_init)
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
+AC_FUNC_FNMATCH
 AC_FUNC_VPRINTF
 AC_FUNC_GETLOADAVG
 AC_FUNC_SELECT_ARGTYPES
