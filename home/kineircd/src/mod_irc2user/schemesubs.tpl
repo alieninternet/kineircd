@@ -91,7 +91,32 @@ namespace Kine {
 	    extern SCM [+
    (schemeName->CName
       (get "name"))
- +](SCM);[+ENDFOR+]
+ +]([+
+   ;; Work out how many parameters the function requires, and output SCM's as
+   ;; is appropriate
+   (let outputParams ((counter (+
+                                  (string->number
+				     (get "requiredParams"))
+                                  (string->number
+				     (get "optionalParams"))
+				  (if (and
+				         (exist? "restParams")
+					 (not
+					    (=
+					       (string->number
+					          (get "restParams"))
+					       0)))
+				     1
+				     0))))
+      (if (positive? 
+             (- counter 1))
+         ;; Output us, plus the next iteration
+         (string-append
+            (outputParams 
+               (- counter 1))
+	       ", SCM")
+	 "SCM"))
+ +]);[+ENDFOR+]
 	 }; // namespace Subs
       }; // namespace Scheme
    }; // namespace mod_irc2user
