@@ -18,7 +18,7 @@ popd
 rm -rf ./htdocs/manual ./*.tag*
 
 # Get tag files
-wget http://libais.sourceforge.net/manual/libais.tag
+wget http://libais.sourceforge.net/manual/libaisutil/libaisutil.tag
 
 # Process the files
 doxygen ./doxygen.conf
