@@ -45,8 +45,10 @@ irc2numerics = {
    name		= "RPL_WELCOME";
    numeric	= "1";
    origin	= "RFC2812";
-   format	= ":Welcome to the Internet Relay Network <nick>!<user>@<host>";
-   comment	= "The first message sent after client registration. The text used varies widely";
+   format	= ":Welcome to the Internet Relay Network "
+                  "<nick>!<user>@<host>";
+   comment	= "The first message sent after client registration. The text "
+                  "used varies widely";
 };
 
 irc2numerics = {
@@ -78,8 +80,11 @@ irc2numerics = {
    numeric	= "4";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   format	= "<server_name> <version> <user_modes> <chan_modes> <channel_modes_with_params> <user_modes_with_params> <server_modes> <server_modes_with_params>";
-   comment	= "Same as RFC2812 however with additional fields to avoid additional 005 burden.";
+   format	= "<server_name> <version> <user_modes> <chan_modes> "
+                  "<channel_modes_with_params> <user_modes_with_params> "
+		  "<server_modes> <server_modes_with_params>";
+   comment	= "Same as RFC2812 however with additional fields to avoid "
+                  "additional 005 burden.";
    repeated	= "yes";
 };
 
@@ -88,7 +93,10 @@ irc2numerics = {
    numeric	= "5";
    origin	= "RFC2812";
    format	= ":Try server <server_name>, port <port_number>";
-   comment	= "Sent by the server to a user to suggest an alternative server, sometimes used when the connection is refused because the server is already full. Also known as RPL_SLINE (AustHex), and RPL_REDIR";
+   comment	= "Sent by the server to a user to suggest an alternative "
+                  "server, sometimes used when the connection is refused "
+		  "because the server is already full. Also known as "
+		  "RPL_SLINE (AustHex), and RPL_REDIR";
    seealso	= "010";
    obsolete	= "yes";
 };
@@ -138,7 +146,8 @@ irc2numerics = {
    name		= "RPL_REDIR";
    numeric	= "10";
    format	= "<hostname> <port> :<info>";
-   comment	= "Sent to the client to redirect it to another server. Also known as RPL_BOUNCE (IRCnet)";
+   comment	= "Sent to the client to redirect it to another server. Also "
+                  "known as RPL_BOUNCE (IRCnet)";
    conflict	= "yes";
 };
 
@@ -180,7 +189,8 @@ irc2numerics = {
    numeric	= "43";
    origin	= "IRCnet";
    format	= ":<info>";
-   comment	= "Sent to the client when their nickname was forced to change due to a collision";
+   comment	= "Sent to the client when their nickname was forced to "
+                  "change due to a collision";
 };
 
 irc2numerics = {
@@ -203,7 +213,10 @@ irc2numerics = {
    name		= "RPL_TRACELINK";
    numeric	= "200";
    origin	= "RFC1459";
-   format	= "Link <version>[.<debug_level>] <destination> <next_server> [V<protocol_version> <link_uptime_in_seconds> <backstream_sendq> <upstream_sendq>]";
+   format	= "Link <version>[.<debug_level>] <destination> "
+                  "<next_server> [V<protocol_version> "
+		  "<link_uptime_in_seconds> <backstream_sendq> "
+		  "<upstream_sendq>]";
    comment	= "See RFC";
 };
 
@@ -251,7 +264,8 @@ irc2numerics = {
    name		= "RPL_TRACESERVER";
    numeric	= "206";
    origin	= "RFC1459";
-   format	= "Serv <class> <int>S <int>C <server> <nick!user|*!*>@<host|server> [V<protocol_version>]";
+   format	= "Serv <class> <int>S <int>C <server> "
+                  "<nick!user|*!*>@<host|server> [V<protocol_version>]";
    comment	= "See RFC";
 };
 
@@ -297,7 +311,8 @@ irc2numerics = {
    name		= "RPL_STATSLINKINFO";
    numeric	= "211";
    origin	= "RFC1459";
-   format	= "<linkname> <sendq> <sent_msgs> <sent_bytes> <recvd_msgs> <rcvd_bytes> <time_open>";
+   format	= "<linkname> <sendq> <sent_msgs> <sent_bytes> <recvd_msgs> "
+                  "<rcvd_bytes> <time_open>";
    comment	= "Reply to STATS (See RFC)";
 };
 
@@ -322,7 +337,8 @@ irc2numerics = {
    numeric	= "214";
    origin	= "RFC1459";
    format	= "N <host> * <name> <port> <class>";
-   comment	= "Reply to STATS (See RFC), Also known as RPL_STATSOLDNLINE (ircu, Unreal)";
+   comment	= "Reply to STATS (See RFC), Also known as RPL_STATSOLDNLINE "
+                  "(ircu, Unreal)";
    conflict	= "yes";
 };
 
@@ -368,8 +384,8 @@ irc2numerics = {
    name		= "RPL_ENDOFSTATS";
    numeric	= "219";
    origin	= "RFC1459";
-   format	= "<stats_letter> :<info>";
-   comment	= "End of RPL_STATS* list. Because KineIRCd uses words instead of letters, the stats_letter field may be a word instead. Other IRC Daemon developers are also considering the same move.";
+   format	= "<query> :<info>";
+   comment	= "End of RPL_STATS* list.";
 };
 
 irc2numerics = {
@@ -391,7 +407,9 @@ irc2numerics = {
    numeric	= "221";
    origin	= "RFC1459";
    format	= "<user_modes> [<user_mode_params>]";
-   comment	= "Information about a user's own modes. KineIRCd has extended the mode command and certain modes take parameters (like channel modes).";
+   comment	= "Information about a user's own modes. Some daemons have "
+                  "extended the mode command and certain modes take "
+		  "parameters (like channel modes).";
 };
 
 irc2numerics = {
@@ -606,7 +624,9 @@ irc2numerics = {
    numeric	= "243";
    origin	= "RFC1459";
    format	= "O <hostmask> * <nick> [:<info>]";
-   comment	= "Reply to STATS (See RFC); The info field is an extension from KineIRCd, and I'm told another older IRC Daemon, which returns info such as an e-mail address or name of an operator";
+   comment	= "Reply to STATS (See RFC); The info field is an extension "
+                  "found in some IRC daemons, which returns info such as an "
+		  "e-mail address or the name/job of an operator";
 };
 
 irc2numerics = {
@@ -710,8 +730,10 @@ irc2numerics = {
    name		= "RPL_LUSERCLIENT";
    numeric	= "251";
    origin	= "RFC1459";
-   format	= ":There are <int> users and <int> invisible on <int> servers";
-   comment	= "Reply to LUSERS command, other versions exist (eg. RFC2812); Text may vary.";
+   format	= ":There are <int> users and <int> invisible on <int> "
+                  "servers";
+   comment	= "Reply to LUSERS command, other versions exist (eg. "
+                  "RFC2812); Text may vary.";
 };
 
 irc2numerics = {
@@ -727,7 +749,8 @@ irc2numerics = {
    numeric	= "253";
    origin	= "RFC1459";
    format	= "<int> :<info>";
-   comment	= "Reply to LUSERS command - Number of unknown/unregistered connections";
+   comment	= "Reply to LUSERS command - Number of unknown/unregistered "
+                  "connections";
 };
 
 irc2numerics = {
@@ -743,7 +766,8 @@ irc2numerics = {
    numeric	= "255";
    origin	= "RFC1459";
    format	= ":I have <int> clients and <int> servers";
-   comment	= "Reply to LUSERS command - Information about local connections; Text may vary.";
+   comment	= "Reply to LUSERS command - Information about local "
+                  "connections; Text may vary.";
 };
 
 irc2numerics = {
@@ -813,7 +837,9 @@ irc2numerics = {
    numeric	= "263";
    origin	= "RFC2812";
    format	= "<command> :<info>";
-   comment	= "When a server drops a command without processing it, it MUST use this reply. Also known as RPL_LOAD_THROTTLED and RPL_LOAD2HI, I'm presuming they do the same thing.";
+   comment	= "When a server drops a command without processing it, it "
+                  "MUST use this reply. Also known as RPL_LOAD_THROTTLED and "
+                  "RPL_LOAD2HI, I'm presuming they do the same thing.";
 };
 
 irc2numerics = {
@@ -1113,7 +1139,8 @@ irc2numerics = {
    numeric	= "301";
    origin	= "RFC1459";
    format	= "<nick> :<message>";
-   comment	= "Used in reply to a command directed at a user who is set away";
+   comment	= "Used in reply to a command directed at a user who is "
+                  "marked as away";
 };
 
 irc2numerics = {
@@ -1537,7 +1564,8 @@ irc2numerics = {
    numeric	= "348";
    origin	= "RFC2812";
    format	= "<channel> <exceptionmask>";
-   comment	= "An exception mask for the exception mask list. Also known as RPL_EXLIST (Unreal, Ultimate)";
+   comment	= "An exception mask for the exception mask list. Also known "
+                  "as RPL_EXLIST (Unreal, Ultimate)";
 };
 
 irc2numerics = {
@@ -1545,7 +1573,8 @@ irc2numerics = {
    numeric	= "349";
    origin	= "RFC2812";
    format	= "<channel> :<info>";
-   comment	= "Termination of an RPL_EXCEPTLIST list. Also known as RPL_ENDOFEXLIST (Unreal, Ultimate)";
+   comment	= "Termination of an RPL_EXCEPTLIST list. Also known as "
+                  "RPL_ENDOFEXLIST (Unreal, Ultimate)";
 };
 
 irc2numerics = {
@@ -1553,22 +1582,27 @@ irc2numerics = {
    numeric	= "351";
    origin	= "RFC1459";
    format	= "<version>[.<debuglevel>] <server> :<comments>";
-   comment	= "Reply by the server showing its version details, however this format is not often adhered to";
+   comment	= "Reply by the server showing its version details, however "
+                  "this format is not often adhered to";
 };
 
 irc2numerics = {
    name		= "RPL_WHOREPLY";
    numeric	= "352";
    origin	= "RFC1459";
-   format	= "<channel> <user> <host> <server> <nick> <H|G>[*][@|+] :<hopcount> <real_name>";
-   comment	= "Reply to vanilla WHO (See RFC)";
+   format	= "<channel> <user> <host> <server> <nick> <H|G>[*][@|+] "
+                  ":<hopcount> <real_name>";
+   comment	= "Reply to vanilla WHO (See RFC). This format can be "
+                  "very different if the 'WHOX' version of the command is "
+		  "used (see ircu).";
 };
 
 irc2numerics = {
    name		= "RPL_NAMREPLY";
    numeric	= "353";
    origin	= "RFC1459";
-   format	= "( '=' / '*' / '@' ) <channel> ' ' : [ '@' / '+' ] <nick> *( ' ' [ '@' / '+' ] <nick> )";
+   format	= "( '=' / '*' / '@' ) <channel> ' ' : [ '@' / '+' ] <nick> "
+                  "*( ' ' [ '@' / '+' ] <nick> )";
    comment	= "Reply to NAMES (See RFC)"; 
 };
 
@@ -1649,7 +1683,8 @@ irc2numerics = {
    numeric	= "367";
    origin	= "RFC1459";
    format	= "<channel> <banid> [<time_left> :<reason>]";
-   comment	= "A ban-list item (See RFC); <time left> and <reason> are additions used by KineIRCd";
+   comment	= "A ban-list item (See RFC); <time left> and <reason> are "
+                  "additions used by KineIRCd";
 };
 
 irc2numerics = {
@@ -1728,8 +1763,10 @@ irc2numerics = {
    origin	= "AustHex";
    contact	= "dev@austnet.org";
    format	= ":<text>";
-   comment	= "Used during the connection (after MOTD) to announce the network policy on spam and privacy; rather redundant.";
-   conflict	= "yes";
+   comment	= "Used during the connection (after MOTD) to announce the "
+                  "network policy on spam and privacy. Supposedly now "
+		  "obsoleted in favour of using NOTICE.";
+   obsolete	= "yes";
 };
 
 irc2numerics = {
@@ -1928,7 +1965,8 @@ irc2numerics = {
    name		= "RPL_HOSTHIDDEN";
    numeric	= "396";
    origin	= "Undernet";
-   comment	= "Reply to a user when user mode +x (host masking) was set successfully";
+   comment	= "Reply to a user when user mode +x (host masking) was set "
+                  "successfully";
 };
 
 
@@ -1955,7 +1993,8 @@ irc2numerics = {
    numeric	= "401";
    origin	= "RFC1459";
    format	= "<nick> :<reason>";
-   comment	= "Used to indicate the nickname parameter supplied to a command is currently unused";
+   comment	= "Used to indicate the nickname parameter supplied to a "
+                  "command is currently unused";
 };
 
 irc2numerics = {
@@ -1963,7 +2002,8 @@ irc2numerics = {
    numeric	= "402";
    origin	= "RFC1459";
    format	= "<server> :<reason>";
-   comment	= "Used to indicate the server name given currently doesn't exist";
+   comment	= "Used to indicate the server name given currently doesn't "
+                  "exist";
 };
 
 irc2numerics = {
@@ -1971,7 +2011,8 @@ irc2numerics = {
    numeric	= "403";
    origin	= "RFC1459";
    format	= "<channel> :<reason>";
-   comment	= "Used to indicate the given channel name is invalid, or does not exist";
+   comment	= "Used to indicate the given channel name is invalid, or "
+                  "does not exist";
 };
 
 irc2numerics = {
@@ -1979,7 +2020,8 @@ irc2numerics = {
    numeric	= "404";
    origin	= "RFC1459";
    format	= "<channel> :<reason>";
-   comment	= "Sent to a user who does not have the rights to send a message to a channel";
+   comment	= "Sent to a user who does not have the rights to send a "
+                  "message to a channel";
 };
 
 irc2numerics = {
@@ -1987,7 +2029,8 @@ irc2numerics = {
    numeric	= "405";
    origin	= "RFC1459";
    format	= "<channel> :<reason>";
-   comment	= "Sent to a user when they have joined the maximum number of allowed channels and they tried to join another channel";
+   comment	= "Sent to a user when they have joined the maximum number "
+                  "of allowed channels and they tried to join another channel";
 };
 
 irc2numerics = {
@@ -1995,7 +2038,8 @@ irc2numerics = {
    numeric	= "406";
    origin	= "RFC1459";
    format	= "<nick> :<reason>";
-   comment	= "Returned by WHOWAS to indicate there was no history information for a given nickname";
+   comment	= "Returned by WHOWAS to indicate there was no history "
+                  "information for a given nickname";
 };
 
 irc2numerics = {
@@ -2003,7 +2047,8 @@ irc2numerics = {
    numeric	= "407";
    origin	= "RFC1459";
    format	= "<target> :<reason>";
-   comment	= "The given target(s) for a command are ambiguous in that they relate to too many targets";
+   comment	= "The given target(s) for a command are ambiguous in that "
+                  "they relate to too many targets";
 };
 
 irc2numerics = {
@@ -2011,7 +2056,9 @@ irc2numerics = {
    numeric	= "408";
    origin	= "RFC2812";
    format	= "<service_name> :<reason>";
-   comment	= "Returned to a client which is attempting to send an SQUERY (or other message) to a service which does not exist";
+   comment	= "Returned to a client which is attempting to send an "
+                  "SQUERY (or other message) to a service which does not "
+		  "exist";
    conflict	= "yes";
 };
 
@@ -2027,7 +2074,9 @@ irc2numerics = {
    numeric	= "409";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "PING or PONG message missing the originator parameter which is required since these commands must work without valid prefixes";
+   comment	= "PING or PONG message missing the originator parameter "
+                  "which is required since these commands must work without "
+		  "valid prefixes";
 };
 
 irc2numerics = {
@@ -2051,7 +2100,8 @@ irc2numerics = {
    numeric	= "413";
    origin	= "RFC1459";
    format	= "<mask> :<reason>";
-   comment	= "Used when a message is being sent to a mask without being limited to a top-level domain (i.e. * instead of *.au)";
+   comment	= "Used when a message is being sent to a mask without being "
+                  "limited to a top-level domain (i.e. * instead of *.au)";
 };
 
 irc2numerics = {
@@ -2059,7 +2109,8 @@ irc2numerics = {
    numeric	= "414";
    origin	= "RFC1459";
    format	= "<mask> :<reason>";
-   comment	= "Used when a message is being sent to a mask with a wild-card for a top level domain (i.e. *.*)";
+   comment	= "Used when a message is being sent to a mask with a "
+                  "wild-card for a top level domain (i.e. *.*)";
 };
 
 irc2numerics = {
@@ -2067,7 +2118,8 @@ irc2numerics = {
    numeric	= "415";
    origin	= "RFC2812";
    format	= "<mask> :<reason>";
-   comment	= "Used when a message is being sent to a mask with an invalid syntax";
+   comment	= "Used when a message is being sent to a mask with an "
+                  "invalid syntax";
 };
 
 irc2numerics = {
@@ -2100,7 +2152,8 @@ irc2numerics = {
    numeric	= "421";
    origin	= "RFC1459";
    format	= "<command> :<reason>";
-   comment	= "Returned when the given command is unknown to the server (or hidden because of lack of access rights)";
+   comment	= "Returned when the given command is unknown to the server "
+                  "(or hidden because of lack of access rights)";
 };
 
 irc2numerics = {
@@ -2128,7 +2181,8 @@ irc2numerics = {
    numeric	= "424";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Generic error message used to report a failed file operation during the processing of a command";
+   comment	= "Generic error message used to report a failed file "
+                  "operation during the processing of a command";
 };
 
 irc2numerics = {
@@ -2148,7 +2202,8 @@ irc2numerics = {
    numeric	= "430";
    origin	= "AustHex";
    contact	= "dev@austnet.org";
-   comment	= "Returned by NICK when the user is not allowed to change their nickname due to a channel event (channel mode +E)";
+   comment	= "Returned by NICK when the user is not allowed to change "
+                  "their nickname due to a channel event (channel mode +E)";
 };
 
 irc2numerics = {
@@ -2156,7 +2211,8 @@ irc2numerics = {
    numeric	= "431";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Returned when a nickname parameter expected for a command isn't found";
+   comment	= "Returned when a nickname parameter expected for a command "
+                  "isn't found";
    registration	= "yes";
 };
 
@@ -2165,7 +2221,10 @@ irc2numerics = {
    numeric	= "432";
    origin	= "RFC1459";
    format	= "<nick> :<reason>";
-   comment	= "Returned after receiving a NICK message which contains a nickname which is considered invalid, such as it's reserved ('anonymous') or contains characters considered invalid for nicknames";
+   comment	= "Returned after receiving a NICK message which contains a "
+                  "nickname which is considered invalid, such as it's "
+		  "reserved ('anonymous') or contains characters considered "
+		  "invalid for nicknames";
    registration	= "yes";
 };
 
@@ -2174,7 +2233,8 @@ irc2numerics = {
    numeric	= "433";
    origin	= "RFC1459";
    format	= "<nick> :<reason>";
-   comment	= "Returned by the NICK command when the given nickname is already in use";
+   comment	= "Returned by the NICK command when the given nickname is "
+                  "already in use";
    registration	= "yes";
 };
 
@@ -2211,7 +2271,8 @@ irc2numerics = {
    numeric	= "436";
    origin	= "RFC1459";
    format	= "<nick> :<reason>";
-   comment	= "Returned by a server to a client when it detects a nickname collision";
+   comment	= "Returned by a server to a client when it detects a "
+                  "nickname collision";
 };
 
 irc2numerics = {
@@ -2219,7 +2280,9 @@ irc2numerics = {
    numeric	= "437";
    origin	= "RFC2812";
    format	= "<nick/channel/service> :<reason>";
-   comment	= "Return when the target is unable to be reached temporarily, eg. a delay mechanism in play, or a service being offline";
+   comment	= "Return when the target is unable to be reached "
+                  "temporarily, eg. a delay mechanism in play, or a service "
+		  "being offline";
    conflict	= "yes";
 };
 
@@ -2249,7 +2312,8 @@ irc2numerics = {
    name		= "ERR_TARGETTOOFAST";
    numeric	= "439";
    origin	= "ircu";
-   comment	= "Also known as many other things, RPL_INVTOOFAST, RPL_MSGTOOFAST etc";
+   comment	= "Also known as many other things, RPL_INVTOOFAST, "
+                  "RPL_MSGTOOFAST etc";
 };
 
 irc2numerics = {
@@ -2263,7 +2327,8 @@ irc2numerics = {
    numeric	= "441";
    origin	= "RFC1459";
    format	= "<nick> <channel> :<reason>";
-   comment	= "Returned by the server to indicate that the target user of the command is not on the given channel";
+   comment	= "Returned by the server to indicate that the target user "
+                  "of the command is not on the given channel";
 };
 
 irc2numerics = {
@@ -2271,7 +2336,9 @@ irc2numerics = {
    numeric	= "442";
    origin	= "RFC1459";
    format	= "<channel> :<reason>";
-   comment	= "Returned by the server whenever a client tries to perform a channel effecting command for which the client is not a member";
+   comment	= "Returned by the server whenever a client tries to "
+                  "perform a channel effecting command for which the client "
+		  "is not a member";
 };
 
 irc2numerics = {
@@ -2279,7 +2346,8 @@ irc2numerics = {
    numeric	= "443";
    origin	= "RFC1459";
    format	= "<nick> <channel> [:<reason>]";
-   comment	= "Returned when a client tries to invite a user to a channel they're already on";
+   comment	= "Returned when a client tries to invite a user to a "
+                  "channel they're already on";
 };
 
 irc2numerics = {
@@ -2287,7 +2355,8 @@ irc2numerics = {
    numeric	= "444";
    origin	= "RFC1459";
    format	= "<user> :<reason>";
-   comment	= "Returned by the SUMMON command if a given user was not logged in and could not be summoned";
+   comment	= "Returned by the SUMMON command if a given user was not "
+                  "logged in and could not be summoned";
 };
 
 irc2numerics = {
@@ -2295,7 +2364,8 @@ irc2numerics = {
    numeric	= "445";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Returned by SUMMON when it has been disabled or not implemented";
+   comment	= "Returned by SUMMON when it has been disabled or not "
+                  "implemented";
 };
 
 irc2numerics = {
@@ -2303,7 +2373,8 @@ irc2numerics = {
    numeric	= "446";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Returned by USERS when it has been disabled or not implemented";
+   comment	= "Returned by USERS when it has been disabled or not "
+                  "implemented";
 };
 
 irc2numerics = {
@@ -2317,7 +2388,8 @@ irc2numerics = {
    numeric	= "449";
    origin	= "Undernet";
    format	= "Unspecified";
-   comment	= "Returned when a requested feature is not implemented (and cannot be completed)";
+   comment	= "Returned when a requested feature is not implemented "
+                  "(and cannot be completed)";
    registration	= "yes";
 };
 
@@ -2326,7 +2398,9 @@ irc2numerics = {
    numeric	= "451";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Returned by the server to indicate that the client must be registered before the server will allow it to be parsed in detail";
+   comment	= "Returned by the server to indicate that the client must "
+                  "be registered before the server will allow it to be "
+		  "parsed in detail";
    registration	= "yes";
 };
 
@@ -2379,7 +2453,8 @@ irc2numerics = {
    numeric	= "461";
    origin	= "RFC1459";
    format	= "<command> :<reason>";
-   comment	= "Returned by the server by any command which requires more parameters than the number of parameters given";
+   comment	= "Returned by the server by any command which requires "
+                  "more parameters than the number of parameters given";
    registration	= "yes";
 };
 
@@ -2388,7 +2463,8 @@ irc2numerics = {
    numeric	= "462";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Returned by the server to any link which attempts to register again";
+   comment	= "Returned by the server to any link which attempts to "
+                  "register again";
    registration	= "yes";
 };
 
@@ -2397,7 +2473,9 @@ irc2numerics = {
    numeric	= "463";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Returned to a client which attempts to register with a server which has been configured to refuse connections from the client's host";
+   comment	= "Returned to a client which attempts to register with a "
+                  "server which has been configured to refuse connections "
+		  "from the client's host";
 };
 
 irc2numerics = {
@@ -2405,7 +2483,9 @@ irc2numerics = {
    numeric	= "464";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Returned by the PASS command to indicate the given password was required and was either not given or was incorrect";
+   comment	= "Returned by the PASS command to indicate the given "
+                  "password was required and was either not given or was "
+		  "incorrect";
    registration	= "yes";
 };
 
@@ -2414,14 +2494,16 @@ irc2numerics = {
    numeric	= "465";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Returned to a client after an attempt to register on a server configured to ban connections from that client";
+   comment	= "Returned to a client after an attempt to register on a "
+                  "server configured to ban connections from that client";
 };
 
 irc2numerics = {
    name		= "ERR_YOUWILLBEBANNED";
    numeric	= "466";
    origin	= "RFC1459";
-   comment	= "Sent by a server to a user to inform that access to the server will soon be denied";
+   comment	= "Sent by a server to a user to inform that access to the "
+                  "server will soon be denied";
    obsolete	= "yes";
 };
 
@@ -2430,7 +2512,8 @@ irc2numerics = {
    numeric	= "467";
    origin	= "RFC1459";
    format	= "<channel> :<reason>";
-   comment	= "Returned when the channel key for a channel has already been set";
+   comment	= "Returned when the channel key for a channel has already "
+                  "been set";
 };
 
 irc2numerics = {
@@ -2472,7 +2555,8 @@ irc2numerics = {
    numeric	= "471";
    origin	= "RFC1459";
    format	= "<channel> :<reason>";
-   comment	= "Returned when attempting to join a channel which is set +l and is already full";
+   comment	= "Returned when attempting to join a channel which is set "
+                  "+l and is already full";
 };
 
 irc2numerics = {
@@ -2488,7 +2572,8 @@ irc2numerics = {
    numeric	= "473";
    origin	= "RFC1459";
    format	= "<channel> :<reason>";
-   comment	= "Returned when attempting to join a channel which is invite only without an invitation";
+   comment	= "Returned when attempting to join a channel which is "
+                  "invite only without an invitation";
 };
 
 irc2numerics = {
@@ -2496,7 +2581,8 @@ irc2numerics = {
    numeric	= "474";
    origin	= "RFC1459";
    format	= "<channel> :<reason>";
-   comment	= "Returned when attempting to join a channel a user is banned from";
+   comment	= "Returned when attempting to join a channel a user is "
+                  "banned from";
 };
 
 irc2numerics = {
@@ -2504,7 +2590,8 @@ irc2numerics = {
    numeric	= "475";
    origin	= "RFC1459";
    format	= "<channel> :<reason>";
-   comment	= "Returned when attempting to join a key-locked channel either without a key or with the wrong key";
+   comment	= "Returned when attempting to join a key-locked channel "
+                  "either without a key or with the wrong key";
 };
 
 irc2numerics = {
@@ -2520,7 +2607,9 @@ irc2numerics = {
    numeric	= "477";
    origin	= "RFC2812";
    format	= "<channel> :<reason>";
-   comment	= "Returned when attempting to set a mode on a channel which does not support channel modes, or channel mode changes. Also known as ERR_MODELESS";
+   comment	= "Returned when attempting to set a mode on a channel which "
+                  "does not support channel modes, or channel mode changes. "
+		  "Also known as ERR_MODELESS";
    conflict	= "yes";
 };
 
@@ -2536,7 +2625,8 @@ irc2numerics = {
    numeric	= "478";
    origin	= "RFC2812";
    format	= "<channel> <char> :<reason>";
-   comment	= "Returned when a channel access list (i.e. ban list etc) is full and cannot be added to";
+   comment	= "Returned when a channel access list (i.e. ban list etc) "
+                  "is full and cannot be added to";
 };
 
 irc2numerics = {
@@ -2571,7 +2661,9 @@ irc2numerics = {
    numeric	= "481";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Returned by any command requiring special privileges (eg. IRC operator) to indicate the operation was unsuccessful";
+   comment	= "Returned by any command requiring special privileges "
+                  "(eg. IRC operator) to indicate the operation was "
+		  "unsuccessful";
 };
 
 irc2numerics = {
@@ -2579,7 +2671,9 @@ irc2numerics = {
    numeric	= "482";
    origin	= "RFC1459";
    format	= "<channel> :<reason>";
-   comment	= "Returned by any command requiring special channel privileges (eg. channel operator) to indicate the operation was unsuccessful";
+   comment	= "Returned by any command requiring special channel "
+                  "privileges (eg. channel operator) to indicate the "
+		  "operation was unsuccessful";
 };
 
 irc2numerics = {
@@ -2595,7 +2689,9 @@ irc2numerics = {
    numeric	= "484";
    origin	= "RFC2812";
    format	= ":<reason>";
-   comment	= "Sent by the server to a user upon connection to indicate the restricted nature of the connection (i.e. usermode +r)";
+   comment	= "Sent by the server to a user upon connection to "
+                  "indicate the restricted nature of the connection (i.e. "
+		  "usermode +r)";
    conflict	= "yes";
 };
 
@@ -2625,7 +2721,9 @@ irc2numerics = {
    numeric	= "485";
    origin	= "RFC2812";
    format	= ":<reason>";
-   comment	= "Any mode requiring 'channel creator' privileges returns this error if the client is attempting to use it while not a channel creator on the given channel";
+   comment	= "Any mode requiring 'channel creator' privileges returns "
+                  "this error if the client is attempting to use it while "
+		  "not a channel creator on the given channel";
 };
 
 irc2numerics = {
@@ -2692,7 +2790,9 @@ irc2numerics = {
    numeric	= "491";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Returned by OPER to a client who cannot become an IRC operator because the server has been configured to disallow the client's host";
+   comment	= "Returned by OPER to a client who cannot become an IRC "
+                  "operator because the server has been configured to "
+		  "disallow the client's host";
 };
 
 irc2numerics = {
@@ -2743,7 +2843,9 @@ irc2numerics = {
    numeric	= "501";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Returned by the server to indicate that a MODE message was sent with a nickname parameter and that the mode flag sent was not recognised";
+   comment	= "Returned by the server to indicate that a MODE message "
+                  "was sent with a nickname parameter and that the mode "
+		  "flag sent was not recognised";
 };
 
 irc2numerics = {
@@ -2751,14 +2853,14 @@ irc2numerics = {
    numeric	= "502";
    origin	= "RFC1459";
    format	= ":<reason>";
-   comment	= "Error sent to any user trying to view or change the user mode for a user other than themselves";
+   comment	= "Error sent to any user trying to view or change the "
+                  "user mode for a user other than themselves";
 };
 
 irc2numerics = {
    name		= "ERR_GHOSTEDCLIENT";
    numeric	= "503";
    origin	= "Hybrid";
-   conflict	= "yes";
 };
 
 irc2numerics = {
@@ -2767,8 +2869,10 @@ irc2numerics = {
    origin	= "AustHex";
    contact	= "dev@austnet.org";
    format	= ":<warning_text>";
-   comment	= "Warning about Virtual-World being turned off. To resolve this conflict RPL_MODECHANGEWARN could be used instead";
-   conflict	= "yes";
+   comment	= "Warning about Virtual-World being turned off. Obsoleted "
+                  "in favour for RPL_MODECHANGEWARN";
+   seealso	= "662";
+   obsolete	= "yes";
 };
 
 irc2numerics = {
@@ -2794,14 +2898,16 @@ irc2numerics = {
    name		= "ERR_TOOMANYWATCH";
    numeric	= "512";
    origin	= "Bahamut";
-   comment	= "Also known as ERR_NOTIFYFULL (aircd), I presume they are the same";
+   comment	= "Also known as ERR_NOTIFYFULL (aircd), I presume they are "
+                  "the same";
 };
 
 irc2numerics = {
    name		= "ERR_BADPING";
    numeric	= "513";
    origin	= "ircu";
-   comment	= "Any relation to ERR_BADPONG (Unreal, Ultimate) of the same number?";
+   comment	= "Any relation to ERR_BADPONG (Unreal, Ultimate) of the "
+                  "same number?";
 };
 
 irc2numerics = {
@@ -3175,8 +3281,9 @@ irc2numerics = {
    numeric	= "660";
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
-   format	= "<target> <hop#> [<address> [<hostname> | '*'] <μsec_ping>]";
-   comment	= "Returned from the TRACEROUTE IRC-Op command when tracerouting a host";
+   format	= "<target> <hop#> [<address> [<hostname> | '*'] <usec_ping>]";
+   comment	= "Returned from the TRACEROUTE IRC-Op command when "
+                  "tracerouting a host";
 };
 
 irc2numerics = {
@@ -3194,7 +3301,9 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "['+' | '-']<mode_char> :<warning>";
-   comment	= "Plain text warning to the user about turning on or off a user mode. If no '+' or '-' prefix is used for the mode char, '+' is presumed.";
+   comment	= "Plain text warning to the user about turning on or off a "
+                  "user mode. If no '+' or '-' prefix is used for the mode "
+		  "char, '+' is presumed.";
 };
 
 irc2numerics = {
@@ -3203,7 +3312,10 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<old_chan> <new_chan> :<info>";
-   comment	= "Used to notify the client upon JOIN that they are joining a different channel than expected because the IRC Daemon has been set up to map the channel they attempted to join to the channel they eventually will join.";
+   comment	= "Used to notify the client upon JOIN that they are joining "
+                  "a different channel than expected because the IRC Daemon "
+		  "has been set up to map the channel they attempted to "
+		  "join to the channel they eventually will join.";
 };
 
 irc2numerics = {
@@ -3212,7 +3324,8 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<server> <modes> <parameters>..";
-   comment	= "Reply to MODE <servername>. KineIRCd supports server modes to simplify configuration of servers; Similar to RPL_CHANNELMODEIS";
+   comment	= "Reply to MODE <servername>. KineIRCd supports server "
+                  "modes to simplify configuration of servers; Similar to RPL_CHANNELMODEIS";
 };
 
 irc2numerics = {
@@ -3221,7 +3334,9 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<nickname> <modes>";
-   comment	= "Reply to MODE <nickname> to return the user-modes of another user to help troubleshoot connections, etc. Similar to RPL_UMODEIS, however including the target";
+   comment	= "Reply to MODE <nickname> to return the user-modes of "
+                  "another user to help troubleshoot connections, etc. "
+		  "Similar to RPL_UMODEIS, however including the target";
 };
 
 irc2numerics = {
@@ -3239,7 +3354,9 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<nick> <type> :<information>";
-   comment	= "Returned by WHOWAS to return extended information (if available). The type field is a number indication what kind of information.";
+   comment	= "Returned by WHOWAS to return extended information (if "
+                  "available). The type field is a number indication what "
+		  "kind of information.";
 };
 
 irc2numerics = {
@@ -3248,7 +3365,9 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<nick> <type> [:<info>]";
-   comment	= "Reply to WHOIS command - Returned if the target is connected securely, eg. type may be TLSv1";
+   comment	= "Reply to WHOIS command - Returned if the target is "
+                  "connected securely, eg. type may be TLSv1, or SSLv2 etc. "
+		  "If the type is unknown, a '*' may be used.";
 };
 
 irc2numerics = {
@@ -3257,7 +3376,9 @@ irc2numerics = {
    origin	= "Ithildin";
    contact	= "wd@telekinesis.org";
    format	= "<modes> :<info>";
-   comment	= "Returns a full list of modes that are unknown when a client issues a MODE command (rather than one numeric per mode)";
+   comment	= "Returns a full list of modes that are unknown when a "
+                  "client issues a MODE command (rather than one numeric per "
+                  "mode)";
 };
 
 irc2numerics = {
@@ -3266,7 +3387,8 @@ irc2numerics = {
    origin	= "Ithildin";
    contact	= "wd@telekinesis.org";
    format	= "<modes> :<info>";
-   comment	= "Returns a full list of modes that cannot be set when a client issues a MODE command";
+   comment	= "Returns a full list of modes that cannot be set when a "
+                  "client issues a MODE command";
 };
 
 irc2numerics = {
@@ -3275,7 +3397,9 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<staff_online_count> :<info>";
-   comment	= "Reply to LUSERS command - Number of network staff (or 'helpers') online (differs from Local/Global operators). Similar format to RPL_LUSEROP";
+   comment	= "Reply to LUSERS command - Number of network staff (or "
+                  "'helpers') online (differs from Local/Global operators). "
+		  "Similar format to RPL_LUSEROP";
 };
 
 irc2numerics = {
@@ -3302,7 +3426,10 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "[<command> | '*'] :<text>";
-   comment	= "Reply to the HELP command, sent using a numeric rather than NOTICE so a client can format it appropriately. KineIRCd uses this to send only the correct parameter format of a command.";
+   comment	= "Reply to the HELP command, sent using a numeric rather "
+                  "than NOTICE so a client can format it appropriately. "
+		  "KineIRCd uses this to send only the correct parameter "
+		  "format of a command.";
 };
 
 irc2numerics = {
@@ -3311,7 +3438,9 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "[<command> | '*'] :<text>";
-   comment	= "Optional detailed information about a command (may be used more than once). KineIRCd uses this to send information about a command following RPL_HELP";
+   comment	= "Optional detailed information about a command (may be "
+                  "used more than once). KineIRCd uses this to send "
+		  "information about a command following RPL_HELP";
 };
 
 irc2numerics = {
@@ -3332,7 +3461,8 @@ irc2numerics = {
    contact	= "kineircd@alien.net.au";
    information	= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/kineircd/kineircd/doc/LANGUAGE?rev=HEAD";
    format	= "<code(s)> :<info>";
-   comment	= "Reply to the LANGUAGE command, informing the client of the language(s) it has set";
+   comment	= "Reply to the LANGUAGE command, informing the client of "
+                  "the language(s) it has set";
 };
 
 irc2numerics = {
@@ -3342,7 +3472,8 @@ irc2numerics = {
    contact	= "kineircd@alien.net.au";
    information	= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/kineircd/kineircd/doc/LANGUAGE?rev=HEAD";
    format	= "<code> <revision> <maintainer> <flags> * :<info>";
-   comment	= "A language reply to LANGUAGE when requesting a list of known languages";
+   comment	= "A language reply to LANGUAGE when requesting a list of "
+                  "known languages";
 };
 
 irc2numerics = {
@@ -3367,7 +3498,8 @@ irc2numerics = {
    contact	= "kineircd@alien.net.au";
    information	= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/kineircd/kineircd/doc/LANGUAGE?rev=HEAD";
    format	= "<nick> <language codes>";
-   comment	= "Reply to WHOIS command - A list of languages someone can speak. The codes are comma delimitered.";
+   comment	= "Reply to WHOIS command - A list of languages someone can "
+                  "speak. The language codes are comma delimitered.";
 };
 
 
@@ -3376,7 +3508,8 @@ irc2numerics = {
    numeric	= "716";
    origin	= "RatBox";
    format	= "<nick> :<info>";
-   comment	= "Sent to indicate the given target is set +g (server-side ignore)";
+   comment	= "Sent to indicate the given target is set +g (server-side "
+                  "ignore)";
 };
 
 irc2numerics = {
@@ -3384,7 +3517,9 @@ irc2numerics = {
    numeric	= "717";
    origin	= "RatBox";
    format	= "<nick> :<info>";
-   comment	= "Sent following a PRIVMSG/NOTICE to indicate the target has been notified of an attempt to talk to them while they are set +g";
+   comment	= "Sent following a PRIVMSG/NOTICE to indicate the target "
+                  "has been notified of an attempt to talk to them while "
+		  "they are set +g";
 };
 
 irc2numerics = {
@@ -3392,7 +3527,10 @@ irc2numerics = {
    numeric	= "718";
    origin	= "RatBox";
    format	= "<nick> <user>@<host> :<info>";
-   comment	= "Sent to a user who is +g to inform them that someone has attempted to talk to them (via PRIVMSG/NOTICE), and that they will need to be accepted (via the ACCEPT command) before being able to talk to them";
+   comment	= "Sent to a user who is +g to inform them that someone has "
+                  "attempted to talk to them (via PRIVMSG/NOTICE), and that "
+		  "they will need to be accepted (via the ACCEPT command) "
+		  "before being able to talk to them";
 };
 
 irc2numerics = {
@@ -3400,7 +3538,9 @@ irc2numerics = {
    numeric	= "771";
    origin	= "Ithildin";
    contact	= "wd@telekinesis.org";
-   comment	= "Used to send 'eXtended info' to the client, a replacement for the STATS command to send a large variety of data and minimise numeric pollution.";
+   comment	= "Used to send 'eXtended info' to the client, a "
+                  "replacement for the STATS command to send a large "
+		  "variety of data and minimise numeric pollution.";
 };
 
 irc2numerics = {
@@ -3455,7 +3595,12 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<nick> :<reason>";
-   comment	= "Returned from NOTICE, PRIVMSG or other commands to notify the user that they cannot send a message to a particular client. Similar to ERR_CANNOTSENDTOCHAN. KineIRCd uses this in conjunction with user-mode +R to allow users to block people who are not identified to services (spam avoidance)";
+   comment	= "Returned from NOTICE, PRIVMSG or other commands to notify "
+                  "the user that they cannot send a message to a particular "
+		  "client. Similar to ERR_CANNOTSENDTOCHAN. KineIRCd uses "
+		  "this in conjunction with user-mode +R to allow users to "
+		  "block people who are not identified to services (spam "
+		  "avoidance)";
 };
 
 irc2numerics = {
@@ -3464,7 +3609,8 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<modechar> :<info>";
-   comment	= "Returned by MODE to inform the client they used an unknown server mode character.";
+   comment	= "Returned by MODE to inform the client they used an "
+                  "unknown server mode character.";
 };
 
 irc2numerics = {
@@ -3473,7 +3619,9 @@ irc2numerics = {
    origin	= "KineIRCd";
    contact	= "kineircd@alien.net.au";
    format	= "<target> :<info>";
-   comment	= "Returned by MODE to inform the client the server has been set mode +L by an administrator to stop server modes being changed";
+   comment	= "Returned by MODE to inform the client the server has "
+                  "been set mode +L by an administrator to stop server "
+		  "modes being changed";
 };
 
 irc2numerics = {
