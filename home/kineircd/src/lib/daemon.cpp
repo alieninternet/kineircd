@@ -74,11 +74,11 @@ namespace Daemon {
    
    Daemon::stages stage = Daemon::STAGE_INIT;
    
-   String networkName = "";
+   String networkName;
    
    struct timeval currentTime;
    String timeZone = "+0000"; // Assume GMT to start with..
-   String timeFlags = "";
+   String timeFlags;
    time_t startTime = 0;
    
 #ifdef HAVE_OPENSSL
@@ -1577,11 +1577,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 {
    bool toggle = true;
    int numModes = 0;
-   String param = "";
-   String toggleOnStr = "";
-   String toggleOffStr = "";
-   String toggleParamsOn = "";
-   String toggleParamsOff = "";
+   String param, toggleOnStr, toggleOffStr, toggleParamsOn, toggleParamsOff;
    
    for (String::size_type i = 0;
 	((i < modes.length()) && (numModes < MAX_MODES_PER_COMMAND));
@@ -1656,13 +1652,13 @@ String Daemon::processServerModes(Server *server, Handler *handler,
    }
 
    // Assembler the mode change string
-   String modeString = "";
+   String modeString;
    
    if (toggleOnStr.length()) {
-      modeString = String('+') + toggleOnStr;
+      modeString = '+' + toggleOnStr;
    }
    if (toggleOffStr.length()) {
-      modeString = modeString + String('-') + toggleOffStr;
+      modeString = modeString + '-' + toggleOffStr;
    }
    if (toggleParamsOn.length()) {
       modeString = modeString + toggleParamsOn;

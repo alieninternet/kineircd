@@ -257,11 +257,7 @@ void Channel::processModes(Handler *handler, User *user,
    
    bool toggle = true;
    int numModes = 0;
-   String param = "";
-   String toggleOnStr = "";
-   String toggleOffStr = "";
-   String toggleParamsOn = "";
-   String toggleParamsOff = "";
+   String param, toggleOnStr, toggleOffStr, toggleParamsOn, toggleParamsOff;
    
    for (String::size_type i = 0;
 	((i < modes.length()) && (numModes < MAX_MODES_PER_COMMAND));
@@ -339,7 +335,7 @@ void Channel::processModes(Handler *handler, User *user,
    }
 
    // Assemble the mode change string
-   String modeString = "";
+   String modeString;
    
    if (toggleOnStr.length()) {
       modeString = String('+') + toggleOnStr;
@@ -510,8 +506,7 @@ void Channel::sendKnock(User *from, String const &reason)
  */
 String Channel::makeModes(Channel *channel)
 {
-   String reply = "+";
-   String params = "";
+   String reply = "+", params;
    
    // Run through the list of standard modes and check what needs to be shown
    for (int i = 0; modeTable[i].letter != 0; i++) {

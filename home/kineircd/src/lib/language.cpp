@@ -42,7 +42,7 @@ namespace Lang {
    LangData *defaultLanguage = 0;
    
    // Language tag list for ISUPPORT
-   String ISUPPORTcodes = "";
+   String ISUPPORTcodes;
 }
 
 /* Do not change these lines unless you know how they are used/referenced or
@@ -103,7 +103,7 @@ bool Lang::loadLanguages(String const &directory,
 #else
    std::map <String, String *> langData;
 #endif
-   String line = "", tag = "", data = "";
+   String line, tag, data;
    unsigned int lineNum = 0;
    
    // Run through the directory list and look for files we want
@@ -130,15 +130,12 @@ bool Lang::loadLanguages(String const &directory,
 	 // Reset some variables
 	 LangData *lang = new LangData();
 	 langData.clear();
-	 line = "";
-	 tag = "";
-	 data = "";
+	 line = tag = data = "";
 	 lineNum = 0;
 	 
 	 while (!file.eof()) {
 	    // Clean-up
-	    tag = "";
-	    data = "";
+	    tag = data = "";
 	    
 	    // Read the line
 //	    file >> line;

@@ -193,7 +193,7 @@ void Connection::sendQueue(void)
    }
 #endif
 
-   String outdata = "";
+   String outdata;
    
    // Loop until the queue is either empty or we have enough to send
    for (;;) {

@@ -62,8 +62,7 @@ struct Server::modeTableStruct const Server::modeTable[] = {
  */
 String Server::makeModes(Server *server)
 {
-   String reply = "+";
-   String params = "";
+   String reply = "+", params;
    
    // Run through the list of standard modes and check what needs to be shown
    for (int i = 0; modeTable[i].letter != 0; i++) {

@@ -452,7 +452,7 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       }
       
       // Send the channel list(s)
-      String channels = "";
+      String channels;
       for (User::channel_map_t::iterator it = u->channels.begin();
 	   it != u->channels.end(); it++) {
 	 // Add this channel to the list, if it is not a 'hidden' channel

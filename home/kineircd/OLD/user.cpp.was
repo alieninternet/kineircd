@@ -213,8 +213,7 @@ String User::makeModes(modes_t modes)
 
 String User::makeModes(User *user)
 {
-   String reply = "+";
-   String params = "";
+   String reply = "+", params;
    
    // Run through the list of modes and check what needs to be shown
    for (int i = 0; modeTable[i].letter != 0; i++) {

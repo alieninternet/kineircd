@@ -661,11 +661,7 @@ String irc2userHandler::processUserModes(String &modes, StringTokens *tokens,
 {
    bool toggle = true;
    int numModes = 0;
-   String param = "";
-   String toggleOnStr = "";
-   String toggleOffStr = "";
-   String toggleParamsOn = "";
-   String toggleParamsOff = "";
+   String param, toggleOnStr, toggleOffStr, toggleParamsOn, toggleParamsOff;
 
    for (String::size_type i = 0; 
 	((i < modes.length()) && (numModes < MAX_MODES_PER_COMMAND));
@@ -756,7 +752,7 @@ String irc2userHandler::processUserModes(String &modes, StringTokens *tokens,
     * specs.. grr
     */
    if (!silent) {
-      String modeString = "";
+      String modeString;
       
       if (toggleOnStr.length()) {
 	 modeString = '+' + toggleOnStr;
@@ -1345,7 +1341,7 @@ void irc2userHandler::doNAMES(String const &param)
 	 matches++;
 #endif
 	 
-	 String reply = "";
+	 String reply;
 
 	 for (Channel::member_map_t::iterator it = c->members.begin();
 	      it != c->members.end(); it++) {
@@ -1456,7 +1452,7 @@ void irc2userHandler::parseACCEPT(irc2userHandler *handler, StringTokens *tokens
    
    // Are we listing?
    if (param == "*") {
-      String reply = "";
+      String reply;
       
       for (User::accept_set_t::iterator it = handler->user->accepts.begin();
 	   it != handler->user->accepts.end(); it++) {
@@ -2535,7 +2531,7 @@ void irc2userHandler::parseLANGUAGE(irc2userHandler *handler, StringTokens *toke
    
    // Grab the languages list
    StringTokens st(tokens->nextToken());
-   String languages = "";
+   String languages;
    int langCount = 0;
    LangData *ld = 0;
    bool gotLocal = false;

@@ -48,7 +48,7 @@ String Utils::baseXStr(unsigned long n, const base_type base)
 #endif
    
    long digit;
-   String tempStr = "";
+   String tempStr;
    
    while (n > 0) {
       digit = n % base;
@@ -92,7 +92,7 @@ StringMask Utils::fixToIdentityMask(const String &inMask)
    StringMask ret(inMask);
    return ret;
    
-   String nick = "", user = "", host = "", temp1 = "", temp2 = "", temp3 = "";
+   String nick, user, host, temp1, temp2, temp3;
    
    // Run through the given mask
    for (String::size_type i = inMask.length(); i--;) {

@@ -334,7 +334,7 @@ String Utils::SHA1::digestToStr(const digest_type &digest,
 				const base_type base,
 				const String::size_type pad)
 {
-   String output = "";
+   String output;
    
    for (unsigned char i = 5; i--;) {
       output += Utils::baseXStr(digest.l[i], base).prepad(pad, '0');
