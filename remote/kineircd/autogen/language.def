@@ -92,6 +92,11 @@ languages = {
    langCode		= "en";
    langName		= "English";
    langMaintainer	= "pickle@alien.net.au";
+
+   dialects = { // American English
+      dialect	= "US";
+      name	= "American";
+   };
 };
 
 languages = {
@@ -124,6 +129,7 @@ tag = {
    name		= "irc2_ERR_ALREADYREGISTERED";
    components	= "mod_irc2registrar";
    data_en	= "Unauthorised command (already registered)";
+   data_en_US	= "Unauthorized command (already registered)";
    data_fr	= "Commande non autorisée (déjà enregistré)";
    data_ja	= "あなたは既に登録される";
    data_tr	= "Bu komutu uygulamaya yetkiniz yok (önceden kaydedildi)";
