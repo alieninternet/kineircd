@@ -78,7 +78,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    sendNumeric(LibIRC2::Numerics::RPL_YOURHOST,
 	       GETLANG(irc2_RPL_YOURHOST,
 		       config().getOptionsServerName(),
-		       Kine::Version::versionFull));
+		       Kine::Version::version));
    
    // Tell the user when the server was created, not that they'd care (003)
    sendNumeric(LibIRC2::Numerics::RPL_CREATED,
