@@ -49,7 +49,7 @@ class registerHandler : public Handler {
    
    void sendGeneric(char const *, 
 		    String const &) const;	// Generic send routine
-   void sendNumeric(short, User *, 
+   void sendNumeric(Numerics::numeric_t, User *, 
 		    String const &) const;	// Minature send-numeric
 
    // Protocol Input

@@ -200,7 +200,7 @@ void Channel::processModes(Handler *handler, User *user,
    if (name[0] == '+') {
       if (handler) {
 	 handler->sendNumeric(Daemon::myServer(),
-			      ERR_NOCHANMODES, 0,
+			      Numerics::ERR_NOCHANMODES, 0,
 			      name + " :" +
 			      user->lang(Language::L_ERR_NOCHANMODES));
       }
@@ -226,7 +226,7 @@ void Channel::processModes(Handler *handler, User *user,
 	 // This language assignment should not presume local info!! :(
 	 handler->
 	   sendNumeric(Daemon::myServer(),
-		       ERR_NOTONCHANNEL, 0,
+		       Numerics::ERR_NOTONCHANNEL, 0,
 		       name + " :" +
 		       user->lang(Language::L_ERR_NOTONCHANNEL));
 	 return;
@@ -298,7 +298,7 @@ void Channel::processModes(Handler *handler, User *user,
 		  if (handler) {
 		     handler->
 		       sendNumeric(Daemon::myServer(),
-				   ERR_CANNOTCHANGECHANMODE, 0,
+				   Numerics::ERR_CANNOTCHANGECHANMODE, 0,
 				   String::printf("%c :%s",
 						  modes[i],
 						  (char const *)user->lang(Language::L_ERR_CANNOTCHANGECHANMODE)));
@@ -313,7 +313,7 @@ void Channel::processModes(Handler *handler, User *user,
 	 if (!gotModeChar && handler) {
 	    handler->
 	      sendNumeric(Daemon::myServer(),
-			  ERR_UNKNOWNMODE, 0,
+			  Numerics::ERR_UNKNOWNMODE, 0,
 			  String::printf("%c :%s",
 					 modes[i],
 					 (char const *)user->lang(Language::E_ERR_UNKNOWNMODE)));
@@ -531,7 +531,7 @@ bool Channel::toggleModeANONYMOUS(bool setting, Handler *handler, Channel *chann
       if (handler) {
 	 handler->
 	   sendNumeric(Daemon::myServer(),
-		       ERR_UNIQOPRIVSNEEDED, 0,
+		       Numerics::ERR_UNIQOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_UNIQOPRIVSNEEDED));
       }
@@ -544,7 +544,7 @@ bool Channel::toggleModeANONYMOUS(bool setting, Handler *handler, Channel *chann
        !(member->modes & ChannelMember::M_HALFOPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -574,7 +574,7 @@ bool Channel::toggleModeBAN(bool setting, Handler *handler, Channel *channel, Ch
 	 for (Channel::mask_list_t::iterator it = channel->bans.begin();
 	      it != channel->bans.end(); it++) {
 	    handler->sendNumeric(Daemon::myServer(),
-				 RPL_BANLIST, 0,
+				 Numerics::RPL_BANLIST, 0,
 				 String::printf("%s %s %s %lu",
 						(char const *)channel->name,
 						(char const *)(*it)->mask.getMask(),
@@ -583,7 +583,7 @@ bool Channel::toggleModeBAN(bool setting, Handler *handler, Channel *channel, Ch
 	 }
 
 	 handler->
-	   sendNumeric(Daemon::myServer(), RPL_ENDOFBANLIST, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::RPL_ENDOFBANLIST, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_RPL_ENDOFBANLIST));
       }
@@ -596,7 +596,7 @@ bool Channel::toggleModeBAN(bool setting, Handler *handler, Channel *channel, Ch
    if (member && !(member->modes & ChannelMember::M_OPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -655,7 +655,7 @@ bool Channel::toggleModeBANEXCEPT(bool setting, Handler *handler, Channel *chann
 	      it != channel->exceptions.end(); it++) {
 	    handler->
 	      sendNumeric(Daemon::myServer(),
-			  RPL_EXCEPTLIST, 0,
+			  Numerics::RPL_EXCEPTLIST, 0,
 			  String::printf("%s %s %s %lu",
 					 (char const *)channel->name,
 					 (char const *)(*it)->mask.getMask(),
@@ -664,7 +664,7 @@ bool Channel::toggleModeBANEXCEPT(bool setting, Handler *handler, Channel *chann
 	 }
 
 	 handler->
-	   sendNumeric(Daemon::myServer(), RPL_ENDOFEXCEPTLIST, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::RPL_ENDOFEXCEPTLIST, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_RPL_ENDOFEXCEPTLIST));
       }
@@ -677,7 +677,7 @@ bool Channel::toggleModeBANEXCEPT(bool setting, Handler *handler, Channel *chann
    if (member && !(member->modes & ChannelMember::M_OPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -748,12 +748,12 @@ bool Channel::toggleModeCHANOPER(bool setting, Handler *handler, Channel *channe
 	 // If they are a half oper, give them a better explanation
 	 if (member->modes & ChannelMember::M_HALFOPPED) {
 	    handler->
-	      sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	      sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 			  channel->name + " :" +
 			  member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
 	 } else {
 	    handler->
-	      sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	      sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 			  channel->name + " :" + 
 			  member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED_HALFOPERVSOPER));
 	 }
@@ -771,7 +771,7 @@ bool Channel::toggleModeCHANOPER(bool setting, Handler *handler, Channel *channe
    if (!u) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_NOSUCHNICK, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_NOSUCHNICK, 0,
 		       *param + " :" +
 		       member->getUser()->lang(Language::L_ERR_NOSUCHNICK_NICK));
       }
@@ -786,7 +786,7 @@ bool Channel::toggleModeCHANOPER(bool setting, Handler *handler, Channel *channe
       if (handler) {
 	 handler->
 	   sendNumeric(Daemon::myServer(),
-		       ERR_USERNOTINCHANNEL, 0,
+		       Numerics::ERR_USERNOTINCHANNEL, 0,
 		       String::printf("%s %s :%s",
 				      (char const *)u->nickname,
 				      (char const *)channel->name,
@@ -798,7 +798,7 @@ bool Channel::toggleModeCHANOPER(bool setting, Handler *handler, Channel *channe
    // Check if this user is immune from deopping
    if (u->modes & User::M_NONKICKABLE) {
       handler->
-	sendNumeric(Daemon::myServer(), ERR_ISCHANSERVICE, 0,
+	sendNumeric(Daemon::myServer(), Numerics::ERR_ISCHANSERVICE, 0,
 		    String::printf("%s %s :%s",
 				   (char const *)u->nickname,
 				   (char const *)channel->name,
@@ -854,7 +854,7 @@ bool Channel::toggleModeEVENT(bool setting, Handler *handler, Channel *channel, 
        !(member->modes & ChannelMember::M_HALFOPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -889,7 +889,7 @@ bool Channel::toggleModeHALFOPER(bool setting, Handler *handler, Channel *channe
       if (!(member->modes & ChannelMember::M_HALFOPPED) &&
 	  !(member->modes & ChannelMember::M_OPPED)) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
 	 return false;
@@ -901,7 +901,7 @@ bool Channel::toggleModeHALFOPER(bool setting, Handler *handler, Channel *channe
 	  !(member->modes & ChannelMember::M_HALFOPPED)) {
 	 if (handler) {
 	    handler->
-	      sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	      sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 			  channel->name + " :" +
 			  member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
 	 }
@@ -919,7 +919,7 @@ bool Channel::toggleModeHALFOPER(bool setting, Handler *handler, Channel *channe
    if (!u) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_NOSUCHNICK, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_NOSUCHNICK, 0,
 		       *param + " :" +
 		       member->getUser()->lang(Language::L_ERR_NOSUCHNICK_NICK));
       }
@@ -934,7 +934,7 @@ bool Channel::toggleModeHALFOPER(bool setting, Handler *handler, Channel *channe
       if (handler) {
 	 handler->
 	   sendNumeric(Daemon::myServer(),
-		       ERR_USERNOTINCHANNEL, 0,
+		       Numerics::ERR_USERNOTINCHANNEL, 0,
 		       String::printf("%s %s :%s",
 				      (char const *)u->nickname,
 				      (char const *)channel->name,
@@ -981,7 +981,7 @@ bool Channel::toggleModeINVITE(bool setting, Handler *handler, Channel *channel,
        !(member->modes & ChannelMember::M_HALFOPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -1012,7 +1012,7 @@ bool Channel::toggleModeINVITEALLOW(bool setting, Handler *handler, Channel *cha
 	      it != channel->invites.end(); it++) {
 	    handler->
 	      sendNumeric(Daemon::myServer(),
-			  RPL_INVITELIST, 0,
+			  Numerics::RPL_INVITELIST, 0,
 			  String::printf("%s %s %s %lu",
 					 (char const *)channel->name,
 					 (char const *)(*it)->mask.getMask(),
@@ -1021,7 +1021,7 @@ bool Channel::toggleModeINVITEALLOW(bool setting, Handler *handler, Channel *cha
 	 }
 
 	 handler->
-	   sendNumeric(Daemon::myServer(), RPL_ENDOFINVITELIST, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::RPL_ENDOFINVITELIST, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_RPL_ENDOFINVITELIST));
       }
@@ -1034,7 +1034,7 @@ bool Channel::toggleModeINVITEALLOW(bool setting, Handler *handler, Channel *cha
    if (member && !(member->modes & ChannelMember::M_OPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -1091,7 +1091,7 @@ bool Channel::toggleModeKEY(bool setting, Handler *handler, Channel *channel, Ch
        !(member->modes & ChannelMember::M_HALFOPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -1102,7 +1102,7 @@ bool Channel::toggleModeKEY(bool setting, Handler *handler, Channel *channel, Ch
       // Make sure we are not resetting the key, got to unset it first
       if (channel->key.length()) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_KEYSET, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_KEYSET, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_KEYSET));
 	 return false;
@@ -1142,7 +1142,7 @@ bool Channel::toggleModeLIMIT(bool setting, Handler *handler, Channel *channel, 
        !(member->modes & ChannelMember::M_HALFOPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -1181,7 +1181,7 @@ bool Channel::toggleModeMODERATED(bool setting, Handler *handler, Channel *chann
        !(member->modes & ChannelMember::M_HALFOPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -1211,7 +1211,7 @@ bool Channel::toggleModeNOOUTSIDEMSG(bool setting, Handler *handler, Channel *ch
        !(member->modes & ChannelMember::M_HALFOPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -1241,7 +1241,7 @@ bool Channel::toggleModePRIVATE(bool setting, Handler *handler, Channel *channel
        !(member->modes & ChannelMember::M_HALFOPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -1271,7 +1271,7 @@ bool Channel::toggleModeREGNICKSONLY(bool setting, Handler *handler, Channel *ch
        !(member->modes & ChannelMember::M_HALFOPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -1301,7 +1301,7 @@ bool Channel::toggleModeSECRET(bool setting, Handler *handler, Channel *channel,
        !(member->modes & ChannelMember::M_HALFOPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -1331,7 +1331,7 @@ bool Channel::toggleModeTOPICLOCK(bool setting, Handler *handler, Channel *chann
        !(member->modes & ChannelMember::M_HALFOPPED)) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
       }
@@ -1401,7 +1401,7 @@ bool Channel::toggleModeVOICE(bool setting, Handler *handler, Channel *channel, 
 	  !(member->modes & ChannelMember::M_OPPED) &&
 	  !(member->modes & ChannelMember::M_HALFOPPED)) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 		       channel->name + " :" +
 		       member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
 	 return false;
@@ -1413,7 +1413,7 @@ bool Channel::toggleModeVOICE(bool setting, Handler *handler, Channel *channel, 
 	  !(member->modes & ChannelMember::M_HALFOPPED)) {
 	 if (handler) {
 	    handler->
-	      sendNumeric(Daemon::myServer(), ERR_CHANOPRIVSNEEDED, 0,
+	      sendNumeric(Daemon::myServer(), Numerics::ERR_CHANOPRIVSNEEDED, 0,
 			  channel->name + " :" +
 			  member->getUser()->lang(Language::L_ERR_CHANOPRIVSNEEDED));
 	 }
@@ -1431,7 +1431,7 @@ bool Channel::toggleModeVOICE(bool setting, Handler *handler, Channel *channel, 
    if (!u) {
       if (handler) {
 	 handler->
-	   sendNumeric(Daemon::myServer(), ERR_NOSUCHNICK, 0,
+	   sendNumeric(Daemon::myServer(), Numerics::ERR_NOSUCHNICK, 0,
 		       *param + " :" +
 		       member->getUser()->lang(Language::L_ERR_NOSUCHNICK_NICK));
       }
@@ -1446,7 +1446,7 @@ bool Channel::toggleModeVOICE(bool setting, Handler *handler, Channel *channel, 
       if (handler) {
 	 handler->
 	   sendNumeric(Daemon::myServer(),
-		       ERR_USERNOTINCHANNEL, 0,
+		       Numerics::ERR_USERNOTINCHANNEL, 0,
 		       String::printf("%s %s :%s",
 				      (char const *)u->nickname,
 				      (char const *)channel->name,

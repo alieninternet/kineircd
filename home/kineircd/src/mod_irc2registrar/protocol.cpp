@@ -102,7 +102,7 @@ void registerHandler::sendGeneric(char const *command,
  * Note: We do a cheap thing here with the numeric because we know it will
  * 	 be three digits and suffer no 0-prepadding issues.
  */
-void registerHandler::sendNumeric(short numeric, User *to, 
+void registerHandler::sendNumeric(Numerics::numeric_t numeric, User *to, 
 				  String const &line) const
 {
    getConnection()->
@@ -154,7 +154,7 @@ void registerHandler::parseLine(String const &line)
 #  endif
       handler->getConnection()->goodbye();
 # else
-      sendNumeric(ERR_UNKNOWNCOMMAND, 0, 
+      sendNumeric(Numerics::ERR_UNKNOWNCOMMAND, 0, 
 		  command + Language::L_ERR_UNKNOWNCOMMAND);
 # endif
       return;
@@ -183,7 +183,7 @@ void registerHandler::parseLine(String const &line)
 	    if (password.length()) {
 	       // something here.
 # ifndef PASSIVE_REGISTRATION      	 
-	       sendNumeric(ERR_PASSWDMISMATCH, 0,
+	       sendNumeric(Numerics::ERR_PASSWDMISMATCH, 0,
 			   Language::lang(Language::L_ERR_PASSWDMISMATCH));
 # endif
 # ifdef DEBUG_EXTENDED
@@ -198,7 +198,7 @@ void registerHandler::parseLine(String const &line)
 	    // Check if we are not full up on clients at the moment
 	    if (getConnection()->socket->getFD() > MAX_FD_NO_MORE_USERS) {
 # ifndef PASSIVE_REGISTRATION      	 
-	       sendNumeric(ERR_SERVERTOOFULL, 0, String(":") +
+	       sendNumeric(Numerics::ERR_SERVERTOOFULL, 0, String(":") +
 			   Language::lang(Language::L_ERR_SERVERTOOFULL));
 # endif
 # ifdef DEBUG
@@ -383,7 +383,7 @@ void registerHandler::parseCAPAB(registerHandler *handler, StringTokens *tokens)
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else
-      handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
+      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   String("CAPAB :") + 
 			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
 #endif
@@ -416,7 +416,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else
-      handler->sendNumeric(ERR_NONICKNAMEGIVEN, 0, String(':') +
+      handler->sendNumeric(Numerics::ERR_NONICKNAMEGIVEN, 0, String(':') +
 			   Language::lang(Language::L_ERR_NONICKNAMEGIVEN));
 #endif
       return;
@@ -427,7 +427,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else
-      handler->sendNumeric(ERR_ERRONEUSNICKNAME, 0,
+      handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
 			   nick + " :" +
 			   Language::lang(Language::L_ERR_ERRONEUSNICKNAME));
 #endif
@@ -450,7 +450,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
       handler->getConnection()->goodbye();
 #else
       handler->
-	sendNumeric(ERR_ERRONEUSNICKNAME, 0,
+	sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
 		    String::printf("%s :%s (%s)",
 				   (char const *)nick,
 				   (char const *)Language::lang(Language::L_ERR_ERRONEUSNICKNAME),
@@ -464,7 +464,7 @@ void registerHandler::parseNICK(registerHandler *handler, StringTokens *tokens)
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else
-      handler->sendNumeric(ERR_NICKNAMEINUSE, 0,
+      handler->sendNumeric(Numerics::ERR_NICKNAMEINUSE, 0,
 			   nick + " :" +
 			   Language::lang(Language::L_ERR_NICKNAMEINUSE));
 #endif
@@ -562,7 +562,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
 #  ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #  else
-      handler->sendNumeric(ERR_ALREADYREGISTERED, 0, String(':') +
+      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, String(':') +
 			   Language::lang(Language::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
@@ -575,7 +575,7 @@ void registerHandler::parseSERVER(registerHandler *handler, StringTokens *tokens
 # ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 # else
-      handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
+      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   String("SERVER :") +
 			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
 # endif
@@ -637,7 +637,7 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
 #  ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #  else
-      handler->sendNumeric(ERR_ALREADYREGISTERED, 0, String(':') +
+      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, String(':') +
 			   Language::lang(Language::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
@@ -650,7 +650,7 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
 # ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 # else
-      handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
+      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   String("SERVICE :") + 
 			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
 # endif
@@ -665,7 +665,7 @@ void registerHandler::parseSERVICE(registerHandler *handler, StringTokens *token
 #ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #else
-      handler->sendNumeric(ERR_ERRONEUSNICKNAME, 0,
+      handler->sendNumeric(Numerics::ERR_ERRONEUSNICKNAME, 0,
 			   name + " :" +
 			   Language::lang(Language::L_ERR_ERRONEUSNICKNAME));
 #endif
@@ -724,7 +724,7 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
 #  ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 #  else
-      handler->sendNumeric(ERR_ALREADYREGISTERED, 0, String(':') +
+      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, String(':') +
 			   Language::lang(Language::L_ERR_ALREADYREGISTERED));
       handler->getConnection()->goodbye();
 #  endif
@@ -737,7 +737,7 @@ void registerHandler::parseUSER(registerHandler *handler, StringTokens *tokens)
 # ifdef PASSIVE_REGISTRATION      	 
       handler->getConnection()->goodbye();
 # else
-      handler->sendNumeric(ERR_NEEDMOREPARAMS, 0,
+      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
 			   String("USER :") + 
 			   Language::lang(Language::L_ERR_NEEDMOREPARAMS));
 # endif

@@ -461,7 +461,7 @@ void Daemon::rehash(Handler *handler, User *user)
       // Tell the user, if there is a handler we are rehashing
       if (handler) {
 	 handler->
-	   sendNumeric(server, RPL_REHASHING, user,
+	   sendNumeric(server, Numerics::RPL_REHASHING, user,
 		       configFile + String(" :") +
 		       user->getLocalInfo()->lang(Language::L_RPL_REHASHING));
       }
@@ -1675,7 +1675,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 		  // Complain to the user that they cannot change this mode
 		  if (handler) {
 		     handler->
-		       sendNumeric(server, ERR_CANNOTCHANGESERVERMODE, 0,
+		       sendNumeric(server, Numerics::ERR_CANNOTCHANGESERVERMODE, 0,
 				   String::printf((char *)Language::L_ERR_CANNOTCHANGESERVERMODE,
 						  modes[i]));
 		  }
@@ -1688,7 +1688,7 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 	 // Check if we found a valid char. If not,c omplain if we can
 	 if (!gotModeChar && handler && user) {
 	    handler->
-	      sendNumeric(server, ERR_UNKNOWNSERVERMODE, 0,
+	      sendNumeric(server, Numerics::ERR_UNKNOWNSERVERMODE, 0,
 			  String::printf("%c :%s",
 					 modes[i],
 					 (char const *)user->lang(Language::E_ERR_UNKNOWNSERVERMODE)));

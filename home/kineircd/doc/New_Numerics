@@ -331,6 +331,14 @@ _______________________________________________________________________________
       true network-wide. Additional fields may be added to this in the future.
 
 
+835 - RPL_DUMMY_NUMERIC
+      Anything here!
+      This is a dummy numeric, put here to be something a client is always to
+      ignore. It is to be used when numerics have not been decided on, or are
+      conflicting, or any situtation really where a real concrete numeric
+      simply cannot be used. Just ignore it! :)
+
+
 990 - ERR_NOKNOCK
       <channel> :<reason>
       Indicate to a client that a knock to the given channel was not

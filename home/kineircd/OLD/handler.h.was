@@ -7,6 +7,7 @@
 
 class Handler;
 
+# include "numerics.h"
 # include "connection.h"
 # include "str.h"
 # include "server.h"
@@ -65,10 +66,11 @@ class Handler {
    virtual void sendNotice(Server *, User *, String const &) const {};
    virtual void sendNotice(User *, Channel *, String const &) const {};
    virtual void sendNotice(User *, User *, String const &) const {};
-   virtual void sendNotice(User *, StringMask const &, String const &) const 
+   virtual void sendNotice(User *, StringMask const &, String const &) const
      {};
    virtual void sendNoticeAnon(Channel *, String const &) const {};
-   virtual void sendNumeric(Server *, short, User *, String const &) const {};
+   virtual void sendNumeric(Server *, Numerics::numeric_t, User *, 
+			    String const &) const {};
    virtual void sendPart(Channel *, User *, String const &) const {};
    virtual void sendPing(void) const {};
    virtual void sendPrivmsg(Server *, User *, String const &) const {};

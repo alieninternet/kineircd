@@ -33,7 +33,7 @@ class irc2userHandler : public Handler {
 			   bool = false);	// Process a usermode request
    
    void sendGoodbye(String const &) const;	// Closing link message
-   void sendNumeric(short, String const &) 
+   void sendNumeric(Numerics::numeric_t, String const &) 
      const;					// Send numeric, breif
    void sendPong(String const &) const;		// PING reply
    void sendWhoReply(User *, Channel *,
@@ -123,7 +123,8 @@ class irc2userHandler : public Handler {
    void sendNotice(User *, User *, String const &) const;
    void sendNotice(User *, StringMask const &, String const &) const;
    void sendNoticeAnon(Channel *, String const &) const;
-   void sendNumeric(Server *, short, User *, String const &) const;
+   void sendNumeric(Server *, Numerics::numeric_t, User *, 
+		    String const &) const;
    void sendPart(Channel *, User *, String const &) const;
    void sendPing(void) const;
    void sendPrivmsg(Server *, User *, String const &) const;
