@@ -2222,7 +2222,8 @@ irc2numerics = {
    comment	= "Returned after receiving a NICK message which contains a "
                   "nickname which is considered invalid, such as it's "
 		  "reserved ('anonymous') or contains characters considered "
-		  "invalid for nicknames";
+		  "invalid for nicknames. This numeric is misspelt, but "
+		  "remains with this name for historical reasons :)";
    registration	= "yes";
 };
 
