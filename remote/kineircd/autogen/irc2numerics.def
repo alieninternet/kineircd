@@ -2059,7 +2059,6 @@ irc2numerics = {
    comment	= "Returned to a client which is attempting to send an "
                   "SQUERY (or other message) to a service which does not "
 		  "exist";
-   conflict	= "yes";
 };
 
 irc2numerics = {
