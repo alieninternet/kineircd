@@ -369,16 +369,6 @@ definition = {
       "core configuration settings for the daemon are kept.";
 
    definition = {
-      name = "Description";
-      hasVariable = yes;
-      varType = "AISutil::String";
-      varHandler = "varHandleString";
-      defaultValue = "\"Unconfigured server\"";
-      comment =
-         "This description appears in WHOIS messages, server listings etc.";
-   };
-
-   definition = {
       name = "ChGroup";
       comment =
          "This defines the GID (group identity) to switch to after the "
@@ -399,6 +389,28 @@ definition = {
       comment =
          "This defines the UID (user identity) to switch to after the "
 	 "configuration has loaded.";
+   };
+   
+   definition = {
+      name = "Description";
+      hasVariable = yes;
+      varType = "AISutil::String";
+      varHandler = "varHandleString";
+      defaultValue = "\"Unconfigured server\"";
+      comment =
+         "This description appears in WHOIS messages, server listings etc.";
+   };
+
+   definition = {
+      name = "EnableUsersCommand";
+      hasVariable = yes;
+      varType = "bool";
+      varHandler = "varHandleBoolean";
+      defaultValue = "false";
+      comment =
+         "Set this if you wish to allow users (connected to the server "
+	 "via a virtual terminal of some description) to be visible via the "
+	 "USERS command (or something similar).";
    };
    
    definition = {
