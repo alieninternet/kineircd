@@ -1,8 +1,8 @@
 /* $Id$
  * The IRC-2 user protocol class
  * 
- * Copyright (c) 2001,2002 Simon Butcher <pickle@alien.net.au>
- * Copyright (c) 2001,2002 KineIRCd Development Team
+ * Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+ * Copyright (c) 2001,2002,2003 KineIRCd Development Team
  * (See DEV-TEAM file for details)
  *
  * This file is a part of KineIRCd.
@@ -27,6 +27,7 @@
 #endif
 
 #include <iostream>
+#include <sstream>
 #include <kineircd/config.h>
 #include <kineircd/languages.h>
 #include <kineircd/version.h>
@@ -49,22 +50,45 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 {
    // vv temporary :)
    std::ostringstream output;
+
+   // Welcome the user to the server (001)
+   sendNumeric(LibIRC2::Numerics::RPL_WELCOME,
+	       GETLANG(irc2_RPL_WELCOME,
+		       user.getNickname(),
+		       user.getUsername(),
+		       user.getHostname()));
    
-   output <<
-     ':' << config().getOptionsServerName() << " 001 " << registrant.name <<
-     " :" << GETLANG(irc2_RPL_WELCOME, 
-		     "nick", "user", "host.name") << "\r\n:" <<
-     config().getOptionsServerName() << " 002 " << registrant.name <<
-     " :" << GETLANG(irc2_RPL_YOURHOST,
-		     config().getOptionsServerName(),
-		     Kine::Version::version) << "\r\n:" <<
-     config().getOptionsServerName() << " 003 " << registrant.name <<
-     " :" << GETLANG(irc2_RPL_CREATED,
-		     Kine::Version::buildTime) << "\r\n:" <<
-     config().getOptionsServerName() << " 004 " << registrant.name <<
-     " :?\r\n:" <<
+   // Tell the user about ourselves - hostname and version (002)
+   sendNumeric(LibIRC2::Numerics::RPL_YOURHOST,
+	       GETLANG(irc2_RPL_YOURHOST,
+		       config().getOptionsServerName(),
+		       Kine::Version::versionFull));
+   
+   // Tell the user when the server was created. Why?? (003)
+   sendNumeric(LibIRC2::Numerics::RPL_CREATED,
+	       GETLANG(irc2_RPL_CREATED,
+		       Kine::Version::buildTime));
+   
+   // Tell the user a little bit about what we know.. (004)
+   sendNumeric(LibIRC2::Numerics::RPL_MYINFO,
+	       config().getOptionsServerName(),
+	       Kine::Version::version,
+	       "umodes",
+	       "cmodes",
+	       "cparammodes",
+	       "uparammodes",
+	       "smodes",
+	       "sparammodes");
+   
+   // Tell the user a about what we can do.. (005)
+   sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
+	       /* stuff */
+	       GETLANG(irc2_RPL_ISUPPORT));
+     
+   // And then.. other stuff..
+   output << ':' <<
      config().getOptionsServerName() << " 251 " << registrant.name <<
-     " :♥ = ☮ & ☯\r\n:" <<
+     " :?\r\n:" <<
      config().getOptionsServerName() << " 252 0 " << registrant.name <<
      " :?\r\n:" <<
      config().getOptionsServerName() << " 253 0 " << registrant.name <<
@@ -101,9 +125,6 @@ void Protocol::parseMessage(const std::string& origin,
    
    // Did we find it? (most of the time we will find it
    if (commandInfo != 0) {
-      std::cout << "Found the command with a penalty rate of " <<
-	(unsigned int)commandInfo->penalty << std::endl;
-
       // Do we have enough parameters?
       if (parameters.size() >= commandInfo->minimumParams) {
 	 
@@ -112,10 +133,12 @@ void Protocol::parseMessage(const std::string& origin,
       }
       
       // Complain about not having enough parameters, and return
-
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS,
+		  GETLANG(irc2_ERR_NEEDMOREPARAMS));
       return;
    }
 
    // If we got here, the command was not found - tell the user the bad news
-   std::cout << "Command not found" << std::endl;
+   sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNCOMMAND,
+	       command, GETLANG(irc2_ERR_UNKNOWNCOMMAND));
 }

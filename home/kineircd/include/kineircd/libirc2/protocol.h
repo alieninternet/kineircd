@@ -80,30 +80,38 @@ namespace Kine {
 	   { return (!outputQueue.empty()); };
 	 
 	 // Send an appropriately formatted message
+	 template <class To, class Td, class Tc>
+	   void sendMessage(const To& origin, const Td& destination,
+			    const Tc& command)
+	   {
+	      std::ostringstream output;
+	      output << ':' << origin << ' ' << command << ' ' <<
+		destination << "\r\n";
+	      outputQueue.push(output.str());
+	   };
 	 template <class To, class Td, class Tc, class Tp>
 	   void sendMessage(const To& origin, const Td& destination,
 			    const Tc& command, const Tp& parameters)
 	   {
 	      std::ostringstream output;
-	      
-	      // Construct the line..
 	      output << ':' << origin << ' ' << command << ' ' <<
 		destination << ' ' << parameters << "\r\n";
-
-	      // Send the line!
 	      outputQueue.push(output.str());
 	   };
 	 
 	 // Send an appropriately formatted message, without TO/FROM fields
 	 template <class Tc, class Tp>
+	   void sendMessage(const Tc& command)
+	   {
+	      std::ostringstream output;
+	      output << command << "\r\n";
+	      outputQueue.push(output.str());
+	   };
+	 template <class Tc, class Tp>
 	   void sendMessage(const Tc& command, const Tp& parameters)
 	   {
 	      std::ostringstream output;
-	      
-	      // Construct the line..
 	      output << command << ' ' << parameters << "\r\n";
-	      
-	      // Send the line!
 	      outputQueue.push(output.str());
 	   };
       };
