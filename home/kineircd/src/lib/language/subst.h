@@ -35,9 +35,9 @@ namespace Kine {
 
 	 // Marker chars, substituted for internal processing of the strings
 	 static const wchar_t parameterMarkerChar =
-	   0x0000;
+	   0x0000; // = NUL, U+0000
 	 static const wchar_t newLineMarkerChar =
-	   0x0001;
+	   0x0085; // = NEL, U+0085
 
 	 /* Replacement glyphs, both used to substitute missing or erroneous
 	  * values of some description.
