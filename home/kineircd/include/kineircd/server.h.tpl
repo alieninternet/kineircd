@@ -70,6 +70,10 @@ namespace Kine {
       //! Check if the given mode is set
       const bool isModeSet(const Mode::mode_type mode) const
 	{ return (getModes() & mode); };
+      
+      //! Is this server hidden?
+      const bool isHidden(void) const
+	{ return isModeSet(Mode::HIDDEN); };
    }; // class Server
 }; // namespace Kine
 
