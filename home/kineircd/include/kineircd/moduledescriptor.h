@@ -36,11 +36,11 @@ namespace Kine {
 namespace Kine {
    class ModuleDescriptor {
     private:
-      void *handle;				// Module handle from dlopen()
-      const Module *module;			// The module's info itself
+      void* const handle;			// Module handle from dlopen()
+      Module& module;				// The module itself
       
       // Constructor
-      ModuleDescriptor(void *h, const Module *m)
+      ModuleDescriptor(void* const h, Module& m)
 	: handle(h),
           module(m)
 	{};
@@ -50,22 +50,17 @@ namespace Kine {
       ~ModuleDescriptor(void);
       
       // Return the module
-      const Module *getModule(void) const
+      const Module& getModule(void) const
 	{ return module; };
 
       // Load a module, hopefully. Returns 0 (null) if we failed
-      static ModuleDescriptor *loadModule(const AISutil::String &moduleFile,
-					  AISutil::String &errorReturn);
+      static ModuleDescriptor* const
+	loadModule(const AISutil::String& moduleFile,
+		   AISutil::String& errString);
       
       // Start a module
-      bool start(Daemon &daemon) {
-	 return module->getBasicInfo().startFunction(daemon);
-      }
-
-      // Stop a module
-      void stop(void) {
-	 module->getBasicInfo().stopFunction();
-      }
+      bool start(Daemon& daemon)
+	{ return module.start(daemon); }
    };
 };
 

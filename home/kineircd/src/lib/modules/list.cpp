@@ -34,67 +34,67 @@ using AISutil::String;
 /* loadModule - Load a module, check it and add it to our list if it is okay
  * Original 21/07/2002 simonb
  */
-ModuleDescriptor *ModuleList::loadModule(const String &moduleFile,
-					 String &errorReturn)
+ModuleDescriptor* const ModuleList::loadModule(const String& filename,
+					 String& errString)
 {
 #ifdef KINE_DEBUG_PSYCHO
-   debug("ModuleList::loadModule() - Trying to load " + moduleFile);
+   debug("ModuleList::loadModule() - Trying to load " + filename);
 #endif
 
    // Load the module
-   ModuleDescriptor *moduleDesc =
-     ModuleDescriptor::loadModule(moduleFile, errorReturn);
+   ModuleDescriptor *descriptor =
+     ModuleDescriptor::loadModule(filename, errString);
    
    // Make sure it loaded happily
-   if (moduleDesc == 0) {
+   if (descriptor == 0) {
       return 0;
    }
 
 #ifdef KINE_DEBUG_EXTENDED
-   debug("ModuleList::loadModule() - Loaded module: " + moduleFile);
+   debug("ModuleList::loadModule() - Loaded module: " + filename);
 #endif
 
    // Does this module only want to be loaded once?
-   if ((moduleDesc->getModule()->getBasicInfo().flags & 
-	Module::basicInfo_type::Flags::UNIQUE_INSTANCE) &&
-       (modules.count(moduleDesc->getModule()->getKeyName()) > 1)) {
-      errorReturn = moduleDesc->getModule()->getVersionString() +
+   if ((descriptor->getModule().getInfo().flags &
+	Module::Flags::UNIQUE_INSTANCE) &&
+       (modules.count(descriptor->getModule().getKeyName()) > 1)) {
+      errString = descriptor->getModule().getVersionString() + 
 	" can only be loaded once";
-      delete moduleDesc;
+      delete descriptor;
       return 0;
    }
 
    // Okay then, if we got this far we can add this module to the list
    (void)modules.insert(modulesMap_type::value_type
-			(moduleDesc->getModule()->getKeyName(), moduleDesc));
+			(descriptor->getModule().getKeyName(), descriptor));
    
 #ifdef KINE_DEBUG_PSYCHO
-   debug("ModuleList::loadModule() - Added " + 
-	 moduleDesc->getModule()->getVersionString() + 
+   debug("ModuleList::loadModule() - Added " +
+	 descriptor->getModule().getVersionString() + 
 	 " to the module list (" + String::convert(modules.size()) +
 	 " modules currently loaded)");
    
    // If the module has the versionInfo variable, output that stuff too :)
-   if (moduleDesc->getModule()->getBasicInfo().versionInfo != 0) {
+   if (descriptor->getModule().getInfo().versionInfo != 0) {
       debug("ModuleList::loadModule() - Module has versionInfo list:");
       for (int i = 0;
-	   (*moduleDesc->getModule()->getBasicInfo().versionInfo)[i] != 0;
+	   descriptor->getModule().getInfo().versionInfo[i] != 0;
 	   i++) {
 	 debug(String("     -=> ") + 
-	       (*moduleDesc->getModule()->getBasicInfo().versionInfo)[i]);
+	       descriptor->getModule().getInfo().versionInfo[i]);
       }
    }
 #endif
    
-   // Smile, it all worked out okay
-   return moduleDesc;
+   // Smile, it all worked out okay :)
+   return descriptor;
 }
 
 
 /* startAll - Start all modules
  * Original 22/07/2002 simonb
  */
-void ModuleList::startAll(Daemon &daemon) const
+void ModuleList::startAll(Daemon& daemon) const
 {
 #ifdef KINE_DEBUG_EXTENDED
    debug("ModuleList::startAll() - Starting " + 
@@ -106,7 +106,7 @@ void ModuleList::startAll(Daemon &daemon) const
 	it != modules.end(); it++) {
 #ifdef KINE_DEBUG_PSYCHO
       debug("ModuleList::startAll() - Starting: " +
-	    (*it).second->getModule()->getVersionString());
+	    (*it).second->getModule().getVersionString());
 #endif
       (*it).second->start(daemon);
    }
@@ -128,9 +128,8 @@ void ModuleList::stopAll(void)
 	it != modules.end(); it++) {
 #ifdef KINE_DEBUG_PSYCHO
       debug("ModuleList::stopAll() - Stopping: " +
-	    (*it).second->getModule()->getVersionString());
+	    (*it).second->getModule().getVersionString());
 #endif
-      (*it).second->stop();
       delete (*it).second;
    }
    

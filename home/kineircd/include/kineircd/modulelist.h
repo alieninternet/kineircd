@@ -36,7 +36,8 @@ namespace Kine {
 namespace Kine {
    class ModuleList {
     private:
-      typedef std::multimap <const char *, ModuleDescriptor *> modulesMap_type;
+      typedef std::multimap <const char* const, ModuleDescriptor* const>
+	modulesMap_type;
       modulesMap_type modules;
       
     public:
@@ -49,11 +50,11 @@ namespace Kine {
 	{ stopAll(); };
       
       // Load a module, return false if we failed (reason in 'errorReturn')
-      ModuleDescriptor *loadModule(const AISutil::String &moduleFile,
-				   AISutil::String &errorReturn);
+      ModuleDescriptor* const loadModule(const AISutil::String &moduleFile,
+					 AISutil::String &errString);
       
       // Start all modules
-      void startAll(Daemon &daemon) const;
+      void startAll(Daemon& daemon) const;
       
       // Stop and unload all modules
       void stopAll(void);

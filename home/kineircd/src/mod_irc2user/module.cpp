@@ -28,29 +28,8 @@
 
 
 namespace {
-   /* moduleStart - Fire up the module
-    * Original 05/10/2002 simonb
-    */
-   static KINE_MODULE_START(moduleStart) {
-#ifdef KINE_DEBUG
-      std::cerr << "Hello, my name is mod_irc2user ;)" << std::endl;
-#endif
-      
-      // Be happy :)
-      return true;
-   }
-
-
-   /* moduleStop - Shut down the module
-    * Original 05/10/2002 simonb
-    */
-   static KINE_MODULE_STOP(moduleStop) {
-      // something here one day..
-   }
-   
-
-   // Basic information about this module
-   static const Kine::Module::basicInfo_type moduleInfo = {
+   // Information about this module
+   static const Kine::Module::Info info = {
       // Firstly, we list the version/copyright information for this module
       MOD_IRC2USER_NAME_SHORT,
       MOD_IRC2USER_NAME_LONG,
@@ -62,18 +41,41 @@ namespace {
       0,
 
       // Flags to define how we need to be run
-      Kine::Module::basicInfo_type::Flags::UNIQUE_INSTANCE,
+      Kine::Module::Flags::UNIQUE_INSTANCE,
 
       // Configuration stuff
-      0,
-	
-      // Our start and stop functions
-      &moduleStart,
-      &moduleStop
+      0
    };
+
+
+   class mod_irc2user : public Kine::Module {
+    public:
+      // Constructor
+      mod_irc2user(void)
+	{};
+      
+      // Destructor
+      ~mod_irc2user(void)
+	{};
+      
+      // Return the information
+      const Kine::Module::Info& getInfo(void) const
+	{ return info; };
+      
+      /* moduleStart - Fire up the module
+       * Original 05/10/2002 simonb
+       */
+      bool start(Kine::Daemon& daemon) {
+#ifdef KINE_DEBUG
+	 std::cerr << "Hello, my name is mod_irc2user ;)" << std::endl;
+#endif
+	 
+	 // Be happy :)
+	 return true;
+      };
+   }; // class mod_irc2user
 }; // namespace {anonymous}
 
 
-KINE_MODULE_INIT {
-   return new Kine::Module(moduleInfo);
-}
+// The initialisation function, called by Kine
+KINE_MODULE_INIT { return new mod_irc2user(); };

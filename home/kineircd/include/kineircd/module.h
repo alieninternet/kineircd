@@ -34,7 +34,7 @@ namespace Kine {
 
 // Template for the function which initialises the module and returns the info
 # define KINE_MODULE_INIT_PROTOTYPE(x) \
-   const Kine::Module* x(void)
+   Kine::Module* const x(void)
 
 // The correct name of the symbol which is searched for by dlopen()
 # define KINE_MODULE_INIT_SYMBOL_NAME \
@@ -44,31 +44,24 @@ namespace Kine {
 # define KINE_MODULE_INIT \
    extern "C" KINE_MODULE_INIT_PROTOTYPE(KineIRCdModuleInit)
 
-// Template for the function which triggers a module to start
-# define KINE_MODULE_START(x) \
-   bool x(Kine::Daemon& daemon)
-
-// Template for the function which triggers a module to stop
-# define KINE_MODULE_STOP(x) \
-   void x(void)
-
 namespace Kine {
+   // The module class modules inherit themselves from
    class Module {
     public:
-      // Type definition for the version information array
-      typedef const char* const (versionInfo_type)[];
-      
-      // The functions all modules are required to have - start and stop
-      typedef KINE_MODULE_START(startFunction_type);
-      typedef KINE_MODULE_STOP(stopFunction_type);
+      // Flags to determine how this module needs to be configured
+      struct Flags { // <=- should be namespace?
+	 enum type {
+	    NONE = 0,			      // No flags set
+	    UNIQUE_INSTANCE	= 0x00000001  // No multiple instances
+	 };
+      };
       
       /* This structure defines information about the module itself. Each 
-       * module must have one of these present to define parameters about the 
+       * module must have one of these present to define parameters about the
        * module so that the server has some idea of how to handle it, what
-       * version it is and so on. This is only the basic information necessary
-       * for the module, and hense every module needs this information.
+       * version it is and so on.
        */
-      struct basicInfo_type {
+      struct Info {
 	 /* Name and version information of the module.
 	  * Note that the full module version will be seen as follows:
 	  * <nameShort>-<versionMajor>.<versionMinor>.<versionPatchLevel>
@@ -90,66 +83,46 @@ namespace Kine {
 	  * sure characters are in UTF-8. If there is no information you want
 	  * listed, simply set this pointer to 0.
 	  */
-	 const versionInfo_type* const versionInfo;
+	 const char* const* versionInfo;
 
-	 // Flags to determine how this module needs to be configured
-	 struct Flags { // <=- should be namespace?
-	    enum type {
-	       NONE = 0,			      // No flags set
-	       UNIQUE_INSTANCE		= 0x00000001  // No multiple instances
-	    };
-	 };
-	 const int flags;
+	 // Flags, see the list above
+	 const long flags;
 
 	 // Configuration info (optional, set to 0 if you don't want it)
 	 const AISutil::ConfigParser::defTable_type* const configDefinitions;
 	 
-	 // The two required functions - start and stop
-	 const startFunction_type* const startFunction;
-	 const stopFunction_type* const stopFunction;
-	 
-	 // Padding, for future use (ignore this, or fill it with 0's)
-	 char _padding[24];
-	 
 	 // This little function checks if the stuff above is valid
 	 const bool isOkay(void) const {
-	    return ((nameShort != 0) && (nameLong != 0) && (copyright != 0) &&
-		    (startFunction != 0) && (stopFunction != 0));
+	    return ((nameShort != 0) && (nameLong != 0) && (copyright != 0));
 	 };
       };
 
-    private:
-      // Basic information about this module
-      const basicInfo_type& basicInfo;
-
-      // The configuration data class (optional)
-      AISutil::ConfigData* const configData;
-
-    public:
+    protected:
       // Constructor
-      Module(const basicInfo_type& bi, AISutil::ConfigData* const cd = 0)
-	: basicInfo(bi),
-          configData(cd)
+      Module(void)
         {};
       
+    public:
       // Destructor
-      ~Module(void)
+      virtual ~Module(void)
 	{};
-
-      // Return the basic information about the module
-      const basicInfo_type& getBasicInfo(void) const
-	{ return basicInfo; };
-
-      // Return the configuration data class pointer
-      AISutil::ConfigData* const getConfigData(void) const
-	{ return configData; };
       
-      // Return the name (from the basic information) in full version format
-      AISutil::String getVersionString(void) const;
+      // Return the information about the module
+      virtual const Info& getInfo(void) const = 0;
+      
+      // Return the configuration data class pointer
+      virtual AISutil::ConfigData* const getConfigData(void) const
+	{ return 0; };
+      
+      // Start the module
+      virtual bool start(Kine::Daemon& daemon) = 0;
+      
+      // Return the name (from the information) in full version format
+      const AISutil::String getVersionString(void) const;
       
       // Return a name worthy enough to be used as a key in a map
       const char* const getKeyName(void) const
-	{ return basicInfo.nameShort; };
+	{ return getInfo().nameShort; };
    };
 };
    

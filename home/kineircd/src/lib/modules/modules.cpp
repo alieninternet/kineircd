@@ -35,23 +35,23 @@ using AISutil::String;
 /* getVersionString - Return the module name in full version format
  * Original 22/07/2002 simonb
  */
-String Module::getVersionString(void) const
+const String Module::getVersionString(void) const
 {
    std::ostringstream output;
    
    // Add the start of the string, these are required fields
-   output << basicInfo.nameShort << '-' << 
-     (unsigned int)basicInfo.versionMajor << '.' << 
-     (unsigned int)basicInfo.versionMinor;
+   output << getInfo().nameShort << '-' << 
+     (unsigned int)getInfo().versionMajor << '.' << 
+     (unsigned int)getInfo().versionMinor;
    
    // Do we need to add the patch level?
-   if (basicInfo.versionPatchLevel > 0) {
-      output << '.' << basicInfo.versionPatchLevel;
+   if (getInfo().versionPatchLevel > 0) {
+      output << '.' << getInfo().versionPatchLevel;
    }
    
    // Do we need to add the extra version info?
-   if (basicInfo.versionExtra != 0) {
-      output << basicInfo.versionExtra;
+   if (getInfo().versionExtra != 0) {
+      output << getInfo().versionExtra;
    }
    
    return output.str();
