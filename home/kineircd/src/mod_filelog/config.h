@@ -45,8 +45,8 @@ namespace Kine {
 	 // Constructor
 	 Config(void)
 	   : defFilename("./kineircd.log"),
-	     defFormat("%Y%m%d%H%M%S%!%$%n"),
-	     defUTC(false)
+	     defFormat("%Y%m%dT%H%M%SZ %! %$%n"),
+	     defUTC(true)
 	   {};
 	 
 	 // Destructor
