@@ -27,7 +27,10 @@
 #endif
 #include "kineircd/kineircdconf.h"
 
+#include <cctype>
+
 #include "kineircd/languages.h"
+#include "kineircd/config.h"
 #include "libkineircd/debug.h"
 
 using namespace Kine;
@@ -40,7 +43,7 @@ Languages* Languages::instance = 0;
 
 // Two replacement characters..
 const char* const Languages::replacementObjectGlyph = 
-  "\357\227\274"; // <=- Unicode U0FFFC; UTF-8 0xEF 0xBF 0xBC
+  "\357\277\274"; // <=- Unicode U0FFFC; UTF-8 0xEF 0xBF 0xBC
 const char* const Languages::replacementCharacterGlyph =
   "\357\277\275"; // <=- Unicode U0FFFD; UTF-8 0xEF 0xBF 0xBD
 
@@ -150,7 +153,7 @@ const std::string Languages::get(const std::string& languageCode,
    
    // Find the tag..
 //   const std::string& tagData = something;
-   const std::string tagData("This is tag data");
+   const std::string tagData("This is tag data \0N \0p0 \0p1 \0q9", 31);
    
    /* If the null character (used to mark necessary substitutions) is missing
     * from the tag data, then we do not need to do any processing. Is this
@@ -162,11 +165,110 @@ const std::string Languages::get(const std::string& languageCode,
       return tagData;
    }
    
-   // Our "reply string" - this is what we will return after processing
-   std::string reply("Tag was supposed to be processed");
+   // Our output string; this is what we will return after processing
+   std::string output;
+   
+   // Run through the tag data string and substitute anything we can
+   for (std::string::size_type i = 0; i < tagData.length(); i++) {
+      // Is this a substitution?
+      if (tagData[i] == '\0') {
+	 // Make sure there is more on the line..
+	 if ((i + 1) >= tagData.length()) {
+	    // Just skip it - eek!
+	    break;
+	 }
+	 
+	 // What do we do with this substitution?
+	 switch (tagData[++i]) {
+	  case 'a': // The name of the server's administrator
+	    output += config().getAdministratorName();
+	    continue;
+	    
+	  case 'A': // The contact point of the server's administrator (e-mail)
+	    output += config().getAdministratorContact();
+	    continue;
+	    
+	  case 'd': // The description of the server
+	    output += config().getOptionsDescription();
+	    continue;
+	    
+	  case 'L': // The location of the server
+	    output += config().getAdministratorLocation();
+	    continue;
+	    
+	  case 'n': // The name of the server (its hostname)
+	    output += config().getOptionsServerName();
+	    continue;
+	    
+	  case 'N': // The name of the network (if there is one)
+	    output += config().getNetworkName();
+	    continue;
+	    
+	  case 'p':
+	  case 'P':
+	  case 'q':
+	  case 'Q': // A parameter substitution, from the given parameters list
+	    // Next char..
+	    i++;
+	    
+	    /* The next char must be a numeric digit, and we must have been
+	     * given parameters to work with! Otherwise, there's no point
+	     * working out WHICH parameter we're supposed to look at, is
+	     * there?
+	     */
+	    if ((parameters != 0) &&
+		(i <= tagData.length()) &&
+		(isdigit(tagData[i]))) {
+	       unsigned char paramNumber;
+	       
+	       // Work out the base parameter number..
+	       switch (tagData[i - 1]) {
+		case 'p':
+		  paramNumber = 0;
+		  break;
+		case 'P':
+		  paramNumber = 10;
+		  break;
+		case 'q':
+		  paramNumber = 20;
+		  break;
+		case 'Q':
+		  paramNumber = 30;
+	       }
+	       
+	       // Add on the supplementary parameter number
+	       paramNumber += (unsigned char)(tagData[i] - 0x30);
+	       
+	       // Do we have this parameter in our list??
+	       if ((parameterList_type::size_type)(paramNumber + 1) <=
+		   parameters->size()) {
+		  /* Fantastic, we must have been given this parameter.. Now
+		   * all we need to do is append it to out output string
+		   * and we're done with it - finally!
+		   * 
+		   * This look uglier than it really is - honest :(
+		   */
+		  output += *((*parameters)[paramNumber]);
+		  continue;
+	       }
+	    }
+	    
+	    // Throw a replacement char in place..
+	    output += replacementCharacterGlyph;
+	    continue;
+	      
+	  default: // NFI what this is supposed to be, use a replacement char
+	    output += replacementCharacterGlyph;
+	    continue;
+	 }
+      }
+      
+      // Copy this char flat
+      output += tagData[i];
+   }
    
    // Return the processed output
-   return reply;
+   return output;
 }
 
   
