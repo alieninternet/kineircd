@@ -27,16 +27,17 @@
 # include <kineircd/errors.h>
 
 namespace Kine {
+   class Entity;
    class Sender;
    
    /*!
     * \brief Abstract base class for \e receivers
     * 
-    * \e Receivers are objects which can receive messages from Sender
+    * \e Receivers a type of Entity which can receive messages from Sender
     * objects. Message types primarily include ordinary messages (or
     * <em>PRIVMSG</em>'s) and notices.
     */
-   class Receiver {
+   class Receiver : virtual public Entity {
     public:
       //! The 'directivity' of a recipient (acuteness of target specification)
       union Directivity {
@@ -106,6 +107,7 @@ namespace Kine {
    }; // class Receiver
 }; // namespace Kine
 
+# include <kineircd/entity.h>
 # include <kineircd/sender.h>
 
 #endif // _INCLUDE_KINEIRCD_RECEIVER_H_

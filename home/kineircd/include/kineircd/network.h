@@ -41,7 +41,7 @@ namespace Kine {
        * \copydoc Kine::Denizen::Denizen()
        */
       explicit Network(const AIS::Util::Time& _signonTime)
-	: Denizen(_signonTime)
+	: Entity(_signonTime)
 	{};
       
     public:

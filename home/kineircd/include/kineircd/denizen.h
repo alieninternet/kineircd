@@ -40,7 +40,7 @@ namespace Kine {
     * Since denizens connect to servers, they also have additional information
     * about themselves such as where they're connected from, and so forth.
     */
-   class Denizen : public Entity {
+   class Denizen : virtual public Entity {
     public:
       /*!
        * \brief Hop count type
@@ -50,13 +50,8 @@ namespace Kine {
       typedef unsigned int hopCount_type;
       
     protected:
-      /*!
-       * \brief Constructor
-       * 
-       * \copydoc Kine::Entity::Entity()
-       */
-      explicit Denizen(const AIS::Util::Time& _signonTime)
-	: Entity(_signonTime)
+      //! Constructor
+      Denizen(void)
 	{};
       
     public:

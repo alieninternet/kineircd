@@ -64,6 +64,16 @@ namespace Kine {
       const AIS::Util::Time signonTime;
 
       /*!
+       * \brief Default Constructor
+       * 
+       * It's recommended to use Entity(const AIS::Util::Time& _signonTime)
+       * for explicit initialisation of \a signonTime, specifically.
+       */
+      explicit Entity(void)
+	: signonTime() // Initialise the signonTime as zeros
+	{};
+      
+      /*!
        * \brief Constructor
        * 
        * You must provide an initialisation value for the \a signonTime field

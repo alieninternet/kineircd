@@ -27,7 +27,6 @@
 # include <map>
 # include <aisutil/time.h>
 
-# include <kineircd/entity.h>
 # include <kineircd/receiver.h>
 # include <kineircd/denizen.h>
 # include <kineircd/channelname.h>
@@ -45,7 +44,7 @@ namespace Kine {
     * is local to this server only, or is propagated over all servers on
     * this network).
     */
-   class Channel : public Entity, public Receiver {
+   class Channel : public Receiver {
     public:
       //! Channel member class
       class Member {

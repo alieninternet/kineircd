@@ -50,7 +50,7 @@ namespace Kine {
       //! Constructor
       explicit Client(const std::string& _hostname,
 		      const AIS::Util::Time& _signonTime)
-	: Denizen(_signonTime),
+	: Entity(_signonTime),
           hostname(_hostname),
           attentionGlyph('\0')
 	{};

@@ -62,7 +62,7 @@ namespace Kine {
       //! Constructor
       explicit Server(const std::string& _hostname,
 		      const AIS::Util::Time& _signonTime)
-	: Denizen(_signonTime),
+	: Entity(_signonTime),
           hostname(_hostname),
 	  modes(0)
 	{};
