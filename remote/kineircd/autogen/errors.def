@@ -29,23 +29,23 @@ errors = {
 };
 
 errors = {
+   name		= "NAME_HAS_BAD_CHARS";
+   reason	= "The name given has invalid characters";
+};
+
+errors = {
+   name		= "NAME_IS_IN_USE";
+   reason	= "The name given is already in use";
+};
+
+errors = {
+   name		= "NAME_TOO_LONG";
+   reason	= "The name given is too long to be acceptable";
+};
+
+errors = {
    name		= "NETWORK_EXISTS";
    reason	= "Network already in list";
-};
-
-errors = {
-   name		= "NICKNAME_HAS_BAD_CHARS";
-   reason	= "The nickname given has invalid characters";
-};
-
-errors = {
-   name		= "NICKNAME_IS_IN_USE";
-   reason	= "The nickname given is already in use";
-};
-
-errors = {
-   name		= "NICKNAME_TOO_LONG";
-   reason	= "The nickname given is too long to be acceptable";
 };
 
 errors = {
