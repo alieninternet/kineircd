@@ -24,6 +24,7 @@
 #include "kineircd/kineircdconf.h"
 
 #include "registrar.h"
+#include "regnumerics.h"
 #include "debug.h"
 
 using namespace Kine;
@@ -42,6 +43,55 @@ const Registrar::commandTable_type Registrar::commandTable[] = {
      { "USER",		&Registrar::parseUSER },
      { 0, 0 }
 };
+
+
+/* sendNumeric - Send a numeric (no payload)
+ * Original 12/08/2001 simonb
+ */
+void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric)
+{
+   /* Output the server name and the numeric (note, we do not pre-pad the
+    * numeric because all registration numerics are over 100 anyway!
+    */
+   std::cout <<
+     ':' << connection.getDaemon().getConfig().getOptionsServername() <<
+     ' ' << (int)numeric;
+   
+   // Determine the appropriate nickname.
+   if (nickname.empty()) {
+      std::cout << " *";
+   } else {
+      std::cout << ' ' << nickname;
+   }
+
+   // Terminate the line according to RFC1459
+   std::cout << "\r\n";
+}
+
+
+/* sendNumeric - Send a numeric (including payload)
+ * Original 12/08/2001 simonb
+ */
+void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
+			    const char* data)
+{
+   /* Output the server name and the numeric (note, we do not pre-pad the
+    * numeric because all registration numerics are over 100 anyway!
+    */
+   std::cout <<
+     ':' << connection.getDaemon().getConfig().getOptionsServername() <<
+     ' ' << (int)numeric;
+   
+   // Determine the appropriate nickname.
+   if (nickname.empty()) {
+      std::cout << " * ";
+   } else {
+      std::cout << ' ' << nickname << ' ';
+   }
+
+   // Output the payload and terminate the line
+   std::cout << data << "\r\n";
+}
 
 
 /* parseLine - Parse an incoming line
@@ -112,8 +162,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-//      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
-//			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
+      sendNumeric(RegistrationNumerics::ERR_ALREADYREGISTERED);
       connection.goodbye();
       return;
    }
@@ -128,14 +177,12 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseIIRCN)
  */
 KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseNICK)
 {
-//#ifdef ALLOW_CLIENT_CONNECTIONS
    // Rip the nick out, ignoring anything after a space
    String nick = line.nextToken();
    
    // Check we got a nickname from that..
    if (nick.empty()) {
-//      handler->sendNumeric(Numerics::ERR_NONICKNAMEGIVEN, 0, ':' +
-//			   Lang::lang(LangTags::L_ERR_NONICKNAMEGIVEN));
+      sendNumeric(RegistrationNumerics::ERR_NONICKNAMEGIVEN);
       return;
    }
    
@@ -254,7 +301,10 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parsePONG)
  */
 KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseQUIT)
 {
-   // Close the connection. No goodbye or anything
+   /* Close the connection. No goodbye or anything to prevent abuse. It is
+    * very rare for a connection to use the QUIT command during registration,
+    * if ever.
+    */
    connection.goodbye();
 }
 
@@ -273,17 +323,14 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVER)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-//      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
-//			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
+      sendNumeric(RegistrationNumerics::ERR_ALREADYREGISTERED);
       connection.goodbye();
       return;
    }
    
    // Check there are enough tokens
    if (line.countTokens() < 7) {
-//      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-//			   "SERVER :" +
-//			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
+      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "SERVER");
       return;
    }
 
@@ -336,17 +383,14 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-//      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
-//			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
+      sendNumeric(RegistrationNumerics::ERR_ALREADYREGISTERED);
       connection.goodbye();
       return;
    }
    
    // Check there are enough tokens
    if (line.countTokens() < 7) {
-//      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-//			   "SERVICE :" + 
-//			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
+      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "SERVICE");
       return;
    }
 
@@ -372,7 +416,7 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseSERVICE)
    // Ok, that name should be ok
    username = name;
  
-// Rip out the rest of the variables
+   // Rip out the rest of the variables
    (void)line.nextToken(); // ignored.. (RFC-2812: reserved)
    distribution = line.nextToken();
    (void)line.nextToken(); // ignored.. (RFC-2812: type)
@@ -408,17 +452,14 @@ KINE_LIB_REGISTRAR_FUNCTION(Registrar::parseUSER)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-//      handler->sendNumeric(Numerics::ERR_ALREADYREGISTERED, 0, ':' +
-//			   Lang::lang(LangTags::L_ERR_ALREADYREGISTERED));
+      sendNumeric(RegistrationNumerics::ERR_ALREADYREGISTERED);
       connection.goodbye();
       return;
    }
    
    // Check there are enough tokens
    if (line.countTokens() < 5) {
-//      handler->sendNumeric(Numerics::ERR_NEEDMOREPARAMS, 0,
-//			   "USER :" +
-//			   Lang::lang(LangTags::L_ERR_NEEDMOREPARAMS));
+      sendNumeric(RegistrationNumerics::ERR_NEEDMOREPARAMS, "USER");
       return;
    }
    

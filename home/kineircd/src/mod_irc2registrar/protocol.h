@@ -27,6 +27,7 @@
 # include "kineircd/protocol.h"
 # include "kineircd/listener.h"
 # include "kineircd/str.h"
+# include "regnumerics.h"
 
 # define KINE_LIB_REGISTRAR_FUNCTION(x) \
      void x(Kine::StringTokens& line)
@@ -72,6 +73,11 @@ namespace Kine {
 	 const handler_type Registrar::* const handler;	// Parser/Handler
       } static const commandTable[];
 
+      // Send a numeric
+      void sendNumeric(const RegistrationNumerics::numeric_type numeric);
+      void sendNumeric(const RegistrationNumerics::numeric_type numeric,
+		       const char* data);
+      
       // Appropriately parse a line of protocol
       void parseLine(const String& line);
 

@@ -27,8 +27,13 @@
 #ifndef _SRC_LIB_REGNUMERICS_H_
 # define _SRC_LIB_REGNUMERICS_H_ 1
 
-enum {
-#error "we must loop here in the template file and rip out appropriate numerics"
+namespace Kine {
+   namespace RegistrationNumerics {
+      enum numeric_type {[+FOR irc2numerics +][+IF (get "registration")+]
+      [+IF (or (get "obsolete") (get "conflict"))+]//[+ELSE+]  [+ENDIF+] [+name+] = [+numeric+],[+ENDIF+][+ENDFOR irc2numerics+]
+         _LAST_
+      };
+   };
 };
 
 #endif // _SRC_LIB_REGNUMERICS_H_

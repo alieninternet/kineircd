@@ -81,6 +81,11 @@ OBJECTS=$(SOURCES:.cpp=.$(LIBTOOL_OBJ_EXT))
 LIBS+=$(SSL_LIB) -ldl # libdl included temporarily, I think..
 LDFLAGS+=$(SSL_LDFLAGS)
 
+AUTOGEN_TPL=\
+	regnumerics.h.tpl
+
+AUTOGEN_OUT=$(basename $(AUTOGEN_TPL))
+
 ########################################################################
 
 include $(top_builddir)/make/rules
@@ -99,7 +104,7 @@ $(SUB_DIRS):
 	$(MAKE) -C $@
 
 
-$(TARGET): subdirs $(OBJECTS) $(ROBJECTS)
+$(TARGET): subdirs $(AUTOGEN_OUT) $(OBJECTS) $(ROBJECTS)
 #	$(LD) -r $(LDFLAGS) $(LIBS) -o $@ $(VER_OBJ) $(OBJECTS) $(ROBJECTS)
 	$(LIBTOOL) --mode=compile $(CXX) -prefer-pic \
 		   $(CXXFLAGS) $(VER_FLG) $(DEFS) $(INCDIRS) \
@@ -122,3 +127,6 @@ distclean: clean
 				\) -type f`
 
 
+# Customised .tpl to .h rules, since the template and the defs do not match
+regnumerics.h: regnumerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
+	$(AUTOGEN) -b $(basename $@) -T $< $(AUTOGEN_DEF_DIR)/irc2numerics.def
