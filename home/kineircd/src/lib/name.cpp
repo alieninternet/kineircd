@@ -52,6 +52,9 @@ inline static char irctolower(char c)
       
     case '\\':
       return '|';
+      
+    case '^':
+      return '~';
    }
    
    return std::tolower(c);
