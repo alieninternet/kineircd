@@ -67,22 +67,24 @@ namespace Kine {
 	 } static const commandTable[];
 	 
 	 // Send a numeric
-	 void sendNumeric(const LibIRC2::Numerics::numeric_type numeric)
-	   {
-	      sendMessageFrom(config().getOptionsServerName(), numeric,
-			      (registrantData.name.empty() ? 
-			       '*' : registrantData.name),
-			      "");
-	   };
-	 
-	 void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
-			  const char* const data)
-	   {
-	      sendMessageFrom(config().getOptionsServerName(), numeric,
-			      (registrantData.name.empty() ? 
-			       '*' : registrantData.name),
-			      data);
-	   };
+	 template <class Ta>
+	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
+			    const Ta& pa)
+	     {
+		sendMessageFrom(config().getOptionsServerName(), numeric,
+				(registrantData.name.empty() ?
+				 "*" : registrantData.name),
+				pa);
+	     };
+	 template <class Ta, class Tb>
+	   void sendNumeric(const LibIRC2::Numerics::numeric_type numeric,
+			    const Ta& pa, const Tb& pb)
+	     {
+		sendMessageFrom(config().getOptionsServerName(), numeric,
+				(registrantData.name.empty() ?
+				 "*" : registrantData.name),
+				pa, pb);
+	     };
 	 
 	 // Send an error message and disconnect
 	 void sendError(const std::string& error)

@@ -241,7 +241,9 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseCAPAB)
 {
    // Make sure we were given at least one parameter
    if (parameters.empty()) {
-      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "CAPAB");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS,
+		  "CAPAB",
+		  GETLANG(irc2_ERR_NEEDMOREPARAMS));
       return;
    }
 
@@ -272,14 +274,17 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseIIRCN)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED);
+      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED,
+		  GETLANG(irc2_ERR_ALREADYREGISTERED));
       connection.goodbye();
       return;
    }
 
    // Check there are enough tokens. We consider the description field optional
    if (parameters.size() < 6) {
-      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "IIRCN");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS,
+		  "IIRCN",
+		  GETLANG(irc2_ERR_NEEDMOREPARAMS));
       return;
    }
    
@@ -343,7 +348,8 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
 {
    // Check the parameter list, there must be one parameter at least..
    if (parameters.empty()) {
-      sendNumeric(LibIRC2::Numerics::ERR_NONICKNAMEGIVEN);
+      sendNumeric(LibIRC2::Numerics::ERR_NONICKNAMEGIVEN,
+		  GETLANG(irc2_ERR_NONICKNAMEGIVEN));
       return;
    }
    
@@ -378,7 +384,8 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
    
    // Check that the nickname is not already in use
    if (registry().findClient(nick)) {
-      sendNumeric(LibIRC2::Numerics::ERR_NICKNAMEINUSE);
+      sendNumeric(LibIRC2::Numerics::ERR_NICKNAMEINUSE,
+		  GETLANG(irc2_ERR_NICKNAMEINUSE));
       return;
    }
    
@@ -411,7 +418,9 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parsePASS)
    
    // We need at least one parameter here (the password itself, duh!)
    if (parameters.empty()) {
-      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "PASS");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS,
+		  "PASS",
+		  GETLANG(irc2_ERR_NEEDMOREPARAMS));
       return;
    }
    
@@ -503,7 +512,8 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVER)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED);
+      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED,
+		  GETLANG(irc2_ERR_ALREADYREGISTERED));
       connection.goodbye();
       return;
    }
@@ -512,7 +522,9 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVER)
     * RFC1459. However, we consider the info/description field optional.
     */
    if (parameters.size() < 3) {
-      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "SERVER");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS,
+		  "SERVER",
+		  GETLANG(irc2_ERR_NEEDMOREPARAMS));
       return;
    }
 
@@ -580,14 +592,17 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseSERVICE)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED);
+      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED,
+		  GETLANG(irc2_ERR_ALREADYREGISTERED));
       connection.goodbye();
       return;
    }
    
    // Check there are enough tokens
    if (parameters.size() < 6) {
-      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "SERVICE");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS,
+		  "SERVICE",
+		  GETLANG(irc2_ERR_NEEDMOREPARAMS));
       return;
    }
 
@@ -647,14 +662,17 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseUSER)
    
    // Make sure this connection has not already been given a registration mode
    if (registrationType != RegistrationType::NONE) {
-      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED);
+      sendNumeric(LibIRC2::Numerics::ERR_ALREADYREGISTERED,
+		  GETLANG(irc2_ERR_ALREADYREGISTERED));
       connection.goodbye();
       return;
    }
    
    // Check there are enough tokens
    if (parameters.size() < 4) {
-      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS, "USER");
+      sendNumeric(LibIRC2::Numerics::ERR_NEEDMOREPARAMS,
+		  "USER",
+		  GETLANG(irc2_ERR_NEEDMOREPARAMS));
       return;
    }
    
