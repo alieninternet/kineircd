@@ -66,3 +66,26 @@ void Commands::initInstance(void)
    // Okay, create ourselves then
    instance = new Commands();
 }
+
+
+/* findCommand - Find the given command, and return any info we have (if any)
+ * Original 01/04/2003 simonb
+ */
+const Commands::CommandInfo* const
+  Commands::findCommand(const std::string& name)
+{
+   // Look for the command..
+   commandsList_type::iterator it = commandsList.find(name);
+   
+   // Did we find it?
+   if (it != commandsList.end()) {
+      // We found it!! Since we did find it, increase the call count
+      (*it).second.callCount++;
+
+      // Return a pointer to this command's information
+      return &((*it).second);
+   }
+   
+   // We didn't find the command.. oh well..
+   return 0;
+}

@@ -100,6 +100,9 @@ namespace Kine {
 	 // Grab the single instance of ourself
 	 static Commands& getInstance(void)
 	   { return *instance; };
+	 
+	 // Find a command in the command list
+	 const CommandInfo* const findCommand(const std::string& name);
       };
    }; // namespace mod_irc2user
 }; // namespace Kine
