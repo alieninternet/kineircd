@@ -63,12 +63,19 @@ namespace Config {
 	},
 #endif
 	{
-	   "LISTEN",
-	     (void *)&Config::defListenerList,
+	   "LANGUAGES",
 	     0,
 	     0,
-	     &ListenerConfig::classHandler
+	     &defClassLanguages,
+	     0
 	},
+//	{
+//	   "LISTEN",
+//	     (void *)&Config::defListenerList,
+//	     0,
+//	     0,
+//	     &ListenerConfig::classHandler
+//	},
 	{
 	   "LOGGING",
 	     0,
@@ -186,6 +193,19 @@ namespace Config {
    // "ARBITERS.SERVERS" class
    const Kine::ConfigParser::defTable_type
      Kine::Config::defClassArbitersServers = {
+	{
+	   0,
+	     0,
+	     0,
+	     0,
+	     0
+	}
+   };
+
+
+   // "LANGUAGES" class
+   const Kine::ConfigParser::defTable_type
+     Kine::Config::defClassLanguages = {
 	{
 	   0,
 	     0,
@@ -329,13 +349,6 @@ namespace Config {
 	   "HIDDEN",
 	     (void *)&Config::defOptionsHidden,
 	     &varHandleBoolean,
-	     0,
-	     0
-	},
-	{
-	   "LANGUAGEDIR",
-	     0,
-	     0,
 	     0,
 	     0
 	},
