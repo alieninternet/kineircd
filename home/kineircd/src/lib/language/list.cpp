@@ -191,7 +191,7 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	 
 #ifdef KINE_DEBUG_PSYCHO
 	 debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
-	       ": Got control tag '" + tag + '\'');
+	       ": Tag '" + tag + "' - Control tag");
 #endif
 	 
 	 // Do something with the control tag? Huh? Huh?? :(
@@ -199,11 +199,6 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
       } else {
 	 LanguageData::tagID_type tagID;
 	 
-#ifdef KINE_DEBUG_PSYCHO
-	 debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
-	       ": Got tag '" + tag + '\'');
-#endif
-
 	 // Look for this tag in the dictionary
 	 tagDictionary_type::const_iterator it = tagDictionary.find(tag);
 	 
@@ -213,8 +208,9 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	    tagID = ++highestTagID;
 	    
 #ifdef KINE_DEBUG_PSYCHO
-	    debug("LanguageList::loadFile() - " + tag + ": TUID #" +
-		  String::convert(tagID) + " (new)");
+	 debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
+	       ": Tag '" + tag + "' - TID #" + String::convert(tagID) +
+	       " (new)");
 #endif
 
 	    // .. and insert its TUID into the tag dictionary
@@ -222,10 +218,11 @@ bool LanguageList::loadFile(const std::string& filename, String& errString)
 	      insert(tagDictionary_type::value_type(tag, tagID));
 	 } else {
 #ifdef KINE_DEBUG_PSYCHO
-	    debug("LanguageList::loadFile() - " + tag + ": TUID #" +
-		  String::convert(tagID) + " (found)");
+	 debug("LanguageList::loadFile() - Line " + String::convert(lineNum) +
+	       ": Tag '" + tag + "' - TID #" + String::convert(tagID) +
+	       " (found)");
 #endif
-	    
+
 	    // Use the tag ID we found
 	    tagID = (*it).second;
 	 }
