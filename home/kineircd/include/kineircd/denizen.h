@@ -59,6 +59,7 @@ namespace Kine {
       virtual ~Denizen(void)
 	{};
 
+
       /*!
        * \brief Return the hostname
        * 
@@ -96,7 +97,8 @@ namespace Kine {
        * \return The hostname representing the host of the denizen
        */
       virtual const std::string& getHostname(void) const = 0;
-      
+
+
       /*!
        * \brief Return the denizen's \e description field
        *
@@ -111,6 +113,7 @@ namespace Kine {
        * \return The \e description of the denizen
        */
       virtual const std::string& getDescription(void) const = 0;
+
 
       /*!
        * \brief Return the number of hops from \e us to this denizen
@@ -130,7 +133,8 @@ namespace Kine {
        */
       virtual const hopCount_type getHopCount(void) const
 	{ return 0; };
-      
+
+
       /*!
        * \brief Return a the server this denizen is connected to
        * 
