@@ -28,7 +28,6 @@
 
 #include <aisutil/string/tokens.h>
 #include <kineircd/config.h>
-#include <kineircd/version.h>
 
 #include "kineircd/irc2/protocol.h"
 
@@ -174,92 +173,4 @@ std::string Protocol::withdrawOutput(AISutil::Socket::blockSize_type amount)
    
    // Return the output
    return output;
-}
-
-
-/* sendISUPPORT - Send ISUPPORT information to the given user..
- * Original 24/08/2001 simonb
- */
-void Protocol::sendISUPPORT(const Kine::User& user)
-{
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_ISUPPORT,
-		 "isupport");
-}
-
-
-/* sendLUSERS - Send an LUSERS reply to the given user..
- * Original 13/08/2001 simonb
- */
-void Protocol::sendLUSERS(const Kine::User& user)
-{
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_LUSERCLIENT,
-		 "Stuff..");
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_LUSEROP,
-		 0,
-		 "luserop");
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_LUSERSTAFF,
-		 0,
-		 "luserstaff");
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_LUSERUNKNOWN,
-		 0,
-		 "luserunknown");
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_LUSERCHANNELS,
-		 0,
-		 0,
-		 "luserchannels");
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_LUSERME,
-		 "luserme");
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_LOCALUSERS,
-		 "localusers");
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_GLOBALUSERS,
-		 "globalusers");
-}
-
-
-/* sendMOTD - Send our MOTD to the given user..
- * Original 13/08/2001 simonb
- */
-void Protocol::sendMOTD(const Kine::User& user,
-			const bool justConnected)
-{
-   // Send the MOTD header
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_MOTDSTART,
-		 "start motd");
-
-   // Send this line
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_MOTD,
-		 "- This is MOTD data");
-   
-   // Send the MOTD footer
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_ENDOFMOTD,
-		 "end motd");
-}
-
-
-/* sendVERSION - Send a VERSION reply to the given user..
- * Original 24/08/2001 simonb
- */
-void Protocol::sendVERSION(const Kine::User& user)
-{
-   // Send the RPL_VERSION reply
-   sendMessageTo(config().getOptionsServerName(), user.getNickname(),
-		 Numerics::RPL_VERSION,
-		 config().getOptionsServerName(),
-		 Version::version,
-		 Version::versionChars);
-   
-   // Also send the RPL_ISUPPORT stuff
-   sendISUPPORT(user);
 }

@@ -84,14 +84,14 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 	       "smodes",
 	       "sparammodes");
    
-   // Tell the user a about what we can do.. (005)
-   sendISUPPORT(user);
-   
+   // Tell the user a about what we can do.. (005 numeric)
+   sendISUPPORT();
+
    // Send the LUSERS output, for some reason some clients want this??
-   sendLUSERS(user);
+   sendLUSERS();
    
-   // Send an MOTD, of some sort..
-   sendMOTD(user, true);
+   // Send an MOTD, of some sort.. maybe..
+   sendMOTD(true);
 }
 
 
@@ -160,6 +160,63 @@ void Protocol::parseMessage(const std::string& origin,
 	       GETLANG(irc2_ERR_UNKNOWNCOMMAND));
 }
 
+
+/* sendISUPPORT - Send ISUPPORT information to the user
+ * Original 24/08/2001 simonb
+ */
+void Protocol::sendISUPPORT(void)
+{
+   sendNumeric(LibIRC2::Numerics::RPL_ISUPPORT,
+	       "isupport");
+}
+
+
+/* sendLUSERS - Send a LUSERS reply to the user
+ * Original 13/08/2001 simonb
+ */
+void Protocol::sendLUSERS(void)
+{
+   sendNumeric(LibIRC2::Numerics::RPL_LUSERCLIENT,
+	       "Stuff..");
+   sendNumeric(LibIRC2::Numerics::RPL_LUSEROP,
+	       0,
+	       "luserop");
+   sendNumeric(LibIRC2::Numerics::RPL_LUSERSTAFF,
+	       0,
+	       "luserstaff");
+   sendNumeric(LibIRC2::Numerics::RPL_LUSERUNKNOWN,
+	       0,
+	       "luserunknown");
+   sendNumeric(LibIRC2::Numerics::RPL_LUSERCHANNELS,
+	       0,
+	       0,
+	       "luserchannels");
+   sendNumeric(LibIRC2::Numerics::RPL_LUSERME,
+	       "luserme");
+   sendNumeric(LibIRC2::Numerics::RPL_LOCALUSERS,
+	       "localusers");
+   sendNumeric(LibIRC2::Numerics::RPL_GLOBALUSERS,
+	       "globalusers");
+}
+
+
+/* sendMOTD - Send our MOTD to the user
+ * Original 13/08/2001 simonb
+ */
+void Protocol::sendMOTD(const bool justConnected)
+{
+   // Send the MOTD header
+   sendNumeric(LibIRC2::Numerics::RPL_MOTDSTART,
+	       "start motd");
+   
+   // Send this line
+   sendNumeric(LibIRC2::Numerics::RPL_MOTD,
+	       "- This is MOTD data");
+   
+   // Send the MOTD footer
+   sendNumeric(LibIRC2::Numerics::RPL_ENDOFMOTD,
+	       "end motd");
+}
 
 
 

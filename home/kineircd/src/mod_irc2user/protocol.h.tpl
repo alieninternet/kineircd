@@ -158,7 +158,12 @@ namespace Kine {
 			        user.getNickname(), numeric,
 			        pa, pb, pc, pd, pe, pf, pg, ph);	
 	     };
-	 
+
+	 // Common stuff to send :)
+	 void sendISUPPORT(void);
+	 void sendLUSERS(void);
+	 void sendMOTD(const bool justConnected = false);
+
 	 // Command handlers[+FOR commands+]
 	 handler_type handle[+command+];[+ENDFOR+]
       }; // class Protocol

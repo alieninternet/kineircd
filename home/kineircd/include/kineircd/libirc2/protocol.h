@@ -218,13 +218,6 @@ namespace Kine {
 		  " :" << ph << lineTerminator;
 		outputQueue.push(output.str());
 	     };
-	 
-	 // Some common information stuff which the user may want..
-	 void sendISUPPORT(const Kine::User& user);
-	 void sendLUSERS(const Kine::User& user);
-	 void sendMOTD(const Kine::User& user,
-		       const bool justConnected = false);
-	 void sendVERSION(const Kine::User& user);
       };
    }; // namespace LibIRC2
 }; // namespace Kine

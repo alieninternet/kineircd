@@ -27,6 +27,7 @@
 #endif
 
 #include <aisutil/string/mask.h>
+#include <kineircd/version.h>
 
 #include "mod_irc2user/protocol.h"
 #include "mod_irc2user/language.h"
@@ -209,7 +210,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLUSERS)
 {
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
-      sendLUSERS(user);
+      sendLUSERS();
       return;
    }
    
@@ -225,7 +226,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
 {
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
-      sendMOTD(user);
+      sendMOTD();
       return;
    }
    
@@ -277,7 +278,16 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleVERSION)
 {
    // If there are no parameters, the user was wants us to reply..
    if (parameters.empty()) {
-      sendVERSION(user);
+      // Send the RPL_VERSION reply
+      sendNumeric(LibIRC2::Numerics::RPL_VERSION,
+		  config().getOptionsServerName(),
+		  Version::version,
+		  Version::versionChars);
+      
+      // Also send the RPL_ISUPPORT stuff
+      sendISUPPORT();
+      
+      // We're done..
       return;
    }
    
