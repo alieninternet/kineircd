@@ -167,6 +167,11 @@ void ModuleList::stopAll(void)
       debug("ModuleList::stopAll() - Stopping: " +
 	    (*it)->getModule().getVersionString());
 #endif
+      
+      // Call the module's stop function
+      (*it)->getModule().stop();
+      
+      // Delete the module..
       delete (*it);
    }
    
