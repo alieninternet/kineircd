@@ -157,8 +157,6 @@ Exit::status_type Daemon::run(void)
 
    // The main loop!
    for (;;) {
-std::cout << "main loop start." << std::endl;
-      
       // Set the time
       setTime();
       
