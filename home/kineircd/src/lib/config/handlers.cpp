@@ -747,7 +747,8 @@ LIBAISUTIL_CONFIG_CLASS_HANDLER(Kine::Config::classHandleModule)
    }
    
    // Does the module have configuration data?
-   if (moduleDesc->getModule().getInfo().configDefinitions != 0) {
+   if ((moduleDesc->getModule().getInfo().configDefinitions != 0) &&
+       (moduleDesc->getModule().getConfigData() != 0)) {
       // Parse the module's configuration data
       return 
 	AISutil::ConfigParser::parse(configData, position,
