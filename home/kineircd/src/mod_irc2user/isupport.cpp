@@ -61,7 +61,7 @@ const char* const ISupport::preInitInfo[] = {
    "STATUSMSG=+%@",
 #endif
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_MODE
-   "CHANMODES=beI,k,l,imnpsta",
+   "CHANMODES=beIR,k,l,imnpsta",
 #endif
 #ifdef KINE_MOD_IRC2USER_HAVE_CMD_WALLCHOPS
    "WALLCHOPS",
