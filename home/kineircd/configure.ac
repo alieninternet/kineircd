@@ -646,7 +646,6 @@ AC_SUBST(INCDIRS)
 AC_OUTPUT([
 	include/kineircd/kineircdconf.h
 	Makefile
-	include/Makefile
 	install/Makefile
 	src/Makefile
 	src/lib/Makefile

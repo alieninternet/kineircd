@@ -2,10 +2,49 @@
 # Top make rules
 #
 
+# Include our rules
+include $(top_builddir)/config/automake.inc
+
+
+
+# Subdirectories we need to compile...
 SUBDIRS=\
-	include \
 	src \
 	install
+
+
+
+# KineIRCd library header files
+nobase_include_HEADERS=\
+	include/kineircd/channel.h \
+	include/kineircd/config.h \
+	include/kineircd/connection.h \
+	include/kineircd/daemon.h \
+	include/kineircd/errors.h \
+	include/kineircd/exit.h \
+	include/kineircd/handler.h \
+	include/kineircd/kineircdconf.h \
+	include/kineircd/languagedata.h \
+	include/kineircd/languagelist.h \
+	include/kineircd/listener.h \
+	include/kineircd/listenerlist.h \
+	include/kineircd/localuser.h \
+	include/kineircd/log.h \
+	include/kineircd/logger.h \
+	include/kineircd/module.h \
+	include/kineircd/moduledescriptor.h \
+	include/kineircd/modulelist.h \
+	include/kineircd/operator.h \
+	include/kineircd/password.h \
+	include/kineircd/protocol.h \
+	include/kineircd/server.h \
+	include/kineircd/signals.h \
+	include/kineircd/str.h \
+	include/kineircd/user.h \
+	include/kineircd/utils.h \
+	include/kineircd/version.h \
+	include/kineircd/whowas.h
+
 
 
 # Stuff that needs to go into the distribution but isn't implied
@@ -25,8 +64,16 @@ EXTRA_DIST=\
 	doc/rfc2810.txt \
 	doc/rfc2811.txt \
 	doc/rfc2812.txt \
-	doc/rfc2813.txt
+	doc/rfc2813.txt \
+	include/kineircd/kineircdconf.h.in
 	
+
+
+# Stuff we don't want distributed
+dist-hook:
+	rm -rf $(distdir)/kineircd/kineircdconf.h
+
+
 
 # A rule to download RFCs :)
 RFC_LOCATION=http://www.rfc-editor.org/rfc
