@@ -126,8 +126,10 @@ Numerics
       maintainer information, it too will be replaced with a '*'.
       
        Currently the following flags are possible:
-        'd' - Default language and is selected upon connection
-        's' - Currently selected as the server language being outputted
+        'd' - Default language and is selected upon connection (optional)
+	'i' - This language may be incomplete (optional)
+        's' - This language is a selected language (optional)
+	'S' - This language is selected as the primary language (required)
 
       The list is terminated with numeric 666 (command = 'LANGUAGE')
 
