@@ -162,6 +162,7 @@ void registerHandler::parseLine(String const &line)
       }
    }
    
+#if 0
    /* If we got a command, and we have at least a hostname and a username,
     * we can check if it is time to follow through with a registration
     */
@@ -351,6 +352,7 @@ void registerHandler::parseLine(String const &line)
 	 delete this;
       }
    }
+#endif
 }
 
 

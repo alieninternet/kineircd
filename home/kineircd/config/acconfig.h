@@ -334,11 +334,12 @@
   
   
 /* Define these depending on what protocols you want compiled in */
-# undef HAVE_IRC2USER_PROTOCOL
-# undef HAVE_IRC3USER_PROTOCOL
-# undef HAVE_P13SERVER_PROTOCOL
-# undef HAVE_P14SERVER_PROTOCOL
-
+# if 0
+#  undef HAVE_IRC2USER_PROTOCOL
+#  undef HAVE_IRC3USER_PROTOCOL
+#  undef HAVE_P13SERVER_PROTOCOL
+#  undef HAVE_P14SERVER_PROTOCOL
+# endif
   
 /* Define these depending on what compression you want added to the above */
 # ifdef HAVE_IRC2USER_PROTOCOL
