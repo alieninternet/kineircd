@@ -138,3 +138,20 @@ and code formatting information.
   versions of mirc too. If you have ANY doubt, please contact me
   (pickle@austnet.org) since I've spent quite some time dealing with
   numeric conflicts.
+  
+* CVS is VERY important. It is not just a tool to keep the source code
+  in sync with all the other developers, but it is also important to
+  keep track of what is being done to the code, and also what can be
+  undone. Update OFTEN, even if the edits are small -- once you have
+  completed a section (eg. a function, or a bug fix) please update.
+  Make sure you do the full 'cvs update' then 'cvs commit'. Also, it
+  is very highly recommended (read: People will get angry if you don't
+  do this) that you are subscribed to the development list
+  (dev@austnet.org). CVS commits notifications and logs are sent there
+  so that the entire development team can be aware of the actions.
+  Make sure you submit details logs of your changes. Logs which are
+  simplistic such as "fixed foo" are just as bad as simplistic code
+  comments and should be avoided. "Fixed foo to foo - 1 to fix the
+  slight oversight that was causing clients to be disconnected" is a
+  much better explanation of what was going on, and will help in
+  future revision tracking.
