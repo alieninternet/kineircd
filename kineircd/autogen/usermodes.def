@@ -1,6 +1,6 @@
 /* $Id$
  *
- * This file is Copyright (c) 2001,2002,2003 Simon Butcher
+ * This file is Copyright (c) 2001,2002,2003,2004 Simon Butcher
  *  <pickle@alien.net.au>
  *
  * This file is PUBLIC DOMAIN, to benifit the IRC developer community. If you
@@ -18,6 +18,7 @@ autogen definitions usermodes;
  *    irc2char     = "<mode char for irc2 based protocol(s)>";
  *    name         = "<mode name>";
  *  [ origin       = "<where the mode was found>"; ]
+ *  [ when	   = "<release version or announced date>"; ]
  *  [ contact      = "<point of contact associated with the mode>"; ]
  *  [ information  = "<url where to find more information>"; ]
  *  [ parameter    = "<parameter name>"; ]
