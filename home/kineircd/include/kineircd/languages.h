@@ -225,7 +225,7 @@ namespace Kine {
       languageDataMap_type languageDataMap;
       
       //! Our default language, to use if all else fails..
-      const LanguageData* defaultLanguage;
+      LanguageData* defaultLanguage;
       
       //! Our single instance (we exist once, and only once)
       static Languages* instance;

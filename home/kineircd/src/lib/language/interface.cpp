@@ -558,13 +558,21 @@ void Languages::processMaps(void) const
 Languages::LanguageData* const
   Languages::findByCode(const std::string& code) const
 {
+   String langCode = code;
+   langCode = langCode.toLower();
+   
    // Find the given language..
    const languageDataMap_type::const_iterator it =
-     languageDataMap.find(String(code).toLower());
+     languageDataMap.find(langCode);
    
    // Did we find the language?
    if (it != languageDataMap.end()) {
       return (*it).second;
+   }
+
+   // Okay.. well, maybe it is the default language?
+   if (langCode == defaultLanguageCode) {
+      return defaultLanguage;
    }
    
    // Could not find it..
