@@ -35,7 +35,6 @@
 # include <aisutil/string/string.h>
  
 # include <kineircd/utils.h>
-# include <kineircd/languagelist.h>
 # include <kineircd/listenerlist.h>
 # include <kineircd/modulelist.h>
  

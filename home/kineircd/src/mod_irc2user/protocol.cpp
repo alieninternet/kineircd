@@ -28,6 +28,7 @@
 
 #include <iostream>
 #include <kineircd/config.h>
+#include <kineircd/languages.h>
 
 #include "mod_irc2user/protocol.h"
 

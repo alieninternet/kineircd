@@ -143,7 +143,7 @@ const std::string Languages::get(const std::string& languageCode,
 				 const parameterList_type* const parameters)
 {
    // Check if the tag ID is 0, or larger than the highest known TID..
-   if ((tagID == 0) /*|| (tagID > something)*/) {
+   if ((tagID == 0) || (tagID > highestTagID)) {
       /* Return 'unknown' - we have no idea what to put here.. This is most
        * likely a missing tag from the language file(s), or a programmer has
        * done something nasty..

@@ -26,12 +26,15 @@
 # define _INCLUDE_KINEIRCD_LANGUAGES_H_ 1
 
 # include <set>
+# include <map>
 # include <string>
 # include <vector>
 
 # include <kineircd/receiver.h>
 
 namespace Kine {
+   class LanguageData;
+   
    class Languages {
     public:
       /* The tag identifier type (also referred to as a 'TID').
@@ -84,11 +87,33 @@ namespace Kine {
       typedef std::set < tagMap_type* > tagMaps_type;
       tagMaps_type tagMaps;
       
+      /* Our "Tag Dictionary". As language files are loaded, tags are thrown
+       * into the tag dictionary with a unique identifier for easier reference.
+       * Later, the tag table bindery can discover each tag's unique identifier
+       * to find the appropriate data within the language data vectors.
+       */
+# ifdef KINE_STL_HAS_HASH
+      typedef std::hash_map <std::string, Languages::tagID_type>
+	tagDictionary_type;
+# else
+      typedef std::map <std::string, Languages::tagID_type>
+	tagDictionary_type;
+# endif
+      tagDictionary_type tagDictionary;
+
+      // The highest known TID
+      tagID_type highestTagID;
+      
+      // Our default language, to use if all else fails..
+      const LanguageData* defaultLanguage;
+      
       // Our single instance (we exist once, and only once)
       static Languages* instance;
       
       // Constructor
       Languages(void)
+	: highestTagID(0),
+	  defaultLanguage(0)
 	{};
       
     public:
@@ -138,6 +163,11 @@ namespace Kine {
 			    const parameter_type& p2,
 			    const parameter_type& p3,
 			    const parameter_type& p4);
+      
+      /* Friends -- LanguageConfig:: needs to fiddle with our private bits..
+       * *giggles* ;)
+       */
+      friend struct LanguageConfig;
    }; // class Languages
 
    
@@ -152,5 +182,7 @@ namespace Kine {
    inline static Languages& langs(void)
      { return Languages::getInstance(); };
 }; // namespace Kine
+
+# include <kineircd/languagedata.h>
 
 #endif // _INCLUDE_KINEIRCD_LANGUAGES_H_

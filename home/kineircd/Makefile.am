@@ -165,7 +165,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/exit.h \
 	include/kineircd/kineircdconf.h \
 	include/kineircd/languagedata.h \
-	include/kineircd/languagelist.h \
 	include/kineircd/languages.h \
 	include/kineircd/listener.h \
 	include/kineircd/listenerlist.h \
@@ -195,7 +194,6 @@ libkineircd_la_SOURCES=\
 	src/libkineircd/language/config.h \
 	src/libkineircd/language/data.cpp \
 	src/libkineircd/language/interface.cpp \
-	src/libkineircd/language/list.cpp \
 	src/libkineircd/listener/listener.cpp \
 	src/libkineircd/listener/config.cpp \
 	src/libkineircd/listener/config.h \

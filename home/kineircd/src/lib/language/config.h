@@ -27,12 +27,10 @@
 
 # include <aisutil/config/parser.h>
 
-# include "kineircd/languagelist.h"
-
 namespace Kine {
-   namespace LanguageConfig {
+   struct LanguageConfig {
       // The variable handler
-      extern LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varHandler);
+      static LIBAISUTIL_CONFIG_VARIABLE_HANDLER(varHandler);
    };
 };
    
