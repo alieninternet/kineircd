@@ -128,7 +128,6 @@ static RETSIGTYPE signalHandler(int signum)
        case SIGINT:
        case SIGQUIT:
        case SIGTERM:
-       case SIGABRT:
 	 maskBit = Signals::PEACEFUL_DEATH;
 	 break;
 	 
@@ -176,9 +175,6 @@ struct {
      { SIGINT,		true },	// Interrupt from keyboard (^C)
      { SIGQUIT,		true },	// Quit from keyboard (^D)
      { SIGILL,		true },	// Illegal Instruction
-#ifdef SIGIOT
-     { SIGIOT,		true }, // IOT trap (SIGABRT)
-#endif
      { SIGFPE,		true },	// Floating point exception
      { SIGSEGV,		true },	// Invalid memory reference (segment violation)
      { SIGPIPE,		false },// Broken pipe: write to pipe with no readers
