@@ -66,7 +66,14 @@
  */
 [+ CASE (suffix) +][+ == cpp +]
 
-#include "[+(getenv "COMPONENT")+]/language.h"
+#include "[+
+   (if
+      (eq?
+         (getenv "SUBDIR")
+	 #f)
+      (getenv "COMPONENT")
+      (getenv "SUBDIR"))
+ +]/language.h"
 
 using namespace Kine;
 
