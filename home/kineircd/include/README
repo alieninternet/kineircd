@@ -1,4 +1,0 @@
-This is the include directory, where header files which are necessary to be
-included by the ENTIRE package are placed. However, this does not include
-header files related to the KineIRCd Library, they live in the 'kineircd'
-sub-directory herein.
