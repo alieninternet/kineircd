@@ -67,15 +67,25 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleADMIN)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
 {
+   static const char* const commandName = "AWAY";
+   
    // If there is a parameter, the user is going away
    if (!parameters.empty()) {
       // Set the user 'away'
-      (void)user.setAway(parameters[0]);
-      return;
+      if (user.setAway(parameters[0]) == Error::NO_ERROR) {
+	 return;
+      }
+   } else {
+      // No parameters were given, so the user is now here..
+      if (user.setHere() == Error::NO_ERROR) {
+	 return;
+      }
    }
-   
-   // No parameters were given, so the user is now here..
-   (void)user.setHere();
+
+   // What happened?? No idea..
+   sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
+	       commandName,
+	       GETLANG(irc2_ERR_UNKNOWNERROR));
 }
 
 
@@ -88,6 +98,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleAWAY)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
 {
+   static const char* const commandName = "HELP";
+   
    bool extended = false;
    AISutil::StringMask mask;
    
@@ -176,7 +188,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
    
    // Say bye bye
    sendNumeric(LibIRC2::Numerics::RPL_ENDOF_GENERIC,
-	       "HELP", mask,
+	       commandName, mask,
 	       GETLANG(irc2_RPL_ENDOF_GENERIC_HELP));
 }
 
@@ -189,6 +201,8 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleHELP)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
 {
+   static const char* const commandName = "LANGUAGE";
+   
    // If we do not have any parameters, we will list the languages available
    if (parameters.empty()) {
       // Run through known languages and list them to the client
@@ -252,7 +266,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
       
       // Send the end of list tag
       sendNumeric(LibIRC2::Numerics::RPL_ENDOF_GENERIC,
-		  "LANGUAGE",
+		  commandName,
 		  GETLANG(irc2_RPL_ENDOF_GENERIC_LANGUAGE));
       return;      
    }
@@ -307,7 +321,14 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleLANGUAGE)
    }
    
    // Set the new language list
-   (void)user.setLanguageList(languageList);
+   if (user.setLanguageList(languageList) == Error::NO_ERROR) {
+      return;
+   }
+   
+   // Errm, this is bad..
+   sendNumeric(LibIRC2::Numerics::ERR_UNKNOWNERROR,
+	       commandName,
+	       GETLANG(irc2_ERR_UNKNOWNERROR));
 }
 
 
@@ -361,12 +382,14 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleMOTD)
  */
 IRC2USER_COMMAND_HANDLER(Protocol::handlePING)
 {
+   static const char* const commandName = "PING";
+   
    // If we were given a parameter, send it back (simple as that!)
    if (!parameters.empty()) {
       // Send the reply in full form
       sendMessageTo(config().getOptionsServerName(), 
 		    config().getOptionsServerName(), 
-		    "PONG", parameters[0]);
+		    commandName, parameters[0]);
       return;
    }
    
