@@ -96,8 +96,7 @@ EXTRA_DIST=\
 	doc/rfc2812.txt \
 	doc/rfc2813.txt \
 	include/kineircd/kineircdconf.h.in \
-	src/libkineircd/version.cpp.tpl \
-	src/libkineircd/numerics.h.tpl
+	src/libkineircd/version.cpp.tpl
 
 	
 
@@ -142,11 +141,11 @@ rfc%.txt:
 
 # Stuff we really need, but automake is too stupid to work out for itself
 BUILT_SOURCES=\
+	include/kineircd/irc2/numerics.h \
 	include/kineircd/config.h \
 	include/kineircd/errors.h \
 	include/kineircd/logger.h \
-	include/kineircd/server.h \
-	src/libkineircd_irc2/numerics.h
+	include/kineircd/server.h
 
 
 
@@ -262,10 +261,10 @@ src/libkineircd/config/config.cpp: src/libkineircd/config/config.cpp.tpl $(AUTOG
 # 'libkineircd_irc2' library
 ###############################################################################
 libkineircd_irc2_la_SOURCES=\
-	src/libkineircd_irc2/modes.h \
-	src/libkineircd_irc2/numerics.h \
+	include/kineircd/irc2/modes.h \
+	include/kineircd/irc2/numerics.h \
+	include/kineircd/irc2/protocol.h \
 	src/libkineircd_irc2/protocol.cpp \
-	src/libkineircd_irc2/protocol.h \
 	src/libkineircd_irc2/servermodes.cpp
 
 libkineircd_irc2_la_LDFLAGS=\
@@ -274,10 +273,10 @@ libkineircd_irc2_la_LDFLAGS=\
 libkineircd_irc2_la_LIBADD=\
 	libkineircd.la
 		
-src/libkineircd_irc2/numerics.h: src/libkineircd_irc2/numerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
+include/kineircd/irc2/numerics.h: include/kineircd/irc2/numerics.h.tpl $(AUTOGEN_DEF_DIR)/irc2numerics.def
 	$(AUTOGEN) \
 		-b $(basename $@) \
-		-T src/libkineircd_irc2/numerics.h.tpl \
+		-T include/kineircd/irc2/numerics.h.tpl \
 		$(AUTOGEN_DEF_DIR)/irc2numerics.def
 
 

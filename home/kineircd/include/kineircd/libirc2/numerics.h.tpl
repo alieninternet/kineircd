@@ -26,8 +26,8 @@
 [+(dne " * ")+]
  */
 
-#ifndef _SRC_LIBKINEIRCD_IRC2_NUMERICS_H_
-# define _SRC_LIBKINEIRCD_IRC2_NUMERICS_H_ 1
+#ifndef _INCLUDE_KINEIRCD_IRC2_NUMERICS_H_
+# define _INCLUDE_KINEIRCD_IRC2_NUMERICS_H_ 1
 
 namespace Kine {
    namespace LibIRC2 {
@@ -62,5 +62,5 @@ namespace Kine {
    };
 };
 
-#endif // _SRC_LIBKINEIRCD_IRC2_NUMERICS_H_
+#endif // _INCLUDE_KINEIRCD_IRC2_NUMERICS_H_
 

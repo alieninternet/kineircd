@@ -30,7 +30,7 @@
 # include "autoconf.h"
 #endif
 
-#include "libkineircd_irc2/modes.h"
+#include "kineircd/irc2/modes.h"
 
 using namespace Kine::LibIRC2::Modes;
 

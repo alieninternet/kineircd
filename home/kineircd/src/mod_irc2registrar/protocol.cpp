@@ -34,7 +34,6 @@
 #include <kineircd/daemon.h>
 
 #include "mod_irc2registrar/protocol.h"
-
 #ifdef KINE_DEBUG
 # include "mod_irc2registrar/debug.h"
 #endif

@@ -22,8 +22,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_LIBKINEIRCD_IRC2_PROTOCOL_H_
-# define _SRC_LIBKINEIRCD_IRC2_PROTOCOL_H_ 1
+#ifndef _INCLUDE_KINEIRCD_IRC2_PROTOCOL_H_
+# define _INCLUDE_KINEIRCD_IRC2_PROTOCOL_H_ 1
 
 # include <queue>
 # include <vector>
@@ -32,8 +32,7 @@
 # include <aisutil/string/string.h>
 # include <kineircd/protocol.h>
 # include <kineircd/user.h>
-
-# include "libkineircd_irc2/numerics.h"
+# include <kineircd/irc2/numerics.h>
 
 namespace Kine {
    namespace LibIRC2 {
@@ -230,5 +229,5 @@ namespace Kine {
    }; // namespace LibIRC2
 }; // namespace Kine
    
-#endif // _SRC_LIBKINEIRCD_IRC2_PROTOCOL_H_
+#endif // _INCLUDE_KINEIRCD_IRC2_PROTOCOL_H_
    
