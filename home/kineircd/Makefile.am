@@ -188,7 +188,6 @@ libkineircd_la_SOURCES=\
 	include/kineircd/utils.h \
 	include/kineircd/version.h \
 	src/libkineircd/config/config.cpp \
-	src/libkineircd/config/defaults.h \
 	src/libkineircd/config/handlers.cpp \
 	$(KINEIRCD_SOURCE_LIB_CONFIG_OLDCONFIG_CPP) \
 	src/libkineircd/language/config.cpp \
