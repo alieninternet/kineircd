@@ -42,6 +42,7 @@ namespace Kine {
 
 # include "kineircd/exit.h"
 # include "kineircd/str.h"
+# include "kineircd/listener.h"
 
 namespace Kine {
    // The Daemon class
@@ -70,6 +71,9 @@ namespace Kine {
       void setTime(void) 
 	{ (void)gettimeofday(&currentTime, NULL); };
 
+      // Process a new connection
+      void newConnection(Listener& listener);
+      
     public:
       // Constructor
       Daemon(Config& conf, Signals& sigs);

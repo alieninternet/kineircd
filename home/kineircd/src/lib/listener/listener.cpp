@@ -35,6 +35,11 @@ using namespace Kine;
  */
 const bool Listener::listen(void)
 {
+#ifdef KINE_DEBUG_PSYCHO
+   debug("Listener::listen() on file descriptor " + 
+	 String::convert(socket.getFD()));
+#endif
+   
    // Make sure we are not already listening, and that the socket exists
    if (listening) {
 #ifdef KINE_DEBUG_EXTENDED

@@ -143,7 +143,7 @@ bool ListenerConfig::setupSocket(Socket& socket, String& errString, int port)
 	 return false;
       }
    }
-      
+
    // Bind
    if (!socket.bind()) {
       // Delete the socket and complain

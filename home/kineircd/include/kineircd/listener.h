@@ -38,25 +38,30 @@ namespace Kine {
       typedef unsigned int flags_type;
       
     private:
-      Socket& socket;					// The socket
-      flags_type flags;					// Flags (see above)
-      bool listening;					// Are we listening?
+      // The socket
+      Socket& socket;
+      
+      // Flags (see above)
+      flags_type flags;	
+      
+      // Are we listening?
+      bool listening;
+      
+      // How many accept()'s have we done since our creation?
+      unsigned long int acceptCount;
       
     public:
       // Constructor
       Listener(Socket& s, flags_type f = 0)
 	: socket(s),
           flags(f),
-          listening(false)
+          listening(false),
+          acceptCount(0)
 	{};
       
       // Destructor
       ~Listener(void)
 	{ delete &socket; };
-      
-      // Grab the socket
-      const Socket& getSocket(void) const
-	{ return socket; };
       
       // Make the socket listen
       const bool listen(void);
@@ -68,6 +73,21 @@ namespace Kine {
       // Return the flags
       const flags_type getFlags(void) const
 	{ return flags; };
+      
+      // Return the number of accepts we have done since we started
+      const unsigned long int getAcceptCount(void) const
+	{ return acceptCount; };
+      
+      // Return the socket's file descriptor
+      const int getFD(void) const
+	{ return socket.getFD(); };
+      
+      // Accept a new connection from the socket
+      Socket* const accept(void)
+	{
+	   acceptCount++;
+	   return socket.accept();
+	};
    };
 };
    

@@ -60,7 +60,7 @@ Daemon::Daemon(Config& conf, Signals& sigs)
 
    // Start listening on all listeners.
    config.getListenerList().startAll();
-   
+
    // We are ready to go, go into normal running runlevel
    runlevel = RUNLEVEL_NORMAL;
 }
@@ -78,13 +78,43 @@ Daemon::~Daemon(void)
 }
 
 
+/* newConnection - Process a new connection
+ * Original 03/09/2002 simonb
+ */
+void Daemon::newConnection(Listener& listener)
+{
+#ifdef KINE_DEBUG_PSYCHO
+   debug("Daemon::newConnection() - New connection on file descriptor " +
+	 String::convert(listener.getFD()));
+#endif
+   
+   // Accept the connection
+   Socket *newSocket = listener.accept();
+   
+   // Check if that worked..
+   if (newSocket == 0) {
+#ifdef KINE_DEBUG_EXTENDED
+      debug("A null socket was returned from the listener!");
+#endif
+      return;
+   }
+   
+#ifdef KINE_DEBUG_PSYCHO
+   debug("New socket FD = " + String::convert(newSocket->getFD()) +
+	 "; Remote address is " + newSocket->getRemoteAddressStr() +
+	 " on port " + String::convert(newSocket->getRemotePort()));
+#endif
+   
+   // and.. throw it away :(
+   delete newSocket;
+}
+
+
 /* run - The main loop
- * Original 11/08/01 simonb
+ * Original 11/08/2001 simonb
  * Note: Unfortuantely not a very nice looking routine..
  */
-#define CheckInput(x)	FD_ISSET(x, &inFDtemp)
-#define CheckOutput(x)	FD_ISSET(x, &outFDtemp)
-Exit::status_type Kine::Daemon::run(void)
+Exit::status_type Daemon::run(void)
 {
    /* Make sure the init was all happy, else there isn't much point us
     * going beyond this point really
@@ -109,8 +139,21 @@ Exit::status_type Kine::Daemon::run(void)
    debug("Daemon::run() - Entering main loop");
 #endif
 
+   // Add the listeners to the file descriptor lists
+   for (ListenerList::listeners_type::const_iterator it = 
+	config.getListenerList().getList().begin(); 
+	it != config.getListenerList().getList().end(); it++) {
+      FD_SET((*it)->getFD(), &inFDSET);
+      if ((*it)->getFD() >= maxDescriptors) {
+	 maxDescriptors = (*it)->getFD() + 1;
+      }
+   }
+   FD_SET(0, &inFDSET);
+
    // The main loop!
    for (;;) {
+std::cout << "main loop start." << std::endl;
+      
       // Set the time
       setTime();
       
@@ -128,21 +171,26 @@ Exit::status_type Kine::Daemon::run(void)
 	 break;
 	 
        case 0: // Select timed out, no descriptor change
-#ifdef KINE_DEBUG
+#ifdef KINE_DEBUG_PSYCHO
 	 debug("Doing nothing...");
 #endif
 	 break;
 	 
-//       default:
-//	 if (runlevel >= RUNLEVEL_NORMAL) {
-	    // Check for a new connection
-//	    for (listen_list_t::iterator it = listens.begin();
-//		 it != listens.end(); it++) {
-//	       // Check if there is a new connection we should be aware of
-//	       if (CheckInput((*it)->socket->getFD())) {
-//		  newConnection(*it);
-//	       }
-//	    }
+       default:
+#ifdef KINE_DEBUG_PSYCHO
+	 debug("Daemon::run() - Select returned with a change!");
+#endif
+	 
+	 if (runlevel >= RUNLEVEL_NORMAL) {
+	    // Check for a new connection: Run through the listeners
+	    for (ListenerList::listeners_type::const_iterator it = 
+		 config.getListenerList().getList().begin(); 
+		 it != config.getListenerList().getList().end(); it++) {
+	       // Check if there is a new connection we should be aware of
+	       if (FD_ISSET((*it)->getFD(), &inFDtemp)) {
+		  newConnection(*(*it));
+	       }
+	    }
 	    
 	    // Check for activity on connections
 //	    for (connection_list_t::iterator it = connections.begin();
@@ -163,7 +211,7 @@ Exit::status_type Kine::Daemon::run(void)
 //	       if (CheckOutput((*it)->socket->getFD())) {
 //		  (*it)->sendQueue();
 //	       }
-//	    }
+	 }
 
       }
       

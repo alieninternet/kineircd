@@ -34,12 +34,15 @@
 
 namespace Kine {
    class ListenerList {
-    private:
+    public:
 # ifdef KINE_STL_HAS_SLIST
       typedef std::slist <Listener*> listeners_type;
 # else
       typedef std::list <Listener*> listeners_type;
 # endif
+      
+    private:
+      // The list of listeners
       listeners_type listeners;
 
     public:
@@ -52,7 +55,11 @@ namespace Kine {
 
       // Start all listeners listening
       void startAll(void);
-      
+
+      // Return the listen list (should be temporary)
+      const listeners_type& getList(void) const
+	{ return listeners; };
+
       // Friends :)
       friend class ListenerConfig;
    };
