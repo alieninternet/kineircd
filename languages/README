@@ -111,6 +111,9 @@ Substitutions within tag data
 	\\	- A slash
        \nnn	- An escaped character. All characters, except #0, are valid.
         \b	- Toggle bold (same as \002)
-	\r	- Toggle reversed (same as \026)
-	\u	- Toggle underline (same as \037)
+	\c	- Beginning of colour sequence (not recommended; Same as \003)
 	\g	- Beep (only supported on some IRC clients; same as \007)
+	\r	- Toggle reversed (same as \026)
+	\s	- A space (same as \040 or ' ')
+	\t	- A horizontal tab (not supported on all clients; same as \011)
+	\u	- Toggle underline (same as \037)
