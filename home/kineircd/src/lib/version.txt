@@ -5,9 +5,9 @@
       |.w---||      |_|\_\_|_| |_|\___||___|_| \_\\____\__._|
       ^^    ^^
 
-Copyright © 1996,1998,1999,2000,2001,2002 Alien Internet Services
-Copyright © 2001,2002,2003 KineIRCd Development Team
-Copyright © 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
+Copyright (c) 1996,1998,1999,2000,2001,2002 Alien Internet Services
+Copyright (c) 2001,2002,2003 KineIRCd Development Team
+Copyright (c) 2001,2002,2003 Simon Butcher <pickle@alien.net.au>
 
   This is free software, distributed under the GNU GPL license;
         Please see the source code for copying conditions.
