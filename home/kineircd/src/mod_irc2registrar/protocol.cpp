@@ -6,9 +6,7 @@
 
 #include "register.h"
 #include "irc2user.h"
-#include "irc3user.h"
 #include "p13server.h"
-#include "p14server.h"
 #include "daemon.h"
 #include "debug.h"
 #include "numerics.h"
@@ -241,10 +239,6 @@ void registerHandler::parseLine(String const &line)
 	     case 13: // P13
 	       break;
 # endif
-# ifdef HAVE_P14SERVER_PROTOCOL
-	     case 14: // P14
-	       break;
-# endif
 	     default: // Unknown protocol, terminate connection
 # ifdef DEBUG
 	       debug("Unsupported protocol (" + String::convert(protocol) + 
@@ -290,11 +284,6 @@ void registerHandler::parseLine(String const &line)
 	       // Create the new handler for this user
 	       newHandler = new p13serverHandler(getConnection(), server,
 						 startStamp, linkStamp);
-	       break;
-# endif
-# ifdef HAVE_P14SERVER_PROTOCOL
-	     case 14: // P14
-//	       newHandler = new p14serverHandler();
 	       break;
 # endif
 # ifdef DEBUG
