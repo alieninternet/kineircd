@@ -396,6 +396,17 @@ usermodes = {
    comment	= "User is using an AustHex Z: line";
    server_on	= "yes";
    server_off	= "yes";
+   conflict	= "yes";
+};
+
+usermodes = {
+   irc2char	= "t";
+   name		= "MODIFIED_HOST";
+   origin	= "Unreal";
+   comment	= "User is using a /vhost (modified host)";
+   server_on	= "yes";
+   server_off	= "yes";
+   conflict	= "yes";
 };
 
 usermodes = {
@@ -405,6 +416,15 @@ usermodes = {
    comment	= "User is using an AustHex w: line";
    server_on	= "yes";
    server_off	= "yes";
+   conflict	= "yes";
+};
+
+usermodes = {
+   irc2char	= "T";
+   name		= "BLOCK_CTCP";
+   origin	= "Unreal";
+   comment	= "Blocks all CTCP requests from other users";
+   conflict	= "yes";
 };
 
 usermodes = {

@@ -66,6 +66,8 @@ chanmodes = {
    irc2char	= "A";
    name		= "ADMIN_ONLY";
    origin	= "Unreal";
+   comment	= "Only server/service/network (co-)administrators can join "
+		  "the channel";
 };
 
 chanmodes = {
@@ -147,6 +149,7 @@ chanmodes = {
    irc2char	= "f";
    name		= "FLOOD_LIMIT";
    origin	= "Unreal";
+   information	= "http://www.vulnscan.org/UnrealIrcd/unreal32docs.html#feature_antiflood";
    parameter	= "<lines>:<seconds>";
    comment	= "Flood limiter";
 };
