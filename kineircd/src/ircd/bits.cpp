@@ -58,10 +58,10 @@ void ircd::printVersion(const unsigned int level)
 	(unsigned int)Version::libAge << ':' <<
 	(unsigned int)Version::libRevision << ")\n"
 	" LibAISutil Library:  " << 
-	AISutil::Version::version << " (API " <<
-	(unsigned int)AISutil::Version::libVersion << ':' <<
-	(unsigned int)AISutil::Version::libAge << ':' <<
-	(unsigned int)AISutil::Version::libRevision << ")\n"
+	AIS::Util::Version::version << " (API " <<
+	(unsigned int)AIS::Util::Version::libVersion << ':' <<
+	(unsigned int)AIS::Util::Version::libAge << ':' <<
+	(unsigned int)AIS::Util::Version::libRevision << ")\n"
 	"           AutoOpts:  " <<
 	OPTIONS_VERSION_STRING << "\n"
 #ifdef KINE_HAVE_OPENSSL

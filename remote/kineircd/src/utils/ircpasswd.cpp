@@ -61,9 +61,9 @@ int main(int argc, char **argv)
       
       // Simply convert it and pipe it to std output
       std::cout <<
-	AISutil::SHA1::digestToStr(Password::makePassword(nickname, password),
-				   Config::operPasswordStrBase,
-				   Config::operPasswordStrBaseLongPad) <<
+	Password::makePassword(nickname, password).
+	toStr(Config::operPasswordStrBase,
+	      Config::operPasswordStrBaseLongPad) <<
 	std::endl;
       
       // Done.
@@ -101,9 +101,9 @@ int main(int argc, char **argv)
    // Output what to add to the configuration file
    std::cout << "\n\nConfiguration data for OPERATORS class:\n\t" << 
      nickname << " {\n\t   password = \"" << 
-     AISutil::SHA1::digestToStr(Password::makePassword(nickname, password),
-				Config::operPasswordStrBase,
-				Config::operPasswordStrBaseLongPad) <<
+     Password::makePassword(nickname, password).
+     toStr(Config::operPasswordStrBase,
+	   Config::operPasswordStrBaseLongPad) <<
      "\";\n\t}\n\nDon't forget to add the 'name' and 'type' variables, and "
      "the 'hosts' sub-class\nto complete the configuration of this "
      "operator." << std::endl;
