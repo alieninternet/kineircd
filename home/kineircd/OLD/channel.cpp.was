@@ -13,6 +13,78 @@
 #include "modes.h"
 
 
+// Channel modes -- IMPORTANT: Update the mode strings as you update the table!
+char const *Channel::modeStr		= "abdeEhiIklmnoOpqrRstv";
+char const *Channel::modeParamStr 	= "bdehIkloOv";
+char const *Channel::prefixStr		= "(ohv)@%+";
+struct Channel::modeTableStruct const Channel::modeTable[] = {
+     { 'a',	MODE_ANONYMOUS,		false,	false,	true,
+	toggleChanmodeANONYMOUS 
+     },
+     { 'b',	0,			true,	true,	true,
+	toggleChanmodeBAN 
+     },
+     { 'd',	0,			true,	true,	true,
+	toggleChanmodeDENY 
+     },
+     { 'e',	0,			true,	true,	true,
+	toggleChanmodeBANEXCEPT 
+     },
+     { 'E',	MODE_EVENT,		false,	false,	true,
+	toggleChanmodeEVENT
+     },
+     { 'h',	0,			true,	true,	true,
+	toggleChanmodeHALFOPER
+     },
+     { 'i',	MODE_INVITE,		false,	false,	true,
+	toggleChanmodeINVITE
+     },
+     { 'I',	0,			true,	true,	true,
+	toggleChanmodeINVITEALLOW
+     },
+     { 'k',	0,			true,	true,	true,
+	toggleChanmodeKEY
+     },
+     { 'l',	0,			true,	false,	true,
+	toggleChanmodeLIMIT
+     },
+     { 'm',	MODE_MODERATED,		false,	false,	true,
+	toggleChanmodeMODERATED
+     },
+     { 'n',	MODE_NOOUTSIDEMSG,	false,	false,	true,
+	toggleChanmodeNOOUTSIDEMSG
+     },
+     { 'o',	0,			true,	true,	true,
+	toggleChanmodeCHANOPER
+     },
+     { 'O',	0,			true,	true,	false,
+	toggleChanmodeCHANCREATOR
+     },
+     { 'p',	MODE_PRIVATE,		false,	false,	true,
+	toggleChanmodePRIVATE
+     },
+     { 'q',	MODE_QUIET,		false,	false,	false,
+	toggleChanmodeQUIET
+     },
+     { 'r',	MODE_REOP,		false,	false,	false,
+	toggleChanmodeREOP
+     },
+     { 'R',	MODE_REGNICKSONLY,	false,	false,	true,
+	toggleChanmodeREGNICKSONLY
+     },
+     { 's',	MODE_SECRET,		false,	false,	true,
+	toggleChanmodeSECRET
+     },
+     { 't',	MODE_TOPICLOCK,		false,	false,	true,
+	toggleChanmodeTOPICLOCK
+     },
+     { 'v',	0,			true,	true,	true,
+	toggleChanmodeVOICE
+     },
+     { 0 }
+};
+
+
 /* ~Channel - Channel class destructor
  * Original 30/08/01, Simon Butcher <pickle@austnet.org>
  */
@@ -132,14 +204,14 @@ void Channel::processModes(Handler *handler, User *user,
 	 numModes++;
 	 
 	 // Run though the channel mode list
-	 for (int ii = 0; channelModeTable[ii].letter != 0; ii++) {
-	    if (channelModeTable[ii].letter == modes[i]) {
+	 for (int ii = 0; modeTable[ii].letter != 0; ii++) {
+	    if (modeTable[ii].letter == modes[i]) {
 	       // Can we modify this mode?
-	       if ((handler && channelModeTable[ii].userToggle) ||
+	       if ((handler && modeTable[ii].userToggle) ||
 		   !handler) {
 		  // If this mode needs a parameter, grab the next token...
-		  if ((toggle && channelModeTable[ii].hasParamOn) ||
-		      (!toggle && channelModeTable[ii].hasParamOff)) {
+		  if ((toggle && modeTable[ii].hasParamOn) ||
+		      (!toggle && modeTable[ii].hasParamOff)) {
 		     param = tokens->nextToken();
 		  } else {
 		     // Reset the parameter thing
@@ -147,8 +219,8 @@ void Channel::processModes(Handler *handler, User *user,
 		  }
 		  
 		  // Run the toggler for this mode, checking if it worked
-		  if (channelModeTable[ii].toggler(toggle, handler, this, &cm,
-						   &user->nickname, &param)) {
+		  if (modeTable[ii].toggler(toggle, handler, this, &cm,
+					    &user->nickname, &param)) {
 		     // Check which toggle string to add this to
 		     if (toggle) {
 			toggleOnStr = toggleOnStr + String(modes[i]);
@@ -288,7 +360,7 @@ void Channel::sendNotice(User *from, String const &message)
       // If this user is local, then this is very easy!
       if ((*it).second->user->local) {
 	 // Real users?
-	 if (!(modes & Channel::MODE_ANONYMOUS)) {
+	 if (!(modes & MODE_ANONYMOUS)) {
 	    (*it).second->user->local->handler->sendNotice(from, this,
 							   message);
 	    continue;
@@ -319,7 +391,7 @@ void Channel::sendPrivmsg(User *from, String const &message)
       // If this user is local, then this is very easy!
       if ((*it).second->user->local) {
 	 // Real users?
-	 if (!(modes & Channel::MODE_ANONYMOUS)) {
+	 if (!(modes & MODE_ANONYMOUS)) {
 	    (*it).second->user->local->handler->sendPrivmsg(from, this, 
 							    message);
 	    continue;
@@ -332,4 +404,34 @@ void Channel::sendPrivmsg(User *from, String const &message)
       
       // stuff to route this message here.
    }
+}
+
+
+/* makeModes - Create a string of channel modes according to what is set
+ * Original 24/08/01, Simon Butcher <pickle@austnet.org>
+ */
+String Channel::makeModes(Channel *channel)
+{
+   String reply = "+";
+   String params = "";
+   
+   // Run through the list of standard modes and check what needs to be shown
+   for (int i = 0; modeTable[i].letter != 0; i++) {
+      // Check if this mode flag is set
+      if (channel->modes & modeTable[i].flag) {
+	 reply = reply + String(modeTable[i].letter);
+      }
+   }
+   
+   // Parameter based modes
+   if (channel->key.length()) {
+      reply = reply + "k";
+      params = String(" ") + channel->key;
+   }
+   if (channel->limit > 0) {
+      reply = reply + "l";
+      params = params + " " + String(channel->limit);
+   }
+   
+   return reply + params;
 }

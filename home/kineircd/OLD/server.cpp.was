@@ -1,0 +1,59 @@
+/* server.cpp
+ * Server and associated classes
+ */
+
+#include "config.h"
+
+#include "server.h"
+
+
+// Server modes
+char const *Server::modeStr		= "aFhLmMn";
+char const *Server::modeParamStr	= "*";
+struct Server::modeTableStruct const Server::modeTable[] = {
+     { 'a',	MODE_AUTOTBS,		false,	false,	true,
+	toggleServermodeAUTOTBS
+     },
+     { 'F',	MODE_USERSFULL,		false,	false,	false,
+	toggleServermodeUSERSFULL
+     },
+     { 'h',	MODE_HIDDEN,		false,	false,	true,
+	toggleServermodeHIDDEN
+     },
+     { 'L',	MODE_MODELOCK,		false,	false,	false,
+	toggleServermodeMODELOCK
+     },
+     { 'm',	MODE_SHORTMOTD,		false,	false,	true,
+	toggleServermodeSHORTMOTD
+     },
+     { 'M',	MODE_REMOTEMOTD,	false,	false,	true,
+	toggleServermodeREMOTEMOTD
+     },
+     { 'n',	MODE_NOOP,		false,	false,	true,
+	toggleServermodeNOOP
+     },
+     { 0 }
+};
+
+
+
+/* makeModes - Create a string of server modes according to what is set
+ * Original 21/09/01, Simon Butcher <pickle@austnet.org>
+ */
+String Server::makeModes(Server *server)
+{
+   String reply = "+";
+   String params = "";
+   
+   // Run through the list of standard modes and check what needs to be shown
+   for (int i = 0; modeTable[i].letter != 0; i++) {
+      // Check if this mode flag is set
+      if (server->modes & modeTable[i].flag) {
+	 reply = reply + String(modeTable[i].letter);
+      }
+   }
+   
+   return reply + params;
+}
+
+

@@ -35,30 +35,22 @@ class User {
    typedef list <StringMask> silence_list_t;
 # endif
    
-   /* User modes (note modes that use paramters are not listed here)
-    * WARNING!! Do not change these once they are set! P14 relies on them
-    * being constant over ALL servers!
-    * Note that the first byte is set up specifically to make it easy to
-    * follow the irc2-user protocol for user registration in RFC 2812, so
-    * best not to touch them especially :)
-    */
+   // User mode type - do not change this - P14 needs this to be the same
    typedef unsigned long long modes_t;
-   static modes_t const MODE_WALLOPS		= 0x0000000000000004; // +w
-   static modes_t const MODE_INVISIBLE		= 0x0000000000000008; // +i
-   static modes_t const MODE_NONKICKABLE	= 0x0000000000000100; // +k
-   static modes_t const MODE_DEAF		= 0x0000000000000200; // +d
-   static modes_t const MODE_SECURE		= 0x0000000000000400; // +S
-   static modes_t const MODE_VWORLD		= 0x0000000000000800; // +v
-   static modes_t const MODE_LOCALOPER		= 0x0000000000001000; // +o
-   static modes_t const MODE_GLOBALOPER		= 0x0000000000002000; // +O
-   static modes_t const MODE_HELPER		= 0x0000000000004000; // +h
-   static modes_t const MODE_RESTRICTED		= 0x0000000000008000; // +r
-   static modes_t const MODE_IDENTIFIED		= 0x0000000000010000; // +I
-   static modes_t const MODE_GOT_IDENTD		= 0x0000000000020000; // +n
-   static modes_t const MODE_REGNICKSMSG	= 0x0000000000040000; // +R
-   static modes_t const MODE_IGNORING		= 0x0000000000080000; // +g
-
+   
+// private:
  public:
+   // User mode table structure
+   struct modeTableStruct {
+      char letter;                 	// Letter of this mode
+      modes_t flag; 	         	// Flag used in bit-wise operations
+      bool hasParamOn;			// Requires a parameter to set?
+      bool hasParamOff;			// Requires a parameter to unset?
+      bool userToggle;			// Can users toggle this mode?
+      bool (*toggler)(bool setting, Handler *handler, Daemon *daemon, User *user, char *modeChr, String *param);	// Function to toggle this mode
+   };
+   static struct modeTableStruct const modeTable[];
+   
    String nickname;				// User nickname
    String const username;			// User name
    String const hostname;			// Host name
@@ -82,6 +74,32 @@ class User {
    silence_list_t silences;			// Silence list
 
  public:
+   /* User modes (note modes that use paramters are not listed here)
+    * WARNING!! Do not change these once they are set! P14 relies on them
+    * being constant over ALL servers!
+    * Note that the first byte is set up specifically to make it easy to
+    * follow the irc2-user protocol for user registration in RFC 2812, so
+    * best not to touch them especially :)
+    */
+   static modes_t const MODE_WALLOPS		= 0x0000000000000004; // +w
+   static modes_t const MODE_INVISIBLE		= 0x0000000000000008; // +i
+   static modes_t const MODE_NONKICKABLE	= 0x0000000000000100; // +k
+   static modes_t const MODE_DEAF		= 0x0000000000000200; // +d
+   static modes_t const MODE_SECURE		= 0x0000000000000400; // +S
+   static modes_t const MODE_VWORLD		= 0x0000000000000800; // +v
+   static modes_t const MODE_LOCALOPER		= 0x0000000000001000; // +o
+   static modes_t const MODE_GLOBALOPER		= 0x0000000000002000; // +O
+   static modes_t const MODE_HELPER		= 0x0000000000004000; // +h
+   static modes_t const MODE_RESTRICTED		= 0x0000000000008000; // +r
+   static modes_t const MODE_IDENTIFIED		= 0x0000000000010000; // +I
+   static modes_t const MODE_GOT_IDENTD		= 0x0000000000020000; // +n
+   static modes_t const MODE_REGNICKSMSG	= 0x0000000000040000; // +R
+   static modes_t const MODE_IGNORING		= 0x0000000000080000; // +g
+   
+   // User mode stuff
+   static const char *modeStr;
+   static const char *modeParamStr;
+
    // Constructor
    User(String const &nick, String const &user, String ip, String host, 
 	String vwhost, String real, time_t signon, Server *serv,
@@ -185,6 +203,9 @@ class User {
    void markAway(String &);			// Set/Unset away message
    
    bool isSilencing(User *);			// Silencing a user?
+
+   static String makeModes(modes_t);		// Make a + user mode string
+   static String makeModes(User *);		// Above, but includes params
 };
 
 #endif

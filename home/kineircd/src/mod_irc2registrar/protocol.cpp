@@ -11,7 +11,8 @@
 
 
 // Functions table
-registerHandler::functionTableStruct registerHandler::functionsTable[] = {
+struct registerHandler::functionTableStruct const 
+  registerHandler::functionsTable[] = {
      { "CAPAB",		parseCAPAB },
      { "NICK",		parseNICK },
      { "PASS",		parsePASS },

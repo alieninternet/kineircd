@@ -1433,12 +1433,12 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 	 numModes++;
 	 
 	 // Run through the server mode list
-	 for (int ii = 0; serverModeTable[ii].letter != 0; ii++) {
+	 for (int ii = 0; Server::modeTable[ii].letter != 0; ii++) {
 	    // Check for a match
-	    if (serverModeTable[ii].letter == modes[i]) {
+	    if (Server::modeTable[ii].letter == modes[i]) {
 	       // If this mode needs a parameter, grab the next token
-	       if ((toggle && serverModeTable[ii].hasParamOn) ||
-		   (!toggle && serverModeTable[ii].hasParamOff)) {
+	       if ((toggle && Server::modeTable[ii].hasParamOn) ||
+		   (!toggle && Server::modeTable[ii].hasParamOff)) {
 		  param = tokens->nextToken();
 	       } else {
 		  // Reset the parameter string
@@ -1446,9 +1446,9 @@ String Daemon::processServerModes(Server *server, Handler *handler,
 	       }
 	       
 	       // Check if this can be toggled
-	       if (serverModeTable[ii].operToggle) {
+	       if (Server::modeTable[ii].operToggle) {
 		  // Run the toggler for this mode, checking if it worked
-		  if (serverModeTable[ii].toggler(toggle, server, &param)) {
+		  if (Server::modeTable[ii].toggler(toggle, server, &param)) {
 		     // It worked, check which toggle string toa dd this to
 		     if (toggle) {
 			toggleOnStr = toggleOnStr + String(modes[i]);

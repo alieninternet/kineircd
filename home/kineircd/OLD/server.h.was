@@ -20,21 +20,22 @@ class Server {
  public:
    typedef unsigned short flags_t;
 
-   /* Server modes (note modes that use paramters are not listed here)
-    * WARNING!! Do not change these once they are set! P14 relies on them
-    * being constant over ALL servers!
-    */
+   // Server mode type - do not change this - P14 needs this to be the same
    typedef unsigned long modes_t;
-   static modes_t const MODE_HIDDEN		= 0x0000000000000001; // +h
-   static modes_t const MODE_NOOP		= 0x0000000000000002; // +n
-   static modes_t const MODE_AUTOTBS		= 0x0000000000000004; // +a
-   static modes_t const MODE_REMOTEMOTD		= 0x0000000000000008; // +M
-   static modes_t const MODE_SHORTMOTD		= 0x0000000000000010; // +m
-   static modes_t const MODE_MODELOCK		= 0x0000000000000020; // +L
-   static modes_t const MODE_USERSFULL		= 0x0000000000000040; // +F
 
 // private:
  public:
+   // Server mode table structure
+   struct modeTableStruct {
+      char letter;			// Letter of this mode
+      modes_t flag;			// Flag used in bit-wise operations
+      bool hasParamOn;			// Requires a parameter to set?
+      bool hasParamOff;			// Requires a parameter to unset?
+      bool operToggle;			// Can this mode be toggled by opers?
+      bool (*toggler)(bool setting, Server *server, String *param);	// Function to toggle this mode
+   };
+   static struct modeTableStruct const modeTable[];
+
    String hostname;				// Server hostname
    String description;				// Server description
    flags_t flags;				// Server flags
@@ -44,6 +45,22 @@ class Server {
    unsigned int numUsers;			// Number of users connected
 
  public:
+   /* Server modes (note modes that use paramters are not listed here)
+    * WARNING!! Do not change these once they are set! P14 relies on them
+    * being constant over ALL servers!
+    */
+   static modes_t const MODE_HIDDEN		= 0x0000000000000001; // +h
+   static modes_t const MODE_NOOP		= 0x0000000000000002; // +n
+   static modes_t const MODE_AUTOTBS		= 0x0000000000000004; // +a
+   static modes_t const MODE_REMOTEMOTD		= 0x0000000000000008; // +M
+   static modes_t const MODE_SHORTMOTD		= 0x0000000000000010; // +m
+   static modes_t const MODE_MODELOCK		= 0x0000000000000020; // +L
+   static modes_t const MODE_USERSFULL		= 0x0000000000000040; // +F
+
+   // Server mode stuff
+   static const char *modeStr;			// Chars of modes
+   static const char *modeParamStr;		// Chars of modes with params
+
    // Constructors
    Server(void)
      : hostname(""), 
@@ -136,6 +153,7 @@ class Server {
 	return numUsers;
      };
    
+   static String makeModes(Server *);		// Make a + server mode string
    
    friend Daemon;
 };

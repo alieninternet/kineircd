@@ -19,6 +19,9 @@
 #  include <list.h>
 # endif
 
+// Channel types we support for the ISUPPORT line.
+# define CHANNEL_TYPES			"&#+!"
+
 class Channel;
 class ChannelMember;
 
@@ -31,21 +34,24 @@ class ChannelMember;
 // A channel member class
 class ChannelMember {
  public:
-   /* Channel member modes...
-    * WARNING!! Do not change these once they are set! P14 relies on them
-    * being constant over ALL servers!
-    */
+   // Do not change this - P14 needs this to be the same
    typedef unsigned short modes_t;
-   static modes_t const MODE_CREATOR		= 0x0001; // +O
-   static modes_t const MODE_OPPED		= 0x0002; // +o
-   static modes_t const MODE_VOICED		= 0x0004; // +v
-   static modes_t const MODE_HALFOPPED		= 0x0008; // +h
- 
+
+// private:
  public:
    User *user;					// Link into user record
    modes_t modes;				// User modes on channel
 
  public:
+   /* Channel member modes...
+    * WARNING!! Do not change these once they are set! P14 relies on them
+    * being constant over ALL servers!
+    */
+   static modes_t const MODE_CREATOR		= 0x0001; // +O
+   static modes_t const MODE_OPPED		= 0x0002; // +o
+   static modes_t const MODE_VOICED		= 0x0004; // +v
+   static modes_t const MODE_HALFOPPED		= 0x0008; // +h
+
    // Constructors
    ChannelMember(void)
      : user(0),
@@ -91,24 +97,21 @@ class Channel {
    typedef list <ChannelMask *> mask_list_t;
 # endif
 
-   /* Channel modes (note modes that use paramters are not listed here)
-    * WARNING!! Do not change these once they are set! P14 relies on them
-    * being constant over ALL servers!
-    */
+   // Channel mode type - do not change this - P14 needs this to be the same
    typedef unsigned long long modes_t;
-   static modes_t const MODE_INVITE		= 0x0000000000000001; // +i
-   static modes_t const MODE_MODERATED		= 0x0000000000000002; // +m
-   static modes_t const MODE_NOOUTSIDEMSG	= 0x0000000000000004; // +n
-   static modes_t const MODE_TOPICLOCK		= 0x0000000000000008; // +t
-   static modes_t const MODE_PRIVATE		= 0x0000000000000010; // +p
-   static modes_t const MODE_SECRET		= 0x0000000000000020; // +s
-   static modes_t const MODE_QUIET		= 0x0000000000000040; // +q
-   static modes_t const MODE_ANONYMOUS		= 0x0000000000000080; // +a
-   static modes_t const MODE_EVENT		= 0x0000000000000100; // +E
-   static modes_t const MODE_REOP		= 0x0000000000000200; // +r
-   static modes_t const MODE_REGNICKSONLY	= 0x0000000000000400; // +R
-   
+
+// private:
  public:
+   struct modeTableStruct {
+      char letter;			// Letter of this mode
+      modes_t flag;			// Flag used in bit-wise operations
+      bool hasParamOn;			// Requires a parameter to set?
+      bool hasParamOff;			// Requires a parameter to unset?
+      bool userToggle;			// Can users toggle this mode?
+      bool (*toggler)(bool setting, Handler *handler, Channel *channel, ChannelMember *member, String *setter, String *param);	// Function to toggle this mode
+   };
+   static struct modeTableStruct const modeTable[];
+
    String name;					// Name of the channel + prefix
    modes_t modes;				// Channel mode flags
    time_t creationTime;				// Time channel was created
@@ -129,6 +132,27 @@ class Channel {
    Daemon *daemon;				// Hook back into the daemon
 
  public:
+   /* Channel modes (note modes that use paramters are not listed here)
+    * WARNING!! Do not change these once they are set! P14 relies on them
+    * being constant over ALL servers!
+    */
+   static modes_t const MODE_INVITE		= 0x0000000000000001; // +i
+   static modes_t const MODE_MODERATED		= 0x0000000000000002; // +m
+   static modes_t const MODE_NOOUTSIDEMSG	= 0x0000000000000004; // +n
+   static modes_t const MODE_TOPICLOCK		= 0x0000000000000008; // +t
+   static modes_t const MODE_PRIVATE		= 0x0000000000000010; // +p
+   static modes_t const MODE_SECRET		= 0x0000000000000020; // +s
+   static modes_t const MODE_QUIET		= 0x0000000000000040; // +q
+   static modes_t const MODE_ANONYMOUS		= 0x0000000000000080; // +a
+   static modes_t const MODE_EVENT		= 0x0000000000000100; // +E
+   static modes_t const MODE_REOP		= 0x0000000000000200; // +r
+   static modes_t const MODE_REGNICKSONLY	= 0x0000000000000400; // +R
+
+   // Channel mode stuff
+   static const char *modeStr;			// Chars of modes
+   static const char *modeParamStr;		// Chars of modes with params
+   static const char *prefixStr;		// Modes vs Prefixes (ISUPPORT)
+
    // Constructor
    Channel(String const &n, time_t ct, Daemon *d)
      : name(n),
@@ -166,6 +190,8 @@ class Channel {
    
    void sendNotice(User *, String const &);	// Send a NOTICE to this chan
    void sendPrivmsg(User *, String const &);	// Send a PRIVMSG to this chan
+
+   static String makeModes(Channel *);		// Make a + channel mode string
 };
 
 #endif

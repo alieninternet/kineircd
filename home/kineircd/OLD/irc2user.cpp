@@ -20,7 +20,8 @@
  * broken down since a compiler would not be able to efficiently create a
  * structure multiplier for the CPU?
  */
-irc2userHandler::functionTableStruct irc2userHandler::functionsTable[] = {
+struct irc2userHandler::functionTableStruct const 
+  irc2userHandler::functionsTable[] = {
      { "ACCEPT",	parseACCEPT,		1,	0,
 	  "{ <nickname> | -<nickname> | * } ( SPACE { nickname | -nickname "
 	  "| * } )",
@@ -387,12 +388,12 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 	       String::printf("%s %s %s %s %s %s %s %s %s",
 			      (char const *)getConnection()->getDaemon()->myServer()->getHostname(),
 			      getVersion,
-			      userModeStr,
-			      channelModeStr,
-			      channelModeParamStr,
-			      userModeParamStr,
-			      serverModeStr,
-			      serverModeParamStr,
+			      User::modeStr,
+			      Channel::modeStr,
+			      Channel::modeParamStr,
+			      User::modeParamStr,
+			      Server::modeStr,
+			      Server::modeParamStr,
 			      getVersionChars));
    sendNumeric(RPL_ISUPPORT,
 	       String::printf("NICKLEN=%d "		// (~11chrs)
@@ -426,7 +427,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
 			      MAX_CHANNELS_PER_USER, 
 			      MAX_BANS_PER_CHANNEL,
 			      MAX_MODES_PER_COMMAND,
-			      channelPrefixes));
+			      Channel::prefixStr));
    
    // Assemble and send the current time on the server to the client
    TYPE_RPL_TIMEONSERVERIS_FLAGS tosiFlags = 0;
@@ -533,7 +534,7 @@ irc2userHandler::irc2userHandler(Connection *c, User *u, String modes)
    
    // Send the modes if there are any set. Note we ignore any parameters...
    if (user->modes != 0) {
-      sendUserMode(0, makeUserModes(user->modes));
+      sendUserMode(0, User::makeModes(user->modes));
    }
 }
 
@@ -606,24 +607,24 @@ String irc2userHandler::processUserModes(String &modes, StringTokens *tokens,
 	 /* Run through the user mode list and look for this char.
 	  * Note that this is a case sensitive check
 	  */
-	 for (int ii = 0; userModeTable[ii].letter != 0; ii++) {
-	    if (userModeTable[ii].letter == modes[i]) {
+	 for (int ii = 0; User::modeTable[ii].letter != 0; ii++) {
+	    if (User::modeTable[ii].letter == modes[i]) {
 	       // Check if this mode can be toggled by the user
-	       if (userModeTable[ii].userToggle) {
+	       if (User::modeTable[ii].userToggle) {
 		  // If this mode needs a parameter, grab the next token...
-		  if ((toggle && userModeTable[ii].hasParamOn) ||
-		      (!toggle && userModeTable[ii].hasParamOff)) {
+		  if ((toggle && User::modeTable[ii].hasParamOn) ||
+		      (!toggle && User::modeTable[ii].hasParamOff)) {
 		     param = tokens->nextToken();
 		  } else {
 		     param = "";
 		  }
 		  
 		  // If this runs, we will need to add the output char
-		  if (userModeTable[ii].toggler(toggle, 
-						(silent ? 0 : this),
-						getConnection()->getDaemon(), 
-						user,
-						&modes[i], &param) &&
+		  if (User::modeTable[ii].toggler(toggle, 
+						  (silent ? 0 : this),
+						  getConnection()->getDaemon(), 
+						  user,
+						  &modes[i], &param) &&
 		      !silent) {
 
 		     // Check which toggle string to add this to
@@ -2141,7 +2142,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
       } else {
 	 // Send the channel modes for this channel
 	 handler->sendNumeric(RPL_CHANNELMODEIS,
-			      c->name + " " + makeChannelModes(c));
+			      c->name + " " + Channel::makeModes(c));
 	 
 	 // Also, send the creation time for the channel
 	 handler->sendNumeric(RPL_CREATIONTIME,
@@ -2169,7 +2170,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
       }
       
       // Show the modes (with the parameters)
-      handler->sendNumeric(RPL_UMODEIS, makeUserModes(handler->user));
+      handler->sendNumeric(RPL_UMODEIS, User::makeModes(handler->user));
       return;
    }
 
@@ -2190,7 +2191,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
       handler->sendNumeric(RPL_OTHERUMODEIS, 
 			   String::printf("%s %s",
 					  (char const *)u->nickname,
-					  (char const *)makeUserModes(u)));
+					  (char const *)User::makeModes(u)));
       return;
    }
 #endif
@@ -2230,7 +2231,7 @@ void irc2userHandler::parseMODE(irc2userHandler *handler, StringTokens *tokens)
    handler->sendNumeric(RPL_SERVMODEIS, 
 			String::printf("%s %s",
 				       (char const *)server->getHostname(),
-				       (char const *)makeServerModes(server)));
+				       (char const *)Server::makeModes(server)));
 }
 
 
@@ -2603,8 +2604,8 @@ void irc2userHandler::parseOPER(irc2userHandler *handler, StringTokens *tokens)
     * only the appropriate modes are went to the user to avoid client
     * confusion.
     */
-   handler->sendUserMode(0, makeUserModes(handler->user->modes ^ 
-					  (handler->user->modes | modes)));
+   handler->sendUserMode(0, User::makeModes(handler->user->modes ^ 
+					    (handler->user->modes | modes)));
    handler->user->modes |= modes;
    
    // Tell the user they are now an IRC Operator, finally!

@@ -130,7 +130,7 @@ class irc2userHandler : public Handler {
       char const *parameters;			// Parameter string for HELP
       char const *help;				// Plain-text line for HELP
    }; 
-   static functionTableStruct functionsTable[];
+   static struct functionTableStruct const functionsTable[];
    
    String processUserModes(String &, StringTokens *,
 			   bool = false);	// Process a usermode request
@@ -254,7 +254,7 @@ class p13serverHandler : public Handler {
       void (*function)(p13serverHandler *handler, String const &origin,
 		       StringTokens *tokens);	// Parsing handler function
    }; 
-   static functionTableStruct functionsTable[];
+   static struct functionTableStruct const functionsTable[];
 
    time_t stampDiff;				// Timestamp difference
 
@@ -347,7 +347,7 @@ class p14serverHandler : public Handler {
       void (*function)(p14serverHandler *handler, String const &origin, 
 		       StringTokens *tokens);	// Parsing handler function
    }; 
-   static functionTableStruct functionsTable[];
+   static struct functionTableStruct const functionsTable[];
 
  public:
    p14serverHandler(Connection *, Server *);	// Constructor
@@ -387,7 +387,7 @@ class registerHandler : public Handler {
 		       StringTokens *tokens);	// Parsing handler function
    };
    
-   static functionTableStruct functionsTable[];
+   static struct functionTableStruct const functionsTable[];
    
    void sendGeneric(const char *, 
 		    String const &);		// Generic send routine

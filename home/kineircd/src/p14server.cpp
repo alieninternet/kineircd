@@ -8,7 +8,8 @@
 #include "language.h"
 
 // Functions table (from P14_Notes)
-p14serverHandler::functionTableStruct p14serverHandler::functionsTable[] = {
+struct p14serverHandler::functionTableStruct const 
+  p14serverHandler::functionsTable[] = {
      { 'a',	0 },			// ADMIN (remote)
      { 'A',	0 },			// AWAY
      { 'b',	0 },			// NOTICE (to broadcast mask)

@@ -13,6 +13,59 @@
 #include "modes.h"
 
 
+// User modes -- IMPORTANT: Update the mode strings as you update the table!
+char const *User::modeStr 		= "dghkiInoOrRsSvw";
+char const *User::modeParamStr 		= "s";
+struct User::modeTableStruct const User::modeTable[] = {
+     { 'd',	MODE_DEAF,		false,	false,	true,
+	toggleUsermodeDEAF
+     },
+     { 'g',	MODE_IGNORING,		false,	false,	false,
+	toggleUsermodeIGNORING
+     },
+     { 'h',	MODE_HELPER,		false,	false,	true,
+	toggleUsermodeHELPER
+     },
+     { 'k',	MODE_NONKICKABLE,	false,	false,	false,
+	toggleUsermodeNONKICKABLE
+     },
+     { 'i',	MODE_INVISIBLE,		false,	false,	true,
+	toggleUsermodeINVISIBLE
+     },
+     { 'I',	MODE_IDENTIFIED,	false,	false,	false,
+	toggleUsermodeIDENTIFIED
+     },
+     { 'n',	MODE_GOT_IDENTD,	false,	false,	false,
+	toggleUsermodeGOT_IDENTD
+     },
+     { 'o',	MODE_LOCALOPER,		false,	false,	true,
+	toggleUsermodeOPER
+     },
+     { 'O',	MODE_GLOBALOPER,	false,	false,	true,
+	toggleUsermodeOPER
+     },
+     { 'r',	MODE_RESTRICTED,	false,	false,	false,
+	toggleUsermodeRESTRICTED
+     },
+     { 'R',	MODE_REGNICKSMSG,	false,	false,	true,
+	toggleUsermodeREGNICKSMSG
+     },
+     { 's',	0,			true,	false,	true,
+	toggleUsermodeSERVNOTICES
+     },
+     { 'S',	MODE_SECURE,		false,	false,	false,
+	toggleUsermodeSECURE
+     },
+     { 'v',	MODE_VWORLD,		false,	false,	true,
+	toggleUsermodeVWORLD
+     },
+     { 'w',	MODE_WALLOPS,		false,	false,	true,
+	toggleUsermodeWALLOPS
+     },
+     { 0 }
+};
+
+
 /* getChannel - Look through our local channel list for a channel
  * Original 15/08/01, Simon Butcher <pickle@austnet.org>
  * Note: Minature version of what appears for the main channel list, why
@@ -77,3 +130,46 @@ bool User::isSilencing(User *target)
    // Must not be on the list..
    return false;
 }
+
+
+/* makeModes - [Various forms] Create a string of user modes
+ * Original 24/08/01, Simon Butcher <pickle@austnet.org>
+ */
+String User::makeModes(TYPE_USERMODES modes)
+{
+   String reply = "+";
+   
+   // Run through the list of modes and check what needs to be shown
+   for (int i = 0; modeTable[i].letter != 0; i++) {
+      // Check if this mode flag is set
+      if (modes & modeTable[i].flag) {
+	 reply = reply + String(modeTable[i].letter);
+      }
+   }
+
+   return reply;
+}
+
+String User::makeModes(User *user)
+{
+   String reply = "+";
+   String params = "";
+   
+   // Run through the list of modes and check what needs to be shown
+   for (int i = 0; modeTable[i].letter != 0; i++) {
+      // Check if this mode flag is set
+      if (user->modes & modeTable[i].flag) {
+	 reply = reply + String(modeTable[i].letter);
+      }
+   }
+   
+   // Parameter based modes
+   if (user->local && user->local->serverNotices) {
+      reply = reply + "s";
+      params = String(" ") + "?";
+   }
+   
+   return reply + params;
+}
+
+
