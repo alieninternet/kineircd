@@ -296,6 +296,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleJOIN)
 {
    // fix me soon
    sendNumeric(LibIRC2::Numerics::ERR_NOSUCHCHANNEL,
+	       parameters[0],
 	       GETLANG(irc2_ERR_NOSUCHCHANNEL_UNSUPPORTED_TYPE));
 }
 #endif
