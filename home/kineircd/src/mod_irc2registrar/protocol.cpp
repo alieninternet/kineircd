@@ -34,7 +34,7 @@
 #include <aisutil/utils.h>
 #include <kineircd/protocolinfo.h>
 #include <kineircd/daemon.h>
-#include <kineircd/registry.h>
+#include <kineircd/mynetwork.h>
 
 #include "mod_irc2registrar/protocol.h"
 #include "mod_irc2registrar/language.h"
@@ -389,7 +389,7 @@ KINE_MOD_REGISTRAR_FUNCTION(Protocol::parseNICK)
 //   }
    
    // Check that the nickname is not already in use
-   if (registry().findClient(nick)) {
+   if (myNetwork().findClient(nick)) {
       sendNumeric(LibIRC2::Numerics::ERR_NICKNAMEINUSE,
 		  GETLANG(irc2_ERR_NICKNAMEINUSE));
       return;

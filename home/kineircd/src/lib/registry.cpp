@@ -103,6 +103,7 @@ void Registry::initInstance(void)
 #ifdef KINE_DEBUG
 # warning "This file is crappy"
 #endif
+#ifdef AFKUEAFKUAEFHAEFKAEFHAHEFHAEHFAEFHAEFKHAEHAEF
 /* changeUserNickname - Change a user's nickname (may involve a key change)
  * Original 16/05/2003
  */
@@ -240,7 +241,6 @@ User* const Registry::findUser(const Client::Name& name) const
 }
 
 
-#ifdef AFKUEAFKUAEFHAEFKAEFHAHEFHAEHFAEFHAEFKHAEHAEF
 /* addService - Add the given service
  * Original 08/04/2003
  */
@@ -327,7 +327,6 @@ const Error::error_type Registry::removeService(const Service& entity)
    // Complain about the user not existing
    return Error::UNREGISTERED_ENTITY;
 }
-#endif // KAHKAFHakefkhAEFHkaefaFKHaefkaefkuaef blah
 
 
 /* findService - Find the a service by its name
@@ -346,3 +345,4 @@ Service* const Registry::findService(const Client::Name& name) const
    // Not found
    return 0;
 }
+#endif // KAHKAFHakefkhAEFHkaefaFKHaefkaefkuaef blah

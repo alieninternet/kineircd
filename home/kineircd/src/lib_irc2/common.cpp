@@ -44,6 +44,7 @@
 #include <aisutil/string/tokens.h>
 #include <kineircd/config.h>
 #include <kineircd/myserver.h>
+#include <kineircd/mynetwork.h>
 #include <kineircd/daemon.h>
 #include <kineircd/registry.h>
 #include <kineircd/version.h>
@@ -391,11 +392,11 @@ void Protocol::doWHOIS(const User& user, const std::string& targets)
       std::string target = st.nextToken(',');
 
       // Find this target.. First look to see if it is a user
-      User* const foundUser = registry().findUser(localiseStr(target));
+      User* const foundUser = myNetwork().findUser(localiseStr(target));
       
       // If we did not find a user, look for this as a service
       Service* const foundService = 
-	((foundUser == 0) ? registry().findService(localiseStr(target)) : 0);
+	((foundUser == 0) ? myNetwork().findService(localiseStr(target)) : 0);
       
       // Whatever it is, it's a client, and we want to keep the code simple :)
       Client* const foundClient =

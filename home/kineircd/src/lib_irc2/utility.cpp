@@ -25,7 +25,7 @@
 # include "autoconf.h"
 #endif
 
-#include <kineircd/registry.h>
+#include <kineircd/mynetwork.h>
 
 #include "kineircd/libirc2/utility.h"
 
@@ -68,7 +68,7 @@ Kine::Receiver* const
       // Okay, check if this is a channel!
       if (/* ?? */ false) {
 	 // Find and return the channel, if we can..
-	 return registry().findChannel(target);
+	 return myNetwork().findChannel(target);
       }
       
       /* Okay, then presume this is a nickname.. This is the bit
@@ -77,7 +77,7 @@ Kine::Receiver* const
       Kine::Receiver* receiver;
       
       // Find a client with just the name
-      receiver = registry().findUser(target);
+      receiver = myNetwork().findUser(target);
 
       // After all that, did we find a user?
       if (receiver != 0) {
@@ -90,7 +90,7 @@ Kine::Receiver* const
        */
       if (includeServices) {
 	 // Try to find the service
-	 receiver = registry().findService(target);
+	 receiver = myNetwork().findService(target);
 	 
 	 // Did we find it?
 	 if (receiver != 0) {

@@ -33,7 +33,7 @@
 #include <algorithm>
 #include <typeinfo>
 #include <aisutil/string.h>
-#include <kineircd/registry.h>
+#include <kineircd/mynetwork.h>
 #include <kineircd/libirc2/utility.h>
 #ifdef KINE_DEBUG_ASSERT
 # include <cassert>
@@ -251,7 +251,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleISON)
    for (parameters_type::const_iterator it = parameters.begin(); 
 	it != parameters.end(); ++it) {
       // Check if we have that nick in our user or service lists
-      if ((client = registry().findClient(localiseStr(*it))) != 0) {
+      if ((client = myNetwork().findClient(localiseStr(*it))) != 0) {
 	 // If the reply is not empty, prefix this nickname with a space
 	 if (!reply.empty()) {
 	    reply += ' ';
@@ -292,7 +292,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleKILL)
    static const char* const commandName = "KILL";
    
    // Find the client to kill
-   Client* const victim = registry().findClient(localiseStr(parameters[0]));
+   Client* const victim = myNetwork().findClient(localiseStr(parameters[0]));
    
    // Check
    if (victim != 0) {
@@ -537,7 +537,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleNAMES)
       target = request.nextToken(',');
       
       // Find this channel without doing the whole mask checking thingy..
-      if ((channel = registry().findChannel(localiseStr(target))) != 0) {
+      if ((channel = myNetwork().findChannel(localiseStr(target))) != 0) {
 	 // Output the names list for this channel..
 	 sendNames(*channel);
 	 continue;
@@ -1158,7 +1158,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERHOST)
       
       // Try to find this user
       const Kine::User* const foundUser =
-	registry().findUser(localiseStr(*it));
+	myNetwork().findUser(localiseStr(*it));
       
       // Did we find this user?
       if (foundUser != 0) {
@@ -1211,7 +1211,7 @@ IRC2USER_COMMAND_HANDLER(Protocol::handleUSERIP)
       }
       
       // Try to find this user
-      const Kine::User* const foundUser = registry().findUser(*it);
+      const Kine::User* const foundUser = myNetwork().findUser(*it);
       
       // Did we find this user?
       if (foundUser != 0) {
