@@ -51,7 +51,7 @@
          (current-time)))
  +]
 
-[+ FOR tags +][+ IF
+[+ FOR tag +][+ IF
    ;; Make sure there is data for this tag
    (or
       (exist? "data")

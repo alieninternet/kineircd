@@ -10,9 +10,9 @@
  
    ;;; Do we use the tag in the current scope?
    (define (useThisTag?)
-      ;; Check if 'component' is the one for us
+      ;; Check if 'components' is the one for us
       (string-ci=?
-         (get "component")
+         (get "components")
          (getenv "COMPONENT")))
 
 
@@ -62,7 +62,7 @@
 
 using namespace Kine;
 
-Languages::tagMap_type [+(namespace)+]::Language::tagMap = {[+ FOR tags +][+ IF
+Languages::tagMap_type [+(namespace)+]::Language::tagMap = {[+ FOR tag +][+ IF
    (useThisTag?) 
  +]
    { "[+
@@ -82,7 +82,7 @@ namespace Kine {
    namespace [+(namespace)+] {
       namespace Language {
          // Language tag look-up table (for our language map)
-         enum {[+ FOR tags +][+ IF (useThisTag?) +][+ IF
+         enum {[+ FOR tag +][+ IF (useThisTag?) +][+ IF
    ;; Determine if we should put a comma here..
    (and
       (not

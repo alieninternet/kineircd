@@ -56,898 +56,898 @@ languages = {
  **                                                                         **
  *****************************************************************************/
 
-tags = {
+tag = {
    name		= "irc2_ERR_ALREADYREGISTERED";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Unauthorised command (already registered)";
    data_tr	= "Bu komutu uygulamaya yetkiniz yok (önceden kaydedildi)";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_BADCHANMASK";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Bad channel mask";
    data_tr	= "Yanlıž^_ CHANNEL MASK";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_BADCHANNELKEY";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+k)";
    data_tr	= "Kanala girilmiyor (+k)";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_BADCHARENCODING";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Given text contained one or more incorrectly encoded "
                   "characters and as been modified.";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_BADMASK";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Bad server/host mask";
    data_tr	= "Yanlıž^_ server/host mask";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_BANLISTFULL";
    fields	= "0 = max # list";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Channel list is full (%p0)";
    data_tr	= "Kanal listesi doldu (%p0)";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_BANNEDFROMCHAN";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+b)";
    data_tr	= "Kanala girilmiyor (+b)";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_CANNOTSENDTOCHAN";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Cannot send to channel";
    data_tr	= "Kanala gonderilemedi";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_CANNOTSENDTONICK";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "You cannot send to this nickname";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_CANTKILLSERVER";
    data_en	= "You can't kill a server!";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_CHANNELISFULL";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+l)";
    data_tr	= "Kanala girilmiyor (+l)";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_CHANOPRIVSNEEDED";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "You're not a channel operator";
    data_tr	= "Kanal operatoru deľ^_ilsiniz";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_DISABLED";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Command has been disabled";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_ERRONEUSNICKNAME";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Erroneous nickname";
    data_tr	= "Yanlıž^_ nickname";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_FILEERROR";
    fields	= "0 = file operation, 1 = file";
    data_en	= "File error doing %p0 on %p1";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_INVITEONLYCHAN";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Cannot join channel (+i)";
    data_tr	= "Kanala girilmiyor (+i)";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_KEYSET";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Channel key already set (to change it, unset it first)";
    data_tr	= "Kanal KEYsi zaten yerlež^_tirilmiž^_tir (deľ^_istirmek "
                   "için lütfen önce KEYyi kaldırın)";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NEEDMOREPARAMS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Not enough parameters";
    data_tr	= "Yeterince bilgi verilmedi";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NICKCOLLISION";
    fields	= "0 = user, 1 = host";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Nickname collision from %p0@%p1";
    data_tr	= "%p0@%p1 den nick çarpıž^_ması";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NICKNAMEINUSE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Nickname is already in use";
    data_tr	= "Bu nickname kullanılmaktadır";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOADMININFO";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "No administrative info available";
    data_tr	= "İdari bilgi bulunamadı";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOCHANMODES";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Channel doesn't support modes or mode changes";
    data_tr	= "Kanal MODElari ve MODE deľ^_iž^_imlerini kabul etmiyor";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOLANGUAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "is an unknown language to me";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOLOGIN";
    data_en	= "User not logged in";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOMORELANGS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No more languages can be set";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOMOTD";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "MOTD File is missing";
    data_tr	= "MOTD bulunamadı";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NONICKNAMEGIVEN";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No nickname given";
    data_tr	= "Nickname belirtilmedi";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOOPERHOST";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Your host is not configured to allow the OPER command";
    data_tr	= "HOSTunuz OPER komutunu kullanmak için konfigüre edilmedi";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOORIGIN";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No origin specified";
    data_tr	= "Kaynak belirtilmedi";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOPERMFORHOST";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Your host isn't among the privileged";
    data_tr	= "HOSTunuz ayrıcalıklılar arasinda deľ^_il";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOPRIVILEGES";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Permission Denied - You're not an IRC Operator";
    data_tr	= "Yetki verilmedi ⾞@~^S IRC Operator deľ^_ilsiniz";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NORECIPIENT";
    fields	= "0 = command";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No recipient given (%p0)";
    data_tr	= "Alicı belirtilmedi (%p0)";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOSUCHCHANNEL";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No such channel";
    data_tr	= "Böyle bir kanal bulunamadı";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOSUCHNICK";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No such nick";
    data_tr	= "Böyle bir nick bulunamadi";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOSUCHSERVER";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No such server";
    data_tr	= "Böyle bir server bulunamadı";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOSUCHSERVICE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No such service";
    data_tr	= "Böyle bir servis yok";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOTEXTTOSEND";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No text to send";
    data_tr	= "Gönderilecek text yok";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOTONCHANNEL";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "You're not on that channel";
    data_tr	= "O kanalda deľ^_ilsiniz";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOTOPLEVEL";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No toplevel domain specified";
    data_tr	= "Toplevel domain belirtilmedi";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_NOTREGISTERED";
    data_en	= "You have not registered";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_PASSWDMISMATCH";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Password incorrect";
    data_tr	= "Yanlıž^_ ž^_ifre";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_RESTRICTED";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Your connection is restricted";
    data_tr	= "Baglantınız kısıtlanmıž^_tır";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_SERVERMODELOCK";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Cannot change server modes (+L)";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_SUMMONDISABLED";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "SUMMON has been disabled";
    data_tr	= "SUMMON komutu kapatıldı";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_TOOMANYCHANNELS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "You have joined too many channels (%p0 is the limit)";
    data_tr	= "Fazla kanala girdiniz (limit %p0 dir)";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_TOOMANYTARGETS";
    data_en	= "Duplicate recipients. No message delivered";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_UMODEUNKNOWNFLAG";
    fields	= "0 = the mode itself";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Unknown MODE flag (%p0)";
    data_tr	= "Bilinmeyen MODE FLAG (%p0)";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_UNAVAILRESOURCE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Resource is temporarily unavailable";
    data_tr	= "Kaynak geçici olarak servis dıž^_ı";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_UNKNOWNCOMMAND";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Unknown command";
    data_tr	= "Bilinmeyen komut";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_UNKNOWNMODE";
    fields	= "0 = channel";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "is unknown mode char to me (%p0)";
    data_tr	= "%p0 için bilinmeyen MODE CHAR";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_UNKNOWNSERVERMODE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "One or more given server modes are unknown";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_UNIQOPPRIVSNEEDED";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "You're not the original channel operator";
    data_tr	= "Kanal öperatörü deľ^_ilsiniz";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_USERNOTINCHANNEL";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "They aren't on that channel";
    data_tr	= "Aradıľ^_ınız kiž^_i bu kanalda deľ^_ildir";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_USERONCHANNEL";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "is already on channel";
    data_tr	= "zaten kanaldalar";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_USERSDISABLED";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "USERS has been disabled";
    data_tr	= "USERS komutu kapatıldı";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_USERSDONTMATCH";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Cannot change mode for other users";
    data_tr	= "Baž^_ka kullanıcı için MODE deľ^_iž^_tiremezsiniz";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_WASNOSUCHNICK";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "There was no such nickname, or they signed off too long "
                   "ago";
    data_tr	= "Böyle bir nick bulunamadı";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_WILDTOPLEVEL";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Wildcard in toplevel domain";
    data_tr	= "Yanlıž^_ gTLD belirtildi";
 };
 
-tags = {
+tag = {
    name		= "irc2_ERR_YOUREBANNEDCREEP";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "You are banned from this server";
    data_tr	= "Bu serverdan banlandınız";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_BUGGY";
    fields	= "0 = error message";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Bug? Error: %p0";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_ECONNRESET";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Connection reset by peer";
    data_tr	= "Baglantiniz ež^_düzey tarafindan sonlandirilmistir";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_EHOSTUNREACH";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No route to host";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_ENETUNREACH";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Network is unreachable";
    data_tr	= "Networke baglanilamadi";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_EPIPE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Broken pipe";
    data_tr	= "Data hatti sorunu";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_ETIMEDOUT";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Connection timed out";
    data_tr	= "Zaman až^_imina ugradi";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_FLOODING";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Excess flood";
    data_tr	= "Bilgi až^_ırılıľ^_ı";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_NORMAL";
    fields	= "0 = the user's quit message";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Quit: %p0";
    data_tr	= "Kullanici ƫikiž^_i: %p0";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_NO_REASON";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Client quit IRC";
    data_tr	= "Kullanici IRC çikisi";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_PINGED_OUT";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Ping timeout";
    data_tr	= "PING zaman asimina ugradi";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_READ_FAIL";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Read error";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_SENDQ_OVERFLOW";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Send queue overflow";
 };
 
-tags = {
+tag = {
    name		= "irc2_QUIT_WRITE_FAIL";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Write error";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ADMINME";
    fields	= "0 = server hostname";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "Administrative info about %p0";
    data_tr	= "Administratif bilgi";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_CHANREDIR";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Note: You are being redirected";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_CREATED";
    fields	= "0 = date";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "This server was created %p0";
    data_tr	= "Bu server %p0 tarihinde yaratılmıž^_tır";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFBANLIST";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of channel ban list";
    data_tr	= "Kanal banlarının listesinin sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFEXCEPTLIST";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of channel exception list";
    data_tr	= "Kanal eksepsiyonlar listensinin sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOF_GENERIC_HELP";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of HELP";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOF_GENERIC_LANGUAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of LANGUAGE list";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFINFO";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of INFO list";
    data_tr	= "INFO listensinin sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFINVITELIST";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of channel invite list";
    data_tr	= "Kanal invite listesinin sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFLINKS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of LINKS list";
    data_tr	= "LINKler listensinin sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFMOTD";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "End of MOTD command";
    data_tr	= "MOTDnin sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFNAMES";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of NAMES list";
    data_tr	= "NAMES (isimler) listesinin sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFSTATS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of STATS report";
    data_tr	= "STATS raporunun sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFUSERS";
    data_en	= "End of USERS";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFWHO";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of WHO list";
    data_tr	= "WHO listesinin sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFWHOIS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of WHOIS list";
    data_tr	= "WHOIS listesinin sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ENDOFWHOWAS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of WHOWAS";
    data_tr	= "WHOWAS komutunun sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_GLOBALUSERS";
    fields	= "0 = # of global users, 1 = peak global user count";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "Current global users: %p0 Max: %p1";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_ISUPPORT";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "are supported by this server";
    data_tr	= "bu server tarafından destekleniyor";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_LISTEND";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of LIST";
    data_tr	= "LIST komutunun sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_LOCALUSERS";
    fields	= "0 = # of local users, 1 = peak local user count";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "Current local users: %p0 Max: %p1";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_LUSERCHANNELS";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "channels formed";
    data_tr	= "Kullanici kanalı";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_LUSERCLIENT";
    fields	= "0 = # of users, 1 = # of services, 2 = # of servers";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "There are %p0 users and %p1 services on %p2 servers";
    data_tr	= "ž^^u an serverin üstünde %p0 kullanici var ve %p2 "
                   "server üzerinde %p1 servis var";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_LUSERSTAFF";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "Staff member(s) online";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_LUSERME";
    fields	= "0 = clients, 1 = servers";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "I have %p0 clients and %p1 servers";
    data_tr	= "%p0 kullanıcım ve %p1 serverım var";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_LUSEROP";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "operator(s) online";
    data_tr	= "online operator";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_LUSERUNKNOWN";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "unknown connection(s)";
    data_tr	= "bilinmeyen baľ^_lantı";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_MOTDSTART";
    fields	= "0 = server name";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "%p0 Message of the day";
    data_tr	= "%p0 Günün mesajı";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_NOTOPIC";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "No topic is set";
    data_tr	= "Hiç bir topic yoktur";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_NOUSERS";
    data_en	= "Nobody logged in";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_NOWAWAY";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "You have been marked as being away";
    data_tr	= "AWAY komutu kabul edildi. ž^^u an awaysiniz";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_REHASHING";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Rehashing";
    data_tr	= "Rehash komutu uygulanıyor";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_SERVLISTEND";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of service listing";
    data_tr	= "Servis listesinin sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_SUMMONING";
    data_en	= "Summoning user to IRC";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_TIMEONSERVERIS";
-   component	= "libkineircd_irc2";
+   components	= "libkineircd_irc2";
    data_en	= "time according to server";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_TRACEEND";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "End of TRACE";
    data_tr	= "TRACE komutunun sonu";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_TRYAGAIN";
    data_en	= "Please wait a while and try again";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_UNAWAY";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "You are no longer marked as being away";
    data_tr	= "Awayiniz kaldırılmıž^_tır";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_USERSSTART";
    data_en	= "UserID   Terminal  Host";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_WELCOME";
    fields	= "0 = nick, 1 = user, 2 = host";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Welcome to the %N Internet Relay Network %p0!%p1@%p2";
    data_tr	= "%N Internet Relay Networkune Hož^_geldiniz %p0!%p1@%p2";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_WHOISIDLE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "seconds idle, signon time";
    data_tr	= "saniye idle, baľ^_lanma zamanı";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_WHOISLANGUAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "speaks these language(s)";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_WHOISOPERATOR";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "is an IRC operator";
    data_tr	= "bir IRC Operator";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_WHOISSECURE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "is connected via a secure connection";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_YOUREOPER";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "You are now an IRC operator";
    data_tr	= "IRC Operator statüsüne geçtiniz";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_YOURESERVICE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "You are service %p0";
    data_tr	= "ž^^u an %p0 servissiniz";
 };
 
-tags = {
+tag = {
    name		= "irc2_RPL_YOURHOST";
    fields	= "0 = server name, 1 = version";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Your host is %p0, running version %p1";
    data_tr	= "Host addressiniz %p0, %p1 versiyonu kullaniyorsunuz";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_BAD_PONG";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "Bad pong reply - Did you really think you could fool me?";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_BROKEN_REGISTRATION_DATA";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "Invalid registration data";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_CONN_DISALLOWED_IIRC";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "Network connections are not allowed on this port";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_CONN_DISALLOWED_SERVER";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "Server connections are not allowed on this port";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_CONN_DISALLOWED_SERVICE";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "Client connections are not allowed on this port";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_CONN_DISALLOWED_USER";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "User connections are not allowed on this port";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_PROTOCOL_INIT_FAIL";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "Requested protocol did not initialise";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_IIRC";
    fields	= "0 = protocol name";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "Requested IIRC protocol (%p0) is unavailable";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVER";
    fields	= "0 = protocol name";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "Requested server protocol (%p0) is unavailable";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_SERVICE";
    fields	= "0 = protocol name";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "Requested service protocol (%p0) is unavailable";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_PROTOCOL_UNAVAILABLE_USER";
    fields	= "0 = protocol name";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "Requested user protocol (%p0) is unavailable";
 };
 
-tags = {
+tag = {
    name		= "irc2registrar_ERROR_TIMEOUT";
-   component	= "mod_irc2registrar";
+   components	= "mod_irc2registrar";
    data_en	= "Registration timed out";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_ACCEPT";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "This command is only useful with the user mode '+g' set. "
                   "When set, this allows you to 'accept' people, thus "
 		  "enabling them to talk to you while you are ignoring "
@@ -955,46 +955,46 @@ tags = {
 		  "given, a list of currently accepted masks will be sent.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_ACCEPT_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "{ [ '+' | '-' ] <mask> ( ',' [ '+' | '-' ] <mask> ) } | "
                   "'*'";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_ADMIN";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Returns information about the administrators of the given "
                   "server. If no server is specified, this returns "
 		  "information regarding the administrators of the server you "
 		  "are locally connected to.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_ADMIN_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <target> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_AWAY";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "If a message is given, this will mark you as 'away', using "
                   "the given message as your reason. If you do not give a "
 		  "message, this will mark you as 'unaway', and will remove "
 		  "the given away message.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_AWAY_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ ':' <reason> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_CONNECT";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Instruct a server to connect to the target server on the "
                   "default port found in the configuration file for that "
 		  "server. If a port is given, the server will connect on "
@@ -1003,44 +1003,44 @@ tags = {
 		  "rather than the local server forfilling the request.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_CONNECT_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<target server>  [ <port>  [ <remote server> ] ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_DIE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "This command shuts down the server you are currently "
                   "connected to. Optionally a reason can be specified which "
 		  "will be broadcast to other operators on the network as "
 		  "the reason for the server's disappearance.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_DIE_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ ':' <reason> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_GLOBOPS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Sends the given message to all global operators online "
                   "(provided they have their server-notices user mode set to "
 		  "receive them).";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_GLOBOPS_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "':' <message>";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_HELP";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Returns command paranters for the given command(s). If no "
                   "command is specified, it is assumed that you mean all "
 		  "commands (commands matching '*'). When the '-' prefix is "
@@ -1048,30 +1048,30 @@ tags = {
 		  "returned, such as what you are reading right now. :-)";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_HELP_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ '-' ] [ <command> | <command mask> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_INFO";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Returns extended information about the version of the "
                   "given server. If no server is specified, this returns "
 		  "information regarding the server you are locally connected "
 		  "to.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_INFO_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <target> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_INVITE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Invite the person under the given nickname to the "
                   "specified channel. You must be on the given channel for "
 		  "this to work. If the channel is invite-only, you must also "
@@ -1081,29 +1081,29 @@ tags = {
 		  "can also be sent with the invite, if specified.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_INVITE_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<nickname>  <channel>  [ <timeout> ]  [ ':' <reason> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_ISON";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Check if the given nickname(s) are online. The server will "
                   "compile a list of nickname(s) who are online now in the "
 		  "exact order of the given list.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_ISON_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<nickname> ( SPACE <nickname> )";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_JOIN";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Join the given channel(s). If the channel(s) require a "
                   "key, or keys, then the keys list (if it exists) will be "
 		  "checked for a valid key. If the special channel name '0' "
@@ -1113,44 +1113,44 @@ tags = {
 		  "joined.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_JOIN_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "{ <channel> ( ',' <channel> )  [ <key> ( ',' <key> ) ] } "
                   "| '0'";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_KICK";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Kick the given user(s) from the given channel(s), "
                   "optionally with a reason for your actions.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_KICK_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<channel> ( ',' <channel> )  <user> ( ',' <user> )  "
                   "[ ':' <reason> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_KILL";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Kill the given nickname with the specified reason. The "
                   "reason is mandatory as you must have a reason for KILLing "
 		  "someone, naturally. Well, unless you're just homicidal :-)";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_KILL_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<nickname>  [ ':' <reason> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_KNOCK";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "'Knock' on the 'door' of an invite-only channel. This "
                   "only works when you are not able to enter normally, such "
 		  "as when the channel is invite-only and you are not on the "
@@ -1160,15 +1160,15 @@ tags = {
 		  "messages) to avoid spamming.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_KNOCK_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<channel>  [ ':' <reason> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_LANGUAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "This selects your preferred language(s), in order from "
                   "your most preferred to least preferred. When no parameters "
 		  "are specified, a list of languages available on the local "
@@ -1180,15 +1180,15 @@ tags = {
 		  "information will be modified.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_LANGUAGE_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <language code> ( ',' <language code> ) ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_LINKS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Generate a list of server links. If a server mask is "
                   "specified, only servers matching the mask will be shown. "
 		  "If a remote server is given, the request will be generated "
@@ -1196,29 +1196,29 @@ tags = {
 		  "are unable to see hidden servers (if any).";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_LINKS_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <target> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_LIST";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Return a list of channels currently created on the "
                   "network. The information returned also includes the number "
 		  "of users on the channels, and the current topic.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_LIST_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <channel> ( ',' <channel> ) ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_LOCOPS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Sends a message to any operator connected to the same "
                   "server as you are. This is not to be confused with "
 		  "'local operators', as this command will send the given "
@@ -1228,85 +1228,85 @@ tags = {
 		  "mode set appropriately.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_LOCOPS_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "':' <message>";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_LUSERS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Show the current local user status. This command has been "
                   "extended to also include global users, server, service and "
 		  "channel information.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_LUSERS_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <mask>  [ <target> ] ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_MAP";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Display a map of the major backbone links in the network, "
                   "along with other server information. This does not 'map' "
 		  "minor ('trendil') links.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_MAP_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <target> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_MODE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Change the mode setting of the given channel, nickname or "
                   "server.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_MODE_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "{ <channel> | <nickname> | <server> }  ( [ '-' | '+' ] "
                   "<mode> )  [ <modeparams> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_MOTD";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Display the MOTD (\\uM\\uessage \\uO\\uf \\uT\\uhe "
                   "\\uD\\uay). If a server is specified, the MOTD displayed "
 		  "will come from that server instead, providing the given "
 		  "server will allow you to receive it remotely.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_MOTD_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <target> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_NAMES";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Return the names of the clients within the given channel "
                   "or channels.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_NAMES_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <channel> ( ',' <channel> ) ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_NICK";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Change your current nickname to the given nickname. This "
                   "command will fail if the given nickname is already in use, "
 		  "the nickname is reserved for another purpose by the server "
@@ -1315,15 +1315,15 @@ tags = {
 		  "is restricted.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_NICK_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<new nickname>";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_NOTICE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Send the given NOTICE message to the given channel(s) or "
                   "nickname(s). Any combination of nicknames and channels "
 		  "can be specified. Note that the NOTICE interface does not "
@@ -1333,58 +1333,58 @@ tags = {
 		  "help.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_NOTICE_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "{ <nickname> | <channel> } "
                   "( ',' { <nickname> | <channel> } )  ':' <message>";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_OPER";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "This command allows you to become an IRC operator. You "
                   "must give your operator nickname and password for this "
 		  "command to be successful";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_OPER_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<nickname>  <password>";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_PART";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Leave the given channel(s), optionally giving a reason for "
                   "your departure.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_PART_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<channel> ( ',' <channel> )  [ ':' <reason> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_PING";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Ping the server, optionally giving text. The server will "
                   "reply with the given text, or just PONG. Some clients use "
 		  "this for 'lag checking', to measure the lag between the "
 		  "client and the server.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_PING_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ [ ':' ] <data> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_PONG";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "This is used as a reply to a server ping, and has no "
                   "other purpose other than for a client to automatically "
 		  "respond to prove to the server that the client is still "
@@ -1392,15 +1392,15 @@ tags = {
 		  "cause the client to 'ping timeout'.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_PONG_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "':' <data>";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_PRIVMSG";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Send the given PRIVMSG message to the given channel(s) "
                   "and/or nickname(s). Any combination of nicknames or "
 		  "channels can be specified. Be aware that if you are being "
@@ -1408,70 +1408,70 @@ tags = {
 		  "receive your message, without warning.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_PRIVMSG_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "{ <nickname> | <channel> } "
                   "( ',' { <nickname> | <channel> } )  ':' <message>";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_QUIT";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Leave IRC, optionally giving a reason for disconnecting.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_QUIT_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ ':' <reason> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_REHASH";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "'Rehash' the server. This command, will entirely reload "
                   "the configuration file, language files, as well as perform "
 		  "some quick checks similar to those done during start-up.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_REHASH_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    // no data (no parameters)
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_RESTART";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "This will restart the server. This command will load an "
                   "entirely new process for the IRC Daemon.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_RESTART_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    // no data (no parameters)
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_SERVLIST";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "List services currently visible on the network. If a mask "
                   "is specified, only services matching the given mask will "
 		  "be shown. If a type is given, only services matching the "
 		  "mask and the type will be listed.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_SERVLIST_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <mask>  [ <type> ] ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_SILENCE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Silence the given mask or nickname. This will stop any "
                   "private messages or notices being sent to you from anyone "
 		  "matching the given mask or nickname (excluding services, "
@@ -1482,57 +1482,57 @@ tags = {
 		  "you will see that person's current silence list.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_SILENCE_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "{ { '+' | '-' } { <mask> | <nickname> } } | [ <nickname> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_SQUIT";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Force the given server to depart the network with the "
                   "given reason. Be aware that this command may cause a "
 		  "netsplit.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_SQUIT_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<server>  [ ':' <reason> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_STATS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Ask for a status/statistical report from the current "
                   "server. If another server is given, the report will be "
 		  "generated there. If no query is given, a list of possible "
 		  "queries you can specify.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_STATS_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <query>  [ <target> ] ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_SUMMON";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Summon to IRC the given username of a user locally "
                   "connected to the machine running this server.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_SUMMON_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<user> [ <target> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_TIME";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Returns the current time on the given server, or the "
                   "server the given user or service is connected to. If no "
 		  "server is specified, the time will be returned according "
@@ -1541,113 +1541,113 @@ tags = {
 		  "that is geographically local to where they are situated.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_TIME_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <target> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_TOPIC";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "If no topic is specified, this returns the current topic "
                   "on the given channel. If a topic is specified, this "
 		  "command will change the topic to the one given, provided "
 		  "you have access to do so.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_TOPIC_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<channel>  [ ':' <topic> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_TRACE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Trace the path (internally, via the network) of a given "
                   "nickname, service or server. This is useful for locating "
 		  "lagging connections that need to be investigated further.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_TRACE_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <target> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_TRACEROUTE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Trace the path of IP packets (external from the network) "
                   "of the given server. This is useful for finding better "
 		  "routes and should be used to confirm a better solution "
 		  "for a route.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_TRACEROUTE_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<destination>  [ '-' <options> ]  [ <target> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_USERHOST";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Returns the host(s) of the nickname(s) on the given list. "
                   "Note that the host may in fact be a virtual-world host "
 		  "rather than the real host. Also see USERIP.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_USERHOST_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<nickname> ( SPACE <nickname> )";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_USERIP";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Returns the IP address(es) of the nickname(s) on the given "
                   "list. Note that the IP may in fact be a virtual-world IP "
 		  "rather than the real IP. Also see USERHOST.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_USERIP_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<nickname> ( SPACE <nickname> )";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_USERS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Return a list of users connected to the machine running "
                   "this IRC server.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_USERS_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <target> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_VERSION";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Returns the version of the given server, or the server the "
                   "given user or service is connected to.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_VERSION_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <target> ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WATCH";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Used as an alternative to ISON, WATCH sets up a list of "
                   "nicknames, or channels you can 'watch'. You will be "
 		  "notified of their appearance and disappearances on the "
@@ -1655,73 +1655,73 @@ tags = {
 		  "server and network names to watch.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WATCH_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "'C' | 'S' | 'L' | { '+' | '-' } <name> "
                   "( SPACE { '+' | '-' } <name> )";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WALLCHOPS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Send the given message to all operators and half operators "
                   "on the given channel.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WALLCHOPS_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    // no data, I need to confirm this first..
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WALLOPS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Broadcasts the given message to all users on the network "
                   "with the user mode '+w' set.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WALLOPS_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "':' <message>";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WHO";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Return a single line of user information for the given "
                   "user, or users (possibly matching a given mask), "
 		  "optionally using the format provided.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WHO_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "{ <channel> | <nickname mask> | '0' }  "
                   "[ 'H' | 'I' | 'N' | 'O' | 'R' | 'S' | 'U' | 'X' ] "
 		  "[ '%%' { 'C' | 'D' | 'F' | 'H' | 'I' | 'N' | 'R' | 'S' | "
 		  "'T' | 'U' } [ ',' <query type> ] ]";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WHOIS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Return information on who the given nickname(s) are. If a "
                   "server is specified, that server will generate the reply. "
 		  "This is an extended version of the simplistic WHO command.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WHOIS_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "[ <target> ]  <nickname> ( ',' <nickname> )";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WHOWAS";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "Return information on who the given nickname(s) were. The "
                   "information on who somebody was is kept on the server for "
 		  "a short amount of time after they have disconnected from "
@@ -1731,9 +1731,9 @@ tags = {
 		  "field.";
 };
 
-tags = {
+tag = {
    name		= "irc2user_HELP_CMD_WHOWAS_USAGE";
-   component	= "mod_irc2user";
+   components	= "mod_irc2user";
    data_en	= "<nickname> ( ',' <nickname> )  [ <count> ]";
 };
 
