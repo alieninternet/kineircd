@@ -56,8 +56,7 @@ Protocol::Protocol(const Kine::Registrant& registrant,
 		   Kine::Connection& connection,
 		   const std::string& inputQueue,
 		   const std::string& outputQueue)
- : Kine::Protocol(connection),
-   Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue),
+ : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue),
    user(*this, registrant, connection.getSocket().getRemoteAddress()),
    maxMessageSize(512) // <=- should really be configurable
 {

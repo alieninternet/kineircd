@@ -109,8 +109,9 @@ namespace Kine {
        * This is only used when creating a new protocol to associate against
        * a new connection.
        */
-      virtual Protocol* const createProtocol(Connection& connection,
-					     const Listener& listener)
+      virtual Kine::Protocol::Base* const
+	createProtocol(Connection& connection,
+		       const Listener& listener)
 	{ return 0; };
       
       /* This function returns a brand new (inherited) protocol class which
@@ -120,10 +121,11 @@ namespace Kine {
        * This is only used for a 'replacement' protocol, when it's being
        * handed a connection over from a registrar protocol.
        */
-      virtual Protocol* const createProtocol(const Registrant& registrant,
-					     Connection& connection,
-					     const std::string& inputQueue,
-					     const std::string& outputQueue)
+      virtual Protocol::Base* const 
+	createProtocol(const Registrant& registrant,
+		       Connection& connection,
+		       const std::string& inputQueue,
+		       const std::string& outputQueue)
 	{ return 0; };
    };
 }; // namespace Kine

@@ -31,14 +31,12 @@
 namespace Kine {
    namespace LibCLBP {
       //! The command line based protocol (CLBP) class (both input and output)
-      class Protocol : public Kine::LibCLBP::Input, public Kine::LibCLBP::Output {
+      class Protocol : public Input, public Output {
        protected:
 	 //! Constructor
 	 explicit Protocol(Kine::Connection& _connection,
 			   const char* const _eolChars = Output::EOL_CR_LF)
-	   : Kine::Protocol(_connection),
-	     Input(_connection),
-	     Output(_connection, _eolChars)
+	   : Output(_connection, _eolChars)
 	   {};
 
 	 //! Constructor (for migrating I/O queues)
@@ -46,8 +44,7 @@ namespace Kine {
 			   const std::string& _inputQueue,
 			   const std::string& _outputQueue,
 			   const char* const _eolChars = Output::EOL_CR_LF)
-	   : Kine::Protocol(_connection),
-	     Input(_connection, _inputQueue),
+	   : Input(_inputQueue),
 	     Output(_connection, _outputQueue, _eolChars)
 	   {};
 	 

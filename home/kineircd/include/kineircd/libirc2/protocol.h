@@ -70,8 +70,7 @@ namespace Kine {
        protected:
 	 // Constructor
 	 explicit Protocol(Kine::Connection& c)
-	   : Kine::Protocol(c),
-	     Kine::LibCLBP::Protocol(c),
+	   : Kine::LibCLBP::Protocol(c),
 	     sentMessageCount(0),
 	     receivedMessageCount(0)
 	   {};
@@ -80,8 +79,7 @@ namespace Kine {
 	 explicit Protocol(Kine::Connection& c,
 			   const std::string& iq,
 			   const std::string& oq)
-	   : Kine::Protocol(c),
-	     Kine::LibCLBP::Protocol(c, iq, oq),
+	   : Kine::LibCLBP::Protocol(c, iq, oq),
 	     sentMessageCount(0),
 	     receivedMessageCount(0)
 	   {};

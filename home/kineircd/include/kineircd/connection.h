@@ -28,7 +28,9 @@
 # include <aisutil/time.h>
 
 namespace Kine {
-   class Protocol;
+   namespace Protocol {
+      class Base;
+   };
    
    //! Connection class
    class Connection {
@@ -37,7 +39,7 @@ namespace Kine {
       
     private:
       AIS::Util::Socket& socket;		//!< The connected socket
-      Protocol* protocol;			//!< The protocol we are running
+      Protocol::Base* protocol;			//!< The protocol we are running
       
       byteCount_type sentBytes;			//!< Number of bytes sent
       byteCount_type receivedBytes;		//!< Number of bytes received
@@ -60,11 +62,11 @@ namespace Kine {
 
       
       //! Return the protocol in use (read-only access)
-      const Protocol* const getProtocol(void) const
+      const Protocol::Base* const getProtocol(void) const
 	{ return protocol; }; 
       
       //! Replace the protocol with something new
-      void setProtocol(Protocol& p)
+      void setProtocol(Protocol::Base& p)
 	{ protocol = &p; };
 
       

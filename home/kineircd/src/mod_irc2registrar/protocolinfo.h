@@ -41,8 +41,9 @@ namespace Kine {
 	 ~ProtocolInfo(void)
 	   {};
 	 
-	 Kine::Protocol* const createProtocol(Kine::Connection& c,
-					      const Kine::Listener& l)
+	 Kine::Protocol::Base* const
+	   createProtocol(Kine::Connection& c,
+			  const Kine::Listener& l)
 	   {
 	      return new Kine::mod_irc2registrar::Protocol(c, l);
 	   };

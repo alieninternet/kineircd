@@ -31,7 +31,7 @@
 namespace Kine {
    namespace LibCLBP {
       //! The command line based protocol (CLBP) output handling class
-      class Output : virtual public Kine::Protocol {
+      class Output : public Kine::Protocol::Output {
        public:
 	 static const char* const EOL_CR_LF;	//!< '\r\n' end of line (common)
 	 static const char* const EOL_CR;	//!< '\r' end of line (rare)
@@ -49,7 +49,7 @@ namespace Kine {
 	 //! Constructor
 	 explicit Output(Kine::Connection& _connection,
 			 const char* const _eolChars = EOL_CR_LF)
-	   : Kine::Protocol(_connection),
+	   : Kine::Protocol::Output(_connection),
 	     eolChars(_eolChars)
 	   {};
 
@@ -57,7 +57,7 @@ namespace Kine {
 	 explicit Output(Kine::Connection& _connection,
 			 const std::string& _outputQueue,
 			 const char* const _eolChars = EOL_CR_LF)
-	   : Kine::Protocol(_connection),
+	   : Kine::Protocol::Output(_connection),
 	     outputQueue(_outputQueue),
 	     eolChars(_eolChars)
 	   {};

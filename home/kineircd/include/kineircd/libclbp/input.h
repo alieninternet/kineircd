@@ -32,22 +32,19 @@
 namespace Kine {
    namespace LibCLBP {
       //! The command line based protocol (CLBP) input handling class
-      class Input : virtual public Kine::Protocol {
+      class Input : public Kine::Protocol::Input {
        private:
 	 // Our input queue
 	 std::string inputQueue;
 	 
        protected:
 	 //! Constructor
-	 Input(Kine::Connection& _connection)
-	   : Kine::Protocol(_connection)
+	 Input(void)
 	   {};
 
 	 //! Constructor (for migrating I/O queues)
-	 explicit Input(Kine::Connection& _connection,
-			const std::string& _inputQueue)
-	   : Kine::Protocol(_connection),
-	     inputQueue(_inputQueue)
+	 explicit Input(const std::string& _inputQueue)
+	   : inputQueue(_inputQueue)
 	   {};
 	 
        public:

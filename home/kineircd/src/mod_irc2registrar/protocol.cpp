@@ -213,7 +213,7 @@ void Protocol::parseMessage(const std::string& origin,
 #endif
     
    // Create the new protocol
-   Kine::Protocol* const newProtocol = 
+   Kine::Protocol::Base* const newProtocol = 
      protocolInfo->createProtocol(registrantData, connection,
 				  getInputQueue(),
 				  getOutputQueue());

@@ -42,10 +42,11 @@ namespace Kine {
 	 ~ProtocolInfo(void)
 	   {};
 	 
-	 Kine::Protocol* const createProtocol(const Kine::Registrant& r,
-					      Kine::Connection& c,
-					      const std::string& iq,
-					      const std::string& oq)
+	 Kine::Protocol::Base* const
+	   createProtocol(const Kine::Registrant& r,
+			  Kine::Connection& c,
+			  const std::string& iq,
+			  const std::string& oq)
 	   {
 	      return new Kine::mod_irc2user::Protocol(r, c, iq, oq);
 	   };

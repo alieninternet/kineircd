@@ -28,63 +28,108 @@
 # include <sstream>
 # include <cstdlib>
 # include <aisutil/socket/socket.h>
-
 # include <kineircd/connection.h>
 
 namespace Kine {
-   //! The protocol base class
-   class Protocol {
-    public:
-      //! The type of a message counter
-      typedef unsigned long messageCount_type;
-
-      //! An unknown number of messages
-      static const messageCount_type unknownMessageCount =
-	((messageCount_type)-1);
+   //! Protocol base classes
+   namespace Protocol {
+      //! The protocol base class
+      class Base {
+       public:
+	 //! The type of a message counter
+	 typedef unsigned long messageCount_type;
+	 
+	 //! An unknown number of messages
+	 static const messageCount_type unknownMessageCount =
+	   ((messageCount_type)-1);
+	 
+       protected:
+	 //! Constructor
+	 explicit Base(void)
+	   {};
+	 
+       public:
+	 // Destructor
+	 virtual ~Base(void)
+	   {};
+	 
+	 // Handle incoming data
+	 virtual void handleInput(std::stringstream& data) = 0;
+	 
+	 // Remove up to the amount of octets given from the output queue
+	 virtual const std::string 
+	   withdrawOutput(const AIS::Util::Socket::blockSize_type amount) = 0;
+	 
+	 // Return true should there be anything in the output queue to send
+	 virtual const bool moreOutput(void) const = 0;
+	 
+	 
+	 //! Return the number of messages sent through this protocol
+	 virtual const messageCount_type getSentMessageCount(void) const
+	   { return unknownMessageCount; };
+	 
+	 //! Return the number of messages received through this protocol
+	 virtual const messageCount_type getReceivedMessageCount(void) const
+	   { return unknownMessageCount; };
+	 
+	 
+	 //! Return some sort of official name of this protocol
+	 virtual const char* const getProtocolName(void) const = 0;
+	 
+	 //! Return some sort of identifying name for this instance
+	 virtual const std::string* const getIdentifyingName(void) const
+	   { return 0; };
+      }; // class Base
       
-    protected:
-      // The specific connection running this instance of the protocol
-      Connection& connection;
-
-
-      // Constructor
-      explicit Protocol(Connection& c)
-	: connection(c)
-        {};
       
-    public:
-      // Destructor
-      virtual ~Protocol(void)
-	{};
-      
-      // Handle incoming data
-      virtual void handleInput(std::stringstream& data) = 0;
-      
-      // Remove up to the amount of octets given from the output queue
-      virtual const std::string 
-	withdrawOutput(const AIS::Util::Socket::blockSize_type amount) = 0;
-      
-      // Return true should there be anything in the output queue to send
-      virtual const bool moreOutput(void) const = 0;
+      //! Generic protocol input base
+      class Input : virtual public Base {
+       protected:
+	 //! Constructor
+	 explicit Input(void)
+	   {};
+	 
+       public:
+	 //! Destructor
+	 virtual ~Input(void)
+	   {};
+      }; // class Input
       
       
-      //! Return the number of messages sent through this protocol
-      virtual const messageCount_type getSentMessageCount(void) const
-	{ return unknownMessageCount; };
+      //! Generic protocol output base
+      class Output : virtual public Base {
+       protected:
+	 //! The specific connection running this instance of the protocol
+	 Connection& connection;
+	 
+	 
+	 //! Constructor
+	 explicit Output(Connection& _connection)
+	   : connection(_connection)
+	   {};
+	 
+       public:
+	 //! Destructor
+	 virtual ~Output(void)
+	   {};
+      }; // class Output
       
-      //! Return the number of messages received through this protocol
-      virtual const messageCount_type getReceivedMessageCount(void) const
-	{ return unknownMessageCount; };
       
-      
-      //! Return some sort of official name of this protocol
-      virtual const char* const getProtocolName(void) const = 0;
-      
-      //! Return some sort of identifying name for this instance
-      virtual const std::string* const getIdentifyingName(void) const
-	{ return 0; };
-   };
-};
+      //! Generic protocol including both input and output components
+      class Protocol : public Input, public Output {
+       protected:
+	 //! Constructor
+	 explicit Protocol(Connection& _connection)
+	   : Output(_connection)
+	   {};
+	 
+       public:
+	 //! Destructor
+	 virtual ~Protocol(void)
+	   {};
+      }; // class Protocol
+   }; // namespace Protocol
+}; // namespace Kine
 
 #endif // _INCLUDE_KINEIRCD_PROTOCOL_H_
 
