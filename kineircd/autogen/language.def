@@ -852,14 +852,14 @@ tags = {
    name		= "irc2_ERR_ALREADYREGISTERED";
    component	= "mod_irc2user";
    data_en	= "Unauthorised command (already registered)";
-   data_tr	= "Bu komutu uygulamaya yetkiniz yok (�~^Vnceden kaydedildi)";
+   data_tr	= "Bu komutu uygulamaya yetkiniz yok (önceden kaydedildi)";
 };
 
 tags = {
    name		= "irc2_ERR_BADCHANMASK";
    component	= "mod_irc2user";
    data_en	= "Bad channel mask";
-   data_tr	= "Yanlı�~^_ CHANNEL MASK";
+   data_tr	= "Yanlıž^_ CHANNEL MASK";
 };
 
 tags = {
@@ -873,7 +873,7 @@ tags = {
    name		= "irc2_ERR_BADMASK";
    component	= "mod_irc2user";
    data_en	= "Bad server/host mask";
-   data_tr	= "Yanlı�~^_ server/host mask";
+   data_tr	= "Yanlıž^_ server/host mask";
 };
 
 tags = {
@@ -909,14 +909,14 @@ tags = {
    name		= "irc2_ERR_CHANOPRIVSNEEDED";
    component	= "mod_irc2user";
    data_en	= "You're not a channel operator";
-   data_tr	= "Kanal operatoru de�~^_ilsiniz";
+   data_tr	= "Kanal operatoru deľ^_ilsiniz";
 };
 
 tags = {
    name		= "irc2_ERR_ERRONEUSNICKNAME";
    component	= "mod_irc2user";
    data_en	= "Erroneous nickname";
-   data_tr	= "Yanlı�~^_ nickname";
+   data_tr	= "Yanlıž^_ nickname";
 };
 
 tags = {
@@ -930,7 +930,7 @@ tags = {
    name		= "irc2_ERR_KEYSET";
    component	= "mod_irc2user";
    data_en	= "Channel key already set (to change it, unset it first)";
-   data_tr	= "Kanal KEYsi zaten yerle�~^_tirilmi�~^_tir (de�~^_istirmek "
+   data_tr	= "Kanal KEYsi zaten yerlež^_tirilmiž^_tir (deľ^_istirmek "
                   "için lütfen önce KEYyi kaldırın)";
 };
 
@@ -946,7 +946,7 @@ tags = {
    fields	= "0 = user, 1 = host";
    component	= "mod_irc2user";
    data_en	= "Nickname collision from %p0@%p1";
-   data_tr	= "%p0@%p1 den nick çarpı�~^_ması";
+   data_tr	= "%p0@%p1 den nick çarpıž^_ması";
 };
 
 tags = {
@@ -967,7 +967,7 @@ tags = {
    name		= "irc2_ERR_NOCHANMODES";
    component	= "mod_irc2user";
    data_en	= "Channel doesn't support modes or mode changes";
-   data_tr	= "Kanal MODElari ve MODE de�~^_i�~^_imlerini kabul etmiyor";
+   data_tr	= "Kanal MODElari ve MODE deľ^_iž^_imlerini kabul etmiyor";
 };
 
 tags = {
@@ -1002,14 +1002,14 @@ tags = {
    name		= "irc2_ERR_NOPERMFORHOST";
    component	= "mod_irc2user";
    data_en	= "Your host isn't among the privileged";
-   data_tr	= "HOSTunuz ayrıcalıklılar arasinda de�~^_il";
+   data_tr	= "HOSTunuz ayrıcalıklılar arasinda deľ^_il";
 };
 
 tags = {
    name		= "irc2_ERR_NOPRIVILEGES";
    component	= "mod_irc2user";
    data_en	= "Permission Denied - You're not an IRC Operator";
-   data_tr	= "Yetki verilmedi �~^@~^S IRC Operator de�~^_ilsiniz";
+   data_tr	= "Yetki verilmedi ⾞@~^S IRC Operator deľ^_ilsiniz";
 };
 
 tags = {
@@ -1038,7 +1038,7 @@ tags = {
    name		= "irc2_ERR_NOTONCHANNEL";
    component	= "mod_irc2user";
    data_en	= "You're not on that channel";
-   data_tr	= "O kanalda de�~^_ilsiniz";
+   data_tr	= "O kanalda deľ^_ilsiniz";
 };
 
 tags = {
@@ -1052,14 +1052,14 @@ tags = {
    name		= "irc2_ERR_PASSWDMISMATCH";
    component	= "mod_irc2user";
    data_en	= "Password incorrect";
-   data_tr	= "Yanlı�~^_ �~^_ifre";
+   data_tr	= "Yanlıž^_ ž^_ifre";
 };
 
 tags = {
    name		= "irc2_ERR_RESTRICTED";
    component	= "mod_irc2user";
    data_en	= "Your connection is restricted";
-   data_tr	= "Baglantınız kısıtlanmı�~^_tır";
+   data_tr	= "Baglantınız kısıtlanmıž^_tır";
 };
 
 tags = {
@@ -1088,7 +1088,7 @@ tags = {
    name		= "irc2_ERR_UNAVAILRESOURCE";
    component	= "mod_irc2user";
    data_en	= "Resource is temporarily unavailable";
-   data_tr	= "Kaynak geçici olarak servis dı�~^_ı";
+   data_tr	= "Kaynak geçici olarak servis dıž^_ı";
 };
 
 tags = {
@@ -1110,14 +1110,14 @@ tags = {
    name		= "irc2_ERR_UNIQOPPRIVSNEEDED";
    component	= "mod_irc2user";
    data_en	= "You're not the original channel operator";
-   data_tr	= "Kanal öperatörü de�~^_ilsiniz";
+   data_tr	= "Kanal öperatörü deľ^_ilsiniz";
 };
 
 tags = {
    name		= "irc2_ERR_USERNOTINCHANNEL";
    component	= "mod_irc2user";
    data_en	= "They aren't on that channel";
-   data_tr	= "Aradı�~^_ınız ki�~^_i bu kanalda de�~^_ildir";
+   data_tr	= "Aradıľ^_ınız kiž^_i bu kanalda deľ^_ildir";
 };
 
 tags = {
@@ -1138,7 +1138,7 @@ tags = {
    name		= "irc2_ERR_USERSDONTMATCH";
    component	= "mod_irc2user";
    data_en	= "Cannot change mode for other users";
-   data_tr	= "Ba�~^_ka kullanıcı için MODE de�~^_i�~^_tiremezsiniz";
+   data_tr	= "Baž^_ka kullanıcı için MODE deľ^_iž^_tiremezsiniz";
 };
 
 tags = {
@@ -1153,7 +1153,7 @@ tags = {
    name		= "irc2_ERR_WILDTOPLEVEL";
    component	= "mod_irc2user";
    data_en	= "Wildcard in toplevel domain";
-   data_tr	= "Yanlı�~^_ gTLD belirtildi";
+   data_tr	= "Yanlıž^_ gTLD belirtildi";
 };
 
 tags = {
@@ -1174,7 +1174,7 @@ tags = {
    name		= "irc2_QUIT_ECONNRESET";
    component	= "mod_irc2user";
    data_en	= "Connection reset by peer";
-   data_tr	= "Baglantiniz e�~^_düzey tarafindan sonlandirilmistir";
+   data_tr	= "Baglantiniz ež^_düzey tarafindan sonlandirilmistir";
 };
 
 tags = {
@@ -1201,14 +1201,14 @@ tags = {
    name		= "irc2_QUIT_ETIMEDOUT";
    component	= "mod_irc2user";
    data_en	= "Connection timed out";
-   data_tr	= "Zaman a�~^_imina ugradi";
+   data_tr	= "Zaman až^_imina ugradi";
 };
 
 tags = {
    name		= "irc2_QUIT_FLOODING";
    component	= "mod_irc2user";
    data_en	= "Excess flood";
-   data_tr	= "Bilgi a�~^_ırılı�~^_ı";
+   data_tr	= "Bilgi až^_ırılıľ^_ı";
 };
 
 tags = {
@@ -1216,7 +1216,7 @@ tags = {
    fields	= "0 = the user's quit message";
    component	= "mod_irc2user";
    data_en	= "Quit: %p0";
-   data_tr	= "Kullanici ƫiki�~^_i: %p0";
+   data_tr	= "Kullanici ƫikiž^_i: %p0";
 };
 
 tags = {
@@ -1263,7 +1263,7 @@ tags = {
    fields	= "0 = date";
    component	= "mod_irc2user";
    data_en	= "This server was created %p0";
-   data_tr	= "Bu server %p0 tarihinde yaratılmı�~^_tır";
+   data_tr	= "Bu server %p0 tarihinde yaratılmıž^_tır";
 };
 
 tags = {
@@ -1369,7 +1369,7 @@ tags = {
    fields	= "0 = # of users, 1 = # of services, 2 = # of servers";
    component	= "mod_irc2user";
    data_en	= "There are %p0 users and %p1 services on %p2 servers";
-   data_tr	= "�~^^u an serverin üstünde %p0 kullanici var ve %p2 "
+   data_tr	= "ž^^u an serverin üstünde %p0 kullanici var ve %p2 "
                   "server üzerinde %p1 servis var";
 };
 
@@ -1398,7 +1398,7 @@ tags = {
    name		= "irc2_RPL_LUSERUNKNOWN";
    component	= "mod_irc2user";
    data_en	= "unknown connection(s)";
-   data_tr	= "bilinmeyen ba�~^_lantı";
+   data_tr	= "bilinmeyen baľ^_lantı";
 };
 
 tags = {
@@ -1441,7 +1441,7 @@ tags = {
    name		= "irc2_RPL_NOWAWAY";
    component	= "mod_irc2user";
    data_en	= "You have been marked as being away";
-   data_tr	= "AWAY komutu kabul edildi. �~^^u an awaysiniz";
+   data_tr	= "AWAY komutu kabul edildi. ž^^u an awaysiniz";
 };
 
 tags = {
@@ -1475,7 +1475,7 @@ tags = {
    name		= "irc2_RPL_UNAWAY";
    component	= "mod_irc2user";
    data_en	= "You are no longer marked as being away";
-   data_tr	= "Awayiniz kaldırılmı�~^_tır";
+   data_tr	= "Awayiniz kaldırılmıž^_tır";
 };
 
 tags = {
@@ -1483,14 +1483,14 @@ tags = {
    fields	= "0 = nick, 1 = user, 2 = host";
    component	= "mod_irc2user";
    data_en	= "Welcome to the %N Internet Relay Network %p0!%p1@%p2";
-   data_tr	= "%N Internet Relay Networkune Ho�~^_geldiniz %p0!%p1@%p2";
+   data_tr	= "%N Internet Relay Networkune Hož^_geldiniz %p0!%p1@%p2";
 };
 
 tags = {
    name		= "irc2_RPL_WHOISIDLE";
    component	= "mod_irc2user";
    data_en	= "seconds idle, signon time";
-   data_tr	= "saniye idle, ba�~^_lanma zamanı";
+   data_tr	= "saniye idle, baľ^_lanma zamanı";
 };
 
 tags = {
@@ -1511,7 +1511,7 @@ tags = {
    name		= "irc2_RPL_YOURESERVICE";
    component	= "mod_irc2user";
    data_en	= "You are service %p0";
-   data_tr	= "�~^^u an %p0 servissiniz";
+   data_tr	= "ž^^u an %p0 servissiniz";
 };
 
 tags = {
