@@ -36,64 +36,22 @@ using namespace Kine;
 Signals *siggies;
 
 
-#ifdef SYS_SIGLIST_DECLARED
-# define sigNames sys_siglist
-#else
-/* Reference - man page signal(7) on Linux (Posix/SysV/BSD combine)
- * Note: This is a guessing table since we don't have a real signal
- *       list declared for us
- */
-static char const *sigNames[] = {
-   "SIGZERO",   //  0 - Apparently never used
-   "SIGHUP",    //  1 - Hang up detected on controlling terminal
-   "SIGINT",    //  2 - Interrupt from keyboard (^C)
-   "SIGQUIT",   //  3 - Quit from keyboard (^D)
-   "SIGILL",    //  4 - Illegal intruction called
-   "SIGTRAP",   //  5 - Trace/Breakpoint trap
-   "SIGABRT",   //  6 - Abort signal from abort()
-   "SIGEMT",    //  7 -
-   "SIGFPE",    //  8 - Floating point exception
-   "SIGKILL",   //  9 - Kill signal (cannot be caught)
-   "SIGBUS",    // 10 - BUS error (bad memory access, usually causes core dump)
-   "SIGSEGV",   // 11 - Invalid memory reference (segment violation)
-   "SIGSYS",    // 12 - Bad argument to routine
-   "SIGPIPE",   // 13 - Broken pipe (written to pipe with nobody listening)
-   "SIGALRM",   // 14 - Time signal from alarm()
-   "SIGTERM",   // 15 - Termination signal
-   "SIGURG",    // 16 - Urgent condition on socket (should induce race condition)
-   "SIGSTOP",   // 17 - Stop process (pauses process, cannot be caught)
-   "SIGTSTP",   // 18 - Stop typed at TTY
-   "SIGCONT",   // 19 - Continue if stopped
-   "SIGCHLD",   // 20 - Child process stopped or terminated
-   "SIGTTIN",   // 21 - TTY input for background process
-   "SIGTTOU",   // 22 - TTY output for background process
-   "SIGIO",     // 23 - I/O now possible
-   "SIGXCPU",   // 24 - CPU time limit exceeded (usually terminates with core dump)
-   "SIGXFSZ",   // 25 - File size limit exceeded (usually terminates with core dump)
-   "SIGVTALRM", // 26 - Virtual alarm clock
-   "SIGPROF",   // 27 - Profiling timer expired
-   "SIGWINCH",  // 28 - Window resize signal
-# ifdef SIGLOST
-   "SIGLOST",   // 29 - Signal Lost (apparently obsolete)
-# else
-   "SIGPWR",    // 29 - Power failure
-# endif
-   "SIGUSR1",   // 30 - User-defined signal 1
-   "SIGUSR2"    // 31 - User-defined signal 2
-};
-#endif
-   
-
 /* sigHandler - Handle signals
  * Original 11/08/2001 simonb
  * Note: If this is to compile on other systems we may need the header
  * 	 RETSIGTYPE sigHandler(int sig, int code, struct sigcontext *context) 
  *       right?
  */
-RETSIGTYPE sigHandler(int sig)
+RETSIGTYPE signalHandler(int sig)
 {
 #ifdef DEBUG
-   debug("sigHandler() -> [" + sig + String("] ") + sigNames[sig]);
+   debug("sigHandler() -> [" + sig +
+# ifdef SYS_SIGLIST_DECLARED
+	 "] " + sys_siglist[sig]
+# else
+	 ']'
+# endif
+	 );
 #endif
    
    switch (sig) {
@@ -103,7 +61,7 @@ RETSIGTYPE sigHandler(int sig)
       abort();//temporary
       break;
       
-      // Die violently
+      // Violent Death
     case SIGILL:
     case SIGTRAP:
 #ifdef SIGEMT
@@ -125,10 +83,9 @@ RETSIGTYPE sigHandler(int sig)
       exit(Exit::ERR_UGLY_SIGNAL); // This could be a little nicer..
       break;
 
-      // Die gracefully
+      // Peaceful death
     case SIGINT:
     case SIGQUIT:
-/*    case SIGPIPE:  */ // bsd?
     case SIGTERM:
     case SIGABRT:
 #ifdef SIGXCPU
@@ -147,8 +104,82 @@ RETSIGTYPE sigHandler(int sig)
    }
    
    // Reset the signal for future handling. Some os's do not need this??
-   signal(sig, sigHandler);
+   signal(sig, signalHandler);
 }
+
+
+// A list of what to do with signals to iterate over
+struct {
+   const int signal;	// We specify the signal because the defines change
+   const bool handle;	// If false, we will set SIG_IGN on it
+} static const signalHandlerInstructions[] = {
+     { SIGHUP,		true },	// Hangup detected on controlling terminal
+     { SIGINT,		true },	// Interrupt from keyboard (^C)
+     { SIGQUIT,		true },	// Quit from keyboard (^D)
+     { SIGILL,		true },	// Illegal Instruction
+     { SIGABRT,		true },	// Abort signal from abort()
+#ifdef SIGIOT
+     { SIGIOT,		true }, // IOT trap (SIGABRT)
+#endif
+     { SIGFPE,		true },	// Floating point exception
+     { SIGSEGV,		true },	// Invalid memory reference (segment violation)
+     { SIGPIPE,		false },// Broken pipe: write to pipe with no readers
+     { SIGALRM,		true },	// Timer signal from alarm() (or lame sleep())
+#ifdef SIGVTALRM
+     { SIGVTALRM,	true },	// Virtual alarm clock
+#endif
+     { SIGTERM,		true },	// Termination signal
+     { SIGUSR1,		true },	// User-defined signal 1
+     { SIGUSR2,		true },	// User-defined signal 2
+     { SIGCHLD,		true },	// Child stopped or terminated
+#ifdef SIGCLD
+     { SIGCLD,		true },	// Child stopped or terminated (SIGCHLD)
+#endif
+     { SIGCONT,		true },	// Continue if stopped
+     { SIGTSTP,		true },	// Stop typed at tty
+     { SIGTTIN,		true },	// tty input for background process
+     { SIGTTOU,		true },	// tty output for background process
+#ifdef SIGBUS
+     { SIGBUS,		true },	// Bus error (bad memory access)
+#endif
+#ifdef SIGPOLL
+     { SIGPOLL,		true },	// Pollable event (SIGIO)
+#endif
+#ifdef SIGSYS
+     { SIGSYS,		true },	// Bad argument to routine (system call)
+#endif
+#ifdef SIGURG
+     { SIGURG,		false },// Urgent condition on socket
+#endif
+#ifdef SIGXCPU
+     { SIGXCPU,		true },	// CPU time limit exceeded (process quota)
+#endif
+#ifdef SIGXFSZ
+     { SIGXFSZ,		true },	// File size limit exceeded (file quota)
+#endif
+#ifdef SIGEMT
+     { SIGEMT,		false },// What is this?
+#endif
+#ifdef SIGSTKFLT
+     { SIGSTKFLT,	true },	// Stack fault on coprocessor
+#endif
+#ifdef SIGIO
+     { SIGIO,		true },	// I/O now possible
+#endif
+#ifdef SIGPWR
+     { SIGPWR,		true },	// Power failure
+#endif
+#ifdef SIGINFO
+     { SIGINFO,		true }, // SIGPWR
+#endif
+#ifdef SIGLOST
+     { SIGLOST,		false },// File lock lost (obsolete?)
+#endif
+#ifdef SIGWINCH
+     { SIGWINCH,	false },// Window resize signal
+#endif
+     { 0, false }
+};
 
 
 /* Signals - Constructor for the signal handler class
@@ -159,13 +190,22 @@ Signals::Signals(void)
 #ifdef DEBUG_PSYCHO
    debug("Signals::Signals() - Setting up signal handlers...");
 #endif
+
+#ifdef DEBUG_ASSERT
+   // Make sure the list is really empty
+   assert(handlers.empty());
+#endif
    
    // Remember who we are..
    siggies = this;
    
-   // We are very multi-talented and try to handle every signal we can..
-   for (register unsigned int i = NSIG; i--;) {
-      signal(i, sigHandler);
+   // Run through our signal instruction list...
+   for (unsigned int i = 0; signalHandlerInstructions[i].signal != 0; i++) {
+      if (signalHandlerInstructions[i].handle) {
+	 (void)signal(signalHandlerInstructions[i].signal, signalHandler);
+      } else {
+	 (void)signal(signalHandlerInstructions[i].signal, SIG_IGN);
+      }
    }
 }
 
@@ -181,6 +221,6 @@ Signals::~Signals(void)
    
    // Be neat and restore the signals. At least we are friendly!
    for (register unsigned int i = NSIG; i--;) {
-      signal(i, SIG_DFL);
+      (void)signal(i, SIG_DFL);
    }
 }
