@@ -43,8 +43,8 @@ using namespace Kine;
 using AIS::Util::String;
 using AIS::Util::StringTokens;
 
-// The conversion output buffer incremental size (Note: # of wchar_t's)
-#define ICONV_BUFFER_STEP_SIZE 512 // 512 * 4 = 2kB if wchar_t is 32-bits long
+// The conversion output buffer size
+#define ICONV_BUFFER_SIZE 256 // 256 * 4 = 1kB if wchar_t is 32-bits long
 
 // Our instance...
 Languages* Languages::instance = 0;
@@ -155,8 +155,7 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
    unsigned long lineNum = 0;
 
    // Output buffer for iconv()
-   size_t convOutBufferSize = 256;
-   wchar_t convOutBuffer[convOutBufferSize];
+   wchar_t convOutBuffer[ICONV_BUFFER_SIZE];
    
    // Create what may be either our permanent or temporary home for this data
    LanguageData* languageData = new LanguageData();
@@ -273,13 +272,16 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 
       // Stuff needed for iconv()'ing the data
       size_t convInBytes = line.length();
-      size_t convOutBytes = convOutBufferSize * sizeof(wchar_t);
+      size_t convOutBytes = ICONV_BUFFER_SIZE * sizeof(wchar_t);
       char* convInPtr = const_cast<char*>(line.data());
       char* convOutPtr = reinterpret_cast<char*>(convOutBuffer);
 
       // Initialise the conversion descriptor for this run
       (void)iconv(convDesc, NULL, NULL, &convOutPtr, &convOutBytes);
    
+      // Make a new data string (where the output buffer will go)
+      std::wstring* const convertedData = new std::wstring();
+
       // Convert the data
       for (;;) {
 	 const size_t convVal = iconv(convDesc,
@@ -292,13 +294,49 @@ bool Languages::loadFile(const std::string& fileName, std::string& errString,
 	    break;
 	 }
 
-#warning "No code to expand output iconv buffer"
-	 abort(); // No code written for this yet - panic.
+	 // An error occurred.. Check what it was..
+	 switch (errno) {
+	  case E2BIG: // No more room left in the output buffer
+#ifdef KINE_DEBUG
+	    debug("Languages::loadFile() - Conversion output buffer "
+		  "exhausted, dumping..");
+#endif
+	    
+	    // Copy everything from the output buffer to the data string
+	    convertedData->append(convOutBuffer, ICONV_BUFFER_SIZE);
+	    
+	    // Reset the static output buffer
+	    convOutBytes = ICONV_BUFFER_SIZE * sizeof(wchar_t);
+	    convOutPtr = reinterpret_cast<char*>(convOutBuffer);
+	    continue;
+	    
+	  case EILSEQ: // An illegal multibyte sequence was found in the input
+	  case EINVAL: // An incomplete multibyte sequence was found..
+	    errString =
+	      "Illegal " KINE_LANGTAGS_LANGFILE_CHARSET
+	      " sequence or corrupt language file";
+	    (void)iconv_close(convDesc);
+	    return false;
+	    
+	  default: // No idea what this error is..
+	    errString = "Unknown conversion error: ";
+	    errString += strerror(errno);
+	    (void)iconv_close(convDesc);
+	    return false;
+	 }
       }
       
-      // Make a new data string from the conversion buffer
-      std::wstring* const convertedData = new std::wstring(/* ? */);
-
+      // Okay, was anything in the buffer after that?
+      const std::wstring::size_type convOutChars =
+	(((int)convOutPtr - (int)convOutBuffer) / sizeof(wchar_t));
+      if (convOutChars > 0) {
+#ifdef KINE_DEBUG
+	 debug("Languages::loadFile() - Dumping the rest of the output "
+	       "buffer");
+#endif
+	 convertedData->append(convOutBuffer, convOutChars);
+      }
+      
       // Run over the tag data (erk, again - I *REALLY* do not like this)
       for (std::wstring::size_type i = 0; i < convertedData->length(); ++i) {
 	 /* If the character is one of those naughty control characters,
