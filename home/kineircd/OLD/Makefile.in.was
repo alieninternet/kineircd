@@ -104,21 +104,14 @@ $(SUB_DIRS):
 	$(MAKE) -C $@
 
 
-$(TARGET): $(OBJECTS) subdirs $(ROBJECTS) $(VER_OBJ)
-	$(LD) -r $(LDFLAGS) $(LIBS) -o $@ \
-		$(VER_OBJ) $(OBJECTS) $(ROBJECTS)
+$(TARGET): $(OBJECTS) subdirs $(ROBJECTS)
+	$(CXX) $(CXXFLAGS) $(VER_FLG) $(DEFS) $(INCDIRS) -c $(VER_SRC)
+	$(LD) -r $(LDFLAGS) $(LIBS) -o $@ $(VER_OBJ) $(OBJECTS) $(ROBJECTS)
 
 
 # We need to make langtags.h and langtags.cpp via GNU AutoGen...
 $(LANGTAGS_OUT_CPP): $(LANGTAGS_IN_DEF) $(LANGTAGS_IN_TPL)
 	autogen $(LANGTAGS_IN_DEF)
-
-
-# We want to force this being compiled each time...
-.PHONY: $(VER_OBJ)	
-$(VER_OBJ): $(VER_SRC)
-	$(CXX) $(CXXFLAGS) $(VER_FLG) \
-		$(DEFS) $(INCDIRS) -c $(VER_SRC)
 
 
 install:
