@@ -661,37 +661,37 @@ dnl Which modules shall we compile?
 dnl
 AC_MSG_CHECKING([which modules to compile])
 
-if test "$kineircd_test_netsnmp_broken" = "no"; then
-  AC_ARG_ENABLE(module-emod-snmp,
-                AC_HELP_STRING([--disable-module-emod-snmp],
-		               [Disable the SNMP extension module]),
-   [
-     if test "$enableval" \!= "yes"; then
-       echo -n "emod_snmp "
-       kineircd_test_compile_emod_snmp=yes
-     fi
-   ],[
-     echo -n "emod_snmp "
-     kineircd_test_compile_emod_snmp=yes
-   ])
-else
-  kineircd_test_compile_emod_snmp=no
-fi
-AC_SUBST(kineircd_test_compile_emod_snmp)
-
-AC_ARG_ENABLE(module-pmod-http,
-              AC_HELP_STRING([--disable-module-pmod-http],
+AC_ARG_ENABLE(module-mod-http,
+              AC_HELP_STRING([--disable-module-mod-http],
                              [Disable the HTTP protocol module]),
  [
    if test "$enableval" \!= "yes"; then
-     echo -n "pmod_http "
-     kineircd_test_compile_pmod_http=yes
+     echo -n "mod_http "
+     kineircd_test_compile_mod_http=yes
    fi
  ],[
-   echo -n "pmod_http "
-   kineircd_test_compile_pmod_http=yes
+   echo -n "mod_http "
+   kineircd_test_compile_mod_http=yes
  ])
-AC_SUBST(kineircd_test_compile_pmod_http)
+AC_SUBST(kineircd_test_compile_mod_http)
+
+if test "$kineircd_test_netsnmp_broken" = "no"; then
+  AC_ARG_ENABLE(module-mod-snmp,
+                AC_HELP_STRING([--disable-module-mod-snmp],
+		               [Disable the SNMP extension module]),
+   [
+     if test "$enableval" \!= "yes"; then
+       echo -n "mod_snmp "
+       kineircd_test_compile_mod_snmp=yes
+     fi
+   ],[
+     echo -n "mod_snmp "
+     kineircd_test_compile_mod_snmp=yes
+   ])
+else
+  kineircd_test_compile_mod_snmp=no
+fi
+AC_SUBST(kineircd_test_compile_mod_snmp)
 
 dnl finish off the line
 echo
@@ -763,8 +763,8 @@ AC_OUTPUT([
 	src/lib/modules/Makefile
 	src/lib/socket/Makefile
 	src/modules/Makefile
-	src/modules/emod_snmp/Makefile
-	src/modules/pmod_http/Makefile
+	src/modules/mod_http/Makefile
+	src/modules/mod_snmp/Makefile
 	])
 
 

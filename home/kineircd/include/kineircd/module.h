@@ -59,13 +59,6 @@ namespace Kine {
       typedef KINE_MODULE_START(startFunction_type);
       typedef KINE_MODULE_STOP(stopFunction_type);
       
-      // Type of the module, so we know how to install it correctly
-      enum type_type {
-	 TYPE_PROTOCOL,			// Protocol module (pmod)
-	 TYPE_SERVICE,			// Service module (smod)
-	 TYPE_EXTENSION			// Core extension module (emod)
-      };
-      
       /* This structure defines information about the module itself. Each 
        * module must have one of these present to define parameters about the 
        * module so that the server has some idea of how to handle it, what
@@ -112,32 +105,23 @@ namespace Kine {
       };
 
     private:
-      // Type of the module
-      const type_type type;
-      
       // Basic information about this module
       const basicInfo_type& basicInfo;
 
       // The configuration data class (optional)
       ConfigData* const configData;
 
-    protected:
+    public:
       // Constructor
-      Module(const type_type t, const basicInfo_type& bi, ConfigData* const cd)
-	: type(t),
-          basicInfo(bi),
+      Module(const basicInfo_type& bi, ConfigData* const cd = 0)
+	: basicInfo(bi),
           configData(cd)
         {};
       
-    public:
       // Destructor
-      virtual ~Module(void)
+      ~Module(void)
 	{};
 
-      // Return the type of the module
-      const type_type& getType(void) const
-	{ return type; };
-      
       // Return the basic information about the module
       const basicInfo_type& getBasicInfo(void) const
 	{ return basicInfo; };
