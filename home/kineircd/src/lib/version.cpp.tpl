@@ -55,9 +55,6 @@ namespace Version {
 #ifdef STL_HAS_HASH
 				"H"
 #endif
-#ifdef BLOODY_IRCII_KLUGE
-				"I"
-#endif
 #ifdef ALLOW_LOCALOP_GLOBAL_KILL
 				"k"
 #endif
@@ -109,6 +106,9 @@ namespace Version {
 #ifdef HAVE_CMD_TRACEROUTE
 				"T"
 #endif
+#ifdef ALLOW_CLIENT_CONNECTIONS
+     				"U"
+#endif
 #ifdef ALLOW_OPER_WALLOPS
 				"w"
 #endif
@@ -118,11 +118,47 @@ namespace Version {
 #ifdef ALLOW_GLOBALOP_DIE
 				"X"
 #endif
+#ifdef DO_MATCH_COUNTING
+				"y"
+#endif
 #ifdef LOG_TO_SYSLOG
 				"Y"
 #endif
-#ifdef DO_MATCH_COUNTING
+#ifdef ALLOW_SERVER_CONNECTIONS
 				"z"
+#endif
+#ifdef ALLOW_SERVICE_CONNECTIONS
+     				"Z"
+#endif
+#ifdef HAVE_TRANSPORT_TCP_IPV4
+     				",IPv4"
+#endif
+#ifdef HAVE_TRANSPORT_TCP_IPV6
+     				",IPv6"
+#endif
+#ifdef HAVE_PROTOCOL_P13SERVER
+     				",P13"
+#endif
+#ifdef COMPRESS_PROTOCOL_P13SERVER
+     					"c"
+#endif
+#ifdef HAVE_PROTOCOL_P14SERVER
+     				",P14"
+#endif
+#ifdef COMPRESS_PROTOCOL_P14SERVER
+     					"c"
+#endif
+#ifdef HAVE_PROTOCOL_IRC2USER
+     				",IRC2"
+#endif
+#ifdef BLOODY_IRCII_KLUGE
+					"k"
+#endif
+#ifdef HAVE_PROTOCOL_IRC3USER
+     				",IRC3"
+#endif
+#ifdef COMPRESS_PROTOCOL_IRC3USER
+     					"c"
 #endif
 					; // The end, phew!
 }

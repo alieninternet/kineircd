@@ -6,7 +6,8 @@
 # ifndef __DEBUG_H_
 #  define __DEBUG_H_
 
-extern void debug(String const &);		// Output/Broadcast debug line
+// Output/Broadcast debug line
+extern void debug(String const &);
 
 # endif
 #endif

@@ -40,6 +40,8 @@ class User {
 
    // User mode type - do not change this - P14 needs this to be the same
    typedef unsigned long long modes_t;
+   
+   typedef unsigned char status_t;
 
 // private:
  public:
@@ -67,7 +69,7 @@ class User {
    time_t lastNickChange;			// Last nickname change
 
    String awayMessage;				// /AWAY message
-   unsigned char status;			// Status
+   status_t status;				// Status
 
    String langCharset;				// Language character set
    String langList;				// List of langauges (WHOIS)
@@ -272,6 +274,12 @@ class User {
 	return local;
      };
 
+   // Return the helper status variable
+   status_t getStatus(void) const
+     {
+	return status;
+     };
+   
    // Return the appropriate language information
    String lang(Language::tag_t const &t) const
      {

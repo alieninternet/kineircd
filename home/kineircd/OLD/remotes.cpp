@@ -490,53 +490,25 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
       
       // Send the rest of the string if needs be
       if (channels.length()) {
-	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISCHANNELS, from,
-			      u->nickname + " :" + channels);
+	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISCHANNELS, 
+			      from, u->nickname + " :" + channels);
       }
       
-      /* Send the server information, if the server is not hidden and the
-       * user is visible or if the user looking at the information is an
-       * operator
-       */
-      if ((!(u->server->isModeSet(Server::M_HIDDEN)) &&
-	   !(u->isModeSet(User::M_INVISIBLE))) ||
-	  User::isOper(from)) {
-	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISSERVER, from,
-			      u->nickname + " " + u->server->getHostname() + 
-			      " :" + u->server->getDescription());
-      }
-     
       // Send language specification
       if (u->hasLangInfo()) {
-	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOIS_LANGUAGE, from,
+	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOIS_LANGUAGE, 
+			      from,
 			      u->getNickname() + " " + u->getLangList() + " " +
 			      u->getLangCharset());
       }
       
-      // If the user is away, send the away message
-      if (u->awayMessage.length()) {
-	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_AWAY, from,
-			      u->nickname + " :" + u->awayMessage);
-      }
-      
-      // Check if this user is local, and whether this user can see idle info
-      if ((u->server == Daemon::myServer()) &&
-#ifdef TIME_TO_BE_IDLE
-	  (difftime(Daemon::getTime(), 
-		    u->local->handler->getConnection()->getLastSpoke()) >=
-	   TIME_TO_BE_IDLE) &&
-#endif
-	  (!u->isModeSet(User::M_INVISIBLE) || User::isHelper(from))) {
-	 handler->
-	   sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISIDLE, from,
-		       String::printf("%s %lu %lu :%s",
-				      (char const *)u->nickname,
-				      ((unsigned long)
-				       difftime(Daemon::getTime(),
-						u->local->handler->getConnection()->getLastSpoke())),
-				      u->signonTime,
-				      (char const *)from->lang(Language::E_RPL_WHOISIDLE)));
-      }
+      // Check if this user is a helper
+//      if (User::isHelper(u)/* && u->getStatus()*/) {
+//	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISHELPER,
+//			      from, u->getNickname() + " :" +
+//			      from->lang((Language::E_HELPER_01 - 1) +
+//					 u->getStatus()));
+//      }
       
       // Check if this user is an irc operator
       if (User::isOper(u)) {
@@ -560,6 +532,43 @@ void Handler::doWHOIS(Handler *handler, User *from, String const &request)
 		       String::printf("%s * :%s",
 				      (char const *)u->nickname,
 				      (char const *)from->lang(Language::E_RPL_WHOISSECURE)));
+      }
+
+      // If the user is away, send the away message
+      if (u->awayMessage.length()) {
+	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_AWAY, from,
+			      u->nickname + " :" + u->awayMessage);
+      }
+      
+      // Check if this user is local, and whether this user can see idle info
+      if ((u->server == Daemon::myServer()) &&
+#ifdef TIME_TO_BE_IDLE
+	  (difftime(Daemon::getTime(),
+		    u->local->handler->getConnection()->getLastSpoke()) >=
+	   TIME_TO_BE_IDLE) &&
+#endif
+	  (!u->isModeSet(User::M_INVISIBLE) || User::isHelper(from))) {
+	 handler->
+	   sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISIDLE, from,
+		       String::printf("%s %lu %lu :%s",
+				      (char const *)u->nickname,
+				      ((unsigned long)
+				       difftime(Daemon::getTime(),
+						u->local->handler->getConnection()->getLastSpoke())),
+				      u->signonTime,
+				      (char const *)from->lang(Language::E_RPL_WHOISIDLE)));
+      }
+
+      /* Send the server information, if the server is not hidden and the
+       * user is visible or if the user looking at the information is an
+       * operator
+       */
+      if ((!(u->server->isModeSet(Server::M_HIDDEN)) &&
+	   !(u->isModeSet(User::M_INVISIBLE))) ||
+	  User::isOper(from)) {
+	 handler->sendNumeric(Daemon::myServer(), Numerics::RPL_WHOISSERVER, from,
+			      u->nickname + " " + u->server->getHostname() + 
+			      " :" + u->server->getDescription());
       }
    }
    
