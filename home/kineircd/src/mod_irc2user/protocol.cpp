@@ -70,7 +70,6 @@ Protocol::Protocol(const Kine::Registrant& registrant,
    (void)changeOutputCharset("UTF-8");
 #endif
 
-   
    // Attempt to register the user to the registry..
    if (myServer().addUser(user) != Error::NO_ERROR) {
       // Deal with this in a nice way.. but we don't, yet, do we?

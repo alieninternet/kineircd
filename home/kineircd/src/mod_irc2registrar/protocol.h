@@ -118,7 +118,10 @@ namespace Kine {
 	     listener(l),
 	     registrationType(RegistrationType::NONE),
 	     pongsLeft(config().getOptionsRegistrarUserPingProbeCount())
-	   {};
+	   {
+	      (void)changeInputCharset("UTF-8"); // temporary
+	      (void)changeOutputCharset("UTF-8"); // also.. temporary..
+	   };
       
 	 // Destructor
 	 ~Protocol(void)
