@@ -25,10 +25,15 @@
 
 #include "config.h"
 
+
 // Our constructor
 Config::Config(const String &f)
-  : parser(&Config::topDefs, f)
-{};
+  : parser(&Config::topDefs, f),
+    defAdminEmail(DEFAULT_CONFIG_ADMIN_EMAIL),
+    defAdminLocation(DEFAULT_CONFIG_ADMIN_LOCATION),
+    defAdminName(DEFAULT_CONFIG_ADMIN_NAME)
+{
+};
 
 
 // This is temporary.

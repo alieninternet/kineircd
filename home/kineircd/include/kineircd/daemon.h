@@ -122,10 +122,6 @@ class Daemon {
  private:
    static Config *config;			// Configuration
    
-   static String adminName;			// Administrator name
-   static String adminEmail;			// Administrator e-mail
-   static String adminLocation;			// Admin location (optional)
-
    static unsigned short confMaxAcceptsPerUser;	// Max accepts per user
    static unsigned short confMaxBansPerChannel;	// Max +b/+e/+I per channel
    static unsigned char confMaxLangsPerUser;	// Max languages per user
@@ -220,7 +216,13 @@ class Daemon {
  public:
    ~Daemon(void);				// Class destructor
 
-   static bool init(String const &);		// Initialise the daemon
+   static bool init(Config &);			// Initialise the daemon
+
+   // Get the configuration class
+   static const Config &getConfig(void)
+     {
+	return *config;
+     };
    
    // Do we have a network name?
    static bool haveNetworkName(void)

@@ -56,16 +56,16 @@ void Handler::doADMIN(Handler *handler, User *from)
 			Daemon::myServer()->getHostname() + " :" +
 			from->lang(LangTags::L_RPL_ADMINME));
    handler->sendNumeric(Daemon::myServer(), Numerics::RPL_ADMINLOC1, from,
-			Daemon::adminName);
+			Daemon::getConfig().getAdminName());
    
-   // The second location line is optional...
-   if (Daemon::adminLocation.length()) {
+   // Check if the location line exists (it is optional)
+   if (!Daemon::getConfig().getAdminLocation().empty()) {
       handler->sendNumeric(Daemon::myServer(), Numerics::RPL_ADMINLOC2, from,
-			   Daemon::adminLocation);
+			   Daemon::getConfig().getAdminLocation());
    }
-   
+
    handler->sendNumeric(Daemon::myServer(), Numerics::RPL_ADMINEMAIL, from,
-			Daemon::adminEmail);
+			Daemon::getConfig().getAdminEmail());
 }
 
 

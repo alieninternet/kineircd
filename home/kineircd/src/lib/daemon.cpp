@@ -44,10 +44,6 @@
 namespace Daemon {
    Config *config = 0;
    
-   String adminName = DEFAULT_CONFIG_ADMIN_NAME;
-   String adminEmail = DEFAULT_CONFIG_ADMIN_EMAIL;
-   String adminLocation = DEFAULT_CONFIG_ADMIN_LOCATION;
-   
    unsigned short confMaxAcceptsPerUser = DEFAULT_MAX_ACCEPTS_PER_USER;
    unsigned short confMaxBansPerChannel = DEFAULT_MAX_BANS_PER_CHANNEL;
    unsigned char confMaxLangsPerUser = DEFAULT_MAX_LANGS_PER_USER;
@@ -194,12 +190,15 @@ Daemon::~Daemon(void)
 /* init - Init the server
  * Original 11/08/01 simonb
  */
-bool Daemon::init(String const &configFile)
+bool Daemon::init(Config &conf)
 {
 #ifdef DEBUG
    cerr << "Initialising new server" << endl;
 #endif
 
+   // Copy the config pointer over
+   config = &conf;
+   
    // Reset lists
 #ifdef DEBUG_EXTENDED
    cerr << "Resetting lists" << endl;
@@ -284,14 +283,6 @@ bool Daemon::init(String const &configFile)
    // Fire up the extended clock information
    checkClock();
    
-   // Load config!
-   config = new Config(configFile);
-   if (!config->configure()) {
-      logger("IRCd not started: Configuration file error", 
-	     LOGPRI_ERROR);
-      return false;
-   }
-
    /* Make sure we have actually bound to SOMETHING and are listening,
     * else we aren't going to be very useful at all
     */
@@ -304,16 +295,6 @@ bool Daemon::init(String const &configFile)
    // Add ourselves to the server list which should be completely blank
    servers[server->hostname.toLower()] = server;
 
-   // Last message, we are obviously going to run here. Tell the caller
-   cout << "Running..." << endl;
-   
-   // Close some descriptors we will not be using
-   close(0); // stdin
-#ifndef DEBUG
-   close(1); // stdout
-   close(2); // stderr
-#endif
-   
    // We are ready to go, go into normal running stage
    stage = STAGE_NORMAL;
    return true;
