@@ -855,7 +855,7 @@ void irc2userHandler::sendNoticeAnon(Channel *destination,
 				     String const &message) const
 {
    getConnection()->
-     sendRaw(String::printf(":" ANONYMOUS_CHANNEL_MASK " NOTICE %s :%s"
+     sendRaw(String::printf(":" ANONYMOUS_IDENT_MASK " NOTICE %s :%s"
 			    IRC2USER_EOL_CHARS,
 			    (char const *)destination->name,
 			    (char const *)message));
@@ -977,7 +977,7 @@ void irc2userHandler::sendPrivmsgAnon(Channel *destination,
 				      String const &message) const
 {
    getConnection()->
-     sendRaw(String::printf(":" ANONYMOUS_CHANNEL_MASK " PRIVMSG %s :%s" 
+     sendRaw(String::printf(":" ANONYMOUS_IDENT_MASK " PRIVMSG %s :%s" 
 			    IRC2USER_EOL_CHARS,
 			    (char const *)destination->name,
 			    (char const *)message));
