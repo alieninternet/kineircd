@@ -81,6 +81,30 @@
        GNU LibTool can be found at http://www.gnu.org/software/libtool/
 
 
+     - DNS host resolver library (libresolv):
+     
+       Foo.
+
+
+     - BIND Lightweight Resolver Library (lwresolv):
+     
+       The lightweight resolver library resolves many issues with the
+       traditional resolver library (no pun intended) by setting up a
+       small cache only server and a puny cut-down DNS protocol designed
+       specifically for the task of acting as a resolver for software which
+       performs quite a large number of DNS requests (and needs them to be
+       quickly resolved), just like an IRC server.
+       
+       If you have a heavily loaded IRC server and might be finding in
+       peak times some clients are not being resolved (because the server
+       may be too busy), this is the answer for you.
+       
+       The lightweight resolver comes with ISC's BIND DNS server, and can be 
+       set up inside named itself or using the standalone "lwresd" daemon.
+       
+       BIND can be found at http://www.isc.org/products/BIND/
+
+
      - OpenSSL (optional):
 
        If you wish to use SSL for connections between servers, users or
