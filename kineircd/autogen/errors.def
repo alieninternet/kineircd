@@ -24,6 +24,11 @@ autogen definitions errors;
 
 
 errors = {
+   name		= "CHANNEL_NAME_PREFIX_UNKNOWN";
+   reason	= "Channel name has an unknown prefix";
+};
+
+errors = {
    name		= "CLIENT_EXISTS";
    reason	= "Client already in list";
 };
@@ -31,6 +36,11 @@ errors = {
 errors = {
    name		= "NAME_HAS_BAD_CHARS";
    reason	= "The name given has invalid characters";
+};
+
+errors = {
+   name		= "NAME_IS_A_MASK";
+   reason	= "The name given is a mask";
 };
 
 errors = {
@@ -61,6 +71,16 @@ errors = {
 errors = {
    name		= "SERVER_EXISTS";
    reason	= "Server already in list";
+};
+
+errors = {
+   name		= "SERVER_NAME_HAS_DOT_DOT";
+   reason	= "Server name has two dots with nothing between them";
+};
+
+errors = {
+   name		= "SERVER_NAME_HAS_NO_DOT";
+   reason	= "Server name has no dot in it";
 };
 
 errors = {

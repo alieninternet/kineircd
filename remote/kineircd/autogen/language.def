@@ -1953,6 +1953,13 @@ tag = {
  *****************************************************************************/
 
 tag = {
+   name		= "Kine_Error_CHANNEL_NAME_PREFIX_UNKNOWN";
+   components	= "libkineircd";
+   data_en	= "The channel name given has an unknown/non-standard prefix "
+   		  "character";
+};
+
+tag = {
    name		= "Kine_Error_CLIENT_EXISTS";
    components	= "libkineircd";
    data_en	= "Client already exists";
@@ -1962,6 +1969,12 @@ tag = {
    name		= "Kine_Error_NAME_HAS_BAD_CHARS";
    components	= "libkineircd";
    data_en	= "The name given has invalid characters";
+};
+
+tag = {
+   name		= "Kine_Error_NAME_IS_A_MASK";
+   components	= "libkineircd";
+   data_en	= "The name given is a mask, and cannot be used";
 };
 
 tag = {
@@ -1998,6 +2011,20 @@ tag = {
    name		= "Kine_Error_SERVER_EXISTS";
    components	= "libkineircd";
    data_en	= "Server already exists";
+};
+
+tag = {
+   name		= "Kine_Error_SERVER_NAME_HAS_DOT_DOT";
+   components	= "libkineircd";
+   data_en	= "The server name given has two dots with nothing between "
+   		  "them! (\"..\")";
+};
+
+tag = {
+   name		= "Kine_Error_SERVER_NAME_HAS_NO_DOT";
+   components	= "libkineircd";
+   data_en	= "The server name given has no dot in it to be considered "
+                  "a valid host name";
 };
 
 tag = {
