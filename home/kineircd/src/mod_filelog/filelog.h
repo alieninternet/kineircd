@@ -32,7 +32,7 @@ namespace Kine {
    // The generic file logging class
    class LoggerFile : public Logger {
     private:
-      ofstream logFile;
+      std::ofstream logFile;
       
       void logLine(const String &, 
 		   const mask_type = MASK_HOUSEKEEPING);// Log a string of text
