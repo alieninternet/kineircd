@@ -121,7 +121,7 @@ void Protocol::parseMessage(const std::string& origin,
 			    parameters)
 {
    // Try and find the command..
-   const Commands::CommandInfo* const commandInfo =
+   Commands::CommandInfo* const commandInfo =
      Commands::getInstance().findCommand(command);
    
    // Did we find it? (most of the time we will find it
