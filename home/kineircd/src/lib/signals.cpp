@@ -27,6 +27,7 @@
 #include <csignal>
 #include <algorithm>
 #include <functional>
+#include <libais/string/string.h>
 
 #include "kineircd/signals.h"
 #include "kineircd/exit.h"
