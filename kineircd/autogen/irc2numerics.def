@@ -3646,6 +3646,113 @@ irc2numerics = {
 
 
 irc2numerics = {
+   name		= "RPL_MODLIST";
+   numeric	= "702";
+   origin	= "RatBox";
+   format	= "<?> 0x<?> <?> <?>";
+   comment	= "Output from the MODLIST command";
+};
+
+irc2numerics = {
+   name		= "RPL_ENDOFMODLIST";
+   numeric	= "703";
+   origin	= "RatBox";
+   format	= ":<text>";
+   comment	= "Terminates MODLIST output";
+};
+
+irc2numerics = {
+   name		= "RPL_HELPSTART";
+   numeric	= "704";
+   origin	= "RatBox";
+   format	= "<command> :<text>";
+   comment	= "Start of HELP command output";
+};
+
+irc2numerics = {
+   name		= "RPL_HELPTXT";
+   numeric	= "705";
+   origin	= "RatBox";
+   format	= "<command> :<text>";
+   comment	= "Output from HELP command";
+};
+
+irc2numerics = {
+   name		= "RPL_ENDOFHELP";
+   numeric	= "706";
+   origin	= "RatBox";
+   format	= "<command> :<text>";
+   comment	= "End of HELP command output";
+};
+
+irc2numerics = {
+   name		= "RPL_ETRACEFULL";
+   numeric	= "708";
+   origin	= "RatBox";
+   format	= "<?> <?> <?> <?> <?> <?> <?> :<?>";
+   comment	= "Output from 'extended' trace";
+};
+
+irc2numerics = {
+   name		= "RPL_ETRACE";
+   numeric	= "709";
+   origin	= "RatBox";
+   format	= "<?> <?> <?> <?> <?> <?> :<?>";
+   comment	= "Output from 'extended' trace";
+};
+
+irc2numerics = {
+   name		= "RPL_KNOCK";
+   numeric	= "710";
+   origin	= "RatBox";
+   format	= "<channel> <nick>!<user>@<host> :<text>";
+   comment	= "Message delivered using KNOCK command";
+};
+
+irc2numerics = {
+   name		= "RPL_KNOCKDLVR";
+   numeric	= "711";
+   origin	= "RatBox";
+   format	= "<channel> :<text>";
+   comment	= "Message returned from using KNOCK command";
+};
+
+irc2numerics = {
+   name		= "ERR_TOOMANYKNOCK";
+   numeric	= "712";
+   origin	= "RatBox";
+   format	= "<channel> :<text>";
+   comment	= "Message returned when too many KNOCKs for a channel have "
+   		  "been sent by a user";
+};
+
+irc2numerics = {
+   name		= "ERR_CHANOPEN";
+   numeric	= "713";
+   origin	= "RatBox";
+   format	= "<channel> :<text>";
+   comment	= "Message returned from KNOCK when the channel can be freely "
+   		  "joined by the user";
+};
+
+irc2numerics = {
+   name		= "ERR_KNOCKONCHAN";
+   numeric	= "714";
+   origin	= "RatBox";
+   format	= "<channel> :<text>";
+   comment	= "Message returned from KNOCK when the user has used KNOCK "
+   		  "on a channel they have already joined";
+};
+
+irc2numerics = {
+   name		= "ERR_KNOCKDISABLED";
+   numeric	= "715";
+   origin	= "RatBox";
+   format	= ":<text>";
+   comment	= "Returned from KNOCK when the command has been disabled";
+};
+
+irc2numerics = {
    name		= "RPL_TARGUMODEG";
    numeric	= "716";
    origin	= "RatBox";
@@ -3673,6 +3780,66 @@ irc2numerics = {
                   "attempted to talk to them (via PRIVMSG/NOTICE), and that "
 		  "they will need to be accepted (via the ACCEPT command) "
 		  "before being able to talk to them";
+};
+
+irc2numerics = {
+   name		= "RPL_OMOTDSTART";
+   numeric	= "720";
+   origin	= "RatBox";
+   format	= ":<text>";
+   comment	= "IRC Operator MOTD header, sent upon OPER command";
+};
+
+irc2numerics = {
+   name		= "RPL_OMOTD";
+   numeric	= "721";
+   origin	= "RatBox";
+   format	= ":<text>";
+   comment	= "IRC Operator MOTD text (repeated, usually)";
+};
+
+irc2numerics = {
+   name		= "RPL_ENDOFOMOTD";
+   numeric	= "722";
+   origin	= "RatBox";
+   format	= ":<text>";
+   comment	= "IRC operator MOTD footer";
+};
+
+irc2numerics = {
+   name		= "ERR_NOPRIVS";
+   numeric	= "723";
+   origin	= "RatBox";
+   format	= "<command> :<text>";
+   comment	= "Returned from an oper command when the IRC operator "
+   		  "does not have the relevant operator privileges.";
+};
+
+irc2numerics = {
+   name		= "RPL_TESTMARK";
+   numeric	= "724";
+   origin	= "RatBox";
+   format	= "<nick>!<user>@<host> <?> <?> :<text>";
+   comment	= "Reply from an oper command reporting how many users "
+   		  "match a given user@host mask";
+};
+
+irc2numerics = {
+   name		= "RPL_TESTLINE";
+   numeric	= "725";
+   origin	= "RatBox";
+   format	= "<?> <?> <?> :<?>";
+   comment	= "Reply from an oper command reporting relevant I/K lines "
+   		  "that will match a given user@host";
+};
+
+irc2numerics = {
+   name		= "RPL_NOTESTLINE";
+   numeric	= "726";
+   origin	= "RatBox";
+   format	= "<?> :<text>";
+   comment	= "Reply from oper command reporting no I/K lines match "
+   		  "the given user@host";
 };
 
 irc2numerics = {
