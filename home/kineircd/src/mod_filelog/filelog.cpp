@@ -42,7 +42,7 @@ FileLog::FileLog(Config& c)
   : Kine::Logger(c.getLogMask()),
     config(c)
 {
-   logFile.open(c.getFilename().c_str(),
+   logFile.open(config.getFilename().c_str(),
 		std::ofstream::out | std::ofstream::app);
 }
 
