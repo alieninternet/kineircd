@@ -1,6 +1,8 @@
 RCS
 CVS
 Makefile
+Makefile.deps
+libtool
 configure
 config.log
 config.status
