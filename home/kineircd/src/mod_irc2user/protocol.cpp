@@ -22,36 +22,36 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SRC_MOD_IRC2USER_PROTOCOL_H_
-# define _SRC_MOD_IRC2USER_PROTOCOL_H_ 1
+#ifdef HAVE_CONFIG_H
+# include "autoconf.h"
+#endif
 
-# include <kineircd/registrant.h>
+#include <iostream>
+#include <kineircd/config.h>
 
-# include "libkineircd_irc2/protocol.h"
+#include "mod_irc2user/protocol.h"
 
-namespace Kine {
-   namespace mod_irc2user {
-      class Protocol : public Kine::LibIRC2::Protocol {
-       private:
-	 // Appropriately parse a protocol message
-	 void parseMessage(const std::string& origin,
-			   const std::string& destination,
-			   const std::string& command,
-			   const Kine::LibIRC2::Protocol::parameters_type&
-			   parameters);
-	 
-       public:
-	 // Constructor (init the connection)
-	 Protocol(const Kine::Registrant& registrant,
-		  Kine::Connection& connection, std::string& inputQueue,
-		  std::string& outputQueue);
-	 
-	 // Destructor
-	 ~Protocol(void)
-	   {};
-      };
-   }; // namespace mod_irc2user
-}; // namespace Kine
-   
-#endif // _SRC_MOD_IRC2USER_PROTOCOL_H_
-   
+using namespace Kine::mod_irc2user;
+
+
+/* Protocol - Constructor/Initialise the connection
+ * Original 12/08/2001 simonb
+ */
+Protocol::Protocol(const Kine::Registrant& registrant,
+		   Kine::Connection& connection, std::string& inputQueue,
+		   std::string& outputQueue)
+  : Kine::LibIRC2::Protocol(connection, inputQueue, outputQueue)
+{
+}
+
+
+/* parseMessage - Appropriately parse a protocol message
+ * Original 12/08/2001 simonb
+ */
+void Protocol::parseMessage(const std::string& origin,
+			    const std::string& destination,
+			    const std::string& command,
+			    const Kine::LibIRC2::Protocol::parameters_type&
+			    parameters)
+{
+}
