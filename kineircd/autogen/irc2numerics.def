@@ -1519,7 +1519,6 @@ irc2numerics = {
    name		= "RPL_USERIP";
    numeric	= "340";
    origin	= "ircu";
-   conflict	= "yes";
 };
 
 irc2numerics = {
