@@ -47,6 +47,12 @@ namespace Kine {
       
       // The type of protocol this is (see the enumeration above)
       const Type::type type;
+
+      // Constructor
+      ProtocolName(const char* const n, Type::type t)
+	: name(n),
+          type(t)
+	{};
       
       // Equal-to operator
       bool operator==(const ProtocolName& a) const

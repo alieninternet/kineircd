@@ -140,8 +140,9 @@ namespace Kine {
       // Protocol set manipulators, for the registrar and modules to tap into
       bool registerProtocol(const ProtocolName& name, ProtocolInfo& info);
       bool deregisterProtocol(const ProtocolName& name);
-      const protocols_type& getProtocols(void) const
-	{ return protocols; };
+      ProtocolInfo* const findProtocol(const ProtocolName::Type::type type,
+				       const std::string& name)
+	{ return protocols.find(ProtocolName(name.c_str(), type))->second; };
       
       // Main loop
       Exit::status_type run(void);

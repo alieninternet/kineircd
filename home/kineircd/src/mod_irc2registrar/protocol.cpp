@@ -27,6 +27,8 @@
 #include <sstream>
 #include <iomanip>
 
+#include "kineircd/protocolinfo.h"
+#include "kineircd/protocolname.h"
 #include "registrar.h"
 #include "regnumerics.h"
 #include "debug.h"
@@ -86,7 +88,7 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric)
  * Original 12/08/2001 simonb
  */
 void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
-			    const char* data)
+			    const char* const data)
 {
    std::ostringstream output;
    
@@ -112,6 +114,24 @@ void Registrar::sendNumeric(const RegistrationNumerics::numeric_type numeric,
    
    // Throw the line onto the output queue
    outputQueue.push(output.str());
+}
+
+
+/* sendError - Send an error and disconnect
+ * Original 12/08/2001 simonb
+ */
+void Registrar::sendError(const char* const error)
+{
+   std::ostringstream output;
+   
+   // Assemble the line, nicely terminated..
+   output << "ERROR :" << error << "\r\n";
+   
+   // Throw the line onto the output queue
+   outputQueue.push(output.str());
+   
+   // Disconnect..
+   connection.goodbye();
 }
 
 
@@ -156,10 +176,12 @@ void Registrar::parseLine(const String& line)
 	 break;
       }
    }
+
+   ProtocolInfo* protocolInfo = 0;
    
    /* That command could have been the completion of registration.. The first
     * sign of that being true would be the registration type would have been
-    * set. Let's check that to see what we need to do next..
+    * set. Let's check...
     */
    switch (registrationType) {
     case RegistrationType::NONE:
@@ -176,7 +198,7 @@ void Registrar::parseLine(const String& line)
        }
 
        // No support yet...
-       connection.goodbye();
+       sendError("Requested client protocol unavailable");
        return;
     }
       
@@ -190,9 +212,17 @@ void Registrar::parseLine(const String& line)
 	  return;
        }
 
-       // No support yet...
-       connection.goodbye();
-       return;
+       /* Since we know IIRCN protocols always have a protocol name, finding
+	* the appropriate protocol is easy.
+	*/
+       if ((protocolInfo = 
+	    connection.getDaemon().
+	    findProtocol(ProtocolName::Type::NETWORK,
+			 registrantData.protocol.toUpper())) == 0) {
+	  // Complain
+	  sendError("Requested IIRC protocol unavailable");
+	  return;
+       }
     }
       
     case RegistrationType::SERVER: {
@@ -203,7 +233,7 @@ void Registrar::parseLine(const String& line)
        }
        
        // No support yet...
-       connection.goodbye();
+       sendError("Requested server protocol unavailable");
        return;
     }
       
@@ -216,10 +246,42 @@ void Registrar::parseLine(const String& line)
        }
        
        // No support yet...
-       connection.goodbye();
+       sendError("Requested service protocol unavailable");
        return;
     }
    }
+   
+   // If we got here, we are likely to switch to the newly created protocol.
+#ifdef KINE_DEBUG_ASSERT
+   assert(protocolInfo != 0);
+#endif
+    
+   // First, we need to assemble a string representing the old output queue
+   std::string output;
+   while (!outputQueue.empty()) {
+      output += outputQueue.front();
+      outputQueue.pop();
+   }
+   
+   // Second, we create the new protocol
+   Protocol* const newProtocol =
+     protocolInfo->createProtocol(registrantData, connection, listener,
+				  buffer, output);
+      
+   // That protocol instance may not have been created, so let's just check..
+   if (newProtocol != 0) {
+      // Do the protocol hand-over
+      connection.setProtocol(*newProtocol);
+      
+      // Delete ourself..
+      delete this;
+      
+      // Bye bye!
+      return;
+   }
+
+   // Uh oh - the protocol was not created..
+   sendError("Requested protocol did not initialise");
 }
 
 

@@ -75,8 +75,11 @@ namespace Kine {
       // Send a numeric
       void sendNumeric(const RegistrationNumerics::numeric_type numeric);
       void sendNumeric(const RegistrationNumerics::numeric_type numeric,
-		       const char* data);
+		       const char* const data);
 
+      // Send an error message and disconnect
+      void sendError(const char* const error);
+      
       // Send a ping with some unpredictable data
       void sendPing(void);
 
