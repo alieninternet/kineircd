@@ -558,9 +558,13 @@ AC_KINE_MODULE_CHECK(mod-iirc1, [the IIRC/1 inter-network protocol module])
 AC_KINE_MODULE_CHECK(mod-irc2user, [the IRC/2 user protocol module])
 if test "$kineircd_test_netsnmp_broken" = "no"; then
   AC_KINE_MODULE_CHECK(mod-snmp, [the SNMP statistics module])
+else
+  AM_CONDITIONAL(KINEIRCD_COMPILE_MOD_SNMP, [false])
 fi
 if test "$ac_cv_header_syslog_h" = "yes"; then
   AC_KINE_MODULE_CHECK(mod-syslog, [the syslog logging module])
+else
+  AM_CONDITIONAL(KINEIRCD_COMPILE_MOD_SYSLOG, [false])
 fi
 
 dnl finish off the line
